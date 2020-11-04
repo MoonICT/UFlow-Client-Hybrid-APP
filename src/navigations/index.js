@@ -25,6 +25,7 @@ import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
 //Custom Theme
 import {theme} from '../themes';
+import TextFeild from '../screens/TextField';
 
 const store = initStore();
 
@@ -94,6 +95,12 @@ const App = () => {
             <RootStack.Screen
               name="Geolocations"
               component={Geolocations}
+              headerMode={true}
+              options={{headerShown: true}}
+            />
+            <RootStack.Screen
+              name="TextFeild"
+              component={TextFeild}
               headerMode={true}
               options={{headerShown: true}}
             />
