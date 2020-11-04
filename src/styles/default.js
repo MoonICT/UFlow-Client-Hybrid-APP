@@ -36,6 +36,12 @@ export default StyleSheet.create({
   _secondary: {
     backgroundColor: color.secondary.main,
   },
+  _error: {
+    backgroundColor: color.error.main,
+  },
+  _success: {
+    backgroundColor: color.success.main,
+  },
   _tertiary: {
     color: color.warning.main,
   },
@@ -43,11 +49,15 @@ export default StyleSheet.create({
   /** Text BTN */
   _textPrimary: {
     backgroundColor: 'white',
-    borderColor: color.warning.main,
+    color: color.warning.main,
   },
   _textSecondary: {
     backgroundColor: 'white',
-    borderColor: color.secondary.main,
+    color: color.secondary.main,
+  },
+  _textDisabled: {
+    backgroundColor: color.action.disabled_bg,
+    color: color.action.disabled,
   },
 
   /** Ouline BTN */
@@ -58,6 +68,19 @@ export default StyleSheet.create({
   _oulineSecondary: {
     backgroundColor: 'white',
     borderColor: color.secondary.main,
+  },
+  _oulineDisabled: {
+    backgroundColor: color.action.disabled_bg,
+    color: color.action.disabled,
+  },
+  //--> Vertical group
+  _oulinePrimaryActive: {
+    color: 'white',
+    backgroundColor: color.primary.dark,
+  },
+  _oulineWarningActive: {
+    color: color.warning.dark,
+    backgroundColor: color.warning.background,
   },
 
   /** Input */
