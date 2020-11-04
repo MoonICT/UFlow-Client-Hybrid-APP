@@ -17,6 +17,7 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
 // Local Imports
 import initStore from '@Store/index';
+import LoginScreen from '@Screeens/Login';
 import HomeScreen from '@Screeens/Home';
 import SampleScreen from '@Screeens/Sample';
 import WebviewScreen from '@Screeens/Webview';
@@ -62,42 +63,56 @@ const TabScreen = () => {
 
 // 전체 네비게이션 구조를 정의하고, 하위 네비게이션 구조는 별도 파일로 정의한다.
 const RootStack = createStackNavigator();
+const AuthStack = createStackNavigator();
+
+let isLogin = false;
+
 const App = () => {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
         <NavigationContainer>
-          <RootStack.Navigator>
-            <RootStack.Screen
-              name="Home"
-              component={TabScreen}
-              options={{headerShown: false}}
-            />
-            <RootStack.Screen
-              name="Webview"
-              component={WebviewScreen}
-              headerMode={true}
-              options={{headerShown: true}}
-            />
-            <RootStack.Screen
-              name="Camera"
-              component={CameraScreen}
-              headerMode={true}
-              options={{headerShown: true}}
-            />
-            <RootStack.Screen
-              name="Notification"
-              component={Notification}
-              headerMode={true}
-              options={{headerShown: true}}
-            />
-            <RootStack.Screen
-              name="Geolocations"
-              component={Geolocations}
-              headerMode={true}
-              options={{headerShown: true}}
-            />
-          </RootStack.Navigator>
+          {!isLogin ? (
+            <AuthStack.Navigator>
+              <AuthStack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{headerShown: false}}
+              />
+            </AuthStack.Navigator>
+          ) : (
+            <RootStack.Navigator>
+              <RootStack.Screen
+                name="Home"
+                component={TabScreen}
+                options={{headerShown: false}}
+              />
+              <RootStack.Screen
+                name="Webview"
+                component={WebviewScreen}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Camera"
+                component={CameraScreen}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Notification"
+                component={Notification}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Geolocations"
+                component={Geolocations}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+            </RootStack.Navigator>
+          )}
         </NavigationContainer>
       </PaperProvider>
     </Provider>

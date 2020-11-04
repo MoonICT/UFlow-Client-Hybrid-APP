@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 15:28:22
- * @modify date 2020-11-04 15:46:23
+ * @modify date 2020-11-04 18:42:01
  * @desc [description]
  */
 
@@ -13,11 +13,11 @@ export const theme = {
   ...DefaultTheme,
   dark: true, //(boolean): whether this is a dark theme or light theme.
   mode: 'adaptive', // ('adaptive' | 'exact'): color mode for dark theme (See Dark Theme).
-  roundness: 2, //roundness of common elements, such as buttons.
+  roundness: 3, //roundness of common elements, such as buttons.
   colors: {
     ...DefaultTheme.colors,
     primary: color.primary.main, //primary color for your app, usually your brand color.
-    accent: '#f1c40f', //secondary color for your app which complements the primary color.
+    accent: color.primary.main, //secondary color for your app which complements the primary color.
     // background: '#f1c40f', //background color for pages, such as lists.
     // surface: '#ffff', //background color for elements containing content, such as cards.
     // text: color.primary.dark, //text color for content.
