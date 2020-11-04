@@ -12,17 +12,28 @@ import {Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
 // Local Imports
-import initStore from '../store';
-import HomeScreen from '../screens/Home';
-import SampleScreen from '../screens/Sample';
-import WebviewScreen from '../screens/Webview';
-import CameraScreen from '../screens/Camera';
-import Notification from '../screens/Notification';
-import Geolocations from '../screens/Geolocations';
+import initStore from '@Store/index';
+import HomeScreen from '@Screeens/Home';
+import SampleScreen from '@Screeens/Sample';
+import WebviewScreen from '@Screeens/Webview';
+import CameraScreen from '@Screeens/Camera';
+import Notification from '@Screeens/Notification';
+import Geolocations from '@Screeens/Geolocations';
 
 const store = initStore();
+
+/**Custom Theme */
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'tomato',
+    accent: 'yellow',
+  },
+};
 
 // 메인 탭 옵션 설정.(Sample)
 const TabScreenOptions = ({route}) => ({
@@ -61,39 +72,41 @@ const RootStack = createStackNavigator();
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <RootStack.Navigator>
-          <RootStack.Screen
-            name="Home"
-            component={TabScreen}
-            options={{headerShown: false}}
-          />
-          <RootStack.Screen
-            name="Webview"
-            component={WebviewScreen}
-            headerMode={true}
-            options={{headerShown: true}}
-          />
-          <RootStack.Screen
-            name="Camera"
-            component={CameraScreen}
-            headerMode={true}
-            options={{headerShown: true}}
-          />
-          <RootStack.Screen
-            name="Notification"
-            component={Notification}
-            headerMode={true}
-            options={{headerShown: true}}
-          />
-          <RootStack.Screen
-            name="Geolocations"
-            component={Geolocations}
-            headerMode={true}
-            options={{headerShown: true}}
-          />
-        </RootStack.Navigator>
-      </NavigationContainer>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <RootStack.Navigator>
+            <RootStack.Screen
+              name="Home"
+              component={TabScreen}
+              options={{headerShown: false}}
+            />
+            <RootStack.Screen
+              name="Webview"
+              component={WebviewScreen}
+              headerMode={true}
+              options={{headerShown: true}}
+            />
+            <RootStack.Screen
+              name="Camera"
+              component={CameraScreen}
+              headerMode={true}
+              options={{headerShown: true}}
+            />
+            <RootStack.Screen
+              name="Notification"
+              component={Notification}
+              headerMode={true}
+              options={{headerShown: true}}
+            />
+            <RootStack.Screen
+              name="Geolocations"
+              component={Geolocations}
+              headerMode={true}
+              options={{headerShown: true}}
+            />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
     </Provider>
   );
 };

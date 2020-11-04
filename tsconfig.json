@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "listFiles": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react",
+    "baseUrl": "src",
+    "paths": {
+      "@Actions": ["src/actions/*"],
+      "@Assets": ["src/assets"],
+      "@Components": ["src/components"],
+      "@Navigations": ["src/navigations/*"],
+      "@Reducers": ["src/reducers"],
+      "@Screeens": ["src/screens/*"],
+      "@Services": ["src/services"],
+      "@Interfaces": ["src/interface/*"],
+      "@Store": ["src/store/*"],
+      "@Styles": ["src/styles/*"],
+      "@Static/*": ["public/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "src/*"
+  ]
+}
