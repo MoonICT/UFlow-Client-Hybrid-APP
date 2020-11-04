@@ -26,6 +26,7 @@ import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
 //Custom Theme
 import {theme} from '../themes';
+import TextFeild from '../screens/TextField';
 
 const store = initStore();
 

@@ -91,5 +91,78 @@ export default StyleSheet.create({
   },
 
   /** Input */
+  _fillInput: {
+    backgroundColor: color.grey._300,
+    color: color.text.secondary,
+    borderBottomColor: color.grey._500,
+    borderBottomWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+  },
+  _fillValueInput: {
+    color: color.text.primary,
+    paddingBottom: 0,
+    paddingTop: 20,
+  },
+
+  _fillDefaultInput: {
+    borderBottomColor: color.grey._500,
+    borderBottomWidth: 1,
+  },
+  _fillActiveInput: {
+    borderBottomColor: color.primary.dark,
+    borderBottomWidth: 1,
+  },
+
+  _fillHasValueInput: {
+    backgroundColor: color.grey._300,
+    color: color.text.primary,
+    borderBottomColor: color.grey._500,
+    borderBottomWidth: 1,
+    paddingBottom: 0,
+  },
+  _fillDisableInput: {
+    backgroundColor: color.grey._400,
+    color: color.text.secondary,
+    borderBottomColor: color.grey._500,
+    borderBottomWidth: 1,
+    paddingBottom: 0,
+  },
+
+  _labelInput: {
+    color: color.primary.main,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    zIndex: 1,
+  },
+  _activeLabelInput: {
+    color: color.primary.main,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    zIndex: 1,
+  },
+  _fillActiveLabelInput: {
+    borderBottomColor: color.primary.dark,
+    borderBottomWidth: 1,
+  },
+  _hasValueLabelInput: {
+    color: color.text.secondary,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    zIndex: 1,
+  },
+  _notifiInput: {
+    color: color.text.secondary,
+    paddingLeft: 5,
+    marginTop: 0,
+  },
+  _activeNotifiInput: {
+    color: color.error.dark,
+    paddingLeft: 5,
+    marginTop: 0,
+  },
   //Code input write at here
 });

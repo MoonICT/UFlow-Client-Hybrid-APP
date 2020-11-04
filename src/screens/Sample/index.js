@@ -37,6 +37,8 @@ export default class Sample extends Component {
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Camera')} style={DefaultStyle.btn}><Text>{'Camera Mode'}</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} style={DefaultStyle.btn}><Text>{'Notification Sample'}</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Geolocations')} style={DefaultStyle.btn}><Text>{'Geolocation Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('TextFeild')} style={DefaultStyle.btn}><Text>{'TextFeild Sample'}</Text></TouchableOpacity>
+
         <View style={styles.button}>
           {/*<Button
             title="카카오톡 공유하기"
