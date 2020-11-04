@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 11:30:30
- * @modify date 2020-11-04 15:30:33
+ * @modify date 2020-11-04 16:54:33
  * @desc [description]
  */
 
@@ -12,69 +12,69 @@ export const color = {
     dark: '#E64A19',
     light: '#FF8A65',
     constrast: '#ffffff',
-    background: '#FF6D00 (8% alpha)',
+    background: 'rgba(255, 109, 0, 0.08)',
   },
   secondary: {
     main: '#F2453D',
     dark: '#D32F2F',
     light: '#E57373',
     constrast: '#ffffff',
-    background: '#F2453D (8% alpha)',
+    background: 'rgba(242, 69, 61, 0.08)',
   },
   tertiary_01: {
     main: '#4CAF50',
     dark: '#388E3C',
     light: '#81C784',
     constrast: '#ffffff',
-    text: '#4CAF50 (60% darken)',
-    background: '#4CAF50 (90% lighten)',
+    text: '#1e4620',
+    background: '#43a047',
   },
   tertiary_02: {
     main: '#2196F3',
     dark: '#0B79D0',
     light: '#BBDEFB',
     constrast: '#ffffff',
-    text: '#2196F3 (60% darken)',
-    background: '#2196F3 (90% lighten)',
+    text: '#0d3c61',
+    background: '#e9f5fe',
   },
   point: {
     main: '#FFEB3B',
     dark: '#FBC02D',
     light: '#FFF59D',
     constrast: '#ffffff',
-    background: '#F2453D (8% alpha)',
+    background: 'rgba(255, 235, 59, 0.08)',
   },
   success: {
     main: '#4CAF50',
     dark: '#388E3C',
     light: '#81C784',
     constrast: '#ffffff',
-    text: '#4CAF50 (60% darken)',
-    background: '#4CAF50 (90% lighten)',
+    text: '#1e4620',
+    background: '#edf6ed',
   },
   info: {
     main: '#2196F3',
     dark: '#0B79D0',
     light: '#BBDEFB',
     constrast: '#ffffff',
-    text: '#2196F3 (60% darken)',
-    background: '#2196F3 (90% lighten)',
+    text: '#0d3c61',
+    background: '#e9f5fe',
   },
   warning: {
     main: '#FF9800',
     dark: '#F57C00',
     light: '#FFB74D',
     constrast: '#ffffff',
-    text: '#FF9800 (60% darken)',
-    background: '#FF9800 (90% lighten)',
+    text: '#663c00', //(60% darken)
+    background: '#fff5e6', //(90% lighten)
   },
   error: {
     main: '#F44336',
     dark: '#D32F2F',
     light: '#E57373',
     constrast: '#ffffff',
-    text: '#F44336 (60% darken)',
-    background: '#F44336 (90% lighten)',
+    text: '#611a15',
+    background: '#feedeb',
   },
   grey: {
     _50: '#FAFAFA',
