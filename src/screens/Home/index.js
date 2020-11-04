@@ -10,11 +10,14 @@ import React, {Component} from 'react';
 import {SafeAreaView, Text, TouchableOpacity, Alert} from 'react-native';
 import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
+import {Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import ActionCreator from '../../actions';
 import VersionCheckService from '../../services/VersionCheckService';
+
+const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
 class Home extends Component {
   constructor(props) {
@@ -45,12 +48,33 @@ class Home extends Component {
     console.log('::componentWillUnmount::');
   }
 
-
   // 컴포넌트 랜더링.
   render() {
     return (
       <SafeAreaView style={DefaultStyle.container}>
         <Text style={{textAlign: 'center', marginTop: 40}}>UFLOW</Text>
+        <Button
+          icon="camera"
+          mode="contained"
+          onPress={() => console.log('Pressed')}>
+          Press me
+        </Button>
+        <Card>
+          <Card.Title
+            title="Card Title"
+            subtitle="Card Subtitle"
+            left={LeftContent}
+          />
+          <Card.Content>
+            <Title>Card title</Title>
+            <Paragraph>Card content</Paragraph>
+          </Card.Content>
+          <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+          <Card.Actions>
+            <Button>Cancel</Button>
+            <Button>Ok</Button>
+          </Card.Actions>
+        </Card>
       </SafeAreaView>
     );
   }
@@ -82,13 +106,16 @@ function mapStateToProps(state) {
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps(dispatch) {
   return {
-    countUp: (diff) => {
+    countUp: diff => {
       dispatch(ActionCreator.countUp(diff));
     },
-    countDown: (diff) => {
+    countDown: diff => {
       dispatch(ActionCreator.countDown(diff));
     },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);

@@ -5,6 +5,7 @@
  * */
 
 import {StyleSheet} from 'react-native';
+import {color} from '../themes/colors';
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.
@@ -18,6 +19,47 @@ export default StyleSheet.create({
     paddingBottom: 12,
     paddingLeft: 12,
     paddingRight: 12,
-    textAlign: 'center'
+    textAlign: 'center',
   },
+  /** Container button */
+  containerBTN: {
+    width: 120,
+    height: 36,
+    textAlign: 'center',
+    color: color.primary.constrast,
+    borderRadius: 30,
+  },
+  //---> Background
+  _primary: {
+    backgroundColor: color.primary.main,
+  },
+  _secondary: {
+    backgroundColor: color.secondary.main,
+  },
+  _tertiary: {
+    color: color.warning.main,
+  },
+
+  /** Text BTN */
+  _textPrimary: {
+    backgroundColor: 'white',
+    borderColor: color.warning.main,
+  },
+  _textSecondary: {
+    backgroundColor: 'white',
+    borderColor: color.secondary.main,
+  },
+
+  /** Ouline BTN */
+  _oulinePrimary: {
+    backgroundColor: 'white',
+    borderColor: color.warning.main,
+  },
+  _oulineSecondary: {
+    backgroundColor: 'white',
+    borderColor: color.secondary.main,
+  },
+
+  /** Input */
+  //Code input write at here
 });

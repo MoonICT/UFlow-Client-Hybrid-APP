@@ -6,13 +6,14 @@
  * @format
  * @flow strict-local
  * */
+
 // Global Imports
 import React from 'react';
 import {Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
+import {Provider as PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
 // Local Imports
 import initStore from '@Store/index';
@@ -22,18 +23,10 @@ import WebviewScreen from '@Screeens/Webview';
 import CameraScreen from '@Screeens/Camera';
 import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
+//Custom Theme
+import {theme} from '../themes';
 
 const store = initStore();
-
-/**Custom Theme */
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'tomato',
-    accent: 'yellow',
-  },
-};
 
 // 메인 탭 옵션 설정.(Sample)
 const TabScreenOptions = ({route}) => ({
