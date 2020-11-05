@@ -119,4 +119,8 @@ export const color = {
     rating_full: '#FFEB3B',
     rating_full_radient: '#FFEB3B',
   },
+  input: {
+    default_bgr: 'rgba(0, 0, 0, 0.05)',
+    default_border: 'rgba(0, 0, 0, 0.1)',
+  },
 };

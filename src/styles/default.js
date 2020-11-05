@@ -99,9 +99,9 @@ export default StyleSheet.create({
   /** Input */
   /** Fill Input */
   _fillInput: {
-    backgroundColor: color.grey._300,
+    backgroundColor: color.input.default_bgr,
     color: color.text.secondary,
-    borderColor: color.grey._500,
+    borderColor: color.input.default_border,
     borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
@@ -113,19 +113,19 @@ export default StyleSheet.create({
   },
 
   _activeInput: {
-    borderColor: color.primary.dark,
+    borderColor: color.primary.main,
   },
   _disableInput: {
-    backgroundColor: color.grey._400,
+    backgroundColor: color.action.disabled_bg,
     color: color.text.disabled,
   },
   _errorInput: {
-    borderColor: color.error.dark,
+    borderColor: color.error.main,
   },
   /** Line Input */
   _lineInput: {
     color: color.text.secondary,
-    borderColor: color.grey._500,
+    borderColor: color.input.default_border,
     borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
@@ -137,7 +137,7 @@ export default StyleSheet.create({
   /** Outline Input */
   _outLineInput: {
     color: color.text.secondary,
-    borderColor: color.grey._500,
+    borderColor: color.input.default_border,
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,
@@ -166,7 +166,7 @@ export default StyleSheet.create({
     color: color.primary.main,
   },
   _errorLabelInput: {
-    color: color.error.dark,
+    color: color.error.main,
   },
 
   /** Notifi Input*/
