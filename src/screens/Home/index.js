@@ -7,7 +7,7 @@
  */
 // Global Imports
 import React, {Component} from 'react';
-import {SafeAreaView, Text, TouchableOpacity, Alert} from 'react-native';
+import {SafeAreaView, Text, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
@@ -53,28 +53,40 @@ class Home extends Component {
     return (
       <SafeAreaView style={DefaultStyle.container}>
         <Text style={{textAlign: 'center', marginTop: 40}}>UFLOW</Text>
-        <Button
-          icon="camera"
-          mode="contained"
-          onPress={() => console.log('Pressed')}>
-          Press me
-        </Button>
-        <Card>
-          <Card.Title
-            title="Card Title"
-            subtitle="Card Subtitle"
-            left={LeftContent}
-          />
-          <Card.Content>
-            <Title>Card title</Title>
-            <Paragraph>Card content</Paragraph>
-          </Card.Content>
-          <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
-          <Card.Actions>
-            <Button>Cancel</Button>
-            <Button>Ok</Button>
-          </Card.Actions>
-        </Card>
+        <ScrollView>
+          <Card>
+            <Card.Title
+              title="Card Title"
+              subtitle="Card Subtitle"
+              left={LeftContent}
+            />
+            <Card.Content>
+              <Title>Card title</Title>
+              <Paragraph>Card content</Paragraph>
+            </Card.Content>
+            <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+            <Card.Actions>
+              <Button>Cancel</Button>
+              <Button>Ok</Button>
+            </Card.Actions>
+          </Card>
+          <Card>
+            <Card.Title
+              title="Card Title"
+              subtitle="Card Subtitle"
+              left={LeftContent}
+            />
+            <Card.Content>
+              <Title>Card title</Title>
+              <Paragraph>Card content</Paragraph>
+            </Card.Content>
+            <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+            <Card.Actions>
+              <Button>Cancel</Button>
+              <Button>Ok</Button>
+            </Card.Actions>
+          </Card>
+        </ScrollView>
       </SafeAreaView>
     );
   }

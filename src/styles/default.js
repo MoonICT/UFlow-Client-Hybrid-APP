@@ -27,6 +27,10 @@ export default StyleSheet.create({
     paddingRight: 12,
     textAlign: 'center',
   },
+  header: {
+    height: 64,
+    backgroundColor: color.primary.main,
+  },
   /** Container button */
   containerBTN: {
     width: 120,
@@ -49,6 +53,9 @@ export default StyleSheet.create({
     backgroundColor: color.success.main,
   },
   _tertiary: {
+    color: color.tertiary_01.main,
+  },
+  _warning: {
     color: color.warning.main,
   },
 
