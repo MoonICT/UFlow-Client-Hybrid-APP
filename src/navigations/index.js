@@ -66,7 +66,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = false;
+let isLogin = true;
 
 const App = () => {
   return (
@@ -109,6 +109,12 @@ const App = () => {
               <RootStack.Screen
                 name="Geolocations"
                 component={Geolocations}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="TextFeild"
+                component={TextFeild}
                 headerMode={true}
                 options={{headerShown: true}}
               />

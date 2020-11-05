@@ -31,14 +31,8 @@ export default class TextFeild extends Component {
     this.state = {
       // value: '',
       isFocused: false,
+      isNotifi: false,
     };
-    // this.idChannel = 'test-channel';
-    // this.localNotify = new LocalNotificationService(this._onLocalNotification);
-    // this.localNotify.createOrUpdateChannel(
-    //   this.idChannel,
-    //   'Test Channel',
-    //   'This is a channel for testing.',
-    // );
   }
   onChangeText(e) {
     console.log('e', e);
@@ -50,12 +44,16 @@ export default class TextFeild extends Component {
   onFocusChange(e) {
     this.setState({isFocused: true});
   }
+
   onBlurChange(e) {
     this.setState({isFocused: false});
+    if (this.state.value === '') {
+      this.setState({isNotifi: true});
+    } else {
+      this.setState({isNotifi: false});
+    }
   }
   render() {
-    console.log('value', this.state);
-
     return (
       <ScrollView>
         <SafeAreaView
@@ -93,13 +91,15 @@ export default class TextFeild extends Component {
                 onChangeText={text => this.onChangeText(text)}
                 value={this.state && this.state.value}
               />
-              <Text
-                style={[
-                  DefaultStyle._notifiInput,
-                  DefaultStyle._errorNotifiInput,
-                ]}>
-                notification
-              </Text>
+              {this.state.isNotifi === true ? (
+                <Text
+                  style={[
+                    DefaultStyle._notifiInput,
+                    DefaultStyle._errorNotifiInput,
+                  ]}>
+                  notification
+                </Text>
+              ) : null}
             </View>
 
             <View style={Styles.textField}>
@@ -196,6 +196,47 @@ export default class TextFeild extends Component {
 
           <View style={Styles.container}>
             <Text style={{fontSize: 20, fontWeight: 'bold'}}>Line</Text>
+            <Text>Template</Text>
+            <View style={Styles.textField}>
+              {this.state.isFocused === true ? (
+                <Text
+                  style={[
+                    DefaultStyle._labelInput,
+                    DefaultStyle._activeLabelInput,
+                  ]}>
+                  Label
+                </Text>
+              ) : null}
+
+              <TextInput
+                onFocus={() => this.onFocusChange()}
+                onBlur={() => this.onBlurChange()}
+                defaultValue={
+                  this.state.isFocused === true ? 'Active' : 'Default'
+                }
+                style={[
+                  DefaultStyle._lineInput,
+                  this.state.isFocused === true
+                    ? [
+                        DefaultStyle._outLineValueInput,
+                        DefaultStyle._activeInput,
+                      ]
+                    : null,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              {this.state.isNotifi === true ? (
+                <Text
+                  style={[
+                    DefaultStyle._notifiInput,
+                    DefaultStyle._errorNotifiInput,
+                  ]}>
+                  notification
+                </Text>
+              ) : null}
+            </View>
+
             <View style={Styles.textField}>
               <TextInput
                 defaultValue={'default'}
@@ -293,6 +334,47 @@ export default class TextFeild extends Component {
 
           <View style={Styles.container}>
             <Text style={{fontSize: 20, fontWeight: 'bold'}}>Outline</Text>
+            <Text>Template</Text>
+            <View style={Styles.textField}>
+              {this.state.isFocused === true ? (
+                <Text
+                  style={[
+                    DefaultStyle._labelInput,
+                    DefaultStyle._activeLabelInput,
+                  ]}>
+                  Label
+                </Text>
+              ) : null}
+
+              <TextInput
+                onFocus={() => this.onFocusChange()}
+                onBlur={() => this.onBlurChange()}
+                defaultValue={
+                  this.state.isFocused === true ? 'Active' : 'Default'
+                }
+                style={[
+                  DefaultStyle._outLineInput,
+                  this.state.isFocused === true
+                    ? [
+                        DefaultStyle._outLineValueInput,
+                        DefaultStyle._activeInput,
+                      ]
+                    : null,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              {this.state.isNotifi === true ? (
+                <Text
+                  style={[
+                    DefaultStyle._notifiInput,
+                    DefaultStyle._errorNotifiInput,
+                  ]}>
+                  notification
+                </Text>
+              ) : null}
+            </View>
+
             <View style={Styles.textField}>
               <TextInput
                 defaultValue={'default'}

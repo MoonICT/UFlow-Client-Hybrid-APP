@@ -125,7 +125,7 @@ export default StyleSheet.create({
   /** Line Input */
   _lineInput: {
     color: color.text.secondary,
-    borderBottomColor: color.grey._500,
+    borderColor: color.grey._500,
     borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
