@@ -11,6 +11,7 @@ import React, {Component} from 'react';
 import {
   SafeAreaView,
   View,
+  ScrollView,
   Text,
   Alert,
   StyleSheet,
@@ -29,6 +30,7 @@ export default class TextFeild extends Component {
     this.countNotification = 0;
     this.state = {
       // value: '',
+      isFocused: false,
     };
     // this.idChannel = 'test-channel';
     // this.localNotify = new LocalNotificationService(this._onLocalNotification);
@@ -44,88 +46,353 @@ export default class TextFeild extends Component {
       value: e,
     });
   }
+
+  onFocusChange(e) {
+    this.setState({isFocused: true});
+  }
+  onBlurChange(e) {
+    this.setState({isFocused: false});
+  }
   render() {
     console.log('value', this.state);
 
     return (
-      <SafeAreaView
-        style={[
-          DefaultStyle.container,
-          {justifyContent: 'center', alignItems: 'center'},
-        ]}>
-        <View>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Filled</Text>
-          <View style={Styles.textField}>
-            <TextInput
-              defaultValue={'default'}
-              style={[
-                DefaultStyle._fillInput,
-                DefaultStyle._fillDefaultInput,
-                Styles.input,
-              ]}
-              onChangeText={text => this.onChangeText(text)}
-              value={this.state && this.state.value}
-            />
-            <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+      <ScrollView>
+        <SafeAreaView
+          style={[
+            DefaultStyle.container,
+            DefaultStyle.row,
+            {justifyContent: 'center', alignItems: 'center'},
+          ]}>
+          <View style={Styles.container}>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Filled</Text>
+            <Text>Template</Text>
+            <View style={Styles.textField}>
+              {this.state.isFocused === true ? (
+                <Text
+                  style={[
+                    DefaultStyle._labelInput,
+                    DefaultStyle._activeLabelInput,
+                  ]}>
+                  Label
+                </Text>
+              ) : null}
+
+              <TextInput
+                onFocus={() => this.onFocusChange()}
+                onBlur={() => this.onBlurChange()}
+                defaultValue={
+                  this.state.isFocused === true ? 'Active' : 'Default'
+                }
+                style={[
+                  DefaultStyle._fillInput,
+                  this.state.isFocused === true
+                    ? [DefaultStyle._fillValueInput, DefaultStyle._activeInput]
+                    : null,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text
+                style={[
+                  DefaultStyle._notifiInput,
+                  DefaultStyle._errorNotifiInput,
+                ]}>
+                notification
+              </Text>
+            </View>
+
+            <View style={Styles.textField}>
+              <TextInput
+                defaultValue={'default'}
+                style={[DefaultStyle._fillInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text
+                style={[
+                  DefaultStyle._labelInput,
+                  DefaultStyle._activeLabelInput,
+                ]}>
+                Label
+              </Text>
+              <TextInput
+                defaultValue={'active'}
+                style={[
+                  DefaultStyle._fillInput,
+                  DefaultStyle._fillValueInput,
+                  DefaultStyle._activeInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text style={[DefaultStyle._labelInput]}>Label</Text>
+              <TextInput
+                defaultValue={'Has value'}
+                style={[DefaultStyle._fillInput, DefaultStyle._fillValueInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <TextInput
+                editable={false}
+                defaultValue={'Disabled'}
+                style={[DefaultStyle._fillInput, DefaultStyle._disableInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <TextInput
+                defaultValue={'Empty Error'}
+                style={[DefaultStyle._fillInput, DefaultStyle._errorInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text
+                style={[
+                  DefaultStyle._notifiInput,
+                  DefaultStyle._errorNotifiInput,
+                ]}>
+                notification
+              </Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text
+                style={[
+                  DefaultStyle._labelInput,
+                  DefaultStyle._errorLabelInput,
+                ]}>
+                Label
+              </Text>
+              <TextInput
+                defaultValue={'Error'}
+                style={[
+                  DefaultStyle._fillInput,
+                  DefaultStyle._fillValueInput,
+                  DefaultStyle._errorInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text
+                style={[
+                  DefaultStyle._notifiInput,
+                  DefaultStyle._errorNotifiInput,
+                ]}>
+                notification
+              </Text>
+            </View>
           </View>
-          <View style={Styles.textField}>
-            <Text style={[DefaultStyle._labelInput, Styles.label]}>Label</Text>
-            <TextInput
-              defaultValue={'active'}
-              style={[
-                DefaultStyle._fillInput,
-                DefaultStyle._fillValueInput,
-                DefaultStyle._fillActiveInput,
-              ]}
-              onChangeText={text => this.onChangeText(text)}
-              value={this.state && this.state.value}
-            />
-            <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+
+          <View style={Styles.container}>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Line</Text>
+            <View style={Styles.textField}>
+              <TextInput
+                defaultValue={'default'}
+                style={[DefaultStyle._lineInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text
+                style={[
+                  DefaultStyle._labelInput,
+                  DefaultStyle._activeLabelInput,
+                ]}>
+                Label
+              </Text>
+              <TextInput
+                defaultValue={'active'}
+                style={[
+                  DefaultStyle._lineInput,
+                  DefaultStyle._fillValueInput,
+                  DefaultStyle._activeInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text style={[DefaultStyle._labelInput]}>Label</Text>
+              <TextInput
+                defaultValue={'Has value'}
+                style={[DefaultStyle._lineInput, DefaultStyle._fillValueInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <TextInput
+                editable={false}
+                defaultValue={'Disabled'}
+                style={[
+                  DefaultStyle._lineInput,
+                  DefaultStyle._outLineDisableInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <TextInput
+                defaultValue={'Empty Error'}
+                style={[DefaultStyle._lineInput, DefaultStyle._errorInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text
+                style={[
+                  DefaultStyle._notifiInput,
+                  DefaultStyle._errorNotifiInput,
+                ]}>
+                notification
+              </Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text
+                style={[
+                  DefaultStyle._labelInput,
+                  DefaultStyle._errorLabelInput,
+                ]}>
+                Label
+              </Text>
+              <TextInput
+                defaultValue={'Error'}
+                style={[
+                  DefaultStyle._lineInput,
+                  DefaultStyle._fillValueInput,
+                  DefaultStyle._errorInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text
+                style={[
+                  DefaultStyle._notifiInput,
+                  DefaultStyle._errorNotifiInput,
+                ]}>
+                notification
+              </Text>
+            </View>
           </View>
-          <View style={Styles.textField}>
-            <Text style={[DefaultStyle._hasValueLabelInput, Styles.label]}>
-              Label
-            </Text>
-            <TextInput
-              defaultValue={'Has value'}
-              style={[
-                DefaultStyle._fillInput,
-                DefaultStyle._fillValueInput,
-                Styles.inputActive,
-              ]}
-              onChangeText={text => this.onChangeText(text)}
-              value={this.state && this.state.value}
-            />
-            <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+
+          <View style={Styles.container}>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Outline</Text>
+            <View style={Styles.textField}>
+              <TextInput
+                defaultValue={'default'}
+                style={[DefaultStyle._outLineInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text
+                style={[
+                  DefaultStyle._labelInput,
+                  DefaultStyle._activeLabelInput,
+                ]}>
+                Label
+              </Text>
+              <TextInput
+                defaultValue={'active'}
+                style={[
+                  DefaultStyle._outLineInput,
+                  DefaultStyle._fillValueInput,
+                  DefaultStyle._activeInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text style={[DefaultStyle._labelInput]}>Label</Text>
+              <TextInput
+                defaultValue={'Has value'}
+                style={[
+                  DefaultStyle._outLineInput,
+                  DefaultStyle._fillValueInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <TextInput
+                editable={false}
+                defaultValue={'Disabled'}
+                style={[
+                  DefaultStyle._outLineInput,
+                  DefaultStyle._disableInput,
+                  DefaultStyle._outLineDisableInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text style={[DefaultStyle._notifiInput]}>notification</Text>
+            </View>
+            <View style={Styles.textField}>
+              <TextInput
+                defaultValue={'Empty Error'}
+                style={[DefaultStyle._outLineInput, DefaultStyle._errorInput]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text
+                style={[
+                  DefaultStyle._notifiInput,
+                  DefaultStyle._errorNotifiInput,
+                ]}>
+                notification
+              </Text>
+            </View>
+            <View style={Styles.textField}>
+              <Text
+                style={[
+                  DefaultStyle._labelInput,
+                  DefaultStyle._errorLabelInput,
+                ]}>
+                Label
+              </Text>
+              <TextInput
+                defaultValue={'Error'}
+                style={[
+                  DefaultStyle._outLineInput,
+                  DefaultStyle._fillValueInput,
+                  DefaultStyle._errorInput,
+                ]}
+                onChangeText={text => this.onChangeText(text)}
+                value={this.state && this.state.value}
+              />
+              <Text
+                style={[
+                  DefaultStyle._notifiInput,
+                  DefaultStyle._errorNotifiInput,
+                ]}>
+                notification
+              </Text>
+            </View>
           </View>
-          <View style={Styles.textField}>
-            <TextInput
-              editable={false}
-              defaultValue={'Disabled'}
-              style={[DefaultStyle._fillInput, Styles.input]}
-              onChangeText={text => this.onChangeText(text)}
-              value={this.state && this.state.value}
-            />
-            <Text style={[DefaultStyle._notifiInput]}>notification</Text>
-          </View>
-          <View style={Styles.textField}>
-            <Text style={[DefaultStyle._hasValueLabelInput, Styles.label]}>
-              Label
-            </Text>
-            <TextInput
-              defaultValue={'Error'}
-              style={[
-                DefaultStyle._fillInput,
-                DefaultStyle._fillValueInput,
-                Styles.inputActive,
-              ]}
-              onChangeText={text => this.onChangeText(text)}
-              value={this.state && this.state.value}
-            />
-            <Text style={[DefaultStyle._notifiInput]}>notification</Text>
-          </View>
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ScrollView>
     );
   }
 }

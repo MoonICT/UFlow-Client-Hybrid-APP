@@ -123,3 +123,11 @@ rootProject.name = '[PROJECT_NAME]'
 + Geolocation API ([@react-native-community/geolocation](https://github.com/react-native-geolocation/react-native-geolocation))
 + Local Notification ([zo0r/react-native-push-notification](https://github.com/zo0r/react-native-push-notification))
 + TODO Firebase Cloud Messaging(FCM)
+
+
+.  Task :app:mergeDebugAssets FAILED
+    ```
+    yarn cache clean
+    yarn start --reset-cache
+    watchman watch-del-all
+    ```

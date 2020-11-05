@@ -12,6 +12,12 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  row:{
+    flexDirection: 'row',
+    margin: 'auto',
+    marginRight: 10,
+    marginLeft: 10,
+  },
   btn: {
     marginBottom: 12,
     backgroundColor: '#e1e1e1',
@@ -84,78 +90,86 @@ export default StyleSheet.create({
   },
 
   /** Input */
+  /** Fill Input */
   _fillInput: {
     backgroundColor: color.grey._300,
     color: color.text.secondary,
-    borderBottomColor: color.grey._500,
+    borderColor: color.grey._500,
     borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
   },
   _fillValueInput: {
     color: color.text.primary,
-    paddingBottom: 0,
+    paddingBottom: 1,
     paddingTop: 20,
   },
 
-  _fillDefaultInput: {
-    borderBottomColor: color.grey._500,
-    borderBottomWidth: 1,
+  _activeInput: {
+    borderColor: color.primary.dark,
   },
-  _fillActiveInput: {
-    borderBottomColor: color.primary.dark,
-    borderBottomWidth: 1,
-  },
-
-  _fillHasValueInput: {
-    backgroundColor: color.grey._300,
-    color: color.text.primary,
-    borderBottomColor: color.grey._500,
-    borderBottomWidth: 1,
-    paddingBottom: 0,
-  },
-  _fillDisableInput: {
+  _disableInput: {
     backgroundColor: color.grey._400,
+    color: color.text.disabled,
+  },
+  _errorInput: {
+    borderColor: color.error.dark,
+  },
+  /** Line Input */
+  _lineInput: {
     color: color.text.secondary,
     borderBottomColor: color.grey._500,
     borderBottomWidth: 1,
-    paddingBottom: 0,
+    borderRadius: 5,
+    padding: 10,
+  },
+  _lineDisableInput: {
+    color: color.text.disabled,
   },
 
+  /** Outline Input */
+  _outLineInput: {
+    color: color.text.secondary,
+    borderColor: color.grey._500,
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+  },
+  _outLineValueInput: {
+    color: color.text.primary,
+    paddingBottom: 1,
+    paddingTop: 20,
+  },
+
+  _outLineDisableInput: {
+    backgroundColor: 'transparent',
+    color: color.text.disabled,
+  },
+
+
+  /** Label*/
   _labelInput: {
-    color: color.primary.main,
+    color: color.text.secondary,
     position: 'absolute',
-    left: 0,
-    top: 0,
+    top: 5,
+    left: 10,
     zIndex: 1,
   },
   _activeLabelInput: {
     color: color.primary.main,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    zIndex: 1,
   },
-  _fillActiveLabelInput: {
-    borderBottomColor: color.primary.dark,
-    borderBottomWidth: 1,
+  _errorLabelInput: {
+    color: color.error.dark,
   },
-  _hasValueLabelInput: {
-    color: color.text.secondary,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    zIndex: 1,
-  },
+
+  /** Notifi Input*/
   _notifiInput: {
     color: color.text.secondary,
     paddingLeft: 5,
     marginTop: 0,
   },
-  _activeNotifiInput: {
+  _errorNotifiInput: {
     color: color.error.dark,
-    paddingLeft: 5,
-    marginTop: 0,
   },
   //Code input write at here
 });
