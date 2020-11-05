@@ -66,7 +66,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = true;
+let isLogin = false;
 
 const App = () => {
   return (
@@ -78,6 +78,11 @@ const App = () => {
               <AuthStack.Screen
                 name="Login"
                 component={LoginScreen}
+                options={{headerShown: false}}
+              />
+              <AuthStack.Screen
+                name="Home"
+                component={TabScreen}
                 options={{headerShown: false}}
               />
             </AuthStack.Navigator>

@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2020-11-04 18:45:05
+ * @modify date 2020-11-05 18:43:14
  * @desc [description]
  */
 
@@ -12,6 +12,7 @@ import {SafeAreaView, View, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
@@ -27,6 +28,7 @@ class Login extends Component {
       password: '',
       isRemember: false,
     };
+    this.navigation = props.navigation;
   }
 
   /** listener when change props */
@@ -41,6 +43,7 @@ class Login extends Component {
 
   render() {
     const {email, password, isRemember} = this.state;
+
     return (
       <SafeAreaView style={DefaultStyle.container}>
         <Appbar.Header style={DefaultStyle.header}>
@@ -91,7 +94,9 @@ class Login extends Component {
             <Button
               mode="contained"
               style={[DefaultStyle.containerBTN, S.loginBtn]}
-              onPress={() => console.log('Pressed')}>
+              onPress={() => {
+                this.navigation.navigate('Home');
+              }}>
               확인
             </Button>
             <View style={[S.plusFormLogin, S.forgot]}>
