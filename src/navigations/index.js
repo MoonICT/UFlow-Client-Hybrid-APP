@@ -27,6 +27,9 @@ import Geolocations from '@Screeens/Geolocations';
 //Custom Theme
 import {theme} from '../themes';
 import TextFeild from '../screens/TextField';
+import Pagination from '../screens/Pagination';
+import Rating from '../screens/Rating';
+import Progress from '../screens/Progress';
 
 const store = initStore();
 
@@ -115,6 +118,24 @@ const App = () => {
               <RootStack.Screen
                 name="TextFeild"
                 component={TextFeild}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Pagination"
+                component={Pagination}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Rating"
+                component={Rating}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Progress"
+                component={Progress}
                 headerMode={true}
                 options={{headerShown: true}}
               />

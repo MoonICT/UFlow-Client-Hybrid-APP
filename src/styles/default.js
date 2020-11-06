@@ -12,7 +12,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
-  row:{
+  row: {
     flexDirection: 'row',
     margin: 'auto',
     marginRight: 10,

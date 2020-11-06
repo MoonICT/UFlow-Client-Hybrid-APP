@@ -38,6 +38,9 @@ export default class Sample extends Component {
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} style={DefaultStyle.btn}><Text>{'Notification Sample'}</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Geolocations')} style={DefaultStyle.btn}><Text>{'Geolocation Sample'}</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('TextFeild')} style={DefaultStyle.btn}><Text>{'TextFeild Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Pagination')} style={DefaultStyle.btn}><Text>{'Pagination Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Rating')} style={DefaultStyle.btn}><Text>{'Rating Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Progress')} style={DefaultStyle.btn}><Text>{'Progress Sample'}</Text></TouchableOpacity>
 
         <View style={styles.button}>
           {/*<Button
