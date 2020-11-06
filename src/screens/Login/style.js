@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:35:26
- * @modify date 2020-11-05 12:04:35
+ * @modify date 2020-11-05 18:30:20
  * @desc [description]
  */
 
@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 40,
     marginBottom: 40,
-    fontWeight: 'bold',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontWeight: 'bold',
+    fontFamily: 'NotoSansCJKkr-Bold',
   },
   formLogin: {
     paddingLeft: 16,
