@@ -15,7 +15,7 @@ import {Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import ActionCreator from '../../actions';
-import VersionCheckService from '../../services/VersionCheckService';
+// import VersionCheckService from '../../services/VersionCheckService';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
@@ -28,28 +28,17 @@ class Home extends Component {
     };
   }
 
-  /*
-   * React Component Lifecycle
-   * - Mount
-   *    getDerivedStateFromProps => render => componentDidMount
-   * - Update
-   *    getDerivedStateFromProps => shouldComponentUpdate(true) => render => getSnapshotBeforeUpdate => componentDidMount
-   * */
-
-  // 컴포넌트 업데이트 직전에 호출되는 메소드다.
-  // props 또는 state가 변경되었을 때, 재랜더링을 여부를 return 값으로 결정한다.
   shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
-  // 컴포넌트가 소멸된 시점에(DOM에서 삭제된 후) 실행되는 메소드다.
-  // 컴포넌트 내부에서 타이머나 비동기 API를 사용하고 있을 때, 이를 제거하기에 유용하다.
   componentWillUnmount() {
     console.log('::componentWillUnmount::');
   }
 
-  // 컴포넌트 랜더링.
   render() {
+    const {showPopup} = this.props;
+
     return (
       <SafeAreaView style={DefaultStyle.container}>
         <Text style={{textAlign: 'center', marginTop: 40}}>UFLOW</Text>
@@ -66,7 +55,7 @@ class Home extends Component {
             </Card.Content>
             <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
             <Card.Actions>
-              <Button>Cancel</Button>
+              <Button onPress={() => showPopup()}>Cancel</Button>
               <Button>Ok</Button>
             </Card.Actions>
           </Card>
@@ -82,7 +71,7 @@ class Home extends Component {
             </Card.Content>
             <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
             <Card.Actions>
-              <Button>Cancel</Button>
+              <Button onPress={() => showPopup()}>Cancel</Button>
               <Button>Ok</Button>
             </Card.Actions>
           </Card>
@@ -91,8 +80,6 @@ class Home extends Component {
     );
   }
 
-  // 컴포넌트가 만들어지고 render가 호출된 이후에 호출.
-  // 비동기 요청을 처리하는 부분.
   async componentDidMount() {
     console.log('::componentDidMount::');
     /** App Version Check (배포시 활성.) */
@@ -109,7 +96,7 @@ class Home extends Component {
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps(state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
   };
@@ -118,11 +105,17 @@ function mapStateToProps(state) {
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps(dispatch) {
   return {
-    countUp: diff => {
-      dispatch(ActionCreator.countUp(diff));
+    showPopup: status => {
+      dispatch(
+        ActionCreator.show({
+          title: '문의 완료',
+          content:
+            '답변 내용은 [마이페이지 > 문의내역[ 혹은 등록하신 이메일에서 확인해 주세요.',
+        }),
+      );
     },
-    countDown: diff => {
-      dispatch(ActionCreator.countDown(diff));
+    hidePopup: status => {
+      dispatch(ActionCreator.hide(status));
     },
   };
 }

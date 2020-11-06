@@ -37,60 +37,65 @@ export default class AxiosService extends AbstractHttpRequest {
   // Request Get (implement)
   requestGet({url, config} = {}) {
     console.debug('::: Axios Request Get :::');
-    return this.axios.get(
-      url, this.initConfig(config),
-    ).then(resp => {
-      return resp;
-    }).catch(err => {
-      this.catchError(err);
-    });
+    return this.axios
+      .get(url, this.initConfig(config))
+      .then(resp => {
+        return resp;
+      })
+      .catch(err => {
+        this.catchError(err);
+      });
   }
 
   // Request Post (implement)
   requestPost({url, body, config} = {}) {
     console.debug('::: Axios Request Post :::');
-    return this.axios.post(
-      url, body, this.initConfig(config),
-    ).then(resp => {
-      return resp;
-    }).catch(err => {
-      this.catchError(err);
-    });
+    return this.axios
+      .post(url, body, this.initConfig(config))
+      .then(resp => {
+        return resp;
+      })
+      .catch(err => {
+        this.catchError(err);
+      });
   }
 
   // Request Put (implement)
   requestPut({url, body, config} = {}) {
     console.debug('::: Axios Request Put :::');
-    return this.axios.put(
-      url, body, this.initConfig(config),
-    ).then(resp => {
-      return resp;
-    }).catch(err => {
-      this.catchError(err);
-    });
+    return this.axios
+      .put(url, body, this.initConfig(config))
+      .then(resp => {
+        return resp;
+      })
+      .catch(err => {
+        this.catchError(err);
+      });
   }
 
   // Request Patch (implement)
   requestPatch({url, body, config} = {}) {
     console.debug('::: Axios Request Patch :::');
-    return this.axios.patch(
-      url, body, this.initConfig(config),
-    ).then(resp => {
-      return resp;
-    }).catch(err => {
-      this.catchError(err);
-    });
+    return this.axios
+      .patch(url, body, this.initConfig(config))
+      .then(resp => {
+        return resp;
+      })
+      .catch(err => {
+        this.catchError(err);
+      });
   }
 
   // Request Delete (implement)
   requestDelete({url, config} = {}) {
     console.debug('::: Axios Request Delete :::');
-    return this.axios.delete(
-      url, this.initConfig(config),
-    ).then(resp => {
-      return resp;
-    }).catch(err => {
-      this.catchError(err);
-    });
+    return this.axios
+      .delete(url, this.initConfig(config))
+      .then(resp => {
+        return resp;
+      })
+      .catch(err => {
+        this.catchError(err);
+      });
   }
 }

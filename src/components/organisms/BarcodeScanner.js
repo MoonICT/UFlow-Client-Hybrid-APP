@@ -5,7 +5,15 @@
  * @flow strict-local
  * */
 import React, {Component} from 'react';
-import {SafeAreaView, Platform, StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {
+  SafeAreaView,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 
 export default class BarcodeScanner extends Component {
@@ -29,23 +37,29 @@ export default class BarcodeScanner extends Component {
         <View style={styles.BarcodeScannerContainer}>
           {/** Overlay Style */}
           <View style={styles.overlayContainer}>
-            <View style={[styles.overlayInner, styles.overlayInnerTop]}></View>
+            <View style={[styles.overlayInner, styles.overlayInnerTop]} />
             <View style={[styles.overlayInner, styles.overlayInnerMiddle]}>
-              <View style={[styles.overlayInner, styles.overlayInnerRight]}></View>
-              <View style={[styles.overlayInner, styles.overlayInnerCenter]}></View>
-              <View style={[styles.overlayInner, styles.overlayInnerLeft]}></View>
+              <View style={[styles.overlayInner, styles.overlayInnerRight]} />
+              <View style={[styles.overlayInner, styles.overlayInnerCenter]} />
+              <View style={[styles.overlayInner, styles.overlayInnerLeft]} />
             </View>
             <View style={[styles.overlayInner, styles.overlayInnerBottom]}>
-              <Text style={{color: '#fff'}}>{'카메라에 바코드 또는 QR코드를 인식시켜 주세요.'}</Text>
+              <Text style={{color: '#fff'}}>
+                {'카메라에 바코드 또는 QR코드를 인식시켜 주세요.'}
+              </Text>
             </View>
           </View>
           {/** Camera */}
-          <RNCamera style={styles.BarcodeScannerCamera}
-                    onBarCodeRead={(result) => this._onBarCodeRead(result)}
-                    captureAudio={false} />
+          <RNCamera
+            style={styles.BarcodeScannerCamera}
+            onBarCodeRead={result => this._onBarCodeRead(result)}
+            captureAudio={false}
+          />
           {/** Bottom */}
-          <TouchableOpacity style={styles.BarcodeScannerBtnDefault} activeOpacity={1}
-                            onPress={() => this._onClose()}>
+          <TouchableOpacity
+            style={styles.BarcodeScannerBtnDefault}
+            activeOpacity={1}
+            onPress={() => this._onClose()}>
             <Text style={styles.BarcodeScannerBarCodeText}>{'닫기'}</Text>
           </TouchableOpacity>
         </View>

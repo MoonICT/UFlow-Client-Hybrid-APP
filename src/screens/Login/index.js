@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2020-11-05 18:43:14
+ * @modify date 2020-11-06 17:45:50
  * @desc [description]
  */
 
@@ -123,7 +123,7 @@ class Login extends Component {
 
 /** map state with store states redux store */
 function mapStateToProps(state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
   };

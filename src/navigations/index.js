@@ -24,9 +24,11 @@ import WebviewScreen from '@Screeens/Webview';
 import CameraScreen from '@Screeens/Camera';
 import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
+import TextFeild from '@Screeens/TextField';
+import Popup from '@Components/organisms/Popup';
+
 //Custom Theme
 import {theme} from '../themes';
-import TextFeild from '../screens/TextField';
 
 const store = initStore();
 
@@ -72,6 +74,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
+        <Popup />
         <NavigationContainer>
           {!isLogin ? (
             <AuthStack.Navigator>

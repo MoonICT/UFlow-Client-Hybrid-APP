@@ -12,7 +12,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
-  row:{
+  row: {
     flexDirection: 'row',
     margin: 'auto',
     marginRight: 10,
@@ -62,7 +62,14 @@ export default StyleSheet.create({
   /** Text BTN */
   _textPrimary: {
     backgroundColor: 'white',
-    color: color.warning.main,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 14,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 1.71,
+    letterSpacing: 0,
+    textAlign: 'center',
+    color: color.primary.main,
   },
   _textSecondary: {
     backgroundColor: 'white',
@@ -152,7 +159,6 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
     color: color.text.disabled,
   },
-
 
   /** Label*/
   _labelInput: {

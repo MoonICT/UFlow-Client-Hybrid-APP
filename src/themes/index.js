@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 15:28:22
- * @modify date 2020-11-04 18:42:01
+ * @modify date 2020-11-06 17:31:55
  * @desc [description]
  */
 
@@ -25,11 +25,14 @@ export const theme = {
     // placeholder: color.primary.light, //color for placeholder text, such as input placeholder.
     // backdrop: color.primary.light, //color for backdrops of various components such as modals.
   },
-  //   fonts: {
-  //     regular: '',
-  //     medium: '',
-  //     light: '',
-  //     thin: '',
-  //   },
+  fonts: {
+    black: 'NotoSansCJKkr-Black',
+    boild: 'NotoSansCJKkr-Bold',
+    demilight: 'NotoSansCJKkr-DemiLight',
+    light: 'NotoSansCJKkr-Light',
+    medium: 'NotoSansCJKkr-Medium',
+    regular: 'NotoSansCJKkr-Regular',
+    thin: 'NotoSansCJKkr-Thin',
+  },
   //   animation: {scale:},
 };
