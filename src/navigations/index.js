@@ -16,6 +16,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
 // Local Imports
+//---> Screens
 import initStore from '@Store/index';
 import LoginScreen from '@Screeens/Login';
 import HomeScreen from '@Screeens/Home';
@@ -25,6 +26,10 @@ import CameraScreen from '@Screeens/Camera';
 import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
 import TextFeild from '@Screeens/TextField';
+import Pagination from '@Screeens/Pagination';
+import Rating from '@Screeens/Rating';
+import Progress from '@Screeens/Progress';
+//---> Components
 import Popup from '@Components/organisms/Popup';
 
 //Custom Theme
@@ -123,6 +128,24 @@ const App = () => {
               <RootStack.Screen
                 name="TextFeild"
                 component={TextFeild}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Pagination"
+                component={Pagination}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Rating"
+                component={Rating}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
+              <RootStack.Screen
+                name="Progress"
+                component={Progress}
                 headerMode={true}
                 options={{headerShown: true}}
               />
