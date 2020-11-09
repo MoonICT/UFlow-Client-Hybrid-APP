@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:35:26
- * @modify date 2020-11-09 15:41:32
+ * @modify date 2020-11-05 18:30:20
  * @desc [description]
  */
 
@@ -16,13 +16,14 @@ export const styles = StyleSheet.create({
     fontSize: 36,
     textAlign: 'center',
     marginTop: 40,
-    marginBottom: 37,
+    marginBottom: 40,
+    // fontWeight: 'bold',
     fontFamily: 'NotoSansCJKkr-Bold',
   },
-  // formLogin: {
-  //   paddingLeft: 16,
-  //   paddingRight: 16,
-  // },
+  formLogin: {
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
   inputs: {
     height: 56,
   },

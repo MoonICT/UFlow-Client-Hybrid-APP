@@ -1,8 +1,8 @@
 /**
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
- * @create date 2020-11-04 17:12:03
- * @modify date 2020-11-09 16:13:10
+ * @create date 2020-11-09 14:05:49
+ * @modify date 2020-11-09 14:10:17
  * @desc [description]
  */
 
@@ -16,11 +16,10 @@ import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import Appbars from '@Components/organisms/Appbar';
 import ActionCreator from '../../actions';
 import {styles as S} from './style';
 
-class Login extends Component {
+class ForgotPass extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -46,14 +45,14 @@ class Login extends Component {
     const {email, password, isRemember} = this.state;
 
     return (
-      <SafeAreaView>
-        <Appbars>
+      <SafeAreaView style={DefaultStyle.container}>
+        <Appbar.Header style={DefaultStyle.header}>
           <Appbar.Action
             icon="close"
             color="white"
             onPress={() => console.log('hello')}
           />
-        </Appbars>
+        </Appbar.Header>
         <ScrollView>
           <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text>
           <View style={S.formLogin}>
@@ -87,9 +86,7 @@ class Login extends Component {
                 <Text>자동 로그인</Text>
               </View>
               <View style={S.ortherLink}>
-                <Text onPress={() => this.navigation.navigate('ForgotID')}>
-                  아이디 찾기
-                </Text>
+                <Text>아이디 찾기</Text>
                 <Text style={S.rectangle}>|</Text>
                 <Text>비밀번호 찾기</Text>
               </View>
@@ -147,4 +144,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Login);
+)(ForgotPass);

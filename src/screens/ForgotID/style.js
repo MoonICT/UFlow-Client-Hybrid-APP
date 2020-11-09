@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:35:26
- * @modify date 2020-11-09 15:41:32
+ * @modify date 2020-11-09 15:29:28
  * @desc [description]
  */
 
@@ -13,16 +13,18 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
   },
   titleLogin: {
-    fontSize: 36,
     textAlign: 'center',
-    marginTop: 40,
-    marginBottom: 37,
-    fontFamily: 'NotoSansCJKkr-Bold',
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 1.31,
+    color: 'rgba(0, 0, 0, 0.87)',
   },
-  // formLogin: {
-  //   paddingLeft: 16,
-  //   paddingRight: 16,
-  // },
+  formLogin: {
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
   inputs: {
     height: 56,
   },
@@ -51,7 +53,7 @@ export const styles = StyleSheet.create({
   },
   loginBtn: {
     width: '100%',
-    color: 'white',
+    color: '#ffffff',
     marginTop: 27,
   },
   rectangle: {

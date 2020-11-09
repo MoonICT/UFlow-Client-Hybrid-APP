@@ -18,7 +18,11 @@ import {Provider} from 'react-redux';
 // Local Imports
 //---> Screens
 import initStore from '@Store/index';
+
+import Global from '@Screeens/Global';
 import LoginScreen from '@Screeens/Login';
+import ForgotIDScreen from '@Screeens/ForgotID';
+import ForgotPassScreen from '@Screeens/ForgotPass';
 import HomeScreen from '@Screeens/Home';
 import SampleScreen from '@Screeens/Sample';
 import WebviewScreen from '@Screeens/Webview';
@@ -29,8 +33,6 @@ import TextFeild from '@Screeens/TextField';
 import Pagination from '@Screeens/Pagination';
 import Rating from '@Screeens/Rating';
 import Progress from '@Screeens/Progress';
-//---> Components
-import Popup from '@Components/organisms/Popup';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -79,78 +81,84 @@ const App = () => {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <Popup />
         <NavigationContainer>
-          {!isLogin ? (
-            <AuthStack.Navigator>
-              <AuthStack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{headerShown: false}}
-              />
-              <AuthStack.Screen
-                name="Home"
-                component={TabScreen}
-                options={{headerShown: false}}
-              />
-            </AuthStack.Navigator>
-          ) : (
-            <RootStack.Navigator>
-              <RootStack.Screen
-                name="Home"
-                component={TabScreen}
-                options={{headerShown: false}}
-              />
-              <RootStack.Screen
-                name="Webview"
-                component={WebviewScreen}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
-              <RootStack.Screen
-                name="Camera"
-                component={CameraScreen}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
-              <RootStack.Screen
-                name="Notification"
-                component={Notification}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
-              <RootStack.Screen
-                name="Geolocations"
-                component={Geolocations}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
-              <RootStack.Screen
-                name="TextFeild"
-                component={TextFeild}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
-              <RootStack.Screen
-                name="Pagination"
-                component={Pagination}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
-              <RootStack.Screen
-                name="Rating"
-                component={Rating}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
-              <RootStack.Screen
-                name="Progress"
-                component={Progress}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
-            </RootStack.Navigator>
-          )}
+          <Global>
+            {!isLogin ? (
+              <AuthStack.Navigator>
+                <AuthStack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{headerShown: false}}
+                />
+                <AuthStack.Screen
+                  name="Home"
+                  component={TabScreen}
+                  options={{headerShown: false}}
+                />
+                <AuthStack.Screen
+                  name="ForgotID"
+                  component={ForgotIDScreen}
+                  options={{headerShown: false}}
+                />
+              </AuthStack.Navigator>
+            ) : (
+              <RootStack.Navigator>
+                <RootStack.Screen
+                  name="Home"
+                  component={TabScreen}
+                  options={{headerShown: false}}
+                />
+                <RootStack.Screen
+                  name="Webview"
+                  component={WebviewScreen}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Camera"
+                  component={CameraScreen}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Notification"
+                  component={Notification}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Geolocations"
+                  component={Geolocations}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="TextFeild"
+                  component={TextFeild}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Pagination"
+                  component={Pagination}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Rating"
+                  component={Rating}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Progress"
+                  component={Progress}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+              </RootStack.Navigator>
+            )}
+          </Global>
         </NavigationContainer>
       </PaperProvider>
     </Provider>
