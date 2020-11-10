@@ -2,13 +2,13 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2020-11-09 16:13:10
+ * @modify date 2020-11-10 13:41:22
  * @desc [description]
  */
 
 // Global Imports
 import React, {Component} from 'react';
-import {SafeAreaView, View, ScrollView} from 'react-native';
+import {SafeAreaView, View, ScrollView, Image} from 'react-native';
 import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
@@ -16,9 +16,11 @@ import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import Appbars from '@Components/organisms/Appbar';
+import Appbars from '../../components/organisms/AppBar';
 import ActionCreator from '../../actions';
 import {styles as S} from './style';
+//---> Assets
+import Logo from '@Assets/images/logo.png';
 
 class Login extends Component {
   constructor(props) {
@@ -55,7 +57,8 @@ class Login extends Component {
           />
         </Appbars>
         <ScrollView>
-          <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text>
+          {/* <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text> */}
+          <Image source={Logo} alt="logo" style={[S.titleLogin]} />
           <View style={S.formLogin}>
             <TextInput
               label="이메일"
@@ -97,6 +100,7 @@ class Login extends Component {
             <Button
               mode="contained"
               style={[DefaultStyle.containerBTN, S.loginBtn]}
+              // color="red"
               onPress={() => {
                 this.navigation.navigate('Home');
               }}>
