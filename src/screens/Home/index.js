@@ -15,6 +15,8 @@ import {Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import ActionCreator from '../../actions';
+import Carousel from '@Components/organisms/Carousel';
+
 // import VersionCheckService from '../../services/VersionCheckService';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
@@ -42,6 +44,7 @@ class Home extends Component {
     return (
       <SafeAreaView style={DefaultStyle.container}>
         <Text style={{textAlign: 'center', marginTop: 40}}>UFLOW</Text>
+        <Carousel />
         <ScrollView>
           <Card>
             <Card.Title

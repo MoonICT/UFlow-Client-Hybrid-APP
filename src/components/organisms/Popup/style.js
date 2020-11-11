@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-06 16:54:09
- * @modify date 2020-11-11 09:54:29
+ * @modify date 2020-11-11 11:05:55
  * @desc [description]
  */
 import {StyleSheet} from 'react-native';
