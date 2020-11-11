@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-06 10:43:36
- * @modify date 2020-11-06 17:14:29
+ * @modify date 2020-11-11 09:18:11
  * @desc [description]
  */
 
@@ -31,10 +31,12 @@ class Popup extends Component {
             <Text style={styles.headContent}>{title}</Text>
             <Text style={styles.textContent}>{content}</Text>
           </View>
-          <View style={styles.actionButton}>
-            <Button onPress={() => hidePopup()}>취소</Button>
+          <View style={styles.action}>
+            <Button onPress={() => hidePopup()} style={styles.actionButton}>
+              취소
+            </Button>
             <View style={styles.borderHave} />
-            <Button>확인</Button>
+            <Button style={styles.actionButton}>확인</Button>
           </View>
         </Modal>
       </Portal>
