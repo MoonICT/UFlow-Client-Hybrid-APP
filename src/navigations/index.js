@@ -33,6 +33,8 @@ import TextFeild from '@Screeens/TextField';
 import Pagination from '@Screeens/Pagination';
 import Rating from '@Screeens/Rating';
 import Progress from '@Screeens/Progress';
+import Dialog from '@Screeens/Dialog';
+import SnackBar from '@Screeens/SnackBar';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -75,7 +77,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = false;
+let isLogin = true;
 
 const App = () => {
   return (
@@ -153,6 +155,18 @@ const App = () => {
                 <RootStack.Screen
                   name="Progress"
                   component={Progress}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />  
+                <RootStack.Screen
+                  name="Dialog"
+                  component={Dialog}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />   
+                <RootStack.Screen
+                  name="SnackBar"
+                  component={SnackBar}
                   headerMode={true}
                   options={{headerShown: true}}
                 />
