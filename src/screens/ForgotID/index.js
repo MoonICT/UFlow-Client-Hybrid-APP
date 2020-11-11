@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 14:05:00
- * @modify date 2020-11-09 15:28:27
+ * @modify date 2020-11-11 09:18:02
  * @desc [description]
  */
 
@@ -16,6 +16,7 @@ import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
+import Appbars from '../../components/organisms/AppBar';
 import ActionCreator from '../../actions';
 import {styles as S} from './style';
 
@@ -45,44 +46,55 @@ class ForgotID extends Component {
     const {email} = this.state;
 
     return (
-      <SafeAreaView style={DefaultStyle.container}>
-        <Appbar.Header style={DefaultStyle.header}>
+      <SafeAreaView style={S.container}>
+        <Appbars>
           <Appbar.Action
-            icon="keyboard-backspace"
-            color="white"
+            icon="arrow-left"
+            color="black"
             onPress={() => this.navigation.goBack()}
           />
-          <Appbar.Content title="아이디 찾기" color="white" />
-        </Appbar.Header>
-        <ScrollView>
+          <Appbar.Content
+            title="아이디 찾기"
+            color="black"
+            fontSize="12"
+            style={DefaultStyle.headerTitle}
+          />
+        </Appbars>
+        <View>
           <Text style={[S.titleLogin]}>아이디를 찾기 위해 </Text>
           <Text style={[S.titleLogin]}>전화번호를 입력해 주세요.</Text>
-          <View style={S.formLogin}>
-            <TextInput
-              label="전화번호"
-              mode="outlined"
-              value={email}
-              type="number"
-              maxLength={20}
-              style={[S.inputs]}
-              theme={{
-                colors: {
-                  primary: 'rgba(0, 0, 0, 0.1)',
-                  underlineColor: 'transparent',
-                },
-              }}
-              onChangeText={text => this.setState({email: text})}
-            />
-            <Button
-              mode="contained"
-              style={[DefaultStyle.containerBTN, S.loginBtn]}
-              onPress={() => {
-                this.navigation.navigate('Home');
-              }}>
-              확인
-            </Button>
-          </View>
-        </ScrollView>
+        </View>
+        <View style={S.formLogin}>
+          <TextInput
+            label="전화번호"
+            mode="outlined"
+            value={email}
+            type="number"
+            maxLength={20}
+            style={[DefaultStyle.inputs]}
+            theme={{
+              colors: {
+                primary: 'black',
+                underlineColor: 'transparent',
+              },
+            }}
+            multiline={true}
+            onChangeText={text => this.setState({email: text})}
+          />
+          <Button
+            mode="contained"
+            style={[
+              DefaultStyle.containerBTN,
+              S.sendBTN,
+              DefaultStyle._primary,
+            ]}
+            color="red"
+            onPress={() => {
+              this.navigation.navigate('Home');
+            }}>
+            확인
+          </Button>
+        </View>
       </SafeAreaView>
     );
   }

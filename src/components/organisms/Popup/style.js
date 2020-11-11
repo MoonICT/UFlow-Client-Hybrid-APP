@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-06 16:54:09
- * @modify date 2020-11-09 16:04:25
+ * @modify date 2020-11-11 09:18:58
  * @desc [description]
  */
 import {StyleSheet} from 'react-native';
@@ -33,7 +33,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontStyle: 'normal',
   },
-  actionButton: {
+  action: {
+    width: '100%',
     height: 52,
     display: 'flex',
     flexDirection: 'row',
@@ -41,6 +42,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     borderTopWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  actionButton: {
+    flex: 1,
   },
   borderHave: {
     width: 1,

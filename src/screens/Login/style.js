@@ -2,15 +2,26 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:35:26
- * @modify date 2020-11-10 11:44:31
+ * @modify date 2020-11-10 15:47:31
  * @desc [description]
  */
 
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
+  container: {
+    width: windowWidth,
+    height: windowHeight,
+    backgroundColor: 'white',
+  },
   mrL10: {
     marginLeft: 10,
+  },
+  fontS14: {
+    fontSize: 14,
   },
   titleLogin: {
     width: 152,
@@ -20,13 +31,12 @@ export const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
+
   formLogin: {
     paddingLeft: 16,
     paddingRight: 16,
   },
-  inputs: {
-    height: 56,
-  },
+
   inputPass: {
     marginTop: 24,
     marginBottom: 25,
@@ -53,6 +63,7 @@ export const styles = StyleSheet.create({
   loginBtn: {
     width: '100%',
     color: 'white',
+    backgroundColor: 'green',
     marginTop: 27,
   },
   rectangle: {
@@ -61,5 +72,9 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     marginLeft: 9,
     marginRight: 9,
+  },
+
+  ask: {
+    color: 'rgba(0, 0, 0, 0.54)',
   },
 });

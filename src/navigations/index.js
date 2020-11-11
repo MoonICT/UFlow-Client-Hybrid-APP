@@ -100,6 +100,11 @@ const App = () => {
                   component={ForgotIDScreen}
                   options={{headerShown: false}}
                 />
+                <AuthStack.Screen
+                  name="TextFeild"
+                  component={TextFeild}
+                  options={{headerShown: false}}
+                />
               </AuthStack.Navigator>
             ) : (
               <RootStack.Navigator>

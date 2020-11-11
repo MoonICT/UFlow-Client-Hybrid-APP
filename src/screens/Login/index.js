@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2020-11-10 13:41:22
+ * @modify date 2020-11-10 16:35:01
  * @desc [description]
  */
 
@@ -48,11 +48,11 @@ class Login extends Component {
     const {email, password, isRemember} = this.state;
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style={S.container}>
         <Appbars>
           <Appbar.Action
             icon="close"
-            color="white"
+            color="black"
             onPress={() => console.log('hello')}
           />
         </Appbars>
@@ -66,7 +66,7 @@ class Login extends Component {
               value={email}
               type="number"
               maxLength={20}
-              style={[S.inputs]}
+              style={[DefaultStyle.inputs]}
               onChangeText={text => this.setState({email: text})}
             />
             <TextInput
@@ -76,7 +76,7 @@ class Login extends Component {
               type="text"
               secureTextEntry={true}
               maxLength={20}
-              style={[S.inputs, S.inputPass]}
+              style={[DefaultStyle.inputs, S.inputPass]}
               onChangeText={text => this.setState({password: text})}
             />
             <View style={S.plusFormLogin}>
@@ -87,28 +87,34 @@ class Login extends Component {
                     this.setState({isRemember: !isRemember});
                   }}
                 />
-                <Text>자동 로그인</Text>
+                <Text style={[S.fontS14]}>자동 로그인</Text>
               </View>
               <View style={S.ortherLink}>
-                <Text onPress={() => this.navigation.navigate('ForgotID')}>
+                <Text
+                  style={[S.fontS14]}
+                  onPress={() => this.navigation.navigate('ForgotID')}>
                   아이디 찾기
                 </Text>
                 <Text style={S.rectangle}>|</Text>
-                <Text>비밀번호 찾기</Text>
+                <Text style={[S.fontS14]}>비밀번호 찾기</Text>
               </View>
             </View>
             <Button
               mode="contained"
-              style={[DefaultStyle.containerBTN, S.loginBtn]}
-              // color="red"
+              style={[
+                DefaultStyle.containerBTN,
+                S.loginBtn,
+                DefaultStyle._primary,
+              ]}
+              color="red"
               onPress={() => {
                 this.navigation.navigate('Home');
               }}>
               확인
             </Button>
             <View style={[S.plusFormLogin, S.forgot]}>
-              <Text>유플로우가 처음이신가요?</Text>
-              <Text style={S.mrL10}>회원가입</Text>
+              <Text style={[S.ask, S.fontS14]}>유플로우가 처음이신가요?</Text>
+              <Text style={[S.mrL10, S.fontS14]}>회원가입</Text>
             </View>
           </View>
         </ScrollView>
