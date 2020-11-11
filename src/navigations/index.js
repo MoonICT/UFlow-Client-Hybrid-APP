@@ -36,6 +36,7 @@ import Progress from '@Screeens/Progress';
 import Dialog from '@Screeens/Dialog';
 import SnackBar from '@Screeens/SnackBar';
 import Slider from '@Screeens/Slider';
+import Switch from '@Screeens/Switch';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -179,6 +180,12 @@ const App = () => {
                 <RootStack.Screen
                   name="Slider"
                   component={Slider}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                 <RootStack.Screen
+                  name="Switch"
+                  component={Switch}
                   headerMode={true}
                   options={{headerShown: true}}
                 />

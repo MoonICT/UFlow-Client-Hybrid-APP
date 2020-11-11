@@ -205,7 +205,7 @@ export default StyleSheet.create({
     marginTop: 15,
     marginBottom: 17,
   },
-/** Dialog popup**/
+  /** Dialog popup**/
   _buttonPopup: {
     flexDirection: 'row',
     padding: 0,
@@ -221,11 +221,16 @@ export default StyleSheet.create({
     flex: 1,
     padding: 0,
     margin: 0,
-    borderRadius:0,
+    borderRadius: 0,
   },
 
-  snackbar:{
+  snackbar: {
     // backgroundColor: color.misc.snackbar,
     color: 'green'
+  },
+
+  _labelSwitch: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 16,
   }
 });
