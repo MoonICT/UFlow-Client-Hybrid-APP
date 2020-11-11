@@ -6,8 +6,41 @@
  * @desc [description]
  */
 
-import {DefaultTheme} from 'react-native-paper';
+import {DefaultTheme, configureFonts} from 'react-native-paper';
 import {color} from './colors';
+
+const fontConfig = {
+  default: {
+    black: {
+      fontFamily: 'NotoSansCJKkr-Black',
+      fontWeight: 'normal',
+    },
+    bold: {
+      fontFamily: 'NotoSansCJKkr-Bold',
+      fontWeight: 'normal',
+    },
+    demilight: {
+      fontFamily: 'NotoSansCJKkr-DemiLight',
+      fontWeight: 'normal',
+    },
+    light: {
+      fontFamily: 'NotoSansCJKkr-Light',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'NotoSansCJKkr-Medium',
+      fontWeight: 'normal',
+    },
+    regular: {
+      fontFamily: 'NotoSansCJKkr-Regular',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'NotoSansCJKkr-Thin',
+      fontWeight: 'normal',
+    },
+  },
+};
 
 export const theme = {
   ...DefaultTheme,
@@ -25,14 +58,15 @@ export const theme = {
     // placeholder: color.primary.light, //color for placeholder text, such as input placeholder.
     // backdrop: color.primary.light, //color for backdrops of various components such as modals.
   },
-  fonts: {
-    black: 'NotoSansCJKkr-Black',
-    boild: 'NotoSansCJKkr-Bold',
-    demilight: 'NotoSansCJKkr-DemiLight',
-    light: 'NotoSansCJKkr-Light',
-    medium: 'NotoSansCJKkr-Medium',
-    regular: 'NotoSansCJKkr-Regular',
-    thin: 'NotoSansCJKkr-Thin',
-  },
+  fonts: configureFonts(fontConfig),
+  // fonts: {
+  //   black: 'NotoSansCJKkr-Black',
+  //   bold: 'NotoSansCJKkr-Bold',
+  //   demilight: 'NotoSansCJKkr-DemiLight',
+  //   light: 'NotoSansCJKkr-Light',
+  //   medium: 'NotoSansCJKkr-Medium',
+  //   regular: 'NotoSansCJKkr-Regular',
+  //   thin: 'NotoSansCJKkr-Thin',
+  // },
   //   animation: {scale:},
 };

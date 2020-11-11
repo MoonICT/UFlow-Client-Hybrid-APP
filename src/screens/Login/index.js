@@ -20,7 +20,7 @@ import Appbars from '../../components/organisms/AppBar';
 import ActionCreator from '../../actions';
 import {styles as S} from './style';
 //---> Assets
-import Logo from '@Assets/images/logo.png';
+const Logo = require('@Assets/images/logo.png')
 
 class Login extends Component {
   constructor(props) {
