@@ -28,8 +28,14 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   header: {
-    height: 64,
-    backgroundColor: color.primary.main,
+    height: 48,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: 'black',
   },
   /** Container button */
   containerBTN: {
@@ -105,6 +111,10 @@ export default StyleSheet.create({
 
   /** Input */
   /** Fill Input */
+  inputs: {
+    height: 56,
+    backgroundColor: 'white',
+  },
   _fillInput: {
     backgroundColor: color.input.default_bgr,
     color: color.text.secondary,

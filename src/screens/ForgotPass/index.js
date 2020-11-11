@@ -1,14 +1,14 @@
 /**
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
- * @create date 2020-11-04 17:12:03
- * @modify date 2020-11-11 09:23:14
+ * @create date 2020-11-09 14:05:49
+ * @modify date 2020-11-09 14:10:17
  * @desc [description]
  */
 
 // Global Imports
 import React, {Component} from 'react';
-import {SafeAreaView, View, ScrollView, Image} from 'react-native';
+import {SafeAreaView, View, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
@@ -16,13 +16,10 @@ import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import Appbars from '../../components/organisms/AppBar';
 import ActionCreator from '../../actions';
 import {styles as S} from './style';
-//---> Assets
-import Logo from '@Assets/images/logo.png';
 
-class Login extends Component {
+class ForgotPass extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -48,17 +45,16 @@ class Login extends Component {
     const {email, password, isRemember} = this.state;
 
     return (
-      <SafeAreaView style={S.container}>
-        <Appbars>
+      <SafeAreaView style={DefaultStyle.container}>
+        <Appbar.Header style={DefaultStyle.header}>
           <Appbar.Action
             icon="close"
-            color="black"
+            color="white"
             onPress={() => console.log('hello')}
           />
-        </Appbars>
+        </Appbar.Header>
         <ScrollView>
-          {/* <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text> */}
-          <Image source={Logo} alt="logo" style={[S.titleLogin]} />
+          <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text>
           <View style={S.formLogin}>
             <TextInput
               label="이메일"
@@ -66,7 +62,7 @@ class Login extends Component {
               value={email}
               type="number"
               maxLength={20}
-              style={[DefaultStyle.inputs]}
+              style={[S.inputs]}
               onChangeText={text => this.setState({email: text})}
             />
             <TextInput
@@ -76,7 +72,7 @@ class Login extends Component {
               type="text"
               secureTextEntry={true}
               maxLength={20}
-              style={[DefaultStyle.inputs, S.inputPass]}
+              style={[S.inputs, S.inputPass]}
               onChangeText={text => this.setState({password: text})}
             />
             <View style={S.plusFormLogin}>
@@ -87,34 +83,25 @@ class Login extends Component {
                     this.setState({isRemember: !isRemember});
                   }}
                 />
-                <Text style={[S.fontS14]}>자동 로그인</Text>
+                <Text>자동 로그인</Text>
               </View>
               <View style={S.ortherLink}>
-                <Text
-                  style={[S.fontS14]}
-                  onPress={() => this.navigation.navigate('ForgotID')}>
-                  아이디 찾기
-                </Text>
+                <Text>아이디 찾기</Text>
                 <Text style={S.rectangle}>|</Text>
-                <Text style={[S.fontS14]}>비밀번호 찾기</Text>
+                <Text>비밀번호 찾기</Text>
               </View>
             </View>
             <Button
               mode="contained"
-              style={[
-                DefaultStyle.containerBTN,
-                S.loginBtn,
-                DefaultStyle._primary,
-              ]}
-              color="red"
+              style={[DefaultStyle.containerBTN, S.loginBtn]}
               onPress={() => {
                 this.navigation.navigate('Home');
               }}>
               확인
             </Button>
             <View style={[S.plusFormLogin, S.forgot]}>
-              <Text style={[S.ask, S.fontS14]}>유플로우가 처음이신가요?</Text>
-              <Text style={[S.mrL10, S.fontS14]}>회원가입</Text>
+              <Text>유플로우가 처음이신가요?</Text>
+              <Text style={S.mrL10}>회원가입</Text>
             </View>
           </View>
         </ScrollView>
@@ -157,4 +144,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Login);
+)(ForgotPass);
