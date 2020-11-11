@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-06 16:54:09
- * @modify date 2020-11-11 09:18:58
+ * @modify date 2020-11-11 09:54:29
  * @desc [description]
  */
 import {StyleSheet} from 'react-native';
@@ -10,7 +10,7 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     width: 328,
-    height: 180,
+    minHeight: 180,
     backgroundColor: 'white',
     marginLeft: 'auto',
     marginRight: 'auto',
