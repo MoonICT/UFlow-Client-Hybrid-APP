@@ -7,7 +7,7 @@
  * @flow strict-local
  * */
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   View,
@@ -19,13 +19,14 @@ import {
   TextInput,
   FlatList,
 } from 'react-native';
-import {DefaultTheme, ProgressBar, Colors} from 'react-native-paper';
+import { DefaultTheme, ProgressBar, Colors } from 'react-native-paper';
 // Local Imports
 import LocalNotificationService from '../../services/LocalNotificationService';
 import DefaultStyle from '../../styles/default';
+import * as Progress from 'react-native-progress';
 import Styles from './style';
 
-export default class Progress extends Component {
+export default class ProgressScreen extends Component {
   constructor() {
     super();
 

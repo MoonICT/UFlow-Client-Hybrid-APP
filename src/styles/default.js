@@ -4,8 +4,8 @@
  * 2020.07.05 Deokin.
  * */
 
-import {StyleSheet} from 'react-native';
-import {color} from '../themes/colors';
+import { StyleSheet } from 'react-native';
+import { color } from '../themes/colors';
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.
@@ -195,4 +195,37 @@ export default StyleSheet.create({
     color: color.error.dark,
   },
   //Code input write at here
+
+  /** Dialog **/
+  _titleDialog: {
+    fontSize: 20,
+    color: color.text.primary,
+    fontWeight: '500',
+    fontFamily: 'NotoSansCJKkr-Medium',
+    marginTop: 15,
+    marginBottom: 17,
+  },
+/** Dialog popup**/
+  _buttonPopup: {
+    flexDirection: 'row',
+    padding: 0,
+    margin: 0,
+    borderTopWidth: 1,
+    borderColor: color.input.default_border,
+  },
+  _buttonElement: {
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: color.input.default_border,
+    justifyContent: 'center',
+    flex: 1,
+    padding: 0,
+    margin: 0,
+    borderRadius:0,
+  },
+
+  snackbar:{
+    // backgroundColor: color.misc.snackbar,
+    color: 'green'
+  }
 });
