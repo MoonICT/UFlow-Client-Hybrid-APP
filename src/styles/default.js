@@ -4,8 +4,8 @@
  * 2020.07.05 Deokin.
  * */
 
-import { StyleSheet } from 'react-native';
-import { color } from '../themes/colors';
+import {StyleSheet} from 'react-native';
+import {color} from '../themes/colors';
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.
@@ -226,11 +226,16 @@ export default StyleSheet.create({
 
   snackbar: {
     // backgroundColor: color.misc.snackbar,
-    color: 'green'
+    color: 'green',
   },
 
   _labelSwitch: {
     fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
-  }
+  },
+
+  _pagination: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 14,
+  },
 });
