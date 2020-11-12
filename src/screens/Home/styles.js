@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-11-12 16:39:02
+ * @modify date 2020-11-12 17:30:52
  * @desc [description]
  */
 
@@ -109,6 +109,8 @@ export const styles = StyleSheet.create({
     backgroundColor: color.tertiary_01.main,
   },
   mainStep: {
-    height: 'auto',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

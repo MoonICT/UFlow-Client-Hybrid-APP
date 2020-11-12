@@ -23,7 +23,7 @@ import {
 import DefaultStyle from '../../styles/default';
 import ActionCreator from '../../actions';
 import Carousel from '@Components/organisms/Carousel';
-// import CarouselSnap from '@Components/organisms/CarouselSnaps';
+import CarouselSnap from '@Components/organisms/CarouselSnap';
 import AppBars from '@Components/organisms/AppBar';
 import {styles} from './styles';
 
@@ -192,15 +192,15 @@ class Home extends Component {
           </View>
           {/**MainStep */}
           <View style={styles.mainStep}>
-            {/* <CarouselSnap
+            <CarouselSnap
               layout={'default'}
-              ref={ref => (this.carousel = ref)}
+              // ref={ref => (this.carousel = ref)}
               data={slides}
               sliderWidth={300}
               itemWidth={300}
               renderItem={this._renderStepItem}
               onSnapToItem={index => this.setState({activeIndex: index})}
-            /> */}
+            />
           </View>
 
           <Card>
