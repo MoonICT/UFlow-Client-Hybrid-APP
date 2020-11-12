@@ -2,24 +2,24 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-11 14:22:05
- * @modify date 2020-11-12 10:42:49
+ * @modify date 2020-11-12 16:49:22
  * @desc [description]
  */
 
 import React, {Component} from 'react';
-import AppIntroSlider from 'react-native-app-intro-slider';
+import CarouselSnap from 'react-native-snap-carousel';
 //Local Import
 // import {styles} from './style';
 
-class Carousels extends Component {
+class CarouselSnaps extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     const {custom} = this.props;
-    return <AppIntroSlider {...custom} />;
+    return <CarouselSnap {...custom} />;
   }
 }
 
-export default Carousels;
+export default CarouselSnaps;

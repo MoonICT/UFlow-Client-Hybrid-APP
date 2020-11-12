@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 15:58:18
- * @modify date 2020-11-11 09:22:23
+ * @modify date 2020-11-12 10:52:30
  * @desc [description]
  */
 
@@ -21,7 +21,9 @@ class AppBars extends Component {
   render() {
     const {children} = this.props;
     return (
-      <View style={[DefaultStyle.header, styles.container]}>{children}</View>
+      <View style={[DefaultStyle.header, styles.container]} {...this.props}>
+        {children}
+      </View>
     );
   }
 }
