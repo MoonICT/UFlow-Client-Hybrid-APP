@@ -38,6 +38,7 @@ import SnackBar from '@Screeens/SnackBar';
 import Slider from '@Screeens/Slider';
 import Switch from '@Screeens/Switch';
 import AppBar from '@Screeens/AppBar';
+import ToggleButton from '@Screeens/ToggleButton';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -193,6 +194,12 @@ const App = () => {
                 <RootStack.Screen
                   name="AppBar"
                   component={AppBar}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="ToggleButton"
+                  component={ToggleButton}
                   headerMode={true}
                   options={{headerShown: true}}
                 />

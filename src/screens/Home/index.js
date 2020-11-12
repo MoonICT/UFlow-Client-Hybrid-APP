@@ -44,7 +44,6 @@ class Home extends Component {
     return (
       <SafeAreaView style={DefaultStyle.container}>
         <Text style={{textAlign: 'center', marginTop: 40}}>UFLOW</Text>
-        <Carousel />
         <ScrollView>
           <Card>
             <Card.Title

@@ -277,4 +277,15 @@ export default StyleSheet.create({
     marginLeft: 0,
     marginRight: 0,
   },
+
+  /** toggle Button**/
+  _toggleButton: {
+    borderWidth: 1,
+    borderColor: color.button.default_border,
+    width: 48,
+    height: 48,
+  },
+  _toggleBtnActive: {
+    backgroundColor: color.button.active,
+  },
 });

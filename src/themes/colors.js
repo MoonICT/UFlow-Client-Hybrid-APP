@@ -123,4 +123,8 @@ export const color = {
     default_bgr: 'rgba(0, 0, 0, 0.05)',
     default_border: 'rgba(0, 0, 0, 0.1)',
   },
+  button: {
+    active: 'rgba(0, 0, 0, 0.12)',
+    default_border: 'rgba(0, 0, 0, 0.1)',
+  },
 };
