@@ -15,6 +15,7 @@ import {
   Alert,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 // Local Imports
@@ -27,6 +28,7 @@ export default class Sample extends Component {
 
   render() {
     return (
+      <ScrollView>
       <SafeAreaView
         style={[
           DefaultStyle.container,
@@ -45,6 +47,7 @@ export default class Sample extends Component {
         <TouchableOpacity onPress={() => this.props.navigation.navigate('SnackBar')} style={DefaultStyle.btn}><Text>{'SnackBar Sample'}</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Slider')} style={DefaultStyle.btn}><Text>{'Slider Sample'}</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Switch')} style={DefaultStyle.btn}><Text>{'Switch Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('AppBar')} style={DefaultStyle.btn}><Text>{'AppBar Sample'}</Text></TouchableOpacity>
 
         <View style={styles.button}>
           {/*<Button
@@ -57,6 +60,7 @@ export default class Sample extends Component {
           />*/}
         </View>
       </SafeAreaView>
+      </ScrollView>
     );
   }
 }

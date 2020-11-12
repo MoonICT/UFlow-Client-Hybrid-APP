@@ -238,4 +238,43 @@ export default StyleSheet.create({
     fontFamily: 'NotoSansCJKkr',
     fontSize: 14,
   },
+
+  /** AppBar**/
+  tabBar: {
+    flex: 1,
+    margin: 'auto',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    textAlign: 'center',
+    height: 'auto',
+  },
+  _itemBar: {
+    // color: 'red',
+    opacity: 0.6,
+    alignItems: 'center',
+  },
+  _itemBarActive: {
+    opacity: 1,
+  },
+  _rightTitle: {
+    color: 'rgba(255, 109, 0, 0.87)',
+    marginRight: 0,
+    textAlign: 'right',
+    fontSize: 16,
+    fontFamily: 'NotoSansCJKkr',
+    fontWeight: '500',
+  },
+  _leftTitle: {
+    color: 'rgba(255, 109, 0, 0.87)',
+    textAlign: 'left',
+    fontSize: 16,
+    fontFamily: 'NotoSansCJKkr',
+    fontWeight: '500',
+  },
+  _contentApp: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    marginLeft: 0,
+    marginRight: 0,
+  },
 });
