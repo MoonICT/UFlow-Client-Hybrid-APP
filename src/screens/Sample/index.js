@@ -15,7 +15,11 @@ import {
   Alert,
   StyleSheet,
   TouchableOpacity,
+<<<<<<< HEAD
   ScrollView
+=======
+  ScrollView,
+>>>>>>> origin/Life
 } from 'react-native';
 // import { ScrollView } from 'react-native-gesture-handler';F
 
@@ -30,6 +34,7 @@ export default class Sample extends Component {
   render() {
     return (
       <ScrollView>
+<<<<<<< HEAD
         <SafeAreaView
           style={[
             DefaultStyle.container,
@@ -96,6 +101,28 @@ export default class Sample extends Component {
             style={DefaultStyle.btn}>
             <Text>{'Switch Sample'}</Text>
           </TouchableOpacity>
+=======
+      <SafeAreaView
+        style={[
+          DefaultStyle.container,
+          {justifyContent: 'center', alignItems: 'center'},
+        ]}>
+        <Text style={{marginBottom: 20, fontSize: 20}}>Sample</Text>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Webview')} style={DefaultStyle.btn}><Text>{'WebView Mode'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Camera')} style={DefaultStyle.btn}><Text>{'Camera Mode'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')} style={DefaultStyle.btn}><Text>{'Notification Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Geolocations')} style={DefaultStyle.btn}><Text>{'Geolocation Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('TextFeild')} style={DefaultStyle.btn}><Text>{'TextFeild Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Pagination')} style={DefaultStyle.btn}><Text>{'Pagination Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Rating')} style={DefaultStyle.btn}><Text>{'Rating Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Progress')} style={DefaultStyle.btn}><Text>{'Progress Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Dialog')} style={DefaultStyle.btn}><Text>{'Dialog Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('SnackBar')} style={DefaultStyle.btn}><Text>{'SnackBar Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Slider')} style={DefaultStyle.btn}><Text>{'Slider Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Switch')} style={DefaultStyle.btn}><Text>{'Switch Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('AppBar')} style={DefaultStyle.btn}><Text>{'AppBar Sample'}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ToggleButton')} style={DefaultStyle.btn}><Text>{'ToggleButton Sample'}</Text></TouchableOpacity>
+>>>>>>> origin/Life
 
           <View style={styles.button}>
             {/*<Button
@@ -106,8 +133,13 @@ export default class Sample extends Component {
               })
             }
           />*/}
+<<<<<<< HEAD
           </View>
         </SafeAreaView>
+=======
+        </View>
+      </SafeAreaView>
+>>>>>>> origin/Life
       </ScrollView>
     );
   }
