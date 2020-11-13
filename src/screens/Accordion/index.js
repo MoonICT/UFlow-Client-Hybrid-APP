@@ -10,9 +10,9 @@
 import React, {Component} from 'react';
 import {StyleSheet, ScrollView, Text, View} from 'react-native';
 import {List} from 'react-native-paper';
+import Accordion from '@Components/organisms/Accordion';
 import DefaultStyle from '../../styles/default';
-
-export default class Accordion extends Component {
+export default class AccordionScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {expanded: 'true'};
@@ -26,33 +26,7 @@ export default class Accordion extends Component {
   render() {
     return (
       <ScrollView>
-        <List.Section title="Accordions">
-          <List.Accordion
-            onAccordionPress={expandedId => this.accordionPress(expandedId)}
-            title="Expansion Panel 1"
-            left={props => <List.Icon {...props} icon="folder" />}>
-            <List.Item title="First item" />
-            <List.Item title="Second item" />
-          </List.Accordion>
-
-          <List.Accordion
-            title="Expansion Panel 2"
-            left={props => <List.Icon {...props} icon="folder" />}
-            expanded={this.state.expanded}
-            onPress={this.handlePress}>
-            <List.Item
-              title="First Item"
-              left={() => <List.Icon icon="equal" />}
-            />
-            <List.Item
-              title="Second Item"
-              left={() => <List.Icon color="#000" icon="calendar" />}
-            />
-          </List.Accordion>
-        </List.Section>
-
-        <Text>Group</Text>
-        <List.AccordionGroup>
+        <Accordion type="group" title="Ground">
           <List.Accordion
             style={DefaultStyle._titleAccordion}
             title="Expansion Panel1"
@@ -75,7 +49,32 @@ export default class Accordion extends Component {
             titleStyle={DefaultStyle._contentAccordion}>
             <List.Item title="Item 3" />
           </List.Accordion>
-        </List.AccordionGroup>
+        </Accordion>
+
+        <Accordion title="Accordions">
+          <List.Accordion
+            onAccordionPress={expandedId => this.accordionPress(expandedId)}
+            title="Expansion Panel 1"
+            left={props => <List.Icon {...props} icon="folder" />}>
+            <List.Item title="First item" />
+            <List.Item title="Second item" />
+          </List.Accordion>
+
+          <List.Accordion
+            title="Expansion Panel 2"
+            left={props => <List.Icon {...props} icon="folder" />}
+            expanded={this.state.expanded}
+            onPress={this.handlePress}>
+            <List.Item
+              title="First Item"
+              left={() => <List.Icon icon="equal" />}
+            />
+            <List.Item
+              title="Second Item"
+              left={() => <List.Icon color="#000" icon="calendar" />}
+            />
+          </List.Accordion>
+        </Accordion>
       </ScrollView>
     );
   }
