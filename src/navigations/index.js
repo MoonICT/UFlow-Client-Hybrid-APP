@@ -42,6 +42,7 @@ import ToggleButton from '@Screeens/ToggleButton';
 import Breadcrumb from '@Screeens/Breadcrumb';
 import Accordion from '@Screeens/Accordion';
 import SpeedDial from '@Screeens/SpeedDial';
+import List from '@Screeens/List';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -221,6 +222,12 @@ const App = () => {
                 <RootStack.Screen
                   name="SpeedDial"
                   component={SpeedDial}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="List"
+                  component={List}
                   headerMode={true}
                   options={{headerShown: true}}
                 />

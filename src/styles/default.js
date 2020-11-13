@@ -6,6 +6,7 @@
 
 import {StyleSheet} from 'react-native';
 import {color} from '../themes/colors';
+import {theme} from '../themes/index';
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.
@@ -350,5 +351,32 @@ export default StyleSheet.create({
   },
   _btnDial: {
     backgroundColor: color.secondary.main,
+  },
+
+  /** List**/
+  _list: {
+    backgroundColor: color.primary.constrast,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: 4,
+  },
+  _titleList: {
+    fontFamily: theme.fonts.regular,
+    fontSize: 16,
+    color: color.text.primary,
+    padding: 0,
+    margin: 0,
+    height: 48,
+    justifyContent: 'center',
+  },
+  _itemList: {
+    fontFamily: theme.fonts.regular,
+    fontSize: 16,
+    color: color.text.primary,
+    padding: 0,
+    margin: 0,
+    height: 48,
+    justifyContent: 'center',
+    paddingLeft: 32,
   },
 });
