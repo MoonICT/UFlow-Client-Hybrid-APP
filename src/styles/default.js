@@ -343,4 +343,12 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#000000',
   },
+
+  /** SpeedDial**/
+  _wrapperDial: {
+    backgroundColor: color.misc.backdrop,
+  },
+  _btnDial: {
+    backgroundColor: color.secondary.main,
+  },
 });

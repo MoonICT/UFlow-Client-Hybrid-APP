@@ -41,6 +41,7 @@ import AppBar from '@Screeens/AppBar';
 import ToggleButton from '@Screeens/ToggleButton';
 import Breadcrumb from '@Screeens/Breadcrumb';
 import Accordion from '@Screeens/Accordion';
+import SpeedDial from '@Screeens/SpeedDial';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -214,6 +215,12 @@ const App = () => {
                 <RootStack.Screen
                   name="Accordion"
                   component={Accordion}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="SpeedDial"
+                  component={SpeedDial}
                   headerMode={true}
                   options={{headerShown: true}}
                 />

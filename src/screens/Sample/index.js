@@ -116,6 +116,11 @@ export default class Sample extends Component {
             style={DefaultStyle.btn}>
             <Text>{'Accordion Sample'}</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('SpeedDial')}
+            style={DefaultStyle.btn}>
+            <Text>{'SpeedDial Sample'}</Text>
+          </TouchableOpacity>
           <View style={styles.button}>
             {/*<Button
             title="카카오톡 공유하기"
