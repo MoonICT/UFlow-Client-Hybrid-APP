@@ -19,6 +19,7 @@ import {
   Appbar,
   Menu,
   Divider,
+  List,
 } from 'react-native-paper';
 
 // Local Imports
@@ -27,7 +28,9 @@ import ActionCreator from '../../actions';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import AppBars from '@Components/organisms/AppBar';
+
 import Menus from '@Components/organisms/Menu';
+import TreeViews from '@Components/organisms/TreeView';
 
 import {styles} from './styles';
 
@@ -107,6 +110,7 @@ class Home extends Component {
     this.state = {
       activeIndex: 0,
       isShow: false,
+      expanded: true,
     };
   }
 
@@ -150,7 +154,7 @@ class Home extends Component {
 
   render() {
     const {showPopup} = this.props;
-    const {isShow} = this.state;
+    const {isShow, expanded} = this.state;
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -239,6 +243,24 @@ class Home extends Component {
             <Divider />
             <Menu.Item onPress={() => {}} title="Item 3" />
           </Menus>
+
+          <TreeViews>
+            <List.Accordion
+              title="Uncontrolled Accordion"
+              left={props => <List.Icon {...props} icon="folder" />}>
+              <List.Item title="First item" />
+              <List.Item title="Second item" />
+            </List.Accordion>
+
+            <List.Accordion
+              title="Controlled Accordion"
+              left={props => <List.Icon {...props} icon="folder" />}
+              expanded={expanded}
+              onPress={() => this.setState({expanded: !expanded})}>
+              <List.Item title="First item" />
+              <List.Item title="Second item" />
+            </List.Accordion>
+          </TreeViews>
         </ScrollView>
       </SafeAreaView>
     );
