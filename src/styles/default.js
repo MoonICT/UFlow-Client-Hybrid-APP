@@ -379,4 +379,22 @@ export default StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 32,
   },
+
+  /** Table**/
+  _table: {
+    backgroundColor: color.misc.white,
+    borderRadius: 4,
+  },
+  _headerTable: {
+    backgroundColor: '#fafafa',
+    fontFamily: 'AppleSDGothicNeo-Medium',
+    fontSize: 14,
+    color: color.text.primary,
+    fontWeight: '500',
+  },
+  _tableRow: {},
+  _borderTableRow: {
+    borderColor: '#e0e0e0',
+    borderTopWidth: 1,
+  },
 });

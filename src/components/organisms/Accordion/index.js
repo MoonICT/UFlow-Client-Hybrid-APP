@@ -7,7 +7,7 @@ import React, {Component} from 'react';
 import {List} from 'react-native-paper';
 // import DefaultStyle from '@Styles/default';
 
-export default class Accordion extends Component {
+export default class Table extends Component {
   constructor(props) {
     super(props);
   }

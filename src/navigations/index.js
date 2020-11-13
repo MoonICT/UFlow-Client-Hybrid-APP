@@ -43,6 +43,7 @@ import Breadcrumb from '@Screeens/Breadcrumb';
 import Accordion from '@Screeens/Accordion';
 import SpeedDial from '@Screeens/SpeedDial';
 import List from '@Screeens/List';
+import Table from '@Screeens/Table';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -228,6 +229,12 @@ const App = () => {
                 <RootStack.Screen
                   name="List"
                   component={List}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Table"
+                  component={Table}
                   headerMode={true}
                   options={{headerShown: true}}
                 />

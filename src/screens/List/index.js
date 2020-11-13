@@ -9,7 +9,6 @@
 // Global Imports
 import React, {Component} from 'react';
 import {View} from 'react-native';
-import {List} from 'react-native-paper';
 import Lists from '@Components/organisms/List';
 
 export default class AccordionScreen extends Component {
