@@ -288,4 +288,38 @@ export default StyleSheet.create({
   _toggleBtnActive: {
     backgroundColor: color.button.active,
   },
+
+  /** Breadcrumbs**/
+  _breadcrumb: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  _itemBreadcrumb: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 16,
+    color: color.text.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  _iconBreadcrumb: {
+    color: color.text.secondary,
+    padding: 0,
+    marginLeft: 0,
+    minWidth: 20,
+    maxWidth: 25,
+    margin: 'auto',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  _activeIconBreadcrumb: {
+    color: color.text.primary,
+  },
+  _separator: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    color: color.text.secondary,
+    paddingLeft: 10,
+    paddingRight: 10,
+    // lineHeight: 1.43,
+  },
 });

@@ -39,6 +39,7 @@ import Slider from '@Screeens/Slider';
 import Switch from '@Screeens/Switch';
 import AppBar from '@Screeens/AppBar';
 import ToggleButton from '@Screeens/ToggleButton';
+import Breadcrumb from '@Screeens/Breadcrumb';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -200,6 +201,12 @@ const App = () => {
                 <RootStack.Screen
                   name="ToggleButton"
                   component={ToggleButton}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Breadcrumb"
+                  component={Breadcrumb}
                   headerMode={true}
                   options={{headerShown: true}}
                 />
