@@ -40,6 +40,7 @@ import Switch from '@Screeens/Switch';
 import AppBar from '@Screeens/AppBar';
 import ToggleButton from '@Screeens/ToggleButton';
 import Breadcrumb from '@Screeens/Breadcrumb';
+import Accordion from '@Screeens/Accordion';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -207,6 +208,12 @@ const App = () => {
                 <RootStack.Screen
                   name="Breadcrumb"
                   component={Breadcrumb}
+                  headerMode={true}
+                  options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="Accordion"
+                  component={Accordion}
                   headerMode={true}
                   options={{headerShown: true}}
                 />

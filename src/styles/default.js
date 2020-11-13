@@ -37,6 +37,14 @@ export default StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
+  /** Divider */
+  divider: {
+    width: '100%',
+    height: 1,
+    opacity: 0.23,
+    backgroundColor: '#ffffff',
+  },
+
   /** Container button */
   containerBTN: {
     width: 120,
@@ -321,5 +329,18 @@ export default StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     // lineHeight: 1.43,
+  },
+
+  /** Accordion**/
+  _titleAccordion: {
+    fontFamily: 'AppleSDGothicNeo-Regular',
+    fontSize: 15,
+    color: '#000000',
+  },
+
+  _contentAccordion: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 16,
+    color: '#000000',
   },
 });
