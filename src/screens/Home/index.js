@@ -17,6 +17,8 @@ import {
   Title,
   Paragraph,
   Appbar,
+  Menu,
+  Divider,
 } from 'react-native-paper';
 
 // Local Imports
@@ -25,6 +27,8 @@ import ActionCreator from '../../actions';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import AppBars from '@Components/organisms/AppBar';
+import Menus from '@Components/organisms/Menu';
+
 import {styles} from './styles';
 
 import mainBG from '@Assets/images/main-bg.png';
@@ -102,6 +106,7 @@ class Home extends Component {
     this.webView = null;
     this.state = {
       activeIndex: 0,
+      isShow: false,
     };
   }
 
@@ -145,6 +150,7 @@ class Home extends Component {
 
   render() {
     const {showPopup} = this.props;
+    const {isShow} = this.state;
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -219,6 +225,20 @@ class Home extends Component {
               <Button>Ok</Button>
             </Card.Actions>
           </Card>
+
+          <Menus
+            visible={isShow}
+            onDismiss={isShow}
+            anchor={
+              <Button onPress={() => this.setState({isShow: !isShow})}>
+                ShowMenu
+              </Button>
+            }>
+            <Menu.Item onPress={() => {}} title="Item 1" />
+            <Menu.Item onPress={() => {}} title="Item 2" />
+            <Divider />
+            <Menu.Item onPress={() => {}} title="Item 3" />
+          </Menus>
         </ScrollView>
       </SafeAreaView>
     );
