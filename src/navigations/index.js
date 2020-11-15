@@ -44,6 +44,7 @@ import Accordion from '@Screeens/Accordion';
 import SpeedDial from '@Screeens/SpeedDial';
 import List from '@Screeens/List';
 import Table from '@Screeens/Table';
+import DatePicker from '@Screeens/DatePicker';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -237,7 +238,13 @@ const App = () => {
                   component={Table}
                   headerMode={true}
                   options={{headerShown: true}}
-                />
+                />     
+                <RootStack.Screen
+                name="DatePicker"
+                component={DatePicker}
+                headerMode={true}
+                options={{headerShown: true}}
+              />
               </RootStack.Navigator>
             )}
           </Global>
