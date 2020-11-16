@@ -15,7 +15,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {
   SafeAreaView,
   Text,
@@ -24,9 +24,9 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-} from 'react-native';
-import {connect} from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
+} from 'react-native'
+import {connect} from 'react-redux'
+import SplashScreen from 'react-native-splash-screen'
 import {
   Avatar,
   Button,
@@ -37,35 +37,35 @@ import {
   Menu,
   Divider,
   List,
-} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+} from 'react-native-paper'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 // Local Imports
-import DefaultStyle from '../../styles/default';
-import {color} from '@Themes/colors';
+import DefaultStyle from '../../styles/default'
+import {color} from '@Themes/colors'
 
-import ActionCreator from '../../actions';
-import Carousel from '@Components/organisms/Carousel';
-import CarouselSnap from '@Components/organisms/CarouselSnap';
-import AppBars from '@Components/organisms/AppBar';
-import ProductCard from '@Components/organisms/ProductCard';
+import ActionCreator from '../../actions'
+import Carousel from '@Components/organisms/Carousel'
+import CarouselSnap from '@Components/organisms/CarouselSnap'
+import AppBars from '@Components/organisms/AppBar'
+import ProductCard from '@Components/organisms/ProductCard'
 
 // import Menus from '@Components/organisms/Menu';
 // import TreeViews from '@Components/organisms/TreeView';
 
-import {styles} from './styles';
+import {styles} from './styles'
 
-import mainBG from '@Assets/images/main-bg.png';
-import symbolsBG from '@Assets/images/symbol.png';
-import factoryBG from '@Assets/images/factory.png';
-import cardBG from '@Assets/images/card-img.png';
+import mainBG from '@Assets/images/main-bg.png'
+import symbolsBG from '@Assets/images/symbol.png'
+import factoryBG from '@Assets/images/factory.png'
+import cardBG from '@Assets/images/card-img.png'
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
 // const windowWidth = Dimensions.get('window').width;
 // const windowHeight = Dimensions.get('window').height;
 
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
 
 const slides = [
   {
@@ -128,7 +128,7 @@ const slides = [
     imageStyle: styles.image,
     backgroundColor: '#59b2ab',
   },
-];
+]
 
 const slidesProduct = [
   {
@@ -181,25 +181,25 @@ const slidesProduct = [
     address: '경기도 화천시 부평읍',
     totalPrice: '60,000원/평',
   },
-];
+]
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.webView = null;
+  constructor (props) {
+    super(props)
+    this.webView = null
     this.state = {
       activeIndex: 0,
       isShow: false,
       expanded: true,
-    };
+    }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
+  shouldComponentUpdate (nextProps, nextState) {
+    return true
   }
 
-  componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  componentWillUnmount () {
+    console.log('::componentWillUnmount::')
   }
 
   _renderItem = ({item}) => {
@@ -212,19 +212,19 @@ class Home extends Component {
         </View>
         <Image source={item.image} />
       </View>
-    );
-  };
+    )
+  }
 
   _renderProductItem = ({item}) => {
-    return <ProductCard data={{...item, img: cardBG}} />;
-  };
+    return <ProductCard data={{...item, img: cardBG}} />
+  }
 
   _onDone = () => {
-    this.setState({showRealApp: true});
-  };
+    this.setState({showRealApp: true})
+  }
 
-  render() {
-    const {showPopup} = this.props;
+  render () {
+    const {showPopup} = this.props
     // const {isShow, expanded} = this.state;
 
     return (
@@ -232,14 +232,14 @@ class Home extends Component {
         {/**### APPBAR ###*/}
         <AppBars style={[styles.appBar]}>
           <View style={[styles.actionBar]}>
-            <Appbar.Action icon="menu" color="white" onPress={() => {}} />
+            <Appbar.Action icon='menu' color='white' onPress={() => {}} />
             {/* <Text styles={[styles.notifiAppbar, styles.font14]}>
               더 많은 혜택을 위해 회원가입하러 가기
             </Text> */}
             <Button
-              mode="contained"
+              mode='contained'
               style={[DefaultStyle.containerBTN, styles.btnAction]}
-              color="red"
+              color='red'
               onPress={() => showPopup()}>
               회원가입
             </Button>
@@ -269,38 +269,28 @@ class Home extends Component {
 
           {/**### INTRO ###*/}
           <View style={styles.intro}>
-<<<<<<< HEAD
-            <View style={styles.intro}>
-              <Image source />
-=======
-            <View style={[styles.introImage]}>
-              <Image source={symbolsBG} style={styles.introSymbolImage} />
-              <Image source={factoryBG} style={styles.introFactoryImage} />
->>>>>>> 16416a931811ca74834c47a33dde9d802b0bab5d
-            </View>
             {/*--Content--*/}
             <View style={styles.introRow}>
               <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text>
-              {<Icon name="search" size={24} color="white" />}
             </View>
 
             <View style={styles.introDivider} />
 
             <View style={[styles.introRow, styles.introBottom]}>
               <View style={styles.introColum}>
-                {<Icon name="check" size={12} color="white" />}
+                {<Icon name='check' size={12} color='white' />}
                 <Text style={[styles.font9, styles.introColumText]}>
                   빠르고 편리하게
                 </Text>
               </View>
               <View style={styles.introColum}>
-                {<Icon name="check" size={12} color="white" />}
+                {<Icon name='check' size={12} color='white' />}
                 <Text style={[styles.font9, styles.introColumText]}>
                   신뢰할 수 있는
                 </Text>
               </View>
               <View style={styles.introColum}>
-                {<Icon name="check" size={12} color="white" />}
+                {<Icon name='check' size={12} color='white' />}
                 <Text style={[styles.font9, styles.introColumText]}>
                   안전한 보험, 계약 시스템
                 </Text>
@@ -346,7 +336,7 @@ class Home extends Component {
                 </Text>
                 {
                   <Icon
-                    name="arrow-forward"
+                    name='arrow-forward'
                     size={22}
                     color={color.primary.main}
                   />
@@ -407,33 +397,33 @@ class Home extends Component {
           </View>
         </ScrollView>
       </SafeAreaView>
-    );
+    )
   }
 
-  async componentDidMount() {
-    console.log('::componentDidMount::');
+  async componentDidMount () {
+    console.log('::componentDidMount::')
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
     /** Complete Initialize. */
-    SplashScreen.hide();
+    SplashScreen.hide()
   }
 
   // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+  componentDidUpdate (prevProps, prevState) {
+    console.log('::componentDidUpdate::')
   }
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
-  };
+  }
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     showPopup: status => {
       dispatch(
@@ -442,15 +432,12 @@ function mapDispatchToProps(dispatch) {
           content:
             '답변 내용은 [마이페이지 > 문의내역[ 혹은 등록하신 이메일에서 확인해 주세요.',
         }),
-      );
+      )
     },
     hidePopup: status => {
-      dispatch(ActionCreator.hide(status));
+      dispatch(ActionCreator.hide(status))
     },
-  };
+  }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
