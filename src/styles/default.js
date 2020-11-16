@@ -450,4 +450,14 @@ export default StyleSheet.create({
     lineHeight: 36,
     margin: 0,
   },
+
+  /** Footer**/
+  _wrapperFooter: {
+    backgroundColor: color.secondary.main,
+    color: 'rgba(255, 255, 255, 0.87)',
+  },
+  _wrapperTitle: {
+    backgroundColor: color.secondary.main,
+    color: 'rgba(255, 255, 255, 0.87)',
+  },
 });

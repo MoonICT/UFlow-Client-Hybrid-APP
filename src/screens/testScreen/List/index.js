@@ -23,6 +23,10 @@ export default class AccordionScreen extends Component {
       {
         titleList: 'Uncontrolled Accordion',
         icon: 'mail',
+        listItem: [
+          {titleItem: 'item 1', iconItem: 'star'},
+          {titleItem: 'item2', iconItem: 'star'},
+        ],
       },
       {
         titleList: 'Controlled Accordion',

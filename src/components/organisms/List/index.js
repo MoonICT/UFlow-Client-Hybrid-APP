@@ -1,8 +1,7 @@
 /**
  * @author [Peter]
- * @email [hoangvanlam9988@mail.com]
- * @create date 2020-11-13 11:03:45
- * @modify date 2020-11-13 11:44:30
+ * @create
+ * @modify
  * @desc [description]
  */
 
@@ -17,28 +16,37 @@ class Lists extends Component {
     super(props);
   }
   render() {
-    const {children, title, listItems} = this.props;
-    console.log('listItems', listItems);
+    const {title, listItems, customWrapper, customItem} = this.props;
     const listItem =
       listItems &&
       listItems.map((item, index) => {
         return (
           <List.Accordion
-            style={DefaultStyle._titleList}
+            style={[DefaultStyle._titleList, customItem]}
             key={index}
             title={item.titleList}
+            titleStyle={customItem}
             left={props => <List.Icon {...props} icon={item.icon} />}>
-            <List.Item
-              style={DefaultStyle._itemList}
-              title="First item"
-              left={props => <List.Icon {...props} icon="star" />}
-            />
-            <List.Item style={DefaultStyle._itemList} title="Second item" />
+            {item.listItem &&
+              item.listItem.map((el, number) => {
+                return (
+                  <List.Item
+                    key={number}
+                    style={DefaultStyle._itemList}
+                    titleStyle={customItem}
+                    title={el.titleItem}
+                    left={props => <List.Icon {...props} icon={el.iconItem} />}
+                  />
+                );
+              })}
           </List.Accordion>
         );
       });
     return (
-      <List.Section style={DefaultStyle._list} title={title}>
+      <List.Section
+        style={[DefaultStyle._list, customWrapper]}
+        title={title}
+        {...this.props}>
         {listItem}
       </List.Section>
     );

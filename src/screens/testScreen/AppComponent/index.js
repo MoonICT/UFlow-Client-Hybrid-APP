@@ -12,7 +12,7 @@ import DefaultStyle from '@Styles/default';
 export default class AppComponentScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {expanded: 'true'};
+    this.state = {text: ''};
   }
 
   render() {
@@ -20,7 +20,12 @@ export default class AppComponentScreen extends Component {
       <View>
         <Text style={DefaultStyle.titleDf}>AppComponent</Text>
         <Text style={DefaultStyle.titleDf}>Search</Text>
-        <AppComponent label="Label Name" placeholder="Enter placeholder" />
+        <AppComponent
+          value={this.state.text}
+          onChangeText={text => this.setState({text})}
+          label="Label Name"
+          placeholder="Enter placeholder"
+        />
       </View>
     );
   }
