@@ -36,7 +36,7 @@ import TreeViews from '@Components/organisms/TreeView';
 import {styles} from './styles';
 
 import mainBG from '@Assets/images/main-bg.png';
-import symbolsBG from '@Assets/images/symbols.png';
+// import symbolsBG from '@Assets/images/symbols.png';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
@@ -194,7 +194,7 @@ class Home extends Component {
           {/**intro */}
           <View style={styles.intro}>
             <View style={styles.intro}>
-              <Image source={symbolsBG} />
+              <Image source />
             </View>
             <View>
               <View style={styles.introRow}>

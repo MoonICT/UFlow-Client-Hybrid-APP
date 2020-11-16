@@ -402,4 +402,27 @@ export default StyleSheet.create({
     borderColor: '#e0e0e0',
     borderTopWidth: 1,
   },
+
+  /** Tab Grid**/
+  _tabGrid: {
+    flexDirection: 'row',
+    maxWidth: '100%',
+  },
+  _tabItem: {
+    color: color.text.secondary,
+    fontFamily: theme.fonts.medium,
+    fontSize: 14,
+    fontWeight: '500',
+    borderBottomWidth: 1,
+    borderColor: color.button.default_border,
+  },
+  _tabItemActive: {
+    borderColor: color.primary.main,
+  },
+  _contentGrid: {
+    color: color.text.secondary,
+    fontFamily: theme.fonts.regular,
+    fontSize: 14,
+    fontWeight: '500',
+  },
 });
