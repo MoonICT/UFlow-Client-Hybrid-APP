@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-11 14:22:05
- * @modify date 2020-11-12 17:21:39
+ * @modify date 2020-11-16 15:41:12
  * @desc [description]
  */
 
@@ -17,8 +17,8 @@ class CarouselSnaps extends Component {
   }
 
   render() {
-    const {custom} = this.props;
-    return <CarouselSnap {...custom} />;
+    // const {custom} = this.props;
+    return <CarouselSnap {...this.props} />;
   }
 }
 
