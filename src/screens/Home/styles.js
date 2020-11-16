@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-11-12 17:30:52
+ * @modify date 2020-11-16 09:50:35
  * @desc [description]
  */
 
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     backgroundColor: color.primary.main,
     fontFamily: 'NotoSansCJKkr-Medium',
   },
-  //Slide
+  //====================Slide==============================
   carousel: {
     height: 640,
   },
@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'NotoSansCJKkr-Bold',
   },
-  //Content
+  //=====================Content=========================
   //-->intro
   intro: {
     height: 349,
@@ -94,6 +94,22 @@ export const styles = StyleSheet.create({
     paddingBottom: 60,
     paddingLeft: 34,
     backgroundColor: color.primary.main,
+  },
+  introTitle: {
+    fontFamily: 'NotoSansCJKkr-Bold',
+    fontSize: 24,
+    letterSpacing: -0.5,
+    color: color.primary.constrast,
+  },
+  introRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  introDivider: {
+    width: 257,
+    height: 2,
+    color: color.primary.constrast,
   },
   //-->main
   mainProduct: {
