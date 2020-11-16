@@ -24,6 +24,7 @@ import SnackBar from './SnackBar';
 import SpeedDial from './SpeedDial';
 import ToggleButton from './ToggleButton';
 import AppGrid from './AppGrid';
+import AppComponent from './AppComponent';
 
 export default class AccordionScreen extends Component {
   constructor(props) {
@@ -47,6 +48,7 @@ export default class AccordionScreen extends Component {
         <SpeedDial />
         <ToggleButton />
         <AppGrid />
+        <AppComponent />
       </ScrollView>
     );
   }

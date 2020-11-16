@@ -425,4 +425,29 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
+
+  /** App Components**/
+  _inputSearch: {
+    height: 36,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(151, 151, 151, 0.54)',
+    backgroundColor: '#fff',
+    color: '#424242',
+    justifyContent: 'center',
+  },
+  _searchIcon: {
+    position: 'absolute',
+    top: 0,
+    fontSize: 24,
+    lineHeight: 36,
+    margin: 0,
+  },
+  _searchRightIcon: {
+    position: 'absolute',
+    top: 0,
+    fontSize: 24,
+    lineHeight: 36,
+    margin: 0,
+  },
 });

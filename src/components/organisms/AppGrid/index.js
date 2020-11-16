@@ -10,7 +10,10 @@ import DefaultStyle from '@Styles/default';
 class AppGrid extends Component {
   constructor(props) {
     super(props);
-    this.state = {active: props.data[0].title, content: props.data[0].content};
+    this.state = {
+      active: props.data && props.data[0].title,
+      content: props.data && props.data[0].content,
+    };
   }
   handlePress = item => {
     console.log('item', item);
