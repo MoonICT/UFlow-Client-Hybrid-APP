@@ -1,15 +1,13 @@
 /**
- * Sample Screen
- * 샘플 화면 입니다.
- * 2020.06.05 Deokin.
  *
  * @format
  * @flow strict-local
  * */
 // Global Imports
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import SpeedDial from '@Components/organisms/SpeedDial';
+import DefaultStyle from '@Styles/default';
 
 export default class AccordionScreen extends Component {
   constructor(props) {
@@ -38,6 +36,7 @@ export default class AccordionScreen extends Component {
     ];
     return (
       <View style={{height: 500}}>
+        <Text style={DefaultStyle.titleDf}>SpeedDial</Text>
         <SpeedDial actions={data} />
       </View>
     );

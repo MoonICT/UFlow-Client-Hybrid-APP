@@ -7,30 +7,30 @@
  * @flow strict-local
  * */
 // Global Imports
-import React, { Component } from 'react';
-import {
-  SafeAreaView,
-  View,
-} from 'react-native';
-import { Button, Snackbar } from 'react-native-paper';
+import React, {Component} from 'react';
+import {SafeAreaView, Text} from 'react-native';
+import {Button, Snackbar} from 'react-native-paper';
 // Local Imports
-import DefaultStyle from '../../styles/default';
+import DefaultStyle from '../../../styles/default';
 import Styles from './style';
 
 export default class SnackBarScreen extends Component {
   constructor() {
     super();
 
-    this.state = { visible: false };
+    this.state = {visible: false};
   }
 
-  onToggleSnackBar = () => this.setState({ visible: !this.state.visible });
+  onToggleSnackBar = () => this.setState({visible: !this.state.visible});
 
-  onDismissSnackBar = () => this.setState({ visible: false });
+  onDismissSnackBar = () => this.setState({visible: false});
   render() {
     return (
       <SafeAreaView style={Styles.container}>
-        <Button onPress={this.onToggleSnackBar}>{this.state.visible ? 'Hide' : 'Show'}</Button>
+        <Text style={DefaultStyle.titleDf}>Snackbar</Text>
+        <Button onPress={this.onToggleSnackBar}>
+          {this.state.visible ? 'Hide' : 'Show'}
+        </Button>
         <Snackbar
           style={DefaultStyle.snackbar}
           visible={this.state.visible}
@@ -40,12 +40,10 @@ export default class SnackBarScreen extends Component {
             onPress: () => {
               // Do something
             },
-
           }}>
           Hey there! I'm a Snackbar.
-      </Snackbar>
+        </Snackbar>
       </SafeAreaView>
     );
   }
 }
-

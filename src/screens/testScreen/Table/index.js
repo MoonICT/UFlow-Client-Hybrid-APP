@@ -11,7 +11,8 @@ import React, {Component} from 'react';
 import {StyleSheet, ScrollView, Text, View} from 'react-native';
 import {DataTable} from 'react-native-paper';
 import Tables from '@Components/organisms/Table';
-import DefaultStyle from '../../styles/default';
+import DefaultStyle from '@Styles/default';
+
 export default class AccordionScreen extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +27,7 @@ export default class AccordionScreen extends Component {
   render() {
     return (
       <ScrollView style={{padding: 24}}>
+        <Text style={DefaultStyle.headerTitle}>Table</Text>
         <Tables style={DefaultStyle._table}>
           <DataTable.Header style={DefaultStyle._headerTable}>
             <DataTable.Title>Dessert</DataTable.Title>

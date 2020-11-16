@@ -11,7 +11,8 @@ import React, {Component} from 'react';
 import {StyleSheet, ScrollView, Text, View} from 'react-native';
 import {List} from 'react-native-paper';
 import Accordion from '@Components/organisms/Accordion';
-import DefaultStyle from '../../styles/default';
+import DefaultStyle from '@Styles/default';
+
 export default class AccordionScreen extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +27,7 @@ export default class AccordionScreen extends Component {
   render() {
     return (
       <ScrollView>
+        <Text style={DefaultStyle.titleDf}>Accordion</Text>
         <Accordion type="group" title="Ground">
           <List.Accordion
             style={DefaultStyle._titleAccordion}

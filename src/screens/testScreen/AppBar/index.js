@@ -10,7 +10,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, ScrollView, Text, View} from 'react-native';
 import {Appbar} from 'react-native-paper';
-import DefaultStyle from '../../styles/default';
+import DefaultStyle from '@Styles/default';
 
 const data = [
   {icon: 'archive', title: 'archive'},
@@ -55,6 +55,7 @@ export default class AppBar extends Component {
       });
     return (
       <ScrollView>
+        <Text style={DefaultStyle.titleDf}>AppBar</Text>
         <Text>simple app bar</Text>
         <Appbar.Header>
           <Appbar.BackAction onPress={() => {}} />

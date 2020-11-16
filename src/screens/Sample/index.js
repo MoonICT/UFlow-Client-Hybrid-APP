@@ -61,80 +61,11 @@ export default class Sample extends Component {
             style={DefaultStyle.btn}>
             <Text>{'TextFeild Sample'}</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Pagination')}
+            onPress={() => this.props.navigation.navigate('testScreen')}
             style={DefaultStyle.btn}>
-            <Text>{'Pagination Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Rating')}
-            style={DefaultStyle.btn}>
-            <Text>{'Rating Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Progress')}
-            style={DefaultStyle.btn}>
-            <Text>{'Progress Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Dialog')}
-            style={DefaultStyle.btn}>
-            <Text>{'Dialog Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('SnackBar')}
-            style={DefaultStyle.btn}>
-            <Text>{'SnackBar Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Slider')}
-            style={DefaultStyle.btn}>
-            <Text>{'Slider Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Switch')}
-            style={DefaultStyle.btn}>
-            <Text>{'Switch Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('AppBar')}
-            style={DefaultStyle.btn}>
-            <Text>{'AppBar Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ToggleButton')}
-            style={DefaultStyle.btn}>
-            <Text>{'ToggleButton Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Breadcrumb')}
-            style={DefaultStyle.btn}>
-            <Text>{'Breadcrumb Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Accordion')}
-            style={DefaultStyle.btn}>
-            <Text>{'Accordion Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('SpeedDial')}
-            style={DefaultStyle.btn}>
-            <Text>{'SpeedDial Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('List')}
-            style={DefaultStyle.btn}>
-            <Text>{'List Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Table')}
-            style={DefaultStyle.btn}>
-            <Text>{'Table Sample'}</Text>
-          </TouchableOpacity>     
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('DatePicker')}
-            style={DefaultStyle.btn}>
-            <Text>{'DatePicker Sample'}</Text>
+            <Text>{'testScreen Sample'}</Text>
           </TouchableOpacity>
           <View style={styles.button}>
             {/*<Button

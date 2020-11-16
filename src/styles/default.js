@@ -38,6 +38,11 @@ export default StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
+  titleDf: {
+    marginTop: 20,
+    fontSize: 16,
+    color: 'black',
+  },
   /** Divider */
   divider: {
     width: '100%',

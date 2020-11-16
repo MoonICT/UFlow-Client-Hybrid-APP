@@ -8,8 +8,7 @@ export default StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
-  textValue:{
-    textAlign: 'center'
-  }
-
+  textValue: {
+    textAlign: 'center',
+  },
 });

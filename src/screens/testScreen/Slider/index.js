@@ -1,38 +1,29 @@
 /**
- * Sample Screen
- * 샘플 화면 입니다.
- * 2020.06.05 Deokin.
- *
  * @format
  * @flow strict-local
  * */
 // Global Imports
-import React, { Component } from 'react';
-import {
-  SafeAreaView,
-  Slider,
-  View,
-  Text,
-} from 'react-native';
+import React, {Component} from 'react';
+import {SafeAreaView, Slider, View, Text} from 'react-native';
 // Local Imports
-import { color } from '../../themes/colors';
-import DefaultStyle from '../../styles/default';
+import {color} from '../../../themes/colors';
+import DefaultStyle from '@Styles/default';
 import Styles from './style';
 
 export default class SliderScreen extends Component {
   constructor() {
     super();
-
-    this.state = { value: 0 };
+    this.state = {value: 0};
   }
 
-  onValueChange = (e) => this.setState({ value: e });
+  onValueChange = e => this.setState({value: e});
   render() {
     return (
       <SafeAreaView style={Styles.container}>
+        <Text style={DefaultStyle.titleDf}>Slider</Text>
         <View>
           <Slider
-            style={{ width: 200, height: 40 }}
+            style={{width: 200, height: 40}}
             minimumValue={0}
             maximumValue={100}
             step={5}
@@ -45,11 +36,11 @@ export default class SliderScreen extends Component {
         </View>
 
         <View>
-          <Text >Disable</Text>
+          <Text>Disable</Text>
 
           <Slider
             disabled={true}
-            style={{ width: 200, height: 40 }}
+            style={{width: 200, height: 40}}
             minimumValue={0}
             maximumValue={100}
             value={40}
@@ -63,4 +54,3 @@ export default class SliderScreen extends Component {
     );
   }
 }
-

@@ -30,21 +30,8 @@ import CameraScreen from '@Screeens/Camera';
 import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
 import TextFeild from '@Screeens/TextField';
-import Pagination from '@Screeens/Pagination';
-import Rating from '@Screeens/Rating';
-import Progress from '@Screeens/Progress';
-import Dialog from '@Screeens/Dialog';
-import SnackBar from '@Screeens/SnackBar';
-import Slider from '@Screeens/Slider';
-import Switch from '@Screeens/Switch';
-import AppBar from '@Screeens/AppBar';
-import ToggleButton from '@Screeens/ToggleButton';
-import Breadcrumb from '@Screeens/Breadcrumb';
-import Accordion from '@Screeens/Accordion';
-import SpeedDial from '@Screeens/SpeedDial';
-import List from '@Screeens/List';
-import Table from '@Screeens/Table';
-import DatePicker from '@Screeens/DatePicker';
+
+import testScreen from '@Screeens/testScreen';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -155,96 +142,13 @@ const App = () => {
                   headerMode={true}
                   options={{headerShown: true}}
                 />
+
                 <RootStack.Screen
-                  name="Pagination"
-                  component={Pagination}
+                  name="testScreen"
+                  component={testScreen}
                   headerMode={true}
                   options={{headerShown: true}}
                 />
-                <RootStack.Screen
-                  name="Rating"
-                  component={Rating}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Progress"
-                  component={Progress}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Dialog"
-                  component={Dialog}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="SnackBar"
-                  component={SnackBar}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Slider"
-                  component={Slider}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Switch"
-                  component={Switch}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="AppBar"
-                  component={AppBar}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="ToggleButton"
-                  component={ToggleButton}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Breadcrumb"
-                  component={Breadcrumb}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Accordion"
-                  component={Accordion}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="SpeedDial"
-                  component={SpeedDial}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="List"
-                  component={List}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Table"
-                  component={Table}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />     
-                <RootStack.Screen
-                name="DatePicker"
-                component={DatePicker}
-                headerMode={true}
-                options={{headerShown: true}}
-              />
               </RootStack.Navigator>
             )}
           </Global>

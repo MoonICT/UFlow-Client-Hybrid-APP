@@ -10,7 +10,7 @@
 import React, {Component} from 'react';
 import {ScrollView, View, Text} from 'react-native';
 import {Button} from 'react-native-paper';
-import DefaultStyle from '../../styles/default';
+import DefaultStyle from '@Styles/default';
 
 export default class BreadcrumbScreen extends Component {
   constructor(props) {
@@ -20,6 +20,7 @@ export default class BreadcrumbScreen extends Component {
   render() {
     return (
       <ScrollView>
+        <Text style={DefaultStyle.titleDf}>Breadcrumb</Text>
         <View style={DefaultStyle._breadcrumb}>
           <View style={DefaultStyle._itemBreadcrumb}>
             <Button

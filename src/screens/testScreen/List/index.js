@@ -8,8 +8,9 @@
  * */
 // Global Imports
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import Lists from '@Components/organisms/List';
+import DefaultStyle from '@Styles/default';
 
 export default class AccordionScreen extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ export default class AccordionScreen extends Component {
     ];
     return (
       <View>
+        <Text style={DefaultStyle.titleDf}>List</Text>
         <Lists title={'Nested List Items'} listItems={data} />
       </View>
     );

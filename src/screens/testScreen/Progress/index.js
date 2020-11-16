@@ -1,29 +1,13 @@
 /**
- * Sample Screen
- * 샘플 화면 입니다.
- * 2020.06.05 Deokin.
- *
  * @format
  * @flow strict-local
  * */
 // Global Imports
-import React, { Component } from 'react';
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  Text,
-  Alert,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-} from 'react-native';
-import { DefaultTheme, ProgressBar, Colors } from 'react-native-paper';
+import React, {Component} from 'react';
+import {SafeAreaView, Text} from 'react-native';
+import {DefaultTheme, ProgressBar, Colors} from 'react-native-paper';
 // Local Imports
-import LocalNotificationService from '../../services/LocalNotificationService';
-import DefaultStyle from '../../styles/default';
-import * as Progress from 'react-native-progress';
+import DefaultStyle from '@Styles/default';
 import Styles from './style';
 
 export default class ProgressScreen extends Component {
@@ -36,6 +20,7 @@ export default class ProgressScreen extends Component {
   render() {
     return (
       <SafeAreaView style={Styles.container}>
+        <Text style={DefaultStyle.titleDf}>Progress</Text>
         <ProgressBar theme={theme} progress={0.6} color={Colors.red800} />
       </SafeAreaView>
     );

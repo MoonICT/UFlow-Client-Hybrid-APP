@@ -1,17 +1,15 @@
 /**
- * Sample Screen
- * 샘플 화면 입니다.
- * 2020.06.05 Deokin.
  *
  * @format
  * @flow strict-local
  * */
 // Global Imports
 import React, {Component} from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, Text} from 'react-native';
 import {DataTable} from 'react-native-paper';
 // Local Imports
-import DefaultStyle from '../../styles/default';
+import DefaultStyle from '@Styles/default';
+
 import Styles from './style';
 const itemsPerPage = 2;
 
@@ -43,6 +41,8 @@ export default class PaginationScreen extends Component {
     const to = (this.state.pageValue + 1) * itemsPerPage;
     return (
       <SafeAreaView style={Styles.container}>
+        <Text style={DefaultStyle.titleDf}>Pagination</Text>
+
         <DataTable>
           <DataTable.Pagination
             style={DefaultStyle._pagination}

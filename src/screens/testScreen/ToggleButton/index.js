@@ -1,16 +1,13 @@
 /**
- * Sample Screen
- * 샘플 화면 입니다.
- * 2020.06.05 Deokin.
  *
  * @format
  * @flow strict-local
  * */
 // Global Imports
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import {ToggleButton} from 'react-native-paper';
-import DefaultStyle from '../../styles/default';
+import DefaultStyle from '@Styles/default';
 
 export default class ToggleButtonScreen extends Component {
   constructor(props) {
@@ -20,6 +17,7 @@ export default class ToggleButtonScreen extends Component {
   render() {
     return (
       <ScrollView>
+        <Text style={DefaultStyle.titleDf}>ToggleButton</Text>
         <ToggleButton.Row
           onValueChange={value => this.setState({valueBtn: value})}
           value={this.state.valueBtn}>
