@@ -21,6 +21,7 @@ import {
   Divider,
   List,
 } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
@@ -35,6 +36,7 @@ import TreeViews from '@Components/organisms/TreeView';
 import {styles} from './styles';
 
 import mainBG from '@Assets/images/main-bg.png';
+import symbolsBG from '@Assets/images/symbols.png';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
@@ -188,18 +190,41 @@ class Home extends Component {
               },
             }}
           />
+
           {/**intro */}
           <View style={styles.intro}>
-            <Text>Hello</Text>
+            <View style={styles.intro}>
+              <Image source={symbolsBG} />
+            </View>
+            <View>
+              <View style={styles.introRow}>
+                <Text style={styles.introTitle}>
+                  어떤 창고를 찾고 계시나요?
+                </Text>
+                {<Icon name="search" size={24} color="white" />}
+              </View>
+              <View style={styles.introDivider} />
+              <View style={styles.introRow}>
+                <View style={styles.introColum}>
+                  {<Icon name="search" size={24} color="white" />}
+                  <Text style={styles.introTitle}>
+                    어떤 창고를 찾고 계시나요?
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
+
           {/**mainProduct */}
           <View style={styles.mainProduct}>
-            <Text>Hello</Text>
+            <View style={styles.intro}>{/* <Image source={a}/> */}</View>
           </View>
+
           {/**mainCallForBinding */}
           <View style={styles.mainCallForBinding}>
             <Text>Hello</Text>
           </View>
+
           {/**MainStep */}
           <View style={styles.mainStep}>
             <CarouselSnap
