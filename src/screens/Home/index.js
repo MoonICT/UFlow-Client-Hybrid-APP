@@ -10,12 +10,12 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-11-16 18:54:24
+ * @modify date 2020-11-17 09:11:59
  * @desc [description]
  */
 
 // Global Imports
-import React, { Component } from 'react'
+import React, {Component} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -24,9 +24,9 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-} from 'react-native'
-import { connect } from 'react-redux'
-import SplashScreen from 'react-native-splash-screen'
+} from 'react-native';
+import {connect} from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 import {
   Avatar,
   Button,
@@ -38,29 +38,29 @@ import {
   Divider,
   List,
   TextInput,
-} from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Local Imports
-import DefaultStyle from '../../styles/default'
-import { color } from '@Themes/colors'
+import DefaultStyle from '../../styles/default';
+import {color} from '@Themes/colors';
 
-import ActionCreator from '../../actions'
-import Carousel from '@Components/organisms/Carousel'
-import CarouselSnap from '@Components/organisms/CarouselSnap'
-import AppBars from '@Components/organisms/AppBar'
-import ProductCard from '@Components/organisms/ProductCard'
-import StepCard from '@Components/organisms/StepCard'
+import ActionCreator from '../../actions';
+import Carousel from '@Components/organisms/Carousel';
+import CarouselSnap from '@Components/organisms/CarouselSnap';
+import AppBars from '@Components/organisms/AppBar';
+import ProductCard from '@Components/organisms/ProductCard';
+import StepCard from '@Components/organisms/StepCard';
 
 // import Menus from '@Components/organisms/Menu';
 // import TreeViews from '@Components/organisms/TreeView';
 
-import { styles } from './styles'
+import {styles} from './styles';
 
-import mainBG from '@Assets/images/main-bg.png'
-import symbolsBG from '@Assets/images/symbol.png'
-import factoryBG from '@Assets/images/factory.png'
-import cardBG from '@Assets/images/card-img.png'
+import mainBG from '@Assets/images/main-bg.png';
+import symbolsBG from '@Assets/images/symbol.png';
+import factoryBG from '@Assets/images/factory.png';
+import cardBG from '@Assets/images/card-img.png';
 import stepBG from '@Assets/images/step.png';
 
 // import VersionCheckService from '../../services/VersionCheckService';
@@ -131,7 +131,7 @@ const slides = [
     imageStyle: styles.image,
     backgroundColor: '#59b2ab',
   },
-]
+];
 
 const slidesProduct = [
   {
@@ -184,7 +184,7 @@ const slidesProduct = [
     address: '경기도 화천시 부평읍',
     totalPrice: '60,000원/평',
   },
-]
+];
 
 const slidesSteps = [
   {
@@ -220,29 +220,29 @@ const slidesSteps = [
 안심 재물보험 가입으로 혹시 모를 
 위험요소까지 보장해 드립니다.`,
   },
-]
+];
 
 class Home extends Component {
   constructor(props) {
-    super(props)
-    this.webView = null
+    super(props);
+    this.webView = null;
     this.state = {
       activeIndex: 0,
       isShow: false,
       expanded: true,
       search: '',
-    }
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return true
+    return true;
   }
 
   componentWillUnmount() {
-    console.log('::componentWillUnmount::')
+    console.log('::componentWillUnmount::');
   }
 
-  _renderItem = ({ item }) => {
+  _renderItem = ({item}) => {
     return (
       <View style={styles.slide}>
         <View style={styles.overlay} />
@@ -252,38 +252,38 @@ class Home extends Component {
         </View>
         <Image source={item.image} />
       </View>
-    )
-  }
+    );
+  };
 
-  _renderProductItem = ({ item }) => {
-    return <ProductCard data={{ ...item, img: cardBG }} />
-  }
+  _renderProductItem = ({item}) => {
+    return <ProductCard data={{...item, img: cardBG}} />;
+  };
 
-  _renderStepItem = ({ item }) => {
-    return <StepCard data={item} />
-  }
+  _renderStepItem = ({item}) => {
+    return <StepCard data={item} />;
+  };
 
   _onDone = () => {
-    this.setState({ showRealApp: true })
-  }
+    this.setState({showRealApp: true});
+  };
 
   render() {
-    const { showPopup } = this.props
-    const { search } = this.state;
+    const {showPopup} = this.props;
+    const {search} = this.state;
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
         {/**### APPBAR ###*/}
         <AppBars style={[styles.appBar]}>
           <View style={[styles.actionBar]}>
-            <Appbar.Action icon='menu' color='white' onPress={() => { }} />
+            <Appbar.Action icon="menu" color="white" onPress={() => {}} />
             {/* <Text styles={[styles.notifiAppbar, styles.font14]}>
               더 많은 혜택을 위해 회원가입하러 가기
             </Text> */}
             <Button
-              mode='contained'
+              mode="contained"
               style={[DefaultStyle.containerBTN, styles.btnAction]}
-              color='red'
+              color="red"
               onPress={() => showPopup()}>
               회원가입
             </Button>
@@ -301,7 +301,7 @@ class Home extends Component {
               renderItem: this._renderItem,
               showNextButton: false,
               showDoneButton: false,
-              dotStyle: { backgroundColor: '#757575', width: 8, height: 8 },
+              dotStyle: {backgroundColor: '#757575', width: 8, height: 8},
               activeDotStyle: {
                 borderColor: 'white',
                 borderWidth: 1,
@@ -322,19 +322,19 @@ class Home extends Component {
 
             <View style={[styles.introRow, styles.introBottom]}>
               <View style={styles.introColum}>
-                {<Icon name='check' size={12} color='white' />}
+                {<Icon name="check" size={12} color="white" />}
                 <Text style={[styles.font9, styles.introColumText]}>
                   빠르고 편리하게
                 </Text>
               </View>
               <View style={styles.introColum}>
-                {<Icon name='check' size={12} color='white' />}
+                {<Icon name="check" size={12} color="white" />}
                 <Text style={[styles.font9, styles.introColumText]}>
                   신뢰할 수 있는
                 </Text>
               </View>
               <View style={styles.introColum}>
-                {<Icon name='check' size={12} color='white' />}
+                {<Icon name="check" size={12} color="white" />}
                 <Text style={[styles.font9, styles.introColumText]}>
                   안전한 보험, 계약 시스템
                 </Text>
@@ -380,7 +380,7 @@ class Home extends Component {
                 </Text>
                 {
                   <Icon
-                    name='arrow-forward'
+                    name="arrow-forward"
                     size={22}
                     color={color.primary.main}
                   />
@@ -396,20 +396,20 @@ class Home extends Component {
                 sliderWidth={328}
                 itemWidth={160}
                 renderItem={this._renderProductItem}
-                onSnapToItem={index => this.setState({ activeIndex: index })}
+                onSnapToItem={index => this.setState({activeIndex: index})}
               />
             </View>
           </View>
 
           {/**____MainCallForBinding___*/}
-          <View style={styles.mainCallForBinding}>
+          {/* <View style={styles.mainCallForBinding}>
             <Text
               style={[
                 styles.mainCallForBindingTitle,
                 styles.font16,
                 styles.bold,
               ]}>
-              유플로우의{' '}
+              유플로우의
               <Text style={styles.mainCallForBindingTitleSub}>
                 B2B 물류 서비스
               </Text>
@@ -424,22 +424,35 @@ class Home extends Component {
               {'비즈니스에 맞춤 창고가 필요하시다고요?\n' +
                 '국내 최대 규모의 온라인 창고 중계 플랫폼, 유플로우에서\n' +
                 '편리하고 안전하게 창고를 임대 & 매매하세요.'}
-            </Text>
+            </Text> */}
 
-            <View>
+          {/* <View>
               <TextInput
                 label="이메일을 입력해주세요."
                 value={search}
-                onChangeText={text => this.setState({ search: text })}
+                onChangeText={text => this.setState({search: text})}
               />
-              <Button></Button>
-            </View>
-          </View>
+              <Button />
+            </View> */}
+          {/* </View> */}
 
           {/**___MainStep___ */}
-          <View style={styles.mainStep}>
-            <Text style={[styles.mainStepTitle, styles.bold, styles.font24]}>{`남는 공간을 ${<Text style={[styles.blueColor, styles.bold, styles.font24]}>등록</Text>}해서 수익 창출,'
-              '필요한 창고는 ${<Text style={[styles.blueColor, styles.bold, styles.font24]}>찾기</Text>} 편리하게`}</Text>
+          {/* <View style={styles.mainStep}>
+            <Text
+              style={[
+                styles.mainStepTitle,
+                styles.bold,
+                styles.font24,
+              ]}>{`남는 공간을 ${(
+              <Text style={[styles.blueColor, styles.bold, styles.font24]}>
+                등록
+              </Text>
+            )}해서 수익 창출,'
+              '필요한 창고는 ${(
+                <Text style={[styles.blueColor, styles.bold, styles.font24]}>
+                  찾기
+                </Text>
+              )} 편리하게`}</Text>
             <CarouselSnap
               layout={'default'}
               data={slidesSteps}
@@ -447,55 +460,41 @@ class Home extends Component {
               itemWidth={312}
               isPagination={true}
               renderItem={this._renderStepItem}
-              onSnapToItem={index => this.setState({ activeIndex: index })}
+              onSnapToItem={index => this.setState({activeIndex: index})}
             />
-          </View>
+          </View> */}
 
           {/**___Slogan___ */}
-          <View style={styles.mainSlogan}>
-            <Text style={[styles.mainSloganTitle, styles.bold, styles.font24]}>{'빠르고 편리하고 안전한\n' +
-              '좋은 창고, 유플로우'}</Text>
-            <View style={styles.mainSloganContent}>
-              {/**Map gird here */}
-            </View>
-          </View>
+          {/* <View style={styles.mainSlogan}>
+            <Text style={[styles.mainSloganTitle, styles.bold, styles.font24]}>
+              {'빠르고 편리하고 안전한\n' + '좋은 창고, 유플로우'}
+            </Text>
+            <View style={styles.mainSloganContent} />
+          </View> */}
 
           {/**___Video Intro___ */}
-          <View>
-            {/* <Video */}
-          </View>
 
           {/**___Call tell___ */}
-          <View>
-            {/* <Video */}
-          </View>
 
           {/**___Contact___ */}
-          <View>
-            {/* <Video */}
-          </View>
 
           {/**___App Download___ */}
-          <View>
-            {/* <Video */}
-          </View>
-
         </ScrollView>
       </SafeAreaView>
-    )
+    );
   }
 
   async componentDidMount() {
-    console.log('::componentDidMount::')
+    console.log('::componentDidMount::');
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
     /** Complete Initialize. */
-    SplashScreen.hide()
+    SplashScreen.hide();
   }
 
   // 컴포넌트 업데이트 직후 호출.
   componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::')
+    console.log('::componentDidUpdate::');
   }
 }
 
@@ -504,7 +503,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
-  }
+  };
 }
 
 // store에 action을 dispatch 하는 역할.
@@ -517,12 +516,15 @@ function mapDispatchToProps(dispatch) {
           content:
             '답변 내용은 [마이페이지 > 문의내역[ 혹은 등록하신 이메일에서 확인해 주세요.',
         }),
-      )
+      );
     },
     hidePopup: status => {
-      dispatch(ActionCreator.hide(status))
+      dispatch(ActionCreator.hide(status));
     },
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);

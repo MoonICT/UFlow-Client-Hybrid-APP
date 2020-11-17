@@ -2,12 +2,12 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-11-16 18:54:58
+ * @modify date 2020-11-17 08:38:29
  * @desc [description]
  */
 
-import { Dimensions, StyleSheet } from 'react-native';
-import { color } from '@Themes/colors.js';
+import {Dimensions, StyleSheet} from 'react-native';
+import {color} from '@Themes/colors.js';
 
 const windowWidth = Dimensions.get('window').width;
 // const windowHeight = Dimensions.get('window').height;
@@ -259,15 +259,15 @@ export const styles = StyleSheet.create({
   //---->main slogan
   mainSlogan: {
     paddingLeft: 16,
-    paddingRight: 16
-  }
+    paddingRight: 16,
+  },
   mainSloganTitle: {
     letterSpacing: -0.5,
-  }
+  },
   mainSloganContent: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'stretch',
-  }
+  },
 });
