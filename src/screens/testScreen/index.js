@@ -50,6 +50,7 @@ export default class AccordionScreen extends Component {
         <AppComponent />
         <Footer />
         <Rating />
+        <Progress />
       </ScrollView>
     );
   }
