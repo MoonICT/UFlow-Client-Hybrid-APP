@@ -13,31 +13,31 @@ const fontConfig = {
   default: {
     black: {
       fontFamily: 'NotoSansCJKkr-Black',
-      fontWeight: 'normal',
+      // fontWeight: 'normal',
     },
     bold: {
       fontFamily: 'NotoSansCJKkr-Bold',
-      fontWeight: 'normal',
+      // fontWeight: 'normal',
     },
     medium: {
       fontFamily: 'NotoSansCJKkr-Medium',
-      fontWeight: 'normal',
+      // fontWeight: 'normal',
     },
     regular: {
       fontFamily: 'NotoSansCJKkr-Regular',
-      fontWeight: 'normal',
+      // fontWeight: 'normal',
     },
     demilight: {
       fontFamily: 'NotoSansCJKkr-DemiLight',
-      fontWeight: 'normal',
+      // fontWeight: 'normal',
     },
     light: {
       fontFamily: 'NotoSansCJKkr-Light',
-      fontWeight: 'normal',
+      // fontWeight: 'normal',
     },
     thin: {
       fontFamily: 'NotoSansCJKkr-Thin',
-      fontWeight: 'normal',
+      // fontWeight: 'normal',
     },
   },
 };
