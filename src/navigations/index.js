@@ -24,6 +24,7 @@ import LoginScreen from '@Screeens/Login';
 import ForgotIDScreen from '@Screeens/ForgotID';
 import ForgotPassScreen from '@Screeens/ForgotPass';
 import HomeScreen from '@Screeens/Home';
+import SearchScreen from '@Screeens/Search';
 import SampleScreen from '@Screeens/Sample';
 import WebviewScreen from '@Screeens/Webview';
 import CameraScreen from '@Screeens/Camera';
@@ -85,6 +86,11 @@ const App = () => {
           <Global>
             {!isLogin ? (
               <AuthStack.Navigator>
+                <AuthStack.Screen
+                  name="Search"
+                  component={SearchScreen}
+                  options={{headerShown: false}}
+                />
                 <AuthStack.Screen
                   name="Login"
                   component={LoginScreen}
