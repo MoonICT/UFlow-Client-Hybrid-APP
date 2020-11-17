@@ -2,12 +2,12 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-17 06:16:40
- * @modify date 2020-11-17 06:16:40
+ * @modify date 2020-11-17 11:57:57
  * @desc [description]
  */
 
-import { StyleSheet } from 'react-native';
-import { color } from '@Themes/colors';
+import {StyleSheet} from 'react-native';
+import {color} from '@Themes/colors';
 
 export const styles = StyleSheet.create({
   font9: {
@@ -15,6 +15,9 @@ export const styles = StyleSheet.create({
   },
   font14: {
     fontSize: 14,
+  },
+  font16: {
+    fontSize: 16,
   },
   regular: {
     fontFamily: 'NotoSansCJKkr-Regular',
@@ -58,7 +61,7 @@ export const styles = StyleSheet.create({
   },
 
   container: {
-    width: 312,
+    // width: 312,
     height: 425,
     overflow: 'hidden',
     borderRadius: 12,
@@ -70,32 +73,44 @@ export const styles = StyleSheet.create({
     shadowOpacity: 20,
     shadowRadius: 12,
     elevation: 8,
-  },
-
-  cardImage: {
-    width: 128,
-    height: 128,
+    marginLeft: 16,
+    marginRight: 16,
   },
 
   content: {
+    paddingTop: 24,
     paddingLeft: 16,
     paddingRight: 16,
     display: 'flex',
+    alignItems: 'center',
+  },
+
+  cardImage: {
+    // width: 128,
+    // height: 128,
+    marginBottom: 12,
   },
 
   stepTitle: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    margin: 0,
-    padding: 0,
-    lineHeight: 11,
+    // lineHeight: 20,
+  },
+  title: {
+    lineHeight: 18,
   },
   titleType: {
-    color: 'rgba(0, 0, 0, 0.87)',
     margin: 0,
-    lineHeight: 22,
+    lineHeight: 14,
+    textAlign: 'left',
   },
   contentTitle: {
-    color: 'rgba(0, 0, 0, 0.54)',
     lineHeight: 13,
+  },
+  mainStepSeeMoreBTN: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 24,
   },
 });

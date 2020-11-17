@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-11-17 09:11:59
+ * @modify date 2020-11-17 16:08:41
  * @desc [description]
  */
 
@@ -40,6 +40,7 @@ import {
   TextInput,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Video from 'react-native-video';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
@@ -48,9 +49,12 @@ import {color} from '@Themes/colors';
 import ActionCreator from '../../actions';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
+// import CarouselSnapPagi from '@Components/organisms/CarouselSnapPagi';
 import AppBars from '@Components/organisms/AppBar';
 import ProductCard from '@Components/organisms/ProductCard';
 import StepCard from '@Components/organisms/StepCard';
+import SloganCard from '@Components/organisms/SloganCard';
+import Footer from '@Components/organisms/Footer';
 
 // import Menus from '@Components/organisms/Menu';
 // import TreeViews from '@Components/organisms/TreeView';
@@ -62,13 +66,18 @@ import symbolsBG from '@Assets/images/symbol.png';
 import factoryBG from '@Assets/images/factory.png';
 import cardBG from '@Assets/images/card-img.png';
 import stepBG from '@Assets/images/step.png';
+import slogan1 from '@Assets/images/slogan1.png';
+import slogan2 from '@Assets/images/slogan2.png';
+import slogan3 from '@Assets/images/slogan3.png';
+import slogan4 from '@Assets/images/slogan4.png';
+import slogan5 from '@Assets/images/slogan5.png';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
 // const windowWidth = Dimensions.get('window').width;
 // const windowHeight = Dimensions.get('window').height;
 
-// const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
+// const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
 const slides = [
   {
@@ -188,37 +197,96 @@ const slidesProduct = [
 
 const slidesSteps = [
   {
-    key: 'somethun',
     img: stepBG,
-    step: 'Step 4. 창고 임대 진행 및 완료',
+    step: 'Step 1. 창고 임대 진행 및 완료',
     title: `안전한 대금 보호 시스템과 혹시 모를\n
-위험요소를 위한 안심보험 가입까지!`,
+  위험요소를 위한 안심보험 가입까지!`,
     content: `에스크로 방식의 대금보호시스템을 통해 대금 
-걱정 없이 창고 관리에만 집중하실 수 있습니다.
-안심 재물보험 가입으로 혹시 모를 
-위험요소까지 보장해 드립니다.`,
+  걱정 없이 창고 관리에만 집중하실 수 있습니다.
+  안심 재물보험 가입으로 혹시 모를 
+  위험요소까지 보장해 드립니다.`,
   },
   {
-    key: 'somethun',
     img: stepBG,
-    step: 'Step 4. 창고 임대 진행 및 완료',
+    step: 'Step 2. 창고 임대 진행 및 완료',
     title: `안전한 대금 보호 시스템과 혹시 모를\n
-위험요소를 위한 안심보험 가입까지!`,
+  위험요소를 위한 안심보험 가입까지!`,
     content: `에스크로 방식의 대금보호시스템을 통해 대금 
-걱정 없이 창고 관리에만 집중하실 수 있습니다.
-안심 재물보험 가입으로 혹시 모를 
-위험요소까지 보장해 드립니다.`,
+  걱정 없이 창고 관리에만 집중하실 수 있습니다.
+  안심 재물보험 가입으로 혹시 모를 
+  위험요소까지 보장해 드립니다.`,
   },
   {
-    key: 'somethun',
+    img: stepBG,
+    step: 'Step 3. 창고 임대 진행 및 완료',
+    title: `안전한 대금 보호 시스템과 혹시 모를\n
+  위험요소를 위한 안심보험 가입까지!`,
+    content: `에스크로 방식의 대금보호시스템을 통해 대금 
+  걱정 없이 창고 관리에만 집중하실 수 있습니다.
+  안심 재물보험 가입으로 혹시 모를 
+  위험요소까지 보장해 드립니다.`,
+  },
+  {
     img: stepBG,
     step: 'Step 4. 창고 임대 진행 및 완료',
     title: `안전한 대금 보호 시스템과 혹시 모를\n
-위험요소를 위한 안심보험 가입까지!`,
+  위험요소를 위한 안심보험 가입까지!`,
     content: `에스크로 방식의 대금보호시스템을 통해 대금 
-걱정 없이 창고 관리에만 집중하실 수 있습니다.
-안심 재물보험 가입으로 혹시 모를 
-위험요소까지 보장해 드립니다.`,
+  걱정 없이 창고 관리에만 집중하실 수 있습니다.
+  안심 재물보험 가입으로 혹시 모를 
+  위험요소까지 보장해 드립니다.`,
+  },
+];
+
+const slidesSlogans = [
+  {
+    img: slogan1,
+    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+  },
+  {
+    img: slogan2,
+    title: '내게 맞는 공간 한눈에\n' + '비교하고 선택까지',
+  },
+  {
+    img: slogan3,
+    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+  },
+  {
+    img: slogan4,
+    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+  },
+  {
+    img: slogan5,
+    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+  },
+  {
+    img: slogan3,
+    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+  },
+];
+
+//Data Footer
+const data = [
+  {
+    titleList: '창고 등록',
+    listItem: [
+      {titleItem: '공급사 등록'},
+      {titleItem: '수요사 등록'},
+      {titleItem: '회원 조회'},
+      {titleItem: '기본 조회'},
+    ],
+  },
+  {
+    titleList: '창고 찾기',
+  },
+  {
+    titleList: '이용 방법',
+  },
+  {
+    titleList: '고객센터',
+  },
+  {
+    titleList: '패밀리사이트',
   },
 ];
 
@@ -230,7 +298,6 @@ class Home extends Component {
       activeIndex: 0,
       isShow: false,
       expanded: true,
-      search: '',
     };
   }
 
@@ -260,7 +327,7 @@ class Home extends Component {
   };
 
   _renderStepItem = ({item}) => {
-    return <StepCard data={item} />;
+    return <StepCard data={{...item}} />;
   };
 
   _onDone = () => {
@@ -269,7 +336,7 @@ class Home extends Component {
 
   render() {
     const {showPopup} = this.props;
-    const {search} = this.state;
+    // const {isShow, expanded} = this.state;
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -313,9 +380,14 @@ class Home extends Component {
 
           {/**### INTRO ###*/}
           <View style={styles.intro}>
+            <View style={[styles.introImage]}>
+              <Image source={symbolsBG} style={styles.introSymbolImage} />
+              <Image source={factoryBG} style={styles.introFactoryImage} />
+            </View>
             {/*--Content--*/}
             <View style={styles.introRow}>
               <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text>
+              {<Icon name="search" size={24} color="white" />}
             </View>
 
             <View style={styles.introDivider} />
@@ -402,14 +474,14 @@ class Home extends Component {
           </View>
 
           {/**____MainCallForBinding___*/}
-          {/* <View style={styles.mainCallForBinding}>
+          <View style={styles.mainCallForBinding}>
             <Text
               style={[
                 styles.mainCallForBindingTitle,
                 styles.font16,
                 styles.bold,
               ]}>
-              유플로우의
+              유플로우의{' '}
               <Text style={styles.mainCallForBindingTitleSub}>
                 B2B 물류 서비스
               </Text>
@@ -424,61 +496,159 @@ class Home extends Component {
               {'비즈니스에 맞춤 창고가 필요하시다고요?\n' +
                 '국내 최대 규모의 온라인 창고 중계 플랫폼, 유플로우에서\n' +
                 '편리하고 안전하게 창고를 임대 & 매매하세요.'}
-            </Text> */}
-
-          {/* <View>
+            </Text>
+            <View style={styles.mainCallForBindingSearch}>
               <TextInput
                 label="이메일을 입력해주세요."
-                value={search}
-                onChangeText={text => this.setState({search: text})}
+                style={styles.mainCallForBindingSearchInput}
               />
-              <Button />
-            </View> */}
-          {/* </View> */}
+              <TouchableOpacity
+                mode="contained"
+                onPress={() => console.log('Pressed')}
+                style={styles.mainCallForBindingSearchBTN}>
+                <Text
+                  style={[
+                    styles.mainCallForBindingSearchTextBTN,
+                    styles.medium,
+                  ]}>
+                  임대문의
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
-          {/**___MainStep___ */}
-          {/* <View style={styles.mainStep}>
-            <Text
-              style={[
-                styles.mainStepTitle,
-                styles.bold,
-                styles.font24,
-              ]}>{`남는 공간을 ${(
-              <Text style={[styles.blueColor, styles.bold, styles.font24]}>
-                등록
-              </Text>
-            )}해서 수익 창출,'
-              '필요한 창고는 ${(
-                <Text style={[styles.blueColor, styles.bold, styles.font24]}>
+          {/**___MainStep__*/}
+          <View style={styles.mainStep}>
+            <View style={[styles.mainStepViewTitle]}>
+              <Text style={[styles.mainStepTitle, styles.bold, styles.font24]}>
+                남는 공간을
+                <Text style={[styles.bold, styles.font24, styles.blueColor]}>
+                  등록
+                </Text>
+                <Text
+                  style={[styles.mainStepTitle, styles.bold, styles.font24]}>
+                  해서 수익 창출, 필요한 창고는
+                </Text>
+                <Text style={[styles.bold, styles.font24, styles.blueColor]}>
                   찾기
                 </Text>
-              )} 편리하게`}</Text>
-            <CarouselSnap
-              layout={'default'}
-              data={slidesSteps}
-              // sliderWidth={}
-              itemWidth={312}
-              isPagination={true}
-              renderItem={this._renderStepItem}
-              onSnapToItem={index => this.setState({activeIndex: index})}
+                <Text
+                  style={[styles.mainStepTitle, styles.bold, styles.font24]}>
+                  편리하게
+                </Text>
+              </Text>
+            </View>
+            <Carousel
+              style={[styles.carouselStep]}
+              custom={{
+                data: slidesSteps,
+                renderItem: this._renderStepItem,
+                showNextButton: false,
+                showDoneButton: false,
+                dotStyle: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.26)',
+                  width: 8,
+                  height: 8,
+                },
+                activeDotStyle: {
+                  borderColor: 'rgba(0, 0, 0, 0.54)',
+                  borderWidth: 1,
+                  width: 10,
+                  height: 10,
+                },
+              }}
             />
-          </View> */}
+          </View>
 
-          {/**___Slogan___ */}
-          {/* <View style={styles.mainSlogan}>
+          {/**___Slogan__*/}
+          <View style={styles.mainSlogan}>
             <Text style={[styles.mainSloganTitle, styles.bold, styles.font24]}>
               {'빠르고 편리하고 안전한\n' + '좋은 창고, 유플로우'}
             </Text>
-            <View style={styles.mainSloganContent} />
-          </View> */}
+            <View style={styles.mainSloganContent}>
+              {slidesSlogans.map((v, i) => {
+                return <SloganCard data={v} index={i} />;
+              })}
+            </View>
+          </View>
 
-          {/**___Video Intro___ */}
+          {/**___Video Intro__*/}
+          <View style={styles.mainVideo}>
+            <Video
+              source={{uri: 'https://youtu.be/z7rM7mlgWsg'}}
+              ref={ref => {
+                this.player = ref;
+              }} // Store reference
+              onBuffer={this.onBuffer}
+              onError={this.videoError}
+              style={styles.backgroundVideo}
+            />
+          </View>
 
-          {/**___Call tell___ */}
+          {/**___Call__*/}
+          <View style={styles.mainCall}>
+            <Text style={[styles.mainCallTitle, styles.bold, styles.font16]}>
+              <Text style={styles.yellowColor}>좋은 창고를 공유</Text>
+              하는 경험, 지금 시작해 보세요.
+            </Text>
+            <View
+              style={[styles.introRow, styles.mainCallRow, styles.introBottom]}>
+              <View style={styles.introColum}>
+                {
+                  <Icon
+                    name="check"
+                    size={12}
+                    color="white"
+                    style={{marginLeft: 14}}
+                  />
+                }
+                <Text style={[styles.font9, styles.introColumText]}>
+                  빠르고 편리하게
+                </Text>
+              </View>
+              <View style={styles.introColum}>
+                {
+                  <Icon
+                    name="check"
+                    size={12}
+                    color="white"
+                    style={{marginLeft: 14}}
+                  />
+                }
+                <Text style={[styles.font9, styles.introColumText]}>
+                  신뢰할 수 있는
+                </Text>
+              </View>
+              <View style={styles.introColum}>
+                {
+                  <Icon
+                    name="check"
+                    size={12}
+                    color="white"
+                    style={{marginLeft: 14}}
+                  />
+                }
+                <Text style={[styles.font9, styles.introColumText]}>
+                  안전한 보험, 계약 시스템
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity style={styles.mainCallBTN}>
+              <Text style={[styles.blueColor, styles.medium, styles.font15]}>
+                무료로 회원 가입하기
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-          {/**___Contact___ */}
+          {/**___Help__*/}
+          <View style={[styles.mainHelp]}>
+            <Text style={[styles.mainHelpText, styles.bold, styles.font34]}>
+              1588.1333. HELP@UFLOW.CO.KR
+            </Text>
+          </View>
 
-          {/**___App Download___ */}
+          {/**__Footer___ */}
+          <Footer data={data} />
         </ScrollView>
       </SafeAreaView>
     );

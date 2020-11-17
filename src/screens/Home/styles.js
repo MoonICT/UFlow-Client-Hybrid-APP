@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-11-17 08:38:29
+ * @modify date 2020-11-17 16:05:41
  * @desc [description]
  */
 
@@ -22,8 +22,14 @@ export const styles = StyleSheet.create({
   font16: {
     fontSize: 16,
   },
+  font15: {
+    fontSize: 15,
+  },
   font24: {
     fontSize: 24,
+  },
+  font34: {
+    fontSize: 34,
   },
   regular: {
     fontFamily: 'NotoSansCJKkr-Regular',
@@ -221,7 +227,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 60,
   },
 
-  //--->binding
+  //--->main binding
   mainCallForBinding: {
     width: 360,
     height: 210,
@@ -244,30 +250,134 @@ export const styles = StyleSheet.create({
     color: color.misc.white,
   },
 
+  mainCallForBindingSearch: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 24,
+    paddingTop: 15,
+    alignItems: 'center',
+  },
+
+  mainCallForBindingSearchInput: {
+    minWidth: 217,
+    height: 42,
+    borderRadius: 3,
+  },
+
+  mainCallForBindingSearchBTN: {
+    minWidth: 99,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: color.misc.white,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mainCallForBindingSearchTextBTN: {
+    color: color.tertiary_01.main,
+    fontSize: 15,
+  },
+
   //--->main step
   blueColor: {
     color: color.info.main,
   },
   mainStep: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
+    marginTop: 60,
+  },
+  mainStepViewTitle: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 26,
+    paddingRight: 26,
+    flexWrap: 'wrap',
+    marginBottom: 24,
   },
   mainStepTitle: {
     letterSpacing: -0.5,
+    // lineHeight: 24,
   },
+
+  carouselStep: {
+    height: 425,
+  },
+
   //---->main slogan
   mainSlogan: {
+    paddingTop: 60,
+    paddingBottom: 60,
     paddingLeft: 16,
     paddingRight: 16,
+    display: 'flex',
+    alignItems: 'center',
   },
   mainSloganTitle: {
     letterSpacing: -0.5,
+    textAlign: 'center',
   },
   mainSloganContent: {
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: 'row',
     alignItems: 'stretch',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+
+  //--->main video
+  mainVideo: {
+    width: '100%',
+    height: 224,
+    paddingBottom: 60,
+  },
+
+  //--->main Call
+  yellowColor: {
+    color: color.point.main,
+  },
+  mainCall: {
+    // height: 163,
+    backgroundColor: color.tertiary_02.main,
+    paddingBottom: 24,
+    paddingTop: 24,
+    paddingLeft: 28,
+    paddingRight: 28,
+    display: 'flex',
+    alignItems: 'center',
+  },
+
+  mainCallRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  mainCallTitle: {
+    letterSpacing: -0.3,
+    color: color.misc.white,
+  },
+
+  mainCallBTN: {
+    width: 178,
+    height: 42,
+    backgroundColor: color.misc.white,
+    borderRadius: 21,
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 24,
+  },
+
+  //--->main Help
+  mainHelp: {
+    backgroundColor: color.misc.white,
+    paddingTop: 12,
+    paddingBottom: 12,
+    overflow: 'hidden',
+  },
+  mainHelpText: {
+    color: color.secondary.main,
+    marginLeft: 16,
+    overflow: 'hidden',
   },
 });

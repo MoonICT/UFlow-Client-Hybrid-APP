@@ -2,12 +2,12 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-17 06:16:40
- * @modify date 2020-11-17 06:16:40
+ * @modify date 2020-11-17 11:58:44
  * @desc [description]
  */
 
-import { StyleSheet } from 'react-native';
-import { color } from '@Themes/colors';
+import {StyleSheet} from 'react-native';
+import {color} from '@Themes/colors';
 
 export const styles = StyleSheet.create({
   font9: {
@@ -58,44 +58,39 @@ export const styles = StyleSheet.create({
   },
 
   container: {
-    width: 312,
-    height: 425,
-    overflow: 'hidden',
-    borderRadius: 12,
+    width: 156,
+    display: 'flex',
+    alignItems: 'center',
+    alignContent: 'stretch',
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderStyle: 'solid',
+    borderRadius: 15,
+    marginBottom: 16,
+    shadowColor: 'rgba(0, 0, 0, 0.06)',
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2,
     },
-    shadowColor: 'rgba(0, 0, 0, 0.06)',
-    shadowOpacity: 20,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-
-  cardImage: {
-    width: 128,
-    height: 128,
+    shadowOpacity: 0.01,
+    shadowRadius: 3.84,
+    elevation: 10,
   },
 
   content: {
-    paddingLeft: 16,
-    paddingRight: 16,
+    padding: 16,
     display: 'flex',
+    alignItems: 'center',
+    alignContent: 'stretch',
   },
 
-  stepTitle: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    margin: 0,
-    padding: 0,
-    lineHeight: 11,
-  },
-  titleType: {
-    color: 'rgba(0, 0, 0, 0.87)',
-    margin: 0,
-    lineHeight: 22,
-  },
-  contentTitle: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    lineHeight: 13,
+  sloganTitle: {
+    width: '100%',
+    marginTop: 8,
+    lineHeight: 15,
+    fontWeight: '500',
+    letterSpacing: -0.3,
+    textAlign: 'center',
   },
 });
