@@ -28,8 +28,9 @@ import {
 } from 'react-native';
 import SendIntentAndroid from 'react-native-send-intent';
 import {WebView} from 'react-native-webview';
-import {ProgressView} from '@react-native-community/progress-view';
-import {ProgressBar} from '@react-native-community/progress-bar-android';
+// import {ProgressView} from '@react-native-community/progress-view';
+// import {ProgressBar} from '@react-native-community/progress-bar-android';
+import {ProgressBar} from 'react-native-paper';
 
 // Local Imports
 import WVMsgService from '../../services/WebViewMessageService';
@@ -90,7 +91,7 @@ export default class Webview extends Component {
     if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('about:blank')) {
       return true;
     }
-    i// 웹 프로토콜이 아닌 Indent 등과 같은 앱 실행 프로토콜인 경우 아래와 같이 처리.
+    // 웹 프로토콜이 아닌 Indent 등과 같은 앱 실행 프로토콜인 경우 아래와 같이 처리.
     if (Platform.OS === 'android') {
       // for Android
       SendIntentAndroid.openChromeIntent(url).then(isOpened => {
@@ -192,18 +193,7 @@ export default class Webview extends Component {
         {/** Webview Header Component */}
         {WebViewHeader}
         {/** Webview Progress Bar */}
-        {Platform.OS === 'ios' && <ProgressView
-          progressTintColor="#773000"
-          trackTintColor="#fff"
-          progress={this.state.progress}
-        />}
-        {Platform.OS === 'android' && <ProgressBar
-          styleAttr="Horizontal"
-          indeterminate={false}
-          color={'#773000'}
-          style={{marginTop: -7, marginBottom: -7}}
-          progress={this.state.progress}
-        />}
+        <ProgressBar progress={this.state.progress}/>
         <WebView
           // url 변경 시 웹뷰를 다시 렌더(로드)하기위 사용. (reload() 함수는 현재 주소로 reload 되기 때문에 사용 안함.)
           key={this.state.key}

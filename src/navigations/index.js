@@ -9,12 +9,14 @@
 
 // Global Imports
 import React from 'react';
-import {Text} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {Provider} from 'react-redux';
+import { Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 // Local Imports
 //---> Screens
 import initStore from '@Store/index';
@@ -22,8 +24,9 @@ import initStore from '@Store/index';
 import Global from '@Screeens/Global';
 import LoginScreen from '@Screeens/Login';
 import ForgotIDScreen from '@Screeens/ForgotID';
-import ForgotPassScreen from '@Screeens/ForgotPass';
+// import ForgotPassScreen from '@Screeens/ForgotPass';
 import HomeScreen from '@Screeens/Home';
+import SearchScreen from '@Screeens/Search';
 import SampleScreen from '@Screeens/Sample';
 import WebviewScreen from '@Screeens/Webview';
 import CameraScreen from '@Screeens/Camera';
@@ -32,39 +35,57 @@ import Geolocations from '@Screeens/Geolocations';
 import TextFeild from '@Screeens/TextField';
 
 import testScreen from '@Screeens/testScreen';
+// import CustomTabBar from '@Components/organisms/CustomTabBar';
 
 //Custom Theme
-import {theme} from '../themes';
+import { theme } from '../themes';
 
 const store = initStore();
 
 // 메인 탭 옵션 설정.(Sample)
-const TabScreenOptions = ({route}) => ({
-  tabBarIcon: ({focused, color, size}) => {
+const TabScreenOptions = ({ route }) => ({
+  tabBarIcon: ({ focused, color, size }) => {
     const routeName = route.name;
-    console.log(routeName);
-    let icon = '▲';
+    // console.log(routeName);
+    let icon = <Icon name={'home'} />;
 
     if (routeName === 'Home') {
-      icon = '⛺';
+      icon = <Icon name={'home'} size={20} />;
+    } else if (routeName === 'Search') {
+      icon = <Icon name={'search'} size={20} />;
+    } else if (routeName === 'Message') {
+      icon = <Icon name={'message'} size={20} />;
     } else if (routeName === 'Sample') {
-      icon = '🛠';
+      icon = <Icon name={'more'} size={20} />;
     }
     return (
-      <Text style={{color: (focused && '#46c3ad') || '#888'}}>{icon}</Text>
+      <Text
+        style={{
+          color: (focused && '#FF6D00') || 'rgba(0, 0, 0, 0.54)',
+          fontSize: 17,
+        }}>
+        {icon}
+      </Text>
     );
   },
+  tabBarLabel: ({ focused, tintColor }) => {
+    return <Text style={{ height: 0 }} />;
+  },
   tabBarOptions: {
-    activeTintColor: '#46c3ad',
-    inactiveTintColor: '#888',
+    showLabel: false,
+    activeTintColor: '#FF6D00',
+    inactiveTintColor: 'rgba(0, 0, 0, 0.54)',
   },
 });
 
 const Tab = createBottomTabNavigator();
+//{/** tabBar={props => <CustomTabBar {...props} />}>/*}
 const TabScreen = () => {
   return (
     <Tab.Navigator screenOptions={TabScreenOptions}>
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Search" component={SampleScreen} />
+      <Tab.Screen name="Message" component={SampleScreen} />
       <Tab.Screen name="Sample" component={SampleScreen} />
     </Tab.Navigator>
   );
@@ -85,24 +106,29 @@ const App = () => {
             {!isLogin ? (
               <AuthStack.Navigator>
                 <AuthStack.Screen
+                  name="Search"
+                  component={SearchScreen}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
                   name="Login"
                   component={LoginScreen}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
                   name="Home"
                   component={TabScreen}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
                   name="ForgotID"
                   component={ForgotIDScreen}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
                   name="TextFeild"
                   component={TextFeild}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
               </AuthStack.Navigator>
             ) : (
@@ -110,44 +136,44 @@ const App = () => {
                 <RootStack.Screen
                   name="Home"
                   component={TabScreen}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <RootStack.Screen
                   name="Webview"
                   component={WebviewScreen}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
                 <RootStack.Screen
                   name="Camera"
                   component={CameraScreen}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
                 <RootStack.Screen
                   name="Notification"
                   component={Notification}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
                 <RootStack.Screen
                   name="Geolocations"
                   component={Geolocations}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
                 <RootStack.Screen
                   name="TextFeild"
                   component={TextFeild}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
 
                 <RootStack.Screen
                   name="testScreen"
                   component={testScreen}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
               </RootStack.Navigator>
             )}

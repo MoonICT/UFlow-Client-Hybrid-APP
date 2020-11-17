@@ -2,12 +2,45 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 15:28:22
- * @modify date 2020-11-12 10:52:06
+ * @modify date 2020-11-17 18:06:20
  * @desc [description]
  */
 
-import {DefaultTheme} from 'react-native-paper';
-import {color} from './colors';
+import { DefaultTheme, configureFonts } from 'react-native-paper';
+import { color } from './colors';
+
+const fontConfig = {
+  default: {
+    black: {
+      fontFamily: 'NotoSansCJKkr-Black',
+      // fontWeight: 'normal',
+    },
+    bold: {
+      fontFamily: 'NotoSansCJKkr-Bold',
+      // fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'NotoSansCJKkr-Medium',
+      // fontWeight: 'normal',
+    },
+    regular: {
+      fontFamily: 'NotoSansCJKkr-Regular',
+      // fontWeight: 'normal',
+    },
+    demilight: {
+      fontFamily: 'NotoSansCJKkr-DemiLight',
+      // fontWeight: 'normal',
+    },
+    light: {
+      fontFamily: 'NotoSansCJKkr-Light',
+      // fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'NotoSansCJKkr-Thin',
+      // fontWeight: 'normal',
+    },
+  },
+};
 
 export const theme = {
   ...DefaultTheme,
@@ -25,14 +58,6 @@ export const theme = {
     // placeholder: color.primary.light, //color for placeholder text, such as input placeholder.
     // backdrop: color.primary.light, //color for backdrops of various components such as modals.
   },
-  fonts: {
-    black: 'NotoSansCJKkr-Black',
-    boild: 'NotoSansCJKkr-Bold',
-    demilight: 'NotoSansCJKkr-DemiLight',
-    light: 'NotoSansCJKkr-Light',
-    medium: 'NotoSansCJKkr-Medium',
-    regular: 'NotoSansCJKkr-Regular',
-    thin: 'NotoSansCJKkr-Thin',
-  },
+  fonts: configureFonts(fontConfig),
   //   animation: {scale:},
 };

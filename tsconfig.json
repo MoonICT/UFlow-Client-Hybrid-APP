@@ -19,11 +19,11 @@
     "paths": {
       "@Actions": ["src/actions/*"],
       "@Assets": ["src/assets"],
-      "@Components": ["src/components"],
+      "@Components": ["src/components/*"],
       "@Navigations": ["src/navigations/*"],
       "@Reducers": ["src/reducers"],
       "@Screeens": ["src/screens/*"],
-      "@Services": ["src/services"],
+      "@Services": ["src/services/*"],
       "@Interfaces": ["src/interface/*"],
       "@Store": ["src/store/*"],
       "@Styles": ["src/styles/*"],
