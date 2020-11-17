@@ -14,7 +14,7 @@
  * */
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, Platform } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { WebView } from 'react-native-webview';
 import { ProgressBar, Appbar, Text } from 'react-native-paper';
@@ -27,6 +27,7 @@ import { styles } from './style';
 import Appbars from '@Components/organisms/AppBar';
 import SearchOverlay from '@Components/organisms/SearchOverlay';
 import SearchSwipePanel from '@Components/organisms/SearchSwipePanel';
+import SearchFilter from '@Components/organisms/SearchFilter';
 import ActionCreator from "@Actions";
 
 class Search extends Component {
@@ -36,6 +37,7 @@ class Search extends Component {
     // Webview initialize options.
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
+      // defaultURL: 'http://www.uflow.voltpage.net/webview/search',
       defaultURL: 'http://localhost:13000/webview/search',
     };
     this.state = {
@@ -129,6 +131,9 @@ class Search extends Component {
 
         {/** Webview Progress Bar */}
         {/*<ProgressBar progress={this.state.progress} />*/}
+
+        {/** Filter */}
+        <SearchFilter />
 
         <View style={{
           flex: 1

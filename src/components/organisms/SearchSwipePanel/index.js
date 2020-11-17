@@ -19,7 +19,7 @@ class SearchSwipePanel extends Component {
     super(props);
     this.swipeUpDownRef = null
     this.state = {
-      isPanelActive: true
+      isPanelActive: false
     };
   }
 

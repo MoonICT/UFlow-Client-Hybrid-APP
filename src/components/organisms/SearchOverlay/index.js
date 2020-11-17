@@ -22,6 +22,10 @@ class SearchOverlay extends Component {
     };
   }
 
+  /**
+   * On change search query.
+   * TODO 검색어 변경 시, 조회 처리.
+   * */
   _onChangeSearchQuery (query) {
     if (query.length > 0) {
       this.setState({ query: query });
@@ -29,6 +33,7 @@ class SearchOverlay extends Component {
   }
 
   render () {
+    // Temp array
     let arr = [
       {
         title: '합정역',
@@ -75,8 +80,10 @@ class SearchOverlay extends Component {
             }}
           />
         </View>
+
         {/** Scroll */}
         <ScrollView style={{}}>
+
           {/** Header */}
           <View style={styles.searchListHeader}>
             <Text style={styles.searchListLabel}>{'최근 검색'}</Text>
@@ -86,6 +93,7 @@ class SearchOverlay extends Component {
               <Text style={styles.searchListBtnLabel}>{'검색기록 전체삭제'}</Text>
             </TouchableOpacity>
           </View>
+
           {/** List */}
           {arr.map((r, index) => <List.Item
             key={index}
