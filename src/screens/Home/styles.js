@@ -6,8 +6,8 @@
  * @desc [description]
  */
 
-import {Dimensions, StyleSheet} from 'react-native';
-import {color} from '@Themes/colors.js';
+import { Dimensions, StyleSheet } from 'react-native';
+import { color } from '@Themes/colors.js';
 
 const windowWidth = Dimensions.get('window').width;
 // const windowHeight = Dimensions.get('window').height;
@@ -245,9 +245,29 @@ export const styles = StyleSheet.create({
   },
 
   //--->main step
+  blueColor: {
+    color: color.info.main,
+  },
   mainStep: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  mainStepTitle: {
+    letterSpacing: -0.5,
+  },
+  //---->main slogan
+  mainSlogan: {
+    paddingLeft: 16,
+    paddingRight: 16
+  }
+  mainSloganTitle: {
+    letterSpacing: -0.5,
+  }
+  mainSloganContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+  }
 });

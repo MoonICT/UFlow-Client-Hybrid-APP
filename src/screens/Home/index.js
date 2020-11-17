@@ -15,7 +15,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import {
   SafeAreaView,
   Text,
@@ -25,7 +25,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 import {
   Avatar,
@@ -37,35 +37,38 @@ import {
   Menu,
   Divider,
   List,
+  TextInput,
 } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 // Local Imports
 import DefaultStyle from '../../styles/default'
-import {color} from '@Themes/colors'
+import { color } from '@Themes/colors'
 
 import ActionCreator from '../../actions'
 import Carousel from '@Components/organisms/Carousel'
 import CarouselSnap from '@Components/organisms/CarouselSnap'
 import AppBars from '@Components/organisms/AppBar'
 import ProductCard from '@Components/organisms/ProductCard'
+import StepCard from '@Components/organisms/StepCard'
 
 // import Menus from '@Components/organisms/Menu';
 // import TreeViews from '@Components/organisms/TreeView';
 
-import {styles} from './styles'
+import { styles } from './styles'
 
 import mainBG from '@Assets/images/main-bg.png'
 import symbolsBG from '@Assets/images/symbol.png'
 import factoryBG from '@Assets/images/factory.png'
 import cardBG from '@Assets/images/card-img.png'
+import stepBG from '@Assets/images/step.png';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
 // const windowWidth = Dimensions.get('window').width;
 // const windowHeight = Dimensions.get('window').height;
 
-const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
+// const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
 
 const slides = [
   {
@@ -183,26 +186,63 @@ const slidesProduct = [
   },
 ]
 
+const slidesSteps = [
+  {
+    key: 'somethun',
+    img: stepBG,
+    step: 'Step 4. 창고 임대 진행 및 완료',
+    title: `안전한 대금 보호 시스템과 혹시 모를\n
+위험요소를 위한 안심보험 가입까지!`,
+    content: `에스크로 방식의 대금보호시스템을 통해 대금 
+걱정 없이 창고 관리에만 집중하실 수 있습니다.
+안심 재물보험 가입으로 혹시 모를 
+위험요소까지 보장해 드립니다.`,
+  },
+  {
+    key: 'somethun',
+    img: stepBG,
+    step: 'Step 4. 창고 임대 진행 및 완료',
+    title: `안전한 대금 보호 시스템과 혹시 모를\n
+위험요소를 위한 안심보험 가입까지!`,
+    content: `에스크로 방식의 대금보호시스템을 통해 대금 
+걱정 없이 창고 관리에만 집중하실 수 있습니다.
+안심 재물보험 가입으로 혹시 모를 
+위험요소까지 보장해 드립니다.`,
+  },
+  {
+    key: 'somethun',
+    img: stepBG,
+    step: 'Step 4. 창고 임대 진행 및 완료',
+    title: `안전한 대금 보호 시스템과 혹시 모를\n
+위험요소를 위한 안심보험 가입까지!`,
+    content: `에스크로 방식의 대금보호시스템을 통해 대금 
+걱정 없이 창고 관리에만 집중하실 수 있습니다.
+안심 재물보험 가입으로 혹시 모를 
+위험요소까지 보장해 드립니다.`,
+  },
+]
+
 class Home extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.webView = null
     this.state = {
       activeIndex: 0,
       isShow: false,
       expanded: true,
+      search: '',
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return true
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     console.log('::componentWillUnmount::')
   }
 
-  _renderItem = ({item}) => {
+  _renderItem = ({ item }) => {
     return (
       <View style={styles.slide}>
         <View style={styles.overlay} />
@@ -215,24 +255,28 @@ class Home extends Component {
     )
   }
 
-  _renderProductItem = ({item}) => {
-    return <ProductCard data={{...item, img: cardBG}} />
+  _renderProductItem = ({ item }) => {
+    return <ProductCard data={{ ...item, img: cardBG }} />
+  }
+
+  _renderStepItem = ({ item }) => {
+    return <StepCard data={item} />
   }
 
   _onDone = () => {
-    this.setState({showRealApp: true})
+    this.setState({ showRealApp: true })
   }
 
-  render () {
-    const {showPopup} = this.props
-    // const {isShow, expanded} = this.state;
+  render() {
+    const { showPopup } = this.props
+    const { search } = this.state;
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
         {/**### APPBAR ###*/}
         <AppBars style={[styles.appBar]}>
           <View style={[styles.actionBar]}>
-            <Appbar.Action icon='menu' color='white' onPress={() => {}} />
+            <Appbar.Action icon='menu' color='white' onPress={() => { }} />
             {/* <Text styles={[styles.notifiAppbar, styles.font14]}>
               더 많은 혜택을 위해 회원가입하러 가기
             </Text> */}
@@ -257,7 +301,7 @@ class Home extends Component {
               renderItem: this._renderItem,
               showNextButton: false,
               showDoneButton: false,
-              dotStyle: {backgroundColor: '#757575', width: 8, height: 8},
+              dotStyle: { backgroundColor: '#757575', width: 8, height: 8 },
               activeDotStyle: {
                 borderColor: 'white',
                 borderWidth: 1,
@@ -352,7 +396,7 @@ class Home extends Component {
                 sliderWidth={328}
                 itemWidth={160}
                 renderItem={this._renderProductItem}
-                onSnapToItem={index => this.setState({activeIndex: index})}
+                onSnapToItem={index => this.setState({ activeIndex: index })}
               />
             </View>
           </View>
@@ -381,26 +425,67 @@ class Home extends Component {
                 '국내 최대 규모의 온라인 창고 중계 플랫폼, 유플로우에서\n' +
                 '편리하고 안전하게 창고를 임대 & 매매하세요.'}
             </Text>
+
+            <View>
+              <TextInput
+                label="이메일을 입력해주세요."
+                value={search}
+                onChangeText={text => this.setState({ search: text })}
+              />
+              <Button></Button>
+            </View>
           </View>
 
-          {/**MainStep */}
+          {/**___MainStep___ */}
           <View style={styles.mainStep}>
-            {/* <CarouselSnap
+            <Text style={[styles.mainStepTitle, styles.bold, styles.font24]}>{`남는 공간을 ${<Text style={[styles.blueColor, styles.bold, styles.font24]}>등록</Text>}해서 수익 창출,'
+              '필요한 창고는 ${<Text style={[styles.blueColor, styles.bold, styles.font24]}>찾기</Text>} 편리하게`}</Text>
+            <CarouselSnap
               layout={'default'}
-              ref={ref => (this.carousel = ref)}
-              data={slides}
-              sliderWidth={'300'}
-              itemWidth={'300'}
+              data={slidesSteps}
+              // sliderWidth={}
+              itemWidth={312}
+              isPagination={true}
               renderItem={this._renderStepItem}
-              onSnapToItem={index => this.setState({activeIndex: index})}
-            /> */}
+              onSnapToItem={index => this.setState({ activeIndex: index })}
+            />
           </View>
+
+          {/**___Slogan___ */}
+          <View style={styles.mainSlogan}>
+            <Text style={[styles.mainSloganTitle, styles.bold, styles.font24]}>{'빠르고 편리하고 안전한\n' +
+              '좋은 창고, 유플로우'}</Text>
+            <View style={styles.mainSloganContent}>
+              {/**Map gird here */}
+            </View>
+          </View>
+
+          {/**___Video Intro___ */}
+          <View>
+            {/* <Video */}
+          </View>
+
+          {/**___Call tell___ */}
+          <View>
+            {/* <Video */}
+          </View>
+
+          {/**___Contact___ */}
+          <View>
+            {/* <Video */}
+          </View>
+
+          {/**___App Download___ */}
+          <View>
+            {/* <Video */}
+          </View>
+
         </ScrollView>
       </SafeAreaView>
     )
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     console.log('::componentDidMount::')
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
@@ -409,13 +494,13 @@ class Home extends Component {
   }
 
   // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::')
   }
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
@@ -423,7 +508,7 @@ function mapStateToProps (state) {
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     showPopup: status => {
       dispatch(
