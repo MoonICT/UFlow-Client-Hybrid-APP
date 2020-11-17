@@ -1,14 +1,11 @@
 {
-  "presets": [
-    "module:metro-react-native-babel-preset"
-  ],
+  "presets": ["module:metro-react-native-babel-preset"],
   "plugins": [
     [
       "module-resolver",
+      // "antd-mobile",
       {
-        "root": [
-          "./"
-        ],
+        "root": ["./"],
         "alias": {
           "@Actions": "./src/actions",
           "@Assets": "./src/assets",

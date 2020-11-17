@@ -1,17 +1,15 @@
 /**
- * Sample Screen
- * 샘플 화면 입니다.
- * 2020.06.05 Deokin.
- *
  * @format
  * @flow strict-local
  * */
 // Global Imports
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
-import {Rating, AirbnbRating} from 'react-native-elements';
+import {ScrollView, Text} from 'react-native';
+import Ratings from '@Components/organisms/Rating';
 
-export default class Ratings extends Component {
+import DefaultStyle from '@Styles/default';
+
+export default class RatingScreen extends Component {
   constructor(props) {
     super(props);
     this.countNotification = 0;
@@ -24,7 +22,9 @@ export default class Ratings extends Component {
   render() {
     return (
       <ScrollView>
-        <AirbnbRating
+        <Text style={DefaultStyle.titleDf}>Rating</Text>
+        <Ratings
+          typeAirbnb="Airbnb"
           count={11}
           reviews={[
             'Terrible',
@@ -42,19 +42,23 @@ export default class Ratings extends Component {
           defaultRating={11}
           size={20}
         />
-        <Rating
+        <Ratings
+          showRating
+          onFinishRating={this.ratingCompleted}
+          style={{paddingVertical: 10}}
+        />
+        <Ratings
           type="heart"
-          ratingCount={3}
+          ratingCount={4}
           imageSize={60}
           showRating
           onFinishRating={this.ratingCompleted}
         />
-
-        <Rating
+        <Ratings
           type="custom"
           ratingImage={null}
           ratingColor="#3498db"
-          ratingBackgroundColor="#c8c7c8"
+          ratingBackgroundColor="rgba(0, 0, 0, 0.26)"
           ratingCount={10}
           imageSize={30}
           onFinishRating={this.ratingCompleted}

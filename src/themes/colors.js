@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 11:30:30
- * @modify date 2020-11-09 14:47:58
+ * @modify date 2020-11-12 14:13:57
  * @desc [description]
  */
 
@@ -121,6 +121,10 @@ export const color = {
   },
   input: {
     default_bgr: 'rgba(0, 0, 0, 0.05)',
+    default_border: 'rgba(0, 0, 0, 0.1)',
+  },
+  button: {
+    active: 'rgba(0, 0, 0, 0.12)',
     default_border: 'rgba(0, 0, 0, 0.1)',
   },
 };

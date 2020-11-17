@@ -6,6 +6,7 @@
 
 import {StyleSheet} from 'react-native';
 import {color} from '../themes/colors';
+import {theme} from '../themes/index';
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.
@@ -37,6 +38,19 @@ export default StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
+  titleDf: {
+    marginTop: 20,
+    fontSize: 16,
+    color: 'black',
+  },
+  /** Divider */
+  divider: {
+    width: '100%',
+    height: 1,
+    opacity: 0.23,
+    backgroundColor: '#ffffff',
+  },
+
   /** Container button */
   containerBTN: {
     width: 120,
@@ -195,4 +209,305 @@ export default StyleSheet.create({
     color: color.error.dark,
   },
   //Code input write at here
+
+  /** Dialog **/
+  _titleDialog: {
+    fontSize: 20,
+    color: color.text.primary,
+    fontWeight: '500',
+    fontFamily: 'NotoSansCJKkr-Medium',
+    marginTop: 15,
+    marginBottom: 17,
+  },
+  /** Dialog popup**/
+  _buttonPopup: {
+    flexDirection: 'row',
+    padding: 0,
+    margin: 0,
+    borderTopWidth: 1,
+    borderColor: color.input.default_border,
+  },
+  _buttonElement: {
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: color.input.default_border,
+    justifyContent: 'center',
+    flex: 1,
+    padding: 0,
+    margin: 0,
+    borderRadius: 0,
+  },
+
+  snackbar: {
+    // backgroundColor: color.misc.snackbar,
+    color: 'green',
+  },
+
+  _labelSwitch: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 16,
+  },
+
+  _pagination: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 14,
+  },
+
+  /** AppBar**/
+  tabBar: {
+    flex: 1,
+    margin: 'auto',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    textAlign: 'center',
+    height: 'auto',
+  },
+  _itemBar: {
+    // color: 'red',
+    opacity: 0.6,
+    alignItems: 'center',
+  },
+  _itemBarActive: {
+    opacity: 1,
+  },
+  _rightTitle: {
+    color: 'rgba(255, 109, 0, 0.87)',
+    marginRight: 0,
+    textAlign: 'right',
+    fontSize: 16,
+    fontFamily: 'NotoSansCJKkr',
+    fontWeight: '500',
+  },
+  _leftTitle: {
+    color: 'rgba(255, 109, 0, 0.87)',
+    textAlign: 'left',
+    fontSize: 16,
+    fontFamily: 'NotoSansCJKkr',
+    fontWeight: '500',
+  },
+  _contentApp: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    marginLeft: 0,
+    marginRight: 0,
+  },
+
+  /** toggle Button**/
+  _toggleButton: {
+    borderWidth: 1,
+    borderColor: color.button.default_border,
+    width: 48,
+    height: 48,
+  },
+  _toggleBtnActive: {
+    backgroundColor: color.button.active,
+  },
+
+  /** Breadcrumbs**/
+  _breadcrumb: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  _itemBreadcrumb: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 16,
+    color: color.text.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  _iconBreadcrumb: {
+    color: color.text.secondary,
+    padding: 0,
+    marginLeft: 0,
+    minWidth: 20,
+    maxWidth: 25,
+    margin: 'auto',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  _activeIconBreadcrumb: {
+    color: color.text.primary,
+  },
+  _separator: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    color: color.text.secondary,
+    paddingLeft: 10,
+    paddingRight: 10,
+    // lineHeight: 1.43,
+  },
+
+  /** Accordion**/
+  _titleAccordion: {
+    fontFamily: 'AppleSDGothicNeo-Regular',
+    fontSize: 15,
+    color: '#000000',
+  },
+
+  _contentAccordion: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 16,
+    color: '#000000',
+  },
+
+  /** SpeedDial**/
+  _wrapperDial: {
+    backgroundColor: color.misc.backdrop,
+  },
+  _btnDial: {
+    backgroundColor: color.secondary.main,
+  },
+
+  /** List**/
+  _list: {
+    backgroundColor: color.primary.constrast,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: 4,
+  },
+  _titleList: {
+    fontFamily: theme.fonts.regular,
+    fontSize: 16,
+    color: color.text.primary,
+    padding: 0,
+    margin: 0,
+    height: 48,
+    justifyContent: 'center',
+  },
+  _itemList: {
+    fontFamily: theme.fonts.regular,
+    fontSize: 16,
+    color: color.text.primary,
+    padding: 0,
+    margin: 0,
+    height: 48,
+    justifyContent: 'center',
+    paddingLeft: 32,
+  },
+
+  /** Table**/
+  _table: {
+    backgroundColor: color.misc.white,
+    borderRadius: 4,
+  },
+  _headerTable: {
+    backgroundColor: '#fafafa',
+    fontFamily: 'AppleSDGothicNeo-Medium',
+    fontSize: 14,
+    color: color.text.primary,
+    fontWeight: '500',
+  },
+  _tableRow: {},
+  _borderTableRow: {
+    borderColor: '#e0e0e0',
+    borderTopWidth: 1,
+  },
+
+  /** Tab Grid**/
+  _tabGrid: {
+    flexDirection: 'row',
+    maxWidth: '100%',
+  },
+  _tabItem: {
+    color: color.text.secondary,
+    fontFamily: theme.fonts.medium,
+    fontSize: 14,
+    fontWeight: '500',
+    borderBottomWidth: 1,
+    borderColor: color.button.default_border,
+  },
+  _tabItemActive: {
+    borderColor: color.primary.main,
+  },
+  _contentGrid: {
+    color: color.text.secondary,
+    fontFamily: theme.fonts.regular,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+
+  /** App Components**/
+  _inputSearch: {
+    height: 36,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(151, 151, 151, 0.54)',
+    backgroundColor: '#fff',
+    color: '#424242',
+    justifyContent: 'center',
+  },
+  _searchIcon: {
+    position: 'absolute',
+    top: 0,
+    fontSize: 24,
+    lineHeight: 36,
+    margin: 0,
+  },
+  _searchRightIcon: {
+    position: 'absolute',
+    top: 0,
+    fontSize: 24,
+    lineHeight: 36,
+    margin: 0,
+  },
+
+  /** Footer**/
+  _wrapperFooter: {
+    backgroundColor: color.secondary.main,
+    color: 'rgba(255, 255, 255, 0.87)',
+    fontFamily: theme.fonts.regular,
+    fontSize: 14,
+    padding: 16,
+  },
+  _menuFooter: {
+    borderBottomWidth: 1,
+    borderColor: '#d2d2d7',
+  },
+  _menu: {
+    backgroundColor: color.secondary.main,
+    color: 'rgba(255, 255, 255, 0.87)',
+    paddingLeft: 0,
+    paddingRight: 0,
+    marginLeft: 0,
+    borderWidth: 0,
+  },
+  _menuTitle: {
+    color: 'rgba(255, 255, 255, 0.87)',
+    paddingLeft: 0,
+    marginLeft: 0,
+  },
+  _menuItem: {
+    color: 'rgba(255, 255, 255, 0.87)',
+    paddingLeft: 0,
+    marginLeft: 0,
+  },
+
+  _mainFooter: {
+    marginTop: 24,
+    color: 'rgba(255, 255, 255, 0.54)',
+  },
+  _copyrightFooter: {
+    color: 'rgba(255, 255, 255, 0.54)',
+    fontFamily: theme.fonts.regular,
+    fontSize: 14,
+  },
+  _titleFooter: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  _textTitleFooter: {
+    color: '#ffffff',
+    lineHeight: 20,
+    marginRight: 12,
+    marginBottom: 8,
+    fontFamily: theme.fonts.regular,
+    fontSize: 14,
+  },
+  _contentFooter: {},
+  _textContentFooter: {
+    color: 'rgba(255, 255, 255, 0.54)',
+    lineHeight: 20,
+    fontFamily: theme.fonts.regular,
+    fontSize: 12,
+  },
 });

@@ -31,9 +31,8 @@ import CameraScreen from '@Screeens/Camera';
 import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
 import TextFeild from '@Screeens/TextField';
-import Pagination from '@Screeens/Pagination';
-import Rating from '@Screeens/Rating';
-import Progress from '@Screeens/Progress';
+
+import testScreen from '@Screeens/testScreen';
 
 //Custom Theme
 import {theme} from '../themes';
@@ -76,7 +75,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = false;
+let isLogin = true;
 
 const App = () => {
   return (
@@ -149,21 +148,10 @@ const App = () => {
                   headerMode={true}
                   options={{headerShown: true}}
                 />
+
                 <RootStack.Screen
-                  name="Pagination"
-                  component={Pagination}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Rating"
-                  component={Rating}
-                  headerMode={true}
-                  options={{headerShown: true}}
-                />
-                <RootStack.Screen
-                  name="Progress"
-                  component={Progress}
+                  name="testScreen"
+                  component={testScreen}
                   headerMode={true}
                   options={{headerShown: true}}
                 />
