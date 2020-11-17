@@ -1,7 +1,4 @@
 /**
- * Sample Screen
- * 샘플 화면 입니다.
- * 2020.06.05 Deokin.
  *
  * @format
  * @flow strict-local
@@ -26,6 +23,7 @@ import ToggleButton from './ToggleButton';
 import AppGrid from './AppGrid';
 import AppComponent from './AppComponent';
 import Footer from './Footer';
+import Rating from './Rating';
 
 export default class AccordionScreen extends Component {
   constructor(props) {
@@ -51,6 +49,8 @@ export default class AccordionScreen extends Component {
         <AppGrid />
         <AppComponent />
         <Footer />
+        <Rating />
+        <Progress />
       </ScrollView>
     );
   }

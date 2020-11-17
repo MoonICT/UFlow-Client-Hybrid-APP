@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@material-ui/icons": "^4.9.1",
+    "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "1.12.1",
     "@react-native-community/cookies": "5.0.1",
     "@react-native-community/datetimepicker": "^3.0.4",
@@ -37,6 +38,7 @@
     "react-native-paper": "^4.2.0",
     "react-native-progress": "^4.1.2",
     "react-native-push-notification": "5.1.0",
+    "react-native-ratings": "^7.3.0",
     "react-native-reanimated": "1.9.0",
     "react-native-safe-area-context": "3.0.2",
     "react-native-screens": "2.8.0",
