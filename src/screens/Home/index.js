@@ -5,9 +5,26 @@
  * @format
  * @flow strict-local
  */
+
+/**
+ * @author [Peter]
+ * @email [hoangvanlam9988@mail.com]
+ * @create date 2020-11-16 15:12:23
+ * @modify date 2020-11-17 09:11:59
+ * @desc [description]
+ */
+
 // Global Imports
 import React, {Component} from 'react';
-import {SafeAreaView, Text, ScrollView, View, Image} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  ScrollView,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
@@ -20,27 +37,38 @@ import {
   Menu,
   Divider,
   List,
+  TextInput,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
+import {color} from '@Themes/colors';
+
 import ActionCreator from '../../actions';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import AppBars from '@Components/organisms/AppBar';
+import ProductCard from '@Components/organisms/ProductCard';
+import StepCard from '@Components/organisms/StepCard';
 
-import Menus from '@Components/organisms/Menu';
-import TreeViews from '@Components/organisms/TreeView';
+// import Menus from '@Components/organisms/Menu';
+// import TreeViews from '@Components/organisms/TreeView';
 
 import {styles} from './styles';
 
 import mainBG from '@Assets/images/main-bg.png';
-// import symbolsBG from '@Assets/images/symbols.png';
+import symbolsBG from '@Assets/images/symbol.png';
+import factoryBG from '@Assets/images/factory.png';
+import cardBG from '@Assets/images/card-img.png';
+import stepBG from '@Assets/images/step.png';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+// const windowWidth = Dimensions.get('window').width;
+// const windowHeight = Dimensions.get('window').height;
+
+// const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
 
 const slides = [
   {
@@ -105,6 +133,95 @@ const slides = [
   },
 ];
 
+const slidesProduct = [
+  {
+    key: 'somethun',
+    type: '보관창고',
+    title: `과천동 상온 50평`,
+    img: mainBG,
+    backgroundColor: '#59b2ab',
+    price: '12,345평',
+    address: '경기도 화천시 부평읍',
+    totalPrice: '60,000원/평',
+  },
+  {
+    key: 'somethun',
+    type: '보관창고',
+    title: `과천동 상온 50평`,
+    img: mainBG,
+    backgroundColor: '#59b2ab',
+    price: '12,345평',
+    address: '경기도 화천시 부평읍',
+    totalPrice: '60,000원/평',
+  },
+  {
+    key: 'somethun',
+    type: '보관창고',
+    title: `과천동 상온 50평`,
+    img: mainBG,
+    backgroundColor: '#59b2ab',
+    price: '12,345평',
+    address: '경기도 화천시 부평읍',
+    totalPrice: '60,000원/평',
+  },
+  {
+    key: 'somethun',
+    type: '보관창고',
+    title: `과천동 상온 50평`,
+    img: mainBG,
+    backgroundColor: '#59b2ab',
+    price: '12,345평',
+    address: '경기도 화천시 부평읍',
+    totalPrice: '60,000원/평',
+  },
+  {
+    key: 'somethun',
+    type: '보관창고',
+    title: `과천동 상온 50평`,
+    img: mainBG,
+    backgroundColor: '#59b2ab',
+    price: '12,345평',
+    address: '경기도 화천시 부평읍',
+    totalPrice: '60,000원/평',
+  },
+];
+
+const slidesSteps = [
+  {
+    key: 'somethun',
+    img: stepBG,
+    step: 'Step 4. 창고 임대 진행 및 완료',
+    title: `안전한 대금 보호 시스템과 혹시 모를\n
+위험요소를 위한 안심보험 가입까지!`,
+    content: `에스크로 방식의 대금보호시스템을 통해 대금 
+걱정 없이 창고 관리에만 집중하실 수 있습니다.
+안심 재물보험 가입으로 혹시 모를 
+위험요소까지 보장해 드립니다.`,
+  },
+  {
+    key: 'somethun',
+    img: stepBG,
+    step: 'Step 4. 창고 임대 진행 및 완료',
+    title: `안전한 대금 보호 시스템과 혹시 모를\n
+위험요소를 위한 안심보험 가입까지!`,
+    content: `에스크로 방식의 대금보호시스템을 통해 대금 
+걱정 없이 창고 관리에만 집중하실 수 있습니다.
+안심 재물보험 가입으로 혹시 모를 
+위험요소까지 보장해 드립니다.`,
+  },
+  {
+    key: 'somethun',
+    img: stepBG,
+    step: 'Step 4. 창고 임대 진행 및 완료',
+    title: `안전한 대금 보호 시스템과 혹시 모를\n
+위험요소를 위한 안심보험 가입까지!`,
+    content: `에스크로 방식의 대금보호시스템을 통해 대금 
+걱정 없이 창고 관리에만 집중하실 수 있습니다.
+안심 재물보험 가입으로 혹시 모를 
+위험요소까지 보장해 드립니다.`,
+  },
+];
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -113,6 +230,7 @@ class Home extends Component {
       activeIndex: 0,
       isShow: false,
       expanded: true,
+      search: '',
     };
   }
 
@@ -137,17 +255,12 @@ class Home extends Component {
     );
   };
 
+  _renderProductItem = ({item}) => {
+    return <ProductCard data={{...item, img: cardBG}} />;
+  };
+
   _renderStepItem = ({item}) => {
-    return (
-      <View style={styles.slide}>
-        <View style={styles.overlay} />
-        <View style={styles.content}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.text}>{item.text}</Text>
-        </View>
-        <Image source={item.image} />
-      </View>
-    );
+    return <StepCard data={item} />;
   };
 
   _onDone = () => {
@@ -156,24 +269,31 @@ class Home extends Component {
 
   render() {
     const {showPopup} = this.props;
-    const {isShow, expanded} = this.state;
+    const {search} = this.state;
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
+        {/**### APPBAR ###*/}
         <AppBars style={[styles.appBar]}>
           <View style={[styles.actionBar]}>
             <Appbar.Action icon="menu" color="white" onPress={() => {}} />
+            {/* <Text styles={[styles.notifiAppbar, styles.font14]}>
+              더 많은 혜택을 위해 회원가입하러 가기
+            </Text> */}
             <Button
               mode="contained"
               style={[DefaultStyle.containerBTN, styles.btnAction]}
               color="red"
               onPress={() => showPopup()}>
-              임대문의
+              회원가입
             </Button>
           </View>
           <View style={[DefaultStyle.divider]} />
         </AppBars>
+
+        {/**### Content ###*/}
         <ScrollView>
+          {/**### Carousel ###*/}
           <Carousel
             style={styles.carousel}
             custom={{
@@ -191,101 +311,174 @@ class Home extends Component {
             }}
           />
 
-          {/**intro */}
+          {/**### INTRO ###*/}
           <View style={styles.intro}>
-            <View style={styles.intro}>
-              <Image source />
+            {/*--Content--*/}
+            <View style={styles.introRow}>
+              <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text>
             </View>
-            <View>
-              <View style={styles.introRow}>
-                <Text style={styles.introTitle}>
-                  어떤 창고를 찾고 계시나요?
+
+            <View style={styles.introDivider} />
+
+            <View style={[styles.introRow, styles.introBottom]}>
+              <View style={styles.introColum}>
+                {<Icon name="check" size={12} color="white" />}
+                <Text style={[styles.font9, styles.introColumText]}>
+                  빠르고 편리하게
                 </Text>
-                {<Icon name="search" size={24} color="white" />}
               </View>
-              <View style={styles.introDivider} />
-              <View style={styles.introRow}>
-                <View style={styles.introColum}>
-                  {<Icon name="search" size={24} color="white" />}
-                  <Text style={styles.introTitle}>
-                    어떤 창고를 찾고 계시나요?
-                  </Text>
-                </View>
+              <View style={styles.introColum}>
+                {<Icon name="check" size={12} color="white" />}
+                <Text style={[styles.font9, styles.introColumText]}>
+                  신뢰할 수 있는
+                </Text>
+              </View>
+              <View style={styles.introColum}>
+                {<Icon name="check" size={12} color="white" />}
+                <Text style={[styles.font9, styles.introColumText]}>
+                  안전한 보험, 계약 시스템
+                </Text>
               </View>
             </View>
           </View>
 
-          {/**mainProduct */}
+          {/**### MainProduct ###*/}
           <View style={styles.mainProduct}>
-            <View style={styles.intro}>{/* <Image source={a}/> */}</View>
+            <View style={styles.mainProductTitle}>
+              <Text
+                style={[
+                  styles.bold,
+                  styles.font24,
+                  styles.mainProductTitleName,
+                ]}>
+                즉시 임대
+              </Text>
+              <Text
+                style={[
+                  styles.medium,
+                  styles.font14,
+                  styles.mainProductTitleContent,
+                ]}>
+                {
+                  '창고의 용도별, 지역별, 편의 시설과 접안 편의성까지\n통합 검색이 가능한 유플로우를 통해 물류를 보관하세요.'
+                }
+              </Text>
+            </View>
+
+            {/**___MoreSee__*/}
+            <View style={styles.mainProductMore}>
+              <TouchableOpacity
+                onPress={() => alert('Hello')}
+                style={[styles.mainProductSeeMoreBTN]}>
+                <Text
+                  style={[
+                    styles.medium,
+                    styles.font14,
+                    styles.mainProductSeeMoreTextBTN,
+                  ]}>
+                  임대 가능 창고 더 보기
+                </Text>
+                {
+                  <Icon
+                    name="arrow-forward"
+                    size={22}
+                    color={color.primary.main}
+                  />
+                }
+              </TouchableOpacity>
+            </View>
+
+            {/**___Product List___*/}
+            <View style={styles.mainProductList}>
+              <CarouselSnap
+                layout={'default'}
+                data={slidesProduct}
+                sliderWidth={328}
+                itemWidth={160}
+                renderItem={this._renderProductItem}
+                onSnapToItem={index => this.setState({activeIndex: index})}
+              />
+            </View>
           </View>
 
-          {/**mainCallForBinding */}
-          <View style={styles.mainCallForBinding}>
-            <Text>Hello</Text>
-          </View>
+          {/**____MainCallForBinding___*/}
+          {/* <View style={styles.mainCallForBinding}>
+            <Text
+              style={[
+                styles.mainCallForBindingTitle,
+                styles.font16,
+                styles.bold,
+              ]}>
+              유플로우의
+              <Text style={styles.mainCallForBindingTitleSub}>
+                B2B 물류 서비스
+              </Text>
+              를 시작해보세요.
+            </Text>
+            <Text
+              style={[
+                styles.font14,
+                styles.regular,
+                styles.mainCallForBindingContent,
+              ]}>
+              {'비즈니스에 맞춤 창고가 필요하시다고요?\n' +
+                '국내 최대 규모의 온라인 창고 중계 플랫폼, 유플로우에서\n' +
+                '편리하고 안전하게 창고를 임대 & 매매하세요.'}
+            </Text> */}
 
-          {/**MainStep */}
-          <View style={styles.mainStep}>
+          {/* <View>
+              <TextInput
+                label="이메일을 입력해주세요."
+                value={search}
+                onChangeText={text => this.setState({search: text})}
+              />
+              <Button />
+            </View> */}
+          {/* </View> */}
+
+          {/**___MainStep___ */}
+          {/* <View style={styles.mainStep}>
+            <Text
+              style={[
+                styles.mainStepTitle,
+                styles.bold,
+                styles.font24,
+              ]}>{`남는 공간을 ${(
+              <Text style={[styles.blueColor, styles.bold, styles.font24]}>
+                등록
+              </Text>
+            )}해서 수익 창출,'
+              '필요한 창고는 ${(
+                <Text style={[styles.blueColor, styles.bold, styles.font24]}>
+                  찾기
+                </Text>
+              )} 편리하게`}</Text>
             <CarouselSnap
               layout={'default'}
-              // ref={ref => (this.carousel = ref)}
-              data={slides}
-              sliderWidth={300}
-              itemWidth={300}
+              data={slidesSteps}
+              // sliderWidth={}
+              itemWidth={312}
+              isPagination={true}
               renderItem={this._renderStepItem}
               onSnapToItem={index => this.setState({activeIndex: index})}
             />
-          </View>
+          </View> */}
 
-          <Card>
-            <Card.Title
-              title="Card Title"
-              subtitle="Card Subtitle"
-              left={LeftContent}
-            />
-            <Card.Content>
-              <Title>Card title</Title>
-              <Paragraph>Card content</Paragraph>
-            </Card.Content>
-            <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
-            <Card.Actions>
-              <Button onPress={() => showPopup()}>Cancel</Button>
-              <Button>Ok</Button>
-            </Card.Actions>
-          </Card>
+          {/**___Slogan___ */}
+          {/* <View style={styles.mainSlogan}>
+            <Text style={[styles.mainSloganTitle, styles.bold, styles.font24]}>
+              {'빠르고 편리하고 안전한\n' + '좋은 창고, 유플로우'}
+            </Text>
+            <View style={styles.mainSloganContent} />
+          </View> */}
 
-          <Menus
-            visible={isShow}
-            onDismiss={isShow}
-            anchor={
-              <Button onPress={() => this.setState({isShow: !isShow})}>
-                ShowMenu
-              </Button>
-            }>
-            <Menu.Item onPress={() => {}} title="Item 1" />
-            <Menu.Item onPress={() => {}} title="Item 2" />
-            <Divider />
-            <Menu.Item onPress={() => {}} title="Item 3" />
-          </Menus>
+          {/**___Video Intro___ */}
 
-          <TreeViews>
-            <List.Accordion
-              title="Uncontrolled Accordion"
-              left={props => <List.Icon {...props} icon="folder" />}>
-              <List.Item title="First item" />
-              <List.Item title="Second item" />
-            </List.Accordion>
+          {/**___Call tell___ */}
 
-            <List.Accordion
-              title="Controlled Accordion"
-              left={props => <List.Icon {...props} icon="folder" />}
-              expanded={expanded}
-              onPress={() => this.setState({expanded: !expanded})}>
-              <List.Item title="First item" />
-              <List.Item title="Second item" />
-            </List.Accordion>
-          </TreeViews>
+          {/**___Contact___ */}
+
+          {/**___App Download___ */}
         </ScrollView>
       </SafeAreaView>
     );
