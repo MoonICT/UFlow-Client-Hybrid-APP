@@ -16,17 +16,27 @@ class Lists extends Component {
     super(props);
   }
   render() {
-    const {title, listItems, customWrapper, customItem} = this.props;
+    const {
+      title,
+      listItems,
+      customWrapper,
+      customTitle,
+      customItem,
+    } = this.props;
     const listItem =
       listItems &&
       listItems.map((item, index) => {
         return (
           <List.Accordion
-            style={[DefaultStyle._titleList, customItem]}
+            style={[DefaultStyle._titleList]}
             key={index}
             title={item.titleList}
-            titleStyle={customItem}
-            left={props => <List.Icon {...props} icon={item.icon} />}>
+            titleStyle={customTitle}
+            left={
+              item.icon
+                ? props => <List.Icon {...props} icon={item.icon} />
+                : null
+            }>
             {item.listItem &&
               item.listItem.map((el, number) => {
                 return (
@@ -35,7 +45,11 @@ class Lists extends Component {
                     style={DefaultStyle._itemList}
                     titleStyle={customItem}
                     title={el.titleItem}
-                    left={props => <List.Icon {...props} icon={el.iconItem} />}
+                    left={
+                      el.iconItem
+                        ? props => <List.Icon {...props} icon={el.iconItem} />
+                        : null
+                    }
                   />
                 );
               })}
@@ -46,6 +60,7 @@ class Lists extends Component {
       <List.Section
         style={[DefaultStyle._list, customWrapper]}
         title={title}
+        titleStyle={customWrapper}
         {...this.props}>
         {listItem}
       </List.Section>

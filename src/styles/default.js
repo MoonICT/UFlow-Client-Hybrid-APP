@@ -455,9 +455,59 @@ export default StyleSheet.create({
   _wrapperFooter: {
     backgroundColor: color.secondary.main,
     color: 'rgba(255, 255, 255, 0.87)',
+    fontFamily: theme.fonts.regular,
+    fontSize: 14,
+    padding: 16,
   },
-  _wrapperTitle: {
+  _menuFooter: {
+    borderBottomWidth: 1,
+    borderColor: '#d2d2d7',
+  },
+  _menu: {
     backgroundColor: color.secondary.main,
     color: 'rgba(255, 255, 255, 0.87)',
+    paddingLeft: 0,
+    paddingRight: 0,
+    marginLeft: 0,
+    borderWidth: 0,
+  },
+  _menuTitle: {
+    color: 'rgba(255, 255, 255, 0.87)',
+    paddingLeft: 0,
+    marginLeft: 0,
+  },
+  _menuItem: {
+    color: 'rgba(255, 255, 255, 0.87)',
+    paddingLeft: 0,
+    marginLeft: 0,
+  },
+
+  _mainFooter: {
+    marginTop: 24,
+    color: 'rgba(255, 255, 255, 0.54)',
+  },
+  _copyrightFooter: {
+    color: 'rgba(255, 255, 255, 0.54)',
+    fontFamily: theme.fonts.regular,
+    fontSize: 14,
+  },
+  _titleFooter: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  _textTitleFooter: {
+    color: '#ffffff',
+    lineHeight: 20,
+    marginRight: 12,
+    marginBottom: 8,
+    fontFamily: theme.fonts.regular,
+    fontSize: 14,
+  },
+  _contentFooter: {},
+  _textContentFooter: {
+    color: 'rgba(255, 255, 255, 0.54)',
+    lineHeight: 20,
+    fontFamily: theme.fonts.regular,
+    fontSize: 12,
   },
 });
