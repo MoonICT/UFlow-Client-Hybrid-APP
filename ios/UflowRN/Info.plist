@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>제품의 바코드 스캔을 위해 카메라 접근을 허용합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -78,6 +78,14 @@
 		<string>Fontisto.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
+		<string>fonts/NotoSansCJKkr-Regular.ttf</string>
+		<string>fonts/NotoSansCJKkr-Black.ttf</string>
+		<string>fonts/NotoSansCJKkr-Bold.ttf</string>
+		<string>fonts/NotoSansCJKkr-DemiLight.ttf</string>
+		<string>fonts/NotoSansCJKkr-Light.ttf</string>
+		<string>fonts/NotoSansCJKkr-Medium.ttf</string>
+		<string>fonts/NotoSansCJKkr-Thin.ttf</string>
+		<string>NotoSansCJKkr-Regular.otf</string>
 	</array>
 </dict>
 </plist>
