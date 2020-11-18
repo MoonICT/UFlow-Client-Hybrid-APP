@@ -59,7 +59,7 @@ const TabScreenOptions = ({ route }) => ({
       case 'Sample':
         icon = 'forum';
         break;
-      case 'TextFeild':
+      case 'testScreen':
         icon = 'dots-horizontal';
         break;
     }
@@ -86,7 +86,7 @@ const TabScreen = () => {
       <Tab.Screen name="Search" component={SearchScreen} options={{ headerShown: false }} />
       {/* TODO Change route */}
       <Tab.Screen name="Sample" component={SampleScreen} />
-      <Tab.Screen name="TextFeild" component={TextFeild} options={{ headerShown: true }} />
+      <Tab.Screen name="testScreen" component={testScreen} options={{ headerShown: true }} />
     </Tab.Navigator>
   );
 };
