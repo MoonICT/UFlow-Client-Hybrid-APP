@@ -64,7 +64,7 @@ const TabScreenOptions = ({ route }) => ({
       case 'Sample':
         icon = 'forum';
         break;
-      case 'testScreen':
+      case 'TextFeild':
         icon = 'dots-horizontal';
         break;
     }
