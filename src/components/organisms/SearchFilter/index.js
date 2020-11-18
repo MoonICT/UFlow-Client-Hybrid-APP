@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Searchbar, List, withTheme } from 'react-native-paper';
+import { Searchbar, List, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -16,16 +16,34 @@ import ActionCreator from "@Actions";
 class SearchFilter extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render () {
     return (
       <View style={styles.container}>
-        <Text>{'Filter List'}</Text>
+        <ScrollView horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+
+          {/*<Button>{'dd'}</Button>*/}
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+          <Text>Filter</Text>
+
+        </ScrollView>
       </View>
-    ) ;
+    );
   }
 }
 
@@ -33,14 +51,12 @@ class SearchFilter extends Component {
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
   console.log('++++++mapStateToProps: ', state);
-  return {
-  };
+  return {};
 }
 
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps (dispatch) {
-  return {
-  };
+  return {};
 }
 
 export default compose(connect(
