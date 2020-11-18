@@ -5,6 +5,9 @@ const types = {
   POPUP_HIDE: 'POPUP_HIDE',
 
   // TODO 추가 타입 작성.
+
+  //REGISTER WH
+  UPLOAD_IMAGE_REGISTER: 'UPLOAD_IMAGE_REGISTER',
 };
 
 export default types;

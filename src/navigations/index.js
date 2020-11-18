@@ -30,9 +30,9 @@ import CameraScreen from '@Screeens/Camera';
 import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
 import TextFeild from '@Screeens/TextField';
-
 import testScreen from '@Screeens/testScreen';
-
+import RegisterWH from '@Screeens/RegisterWH';
+import RegisterImage from '@Screeens/RegisterWH/RegisterImage';
 //Custom Theme
 import {theme} from '../themes';
 
@@ -142,12 +142,23 @@ const App = () => {
                   headerMode={true}
                   options={{headerShown: true}}
                 />
-
                 <RootStack.Screen
                   name="testScreen"
                   component={testScreen}
                   headerMode={true}
                   options={{headerShown: true}}
+                />
+                <RootStack.Screen
+                  name="RegisterImage"
+                  component={RegisterWH}
+                  headerMode={false}
+                  options={{headerShown: false}}
+                />
+                <RootStack.Screen
+                  name="RegisterImage2"
+                  component={RegisterImage}
+                  headerMode={false}
+                  options={{headerShown: false}}
                 />
               </RootStack.Navigator>
             )}
