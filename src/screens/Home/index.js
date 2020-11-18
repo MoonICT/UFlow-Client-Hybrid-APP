@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-11-17 16:08:41
+ * @modify date 2020-11-17 18:18:09
  * @desc [description]
  */
 
@@ -71,6 +71,10 @@ import slogan2 from '@Assets/images/slogan2.png';
 import slogan3 from '@Assets/images/slogan3.png';
 import slogan4 from '@Assets/images/slogan4.png';
 import slogan5 from '@Assets/images/slogan5.png';
+
+import appstore1 from '@Assets/images/appstore-1.png';
+import appstore2 from '@Assets/images/appstore-2.png';
+import logoWhite from '@Assets/images/logo-white.png';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
@@ -575,7 +579,7 @@ class Home extends Component {
           {/**___Video Intro__*/}
           <View style={styles.mainVideo}>
             <Video
-              source={{uri: 'https://youtu.be/z7rM7mlgWsg'}}
+              source={{uri: 'https://www.youtube.com/watch?v=6hwz2mMTgIY'}}
               ref={ref => {
                 this.player = ref;
               }} // Store reference
@@ -641,10 +645,29 @@ class Home extends Component {
           </View>
 
           {/**___Help__*/}
-          <View style={[styles.mainHelp]}>
+          <ScrollView style={[styles.mainHelp]} horizontal={true}>
             <Text style={[styles.mainHelpText, styles.bold, styles.font34]}>
               1588.1333. HELP@UFLOW.CO.KR
             </Text>
+          </ScrollView>
+
+          {/**___App Download__*/}
+          <View style={[styles.mainAppDowload]}>
+            <Image source={logoWhite} />
+            <Text
+              style={[styles.bold, styles.white, styles.mainAppDowloadTitle]}>
+              <Text style={[styles.yellowColor, styles.bold]}>U</Text>it load
+              {' & '}
+              <Text style={[styles.yellowColor, styles.bold]}>F</Text>ulfillment
+              by{'\n'} <Text style={[styles.yellowColor, styles.bold]}>L</Text>
+              ogisAll <Text style={[styles.yellowColor, styles.bold]}>O</Text>
+              penable <Text style={[styles.yellowColor, styles.bold]}>W</Text>
+              arehouse
+            </Text>
+            <View style={styles.appSupport}>
+              <Image source={appstore1} style={styles.appSupportBTN} />
+              <Image source={appstore2} style={styles.appSupportBTN} />
+            </View>
           </View>
 
           {/**__Footer___ */}

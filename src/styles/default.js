@@ -4,9 +4,9 @@
  * 2020.07.05 Deokin.
  * */
 
-import {StyleSheet} from 'react-native';
-import {color} from '../themes/colors';
-import {theme} from '../themes/index';
+import { StyleSheet } from 'react-native';
+import { color } from '../themes/colors';
+import { theme } from '../themes/index';
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.

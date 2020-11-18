@@ -2,12 +2,12 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-11-17 16:05:41
+ * @modify date 2020-11-17 18:20:50
  * @desc [description]
  */
 
-import {Dimensions, StyleSheet} from 'react-native';
-import {color} from '@Themes/colors.js';
+import { Dimensions, StyleSheet } from 'react-native';
+import { color } from '@Themes/colors.js';
 
 const windowWidth = Dimensions.get('window').width;
 // const windowHeight = Dimensions.get('window').height;
@@ -39,6 +39,9 @@ export const styles = StyleSheet.create({
   },
   bold: {
     fontFamily: 'NotoSansCJKkr-Bold',
+  },
+  white: {
+    color: color.misc.white,
   },
   overlay: {
     width: '100%',
@@ -76,6 +79,9 @@ export const styles = StyleSheet.create({
     marginRight: 17,
     backgroundColor: color.primary.main,
     fontFamily: 'NotoSansCJKkr-Medium',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   //====================Slide==============================
   carousel: {
@@ -376,8 +382,34 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   mainHelpText: {
+    width: '200%',
     color: color.secondary.main,
     marginLeft: 16,
     overflow: 'hidden',
+  },
+
+  //---->main App download
+  mainAppDowload: {
+    height: 190,
+    display: 'flex',
+    backgroundColor: color.primary.main,
+    paddingTop: 24,
+    paddingBottom: 24,
+    paddingLeft: 32,
+    paddingRight: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mainAppDowloadTitle: {
+    textAlign: 'center',
+  },
+  appSupport: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  appSupportBTN: {
+    width: 142,
+    height: 42,
   },
 });

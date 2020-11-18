@@ -3,8 +3,7 @@
  * @desc [description]
  * */
 import React, {Component} from 'react';
-import {StyleSheet, ScrollView, Text, View, SafeAreaView} from 'react-native';
-import {List, Button} from 'react-native-paper';
+import {Text, View, SafeAreaView} from 'react-native';
 import DefaultStyle from '@Styles/default';
 import Lists from '@Components/organisms/List';
 class Footer extends Component {
@@ -15,7 +14,7 @@ class Footer extends Component {
 
   render() {
     const {data} = this.props;
-    console.log('data', data);
+    // console.log('data', data);
     return (
       <SafeAreaView style={DefaultStyle._wrapperFooter}>
         <View style={DefaultStyle._menuFooter}>

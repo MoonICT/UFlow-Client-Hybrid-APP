@@ -2,12 +2,12 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 15:28:22
- * @modify date 2020-11-12 10:52:06
+ * @modify date 2020-11-17 18:06:20
  * @desc [description]
  */
 
-import {DefaultTheme, configureFonts} from 'react-native-paper';
-import {color} from './colors';
+import { DefaultTheme, configureFonts } from 'react-native-paper';
+import { color } from './colors';
 
 const fontConfig = {
   default: {
@@ -59,14 +59,5 @@ export const theme = {
     // backdrop: color.primary.light, //color for backdrops of various components such as modals.
   },
   fonts: configureFonts(fontConfig),
-  // fonts: {
-  //   black: 'NotoSansCJKkr-Black',
-  //   bold: 'NotoSansCJKkr-Bold',
-  //   demilight: 'NotoSansCJKkr-DemiLight',
-  //   light: 'NotoSansCJKkr-Light',
-  //   medium: 'NotoSansCJKkr-Medium',
-  //   regular: 'NotoSansCJKkr-Regular',
-  //   thin: 'NotoSansCJKkr-Thin',
-  // },
   //   animation: {scale:},
 };
