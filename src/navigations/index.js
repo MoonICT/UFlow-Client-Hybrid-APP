@@ -9,12 +9,14 @@
 
 // Global Imports
 import React from 'react';
-import {Text} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {Provider} from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider } from 'react-redux';
+import { Button, IconButton } from 'react-native-paper';
+import { Platform } from 'react-native';
+
 // Local Imports
 //---> Screens
 import initStore from '@Store/index';
@@ -34,39 +36,57 @@ import TextFeild from '@Screeens/TextField';
 
 import testScreen from '@Screeens/testScreen';
 
+import { color } from '@Themes/colors';
+
 //Custom Theme
-import {theme} from '../themes';
+import { theme } from '../themes';
 
 const store = initStore();
 
 // 메인 탭 옵션 설정.(Sample)
-const TabScreenOptions = ({route}) => ({
-  tabBarIcon: ({focused, color, size}) => {
+const TabScreenOptions = ({ route }) => ({
+  tabBarIcon: ({ focused, tColor, tSize }) => {
     const routeName = route.name;
-    console.log(routeName);
-    let icon = '▲';
-
-    if (routeName === 'Home') {
-      icon = '⛺';
-    } else if (routeName === 'Sample') {
-      icon = '🛠';
+    let icon = '';
+    switch (routeName) {
+      case 'Home':
+        icon = 'home';
+        break;
+      case 'Search':
+        icon = 'magnify';
+        break;
+      // TODO change route
+      case 'Sample':
+        icon = 'forum';
+        break;
+      case 'TextFeild':
+        icon = 'dots-horizontal';
+        break;
     }
     return (
-      <Text style={{color: (focused && '#46c3ad') || '#888'}}>{icon}</Text>
+      focused ?
+        <IconButton size={24} color={color.primary.main} icon={icon}></IconButton> :
+        <IconButton size={24} icon={icon} color={'rgba(0, 0, 0, 0.54)'}></IconButton>
     );
   },
-  tabBarOptions: {
-    activeTintColor: '#46c3ad',
-    inactiveTintColor: '#888',
-  },
 });
+const TabBarOptions = {
+  showLabel: false,
+  tabStyle: {
+    borderTopWidth: 0.5,
+    borderTopColor: 'rgba(0, 0, 0, 0.1)',
+  }
+}
 
 const Tab = createBottomTabNavigator();
 const TabScreen = () => {
   return (
-    <Tab.Navigator screenOptions={TabScreenOptions}>
+    <Tab.Navigator screenOptions={TabScreenOptions} tabBarOptions={TabBarOptions}>
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} options={{ headerShown: false }} />
+      {/* TODO Change route */}
       <Tab.Screen name="Sample" component={SampleScreen} />
+      <Tab.Screen name="TextFeild" component={TextFeild} options={{ headerShown: true }} />
     </Tab.Navigator>
   );
 };
@@ -86,29 +106,24 @@ const App = () => {
             {!isLogin ? (
               <AuthStack.Navigator>
                 <AuthStack.Screen
-                  name="Search"
-                  component={SearchScreen}
-                  options={{headerShown: false}}
+                  name="Home"
+                  component={TabScreen}
+                  options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
                   name="Login"
                   component={LoginScreen}
-                  options={{headerShown: false}}
-                />
-                <AuthStack.Screen
-                  name="Home"
-                  component={TabScreen}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
                   name="ForgotID"
                   component={ForgotIDScreen}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
                   name="TextFeild"
                   component={TextFeild}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
               </AuthStack.Navigator>
             ) : (
@@ -116,44 +131,44 @@ const App = () => {
                 <RootStack.Screen
                   name="Home"
                   component={TabScreen}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <RootStack.Screen
                   name="Webview"
                   component={WebviewScreen}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
                 <RootStack.Screen
                   name="Camera"
                   component={CameraScreen}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
                 <RootStack.Screen
                   name="Notification"
                   component={Notification}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
                 <RootStack.Screen
                   name="Geolocations"
                   component={Geolocations}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
                 <RootStack.Screen
                   name="TextFeild"
                   component={TextFeild}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
 
                 <RootStack.Screen
                   name="testScreen"
                   component={testScreen}
                   headerMode={true}
-                  options={{headerShown: true}}
+                  options={{ headerShown: true }}
                 />
               </RootStack.Navigator>
             )}
