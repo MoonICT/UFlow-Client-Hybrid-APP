@@ -2,10 +2,10 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-06 16:54:09
- * @modify date 2020-11-13 11:33:10
+ * @modify date 2020-11-17 17:58:07
  * @desc [description]
  */
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {

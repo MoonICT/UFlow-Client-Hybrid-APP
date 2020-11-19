@@ -4,9 +4,9 @@
  * 2020.07.05 Deokin.
  * */
 
-import {StyleSheet} from 'react-native';
-import {color} from '../themes/colors';
-import {theme} from '../themes/index';
+import { StyleSheet } from 'react-native';
+import { color } from '../themes/colors';
+import { theme } from '../themes/index';
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.
@@ -366,7 +366,7 @@ export default StyleSheet.create({
     borderRadius: 4,
   },
   _titleList: {
-    fontFamily: theme.fonts.regular,
+    fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 16,
     color: color.text.primary,
     padding: 0,
@@ -375,7 +375,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   _itemList: {
-    fontFamily: theme.fonts.regular,
+    fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 16,
     color: color.text.primary,
     padding: 0,
@@ -410,7 +410,7 @@ export default StyleSheet.create({
   },
   _tabItem: {
     color: color.text.secondary,
-    fontFamily: theme.fonts.medium,
+    fontFamily: theme.fonts.medium.fontFamily,
     fontSize: 14,
     fontWeight: '500',
     borderBottomWidth: 1,
@@ -421,7 +421,7 @@ export default StyleSheet.create({
   },
   _contentGrid: {
     color: color.text.secondary,
-    fontFamily: theme.fonts.regular,
+    fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -455,7 +455,7 @@ export default StyleSheet.create({
   _wrapperFooter: {
     backgroundColor: color.secondary.main,
     color: 'rgba(255, 255, 255, 0.87)',
-    fontFamily: theme.fonts.regular,
+    fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     padding: 16,
   },
@@ -488,7 +488,7 @@ export default StyleSheet.create({
   },
   _copyrightFooter: {
     color: 'rgba(255, 255, 255, 0.54)',
-    fontFamily: theme.fonts.regular,
+    fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
   },
   _titleFooter: {
@@ -500,14 +500,14 @@ export default StyleSheet.create({
     lineHeight: 20,
     marginRight: 12,
     marginBottom: 8,
-    fontFamily: theme.fonts.regular,
+    fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
   },
   _contentFooter: {},
   _textContentFooter: {
     color: 'rgba(255, 255, 255, 0.54)',
     lineHeight: 20,
-    fontFamily: theme.fonts.regular,
+    fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 12,
   },
 });

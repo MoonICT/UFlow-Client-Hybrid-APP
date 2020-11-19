@@ -8,6 +8,9 @@
 [안드로이드 빌드 및 테스](https://dev-yakuza.github.io/ko/react-native/android-running-on-device/)
 ``` bash
 $ cd android
+// If build error
+$ ./gradlew clean
+// Apk build
 $ ./gradlew assembleRelease
 // Device Test 
 $ react-native run-android --variant=release

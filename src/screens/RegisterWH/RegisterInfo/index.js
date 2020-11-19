@@ -25,7 +25,7 @@ import {
   Checkbox,
   Text,
   Button,
-  IconButton,
+  ToggleButton,
 } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 
@@ -39,23 +39,6 @@ import ignore3 from '@Assets/images/ignore3x.png';
 import {styles as S} from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
-
-const createFormData = (photo, body) => {
-  const data = new FormData();
-
-  data.append('photo', {
-    name: photo.fileName,
-    type: photo.type,
-    uri:
-      Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
-  });
-
-  Object.keys(body).forEach(key => {
-    data.append(key, body[key]);
-  });
-
-  return data;
-};
 
 class RegisterImage extends Component {
   constructor(props) {
@@ -78,52 +61,6 @@ class RegisterImage extends Component {
   _addImage = () => console.log('_addImage');
   _removeImage = () => console.log('_removeImage');
 
-  handlePicker = () => {
-    // console.log('edit');
-    ImagePicker.showImagePicker({}, response => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        let imageData = [{uri: response.uri}];
-        imageData.push();
-        this.props.registerAction({uri: response.uri});
-        this.setState({
-          avatar: {uri: response.uri},
-          title: 'Updating...',
-          imgData: imageData,
-        });
-        fetch('http://localhost:3000/api/upload', {
-          method: 'POST',
-          // eslint-disable-next-line no-undef
-          headers: new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded', //Specifying the Content-Type
-          }),
-          body: createFormData(response, {id: '123'}),
-        })
-          .then(data => data.json())
-          .then(res => {
-            console.log('upload succes', res);
-            this.setState({
-              avatar2: {uri: response.image},
-              title: 'Profile Photo',
-            });
-          })
-          .catch(error => {
-            console.log('upload error', error);
-            this.setState({
-              title: 'Profile Photo',
-            });
-          });
-        // here we can call a API to upload image on server
-      }
-    });
-  };
   // componentWillUpdate(nextProps, nextState) {
   //   const state = this.state.avatar;
   //   // this.props.registerAction(state);
@@ -132,23 +69,6 @@ class RegisterImage extends Component {
   // }
   render() {
     const {imageStore} = this.props;
-    const listImg =
-      imageStore &&
-      imageStore.map((item, index) => {
-        // console.log('index', index);
-        if (index !== 0) {
-          return (
-            <View>
-              <Image style={S.itemImage} source={item} key={index} />
-              <IconButton
-                style={S.btnRemove}
-                icon="close-circle"
-                onPress={() => this.props.removeAction(index)}
-              />
-            </View>
-          );
-        }
-      });
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -158,48 +78,47 @@ class RegisterImage extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="사진 추가"
+            title="창고 정보"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-          <Appbar.Action
-            icon="image-plus"
-            color="black"
-            onPress={() => {
-              this.handlePicker();
-              // this.props.registerAction('44444');
-            }}
-          />
-          <Appbar.Action
-            icon="delete"
-            color="black"
-            onPress={this._removeImage}
-          />
         </Appbars>
         <ScrollView>
-          {!imageStore.length === 0 ? (
-            <View style={S.bgrRegister}>
-              <Image source={ignore3} style={S.ImageStyle} />
-              <Text style={S.textBgr}>최소 3장 이상 등록하세요.</Text>
-            </View>
-          ) : (
-            <View style={styles.imageContainer}>
-              <Image
-                style={S.ImageUpload}
-                source={imageStore[0]}
-                PlaceholderContent={<ActivityIndicator />}
-              />
-
-              <View
-                style={[
-                  S.listImage,
-                  (imageStore.length - 1) % 3 === 0 ? S.threeImage : null,
-                ]}>
-                {listImg}
-              </View>
-            </View>
-          )}
+          <ToggleButton.Row
+            onValueChange={value => this.setState({valueBtn: value})}
+            value={this.state.valueBtn}>
+            <ToggleButton
+              icon="format-align-left"
+              value="left"
+              style={[
+                DefaultStyle._toggleButton,
+                this.state.valueBtn === 'left'
+                  ? DefaultStyle._toggleBtnActive
+                  : '',
+              ]}
+            />
+            <ToggleButton
+              icon="format-align-center"
+              value="center"
+              style={[
+                DefaultStyle._toggleButton,
+                this.state.valueBtn === 'center'
+                  ? DefaultStyle._toggleBtnActive
+                  : '',
+              ]}
+            />
+            <ToggleButton
+              icon="format-align-right"
+              value="right"
+              style={[
+                DefaultStyle._toggleButton,
+                this.state.valueBtn === 'right'
+                  ? DefaultStyle._toggleBtnActive
+                  : '',
+              ]}
+            />
+          </ToggleButton.Row>
         </ScrollView>
         <TouchableOpacity
           onPress={() => this.navigation.navigate('RegisterImage')}

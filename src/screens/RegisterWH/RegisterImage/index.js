@@ -202,7 +202,7 @@ class RegisterImage extends Component {
           )}
         </ScrollView>
         <TouchableOpacity
-          onPress={() => this.navigation.navigate('RegisterImage')}
+          onPress={() => this.navigation.navigate('RegisterWH')}
           style={[
             S.btnSubmit,
             imageStore.length > 2 ? S.activeBtnSubmit : null,

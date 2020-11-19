@@ -68,12 +68,11 @@ class RegisterWH extends Component {
         <ScrollView>
           <TouchableOpacity
             style={S.imageRegister}
-            onPress={() => this.navigation.navigate('RegisterImage2')}>
+            onPress={() => this.navigation.navigate('RegisterImage')}>
             {imageStore.length > 0 ? (
               <Image style={S.ImageUpload} source={imageStore[0]} />
             ) : (
               <View>
-                {' '}
                 <Image source={ignore3} style={S.ImageStyle} />
                 <Text style={S.textImage}>사진 추가</Text>
               </View>
