@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -17,7 +17,7 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
   TextInput,
@@ -36,7 +36,8 @@ import ActionCreator from '../../../actions';
 import ignore2 from '@Assets/images/ignore2x.png';
 import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
-import {styles as S} from '../style';
+import { styles as S } from '../style';
+import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 
@@ -44,7 +45,7 @@ class RegisterImage extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = {title: 'Profile Photo', confirm: false};
+    this.state = { title: 'Profile Photo', confirm: false };
     this.navigation = props.navigation;
   }
 
@@ -68,7 +69,7 @@ class RegisterImage extends Component {
 
   // }
   render() {
-    const {imageStore} = this.props;
+    const { imageStore } = this.props;
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -85,40 +86,11 @@ class RegisterImage extends Component {
           />
         </Appbars>
         <ScrollView>
-          <ToggleButton.Row
-            onValueChange={value => this.setState({valueBtn: value})}
-            value={this.state.valueBtn}>
-            <ToggleButton
-              icon="format-align-left"
-              value="left"
-              style={[
-                DefaultStyle._toggleButton,
-                this.state.valueBtn === 'left'
-                  ? DefaultStyle._toggleBtnActive
-                  : '',
-              ]}
-            />
-            <ToggleButton
-              icon="format-align-center"
-              value="center"
-              style={[
-                DefaultStyle._toggleButton,
-                this.state.valueBtn === 'center'
-                  ? DefaultStyle._toggleBtnActive
-                  : '',
-              ]}
-            />
-            <ToggleButton
-              icon="format-align-right"
-              value="right"
-              style={[
-                DefaultStyle._toggleButton,
-                this.state.valueBtn === 'right'
-                  ? DefaultStyle._toggleBtnActive
-                  : '',
-              ]}
-            />
-          </ToggleButton.Row>
+          <View style={DefaultStyle}>
+            <TouchableOpacity onPress={()=>this.setState({value: '보관'})}>
+              <Text>보관</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
         <TouchableOpacity
           onPress={() => this.navigation.navigate('RegisterImage')}
@@ -163,10 +135,10 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    registerAction: action => {
+    registerAction: (action) => {
       dispatch(ActionCreator.uploadImage(action));
     },
-    removeAction: action => {
+    removeAction: (action) => {
       dispatch(ActionCreator.removeImage(action));
     },
     // countDown: diff => {
@@ -175,10 +147,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RegisterImage);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterImage);
 
 const styles = StyleSheet.create({
   container: {
@@ -196,5 +165,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
   },
-  body: {flex: 1},
+  body: { flex: 1 },
 });

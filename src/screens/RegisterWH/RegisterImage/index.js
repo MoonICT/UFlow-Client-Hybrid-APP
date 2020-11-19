@@ -12,7 +12,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
   Image,
   ActivityIndicator,
   Platform,
@@ -20,11 +19,8 @@ import {
 import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
-  TextInput,
   Appbar,
-  Checkbox,
   Text,
-  Button,
   IconButton,
 } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
@@ -33,11 +29,10 @@ import {
 import DefaultStyle from '@Styles/default';
 import Appbars from '../../../components/organisms/AppBar';
 import ActionCreator from '../../../actions';
-import ignore2 from '@Assets/images/ignore2x.png';
-import ignore1 from '@Assets/images/ignore.png';
+// import ignore2 from '@Assets/images/ignore2x.png';
+// import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
 import {styles as S} from '../style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 
 const createFormData = (photo, body) => {
