@@ -9,13 +9,17 @@
 
 // Global Imports
 import React from 'react';
-import { Text } from 'react-native';
+// import { Text, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Provider as PaperProvider } from 'react-native-paper';
+import {
+  Provider as PaperProvider,
+  // Button,
+  IconButton,
+} from 'react-native-paper';
 import { Provider } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Local Imports
 //---> Screens
@@ -37,6 +41,8 @@ import TextFeild from '@Screeens/TextField';
 import testScreen from '@Screeens/testScreen';
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
+import { color } from '@Themes/colors';
+
 //Custom Theme
 import { theme } from '../themes';
 
@@ -44,49 +50,59 @@ const store = initStore();
 
 // 메인 탭 옵션 설정.(Sample)
 const TabScreenOptions = ({ route }) => ({
-  tabBarIcon: ({ focused, color, size }) => {
+  tabBarIcon: ({ focused, tColor, tSize }) => {
     const routeName = route.name;
-    // console.log(routeName);
-    let icon = <Icon name={'home'} />;
-
-    if (routeName === 'Home') {
-      icon = <Icon name={'home'} size={20} />;
-    } else if (routeName === 'Search') {
-      icon = <Icon name={'search'} size={20} />;
-    } else if (routeName === 'Message') {
-      icon = <Icon name={'message'} size={20} />;
-    } else if (routeName === 'Sample') {
-      icon = <Icon name={'more'} size={20} />;
+    let icon = '';
+    switch (routeName) {
+      case 'Home':
+        icon = 'home';
+        break;
+      case 'Search':
+        icon = 'magnify';
+        break;
+      // TODO change route
+      case 'Sample':
+        icon = 'forum';
+        break;
+      case 'TextFeild':
+        icon = 'dots-horizontal';
+        break;
     }
-    return (
-      <Text
-        style={{
-          color: (focused && '#FF6D00') || 'rgba(0, 0, 0, 0.54)',
-          fontSize: 17,
-        }}>
-        {icon}
-      </Text>
+    return focused ? (
+      <IconButton size={24} color={color.primary.main} icon={icon} />
+    ) : (
+      <IconButton size={24} icon={icon} color={'rgba(0, 0, 0, 0.54)'} />
     );
   },
-  tabBarLabel: ({ focused, tintColor }) => {
-    return <Text style={{ height: 0 }} />;
-  },
-  tabBarOptions: {
-    showLabel: false,
-    activeTintColor: '#FF6D00',
-    inactiveTintColor: 'rgba(0, 0, 0, 0.54)',
-  },
 });
+const TabBarOptions = {
+  showLabel: false,
+  tabStyle: {
+    borderTopWidth: 0.5,
+    borderTopColor: 'rgba(0, 0, 0, 0.1)',
+  },
+};
 
 const Tab = createBottomTabNavigator();
 //{/** tabBar={props => <CustomTabBar {...props} />}>/*}
 const TabScreen = () => {
   return (
-    <Tab.Navigator screenOptions={TabScreenOptions}>
+    <Tab.Navigator
+      screenOptions={TabScreenOptions}
+      tabBarOptions={TabBarOptions}>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Search" component={SampleScreen} />
-      <Tab.Screen name="Message" component={SampleScreen} />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ headerShown: false }}
+      />
+      {/* TODO Change route */}
       <Tab.Screen name="Sample" component={SampleScreen} />
+      <Tab.Screen
+        name="TextFeild"
+        component={TextFeild}
+        options={{ headerShown: true }}
+      />
     </Tab.Navigator>
   );
 };
@@ -106,18 +122,13 @@ const App = () => {
             {!isLogin ? (
               <AuthStack.Navigator>
                 <AuthStack.Screen
-                  name="Search"
-                  component={SearchScreen}
+                  name="Home"
+                  component={TabScreen}
                   options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
                   name="Login"
                   component={LoginScreen}
-                  options={{ headerShown: false }}
-                />
-                <AuthStack.Screen
-                  name="Home"
-                  component={TabScreen}
                   options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
