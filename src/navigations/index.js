@@ -33,6 +33,7 @@ import TextFeild from '@Screeens/TextField';
 import testScreen from '@Screeens/testScreen';
 import RegisterWH from '@Screeens/RegisterWH';
 import RegisterImage from '@Screeens/RegisterWH/RegisterImage';
+import RegisterInfo from '@Screeens/RegisterWH/RegisterInfo';
 //Custom Theme
 import {theme} from '../themes';
 
@@ -149,14 +150,20 @@ const App = () => {
                   options={{headerShown: true}}
                 />
                 <RootStack.Screen
-                  name="RegisterImage"
+                  name="RegisterWH"
                   component={RegisterWH}
                   headerMode={false}
                   options={{headerShown: false}}
                 />
                 <RootStack.Screen
-                  name="RegisterImage2"
+                  name="RegisterImage"
                   component={RegisterImage}
+                  headerMode={false}
+                  options={{headerShown: false}}
+                />
+                <RootStack.Screen
+                  name="RegisterInfo"
+                  component={RegisterInfo}
                   headerMode={false}
                   options={{headerShown: false}}
                 />

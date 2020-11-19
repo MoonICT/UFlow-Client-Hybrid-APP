@@ -98,6 +98,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
   },
+  activeBtnSubmit: {backgroundColor: '#ff6d00'},
   textSubmit: {
     textAlign: 'center',
     fontFamily: 'NotoSansCJKkr-Medium',
@@ -106,9 +107,34 @@ export const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.54)',
     lineHeight: 26,
   },
-
+  textActiveSubmit: {
+    color: '#ffffff',
+  },
   ImageUpload: {
     width: '100%',
     height: 238,
+  },
+  listImage: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+    padding: 16,
+  },
+  itemImage: {
+    height: 90,
+    width: 104,
+    marginBottom: 8,
+    marginRight: 8,
+    borderRadius: 4,
+  },
+  threeImage: {
+    justifyContent: 'space-between',
+  },
+  btnRemove: {
+    position: 'absolute',
+    top: 0,
+    right: 8,
+    minWidth: 0,
+    margin: 0,
   },
 });

@@ -69,9 +69,9 @@ export default class Sample extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('RegisterImage')}
+            onPress={() => this.props.navigation.navigate('RegisterWH')}
             style={DefaultStyle.btn}>
-            <Text>{'RegisterImage Sample'}</Text>
+            <Text>{'RegisterWH Sample'}</Text>
           </TouchableOpacity>
           <View style={styles.button}>
             {/*<Button

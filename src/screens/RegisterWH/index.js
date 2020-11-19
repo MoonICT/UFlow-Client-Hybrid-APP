@@ -48,6 +48,8 @@ class RegisterWH extends Component {
   }
 
   render() {
+    const {imageStore} = this.props;
+    console.log('imageStore', imageStore);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -67,11 +69,20 @@ class RegisterWH extends Component {
           <TouchableOpacity
             style={S.imageRegister}
             onPress={() => this.navigation.navigate('RegisterImage2')}>
-            <Image source={ignore3} style={S.ImageStyle} />
-            <Text style={S.textImage}>사진 추가</Text>
+            {imageStore.length > 0 ? (
+              <Image style={S.ImageUpload} source={imageStore[0]} />
+            ) : (
+              <View>
+                {' '}
+                <Image source={ignore3} style={S.ImageStyle} />
+                <Text style={S.textImage}>사진 추가</Text>
+              </View>
+            )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={S.btnTypeRegister} onPress={() => {}}>
+          <TouchableOpacity
+            style={S.btnTypeRegister}
+            onPress={() => this.navigation.navigate('RegisterInfo')}>
             <Text style={S.textLeftBtn}>사진 추가</Text>
             <View style={S.rightBtn}>
               <Text style={S.textRightBtn}>입력하세요</Text>
@@ -154,7 +165,7 @@ class RegisterWH extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    // count: state.home.count,
+    imageStore: state.registerWH.imageData,
   };
 }
 

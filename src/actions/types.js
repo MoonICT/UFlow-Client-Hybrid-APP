@@ -8,6 +8,7 @@ const types = {
 
   //REGISTER WH
   UPLOAD_IMAGE_REGISTER: 'UPLOAD_IMAGE_REGISTER',
+  REMOVE_IMAGE_REGISTER: 'REMOVE_IMAGE_REGISTER',
 };
 
 export default types;
