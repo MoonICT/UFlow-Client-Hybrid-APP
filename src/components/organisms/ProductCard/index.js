@@ -88,7 +88,7 @@ class ProductCard extends Component {
               <TouchableOpacity
                 style={[styles.label, styles.labelGray]}
                 title={'보세'}>
-                <Text style={[styles.font9, styles.grayColor]}>냉장</Text>
+                <Text style={[styles.font9, styles.grayColor]}>보세</Text>
               </TouchableOpacity>
             </View>
 
@@ -119,6 +119,7 @@ ProductCard.defaultProps = {
   isShadow: true,
 }
 ProductCard.protoType = {
+  data: PropTypes.object,
   type: PropTypes.string, // VERTICAL(Default), HORIZONTAL
   isShadow: PropTypes.bool,
 };
