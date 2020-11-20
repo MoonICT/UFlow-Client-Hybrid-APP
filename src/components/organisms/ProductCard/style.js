@@ -101,6 +101,26 @@ export const styles = StyleSheet.create({
     height: 124,
     borderRadius: 12,
   },
+  badge: {
+    position: 'absolute',
+    left: 16,
+    top: 0,
+    backgroundColor: color.primary.main,
+    width: 46,
+    height: 38,
+    borderBottomLeftRadius: 100,
+    borderBottomRightRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badgeRed: {
+    backgroundColor: '#f2453d'
+  },
+  badgeLabel: {
+    top: -3,
+    fontSize: 9,
+    color: '#fff',
+  },
 
   /************* Contents **************/
   // Label

@@ -33,6 +33,7 @@ class ProductCard extends Component {
         price: '12,345평',
         address: '경기도 화천시 부평읍',
         totalPrice: '60,000원/평',
+        badgeType: true
       };
     }
 
@@ -45,6 +46,11 @@ class ProductCard extends Component {
           <View style={styles.imageWrap}>
             <Card.Cover source={data.img}
                         style={[styles.cardImage, (this.state.isHorizontal && styles.cardImageHorizon)]} />
+            <View style={[styles.badge, (data.badgeType && styles.badgeRed)]}>
+              <Text style={[styles.badgeLabel]}>
+                {data.badge ? '가맹창고' : '제휴창고'}
+              </Text>
+            </View>
           </View>
 
           {/** Contents */}
