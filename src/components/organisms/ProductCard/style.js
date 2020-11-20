@@ -6,15 +6,19 @@
  * @desc [description]
  */
 
-import {StyleSheet} from 'react-native';
-import {color} from '@Themes/colors';
+import { StyleSheet } from 'react-native';
+import { color } from '@Themes/colors';
 
 export const styles = StyleSheet.create({
+  /************* Commons **************/
+  // Fonts
   font9: {
     fontSize: 9,
+    lineHeight: 13,
   },
   font14: {
     fontSize: 14,
+    lineHeight: 19,
   },
   regular: {
     fontFamily: 'NotoSansCJKkr-Regular',
@@ -25,9 +29,14 @@ export const styles = StyleSheet.create({
   bold: {
     fontFamily: 'NotoSansCJKkr-Bold',
   },
-
-  //colors
-  defaultColor: {
+  fontColor1: {
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
+  fontColor2: {
+    color: 'rgba(0, 0, 0, 0.87)',
+  },
+  // Colors
+  primaryColor: {
     color: color.primary.main,
   },
   blueColor: {
@@ -40,80 +49,84 @@ export const styles = StyleSheet.create({
     color: color.grey._600,
   },
 
-  //border
-  blueActionBTN: {
-    borderColor: color.tertiary_02.main,
-    borderStyle: 'solid',
-    marginLeft: 2,
-  },
-  greenActionBTN: {
-    borderColor: color.success.main,
-    borderStyle: 'solid',
-    marginLeft: 2,
-  },
-  grayActionBTN: {
-    borderColor: color.grey._600,
-    borderStyle: 'solid',
-    marginLeft: 2,
-  },
-
+  /************* Layout **************/
   container: {
     borderRadius: 12,
-    height: 261,
-    overflow: 'hidden',
+    backgroundColor: '#fff',
+  },
+  shadow: {
+    // for iOS
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2,
     },
-    shadowColor: 'rgba(0, 0, 0, 0.06)',
-    shadowOpacity: 20,
-    shadowRadius: 12,
-    elevation: 8,
+    // for Android
+    elevation: 5,
+  },
+  innerWrap: {
+    flex: 1,
+    flexDirection: 'column',
+    overflow: 'hidden',
+  },
+  innerWrapHorizon: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  imageWrap: {
+    flex: 1,
+  },
+  contentWrap: {
+    flex: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 16,
+  },
+  contentWrapHorizon: {
+    paddingVertical: 0,
+    paddingLeft: 8,
+    paddingRight: 0,
   },
 
-  content: {
-    padding: 16,
-    display: 'flex',
-  },
+  /************* Image **************/
   cardImage: {
     width: '100%',
     height: 104,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
+    flex: 1,
   },
-  typeTitle: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    margin: 0,
-    padding: 0,
-    lineHeight: 11,
+  cardImageHorizon: {
+    height: 124,
+    borderRadius: 12,
   },
-  titleType: {
-    color: 'rgba(0, 0, 0, 0.87)',
-    margin: 0,
-    lineHeight: 22,
-  },
-  contentTitle: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    lineHeight: 13,
-  },
-  contentBottomTitle: {
-    marginTop: 22,
-  },
-  cardAction: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  cardActionTypeBTN: {
+
+  /************* Contents **************/
+  // Label
+  label: {
     width: 29,
     height: 15,
-    fontSize: 9,
     borderWidth: 1,
-    borderColor: color.primary.main,
+    marginRight: 2,
     borderStyle: 'solid',
-    display: 'flex',
     alignItems: 'center',
     backgroundColor: 'transparent',
+  },
+  labelPrimary: {
+    borderColor: color.primary.main,
+  },
+  labelBlue: {
+    borderColor: color.tertiary_02.main,
+  },
+  labelGreen: {
+    borderColor: color.success.main,
+  },
+  labelGray: {
+    borderColor: color.grey._600,
+  },
+  cardAction: {
+    flexDirection: 'row',
+    marginBottom: 4,
   },
 });

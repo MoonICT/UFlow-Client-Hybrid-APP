@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Slider from "react-native-slider";
@@ -38,5 +39,16 @@ class RangeSlider extends Component {
     );
   }
 }
+
+// Check Props Type.
+RangeSlider.protoType = {
+  value: PropTypes.number,
+  step: PropTypes.number,
+  minimumValue: PropTypes.number,
+  maximumValue: PropTypes.number,
+  LabelMiddle: PropTypes.string,
+  contentStyle: PropTypes.object,
+  onValueChange: PropTypes.func,
+};
 
 export default RangeSlider;

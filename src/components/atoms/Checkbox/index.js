@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Text } from 'react-native-paper';
 import { TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -35,5 +36,13 @@ class Checkbox extends Component {
     );
   }
 }
+
+// Check Props Type.
+Checkbox.protoType = {
+  label: PropTypes.string,
+  checked: PropTypes.bool,
+  disabled: PropTypes.bool,
+  onPress: PropTypes.func,
+};
 
 export default Checkbox;

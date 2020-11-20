@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, ScrollView, Animated, TouchableOpacity } from 'react-native';
 import { withTheme, TextInput } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -111,6 +112,10 @@ function mapDispatchToProps (dispatch) {
     },
   };
 }
+
+// Check Props Type.
+SearchFilter.protoType = {
+};
 
 export default compose(connect(
   mapStateToProps,

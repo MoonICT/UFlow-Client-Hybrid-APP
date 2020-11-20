@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Text } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -32,5 +33,12 @@ class FilterButton extends Component {
     );
   }
 }
+
+// Check Props Type.
+FilterButton.protoType = {
+  isToggle: PropTypes.bool,
+  style: PropTypes.object,
+  label: PropTypes.string,
+};
 
 export default FilterButton;

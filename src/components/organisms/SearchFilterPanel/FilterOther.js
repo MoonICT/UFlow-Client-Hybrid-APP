@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, ScrollView, SafeAreaView } from 'react-native';
 import { withTheme, Text, Appbar, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -356,6 +357,11 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {};
 }
+
+// Check Props Type.
+RangeSlider.protoType = {
+  onClosed: PropTypes.func,
+};
 
 export default compose(connect(
   mapStateToProps,

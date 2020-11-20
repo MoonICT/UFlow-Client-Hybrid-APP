@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, TouchableOpacity } from 'react-native';
 import { withTheme, Text, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -121,6 +122,11 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {};
 }
+
+// Check Props Type.
+FilterStorage.protoType = {
+  onClosed: PropTypes.func,
+};
 
 export default compose(connect(
   mapStateToProps,

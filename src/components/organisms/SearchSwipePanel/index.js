@@ -13,13 +13,14 @@ import { SwipeablePanel } from 'rn-swipeable-panel';
 // Local Imports
 import { styles } from './style';
 import ActionCreator from "@Actions";
+import ProductCard from '@Components/organisms/ProductCard';
 
 class SearchSwipePanel extends Component {
   constructor (props) {
     super(props);
     this.swipeUpDownRef = null
     this.state = {
-      isPanelActive: false
+      isPanelActive: true
     };
   }
 
@@ -38,7 +39,10 @@ class SearchSwipePanel extends Component {
   };
 
   render () {
-    let arr = [1, 2, 3, 4, 5, 6];
+    let arr = [
+      { type: 'HORIZONTAL' },
+      { type: 'VERTICAL' }
+    ];
     return (
       <>
         <TouchableOpacity style={styles.swipeBar} onPress={() => this._openPanel()}>
@@ -55,19 +59,17 @@ class SearchSwipePanel extends Component {
           onClose={this._closePanel}
           barStyle={styles.bar}
         >
-          <ScrollView>
-            {arr.map((item, index) => <Card key={index}>
-              <Card.Content>
-                <Title>Card title</Title>
-                <Paragraph>Card content</Paragraph>
-              </Card.Content>
-              <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-              <Card.Actions>
-                <Button onPress={() => {
-                }}>Cancel</Button>
-                <Button>Ok</Button>
-              </Card.Actions>
-            </Card>)}
+          <ScrollView style={{
+            paddingHorizontal: 16,
+          }}>
+            <View style={{ marginTop: 50, }}></View>
+
+
+            {arr.map((item, index) =>
+              <TouchableOpacity style={{ marginBottom: 20 }}>
+                <ProductCard type={item.type} />
+              </TouchableOpacity>
+            )}
           </ScrollView>
         </SwipeablePanel>
 
