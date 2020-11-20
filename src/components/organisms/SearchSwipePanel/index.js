@@ -56,7 +56,7 @@ class SearchSwipePanel extends Component {
           barStyle={styles.bar}
         >
           <ScrollView>
-            {arr.map(() => <Card>
+            {arr.map((item, index) => <Card key={index}>
               <Card.Content>
                 <Title>Card title</Title>
                 <Paragraph>Card content</Paragraph>
