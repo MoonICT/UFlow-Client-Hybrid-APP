@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   View,
@@ -14,9 +14,9 @@ import {
   TouchableHighlight,
   Image,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
+import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
@@ -26,7 +26,7 @@ import ActionCreator from '../../actions';
 import ignore2 from '@Assets/images/ignore2x.png';
 import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
-import {styles as S} from './style';
+import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class RegisterWH extends Component {
@@ -48,7 +48,7 @@ class RegisterWH extends Component {
   }
 
   render() {
-    const {imageStore} = this.props;
+    const { imageStore } = this.props;
     console.log('imageStore', imageStore);
     return (
       <SafeAreaView style={S.container}>
@@ -141,9 +141,11 @@ class RegisterWH extends Component {
             </View>
           </TouchableOpacity>
         </ScrollView>
-        <TouchableOpacity style={S.btnSubmit}>
-          <Text style={S.textSubmit}>창고 등록하기</Text>
-        </TouchableOpacity>
+        <View style={S.footerRegister}>
+          <TouchableOpacity style={S.btnSubmit}>
+            <Text style={S.textSubmit}>창고 등록하기</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }

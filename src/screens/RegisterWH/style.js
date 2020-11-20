@@ -4,8 +4,8 @@
  * @desc [description]
  */
 
-import {StyleSheet, Dimensions} from 'react-native';
-
+import { StyleSheet, Dimensions } from 'react-native';
+import { color } from '../../themes/colors';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -16,7 +16,11 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingBottom: 24,
   },
-  bodyRegister: {flex: 1},
+  containerRegister: {
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+  },
+
+  bodyRegister: { flex: 1 },
   imageRegister: {
     backgroundColor: '#fafafa',
     height: 238,
@@ -91,14 +95,14 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
     width: windowWidth - 32,
     justifyContent: 'center',
-    margin: 16,
+    // margin: 16,
     marginBottom: 24,
     bottom: 0,
     // marginTop: 148,
     alignItems: 'center',
     padding: 8,
   },
-  activeBtnSubmit: {backgroundColor: '#ff6d00'},
+  activeBtnSubmit: { backgroundColor: '#ff6d00' },
   textSubmit: {
     textAlign: 'center',
     fontFamily: 'NotoSansCJKkr-Medium',
@@ -136,5 +140,71 @@ export const styles = StyleSheet.create({
     right: 8,
     minWidth: 0,
     margin: 0,
+  },
+
+  titleBody: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  textTitleBody: {
+    color: color.text.primary,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 21,
+    paddingTop: 24,
+    paddingBottom: 24,
+  },
+  textNote: {
+    color: color.primary.main,
+  },
+  rightTitle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnAdd: {
+    borderWidth: 1,
+    borderColor: color.primary.main,
+    borderRadius: 18,
+  },
+  textAdd: {
+    color: color.primary.main,
+    lineHeight: 24,
+    padding: 6,
+    paddingLeft: 17,
+    paddingRight: 17,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 14,
+    fontWeight: '500',
+    fontStyle: 'normal',
+  },
+  cards: {
+    borderWidth: 1,
+    borderColor: '#e5e5ea',
+    borderRadius: 8,
+    padding: 16,
+  },
+
+  footerRegister: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingLeft: 14,
+    paddingRight: 14,
+  },
+  textFooter: { paddingBottom: 2 },
+  searchRegister: {
+    height: 56,
+    alignSelf: 'center',
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 16,
+  },
+  footerIntro: {
+    marginTop: 0,
+  },
+  mrBottom0: {
+    marginBottom: 0,
   },
 });

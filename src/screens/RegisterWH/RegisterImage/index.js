@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -16,13 +16,9 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {
-  Appbar,
-  Text,
-  IconButton,
-} from 'react-native-paper';
+import { Appbar, Text, IconButton } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
@@ -32,7 +28,7 @@ import ActionCreator from '../../../actions';
 // import ignore2 from '@Assets/images/ignore2x.png';
 // import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
-import {styles as S} from '../style';
+import { styles as S } from '../style';
 import ImagePicker from 'react-native-image-picker';
 
 const createFormData = (photo, body) => {
@@ -56,7 +52,7 @@ class RegisterImage extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = {title: 'Profile Photo', confirm: false};
+    this.state = { title: 'Profile Photo', confirm: false };
     this.navigation = props.navigation;
   }
 
@@ -85,11 +81,11 @@ class RegisterImage extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        let imageData = [{uri: response.uri}];
+        let imageData = [{ uri: response.uri }];
         imageData.push();
-        this.props.registerAction({uri: response.uri});
+        this.props.registerAction({ uri: response.uri });
         this.setState({
-          avatar: {uri: response.uri},
+          avatar: { uri: response.uri },
           title: 'Updating...',
           imgData: imageData,
         });
@@ -99,13 +95,13 @@ class RegisterImage extends Component {
           headers: new Headers({
             'Content-Type': 'application/x-www-form-urlencoded', //Specifying the Content-Type
           }),
-          body: createFormData(response, {id: '123'}),
+          body: createFormData(response, { id: '123' }),
         })
           .then(data => data.json())
           .then(res => {
             console.log('upload succes', res);
             this.setState({
-              avatar2: {uri: response.image},
+              avatar2: { uri: response.image },
               title: 'Profile Photo',
             });
           })
@@ -126,7 +122,7 @@ class RegisterImage extends Component {
 
   // }
   render() {
-    const {imageStore} = this.props;
+    const { imageStore } = this.props;
     const listImg =
       imageStore &&
       imageStore.map((item, index) => {
@@ -196,21 +192,23 @@ class RegisterImage extends Component {
             </View>
           )}
         </ScrollView>
-        <TouchableOpacity
-          onPress={() => this.navigation.navigate('RegisterWH')}
-          style={[
-            S.btnSubmit,
-            imageStore.length > 2 ? S.activeBtnSubmit : null,
-          ]}
-          disabled={imageStore.length > 2 ? false : true}>
-          <Text
+        <View style={S.footerRegister}>
+          <TouchableOpacity
+            onPress={() => this.navigation.navigate('RegisterWH')}
             style={[
-              S.textSubmit,
-              imageStore.length > 2 ? S.textActiveSubmit : null,
-            ]}>
-            확인
-          </Text>
-        </TouchableOpacity>
+              S.btnSubmit,
+              imageStore.length > 2 ? S.activeBtnSubmit : null,
+            ]}
+            disabled={imageStore.length > 2 ? false : true}>
+            <Text
+              style={[
+                S.textSubmit,
+                imageStore.length > 2 ? S.textActiveSubmit : null,
+              ]}>
+              확인
+            </Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }
@@ -272,5 +270,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
   },
-  body: {flex: 1},
+  body: { flex: 1 },
 });

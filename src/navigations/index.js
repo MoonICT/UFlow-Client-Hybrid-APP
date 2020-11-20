@@ -41,6 +41,7 @@ import testScreen from '@Screeens/testScreen';
 import RegisterWH from '@Screeens/RegisterWH';
 import RegisterImage from '@Screeens/RegisterWH/RegisterImage';
 import RegisterInfo from '@Screeens/RegisterWH/RegisterInfo';
+import RegisterIntro from '@Screeens/RegisterWH/RegisterInfo/introduction';
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
 import { color } from '@Themes/colors';
@@ -205,6 +206,12 @@ const App = () => {
                   headerMode={false}
                   options={{headerShown: false}}
                 />
+                <RootStack.Screen
+                name="RegisterIntro"
+                component={RegisterIntro}
+                headerMode={false}
+                options={{headerShown: false}}
+              />
               </RootStack.Navigator>
             )}
           </Global>
