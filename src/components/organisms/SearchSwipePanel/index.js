@@ -4,12 +4,13 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
 import { Avatar, withTheme, Card, Title, Paragraph, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { SwipeablePanel } from 'rn-swipeable-panel';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Modalize } from 'react-native-modalize';
+import { getStatusBarHeight } from "react-native-status-bar-height";
+import { isIphoneX, getBottomSpace } from "react-native-iphone-x-helper";
 
 // Local Imports
 import { styles } from './style';
@@ -17,27 +18,20 @@ import ActionCreator from "@Actions";
 import Alert from '@Components/atoms/Alert';
 import ProductCard from '@Components/organisms/ProductCard';
 
+const status = getStatusBarHeight(true);
+
 class SearchSwipePanel extends Component {
   constructor (props) {
     super(props);
-    this.swipeUpDownRef = null
-    this.state = {
-      isPanelActive: false
-    };
+    this.state = {};
+    // Ref
+    this.sheetRef = React.createRef();
   }
 
-  _open () {
-    console.log('1111')
-    console.log(this.swipeUpDownRef)
-    this.swipeUpDownRef.showFull();
-  }
-
-  _openPanel = () => {
-    this.setState({ isPanelActive: true });
-  };
-
-  _closePanel = () => {
-    this.setState({ isPanelActive: false });
+  _onChange = (position) => {
+    // top | initial
+    console.log('Change Bottom Sheet !!!', position);
+    // TODO 목록 갱신.
   };
 
   render () {
@@ -53,77 +47,59 @@ class SearchSwipePanel extends Component {
       { type: 'HORIZONTAL' },
       { type: 'HORIZONTAL' },
     ];
+    let height = Math.round(Dimensions.get('window').height)
+    if (Platform.OS === 'ios') {
+      const naviHeight = 54;
+      const filterHeight = 48 * 2;
+      if (isIphoneX()) {
+        console.log('아이폰x')
+        height = Dimensions.get("window").height - status - getBottomSpace() - naviHeight - filterHeight;
+      } else {
+        console.log('아이폰 일반')
+        height = Dimensions.get("window").height - status - naviHeight - filterHeight;
+      }
+    }
+    console.log('높이', height)
     return (
       <>
-        <TouchableOpacity style={styles.swipeBar} onPress={() => this._openPanel()}>
-          <View style={styles.bar}></View>
-        </TouchableOpacity>
-        <SwipeablePanel
-          style={{
-            // marginTop: -100,
-          }}
-          isActive={this.state.isPanelActive}
-          noBackgroundOpacity={true}
-          fullWidth={true}
-          onlyLarge={true}
-          onClose={this._closePanel}
-          barStyle={styles.bar}
-        >
+        <Modalize ref={this.sheetRef}
+                  handlePosition={'inside'}
+                  modalHeight={height}
+                  alwaysOpen={30}
+                  onPositionChange={(position) => {
+                    this._onChange(position);
+                  }}
+                  handleStyle={styles.sheetHandleBar}
+                  childrenStyle={styles.sheetContent}>
 
-          {/** 창고 목록 영역 */}
-          <ScrollView style={{
-            paddingHorizontal: 16,
-          }}>
+          {/** 목록 스크롤 뷰 */}
+          <ScrollView style={{ paddingHorizontal: 16, }}>
 
-            <View style={{ marginTop: 50, }}></View>
+            <Text style={styles.counterText}>{'창고 목록 총 1,400개'}</Text>
 
-            <Text style={{
-              fontSize: 12,
-              color: 'rgba(0, 0, 0, 0.87)',
-              lineHeight: 20,
-            }}>{'창고 목록 총 1,400개'}</Text>
-
-            {[
-              // { type: 'ERROR' },
-              // { type: 'WARNING' },
-              { type: 'INFO' },
-              // { type: 'SUCCESS' },
-            ].map((item) => <Alert type={item.type} />)}
+            <Alert
+              type={'INFO'}
+              buttonText={'확인'}
+              content={'이 지역 UFLOW 추천 광고 보기'}
+              onPress={() => {
+                alert('추천광고 목록');
+              }}
+            />
 
             {/** 목록 */}
             <View style={styles.divider} />
             {arr.map((item, index) =>
-              <>
+              <View key={index}>
                 <TouchableOpacity onPress={() => {
                   alert('Go detail.');
                 }}>
                   <ProductCard type={item.type} isShadow={false} />
                 </TouchableOpacity>
                 <View style={styles.divider} />
-              </>
+              </View>
             )}
           </ScrollView>
-        </SwipeablePanel>
-
-        {/*<TouchableOpacity style={styles.swipeBar} onPress={() => this._open()}>*/}
-        {/*<View style={styles.bar}></View>*/}
-        {/*</TouchableOpacity>*/}
-        {/*<SwipeUpDown*/}
-        {/*hasRef={ref => (this.swipeUpDownRef = ref)}*/}
-        {/*itemFull={*/}
-        {/*<Text>*/}
-        {/*Welcome to component {'\n'} Swipe Up Down on React Native*/}
-        {/*</Text>*/}
-        {/*}*/}
-        {/*onShowMini={() => console.log('mini')}*/}
-        {/*onShowFull={() => console.log('full')}*/}
-        {/*disablePressToShow={false}*/}
-        {/*swipeHeight={40}*/}
-        {/*animation="easeInEaseOut"*/}
-        {/*style={{*/}
-        {/*height: '90%',*/}
-        {/*}}*/}
-        {/*/>*/}
+        </Modalize>
       </>
     );
   }

@@ -110,7 +110,7 @@ class FilterOther extends Component {
               <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'대지면적'}</Text>
             </View>
             <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.areaLand === 30000 || this.state.areaLand === 0) ? '전체' : this.state.areaLand.toLocaleString() + '㎡'}
+              {(this.state.areaLand === 30000 || this.state.areaLand === 0) ? '전체' : this.state.areaLand.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
             </Text>
           </View>
 
@@ -135,7 +135,7 @@ class FilterOther extends Component {
               <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'건축면적'}</Text>
             </View>
             <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.areaBuilding === 30000 || this.state.areaBuilding === 0) ? '전체' : this.state.areaBuilding.toLocaleString() + '㎡'}
+              {(this.state.areaBuilding === 30000 || this.state.areaBuilding === 0) ? '전체' : this.state.areaBuilding.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
             </Text>
           </View>
           {/** Slider */}
@@ -159,7 +159,7 @@ class FilterOther extends Component {
               <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'연면적'}</Text>
             </View>
             <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.areaTotal === 30000 || this.state.areaTotal === 0) ? '전체' : this.state.areaTotal.toLocaleString() + '㎡'}
+              {(this.state.areaTotal === 30000 || this.state.areaTotal === 0) ? '전체' : this.state.areaTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
             </Text>
           </View>
           {/** Slider */}
@@ -214,7 +214,7 @@ class FilterOther extends Component {
               <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'층고'}</Text>
             </View>
             <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.floorHeight === 10 || this.state.floorHeight === 0) ? '전체' : this.state.floorHeight.toLocaleString() + 'm'}
+              {(this.state.floorHeight === 10 || this.state.floorHeight === 0) ? '전체' : this.state.floorHeight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + 'm'}
             </Text>
           </View>
           {/** Slider */}
