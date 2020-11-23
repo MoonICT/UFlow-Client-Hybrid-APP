@@ -64,10 +64,10 @@ const TabScreenOptions = ({ route }) => ({
         icon = 'magnify';
         break;
       // TODO change route
-      case 'Sample':
+      case 'TextFeild':
         icon = 'forum';
         break;
-      case 'TextFeild':
+      case 'testScreen':
         icon = 'dots-horizontal';
         break;
     }
@@ -100,10 +100,10 @@ const TabScreen = () => {
         options={{ headerShown: false }}
       />
       {/* TODO Change route */}
-      <Tab.Screen name="Sample" component={SampleScreen} />
+      <Tab.Screen name="TextFeild" component={TextFeild} />
       <Tab.Screen
-        name="TextFeild"
-        component={TextFeild}
+        name="testScreen"
+        component={testScreen}
         options={{ headerShown: true }}
       />
     </Tab.Navigator>
@@ -140,7 +140,7 @@ const App = () => {
                   options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
-                  name="TextFeild"
+                  name="testScreen"
                   component={TextFeild}
                   options={{ headerShown: false }}
                 />

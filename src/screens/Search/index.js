@@ -14,10 +14,10 @@
  * */
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { WebView } from 'react-native-webview';
-import { ProgressBar, Appbar, Text } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 import SplashScreen from 'react-native-splash-screen';
 
 // Local Imports
@@ -28,6 +28,7 @@ import Appbars from '@Components/organisms/AppBar';
 import SearchOverlay from '@Components/organisms/SearchOverlay';
 import SearchSwipePanel from '@Components/organisms/SearchSwipePanel';
 import SearchFilter from '@Components/organisms/SearchFilter';
+import SearchFilterPanel from '@Components/organisms/SearchFilterPanel';
 import ActionCreator from "@Actions";
 
 class Search extends Component {
@@ -37,8 +38,8 @@ class Search extends Component {
     // Webview initialize options.
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
-      defaultURL: 'http://www.uflow.voltpage.net/webview/search',
-      // defaultURL: 'http://localhost:13000/webview/search',
+      // defaultURL: 'http://www.uflow.voltpage.net/webview/search',
+      defaultURL: 'http://localhost:13000/webview/search',
     };
     this.state = {
       url: this.option.defaultURL,
@@ -48,6 +49,8 @@ class Search extends Component {
       swipeablePanelActive: false,
       isPanelActive: false,
     };
+    // Ref
+    this.refSearchFilter = React.createRef();
   }
 
   /**************************
@@ -111,8 +114,9 @@ class Search extends Component {
     `;
     return (
       <SafeAreaView style={[styles.container]}>
+
         {/** Header */}
-        <Appbars>
+        <Appbars style={styles.appBar}>
           <Appbar.Action
             icon="magnify"
             color="rgba(0, 0, 0, 0.54)"
@@ -120,23 +124,28 @@ class Search extends Component {
           <Appbar.Content
             title="지역명이나 창고명을 검색하세요."
             color="rgba(0, 0, 0, 0.47)"
-            onPress={() => this.props.searchToggle(true)}
+            onPress={() => !this.props.isFilterToggle && this.props.searchToggle(true)}
             titleStyle={styles.headerTitle}
             style={[DefaultStyle.headerTitle, styles.headerContainer]}
           />
         </Appbars>
 
-        {/** Overlay Search */}
+        {/** Search Filter */}
+        <SearchFilter ref={this.refSearchFilter} />
+
+        {/** Search Overlay */}
         {this.props.isSearchToggle && <SearchOverlay />}
 
-        {/** Webview Progress Bar */}
-        {/*<ProgressBar progress={this.state.progress} />*/}
+        {/** Search Filter Panel */}
+        <SearchFilterPanel
+          onClosed={() => {
+            console.log('필터 취소됨.');
+            this.refSearchFilter.current._onClickFilter();
+          }} />
 
-        {/** Filter */}
-        <SearchFilter />
-
+        {/** TODO Test */}
         <View style={{
-          flex: 1
+          flex: 1,
         }}>
           {/** Webview */}
           <WebView
@@ -187,6 +196,7 @@ function mapStateToProps (state) {
   console.log('++++++mapStateToProps: ', state);
   return {
     isSearchToggle: state.search.isSearchToggle,
+    isFilterToggle: state.search.isFilterToggle,
   };
 }
 
