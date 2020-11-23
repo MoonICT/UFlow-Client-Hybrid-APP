@@ -246,4 +246,21 @@ export const styles = StyleSheet.create({
   optionsFooter: {
     marginBottom: 40,
   },
+  imagePopup: {
+    width: '100%',
+    height: 181,
+    backgroundColor: '#e0e0e0',
+  },
+  popup: {
+    justifyContent: 'center',
+  },
+  titleDialog: {
+    textAlign: 'center',
+  },
+  contentDialog: {
+    color: 'rgba(0, 0, 0, 0.54)',
+    lineHeight: 24,
+    textAlign: 'center',
+    fontSize: 16,
+  },
 });

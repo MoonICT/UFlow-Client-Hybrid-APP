@@ -68,7 +68,7 @@ const TabScreenOptions = ({ route }) => ({
         icon = 'magnify';
         break;
       // TODO change route
-      case 'TextFeild':
+      case 'RegisterWH':
         icon = 'forum';
         break;
       case 'testScreen':
@@ -104,7 +104,7 @@ const TabScreen = () => {
         options={{ headerShown: false }}
       />
       {/* TODO Change route */}
-      <Tab.Screen name="TextFeild" component={TextFeild} />
+      <Tab.Screen name="RegisterWH" component={RegisterWH} />
       <Tab.Screen
         name="testScreen"
         component={testScreen}

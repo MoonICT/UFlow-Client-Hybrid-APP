@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component,Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   SafeAreaView,
   View,
@@ -16,12 +16,13 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
-// import {useNavigation} from '@react-navigation/native';
+import { Dialog, Appbar, Paragraph, Text, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '../../components/organisms/AppBar';
+import Dialogs from '@Components/organisms/Dialog';
+
 import ActionCreator from '../../actions';
 import ignore2 from '@Assets/images/ignore2x.png';
 import ignore1 from '@Assets/images/ignore.png';
@@ -33,7 +34,7 @@ class RegisterWH extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = {};
+    this.state = { visible: false };
     this.navigation = props.navigation;
   }
 
@@ -47,8 +48,12 @@ class RegisterWH extends Component {
     console.log('::componentWillUnmount::');
   }
 
+  showDialog = () => this.setState({ visible: true });
+
+  hideDialog = () => this.setState({ visible: false });
   render() {
     const { imageStore, workComplete } = this.props;
+    console.log('this.state', this.state);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -156,10 +161,41 @@ class RegisterWH extends Component {
           </TouchableOpacity>
         </ScrollView>
         <View style={S.footerRegister}>
-          <TouchableOpacity style={S.btnSubmit}>
-            <Text style={S.textSubmit}>창고 등록하기</Text>
+          <TouchableOpacity
+            style={[S.btnSubmit, S.activeBtnSubmit]}
+            onPress={() => {
+              this.showDialog();
+            }}>
+            <Text style={[S.textSubmit, S.textActiveSubmit]}>
+              창고 등록하기
+            </Text>
           </TouchableOpacity>
         </View>
+        <Dialog
+          style={S.popup}
+          visible={this.state.visible}
+          onDismiss={this.hideDialog}>
+          <Dialog.Content>
+            <View style={S.imagePopup} />
+          </Dialog.Content>
+          <Dialog.Title style={[DefaultStyle._titleDialog, S.titleDialog]}>
+            창고 등록 완료
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={S.contentDialog}>
+              UFLOW 관리자가 입력하신 정보를 
+              확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 `
+              {'>'}` 내 창고]에서 확인해 주세요.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={this.hideDialog}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
       </SafeAreaView>
     );
   }

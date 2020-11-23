@@ -67,7 +67,7 @@ class RegisterImage extends Component {
   }
 
   _addImage = () => console.log('_addImage');
-  _removeImage = () => console.log('_removeImage');
+  _removeImage = () => this.props.removeAction(0);
 
   handlePicker = () => {
     // console.log('edit');
@@ -123,6 +123,7 @@ class RegisterImage extends Component {
   // }
   render() {
     const { imageStore } = this.props;
+    console.log('imageStore', imageStore);
     const listImg =
       imageStore &&
       imageStore.map((item, index) => {
@@ -169,7 +170,7 @@ class RegisterImage extends Component {
           />
         </Appbars>
         <ScrollView>
-          {!imageStore.length === 0 ? (
+          {imageStore.length === 0 ? (
             <View style={S.bgrRegister}>
               <Image source={ignore3} style={S.ImageStyle} />
               <Text style={S.textBgr}>최소 3장 이상 등록하세요.</Text>
@@ -191,24 +192,25 @@ class RegisterImage extends Component {
               </View>
             </View>
           )}
-        </ScrollView>
-        <View style={S.footerRegister}>
-          <TouchableOpacity
-            onPress={() => this.navigation.navigate('RegisterWH')}
-            style={[
-              S.btnSubmit,
-              imageStore.length > 2 ? S.activeBtnSubmit : null,
-            ]}
-            disabled={imageStore.length > 2 ? false : true}>
-            <Text
+          
+          <View style={S.footerRegister}>
+            <TouchableOpacity
+              onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
-                S.textSubmit,
-                imageStore.length > 2 ? S.textActiveSubmit : null,
-              ]}>
-              확인
-            </Text>
-          </TouchableOpacity>
-        </View>
+                S.btnSubmit,
+                imageStore.length > 2 ? S.activeBtnSubmit : null,
+              ]}
+              disabled={imageStore.length > 2 ? false : true}>
+              <Text
+                style={[
+                  S.textSubmit,
+                  imageStore.length > 2 ? S.textActiveSubmit : null,
+                ]}>
+                확인
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
