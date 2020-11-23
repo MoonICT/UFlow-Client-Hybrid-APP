@@ -22,7 +22,7 @@ class SearchSwipePanel extends Component {
     super(props);
     this.swipeUpDownRef = null
     this.state = {
-      isPanelActive: true
+      isPanelActive: false
     };
   }
 
@@ -84,10 +84,10 @@ class SearchSwipePanel extends Component {
             }}>{'창고 목록 총 1,400개'}</Text>
 
             {[
-              { type: 'ERROR' },
-              { type: 'WARNING' },
+              // { type: 'ERROR' },
+              // { type: 'WARNING' },
               { type: 'INFO' },
-              { type: 'SUCCESS' },
+              // { type: 'SUCCESS' },
             ].map((item) => <Alert type={item.type} />)}
 
             {/** 목록 */}
