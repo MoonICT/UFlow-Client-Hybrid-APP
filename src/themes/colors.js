@@ -50,7 +50,7 @@ export const color = {
     light: '#81C784',
     constrast: '#ffffff',
     text: '#1e4620',
-    background: '#edf6ed',
+    background: '#ebf5ec',
   },
   info: {
     main: '#2196F3',
@@ -58,7 +58,7 @@ export const color = {
     light: '#BBDEFB',
     constrast: '#ffffff',
     text: '#0d3c61',
-    background: '#e9f5fe',
+    background: '#e8f4fd',
   },
   warning: {
     main: '#FF9800',
@@ -66,7 +66,7 @@ export const color = {
     light: '#FFB74D',
     constrast: '#ffffff',
     text: '#663c00', //(60% darken)
-    background: '#fff5e6', //(90% lighten)
+    background: '#fff4e5', //(90% lighten)
   },
   error: {
     main: '#F44336',
@@ -74,7 +74,7 @@ export const color = {
     light: '#E57373',
     constrast: '#ffffff',
     text: '#611a15',
-    background: '#feedeb',
+    background: '#fdebea',
   },
   grey: {
     _50: '#FAFAFA',

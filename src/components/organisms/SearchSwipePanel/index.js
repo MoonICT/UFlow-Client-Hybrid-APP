@@ -9,17 +9,20 @@ import { Avatar, withTheme, Card, Title, Paragraph, Button } from 'react-native-
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { SwipeablePanel } from 'rn-swipeable-panel';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Local Imports
 import { styles } from './style';
 import ActionCreator from "@Actions";
+import Alert from '@Components/atoms/Alert';
+import ProductCard from '@Components/organisms/ProductCard';
 
 class SearchSwipePanel extends Component {
   constructor (props) {
     super(props);
     this.swipeUpDownRef = null
     this.state = {
-      isPanelActive: false
+      isPanelActive: true
     };
   }
 
@@ -38,7 +41,18 @@ class SearchSwipePanel extends Component {
   };
 
   render () {
-    let arr = [1, 2, 3, 4, 5, 6];
+    let arr = [
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+      { type: 'HORIZONTAL' },
+    ];
     return (
       <>
         <TouchableOpacity style={styles.swipeBar} onPress={() => this._openPanel()}>
@@ -55,19 +69,39 @@ class SearchSwipePanel extends Component {
           onClose={this._closePanel}
           barStyle={styles.bar}
         >
-          <ScrollView>
-            {arr.map(() => <Card>
-              <Card.Content>
-                <Title>Card title</Title>
-                <Paragraph>Card content</Paragraph>
-              </Card.Content>
-              <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-              <Card.Actions>
-                <Button onPress={() => {
-                }}>Cancel</Button>
-                <Button>Ok</Button>
-              </Card.Actions>
-            </Card>)}
+
+          {/** 창고 목록 영역 */}
+          <ScrollView style={{
+            paddingHorizontal: 16,
+          }}>
+
+            <View style={{ marginTop: 50, }}></View>
+
+            <Text style={{
+              fontSize: 12,
+              color: 'rgba(0, 0, 0, 0.87)',
+              lineHeight: 20,
+            }}>{'창고 목록 총 1,400개'}</Text>
+
+            {[
+              { type: 'ERROR' },
+              { type: 'WARNING' },
+              { type: 'INFO' },
+              { type: 'SUCCESS' },
+            ].map((item) => <Alert type={item.type} />)}
+
+            {/** 목록 */}
+            <View style={styles.divider} />
+            {arr.map((item, index) =>
+              <>
+                <TouchableOpacity onPress={() => {
+                  alert('Go detail.');
+                }}>
+                  <ProductCard type={item.type} isShadow={false} />
+                </TouchableOpacity>
+                <View style={styles.divider} />
+              </>
+            )}
           </ScrollView>
         </SwipeablePanel>
 

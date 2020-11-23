@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Searchbar, List, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -133,6 +134,10 @@ function mapDispatchToProps (dispatch) {
     },
   };
 }
+
+// Check Props Type.
+SearchOverlay.protoType = {
+};
 
 export default compose(connect(
   mapStateToProps,

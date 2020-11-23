@@ -7,6 +7,17 @@ import { StyleSheet } from 'react-native';
 // import {color} from '../themes/colors';
 
 export const styles = StyleSheet.create({
+  appBar: {
+    height: 48,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    borderStyle: 'solid',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.1)',
+    zIndex: -999,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
