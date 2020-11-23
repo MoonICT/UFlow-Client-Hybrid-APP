@@ -89,6 +89,19 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
     paddingRight: 20,
   },
+  completeText: {
+    backgroundColor: '#4caf50',
+    borderRadius: 10,
+    textAlign: 'right',
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 12,
+    fontStyle: 'normal',
+    color: '#ffffff',
+    lineHeight: 12,
+    marginRight: 20,
+    padding: 6,
+    paddingBottom: 3,
+  },
   btnSubmit: {
     // flex: 1,
     borderRadius: 21,
@@ -141,7 +154,13 @@ export const styles = StyleSheet.create({
     minWidth: 0,
     margin: 0,
   },
-
+  bodyCard: {
+    backgroundColor: 'white',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 24,
+    marginBottom: 10,
+  },
   titleBody: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -206,5 +225,25 @@ export const styles = StyleSheet.create({
   },
   mrBottom0: {
     marginBottom: 0,
+  },
+  options: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  optionCheck: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  labelCheck: {
+    color: color.text.primary,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    lineHeight: 20,
+    padding: 5,
+  },
+  optionsFooter: {
+    marginBottom: 40,
   },
 });

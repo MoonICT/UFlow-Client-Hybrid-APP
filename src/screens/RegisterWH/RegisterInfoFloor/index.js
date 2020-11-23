@@ -15,13 +15,14 @@ import {
   TouchableHighlight,
   Image,
   ActivityIndicator,
-  TextInput,
+  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
+  TextInput,
   Appbar,
-  Searchbar,
+  Checkbox,
   Text,
   Switch,
   IconButton,
@@ -37,11 +38,11 @@ import CarouselSnap from '@Components/organisms/CarouselSnap';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Form from './form';
-class RegisterIntro extends Component {
+class RegisterInfoFloor extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { text: '' };
+    this.state = { isSwitchOn: false };
 
     this.navigation = props.navigation;
   }
@@ -59,18 +60,8 @@ class RegisterIntro extends Component {
   _addImage = () => console.log('_addImage');
   _removeImage = () => console.log('_removeImage');
 
-  onChangeTitle = textTitle => {
-    this.setState({ textTitle });
-    console.log('textTitle', textTitle);
-  };
-  onChangeLocation = textLocation => {
-    this.setState({ textLocation });
-    console.log('textLoca', textLocation);
-  };
-  onChangeLogistic = textLogistic => {
-    this.setState({ textLogistic });
-    console.log('textLogistic', textLogistic);
-  };
+  onToggleSwitch = () => this.setState({ isSwitchOn: !this.state.isSwitchOn });
+
   render() {
     const { imageStore } = this.props;
     // console.log('this.state.value', this.state.value);
@@ -83,76 +74,34 @@ class RegisterIntro extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="창고 소개"
+            title="층별 상세 정보"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
         <ScrollView style={S.containerRegister}>
-          <View style={SS.bodyTabBar}>
+          <View style={[S.bodyCard, SS.bodyInfoFloor]}>
             <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>
-                제목<Text style={S.textNote}>*</Text>
-              </Text>
+              <Text style={S.textTitleBody}>층별 상세 정보</Text>
+              <View style={S.rightTitle}>
+                <TouchableOpacity
+                  style={S.btnAdd}
+                  onPress={() => console.log('add')}>
+                  <Text style={S.textAdd}>추가</Text>
+                </TouchableOpacity>
+                <IconButton
+                  style={S.btnIcon}
+                  icon="delete"
+                  onPress={() => console.log('remove')}
+                />
+              </View>
             </View>
-            <TextInput
-              style={SS.inputIntro}
-              multiline={true}
-              numberOfLines={2}
-              onChangeText={text => this.onChangeTitle(text)}
-              value={this.state.textTitle}
-              placeholder={'예)신논혁역 도보 5분 거리, 깨끗한 창고입니다.'}
-            />
+            <Form />
           </View>
-
-          <View style={SS.bodyTabBar}>
-            <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>
-                제목<Text style={S.textNote}>*</Text>
-              </Text>
-            </View>
-            <TextInput
-              style={SS.inputIntro}
-              multiline={true}
-              numberOfLines={4}
-              onChangeText={text => this.onChangeIntro(text)}
-              value={this.state.textIntro}
-              placeholder={'상세 설명 작성 주의사항'}
-            />
-          </View>
-
-          <View style={[SS.bodyTabBar,S.mrBottom0]}>
-            <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>
-                위치<Text style={S.textNote}>*</Text>
-              </Text>
-            </View>
-            <Searchbar
-              inputStyle={S.searchRegister}
-              placeholder="예)번동10-1, 강북구 번동"
-              onChangeText={query => {
-                this.setState({ firstQuery: query });
-              }}
-              value={this.state.firstQuery}
-            />
-            <TextInput
-              style={[SS.inputIntro, SS.inputLoction]}
-              onChangeText={text => this.onChangeLocation(text)}
-              value={this.state.textIntro}
-              placeholder={'인천광역시 중구 서해대로94번길 100'}
-            />
-            <TextInput
-              style={[SS.inputIntro, SS.inputLoction]}
-              onChangeText={text => this.onChangeLogistic(text)}
-              value={this.state.textIntro}
-              placeholder={'에이씨티앤코아물류'}
-            />
-          </View>
-
-          <View style={[S.footerRegister,S.footerIntro]}>
+          <View style={[S.footerRegister, S.footerIntro]}>
             <TouchableOpacity
-              onPress={() => this.navigation.navigate('RegisterIntro')}
+              onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
                 S.btnSubmit,
                 imageStore.length > 2 ? S.activeBtnSubmit : null,
@@ -212,4 +161,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegisterIntro);
+)(RegisterInfoFloor);

@@ -41,7 +41,11 @@ import testScreen from '@Screeens/testScreen';
 import RegisterWH from '@Screeens/RegisterWH';
 import RegisterImage from '@Screeens/RegisterWH/RegisterImage';
 import RegisterInfo from '@Screeens/RegisterWH/RegisterInfo';
-import RegisterIntro from '@Screeens/RegisterWH/RegisterInfo/introduction';
+import RegisterIntro from '@Screeens/RegisterWH/RegisterIntro';
+import RegisterMoreIntro from '@Screeens/RegisterWH/MoreInfo';
+import RegisterInfoFloor from '@Screeens/RegisterWH/RegisterInfoFloor';
+import RegisterContractConditions from '@Screeens/RegisterWH/ContractConditions';
+
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
 import { color } from '@Themes/colors';
@@ -192,26 +196,44 @@ const App = () => {
                   name="RegisterWH"
                   component={RegisterWH}
                   headerMode={false}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <RootStack.Screen
                   name="RegisterImage"
                   component={RegisterImage}
                   headerMode={false}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <RootStack.Screen
                   name="RegisterInfo"
                   component={RegisterInfo}
                   headerMode={false}
-                  options={{headerShown: false}}
+                  options={{ headerShown: false }}
                 />
                 <RootStack.Screen
-                name="RegisterIntro"
-                component={RegisterIntro}
-                headerMode={false}
-                options={{headerShown: false}}
-              />
+                  name="RegisterIntro"
+                  component={RegisterIntro}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="RegisterMoreIntro"
+                  component={RegisterMoreIntro}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="RegisterInfoFloor"
+                  component={RegisterInfoFloor}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="RegisterContractConditions"
+                  component={RegisterContractConditions}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
               </RootStack.Navigator>
             )}
           </Global>

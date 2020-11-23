@@ -38,12 +38,23 @@ export default class TextField extends Component {
     }
   }
   render() {
-    const { labelTextField, textRight, rightComponent } = this.props;
+    const {
+      labelTextField,
+      textRight,
+      rightComponent,
+      colorLabel,
+    } = this.props;
 
     return (
       <View style={Styles.textField}>
         {labelTextField ? (
-          <Text style={DefaultStyle._labelTextField}>{labelTextField}</Text>
+          <Text
+            style={[
+              DefaultStyle._labelTextField,
+              colorLabel ? { color: colorLabel } : null,
+            ]}>
+            {labelTextField}
+          </Text>
         ) : null}
 
         <TextInput

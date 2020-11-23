@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import {
   SafeAreaView,
   View,
@@ -48,8 +48,7 @@ class RegisterWH extends Component {
   }
 
   render() {
-    const { imageStore } = this.props;
-    console.log('imageStore', imageStore);
+    const { imageStore, workComplete } = this.props;
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -72,10 +71,10 @@ class RegisterWH extends Component {
             {imageStore.length > 0 ? (
               <Image style={S.ImageUpload} source={imageStore[0]} />
             ) : (
-              <View>
+              <Fragment>
                 <Image source={ignore3} style={S.ImageStyle} />
                 <Text style={S.textImage}>사진 추가</Text>
-              </View>
+              </Fragment>
             )}
           </TouchableOpacity>
 
@@ -93,7 +92,9 @@ class RegisterWH extends Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={S.btnTypeRegister} onPress={() => {}}>
+          <TouchableOpacity
+            style={S.btnTypeRegister}
+            onPress={() => this.navigation.navigate('RegisterIntro')}>
             <Text style={S.textLeftBtn}>창고 소개</Text>
             <View style={S.rightBtn}>
               <Text style={S.textRightBtn}>입력하세요</Text>
@@ -105,7 +106,9 @@ class RegisterWH extends Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={S.btnTypeRegister} onPress={() => {}}>
+          <TouchableOpacity
+            style={S.btnTypeRegister}
+            onPress={() => this.navigation.navigate('RegisterMoreIntro')}>
             <Text style={S.textLeftBtn}>부가 정보</Text>
             <View style={S.rightBtn}>
               <Text style={S.textRightBtn}>입력하세요</Text>
@@ -117,7 +120,9 @@ class RegisterWH extends Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={S.btnTypeRegister} onPress={() => {}}>
+          <TouchableOpacity
+            style={S.btnTypeRegister}
+            onPress={() => this.navigation.navigate('RegisterInfoFloor')}>
             <Text style={S.textLeftBtn}>층별 상세 정보</Text>
             <View style={S.rightBtn}>
               <Text style={S.textRightBtn}>입력하세요</Text>
@@ -129,10 +134,19 @@ class RegisterWH extends Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={S.btnTypeRegister} onPress={() => {}}>
+          <TouchableOpacity
+            style={S.btnTypeRegister}
+            onPress={() =>
+              this.navigation.navigate('RegisterContractConditions')
+            }>
             <Text style={S.textLeftBtn}>계약 조건</Text>
             <View style={S.rightBtn}>
-              <Text style={S.textRightBtn}>입력하세요</Text>
+              {workComplete === undefined ? (
+                <Text style={S.textRightBtn}>입력하세요</Text>
+              ) : (
+                <Text style={S.completeText}>작업완료</Text>
+              )}
+
               <Icon
                 name="arrow-forward-ios"
                 size={12}
@@ -167,6 +181,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.imageData,
+    workComplete: state.registerWH.workComplete,
   };
 }
 

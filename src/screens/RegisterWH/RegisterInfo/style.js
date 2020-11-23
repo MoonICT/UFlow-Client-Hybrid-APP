@@ -57,21 +57,4 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     fontStyle: 'normal',
   },
-  inputIntro: {
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-    lineHeight: 24,
-    letterSpacing: 0.15,
-    padding: 16,
-    paddingRight: 24,
-    color: 'rgba(0, 0, 0, 0.54)',
-    fontFamily: 'NotoSansCJKkr-Regular',
-    fontSize: 16,
-  },
-  inputLoction: {
-    height: 56,
-    marginTop: 24,
-    fontFamily: 'NotoSansCJKkr',
-  },
 });

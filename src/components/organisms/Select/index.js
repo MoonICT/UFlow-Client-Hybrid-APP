@@ -16,12 +16,12 @@ export default class Selected extends Component {
     super(props);
     this.countNotification = 0;
     this.state = {
-      selectedValue: props.data[0].value,
+      checked: props.data[0].value,
     };
   }
 
   render() {
-    const { data, labelSelected } = this.props;
+    const { data, labelSelected, colorLabel, valueProps } = this.props;
     const items =
       data &&
       data.map((item, index) => {
@@ -36,15 +36,22 @@ export default class Selected extends Component {
         );
       });
     return (
-      <View style={DefaultStyle._selected}>
-        <Text style={DefaultStyle._lableSelected}>{labelSelected}</Text>
+      <View style={DefaultStyle._selected} valueState={this.state.checked}>
+        <Text
+          style={[
+            DefaultStyle._lableSelected,
+            colorLabel ? { color: colorLabel } : null,
+          ]}>
+          {labelSelected}
+        </Text>
         <Picker
           style={DefaultStyle._textSelected}
           mode="dropdown"
           selectedValue={this.state.selectedValue}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({ selectedValue: itemValue })
-          }
+          onValueChange={(itemValue, itemIndex) => {
+            this.setState({ selectedValue: itemValue });
+            valueProps && valueProps(itemValue);
+          }}
           {...this.props}>
           {items}
         </Picker>
