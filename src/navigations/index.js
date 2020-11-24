@@ -46,6 +46,7 @@ import RegisterMoreIntro from '@Screeens/RegisterWH/MoreInfo';
 import RegisterInfoFloor from '@Screeens/RegisterWH/RegisterInfoFloor';
 import RegisterContractConditions from '@Screeens/RegisterWH/ContractConditions';
 import Register from '@Screeens/Register';
+import Terms from '@Screeens/Terms';
 
 import DetailsWH from '@Screeens/DetailsWH';
 import DetailsLocationWH from '@Screeens/DetailsWH/DetailsLocation';
@@ -155,6 +156,11 @@ const App = () => {
                 <AuthStack.Screen
                   name="Register"
                   component={Register}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="Terms"
+                  component={Terms}
                   options={{ headerShown: false }}
                 />
               </AuthStack.Navigator>
