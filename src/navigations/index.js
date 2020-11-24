@@ -27,8 +27,8 @@ import initStore from '@Store/index';
 
 import Global from '@Screeens/Global';
 import LoginScreen from '@Screeens/Login';
-import ForgotIDScreen from '@Screeens/ForgotID';
-// import ForgotPassScreen from '@Screeens/ForgotPass';
+import FindIDScreen from '@Screeens/FindID';
+import FindPassWordScreen from '@Screeens/FindPassWord';
 import HomeScreen from '@Screeens/Home';
 import SearchScreen from '@Screeens/Search';
 import SampleScreen from '@Screeens/Sample';
@@ -133,19 +133,24 @@ const App = () => {
           <Global>
             {!isLogin ? (
               <AuthStack.Navigator>
-                {/* <AuthStack.Screen
+                <AuthStack.Screen
                   name="Home"
                   component={TabScreen}
                   options={{ headerShown: false }}
-                /> */}
+                />
                 <AuthStack.Screen
                   name="Login"
                   component={LoginScreen}
                   options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
-                  name="ForgotID"
-                  component={ForgotIDScreen}
+                  name="FindID"
+                  component={FindIDScreen}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="FindPassWord"
+                  component={FindPassWordScreen}
                   options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
