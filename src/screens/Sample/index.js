@@ -7,7 +7,7 @@
  * @flow strict-local
  * */
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   View,
@@ -33,9 +33,9 @@ export default class Sample extends Component {
         <SafeAreaView
           style={[
             DefaultStyle.container,
-            {justifyContent: 'center', alignItems: 'center'},
+            { justifyContent: 'center', alignItems: 'center' },
           ]}>
-          <Text style={{marginBottom: 20, fontSize: 20}}>Sample</Text>
+          <Text style={{ marginBottom: 20, fontSize: 20 }}>Sample</Text>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Webview')}
             style={DefaultStyle.btn}>
@@ -72,6 +72,11 @@ export default class Sample extends Component {
             onPress={() => this.props.navigation.navigate('RegisterWH')}
             style={DefaultStyle.btn}>
             <Text>{'RegisterWH Sample'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('DetailsWH')}
+            style={DefaultStyle.btn}>
+            <Text>{'DetailsWH Sample'}</Text>
           </TouchableOpacity>
           <View style={styles.button}>
             {/*<Button
