@@ -6,35 +6,15 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  TouchableHighlight,
-  Image,
-  ActivityIndicator,
-  ImageBackground,
-} from 'react-native';
+import { SafeAreaView, View, ScrollView, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {
-  TextInput,
-  Appbar,
-  Checkbox,
-  Text,
-  Switch,
-  IconButton,
-} from 'react-native-paper';
-// import {useNavigation} from '@react-navigation/native';
+import { Appbar, Text, IconButton } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '../../../components/organisms/AppBar';
 import ActionCreator from '../../../actions';
-import Carousel from '@Components/organisms/Carousel';
-import CarouselSnap from '@Components/organisms/CarouselSnap';
 import mapImg from '@Assets/images/mapImg.png';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
@@ -57,14 +37,7 @@ class RegisterInfo extends Component {
     console.log('::componentWillUnmount::');
   }
 
-  _addImage = () => console.log('_addImage');
-  _removeImage = () => console.log('_removeImage');
-
-  onToggleSwitch = () => this.setState({ isSwitchOn: !this.state.isSwitchOn });
-
   render() {
-    const { imageStore } = this.props;
-    // console.log('this.state.value', this.state.value);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -83,13 +56,10 @@ class RegisterInfo extends Component {
         <ScrollView>
           <ImageBackground source={mapImg} style={SS.imageMap}>
             <View style={SS.location}>
-              <IconButton
-                size={18}
-                style={SS.icon}
-                icon="file-multiple"
-                onPress={() => console.log('remove')}
-              />
-              <Text style={SS.textLocation}>인천광역시 중구 서해대로94번길 100</Text>
+              <IconButton size={18} style={SS.icon} icon="file-multiple" />
+              <Text style={SS.textLocation}>
+                인천광역시 중구 서해대로94번길 100
+              </Text>
             </View>
           </ImageBackground>
         </ScrollView>
