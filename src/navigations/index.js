@@ -45,6 +45,8 @@ import RegisterIntro from '@Screeens/RegisterWH/RegisterIntro';
 import RegisterMoreIntro from '@Screeens/RegisterWH/MoreInfo';
 import RegisterInfoFloor from '@Screeens/RegisterWH/RegisterInfoFloor';
 import RegisterContractConditions from '@Screeens/RegisterWH/ContractConditions';
+import Register from '@Screeens/Register';
+
 
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
@@ -118,7 +120,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = true;
+let isLogin = false;
 
 const App = () => {
   return (
@@ -128,11 +130,11 @@ const App = () => {
           <Global>
             {!isLogin ? (
               <AuthStack.Navigator>
-                <AuthStack.Screen
+                {/* <AuthStack.Screen
                   name="Home"
                   component={TabScreen}
                   options={{ headerShown: false }}
-                />
+                /> */}
                 <AuthStack.Screen
                   name="Login"
                   component={LoginScreen}
@@ -146,6 +148,11 @@ const App = () => {
                 <AuthStack.Screen
                   name="testScreen"
                   component={TextFeild}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="Register"
+                  component={Register}
                   options={{ headerShown: false }}
                 />
               </AuthStack.Navigator>
