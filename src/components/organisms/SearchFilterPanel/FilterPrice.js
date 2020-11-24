@@ -53,7 +53,7 @@ class FilterPrice extends Component {
           </View>
           <Text
             style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.priceStorage === 1000000 || this.state.priceStorage === 0) ? '전체' : this.state.priceStorage.toLocaleString() + '원'}
+            {(this.state.priceStorage === 1000000 || this.state.priceStorage === 0) ? '전체' : this.state.priceStorage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
           </Text>
         </View>
 
@@ -80,7 +80,7 @@ class FilterPrice extends Component {
           </View>
           <Text
             style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.priceManagement === 1000000 || this.state.priceManagement === 0) ? '전체' : this.state.priceManagement.toLocaleString() + '원'}
+            {(this.state.priceManagement === 1000000 || this.state.priceManagement === 0) ? '전체' : this.state.priceManagement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
           </Text>
         </View>
         {/** Slider */}
