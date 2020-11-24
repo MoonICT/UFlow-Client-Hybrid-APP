@@ -4,6 +4,7 @@
  */
 
 import { StyleSheet } from 'react-native';
+import { theme } from '@Themes';
 import { color } from '@Themes/colors';
 
 export const styles = StyleSheet.create({
@@ -11,7 +12,6 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgb(232, 244, 253)',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 5,
     paddingVertical: 12,
     paddingHorizontal: 16,
     alignItems: 'center',
@@ -19,7 +19,14 @@ export const styles = StyleSheet.create({
   labelWrap: {
     flexDirection: 'row',
   },
-  font: {
+  title: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'left',
+    marginBottom: 4,
+    fontFamily: theme.fonts.medium.fontFamily
+  },
+  content: {
     fontSize: 14,
     lineHeight: 20,
     textAlign: 'left',
@@ -27,6 +34,9 @@ export const styles = StyleSheet.create({
   icon: {
     fontSize: 20,
     marginRight: 12,
+  },
+  iconClose: {
+    fontSize: 20,
   },
   /************** Colors *************/
   bgWarning: {

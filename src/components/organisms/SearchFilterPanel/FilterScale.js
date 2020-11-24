@@ -52,7 +52,7 @@ class FilterScale extends Component {
             <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'가용면적 (계약면적)'}</Text>
           </View>
           <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.areaUsable === 30000 || this.state.areaUsable === 0) ? '전체' : this.state.areaUsable.toLocaleString() + '㎡'}
+            {(this.state.areaUsable === 30000 || this.state.areaUsable === 0) ? '전체' : this.state.areaUsable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
 
@@ -77,7 +77,7 @@ class FilterScale extends Component {
             <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'전용면적'}</Text>
           </View>
           <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.areaDedicated === 30000 || this.state.areaDedicated === 0) ? '전체' : this.state.areaDedicated.toLocaleString() + '㎡'}
+            {(this.state.areaDedicated === 30000 || this.state.areaDedicated === 0) ? '전체' : this.state.areaDedicated.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
         {/** Slider */}
@@ -101,7 +101,7 @@ class FilterScale extends Component {
             <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'공용면적 (계약면적)'}</Text>
           </View>
           <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.areaCommon === 30000 || this.state.areaCommon === 0) ? '전체' : this.state.areaCommon.toLocaleString() + '㎡'}
+            {(this.state.areaCommon === 30000 || this.state.areaCommon === 0) ? '전체' : this.state.areaCommon.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
         {/** Slider */}

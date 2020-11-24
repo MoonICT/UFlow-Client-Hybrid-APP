@@ -52,15 +52,23 @@ class Checkbox extends Component {
         backgroundColor: colorVariant[this.props.type].bg
       }]}>
         <View style={styles.labelWrap}>
-          <Icon style={styles.icon} name={'alert-circle-outline'} />
-          <Text style={[styles.font]}>
-            {'이 지역 UFLOW 추천 광고 보기'}
-          </Text>
+          {this.props.type === 'ERROR' &&
+          <Icon style={[styles.icon, { color: colorVariant.ERROR.icon }]} name={'alert-circle-outline'} />}
+          {this.props.type === 'WARNING' &&
+          <Icon style={[styles.icon, { color: colorVariant.WARNING.icon }]} name={'alert-outline'} />}
+          {this.props.type === 'INFO' &&
+          <Icon style={[styles.icon, { color: colorVariant.INFO.icon }]} name={'information-outline'} />}
+          {this.props.type === 'SUCCESS' &&
+          <Icon style={[styles.icon, { color: colorVariant.SUCCESS.icon }]} name={'check-circle-outline'} />}
+          <View>
+            {this.props.title && <Text style={[styles.title]}>{this.props.title}</Text>}
+            {this.props.content && <Text style={[styles.content]}>{this.props.content}</Text>}
+          </View>
         </View>
-        <TouchableOpacity>
-          <Text style={[styles.font]}>
-            {'확인'}
-          </Text>
+        <TouchableOpacity onPress={this.props.onPress}>
+          {this.props.buttonText ? <Text style={[styles.font, { color: colorVariant[this.props.type].text }]}>
+            {this.props.buttonText}
+          </Text> : <Icon style={styles.iconClose} name={'close'} />}
         </TouchableOpacity>
       </View>
     );
@@ -70,6 +78,9 @@ class Checkbox extends Component {
 // Check Props Type.
 Checkbox.protoType = {
   type: PropTypes.oneOf(['ERROR', 'WARNING', 'INFO', 'SUCCESS']),
+  title: PropTypes.string,
+  contents: PropTypes.string,
+  buttonText: PropTypes.string,
 };
 
 export default Checkbox;
