@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-24 13:57:48
- * @modify date 2020-11-24 17:49:35
+ * @modify date 2020-11-24 19:27:10
  * @desc [description]
  */
 
@@ -62,7 +62,7 @@ class DoneRegister extends Component {
             <Text style={[S.fontMedium, S.fontS16]}>
               회원가입이 완료되었습니다.
             </Text>
-            <Text style={[S.contentDoneNoti,S.fontRegular, S.fontS14]}>
+            <Text style={[S.contentDoneNoti, S.fontRegular, S.fontS14]}>
               {'5초 뒤 자동으로 \n' + '메인 화면으로 이동합니다.'}
             </Text>
             <Button
@@ -74,7 +74,7 @@ class DoneRegister extends Component {
               ]}
               color="red"
               onPress={() => {
-                this.navigation.navigate('Login');
+                this.navigation.push('Login');
               }}>
               메인으로
             </Button>

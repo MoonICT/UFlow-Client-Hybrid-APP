@@ -2,23 +2,23 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 14:05:00
- * @modify date 2020-11-11 09:24:31
+ * @modify date 2020-11-24 19:17:43
  * @desc [description]
  */
 
 // Global Imports
-import React, {Component} from 'react';
-import {SafeAreaView, View, ScrollView} from 'react-native';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { SafeAreaView, View, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
+import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import Appbars from '../../components/organisms/AppBar';
 import ActionCreator from '../../actions';
-import {styles as S} from './style';
+import { styles as S } from './style';
 
 class ForgotID extends Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class ForgotID extends Component {
   }
 
   render() {
-    const {email} = this.state;
+    const { email } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -80,7 +80,7 @@ class ForgotID extends Component {
                 },
               }}
               multiline={true}
-              onChangeText={text => this.setState({email: text})}
+              onChangeText={text => this.setState({ email: text })}
             />
             <Button
               mode="contained"

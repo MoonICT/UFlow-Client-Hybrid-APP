@@ -2,11 +2,11 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:35:26
- * @modify date 2020-11-11 09:24:37
+ * @modify date 2020-11-24 18:31:22
  * @desc [description]
  */
 
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

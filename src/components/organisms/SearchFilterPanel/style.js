@@ -1,6 +1,6 @@
 /**
  * @author [Deokin]
- * @modify date 2020-11-13
+ * @modify date 2020-11-24 18:27:58
  */
 
 import { StyleSheet } from 'react-native';
