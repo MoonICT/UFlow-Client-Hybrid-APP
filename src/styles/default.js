@@ -654,4 +654,28 @@ export default StyleSheet.create({
   backgroundGray: {
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
+
+  /**List Item */
+  btnItem: {
+    borderBottomWidth: 1,
+    borderColor: '#e0e0e0',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  titleItem: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    color: 'rgba(0, 0, 0, 0.87)',
+    lineHeight: 20,
+  },
+  contentItem: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    color: 'rgba(0, 0, 0, 0.47)',
+    lineHeight: 20,
+  },
 });

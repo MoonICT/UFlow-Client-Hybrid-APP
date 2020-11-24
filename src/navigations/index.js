@@ -54,6 +54,9 @@ import InquiryWH from '@Screeens/DetailsWH/InquiryWH';
 import DetailsInquiryWH from '@Screeens/DetailsWH/DetailsInquiryWH';
 import CreateInquiryWH from '@Screeens/DetailsWH/CreateInquiryWH';
 
+import Annoucement from '@Screeens/Annoucement';
+import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
+
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
 import { color } from '@Themes/colors';
@@ -279,6 +282,18 @@ const App = () => {
                 <RootStack.Screen
                   name="CreateInquiryWH"
                   component={CreateInquiryWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Annoucement"
+                  component={Annoucement}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailAnnoucement"
+                  component={DetailAnnoucement}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

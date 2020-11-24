@@ -173,7 +173,7 @@ class RegisterWH extends Component {
             }}
           />
         </Appbars>
-        <ScrollView style={S.backgroundPage}>
+        <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
             <Text style={S.titleWH}>제휴창고</Text>
             <Text style={S.describeTitle}>보관창고, 수탁창고</Text>

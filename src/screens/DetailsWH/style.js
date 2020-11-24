@@ -16,9 +16,6 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     // padding: 24,
   },
-  backgroundPage: {
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-  },
   titleWH: {
     backgroundColor: '#f2453d',
     borderTopRightRadius: 15,
