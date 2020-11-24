@@ -2,11 +2,13 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-24 13:57:38
- * @modify date 2020-11-24 15:24:55
+ * @modify date 2020-11-24 17:46:39
  * @desc [description]
  */
 
 import { StyleSheet, Dimensions } from 'react-native';
+
+import { color } from '@Themes/colors';
 
 const windowWidth = Dimensions.get('window').width;
 // const windowHeight = Dimensions.get('window').height;
@@ -31,6 +33,9 @@ export const styles = StyleSheet.create({
   },
   fontS14: {
     fontSize: 14,
+  },
+  fontS16: {
+    fontSize: 16,
   },
   titleLogin: {
     marginTop: 14,
@@ -60,11 +65,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  rememberLogin: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+
   ortherLink: {
     display: 'flex',
     flexDirection: 'row',
@@ -91,15 +92,53 @@ export const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.54)',
   },
 
+  //--------terms---------
   terms: {
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 16,
     paddingBottom: 24,
-    backgroundColor: 'gray',
+    backgroundColor: '#fafafa',
     marginTop: 24,
   },
   termsText: {
     fontSize: 16,
+  },
+
+  termsList: {
+    display: 'flex',
+  },
+  itemTerm: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemTermCL: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'flex-start',
+  },
+  itemTermMr: {
+    marginLeft: 30,
+  },
+
+  /** -----------------------Done Register------------------- */
+  doneImage: {
+    width: '100%',
+    minHeight: 181,
+    marginTop: 24,
+    marginLeft: 16,
+    marginRight: 16,
+    backgroundColor: color.grey._300,
+  },
+  contentDone: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contentDoneNoti: {
+    textAlign: 'center',
+    color: color.text.secondary,
   },
 });

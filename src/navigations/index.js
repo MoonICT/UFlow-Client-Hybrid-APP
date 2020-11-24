@@ -45,12 +45,14 @@ import RegisterIntro from '@Screeens/RegisterWH/RegisterIntro';
 import RegisterMoreIntro from '@Screeens/RegisterWH/MoreInfo';
 import RegisterInfoFloor from '@Screeens/RegisterWH/RegisterInfoFloor';
 import RegisterContractConditions from '@Screeens/RegisterWH/ContractConditions';
+import Register from '@Screeens/Register';
+import Terms from '@Screeens/Terms';
+
 import DetailsWH from '@Screeens/DetailsWH';
 import DetailsLocationWH from '@Screeens/DetailsWH/DetailsLocation';
 import InquiryWH from '@Screeens/DetailsWH/InquiryWH';
 import DetailsInquiryWH from '@Screeens/DetailsWH/DetailsInquiryWH';
 import CreateInquiryWH from '@Screeens/DetailsWH/CreateInquiryWH';
-import Register from '@Screeens/Register';
 
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
@@ -157,6 +159,11 @@ const App = () => {
                 <AuthStack.Screen
                   name="Register"
                   component={Register}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="Terms"
+                  component={Terms}
                   options={{ headerShown: false }}
                 />
               </AuthStack.Navigator>
