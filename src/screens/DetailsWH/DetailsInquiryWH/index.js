@@ -6,38 +6,28 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView, ImageBackground } from 'react-native';
+import { SafeAreaView, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Text, IconButton } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
+// import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '../../../components/organisms/AppBar';
 import ActionCreator from '../../../actions';
-import mapImg from '@Assets/images/mapImg.png';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
-class RegisterInfo extends Component {
+class DetailsInquiryWH extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { isSwitchOn: false };
-
+    this.state = {};
     this.navigation = props.navigation;
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    console.log('::componentWillUnmount::');
-  }
-
   render() {
+    const { imageStore } = this.props;
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -47,21 +37,32 @@ class RegisterInfo extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="창고 위치"
+            title="창고 문의 상세"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
         <ScrollView>
-          <ImageBackground source={mapImg} style={SS.imageMap}>
-            <View style={SS.location}>
-              <IconButton size={18} style={SS.icon} icon="file-multiple" />
-              <Text style={SS.textLocation}>
-                인천광역시 중구 서해대로94번길 100
+          <View style={S.inquirys}>
+            <View style={S.leftInquiry}>
+              <Text style={S.titleInquiry}>미답변</Text>
+              <Text style={S.contentInquiry}>비밀글입니다.</Text>
+              <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
+            </View>
+            <View style={S.detailInquiry}>
+              <Text style={S.textDetail}>
+                창고 내에 조리 시설이 있나요? 숙식도 해결이 가능해야해서요. 꼭
+                확인 부탁드립니다.
               </Text>
             </View>
-          </ImageBackground>
+          </View>
+          <View style={SS.content}>
+            <Text style={SS.textContent}>안녕하세요. 유플로우입니다.</Text>
+            <Text style={SS.textContent}>
+              해당 창고에는 조리 시설은 따로 없습니다. 감사합니다.
+            </Text>
+          </View>
         </ScrollView>
       </SafeAreaView>
     );
@@ -106,4 +107,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegisterInfo);
+)(DetailsInquiryWH);
