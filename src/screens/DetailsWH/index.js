@@ -40,6 +40,7 @@ import card from '@Assets/images/card-img.png';
 import circle from '@Assets/images/avatars-circle-icon.png';
 import mainBG from '@Assets/images/main-bg.png';
 import cardBG from '@Assets/images/card-img.png';
+import mapLink from '@Assets/images/mapLink.png';
 
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -363,7 +364,12 @@ class RegisterWH extends Component {
               <Text style={S.titleDescribe}>인천광역시 서구 석남동 650-31</Text>
               <View style={DefaultStyle._cardBody}>
                 <View style={S.bodyCard}>
-                  <ImageBackground source style={S.imageMap} />
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.navigation.navigate('DetailsLocationWH');
+                    }}>
+                    <ImageBackground source={mapLink} style={S.imageMap} />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>

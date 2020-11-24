@@ -46,6 +46,7 @@ import RegisterMoreIntro from '@Screeens/RegisterWH/MoreInfo';
 import RegisterInfoFloor from '@Screeens/RegisterWH/RegisterInfoFloor';
 import RegisterContractConditions from '@Screeens/RegisterWH/ContractConditions';
 import DetailsWH from '@Screeens/DetailsWH';
+import DetailsLocationWH from '@Screeens/DetailsWH/DetailsLocation';
 
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
@@ -238,6 +239,12 @@ const App = () => {
                 <RootStack.Screen
                   name="DetailsWH"
                   component={DetailsWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsLocationWH"
+                  component={DetailsLocationWH}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
