@@ -4,9 +4,10 @@
  * 2020.07.05 Deokin.
  * */
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { color } from '../themes/colors';
 import { theme } from '../themes/index';
+const windowWidth = Dimensions.get('window').width;
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.
@@ -489,16 +490,17 @@ export default StyleSheet.create({
   _tabGrid: {
     flexDirection: 'row',
     maxWidth: '100%',
+    borderBottomWidth: 1,
+    borderColor: color.button.default_border,
   },
   _tabItem: {
     color: color.text.secondary,
     fontFamily: theme.fonts.medium.fontFamily,
     fontSize: 14,
     fontWeight: '500',
-    borderBottomWidth: 1,
-    borderColor: color.button.default_border,
   },
   _tabItemActive: {
+    borderBottomWidth: 2,
     borderColor: color.primary.main,
   },
   _contentGrid: {
@@ -591,5 +593,49 @@ export default StyleSheet.create({
     lineHeight: 20,
     fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 12,
+  },
+  _cards: {
+    padding: 16,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    marginBottom: 10,
+  },
+  _cardBody: {
+    borderWidth: 1,
+    borderColor: '#e5e5ea',
+    borderRadius: 8,
+    marginTop: 12,
+    marginBottom: 18,
+  },
+
+  /**Button confirm footer*/
+  footerRegister: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingLeft: 14,
+    paddingRight: 14,
+  },
+  btnSubmit: {
+    borderRadius: 21,
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+    width: windowWidth - 32,
+    justifyContent: 'center',
+    marginBottom: 24,
+    bottom: 0,
+    alignItems: 'center',
+    padding: 8,
+  },
+  activeBtnSubmit: { backgroundColor: '#ff6d00' },
+  textSubmit: {
+    textAlign: 'center',
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 15,
+    fontStyle: 'normal',
+    color: 'rgba(0, 0, 0, 0.54)',
+    lineHeight: 26,
+  },
+  textActiveSubmit: {
+    color: '#ffffff',
   },
 });
