@@ -55,10 +55,12 @@ export default StyleSheet.create({
   /** Container button */
   containerBTN: {
     width: 120,
-    height: 36,
+    height: 42,
     textAlign: 'center',
     color: color.primary.constrast,
     borderRadius: 30,
+    flex: 1,
+    justifyContent: 'center',
   },
   //---> Background
   _primary: {
@@ -127,7 +129,8 @@ export default StyleSheet.create({
   /** Input */
   /** Fill Input */
   inputs: {
-    height: 56,
+    // height: 56,
+    lineHeight:56,
     backgroundColor: 'white',
   },
   _fillInput: {

@@ -29,10 +29,10 @@ import SearchOverlay from '@Components/organisms/SearchOverlay';
 import SearchSwipePanel from '@Components/organisms/SearchSwipePanel';
 import SearchFilter from '@Components/organisms/SearchFilter';
 import SearchFilterPanel from '@Components/organisms/SearchFilterPanel';
-import ActionCreator from "@Actions";
+import ActionCreator from '@Actions';
 
 class Search extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.webView = null;
     // Webview initialize options.
@@ -58,12 +58,12 @@ class Search extends Component {
    * */
 
   // When the WebView has finished loading.
-  async _WVOnLoad (e) {
+  async _WVOnLoad(e) {
     console.log('::: Web View Loaded ::: ');
   }
 
   // When the webview calls window.postMessage.
-  async _WVOnMessage (e) {
+  async _WVOnMessage(e) {
     // console.log(':::: onReceiveWebViewMessage');
     let msgData = WVMsgService.parseMessageData(e);
     switch (msgData.type) {
@@ -72,12 +72,11 @@ class Search extends Component {
     }
   }
 
-  _WVSendMessage (msgObj) {
+  _WVSendMessage(msgObj) {
     // console.log(':::: Send Message');
     let resultMsg = JSON.stringify(msgObj);
     this.webView.postMessage(resultMsg);
   }
-
 
   openPanel = () => {
     this.setState({ swipeablePanelActive: true });
@@ -100,7 +99,7 @@ class Search extends Component {
    ***************************/
 
   // 컴포넌트 랜더링.
-  render () {
+  render() {
     let injectJSCode = `
     window.consoleLog = function(...args){
       window.ReactNativeWebView.postMessage(JSON.stringify({
@@ -114,17 +113,15 @@ class Search extends Component {
     `;
     return (
       <SafeAreaView style={[styles.container]}>
-
         {/** Header */}
         <Appbars style={styles.appBar}>
-          <Appbar.Action
-            icon="magnify"
-            color="rgba(0, 0, 0, 0.54)"
-          />
+          <Appbar.Action icon="magnify" color="rgba(0, 0, 0, 0.54)" />
           <Appbar.Content
             title="지역명이나 창고명을 검색하세요."
             color="rgba(0, 0, 0, 0.47)"
-            onPress={() => !this.props.isFilterToggle && this.props.searchToggle(true)}
+            onPress={() =>
+              !this.props.isFilterToggle && this.props.searchToggle(true)
+            }
             titleStyle={styles.headerTitle}
             style={[DefaultStyle.headerTitle, styles.headerContainer]}
           />
@@ -141,12 +138,14 @@ class Search extends Component {
           onClosed={() => {
             console.log('필터 취소됨.');
             this.refSearchFilter.current._onClickFilter();
-          }} />
+          }}
+        />
 
         {/** TODO Test */}
-        <View style={{
-          flex: 1,
-        }}>
+        <View
+          style={{
+            flex: 1,
+          }}>
           {/** Webview */}
           <WebView
             // Loading URL
@@ -163,7 +162,9 @@ class Search extends Component {
             onLoad={event => this._WVOnLoad(event)}
             onLoadStart={() => this.setState({ isLoading: true })}
             onLoadEnd={() => this.setState({ isLoading: false })}
-            onLoadProgress={({ nativeEvent }) => this.setState({ progress: nativeEvent.progress })}
+            onLoadProgress={({ nativeEvent }) =>
+              this.setState({ progress: nativeEvent.progress })
+            }
             onMessage={event => this._WVOnMessage(event)}
             // Inject javascript code in webview
             injectedJavaScript={injectJSCode} // for Android
@@ -179,20 +180,20 @@ class Search extends Component {
 
   // 컴포넌트가 만들어지고 render가 호출된 이후에 호출.
   // 비동기 요청을 처리하는 부분.
-  componentDidMount () {
+  componentDidMount() {
     console.log('::componentDidMount::');
     /** Complete Initialize. */
     SplashScreen.hide();
   }
 
   // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate () {
+  componentDidUpdate() {
     console.log('::componentDidUpdate::');
   }
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   console.log('++++++mapStateToProps: ', state);
   return {
     isSearchToggle: state.search.isSearchToggle,
@@ -201,8 +202,8 @@ function mapStateToProps (state) {
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps (dispatch) {
-  console.log(':::::::::::::::::', ActionCreator)
+function mapDispatchToProps(dispatch) {
+  console.log(':::::::::::::::::', ActionCreator);
   return {
     searchToggle: status => {
       dispatch(ActionCreator.searchToggle(status));
