@@ -45,6 +45,11 @@ import RegisterIntro from '@Screeens/RegisterWH/RegisterIntro';
 import RegisterMoreIntro from '@Screeens/RegisterWH/MoreInfo';
 import RegisterInfoFloor from '@Screeens/RegisterWH/RegisterInfoFloor';
 import RegisterContractConditions from '@Screeens/RegisterWH/ContractConditions';
+import Register from '@Screeens/Register';
+import Terms from '@Screeens/Terms';
+
+import DetailsWH from '@Screeens/DetailsWH';
+import DetailsLocationWH from '@Screeens/DetailsWH/DetailsLocation';
 
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
@@ -71,7 +76,7 @@ const TabScreenOptions = ({ route }) => ({
       case 'RegisterWH':
         icon = 'forum';
         break;
-      case 'testScreen':
+      case 'SampleScreen':
         icon = 'dots-horizontal';
         break;
     }
@@ -106,8 +111,8 @@ const TabScreen = () => {
       {/* TODO Change route */}
       <Tab.Screen name="RegisterWH" component={RegisterWH} />
       <Tab.Screen
-        name="testScreen"
-        component={testScreen}
+        name="SampleScreen"
+        component={SampleScreen}
         options={{ headerShown: true }}
       />
     </Tab.Navigator>
@@ -118,7 +123,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = true;
+let isLogin = false;
 
 const App = () => {
   return (
@@ -128,11 +133,11 @@ const App = () => {
           <Global>
             {!isLogin ? (
               <AuthStack.Navigator>
-                <AuthStack.Screen
+                {/* <AuthStack.Screen
                   name="Home"
                   component={TabScreen}
                   options={{ headerShown: false }}
-                />
+                /> */}
                 <AuthStack.Screen
                   name="Login"
                   component={LoginScreen}
@@ -146,6 +151,16 @@ const App = () => {
                 <AuthStack.Screen
                   name="testScreen"
                   component={TextFeild}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="Register"
+                  component={Register}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="Terms"
+                  component={Terms}
                   options={{ headerShown: false }}
                 />
               </AuthStack.Navigator>
@@ -231,6 +246,18 @@ const App = () => {
                 <RootStack.Screen
                   name="RegisterContractConditions"
                   component={RegisterContractConditions}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsWH"
+                  component={DetailsWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsLocationWH"
+                  component={DetailsLocationWH}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

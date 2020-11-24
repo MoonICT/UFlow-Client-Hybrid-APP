@@ -2,11 +2,11 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:35:26
- * @modify date 2020-11-10 15:47:31
+ * @modify date 2020-11-24 13:55:13
  * @desc [description]
  */
 
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -63,7 +63,6 @@ export const styles = StyleSheet.create({
   loginBtn: {
     width: '100%',
     color: 'white',
-    backgroundColor: 'green',
     marginTop: 27,
   },
   rectangle: {
