@@ -496,12 +496,12 @@ class RegisterWH extends Component {
               <View style={DefaultStyle._cardBody}>
                 <View style={S.bodyCard}>
                   <View style={S.inquirys}>
-                    <View style={S.rightInquiry}>
+                    <View style={S.leftInquiry}>
                       <Text style={S.titleInquiry}>미답변</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
-                    <View style={S.leftInquiry}>
+                    <View style={S.rightInquiry}>
                       <IconButton
                         style={S.btnIcon}
                         icon="lock"
@@ -510,12 +510,12 @@ class RegisterWH extends Component {
                     </View>
                   </View>
                   <View style={S.inquirys}>
-                    <View style={S.rightInquiry}>
+                    <View style={S.leftInquiry}>
                       <Text style={S.titleInquiry}>미답변</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
-                    <View style={S.leftInquiry}>
+                    <View style={S.rightInquiry}>
                       <IconButton
                         style={S.btnIcon}
                         icon="lock"
@@ -524,12 +524,12 @@ class RegisterWH extends Component {
                     </View>
                   </View>
                   <View style={S.inquirys}>
-                    <View style={S.rightInquiry}>
-                      <Text style={S.titleInquiry}>미답변</Text>
+                    <View style={S.leftInquiry}>
+                      <Text style={[S.titleInquiry,S.titleCompleted]}>답변완료</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
-                    <View style={S.leftInquiry}>
+                    <View style={S.rightInquiry}>
                       <IconButton
                         style={S.btnIcon}
                         icon="lock"
@@ -538,12 +538,12 @@ class RegisterWH extends Component {
                     </View>
                   </View>
                   <View style={S.inquirys}>
-                    <View style={S.rightInquiry}>
+                    <View style={S.leftInquiry}>
                       <Text style={S.titleInquiry}>미답변</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
-                    <View style={S.leftInquiry}>
+                    <View style={S.rightInquiry}>
                       <IconButton
                         style={S.btnIcon}
                         icon="lock"
@@ -553,7 +553,7 @@ class RegisterWH extends Component {
                   </View>
                   <TouchableOpacity
                     style={S.btnViewAll}
-                    onPress={() => console.log('viewall')}>
+                    onPress={() => this.navigation.navigate('InquiryWH')}>
                     <Text style={S.textViewAll}>전체보기</Text>
                   </TouchableOpacity>
                 </View>

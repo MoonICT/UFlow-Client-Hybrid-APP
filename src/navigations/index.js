@@ -47,8 +47,10 @@ import RegisterInfoFloor from '@Screeens/RegisterWH/RegisterInfoFloor';
 import RegisterContractConditions from '@Screeens/RegisterWH/ContractConditions';
 import DetailsWH from '@Screeens/DetailsWH';
 import DetailsLocationWH from '@Screeens/DetailsWH/DetailsLocation';
+import InquiryWH from '@Screeens/DetailsWH/InquiryWH';
+import DetailsInquiryWH from '@Screeens/DetailsWH/DetailsInquiryWH';
+import CreateInquiryWH from '@Screeens/DetailsWH/CreateInquiryWH';
 import Register from '@Screeens/Register';
-
 
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
@@ -122,7 +124,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = false;
+let isLogin = true;
 
 const App = () => {
   return (
@@ -252,6 +254,24 @@ const App = () => {
                 <RootStack.Screen
                   name="DetailsLocationWH"
                   component={DetailsLocationWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="InquiryWH"
+                  component={InquiryWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsInquiryWH"
+                  component={DetailsInquiryWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="CreateInquiryWH"
+                  component={CreateInquiryWH}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

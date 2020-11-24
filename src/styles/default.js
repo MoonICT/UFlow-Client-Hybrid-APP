@@ -39,6 +39,15 @@ export default StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
+  rightTitle: {
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 21,
+    letterSpacing: 0,
+    textAlign: 'right',
+    color: 'rgba(0, 0, 0, 0.47)',
+  },
   titleDf: {
     marginTop: 20,
     fontSize: 16,
@@ -130,7 +139,7 @@ export default StyleSheet.create({
   /** Fill Input */
   inputs: {
     // height: 56,
-    lineHeight:56,
+    lineHeight: 56,
     backgroundColor: 'white',
   },
   _fillInput: {
@@ -640,5 +649,9 @@ export default StyleSheet.create({
   },
   textActiveSubmit: {
     color: '#ffffff',
+  },
+
+  backgroundGray: {
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
 });
