@@ -3,8 +3,8 @@
  * @desc [description]
  * */
 import React, {Component, Fragment} from 'react';
-import {StyleSheet, ScrollView, Text, View, Platform} from 'react-native';
-import {List, Button} from 'react-native-paper';
+import { ScrollView, Text } from 'react-native';
+import { Button} from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 
 class AppGrid extends Component {
@@ -21,7 +21,6 @@ class AppGrid extends Component {
   };
   render() {
     const {data} = this.props;
-    console.log('active', this.state.active);
 
     const tabItem =
       data &&
@@ -50,7 +49,9 @@ class AppGrid extends Component {
         <ScrollView horizontal={true} style={DefaultStyle._tabGrid}>
           {tabItem}
         </ScrollView>
-        <Text style={DefaultStyle._contentGrid}>{this.state.content}</Text>
+        {this.state.content !== '' ? (
+          <Text style={DefaultStyle._contentGrid}>{this.state.content}</Text>
+        ) : null}
       </Fragment>
     );
   }
