@@ -37,13 +37,15 @@ export default class Selected extends Component {
       });
     return (
       <View style={DefaultStyle._selected} valueState={this.state.checked}>
-        <Text
-          style={[
-            DefaultStyle._lableSelected,
-            colorLabel ? { color: colorLabel } : null,
-          ]}>
-          {labelSelected}
-        </Text>
+        {labelSelected ? (
+          <Text
+            style={[
+              DefaultStyle._lableSelected,
+              colorLabel ? { color: colorLabel } : null,
+            ]}>
+            {labelSelected}
+          </Text>
+        ) : null}
         <Picker
           style={DefaultStyle._textSelected}
           mode="dropdown"
