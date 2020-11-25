@@ -15,7 +15,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -25,7 +25,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
   Avatar,
@@ -44,7 +44,7 @@ import Video from 'react-native-video';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import {color} from '@Themes/colors';
+import { color } from '@Themes/colors';
 
 import ActionCreator from '../../actions';
 import Carousel from '@Components/organisms/Carousel';
@@ -59,7 +59,7 @@ import Footer from '@Components/organisms/Footer';
 // import Menus from '@Components/organisms/Menu';
 // import TreeViews from '@Components/organisms/TreeView';
 
-import {styles} from './styles';
+import { styles } from './styles';
 
 import mainBG from '@Assets/images/main-bg.png';
 import symbolsBG from '@Assets/images/symbol.png';
@@ -274,10 +274,10 @@ const data = [
   {
     titleList: '창고 등록',
     listItem: [
-      {titleItem: '공급사 등록'},
-      {titleItem: '수요사 등록'},
-      {titleItem: '회원 조회'},
-      {titleItem: '기본 조회'},
+      { titleItem: '공급사 등록' },
+      { titleItem: '수요사 등록' },
+      { titleItem: '회원 조회' },
+      { titleItem: '기본 조회' },
     ],
   },
   {
@@ -303,6 +303,7 @@ class Home extends Component {
       isShow: false,
       expanded: true,
     };
+    this.navigation = props.navigation;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -579,7 +580,7 @@ class Home extends Component {
           {/**___Video Intro__*/}
           <View style={styles.mainVideo}>
             <Video
-              source={{uri: 'https://www.youtube.com/watch?v=6hwz2mMTgIY'}}
+              source={{ uri: 'https://www.youtube.com/watch?v=6hwz2mMTgIY' }}
               ref={ref => {
                 this.player = ref;
               }} // Store reference
@@ -603,7 +604,7 @@ class Home extends Component {
                     name="check"
                     size={12}
                     color="white"
-                    style={{marginLeft: 14}}
+                    style={{ marginLeft: 14 }}
                   />
                 }
                 <Text style={[styles.font9, styles.introColumText]}>
@@ -616,7 +617,7 @@ class Home extends Component {
                     name="check"
                     size={12}
                     color="white"
-                    style={{marginLeft: 14}}
+                    style={{ marginLeft: 14 }}
                   />
                 }
                 <Text style={[styles.font9, styles.introColumText]}>
@@ -629,7 +630,7 @@ class Home extends Component {
                     name="check"
                     size={12}
                     color="white"
-                    style={{marginLeft: 14}}
+                    style={{ marginLeft: 14 }}
                   />
                 }
                 <Text style={[styles.font9, styles.introColumText]}>
@@ -637,7 +638,9 @@ class Home extends Component {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.mainCallBTN}>
+            <TouchableOpacity
+              style={styles.mainCallBTN}
+              onPress={() => this.navigation.navigate('RegisterWH')}>
               <Text style={[styles.blueColor, styles.medium, styles.font15]}>
                 무료로 회원 가입하기
               </Text>

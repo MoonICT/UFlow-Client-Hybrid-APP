@@ -665,12 +665,34 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     marginBottom: 10,
   },
-  _cardBody: {
+  _card: {
     borderWidth: 1,
     borderColor: '#e5e5ea',
     borderRadius: 8,
     marginTop: 12,
     marginBottom: 18,
+  },
+  _headerCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  _headerCardTitle: {
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    color: color.text.primary,
+    lineHeight: 21,
+    padding: 16,
+
+  },
+  rightTitleHeader:{
+    marginRight: 16,
+  },
+  _bodyCard: {
+    padding: 16,
   },
 
   /**Button confirm footer*/

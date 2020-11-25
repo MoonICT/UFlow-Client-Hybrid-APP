@@ -222,8 +222,8 @@ class RegisterWH extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={DefaultStyle._cardBody}>
-                <View style={S.headerCard}>
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
                   <View style={S.imageHeader} />
                   <Checkbox
                     checked={this.state.checked}
@@ -276,8 +276,8 @@ class RegisterWH extends Component {
                 </View>
               </View>
 
-              <View style={DefaultStyle._cardBody}>
-                <View style={S.headerCard}>
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
                   <View style={S.imageHeader} />
                   <Checkbox
                     checked={this.state.checked2}
@@ -334,9 +334,9 @@ class RegisterWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <Text style={S.title}>창고 정보</Text>
-              <View style={DefaultStyle._cardBody}>
-                <View style={S.headerCard}>
-                  <Text style={S.textHeaderCard}>
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
+                  <Text style={S._headerCardTitle}>
                     인천터미널 부근 리모델링 창고
                   </Text>
                 </View>
@@ -362,7 +362,7 @@ class RegisterWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>창고 정보</Text>
               <Text style={S.titleDescribe}>인천광역시 서구 석남동 650-31</Text>
-              <View style={DefaultStyle._cardBody}>
+              <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <TouchableOpacity
                     onPress={() => {
@@ -378,7 +378,7 @@ class RegisterWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <Text style={S.title}>추가 정보</Text>
-              <View style={DefaultStyle._cardBody}>
+              <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.table}>
                     <View style={S.tableRow}>
@@ -431,7 +431,7 @@ class RegisterWH extends Component {
               <View style>
                 <AppGrid data={dataTab} />
               </View>
-              <View style={DefaultStyle._cardBody}>
+              <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.table}>
                     <View style={S.tableRow}>
@@ -493,7 +493,7 @@ class RegisterWH extends Component {
                 </View>
               </View>
 
-              <View style={DefaultStyle._cardBody}>
+              <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.inquirys}>
                     <View style={S.leftInquiry}>

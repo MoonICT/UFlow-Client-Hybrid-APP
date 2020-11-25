@@ -58,7 +58,7 @@ import Annoucement from '@Screeens/Annoucement';
 import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
 import Question from '@Screeens/Question';
 
-// import CustomTabBar from '@Components/organisms/CustomTabBar';
+import TenantMypage from '@Screeens/TenantMypage';
 
 import { color } from '@Themes/colors';
 
@@ -80,7 +80,7 @@ const TabScreenOptions = ({ route }) => ({
         icon = 'magnify';
         break;
       // TODO change route
-      case 'RegisterWH':
+      case 'TenantMypage':
         icon = 'forum';
         break;
       case 'SampleScreen':
@@ -116,7 +116,7 @@ const TabScreen = () => {
         options={{ headerShown: false }}
       />
       {/* TODO Change route */}
-      <Tab.Screen name="RegisterWH" component={RegisterWH} />
+      <Tab.Screen name="TenantMypage" component={TenantMypage} />
       <Tab.Screen
         name="SampleScreen"
         component={SampleScreen}
@@ -306,6 +306,12 @@ const App = () => {
                 <RootStack.Screen
                   name="Question"
                   component={Question}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="TenantMypage"
+                  component={TenantMypage}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

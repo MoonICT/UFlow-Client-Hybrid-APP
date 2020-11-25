@@ -150,12 +150,7 @@ export const styles = StyleSheet.create({
   activeText: {
     color: 'white',
   },
-  headerCard: {
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+ 
   imageHeader: {
     width: 50,
     height: 50,
