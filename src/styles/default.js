@@ -53,6 +53,39 @@ export default StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
+
+  /**Body */
+  bodyContainer: {
+    backgroundColor: 'white',
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  titleBody: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  textTitleBody: {
+    maxWidth: '50%',
+    color: color.text.primary,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 21,
+    paddingTop: 24,
+    paddingBottom: 24,
+  },
+  childTextTitle: {
+    color: color.text.primary,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 21,
+    paddingTop: 24,
+    paddingBottom: 24,
+  },
   /** Divider */
   divider: {
     width: '100%',
@@ -263,7 +296,7 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingLeft: 5,
     paddingRight: 5,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    fontFamily: 'NotoSansCJKkr',
     fontSize: 12,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -273,7 +306,7 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
     color: '#000000',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -331,6 +364,25 @@ export default StyleSheet.create({
     padding: 0,
     margin: 0,
     borderRadius: 0,
+  },
+
+  /**Popup custom*/
+  imagePopup: {
+    width: '100%',
+    height: 181,
+    backgroundColor: '#e0e0e0',
+  },
+  popup: {
+    justifyContent: 'center',
+  },
+  titleDialog: {
+    textAlign: 'center',
+  },
+  contentDialog: {
+    color: 'rgba(0, 0, 0, 0.54)',
+    lineHeight: 24,
+    textAlign: 'center',
+    fontSize: 16,
   },
 
   snackbar: {

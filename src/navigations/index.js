@@ -56,6 +56,7 @@ import CreateInquiryWH from '@Screeens/DetailsWH/CreateInquiryWH';
 
 import Annoucement from '@Screeens/Annoucement';
 import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
+import Question from '@Screeens/Question';
 
 // import CustomTabBar from '@Components/organisms/CustomTabBar';
 
@@ -299,6 +300,12 @@ const App = () => {
                 <RootStack.Screen
                   name="DetailAnnoucement"
                   component={DetailAnnoucement}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Question"
+                  component={Question}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
