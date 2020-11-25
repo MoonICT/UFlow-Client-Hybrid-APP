@@ -665,6 +665,21 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     marginBottom: 10,
   },
+  _titleCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  _textTitleCard: {
+    color: color.text.primary,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 21,
+    paddingTop: 8,
+    paddingBottom: 18,
+  },
   _card: {
     borderWidth: 1,
     borderColor: '#e5e5ea',
@@ -686,9 +701,8 @@ export default StyleSheet.create({
     color: color.text.primary,
     lineHeight: 21,
     padding: 16,
-
   },
-  rightTitleHeader:{
+  rightTitleHeader: {
     marginRight: 16,
   },
   _bodyCard: {

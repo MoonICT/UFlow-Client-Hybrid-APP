@@ -60,6 +60,8 @@ import Question from '@Screeens/Question';
 
 import TenantMypage from '@Screeens/TenantMypage';
 
+import Mypage from '@Screeens/Mypage';
+
 import { color } from '@Themes/colors';
 
 //Custom Theme
@@ -312,6 +314,12 @@ const App = () => {
                 <RootStack.Screen
                   name="TenantMypage"
                   component={TenantMypage}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Mypage"
+                  component={Mypage}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

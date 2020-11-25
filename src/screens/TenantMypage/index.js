@@ -265,7 +265,7 @@ class TenantMypage extends Component {
               <TouchableOpacity
                 style={DefaultStyle._headerCard}
                 onPress={() =>
-                  this.navigation.navigate('RegisterContractConditions')
+                  this.navigation.navigate('Home')
                 }>
                 <Text style={DefaultStyle._headerCardTitle}>
                   에이씨티앤코아물류
