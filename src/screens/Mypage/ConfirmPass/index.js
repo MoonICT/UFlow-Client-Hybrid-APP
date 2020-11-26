@@ -6,17 +6,10 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Card, Text, RadioButton, Checkbox } from 'react-native-paper';
-import Select from '@Components/organisms/Select';
+import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 import TextField from '@Components/organisms/TextField';
 
 // Local Imports
@@ -24,26 +17,23 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '../../../components/organisms/AppBar';
 import ActionCreator from '../../../actions';
 import { styles as S } from '../style';
-import { styles as SS } from './style';
 class WithdrawalInformation extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      firstQuery: '',
+      visible: false,
     };
 
     this.navigation = props.navigation;
   }
+
+  showDialog = () => this.setState({ visible: true });
+
+  hideDialog = () => this.setState({ visible: false });
+
   render() {
     // const { imageStore } = this.props;
-    const {
-      checkService,
-      checkVisit,
-      checkFunction,
-      checkContent,
-    } = this.state;
-
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -74,7 +64,7 @@ class WithdrawalInformation extends Component {
             </View>
             <TouchableOpacity
               style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
-              onPress={() => console.log('취소하기')}>
+              onPress={() => this.showDialog()}>
               <Text
                 style={[
                   DefaultStyle.textSubmit,
@@ -85,6 +75,31 @@ class WithdrawalInformation extends Component {
             </TouchableOpacity>
           </View>
         </ScrollView>
+
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={this.state.visible}
+          onDismiss={this.hideDialog}>
+          <Dialog.Content>
+            <View style={DefaultStyle.imagePopup} />
+          </Dialog.Content>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            회원탈퇴 완료
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={this.hideDialog}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
       </SafeAreaView>
     );
   }

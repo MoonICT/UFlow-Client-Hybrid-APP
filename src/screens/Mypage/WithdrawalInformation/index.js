@@ -11,12 +11,10 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Card, Text, RadioButton, Checkbox } from 'react-native-paper';
-import Select from '@Components/organisms/Select';
+import { Appbar, Text, Checkbox } from 'react-native-paper';
 import TextField from '@Components/organisms/TextField';
 
 // Local Imports
@@ -49,16 +47,6 @@ class WithdrawalInformation extends Component {
       checkContent,
     } = this.state;
 
-    const dataSelect = [
-      {
-        label: '1년',
-        value: '1년',
-      },
-      {
-        label: '2년',
-        value: '2년',
-      },
-    ];
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
