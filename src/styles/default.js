@@ -711,7 +711,10 @@ export default StyleSheet.create({
   _bodyCard: {
     padding: 16,
   },
-
+  _border0: {
+    borderWidth: 0,
+    borderBottomWidth: 0,
+  },
   /**Button confirm footer*/
   footerRegister: {
     flex: 1,

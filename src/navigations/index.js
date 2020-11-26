@@ -61,6 +61,8 @@ import Question from '@Screeens/Question';
 import TenantMypage from '@Screeens/TenantMypage';
 
 import Mypage from '@Screeens/Mypage';
+import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
+import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 
 import { color } from '@Themes/colors';
 
@@ -320,6 +322,18 @@ const App = () => {
                 <RootStack.Screen
                   name="Mypage"
                   component={Mypage}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="WithdrawalInformation"
+                  component={WithdrawalInformation}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ConfirmPass"
+                  component={ConfirmPass}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

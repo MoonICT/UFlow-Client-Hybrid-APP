@@ -16,10 +16,16 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingBottom: 24,
   },
-  check: {},
+  checks: {},
+  listChecks: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 24,
+  },
   checkItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 23,
   },
   checkChildren: {
     marginLeft: 25,

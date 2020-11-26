@@ -34,23 +34,11 @@ import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
 
 import ActionCreator from '../../actions';
-import ignore2 from '@Assets/images/ignore2x.png';
-import ignore1 from '@Assets/images/ignore.png';
-import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const dataSelect = [
-  {
-    label: '1년',
-    value: '1년',
-  },
-  {
-    label: '2년',
-    value: '2년',
-  },
-];
-class RegisterWH extends Component {
+
+class MyPage extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -206,7 +194,7 @@ class RegisterWH extends Component {
               />
               <TouchableOpacity
                 style={S.btnFooter}
-                onPress={() => console.log('회원탈퇴')}>
+                onPress={() => this.navigation.navigate('WithdrawalInformation')}>
                 <Text style={S.textBtnFooter}>회원탈퇴</Text>
               </TouchableOpacity>
             </View>
@@ -236,7 +224,7 @@ class RegisterWH extends Component {
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-            회원정보가 수정되었습니다.
+              회원정보가 수정되었습니다.
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -287,4 +275,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegisterWH);
+)(MyPage);
