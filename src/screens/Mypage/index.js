@@ -16,7 +16,15 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Checkbox, Appbar, Paragraph, Text, Button } from 'react-native-paper';
+import {
+  Checkbox,
+  Appbar,
+  Searchbar,
+  Text,
+  Button,
+  Dialog,
+  Paragraph,
+} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -50,6 +58,8 @@ class RegisterWH extends Component {
       checkAll: false,
       checkSMS: false,
       checkMail: false,
+      firstQuery: '',
+      visible: false,
     };
     this.navigation = props.navigation;
   }
@@ -69,8 +79,7 @@ class RegisterWH extends Component {
   hideDialog = () => this.setState({ visible: false });
   render() {
     const { imageStore, workComplete } = this.props;
-    const { checkAll, checkSMS, checkMail } = this.state;
-    console.log('this.state', this.state);
+    const { checkAll, checkSMS, checkMail, firstQuery } = this.state;
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -86,7 +95,7 @@ class RegisterWH extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView>
+        <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleCard}>
               <Text style={DefaultStyle._textTitleCard}>거래조건</Text>
@@ -143,7 +152,101 @@ class RegisterWH extends Component {
               </View>
             </View>
           </View>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleCard}>
+              <Text style={DefaultStyle._textTitleCard}>회사 정보</Text>
+            </View>
+            <View style>
+              <TextField labelTextField="회사명" colorLabel="#000000" />
+              <TextField labelTextField="담당자명" colorLabel="#000000" />
+              <View style={S.multiTextField}>
+                <TextField
+                  styleProps={{ marginRight: 8 }}
+                  labelTextField="직함"
+                  colorLabel="#000000"
+                />
+                <TextField
+                  styleProps={{ marginLeft: 8 }}
+                  labelTextField="부서명"
+                  colorLabel="#000000"
+                />
+              </View>
+
+              <TextField
+                labelTextField="담당자 전화번호"
+                colorLabel="#000000"
+              />
+              <TextField labelTextField="담당자 이메일" colorLabel="#000000" />
+            </View>
+          </View>
+
+          <View style={[DefaultStyle._cards, S.cardFooter]}>
+            <View style={DefaultStyle._titleCard}>
+              <Text style={DefaultStyle._textTitleCard}>위치</Text>
+            </View>
+            <View style>
+              <Searchbar
+                inputStyle={S.search}
+                style={{ marginBottom: 24 }}
+                placeholder="예)번동10-1, 강북구 번동"
+                onChangeText={query => {
+                  this.setState({ firstQuery: query });
+                }}
+                value={firstQuery}
+              />
+              <TextField
+                placeholder="인천광역시 중구 서해대로94번길 100"
+                colorLabel="#000000"
+              />
+
+              <TextField
+                defaultValue="에이씨티앤코아물류"
+                colorLabel="#000000"
+                valueProps={e => console.log('e', e)}
+              />
+              <TouchableOpacity
+                style={S.btnFooter}
+                onPress={() => console.log('회원탈퇴')}>
+                <Text style={S.textBtnFooter}>회원탈퇴</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
+              onPress={() => this.showDialog()}>
+              <Text
+                style={[
+                  DefaultStyle.textSubmit,
+                  DefaultStyle.textActiveSubmit,
+                ]}>
+                확인
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={this.state.visible}
+          onDismiss={this.hideDialog}>
+          <Dialog.Content>
+            <View style={DefaultStyle.imagePopup} />
+          </Dialog.Content>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            회원정보 수정 완료
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+            회원정보가 수정되었습니다.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={this.hideDialog}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
       </SafeAreaView>
     );
   }

@@ -43,6 +43,8 @@ export default class TextField extends Component {
       textRight,
       rightComponent,
       colorLabel,
+      styleProps,
+      valueProps,
     } = this.props;
 
     return (
@@ -60,8 +62,11 @@ export default class TextField extends Component {
         <TextInput
           onFocus={() => this.onFocusChange()}
           onBlur={() => this.onBlurChange()}
-          style={DefaultStyle._inputTextField}
-          onChangeText={text => this.onChangeText(text)}
+          style={[DefaultStyle._inputTextField, styleProps]}
+          onChangeText={text => {
+            this.onChangeText(text);
+            valueProps && valueProps(text);
+          }}
           value={this.state && this.state.value}
           {...this.props}
         />

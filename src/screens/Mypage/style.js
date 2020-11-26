@@ -32,4 +32,33 @@ export const styles = StyleSheet.create({
     fontStyle: 'normal',
     lineHeight: 20,
   },
+  multiTextField: {
+    flexDirection: 'row',
+  },
+  search: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 16,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 24,
+    padding: 15,
+  },
+  cardFooter: {
+    marginBottom: 0,
+    paddingBottom: 0,
+  },
+  btnFooter: {
+    alignSelf: 'flex-end',
+    marginBottom: 24,
+  },
+  textBtnFooter: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 20,
+    // textAlign: 'right',
+    textDecorationLine: 'underline',
+  },
 });

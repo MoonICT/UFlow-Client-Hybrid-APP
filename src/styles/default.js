@@ -310,7 +310,7 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
-    paddingLeft: 14,
+    padding: 15,
     paddingRight: 50,
     lineHeight: 24,
   },
@@ -374,6 +374,7 @@ export default StyleSheet.create({
   },
   popup: {
     justifyContent: 'center',
+    borderRadius: 8,
   },
   titleDialog: {
     textAlign: 'center',
@@ -658,6 +659,8 @@ export default StyleSheet.create({
     fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 12,
   },
+
+  /**the boxes in the component */
   _cards: {
     padding: 16,
     backgroundColor: '#ffffff',
