@@ -189,9 +189,9 @@ class TenantMypage extends Component {
         </Appbars>
         <ScrollView>
           <AppGrid data={data} />
-          <View style={DefaultStyle.bodyContainer}>
-            <View style={S.titleBody}>
-              <Text style={[DefaultStyle.textTitleBody, S.textTitleTenant]}>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleCard}>
+              <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
                 견적･계약 관리
               </Text>
             </View>
@@ -200,7 +200,7 @@ class TenantMypage extends Component {
             </View>
           </View>
 
-          <View style={DefaultStyle.bodyContainer}>
+          <View style={DefaultStyle._cards}>
             <View style={S.options}>
               <View style={S.optionSelect}>
                 <Select data={dataSelect} style={S.select} />
@@ -214,7 +214,10 @@ class TenantMypage extends Component {
               <TouchableOpacity
                 style={DefaultStyle._headerCard}
                 onPress={() =>
-                  this.navigation.navigate('RegisterContractConditions')
+                  this.navigation.navigate('Quotation', {
+                    status: 'notAnswerd',
+                    type: 'Commission',
+                  })
                 }>
                 <Text style={DefaultStyle._headerCardTitle}>
                   에이씨티앤코아물류
@@ -265,7 +268,172 @@ class TenantMypage extends Component {
               <TouchableOpacity
                 style={DefaultStyle._headerCard}
                 onPress={() =>
-                  this.navigation.navigate('Home')
+                  this.navigation.navigate('Quotation', {
+                    status: 'Answerd',
+                    type: 'Commission',
+                  })
+                }>
+                <Text style={DefaultStyle._headerCardTitle}>
+                  에이씨티앤코아물류
+                </Text>
+                <View style={DefaultStyle.rightTitleHeader}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.87)"
+                  />
+                </View>
+              </TouchableOpacity>
+              <View style={DefaultStyle._bodyCard}>
+                <Image source={card} style={S.imgAva} />
+                <View style={S.info}>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>창고 유형</Text>
+                    <Text style={S.rightInfo}>보관창고, 수탁창고</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 금액</Text>
+                    <Text style={S.rightInfo}>577,000원</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>창고 주소</Text>
+                    <Text style={S.rightInfo}>
+                      인천광역시 서구 석남동 650-31
+                    </Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 요청일</Text>
+                    <Text style={S.rightInfo}>2020.10.26</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 상태</Text>
+                    <Text style={[S.rightInfo, S.highlightInfo]}>
+                      견적 요청
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity style={S.button} onPress={() => {}}>
+                  <Text style={S.textButton}>견적 재요청</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={DefaultStyle._card}>
+              <TouchableOpacity
+                style={DefaultStyle._headerCard}
+                onPress={() =>
+                  this.navigation.navigate('QuotationTrust', {
+                    status: 'notAnswerd',
+                    type: 'Commission',
+                  })
+                }>
+                <Text style={DefaultStyle._headerCardTitle}>
+                  에이씨티앤코아물류
+                </Text>
+                <View style={DefaultStyle.rightTitleHeader}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.87)"
+                  />
+                </View>
+              </TouchableOpacity>
+              <View style={DefaultStyle._bodyCard}>
+                <Image source={card} style={S.imgAva} />
+                <View style={S.info}>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>창고 유형</Text>
+                    <Text style={S.rightInfo}>보관창고, 수탁창고</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 금액</Text>
+                    <Text style={S.rightInfo}>577,000원</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>창고 주소</Text>
+                    <Text style={S.rightInfo}>
+                      인천광역시 서구 석남동 650-31
+                    </Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 요청일</Text>
+                    <Text style={S.rightInfo}>2020.10.26</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 상태</Text>
+                    <Text style={[S.rightInfo, S.highlightInfo]}>
+                      견적 요청
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity style={S.button} onPress={() => {}}>
+                  <Text style={S.textButton}>견적 재요청</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={DefaultStyle._card}>
+              <TouchableOpacity
+                style={DefaultStyle._headerCard}
+                onPress={() =>
+                  this.navigation.navigate('QuotationTrust', {
+                    status: 'notAnswerd',
+                    type: 'Commission',
+                  })
+                }>
+                <Text style={DefaultStyle._headerCardTitle}>
+                  에이씨티앤코아물류
+                </Text>
+                <View style={DefaultStyle.rightTitleHeader}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.87)"
+                  />
+                </View>
+              </TouchableOpacity>
+              <View style={DefaultStyle._bodyCard}>
+                <Image source={card} style={S.imgAva} />
+                <View style={S.info}>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>창고 유형</Text>
+                    <Text style={S.rightInfo}>보관창고, 수탁창고</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 금액</Text>
+                    <Text style={S.rightInfo}>577,000원</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>창고 주소</Text>
+                    <Text style={S.rightInfo}>
+                      인천광역시 서구 석남동 650-31
+                    </Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 요청일</Text>
+                    <Text style={S.rightInfo}>2020.10.26</Text>
+                  </View>
+                  <View style={S.row}>
+                    <Text style={S.leftInfo}>견적 상태</Text>
+                    <Text style={[S.rightInfo, S.highlightInfo]}>
+                      견적 요청
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity style={S.button} onPress={() => {}}>
+                  <Text style={S.textButton}>견적 재요청</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={DefaultStyle._card}>
+              <TouchableOpacity
+                style={DefaultStyle._headerCard}
+                onPress={() =>
+                  this.navigation.navigate('QuotationTrust', {
+                    status: 'Answerd',
+                    type: 'Commission',
+                  })
                 }>
                 <Text style={DefaultStyle._headerCardTitle}>
                   에이씨티앤코아물류

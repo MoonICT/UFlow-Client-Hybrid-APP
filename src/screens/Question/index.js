@@ -72,9 +72,9 @@ class Question extends Component {
           />
         </Appbars>
         <ScrollView>
-          <View style={DefaultStyle.bodyContainer}>
-            <View style={DefaultStyle.titleBody}>
-              <Text style={DefaultStyle.textTitleBody}>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleCard}>
+              <Text style={DefaultStyle._textTitleCard}>
                 유플로우에 궁금하신 점을
                 <Text style={DefaultStyle.childTextTitle}>문의해 주세요.</Text>
               </Text>

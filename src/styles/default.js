@@ -55,27 +55,27 @@ export default StyleSheet.create({
   },
 
   /**Body */
-  bodyContainer: {
-    backgroundColor: 'white',
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  titleBody: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  textTitleBody: {
-    maxWidth: '50%',
-    color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Medium',
-    fontSize: 16,
-    fontWeight: '500',
-    fontStyle: 'normal',
-    lineHeight: 21,
-    paddingTop: 24,
-    paddingBottom: 24,
-  },
+  // bodyContainer: {
+  //   backgroundColor: 'white',
+  //   paddingLeft: 16,
+  //   paddingRight: 16,
+  // },
+  // titleBody: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'space-between',
+  // },
+  // textTitleBody: {
+  //   maxWidth: '50%',
+  //   color: color.text.primary,
+  //   fontFamily: 'NotoSansCJKkr-Medium',
+  //   fontSize: 16,
+  //   fontWeight: '500',
+  //   fontStyle: 'normal',
+  //   lineHeight: 21,
+  //   paddingTop: 24,
+  //   paddingBottom: 24,
+  // },
   childTextTitle: {
     color: color.text.primary,
     fontFamily: 'NotoSansCJKkr-Medium',
@@ -715,6 +715,15 @@ export default StyleSheet.create({
     borderWidth: 0,
     borderBottomWidth: 0,
   },
+  _margin0: {
+    marginBottom: 0,
+    margin: 0,
+  },
+  _footerCards: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
   /**Button confirm footer*/
   footerRegister: {
     flex: 1,
@@ -781,5 +790,86 @@ export default StyleSheet.create({
     fontStyle: 'normal',
     lineHeight: 24,
     padding: 15,
+  },
+
+  /**Table */
+  _infoTable: {
+    margin: 0,
+  },
+  _rowTable: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  _leftInfoTable: {
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    flex: 1,
+    padding: 6,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  _leftTitleTable: {
+    lineHeight: 20,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: 'rgba(0, 0, 0, 0.87)',
+  },
+  _leftContentTable: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 9,
+    lineHeight: 9,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: '#757575',
+  },
+  _rightInfoTable: {
+    lineHeight: 20,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    flex: 2,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: '500',
+    color: 'rgba(0, 0, 0, 0.87)',
+    padding: 6,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  _highlightInfoTable: {
+    color: '#ff6d00',
+  },
+
+  /**List Button */
+  _listBtn: {
+    flexDirection: 'row',
+    marginBottom: 24,
+    marginTop: 24,
+  },
+  _btnCancel: {
+    borderColor: '#ff6d00',
+    borderWidth: 1,
+    borderRadius: 21,
+    flex: 1,
+    marginRight: 6,
+  },
+  _btnUnsubscribe: {
+    backgroundColor: '#ff6d00',
+    borderRadius: 21,
+    marginLeft: 6,
+    flex: 1,
+  },
+  _textBtn: {
+    textAlign: 'center',
+    color: '#ff6d00',
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 15,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 26,
+    padding: 8,
   },
 });

@@ -59,6 +59,8 @@ import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
 import Question from '@Screeens/Question';
 
 import TenantMypage from '@Screeens/TenantMypage';
+import Quotation from '@Screeens/TenantMypage/Quotation';
+import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
 
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
@@ -349,6 +351,18 @@ const App = () => {
                 <RootStack.Screen
                   name="DetailInquiry"
                   component={DetailInquiry}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Quotation"
+                  component={Quotation}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="QuotationTrust"
+                  component={QuotationTrust}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
