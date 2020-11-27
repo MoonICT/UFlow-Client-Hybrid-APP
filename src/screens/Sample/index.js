@@ -94,9 +94,9 @@ export default class Sample extends Component {
             <Text>{'Mypage Sample'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ConfirmPass')}
+            onPress={() => this.props.navigation.navigate('Inquiry')}
             style={DefaultStyle.btn}>
-            <Text>{'ConfirmPass Sample'}</Text>
+            <Text>{'Inquiry Sample'}</Text>
           </TouchableOpacity>
           <View style={styles.button}>
             {/*<Button

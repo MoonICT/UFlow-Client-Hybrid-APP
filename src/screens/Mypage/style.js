@@ -41,14 +41,6 @@ export const styles = StyleSheet.create({
   multiTextField: {
     flexDirection: 'row',
   },
-  search: {
-    fontFamily: 'NotoSansCJKkr',
-    fontSize: 16,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    lineHeight: 24,
-    padding: 15,
-  },
   cardFooter: {
     marginBottom: 0,
     paddingBottom: 0,

@@ -772,4 +772,14 @@ export default StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.47)',
     lineHeight: 20,
   },
+
+  /**Search */
+  _search: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 16,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 24,
+    padding: 15,
+  },
 });

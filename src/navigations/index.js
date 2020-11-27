@@ -64,6 +64,9 @@ import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
 import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 
+import Inquiry from '@Screeens/Inquiry';
+import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
+
 import { color } from '@Themes/colors';
 
 //Custom Theme
@@ -334,6 +337,18 @@ const App = () => {
                 <RootStack.Screen
                   name="ConfirmPass"
                   component={ConfirmPass}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Inquiry"
+                  component={Inquiry}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailInquiry"
+                  component={DetailInquiry}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

@@ -174,7 +174,7 @@ class MyPage extends Component {
             </View>
             <View style>
               <Searchbar
-                inputStyle={S.search}
+                inputStyle={DefaultStyle._search}
                 style={{ marginBottom: 24 }}
                 placeholder="예)번동10-1, 강북구 번동"
                 onChangeText={query => {
