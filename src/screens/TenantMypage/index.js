@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Text } from 'react-native-paper';
+import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -125,7 +125,7 @@ class TenantMypage extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { visible: false };
+    this.state = { visible: false, visibleConfirm: false };
     this.navigation = props.navigation;
   }
 
@@ -142,6 +142,10 @@ class TenantMypage extends Component {
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
+
+  showConfirm = () => this.setState({ visibleConfirm: true });
+
+  hideConfirm = () => this.setState({ visibleConfirm: false });
   render() {
     const { imageStore, workComplete } = this.props;
     const viewStep =
@@ -474,13 +478,78 @@ class TenantMypage extends Component {
                     </Text>
                   </View>
                 </View>
-                <TouchableOpacity style={S.button} onPress={() => {}}>
-                  <Text style={S.textButton}>견적 재요청</Text>
-                </TouchableOpacity>
+                <View style={DefaultStyle._listBtn}>
+                  <TouchableOpacity
+                    style={DefaultStyle._btnCancel}
+                    onPress={() => console.log('견적 재요청')}>
+                    <Text style={DefaultStyle._textBtn}>견적 재요청</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={DefaultStyle._btnUnsubscribe}
+                    onPress={() => this.showConfirm()}>
+                    <Text style={[DefaultStyle._textBtn, { color: '#ffffff' }]}>
+                      견적 승인
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
         </ScrollView>
+
+        <Dialog
+          visible={this.state.visibleConfirm}
+          onDismiss={this.hideConfirm}>
+          <Dialog.Title style={DefaultStyle._titleDialog}>
+            Alert Title
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>
+              창고주에게 응답 받은 견적 금액으로 계약을 진행하시겠습니까?
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              color="rgba(0, 0, 0, 0.54)"
+              style={[DefaultStyle._buttonElement]}
+              onPress={this.hideConfirm}>
+              아니오
+            </Button>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={this.showDialog}>
+              네
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={this.state.visible}
+          onDismiss={this.hideDialog}>
+          <Dialog.Content>
+            <View style={DefaultStyle.imagePopup} />
+          </Dialog.Content>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            회원정보 수정 완료
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              회원정보가 수정되었습니다.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => {
+                this.hideDialog();
+                this.hideConfirm();
+              }}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
       </SafeAreaView>
     );
   }

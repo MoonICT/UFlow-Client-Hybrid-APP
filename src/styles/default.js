@@ -869,7 +869,7 @@ export default StyleSheet.create({
     fontSize: 15,
     fontWeight: 'normal',
     fontStyle: 'normal',
-    lineHeight: 26,
+    lineHeight: 24,
     padding: 8,
   },
 });
