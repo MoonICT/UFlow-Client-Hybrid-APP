@@ -714,6 +714,7 @@ export default StyleSheet.create({
   _border0: {
     borderWidth: 0,
     borderBottomWidth: 0,
+    borderTopWidth: 0,
   },
   _margin0: {
     marginBottom: 0,
@@ -843,6 +844,27 @@ export default StyleSheet.create({
     color: '#ff6d00',
   },
 
+  /**Button */
+  _btnInline: {
+    borderColor: '#ff6d00',
+    borderWidth: 1,
+    borderRadius: 21,
+    flex: 1,
+    alignItems: 'center',
+  },
+  _btnOutline: {
+    backgroundColor: '#ff6d00',
+    borderRadius: 21,
+    flex: 1,
+  },
+  textButton: {
+    lineHeight: 24,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#ff6d00',
+    padding: 8,
+  },
   /**List Button */
   _listBtn: {
     flexDirection: 'row',
@@ -856,6 +878,7 @@ export default StyleSheet.create({
     flex: 1,
     marginRight: 6,
   },
+
   _btnUnsubscribe: {
     backgroundColor: '#ff6d00',
     borderRadius: 21,

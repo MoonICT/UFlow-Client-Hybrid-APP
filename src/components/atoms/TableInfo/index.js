@@ -20,15 +20,19 @@ class TableInfo extends Component {
   }
 
   render() {
-    const { data } = this.props;
-    // item && item.highlight === true ? DefaultStyle._highlightInfoTable : null;
+    const { data, styleLeft, styleRight, borderRow } = this.props;
     return (
       <Fragment>
         {data &&
           data.map((item, index) => {
             return (
-              <View style={DefaultStyle._rowTable} key={index}>
-                <View style={DefaultStyle._leftInfoTable}>
+              <View
+                style={[
+                  DefaultStyle._rowTable,
+                  borderRow === false ? DefaultStyle._border0 : null,
+                ]}
+                key={index}>
+                <View style={[DefaultStyle._leftInfoTable, styleLeft]}>
                   <Text style={DefaultStyle._leftTitleTable}>
                     {item.type && item.type}
                   </Text>
@@ -41,6 +45,7 @@ class TableInfo extends Component {
                 <Text
                   style={[
                     DefaultStyle._rightInfoTable,
+                    styleRight,
                     item && item.highlight === true
                       ? DefaultStyle._highlightInfoTable
                       : null,

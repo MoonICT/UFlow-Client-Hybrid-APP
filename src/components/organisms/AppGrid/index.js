@@ -21,7 +21,6 @@ class AppGrid extends Component {
   };
   render() {
     const { data } = this.props;
-    console.log('active', this.state.active);
 
     const tabItem =
       data &&
@@ -34,7 +33,10 @@ class AppGrid extends Component {
                 ? '#000000'
                 : 'rgba(0, 0, 0, 0.54)'
             }
-            onPress={() => this.handlePress(item)}
+            onPress={() => {
+              this.handlePress(item);
+              item.onPress;
+            }}
             style={[
               DefaultStyle._tabItem,
               this.state.active === item.title

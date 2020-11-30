@@ -20,7 +20,9 @@ import Select from '@Components/organisms/Select';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import TableInfo from '../tableInfo';
+// import TableInfo from '../TableInfo';
+import TableInfo from '@Components/atoms/TableInfo';
+
 import Appbars from '../../../components/organisms/AppBar';
 import ActionCreator from '../../../actions';
 import { styles as S } from '../style';

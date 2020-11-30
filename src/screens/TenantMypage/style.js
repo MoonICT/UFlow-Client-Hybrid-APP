@@ -100,58 +100,6 @@ export const styles = StyleSheet.create({
   selectLong: {
     minWidth: 130,
   },
-  imgAva: {
-    borderRadius: 12,
-    maxWidth: '100%',
-    height: 190,
-    resizeMode: 'cover',
-    // flex: 1,
-    // aspectRatio: 1,
-  },
-  info: {
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  leftInfo: {
-    lineHeight: 20,
-    flex: 1,
-    fontFamily: 'NotoSansCJKkr-Medium',
-    fontSize: 14,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: 'rgba(0, 0, 0, 0.87)',
-    marginBottom: 10,
-  },
-  rightInfo: {
-    lineHeight: 20,
-    flex: 2,
-    fontFamily: 'NotoSansCJKkr-Medium',
-    fontSize: 14,
-    fontStyle: 'normal',
-    fontWeight: '500',
-    color: 'rgba(0, 0, 0, 0.87)',
-    marginBottom: 10,
-  },
-  highlightInfo: {
-    color: '#ff6d00',
-  },
-  button: {
-    borderRadius: 21,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 109, 0, 0.5)',
-    justifyContent: 'center',
-    marginBottom: 24,
-    bottom: 0,
-    alignItems: 'center',
-    padding: 8,
-  },
-  textButton: {
-    lineHeight: 24,
-    fontFamily: 'NotoSansCJKkr-Medium',
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#ff6d00',
-  },
   avatarHeader: {
     backgroundColor: '#d8d8d8',
     padding: 16,
@@ -182,5 +130,13 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal',
     textAlign: 'center',
+  },
+  styleLeftTable: {
+    backgroundColor: '#fff',
+    paddingLeft: 0,
+  },
+  styleRightTable: {
+    fontFamily: 'NotoSansCJKkr-Medium',
+    paddingLeft: 0,
   },
 });

@@ -61,6 +61,7 @@ import Question from '@Screeens/Question';
 import TenantMypage from '@Screeens/TenantMypage';
 import Quotation from '@Screeens/TenantMypage/Quotation';
 import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
+import ManagementTennant from '@Screeens/TenantMypage/Management';
 
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
@@ -363,6 +364,12 @@ const App = () => {
                 <RootStack.Screen
                   name="QuotationTrust"
                   component={QuotationTrust}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ManagementTennant"
+                  component={ManagementTennant}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

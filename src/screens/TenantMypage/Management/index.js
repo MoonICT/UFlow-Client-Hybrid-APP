@@ -19,15 +19,15 @@ import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
 
-import ActionCreator from '../../actions';
+import ActionCreator from '../../../actions';
 
 import card from '@Assets/images/card-img.png';
-import { styles as S } from './style';
+import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const data = [
@@ -249,7 +249,7 @@ class TenantMypage extends Component {
                   type: 'Commission',
                 })
               }
-              headerTitle={'에이씨티앤코아물류1'}
+              headerTitle={'에이씨티앤코아물류1222222'}
               data={dataInfo}
               borderRow={false}
               styleLeft={S.styleLeftTable}
