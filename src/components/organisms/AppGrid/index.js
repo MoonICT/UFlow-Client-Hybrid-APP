@@ -2,9 +2,9 @@
  * @author [Life]
  * @desc [description]
  * */
-import React, { Component, Fragment } from 'react';
-import { StyleSheet, ScrollView, Text, View, Platform } from 'react-native';
-import { List, Button } from 'react-native-paper';
+import React, {Component, Fragment} from 'react';
+import { ScrollView, Text } from 'react-native';
+import { Button} from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 
 class AppGrid extends Component {
@@ -20,7 +20,11 @@ class AppGrid extends Component {
     this.setState({ active: item.title, content: item.content });
   };
   render() {
+<<<<<<< HEAD
     const { data } = this.props;
+=======
+    const {data} = this.props;
+>>>>>>> origin/1929-Life
 
     const tabItem =
       data &&
@@ -52,7 +56,11 @@ class AppGrid extends Component {
         <ScrollView horizontal={true} style={DefaultStyle._tabGrid}>
           {tabItem}
         </ScrollView>
+<<<<<<< HEAD
         {this.state.content ? (
+=======
+        {this.state.content !== '' ? (
+>>>>>>> origin/1929-Life
           <Text style={DefaultStyle._contentGrid}>{this.state.content}</Text>
         ) : null}
       </Fragment>

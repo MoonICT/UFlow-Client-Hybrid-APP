@@ -56,7 +56,7 @@ import CreateInquiryWH from '@Screeens/DetailsWH/CreateInquiryWH';
 
 import Annoucement from '@Screeens/Annoucement';
 import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
-import Question from '@Screeens/Question';
+import FAQ from '@Screeens/FAQ';
 
 import TenantMypage from '@Screeens/TenantMypage';
 import Quotation from '@Screeens/TenantMypage/Quotation';
@@ -314,62 +314,8 @@ const App = () => {
                   options={{ headerShown: false }}
                 />
                 <RootStack.Screen
-                  name="Question"
-                  component={Question}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="TenantMypage"
-                  component={TenantMypage}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Mypage"
-                  component={Mypage}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="WithdrawalInformation"
-                  component={WithdrawalInformation}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="ConfirmPass"
-                  component={ConfirmPass}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Inquiry"
-                  component={Inquiry}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="DetailInquiry"
-                  component={DetailInquiry}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Quotation"
-                  component={Quotation}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="QuotationTrust"
-                  component={QuotationTrust}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="ManagementTennant"
-                  component={ManagementTennant}
+                  name="FAQ"
+                  component={FAQ}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
