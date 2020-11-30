@@ -20,11 +20,7 @@ class AppGrid extends Component {
     this.setState({ active: item.title, content: item.content });
   };
   render() {
-<<<<<<< HEAD
     const { data } = this.props;
-=======
-    const {data} = this.props;
->>>>>>> origin/1929-Life
 
     const tabItem =
       data &&
@@ -56,11 +52,7 @@ class AppGrid extends Component {
         <ScrollView horizontal={true} style={DefaultStyle._tabGrid}>
           {tabItem}
         </ScrollView>
-<<<<<<< HEAD
         {this.state.content ? (
-=======
-        {this.state.content !== '' ? (
->>>>>>> origin/1929-Life
           <Text style={DefaultStyle._contentGrid}>{this.state.content}</Text>
         ) : null}
       </Fragment>
