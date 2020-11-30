@@ -33,12 +33,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const data = [
   {
     title: '견적･계약 관리',
-    onPress: () => this.navigation.navigate('TenantMypage'),
   },
   {
     title: '입･출고 관리',
-    onPress: () => this.navigation.navigate('ManagementTennant'),
-
   },
   {
     title: '창고조회',
@@ -232,7 +229,7 @@ class TenantMypage extends Component {
             </View>
           </View>
 
-          <View style={DefaultStyle._cards}>
+          <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             <View style={S.options}>
               <View style={S.optionSelect}>
                 <Select data={dataSelect} style={S.select} />
@@ -257,9 +254,9 @@ class TenantMypage extends Component {
               bgrImage={card}
               footer={
                 <TouchableOpacity
-                  style={DefaultStyle._btnInline}
+                  style={DefaultStyle._btnOutline}
                   onPress={() => {}}>
-                  <Text style={DefaultStyle.textButton}>견적 재요청</Text>
+                  <Text style={DefaultStyle._textButton}>견적 재요청</Text>
                 </TouchableOpacity>
               }
             />
@@ -279,9 +276,9 @@ class TenantMypage extends Component {
               bgrImage={card}
               footer={
                 <TouchableOpacity
-                  style={DefaultStyle._btnInline}
+                  style={DefaultStyle._btnOutline}
                   onPress={() => {}}>
-                  <Text style={DefaultStyle.textButton}>견적 재요청</Text>
+                  <Text style={DefaultStyle._textButton}>견적 재요청</Text>
                 </TouchableOpacity>
               }
             />
@@ -301,9 +298,9 @@ class TenantMypage extends Component {
               bgrImage={card}
               footer={
                 <TouchableOpacity
-                  style={DefaultStyle._btnInline}
+                  style={DefaultStyle._btnOutline}
                   onPress={() => {}}>
-                  <Text style={DefaultStyle.textButton}>견적 재요청</Text>
+                  <Text style={DefaultStyle._textButton}>견적 재요청</Text>
                 </TouchableOpacity>
               }
             />
@@ -324,14 +321,14 @@ class TenantMypage extends Component {
               footer={
                 <View style={DefaultStyle._listBtn}>
                   <TouchableOpacity
-                    style={DefaultStyle._btnCancel}
+                    style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
                     onPress={() => console.log('견적 재요청')}>
-                    <Text style={DefaultStyle._textBtn}>견적 재요청</Text>
+                    <Text style={DefaultStyle._textButton}>견적 재요청</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={DefaultStyle._btnUnsubscribe}
+                    style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                     onPress={() => this.showConfirm()}>
-                    <Text style={[DefaultStyle._textBtn, { color: '#ffffff' }]}>
+                    <Text style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
                       견적 승인
                     </Text>
                   </TouchableOpacity>
@@ -389,6 +386,7 @@ class TenantMypage extends Component {
               onPress={() => {
                 this.hideDialog();
                 this.hideConfirm();
+                this.navigation.navigate('AvaliableChate');
               }}>
               확인
             </Button>

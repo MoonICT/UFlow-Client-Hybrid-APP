@@ -139,4 +139,8 @@ export const styles = StyleSheet.create({
     fontFamily: 'NotoSansCJKkr-Medium',
     paddingLeft: 0,
   },
+  btnMess: {
+    marginBottom: 0,
+    flexDirection: 'row',
+  },
 });

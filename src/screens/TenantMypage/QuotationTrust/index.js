@@ -302,14 +302,18 @@ class QuotationTrust extends Component {
 
                 <View style={DefaultStyle._listBtn}>
                   <TouchableOpacity
-                    style={DefaultStyle._btnCancel}
+                    style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
                     onPress={() => console.log('취소하기')}>
-                    <Text style={DefaultStyle._textBtn}>취소하기</Text>
+                    <Text style={DefaultStyle._textButton}>취소하기</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={DefaultStyle._btnUnsubscribe}
+                    style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                     onPress={() => this.navigation.navigate('ConfirmPass')}>
-                    <Text style={[DefaultStyle._textBtn, { color: '#ffffff' }]}>
+                    <Text
+                      style={[
+                        DefaultStyle._textButton,
+                        DefaultStyle._textInline,
+                      ]}>
                       탈퇴하기
                     </Text>
                   </TouchableOpacity>

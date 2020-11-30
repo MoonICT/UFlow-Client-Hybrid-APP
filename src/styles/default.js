@@ -38,6 +38,7 @@ export default StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     color: 'black',
+    lineHeight: 21,
   },
   rightTitle: {
     fontFamily: 'NotoSansCJKkr-Medium',
@@ -845,19 +846,20 @@ export default StyleSheet.create({
   },
 
   /**Button */
-  _btnInline: {
+  _btnOutline: {
     borderColor: '#ff6d00',
     borderWidth: 1,
     borderRadius: 21,
     flex: 1,
     alignItems: 'center',
   },
-  _btnOutline: {
+  _btnInline: {
+    alignItems: 'center',
     backgroundColor: '#ff6d00',
     borderRadius: 21,
     flex: 1,
   },
-  textButton: {
+  _textButton: {
     lineHeight: 24,
     fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
@@ -865,34 +867,19 @@ export default StyleSheet.create({
     color: '#ff6d00',
     padding: 8,
   },
+  _textInline: {
+    color: '#ffffff',
+  },
   /**List Button */
   _listBtn: {
     flexDirection: 'row',
     marginBottom: 24,
     marginTop: 24,
   },
-  _btnCancel: {
-    borderColor: '#ff6d00',
-    borderWidth: 1,
-    borderRadius: 21,
-    flex: 1,
+  _btnLeft: {
     marginRight: 6,
   },
-
-  _btnUnsubscribe: {
-    backgroundColor: '#ff6d00',
-    borderRadius: 21,
+  _btnRight: {
     marginLeft: 6,
-    flex: 1,
-  },
-  _textBtn: {
-    textAlign: 'center',
-    color: '#ff6d00',
-    fontFamily: 'NotoSansCJKkr-Medium',
-    fontSize: 15,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    lineHeight: 24,
-    padding: 8,
   },
 });

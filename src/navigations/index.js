@@ -61,7 +61,9 @@ import FAQ from '@Screeens/FAQ';
 import TenantMypage from '@Screeens/TenantMypage';
 import Quotation from '@Screeens/TenantMypage/Quotation';
 import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
-import ManagementTennant from '@Screeens/TenantMypage/Management';
+import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
+import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
+import Chat from '@Screeens/TenantMypage/Chat';
 
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
@@ -316,6 +318,66 @@ const App = () => {
                 <RootStack.Screen
                   name="FAQ"
                   component={FAQ}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Quotation"
+                  component={Quotation}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="QuotationTrust"
+                  component={QuotationTrust}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="AvaliableChate"
+                  component={AvaliableChate}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ContractDetails"
+                  component={ContractDetails}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Mypage"
+                  component={Mypage}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="WithdrawalInformation"
+                  component={WithdrawalInformation}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ConfirmPass"
+                  component={ConfirmPass}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Inquiry"
+                  component={Inquiry}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailInquiry"
+                  component={DetailInquiry}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Chatting"
+                  component={Chat}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
