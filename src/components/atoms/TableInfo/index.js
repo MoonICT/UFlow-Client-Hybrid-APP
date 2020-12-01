@@ -48,6 +48,8 @@ class TableInfo extends Component {
                     styleRight,
                     item && item.highlight === true
                       ? DefaultStyle._highlightInfoTable
+                      : item.highlight === false
+                      ? DefaultStyle._completeInfoTable
                       : null,
                   ]}>
                   {item.value ? item.value : '-'}

@@ -20,7 +20,6 @@ export default class TextField extends Component {
     };
   }
   onChangeText(e) {
-    console.log('e', e);
     this.setState({
       value: e,
     });

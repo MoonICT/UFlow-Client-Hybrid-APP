@@ -78,14 +78,22 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
   },
+  filter: {
+    marginTop: 16,
+    marginBottom: -16,
+  },
   options: {
     flexDirection: 'row',
     flex: 1,
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
   },
   optionSelect: {
     minWidth: 110,
     marginLeft: 8,
+  },
+  optionSelectRight: {
+    marginLeft: 0,
+    marginRight: 8,
   },
   select: {
     paddingLeft: 0,
@@ -163,5 +171,11 @@ export const styles = StyleSheet.create({
   },
   statusSuccess: {
     backgroundColor: '#4caf50',
+  },
+  searchInput: {
+    padding: 4,
+    paddingLeft: 15,
+    fontSize: 14,
+    lineHeight: 20,
   },
 });

@@ -65,6 +65,7 @@ import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
 import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
 import Chat from '@Screeens/TenantMypage/Chat';
 import StorageAgreement from '@Screeens/TenantMypage/StorageAgreement';
+import DetailsManager from '@Screeens/TenantMypage/DetailsManager';
 
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
@@ -385,6 +386,12 @@ const App = () => {
                 <RootStack.Screen
                   name="StorageAgreement"
                   component={StorageAgreement}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsManager"
+                  component={DetailsManager}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

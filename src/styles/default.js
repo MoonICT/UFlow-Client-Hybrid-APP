@@ -615,7 +615,8 @@ export default StyleSheet.create({
   _searchRightIcon: {
     position: 'absolute',
     top: 0,
-    fontSize: 24,
+    right: 10,
+    // fontSize: 24,
     lineHeight: 36,
     margin: 0,
   },
@@ -863,7 +864,9 @@ export default StyleSheet.create({
   _highlightInfoTable: {
     color: '#ff6d00',
   },
-
+  _completeInfoTable: {
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
   /**Button */
   _btnOutline: {
     borderColor: '#ff6d00',

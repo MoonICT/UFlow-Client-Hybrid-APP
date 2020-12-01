@@ -2,9 +2,9 @@
  * @author [Life]
  * @desc [description]
  * */
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import { ScrollView, Text } from 'react-native';
-import { Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 
 class AppGrid extends Component {
@@ -16,11 +16,10 @@ class AppGrid extends Component {
     };
   }
   handlePress = item => {
-    console.log('item', item);
     this.setState({ active: item.title, content: item.content });
   };
   render() {
-    const { data } = this.props;
+    const { data, titleProps } = this.props;
 
     const tabItem =
       data &&
@@ -35,7 +34,7 @@ class AppGrid extends Component {
             }
             onPress={() => {
               this.handlePress(item);
-              item.onPress;
+              titleProps && titleProps(item.title);
             }}
             style={[
               DefaultStyle._tabItem,
