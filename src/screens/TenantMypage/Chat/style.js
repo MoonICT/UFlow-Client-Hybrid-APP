@@ -18,6 +18,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: windowWidth,
     backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.06)',
   },
   headerChat: {
     padding: 16,
@@ -56,10 +58,13 @@ export const styles = StyleSheet.create({
   },
   chatting: {
     padding: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.06)',
+    marginTop: 72,
+    // backgroundColor: 'rgba(0, 0, 0, 0.06)',
+    // // height: windowHeight
   },
   dateTop: {
-    marginTop: 100,
+    marginTop: 26,
+    marginBottom: 26,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -69,8 +74,8 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     color: 'rgba(0, 0, 0, 0.54)',
     padding: 10,
-    paddingTop: 4,
-    paddingBottom: 3,
+    paddingTop: 5,
+    paddingBottom: 2,
     lineHeight: 23,
     fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 13,
@@ -127,9 +132,49 @@ export const styles = StyleSheet.create({
     color: color.text.primary,
     paddingLeft: 6,
     lineHeight: 20,
-
   },
   contentMe: {
     color: '#ffffff',
+  },
+
+  footer: {
+    backgroundColor: '#fafafa',
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    width: windowWidth,
+    padding: 0,
+  },
+  footerItem: {
+    flexDirection: 'row',
+    padding: 16,
+    paddingTop: 13,
+    paddingBottom: 13,
+  },
+  inputChat: {
+    flex: 1,
+  },
+  inputType: {
+    minHeight: 34,
+    padding: 2,
+    paddingLeft: 8,
+    paddingRight: 24,
+    fontSize: 14,
+    maxWidth: '100%',
+  },
+  iconRight: {
+    position: 'absolute',
+    right: 7,
+    top: 5,
+  },
+  btnAdd: {
+    margin: 0,
+    marginLeft: 8,
+    width: 34,
+    height: 34,
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderWidth: 1,
+    justifyContent: 'center',
   },
 });

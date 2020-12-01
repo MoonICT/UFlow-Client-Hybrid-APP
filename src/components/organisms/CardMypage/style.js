@@ -12,9 +12,9 @@ export const styles = StyleSheet.create({
     maxWidth: '100%',
     height: 190,
     resizeMode: 'cover',
+    marginBottom: 16,
   },
   info: {
-    marginTop: 16,
     marginBottom: 16,
   },
 });

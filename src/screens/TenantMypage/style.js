@@ -142,5 +142,26 @@ export const styles = StyleSheet.create({
   btnMess: {
     marginBottom: 0,
     flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  titleStatus: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  statusContact: {
+    backgroundColor: '#2196f3',
+    borderRadius: 10,
+    color: '#ffffff',
+    marginLeft: 8,
+    marginBottom: 6,
+    paddingLeft: 6,
+    paddingRight: 6,
+    lineHeight: 20,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  statusSuccess: {
+    backgroundColor: '#4caf50',
   },
 });

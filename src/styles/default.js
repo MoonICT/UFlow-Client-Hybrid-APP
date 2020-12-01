@@ -55,6 +55,25 @@ export default StyleSheet.create({
     color: 'black',
   },
 
+  _textDF: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.87)',
+    lineHeight: 21,
+  },
+  _textDF2: {
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 14,
+    fontWeight: '500',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.87)',
+    lineHeight: 21,
+  },
+  _textTitleDF: {
+    marginBottom: 20,
+    marginTop: 20,
+  },
   /**Body */
   // bodyContainer: {
   //   backgroundColor: 'white',
@@ -681,8 +700,8 @@ export default StyleSheet.create({
     fontWeight: '500',
     fontStyle: 'normal',
     lineHeight: 21,
-    paddingTop: 8,
-    paddingBottom: 18,
+    // paddingTop: 8,
+    paddingBottom: 6,
   },
   _card: {
     borderWidth: 1,

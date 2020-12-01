@@ -264,9 +264,9 @@ class AvaliableChate extends Component {
 
             <CardMypage
               onPressHeader={() =>
-                this.navigation.navigate('Quotation', {
-                  status: 'notAnswerd',
-                  type: 'Commission',
+                this.navigation.navigate('ContractDetails', {
+                  statusContact: 'Success',
+                  type: 'KeepRequest',
                 })
               }
               headerTitle={'에이씨티앤코아물류'}
@@ -292,9 +292,9 @@ class AvaliableChate extends Component {
 
             <CardMypage
               onPressHeader={() =>
-                this.navigation.navigate('QuotationTrust', {
-                  status: 'Answerd',
-                  type: 'Commission',
+                this.navigation.navigate('ContractDetails', {
+                  statusContact: 'Processing',
+                  type: 'TrustRequest',
                 })
               }
               headerTitle={'태영종합물류센터'}

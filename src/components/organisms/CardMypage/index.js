@@ -51,7 +51,9 @@ class CardMypage extends Component {
           </View>
         </TouchableOpacity>
         <View style={DefaultStyle._bodyCard}>
-          <Image source={bgrImage ? bgrImage : card} style={S.imgAva} />
+          {bgrImage === false ? null : (
+            <Image source={bgrImage ? bgrImage : card} style={S.imgAva} />
+          )}
           <View style={S.info}>
             <TableInfo
               data={data && data}

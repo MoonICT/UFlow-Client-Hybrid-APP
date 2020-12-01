@@ -15,22 +15,12 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {
-  Appbar,
-  Text,
-  Dialog,
-  Paragraph,
-  Button,
-  List,
-  TextInput,
-} from 'react-native-paper';
+import { Appbar, Text, List, IconButton } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import AppGrid from '@Components/organisms/AppGrid';
-import Select from '@Components/organisms/Select';
-import CardMypage from '@Components/organisms/CardMypage';
+import TextField from '@Components/organisms/TextField';
 
 import ActionCreator from '../../../actions';
 
@@ -115,7 +105,9 @@ class Chatting extends Component {
                           DefaultStyle._btnInline,
                           DefaultStyle._btnRight,
                         ]}
-                        onPress={() => {}}>
+                        onPress={() =>
+                          this.navigation.navigate('StorageAgreement')
+                        }>
                         <Text
                           style={[
                             DefaultStyle._textButton,
@@ -164,15 +156,26 @@ class Chatting extends Component {
               </View>
             </View>
           </View>
-
-          <View style={SS.footer}>
-            <View style={SS.footerItem}>
-              <View style={SS.inputChat}>
-                <TextInput />
-              </View>
-            </View>
-          </View>
         </ScrollView>
+        <View style={SS.footer}>
+          <View style={SS.footerItem}>
+            <View style={SS.inputChat}>
+              <TextField
+                multiline={true}
+                styleProps={SS.inputType}
+                placeholder="입력해 주세요."
+                rightComponent={
+                  <Icon name="arrow-forward" size={20} style={SS.iconRight} />
+                }
+              />
+            </View>
+            <IconButton
+              style={SS.btnAdd}
+              icon="plus"
+              onPress={() => console.log('remove')}
+            />
+          </View>
+        </View>
       </SafeAreaView>
     );
   }

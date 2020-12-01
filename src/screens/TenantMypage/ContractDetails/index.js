@@ -22,7 +22,7 @@ import Select from '@Components/organisms/Select';
 import DefaultStyle from '@Styles/default';
 // import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
-
+import CardMypage from '@Components/organisms/CardMypage';
 import Appbars from '../../../components/organisms/AppBar';
 import ActionCreator from '../../../actions';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -79,6 +79,19 @@ const dataEstimate = [
   },
 ];
 
+const dataInfo = [
+  {
+    type: '계약서 등록일시',
+    value: '2020.11.11',
+  },
+  {
+    type: '보험계약 가입 여부',
+  },
+  {
+    type: '첨부 서류',
+    value: '사업자등록증(사본).pdf',
+  },
+];
 class ContractDetails extends Component {
   constructor(props) {
     super(props);
@@ -97,16 +110,76 @@ class ContractDetails extends Component {
     // const { imageStore } = this.props;
     const { route } = this.props;
     console.log('route', route);
-    const dataSelect = [
-      {
-        label: '2020.10.26 (1차)',
-        value: '2020.10.26 (1차)',
-      },
-      {
-        label: '2020.10.26 (1차)2',
-        value: '2020.10.26 (1차)2',
-      },
-    ];
+
+    const footerBtn =
+      route.params && route.params.type === 'TrustRequest' ? (
+        <Fragment>
+          <TouchableOpacity
+            style={[
+              DefaultStyle.btnSubmit,
+              DefaultStyle.activeBtnSubmit,
+              S.btnMess,
+            ]}
+            onPress={() => this.navigation.navigate('Chatting')}>
+            <Icon name="chat" size={20} color="#fff" />
+            <Text
+              style={[
+                DefaultStyle.textSubmit,
+                DefaultStyle.textActiveSubmit,
+                { paddingLeft: 10 },
+              ]}>
+              채팅 바로가기
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={[DefaultStyle._listBtn, { marginTop: 12, marginBottom: 8 }]}>
+            <TouchableOpacity
+              style={[
+                DefaultStyle._btnOutline,
+                DefaultStyle._btnLeft,
+                { borderColor: '#000000' },
+              ]}
+              onPress={() => console.log('계약 요청 취소')}>
+              <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                계약 요청 취소
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[DefaultStyle._btnOutline, DefaultStyle._btnRight]}
+              onPress={() => this.navigation.navigate('StorageAgreement')}>
+              <Text style={[DefaultStyle._textButton]}>계약서 작성</Text>
+            </TouchableOpacity>
+          </View>
+        </Fragment>
+      ) : (
+        <View
+          style={[DefaultStyle._listBtn, { marginTop: 12, marginBottom: 8 }]}>
+          <TouchableOpacity
+            style={[
+              DefaultStyle._btnOutline,
+              DefaultStyle._btnLeft,
+              { borderColor: '#000000' },
+            ]}
+            onPress={() => console.log('계약 요청 취소')}>
+            <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+              계약 요청 취소
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[DefaultStyle._btnInline, DefaultStyle._btnRight, S.btnMess]}
+            onPress={() => this.navigation.navigate('Chatting')}>
+            <Icon name="chat" size={20} color="#fff" />
+            <Text
+              style={[
+                DefaultStyle.textSubmit,
+                DefaultStyle.textActiveSubmit,
+                { paddingLeft: 10 },
+              ]}>
+              채팅 바로가기
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -124,61 +197,38 @@ class ContractDetails extends Component {
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-            <View style={DefaultStyle._titleCard}>
+            <View style={[DefaultStyle._titleCard, S.titleStatus]}>
               <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
+              {route.params && route.params.statusContact === 'Processing' ? (
+                <Text style={S.statusContact}>계약 진행 중</Text>
+              ) : (
+                <Text style={[S.statusContact, S.statusSuccess]}>계약 완료</Text>
+              )}
             </View>
 
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCardTitle}>
                 <View style={S.avatarHeader} />
               </View>
-              <View
-              // style={DefaultStyle._bodyCard}
-              >
-                <View style={DefaultStyle._infoTable}>
-                  <TableInfo data={dataEstimate} />
-                </View>
+              <View style={DefaultStyle._infoTable}>
+                <TableInfo data={dataEstimate} />
               </View>
             </View>
-            <TouchableOpacity
-              style={[
-                DefaultStyle.btnSubmit,
-                DefaultStyle.activeBtnSubmit,
-                S.btnMess,
-              ]}
-              onPress={() => this.navigation.navigate('Chatting')}>
-              <Icon name="chat" size={20} color="#fff" />
-              <Text
-                style={[
-                  DefaultStyle.textSubmit,
-                  DefaultStyle.textActiveSubmit,
-                  { paddingLeft: 10 },
-                ]}>
-                채팅 바로가기
-              </Text>
-            </TouchableOpacity>
-            <View
-              style={[
-                DefaultStyle._listBtn,
-                { marginTop: 12, marginBottom: 8 },
-              ]}>
-              <TouchableOpacity
-                style={[
-                  DefaultStyle._btnOutline,
-                  DefaultStyle._btnLeft,
-                  { borderColor: '#000000' },
-                ]}
-                onPress={() => console.log('계약 요청 취소')}>
-                <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                  계약 요청 취소
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[DefaultStyle._btnOutline, DefaultStyle._btnRight]}
-                onPress={() => this.navigation.navigate('계약서 작성')}>
-                <Text style={[DefaultStyle._textButton]}>계약서 작성</Text>
-              </TouchableOpacity>
+            <View style={DefaultStyle._footerCards}>
+              <Text style={SS.amount}>예상 견적 금액</Text>
+              <Text style={SS.total}>577,000원</Text>
             </View>
+
+            <CardMypage
+              onPressHeader={() => {}}
+              headerTitle={'계약 정보'}
+              data={dataInfo}
+              borderRow={false}
+              styleLeft={S.styleLeftTable}
+              styleRight={S.styleRightTable}
+              bgrImage={false}
+            />
+            {footerBtn}
           </View>
         </ScrollView>
       </SafeAreaView>
