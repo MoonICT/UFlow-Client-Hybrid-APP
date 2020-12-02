@@ -43,6 +43,7 @@ export default class TextField extends Component {
       rightComponent,
       colorLabel,
       styleProps,
+      styleRight,
       valueProps,
     } = this.props;
 
@@ -72,7 +73,9 @@ export default class TextField extends Component {
         {rightComponent ? (
           rightComponent
         ) : (
-          <Text style={DefaultStyle._rightTextField}>{textRight}</Text>
+          <Text style={[DefaultStyle._rightTextField, styleRight]}>
+            {textRight}
+          </Text>
         )}
       </View>
     );

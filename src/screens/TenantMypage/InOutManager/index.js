@@ -122,20 +122,14 @@ class InOutManager extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = {
-      system: 'UF 시스템',
-      term: '1년',
-      settlement: '',
-      deadline: '',
-      escrow: 'UF 에스크로',
-    };
+    this.state = {};
 
     this.navigation = props.navigation;
   }
   render() {
     // const { imageStore } = this.props;
     const { route } = this.props;
-
+    console.log('navigation', this.navigation);
     return (
       <View style={DefaultStyle._cards}>
         <View style={DefaultStyle._titleCard}>
@@ -154,13 +148,14 @@ class InOutManager extends Component {
 
         <View style={S.filter}>
           <View style={[S.options, { justifyContent: 'flex-start' }]}>
-            <View style={[S.optionSelect, S.optionSelectRight]}>
+            <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={dataStart} style={S.select} />
             </View>
-            <View style={[S.optionSelect, S.optionSelectRight]}>
+            <Text style={S.hyphen}>-</Text>
+            <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={dataEnd} style={S.select} />
             </View>
-            <View style={[S.optionSelect, S.optionSelectRight]}>
+            <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={dataAll} style={S.select} />
             </View>
           </View>
@@ -180,12 +175,7 @@ class InOutManager extends Component {
         </View>
 
         <CardMypage
-          onPressHeader={() =>
-            this.navigation.navigate('QuotationTrust', {
-              status: 'notAnswerd',
-              type: 'Commission',
-            })
-          }
+          onPressHeader={() => this.navigation.navigate('DetailsManager')}
           headerTitle={'에이씨티앤코아물류'}
           data={dataInfo}
           borderRow={false}
@@ -223,12 +213,7 @@ class InOutManager extends Component {
         />
 
         <CardMypage
-          onPressHeader={() =>
-            this.navigation.navigate('QuotationTrust', {
-              status: 'Answerd',
-              type: 'Commission',
-            })
-          }
+          onPressHeader={() => this.navigation.navigate('DetailsManager')}
           headerTitle={'에이씨티앤코아물류3'}
           data={dataCompletion}
           borderRow={false}

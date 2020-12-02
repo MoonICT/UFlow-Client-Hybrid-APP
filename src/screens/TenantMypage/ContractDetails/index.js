@@ -197,12 +197,12 @@ class ContractDetails extends Component {
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-            <View style={[DefaultStyle._titleCard, S.titleStatus]}>
+            <View style={[DefaultStyle._titleCard, DefaultStyle._titleStatus]}>
               <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
               {route.params && route.params.statusContact === 'Processing' ? (
-                <Text style={S.statusContact}>계약 진행 중</Text>
+                <Text style={DefaultStyle._statusProcessing}>계약 진행 중</Text>
               ) : (
-                <Text style={[S.statusContact, S.statusSuccess]}>계약 완료</Text>
+                <Text style={[DefaultStyle._statusProcessing, DefaultStyle._statusSuccess]}>계약 완료</Text>
               )}
             </View>
 
