@@ -160,10 +160,6 @@ class TenantMypage extends Component {
     return true;
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    console.log('Component WILL UPDATE!',nextProps,nextState);
-  }
-
   /** when exits screen */
   componentWillUnmount() {
     console.log('::componentWillUnmount::');
@@ -229,7 +225,7 @@ class TenantMypage extends Component {
         <ScrollView>
           <AppGrid data={data} titleProps={e => this.setState({ title: e })} />
           {title === '입･출고 관리' ? (
-            <InOutManager />
+            <InOutManager navigation={this.navigation} />
           ) : (
             <Fragment>
               <View style={DefaultStyle._cards}>

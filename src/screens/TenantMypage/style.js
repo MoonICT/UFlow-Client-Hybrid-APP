@@ -91,9 +91,13 @@ export const styles = StyleSheet.create({
     minWidth: 110,
     marginLeft: 8,
   },
-  optionSelectRight: {
+  optionSelectLeft: {
     marginLeft: 0,
     marginRight: 8,
+  },
+  hyphen: {
+    marginRight: 3,
+    marginLeft: -3,
   },
   select: {
     paddingLeft: 0,
@@ -152,30 +156,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  titleStatus: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  statusContact: {
-    backgroundColor: '#2196f3',
-    borderRadius: 10,
-    color: '#ffffff',
-    marginLeft: 8,
-    marginBottom: 6,
-    paddingLeft: 6,
-    paddingRight: 6,
-    lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  statusSuccess: {
-    backgroundColor: '#4caf50',
-  },
   searchInput: {
     padding: 4,
     paddingLeft: 15,
     fontSize: 14,
     lineHeight: 20,
   },
+
 });

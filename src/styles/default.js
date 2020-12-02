@@ -333,6 +333,7 @@ export default StyleSheet.create({
     padding: 15,
     paddingRight: 50,
     lineHeight: 24,
+    minHeight: 36,
   },
   _rightTextField: {
     position: 'absolute',
@@ -737,6 +738,10 @@ export default StyleSheet.create({
     borderBottomWidth: 0,
     borderTopWidth: 0,
   },
+  _borderBottom: {
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
   _margin0: {
     marginBottom: 0,
     margin: 0,
@@ -895,6 +900,7 @@ export default StyleSheet.create({
   /**List Button */
   _listBtn: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     marginBottom: 24,
     marginTop: 24,
   },
@@ -903,5 +909,27 @@ export default StyleSheet.create({
   },
   _btnRight: {
     marginLeft: 6,
+  },
+
+  /**Status text */
+  _titleStatus: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  _statusProcessing: {
+    backgroundColor: '#2196f3',
+    borderRadius: 10,
+    color: '#ffffff',
+    marginLeft: 8,
+    marginBottom: 6,
+    paddingLeft: 6,
+    paddingRight: 6,
+    lineHeight: 20,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  _statusSuccess: {
+    backgroundColor: '#4caf50',
   },
 });
