@@ -95,4 +95,39 @@ export const styles = StyleSheet.create({
     fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
   },
+  listBtnProcess: {
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  btnProcess: {
+    borderColor: 'rgba(19, 19, 20, 0.5)',
+    marginBottom: 1,
+  },
+  viewProgress: {
+    flexDirection: 'column',
+  },
+  toggle: {
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 0,
+    // padding: 16,
+    // paddingTop: 20,
+    // paddingBottom: 20,
+    marginLeft: 0,
+    height: 58,
+    flex: 1,
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  textToggle: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: 16,
+    lineHeight: 21,
+    fontFamily: 'NotoSansCJKkr-Medium',
+  },
+  footerCheckInfo: {
+    padding: 16,
+    marginBottom: 14,
+  },
 });

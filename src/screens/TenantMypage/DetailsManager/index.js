@@ -25,18 +25,17 @@ import {
   Paragraph,
 } from 'react-native-paper';
 import Select from '@Components/organisms/Select';
+import FilterButton from '@Components/atoms/FilterButton';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 // import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
-import CardMypage from '@Components/organisms/CardMypage';
 import TextField from '@Components/organisms/TextField';
 
 import Appbars from '../../../components/organisms/AppBar';
 import ActionCreator from '../../../actions';
 import Icon from 'react-native-vector-icons/Fontisto';
-import card from '@Assets/images/card-img.png';
 
 import { styles as S } from '../style';
 import { styles as SS } from './style';
@@ -118,6 +117,91 @@ const dataInfo = [
     value: '5,000원',
   },
 ];
+const dataProgress = [
+  {
+    type: '작성 일시',
+    value: '2020.11.10 09:05:00',
+  },
+  {
+    type: '작성자',
+    value: '임차인(ID)',
+  },
+  {
+    type: '구분',
+    value: '입고 요청',
+  },
+  {
+    type: '예정/ 확정 일시',
+    value: '입고예정 : 2020.11.10 09:05:00',
+  },
+  {
+    type: '입고량',
+    value: '100',
+  },
+  {
+    type: '출고량',
+  },
+  {
+    type: '재고',
+  },
+  {
+    type: '적용단가',
+    value: '950/PLT',
+  },
+  {
+    type: '입고비',
+    value: '95,000원',
+  },
+  {
+    type: '출고비',
+  },
+  {
+    type: '보관비',
+  },
+];
+
+const viewProgress = [
+  {
+    type: '작성 일시',
+    value: '2020.11.10 09:05:00',
+  },
+  {
+    type: '작성자',
+    value: '임차인(ID)',
+  },
+  {
+    type: '구분',
+    value: '입고 요청',
+  },
+  {
+    type: '예정/ 확정 일시',
+    value: '입고예정 : 2020.11.10 09:05:00',
+  },
+  {
+    type: '입고량',
+    value: '100',
+  },
+  {
+    type: '출고량',
+  },
+  {
+    type: '재고',
+  },
+  {
+    type: '적용단가',
+    value: '950/PLT',
+  },
+  {
+    type: '입고비',
+    value: '95,000원',
+  },
+  {
+    type: '출고비',
+  },
+  {
+    type: '보관비',
+  },
+];
 class DetailsManager extends Component {
   constructor(props) {
     super(props);
@@ -125,6 +209,11 @@ class DetailsManager extends Component {
     this.state = {
       visible: false,
       confirm: false,
+      isProgress: false,
+      isCancel: false,
+      cancelRequest: false,
+      isToggle: false,
+      receiptCancel: false,
     };
 
     this.navigation = props.navigation;
@@ -138,6 +227,50 @@ class DetailsManager extends Component {
   render() {
     // const { imageStore } = this.props;
     const { route } = this.props;
+    const { isProgress, isToggle, receiptCancel } = this.state;
+
+    const processing =
+      isProgress === true ? (
+        <View style={DefaultStyle._bodyCard}>
+          <Text style={SS.textBody}>등록한 입･출고 내역이 없습니다.</Text>
+        </View>
+      ) : (
+        <Fragment>
+          <TableInfo
+            data={dataProgress}
+            style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
+          />
+          <View style={[DefaultStyle._listBtn, SS.listBtnProcess]}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('송장정보 확인');
+              }}
+              style={[
+                DefaultStyle._btnOutline,
+                DefaultStyle._btnLeft,
+                SS.btnProcess,
+              ]}>
+              <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                송장정보 확인
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ isCancel: true });
+              }}
+              style={[
+                DefaultStyle._btnOutline,
+                DefaultStyle._btnRight,
+                SS.btnProcess,
+              ]}>
+              <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                입고요청 취소
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+        </Fragment>
+      );
 
     return (
       <SafeAreaView style={S.container}>
@@ -247,21 +380,44 @@ class DetailsManager extends Component {
                   <Text style={SS.textTotal}>-원</Text>
                 </View>
               </View>
-              <View style={DefaultStyle._bodyCard}>
-                <Text style={SS.textBody}>등록한 입･출고 내역이 없습니다.</Text>
-              </View>
+              {processing}
             </View>
 
-            <List.Section style={SS.processing}>
-              <List.Accordion
-                title="진행 내역 보기"
-                titleStyle={SS.textProcessing}>
-                <List.Item title="First processing" />
-                <List.Item title="Second processing" />
-              </List.Accordion>
-            </List.Section>
+            <View style={SS.processing}>
+              <FilterButton
+                label="진행 내역 보기"
+                onPress={() => this.setState({ isToggle: !isToggle })}
+                isToggle={isToggle}
+                style={SS.toggle}
+                styleLabel={SS.textToggle}
+              />
+              {isToggle === true && receiptCancel === true ? (
+                <Fragment>
+                  <TableInfo
+                    data={viewProgress}
+                    style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
+                  />
+                  <View style={SS.footerCheckInfo}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({ isCancel: true });
+                      }}
+                      style={[DefaultStyle._btnOutline, SS.btnProcess]}>
+                      <Text
+                        style={[
+                          DefaultStyle._textButton,
+                          { color: '#000000' },
+                        ]}>
+                        송장정보 확인
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </Fragment>
+              ) : null}
+            </View>
           </View>
         </ScrollView>
+
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.visible}
@@ -359,7 +515,64 @@ class DetailsManager extends Component {
               style={DefaultStyle._buttonElement}
               onPress={() => {
                 this.hideConfirm();
+                this.setState({ isProgress: true });
               }}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+
+        <Dialog
+          visible={this.state.isCancel}
+          onDismiss={() => this.setState({ isCancel: false })}>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, , DefaultStyle.titleDialog]}>
+            입고 요청 취소
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              입고 요청을 취소하시겠습니까?
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              color="rgba(0, 0, 0, 0.54)"
+              style={[DefaultStyle._buttonElement]}
+              onPress={() => this.setState({ isCancel: false })}>
+              아니오
+            </Button>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() =>
+                this.setState({ cancelRequest: true, isCancel: false })
+              }>
+              네
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={this.state.cancelRequest}
+          onDismiss={() => this.setState({ cancelRequest: false })}>
+          <Dialog.Content>
+            <View style={DefaultStyle.imagePopup} />
+          </Dialog.Content>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            입고 요청 취소 완료
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              입고 요청 취소를 완료했습니다.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() =>
+                this.setState({ cancelRequest: false, receiptCancel: true })
+              }>
               확인
             </Button>
           </Dialog.Actions>

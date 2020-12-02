@@ -20,7 +20,7 @@ class TableInfo extends Component {
   }
 
   render() {
-    const { data, styleLeft, styleRight, borderRow } = this.props;
+    const { data, styleLeft, styleRight, borderRow,style } = this.props;
     return (
       <Fragment>
         {data &&
@@ -29,6 +29,7 @@ class TableInfo extends Component {
               <View
                 style={[
                   DefaultStyle._rowTable,
+                  style,
                   borderRow === false ? DefaultStyle._border0 : null,
                 ]}
                 key={index}>
