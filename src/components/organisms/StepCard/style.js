@@ -2,12 +2,12 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-17 06:16:40
- * @modify date 2020-11-24 18:37:23
+ * @modify date 2020-12-02 18:47:23
  * @desc [description]
  */
 
-import {StyleSheet} from 'react-native';
-import {color} from '@Themes/colors';
+import { StyleSheet } from 'react-native';
+import { color } from '@Themes/colors';
 
 export const styles = StyleSheet.create({
   font9: {
@@ -75,6 +75,7 @@ export const styles = StyleSheet.create({
     elevation: 8,
     marginLeft: 16,
     marginRight: 16,
+    position: 'relative',
   },
 
   content: {

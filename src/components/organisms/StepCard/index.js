@@ -2,26 +2,26 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2020-11-24 18:37:21
+ * @modify date 2020-12-02 18:39:12
  * @desc [description]
  */
 
-import React, {Component} from 'react';
-import {View, Text, Alert, TouchableOpacity, Image} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, Alert, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Local Imports
-import {styles} from './style';
-import {Card} from 'react-native-paper';
+import { styles } from './style';
+import { Card } from 'react-native-paper';
 import stepBG from '@Assets/images/step.png';
-import {color} from '@Themes/colors';
+import { color } from '@Themes/colors';
 
 class StepCard extends Component {
   constructor(props) {
     super(props);
   }
   render() {
-    let {data} = this.props;
+    let { data } = this.props;
     if (data === undefined) {
       data = {
         img: stepBG,
