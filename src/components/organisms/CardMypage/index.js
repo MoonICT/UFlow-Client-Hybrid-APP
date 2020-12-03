@@ -10,6 +10,7 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import card from '@Assets/images/card-img.png';
+import PropTypes from 'prop-types';
 
 // Local Imports
 import TableInfo from '@Components/atoms/TableInfo';
@@ -34,6 +35,8 @@ class CardMypage extends Component {
       headerTitle,
       onPressHeader,
       footer,
+      style,
+      borderBottom,
     } = this.props;
     // item && item.highlight === true ? DefaultStyle._highlightInfoTable : null;
     return (
@@ -50,7 +53,7 @@ class CardMypage extends Component {
             />
           </View>
         </TouchableOpacity>
-        <View style={DefaultStyle._bodyCard}>
+        <View style={[DefaultStyle._bodyCard, style]}>
           {bgrImage === false ? null : (
             <Image source={bgrImage ? bgrImage : card} style={S.imgAva} />
           )}
@@ -60,6 +63,7 @@ class CardMypage extends Component {
               styleLeft={styleLeft}
               styleRight={styleRight}
               borderRow={borderRow}
+              borderBottom={borderBottom}
             />
           </View>
           {footer}
@@ -69,4 +73,18 @@ class CardMypage extends Component {
   }
 }
 
+// Check Props Type.
+TableInfo.protoType = {
+  data: PropTypes.array,
+  borderRow: PropTypes.bool,
+  style: PropTypes.object,
+  styleRight: PropTypes.object,
+  styleLeft: PropTypes.object,
+  label: PropTypes.string,
+  bgrImage: PropTypes.any,
+  headerTitle: PropTypes.string,
+  onPressHeader: PropTypes.func,
+  footer: PropTypes.any,
+  borderBottom: PropTypes.bool,
+};
 export default CardMypage;

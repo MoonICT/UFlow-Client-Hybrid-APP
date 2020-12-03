@@ -24,7 +24,7 @@ import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
 import InOutManager from './InOutManager';
-
+import SettlementManagement from './SettlementManagement';
 import ActionCreator from '../../actions';
 
 import card from '@Assets/images/card-img.png';
@@ -39,7 +39,7 @@ const data = [
     title: '입･출고 관리',
   },
   {
-    title: '창고조회',
+    title: '정산관리',
   },
   {
     title: '창고등록',
@@ -204,9 +204,143 @@ class TenantMypage extends Component {
           </View>
         );
       });
-    // if (title === '입･출고 관리') {
-    //   return <InOutManager />;
-    // }
+    let viewComponent = (
+      <Fragment>
+        <View style={DefaultStyle._cards}>
+          <View style={DefaultStyle._titleCard}>
+            <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
+              견적･계약 관리
+            </Text>
+          </View>
+          <View style={DefaultStyle._card}>
+            <View style={S.steps}>{viewStep}</View>
+          </View>
+        </View>
+
+        <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+          <View style={S.options}>
+            <View style={S.optionSelect}>
+              <Select data={dataSelect} style={S.select} />
+            </View>
+            <View style={[S.optionSelect, S.selectLong]}>
+              <Select data={dataSelect2} style={S.select} />
+            </View>
+          </View>
+
+          <CardMypage
+            onPressHeader={() =>
+              this.navigation.navigate('Quotation', {
+                status: 'notAnswerd',
+                type: 'Commission',
+              })
+            }
+            headerTitle={'에이씨티앤코아물류1'}
+            data={dataInfo}
+            borderRow={false}
+            styleLeft={S.styleLeftTable}
+            styleRight={S.styleRightTable}
+            bgrImage={card}
+            footer={
+              <TouchableOpacity
+                style={DefaultStyle._btnOutline}
+                onPress={() => {}}>
+                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
+              </TouchableOpacity>
+            }
+          />
+
+          <CardMypage
+            onPressHeader={() =>
+              this.navigation.navigate('Quotation', {
+                status: 'Answerd',
+                type: 'Commission',
+              })
+            }
+            headerTitle={'에이씨티앤코아물류2'}
+            data={dataInfo}
+            borderRow={false}
+            styleLeft={S.styleLeftTable}
+            styleRight={S.styleRightTable}
+            bgrImage={card}
+            footer={
+              <TouchableOpacity
+                style={DefaultStyle._btnOutline}
+                onPress={() => {}}>
+                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
+              </TouchableOpacity>
+            }
+          />
+
+          <CardMypage
+            onPressHeader={() =>
+              this.navigation.navigate('QuotationTrust', {
+                status: 'notAnswerd',
+                type: 'Commission',
+              })
+            }
+            headerTitle={'에이씨티앤코아물류3'}
+            data={dataInfo}
+            borderRow={false}
+            styleLeft={S.styleLeftTable}
+            styleRight={S.styleRightTable}
+            bgrImage={card}
+            footer={
+              <TouchableOpacity
+                style={DefaultStyle._btnOutline}
+                onPress={() => {}}>
+                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
+              </TouchableOpacity>
+            }
+          />
+
+          <CardMypage
+            onPressHeader={() =>
+              this.navigation.navigate('QuotationTrust', {
+                status: 'Answerd',
+                type: 'Commission',
+              })
+            }
+            headerTitle={'에이씨티앤코아물류3'}
+            data={dataInfo}
+            borderRow={false}
+            styleLeft={S.styleLeftTable}
+            styleRight={S.styleRightTable}
+            bgrImage={card}
+            footer={
+              <View style={DefaultStyle._listBtn}>
+                <TouchableOpacity
+                  style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
+                  onPress={() => console.log('견적 재요청')}>
+                  <Text style={DefaultStyle._textButton}>견적 재요청</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
+                  onPress={() => this.showConfirm()}>
+                  <Text
+                    style={[
+                      DefaultStyle._textButton,
+                      DefaultStyle._textInline,
+                    ]}>
+                    견적 승인
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            }
+          />
+        </View>
+      </Fragment>
+    );
+    switch (title) {
+      case '입･출고 관리':
+        viewComponent = <InOutManager navigation={this.navigation} />;
+        break;
+      case '정산관리':
+        viewComponent = <SettlementManagement navigation={this.navigation} />;
+        break;
+      default:
+      // code block
+    }
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -224,143 +358,7 @@ class TenantMypage extends Component {
         </Appbars>
         <ScrollView>
           <AppGrid data={data} titleProps={e => this.setState({ title: e })} />
-          {title === '입･출고 관리' ? (
-            <InOutManager navigation={this.navigation} />
-          ) : (
-            <Fragment>
-              <View style={DefaultStyle._cards}>
-                <View style={DefaultStyle._titleCard}>
-                  <Text
-                    style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
-                    견적･계약 관리
-                  </Text>
-                </View>
-                <View style={DefaultStyle._card}>
-                  <View style={S.steps}>{viewStep}</View>
-                </View>
-              </View>
-
-              <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-                <View style={S.options}>
-                  <View style={S.optionSelect}>
-                    <Select data={dataSelect} style={S.select} />
-                  </View>
-                  <View style={[S.optionSelect, S.selectLong]}>
-                    <Select data={dataSelect2} style={S.select} />
-                  </View>
-                </View>
-
-                <CardMypage
-                  onPressHeader={() =>
-                    this.navigation.navigate('Quotation', {
-                      status: 'notAnswerd',
-                      type: 'Commission',
-                    })
-                  }
-                  headerTitle={'에이씨티앤코아물류1'}
-                  data={dataInfo}
-                  borderRow={false}
-                  styleLeft={S.styleLeftTable}
-                  styleRight={S.styleRightTable}
-                  bgrImage={card}
-                  footer={
-                    <TouchableOpacity
-                      style={DefaultStyle._btnOutline}
-                      onPress={() => {}}>
-                      <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-                    </TouchableOpacity>
-                  }
-                />
-
-                <CardMypage
-                  onPressHeader={() =>
-                    this.navigation.navigate('Quotation', {
-                      status: 'Answerd',
-                      type: 'Commission',
-                    })
-                  }
-                  headerTitle={'에이씨티앤코아물류2'}
-                  data={dataInfo}
-                  borderRow={false}
-                  styleLeft={S.styleLeftTable}
-                  styleRight={S.styleRightTable}
-                  bgrImage={card}
-                  footer={
-                    <TouchableOpacity
-                      style={DefaultStyle._btnOutline}
-                      onPress={() => {}}>
-                      <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-                    </TouchableOpacity>
-                  }
-                />
-
-                <CardMypage
-                  onPressHeader={() =>
-                    this.navigation.navigate('QuotationTrust', {
-                      status: 'notAnswerd',
-                      type: 'Commission',
-                    })
-                  }
-                  headerTitle={'에이씨티앤코아물류3'}
-                  data={dataInfo}
-                  borderRow={false}
-                  styleLeft={S.styleLeftTable}
-                  styleRight={S.styleRightTable}
-                  bgrImage={card}
-                  footer={
-                    <TouchableOpacity
-                      style={DefaultStyle._btnOutline}
-                      onPress={() => {}}>
-                      <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-                    </TouchableOpacity>
-                  }
-                />
-
-                <CardMypage
-                  onPressHeader={() =>
-                    this.navigation.navigate('QuotationTrust', {
-                      status: 'Answerd',
-                      type: 'Commission',
-                    })
-                  }
-                  headerTitle={'에이씨티앤코아물류3'}
-                  data={dataInfo}
-                  borderRow={false}
-                  styleLeft={S.styleLeftTable}
-                  styleRight={S.styleRightTable}
-                  bgrImage={card}
-                  footer={
-                    <View style={DefaultStyle._listBtn}>
-                      <TouchableOpacity
-                        style={[
-                          DefaultStyle._btnOutline,
-                          DefaultStyle._btnLeft,
-                        ]}
-                        onPress={() => console.log('견적 재요청')}>
-                        <Text style={DefaultStyle._textButton}>
-                          견적 재요청
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={[
-                          DefaultStyle._btnInline,
-                          DefaultStyle._btnRight,
-                        ]}
-                        onPress={() => this.showConfirm()}>
-                        <Text
-                          style={[
-                            DefaultStyle._textButton,
-                            DefaultStyle._textInline,
-                          ]}>
-                          견적 승인
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  }
-                />
-              </View>
-            </Fragment>
-          )}
+          {viewComponent}
         </ScrollView>
 
         <Dialog
