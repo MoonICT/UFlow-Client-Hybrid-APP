@@ -268,7 +268,6 @@ class DetailsManager extends Component {
               </Text>
             </TouchableOpacity>
           </View>
-
         </Fragment>
       );
 
@@ -391,28 +390,36 @@ class DetailsManager extends Component {
                 style={SS.toggle}
                 styleLabel={SS.textToggle}
               />
-              {isToggle === true && receiptCancel === true ? (
-                <Fragment>
-                  <TableInfo
-                    data={viewProgress}
-                    style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
-                  />
-                  <View style={SS.footerCheckInfo}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.setState({ isCancel: true });
-                      }}
-                      style={[DefaultStyle._btnOutline, SS.btnProcess]}>
-                      <Text
-                        style={[
-                          DefaultStyle._textButton,
-                          { color: '#000000' },
-                        ]}>
-                        송장정보 확인
-                      </Text>
-                    </TouchableOpacity>
+              {isToggle === true ? (
+                receiptCancel === true ? (
+                  <Fragment>
+                    <TableInfo
+                      data={viewProgress}
+                      style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
+                    />
+                    <View style={SS.footerCheckInfo}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.setState({ isCancel: true });
+                        }}
+                        style={[DefaultStyle._btnOutline, SS.btnProcess]}>
+                        <Text
+                          style={[
+                            DefaultStyle._textButton,
+                            { color: '#000000' },
+                          ]}>
+                          송장정보 확인
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Fragment>
+                ) : (
+                  <View style={DefaultStyle._bodyCard}>
+                    <Text style={SS.textBody}>
+                      등록한 입･출고 내역이 없습니다.
+                    </Text>
                   </View>
-                </Fragment>
+                )
               ) : null}
             </View>
           </View>
