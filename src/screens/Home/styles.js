@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-12-02 19:10:11
+ * @modify date 2020-12-03 10:42:30
  * @desc [description]
  */
 
@@ -356,11 +356,13 @@ export const styles = StyleSheet.create({
     paddingBottom: 60,
   },
   backgroundVideo: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    // position: 'absolute',
+    // top: 0,
+    // left: 0,
+    // bottom: 0,
+    // right: 0,
+    width: '100%',
+    minWidth: 640,
   },
 
   //--->main Call
