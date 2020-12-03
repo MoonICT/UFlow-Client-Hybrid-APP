@@ -20,7 +20,6 @@ export default class TextField extends Component {
     };
   }
   onChangeText(e) {
-    console.log('e', e);
     this.setState({
       value: e,
     });
@@ -43,6 +42,9 @@ export default class TextField extends Component {
       textRight,
       rightComponent,
       colorLabel,
+      styleProps,
+      styleRight,
+      valueProps,
     } = this.props;
 
     return (
@@ -60,15 +62,20 @@ export default class TextField extends Component {
         <TextInput
           onFocus={() => this.onFocusChange()}
           onBlur={() => this.onBlurChange()}
-          style={DefaultStyle._inputTextField}
-          onChangeText={text => this.onChangeText(text)}
+          style={[DefaultStyle._inputTextField, styleProps]}
+          onChangeText={text => {
+            this.onChangeText(text);
+            valueProps && valueProps(text);
+          }}
           value={this.state && this.state.value}
           {...this.props}
         />
         {rightComponent ? (
           rightComponent
         ) : (
-          <Text style={DefaultStyle._rightTextField}>{textRight}</Text>
+          <Text style={[DefaultStyle._rightTextField, styleRight]}>
+            {textRight}
+          </Text>
         )}
       </View>
     );

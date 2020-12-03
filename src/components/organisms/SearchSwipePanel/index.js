@@ -1,6 +1,6 @@
 /**
  * @author [Deokin]
- * @modify date 2020-11-13
+ * @modify date 2020-11-24 18:37:38
  */
 
 import React, { Component } from 'react';
@@ -52,10 +52,8 @@ class SearchSwipePanel extends Component {
       const naviHeight = 54;
       const filterHeight = 48 * 2;
       if (isIphoneX()) {
-        console.log('아이폰x')
         height = Dimensions.get("window").height - status - getBottomSpace() - naviHeight - filterHeight;
       } else {
-        console.log('아이폰 일반')
         height = Dimensions.get("window").height - status - naviHeight - filterHeight;
       }
     }

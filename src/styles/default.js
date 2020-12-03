@@ -38,11 +38,73 @@ export default StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     color: 'black',
+    lineHeight: 21,
+  },
+  rightTitle: {
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 21,
+    letterSpacing: 0,
+    textAlign: 'right',
+    color: 'rgba(0, 0, 0, 0.47)',
   },
   titleDf: {
     marginTop: 20,
     fontSize: 16,
     color: 'black',
+  },
+
+  _textDF: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.87)',
+    lineHeight: 21,
+  },
+  _textDF2: {
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 14,
+    fontWeight: '500',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.87)',
+    lineHeight: 21,
+  },
+  _textTitleDF: {
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  /**Body */
+  // bodyContainer: {
+  //   backgroundColor: 'white',
+  //   paddingLeft: 16,
+  //   paddingRight: 16,
+  // },
+  // titleBody: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'space-between',
+  // },
+  // textTitleBody: {
+  //   maxWidth: '50%',
+  //   color: color.text.primary,
+  //   fontFamily: 'NotoSansCJKkr-Medium',
+  //   fontSize: 16,
+  //   fontWeight: '500',
+  //   fontStyle: 'normal',
+  //   lineHeight: 21,
+  //   paddingTop: 24,
+  //   paddingBottom: 24,
+  // },
+  childTextTitle: {
+    color: color.text.primary,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 21,
+    paddingTop: 24,
+    paddingBottom: 24,
   },
   /** Divider */
   divider: {
@@ -55,10 +117,12 @@ export default StyleSheet.create({
   /** Container button */
   containerBTN: {
     width: 120,
-    height: 36,
+    height: 42,
     textAlign: 'center',
     color: color.primary.constrast,
     borderRadius: 30,
+    flex: 1,
+    justifyContent: 'center',
   },
   //---> Background
   _primary: {
@@ -127,7 +191,8 @@ export default StyleSheet.create({
   /** Input */
   /** Fill Input */
   inputs: {
-    height: 56,
+    // height: 56,
+    lineHeight: 56,
     backgroundColor: 'white',
   },
   _fillInput: {
@@ -251,7 +316,7 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingLeft: 5,
     paddingRight: 5,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    fontFamily: 'NotoSansCJKkr',
     fontSize: 12,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -261,13 +326,14 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
     color: '#000000',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
-    paddingLeft: 14,
+    padding: 15,
     paddingRight: 50,
     lineHeight: 24,
+    minHeight: 36,
   },
   _rightTextField: {
     position: 'absolute',
@@ -319,6 +385,26 @@ export default StyleSheet.create({
     padding: 0,
     margin: 0,
     borderRadius: 0,
+  },
+
+  /**Popup custom*/
+  imagePopup: {
+    width: '100%',
+    height: 181,
+    backgroundColor: '#e0e0e0',
+  },
+  popup: {
+    justifyContent: 'center',
+    borderRadius: 8,
+  },
+  titleDialog: {
+    textAlign: 'center',
+  },
+  contentDialog: {
+    color: 'rgba(0, 0, 0, 0.54)',
+    lineHeight: 24,
+    textAlign: 'center',
+    fontSize: 16,
   },
 
   snackbar: {
@@ -530,7 +616,8 @@ export default StyleSheet.create({
   _searchRightIcon: {
     position: 'absolute',
     top: 0,
-    fontSize: 24,
+    right: 10,
+    // fontSize: 24,
     lineHeight: 36,
     margin: 0,
   },
@@ -594,6 +681,8 @@ export default StyleSheet.create({
     fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 12,
   },
+
+  /**the boxes in the component */
   _cards: {
     padding: 16,
     backgroundColor: '#ffffff',
@@ -601,14 +690,67 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     marginBottom: 10,
   },
-  _cardBody: {
+  _titleCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  _textTitleCard: {
+    color: color.text.primary,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 21,
+    // paddingTop: 8,
+    paddingBottom: 6,
+  },
+  _card: {
     borderWidth: 1,
     borderColor: '#e5e5ea',
     borderRadius: 8,
     marginTop: 12,
     marginBottom: 18,
   },
-
+  _headerCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  _headerCardTitle: {
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    color: color.text.primary,
+    lineHeight: 21,
+    padding: 16,
+  },
+  rightTitleHeader: {
+    marginRight: 16,
+  },
+  _bodyCard: {
+    padding: 16,
+  },
+  _border0: {
+    borderWidth: 0,
+    borderBottomWidth: 0,
+    borderTopWidth: 0,
+  },
+  _borderBottom: {
+    borderBottomWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  _margin0: {
+    marginBottom: 0,
+    margin: 0,
+  },
+  _footerCards: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
   /**Button confirm footer*/
   footerRegister: {
     flex: 1,
@@ -637,5 +779,157 @@ export default StyleSheet.create({
   },
   textActiveSubmit: {
     color: '#ffffff',
+  },
+
+  backgroundGray: {
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+  },
+
+  /**List Item */
+  btnItem: {
+    borderBottomWidth: 1,
+    borderColor: '#e0e0e0',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  titleItem: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    color: 'rgba(0, 0, 0, 0.87)',
+    lineHeight: 20,
+  },
+  contentItem: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    color: 'rgba(0, 0, 0, 0.47)',
+    lineHeight: 20,
+  },
+
+  /**Search */
+  _search: {
+    fontFamily: 'NotoSansCJKkr',
+    fontSize: 16,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 24,
+    padding: 15,
+  },
+
+  /**Table */
+  _infoTable: {
+    margin: 0,
+  },
+  _rowTable: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  _leftInfoTable: {
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    flex: 1,
+    padding: 6,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  _leftTitleTable: {
+    lineHeight: 20,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: 'rgba(0, 0, 0, 0.87)',
+  },
+  _leftContentTable: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 9,
+    lineHeight: 9,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: '#757575',
+  },
+  _rightInfoTable: {
+    lineHeight: 20,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    flex: 2,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: '500',
+    color: 'rgba(0, 0, 0, 0.87)',
+    padding: 6,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  _highlightInfoTable: {
+    color: '#ff6d00',
+  },
+  _completeInfoTable: {
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
+  /**Button */
+  _btnOutline: {
+    borderColor: '#ff6d00',
+    borderWidth: 1,
+    borderRadius: 21,
+    flex: 1,
+    alignItems: 'center',
+  },
+  _btnInline: {
+    alignItems: 'center',
+    backgroundColor: '#ff6d00',
+    borderRadius: 21,
+    flex: 1,
+  },
+  _textButton: {
+    lineHeight: 24,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#ff6d00',
+    padding: 8,
+  },
+  _textInline: {
+    color: '#ffffff',
+  },
+  /**List Button */
+  _listBtn: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 24,
+    marginTop: 24,
+  },
+  _btnLeft: {
+    marginRight: 6,
+  },
+  _btnRight: {
+    marginLeft: 6,
+  },
+
+  /**Status text */
+  _titleStatus: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  _statusProcessing: {
+    backgroundColor: '#2196f3',
+    borderRadius: 10,
+    color: '#ffffff',
+    marginLeft: 8,
+    marginBottom: 6,
+    paddingLeft: 6,
+    paddingRight: 6,
+    lineHeight: 20,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  _statusSuccess: {
+    backgroundColor: '#4caf50',
   },
 });

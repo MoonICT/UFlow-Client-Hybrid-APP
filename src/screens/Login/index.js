@@ -2,25 +2,25 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2020-11-11 09:23:14
+ * @modify date 2020-11-24 19:30:27
  * @desc [description]
  */
 
 // Global Imports
-import React, {Component} from 'react';
-import {SafeAreaView, View, ScrollView, Image} from 'react-native';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { SafeAreaView, View, ScrollView, Image } from 'react-native';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
+import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import Appbars from '../../components/organisms/AppBar';
 import ActionCreator from '../../actions';
-import {styles as S} from './style';
+import { styles as S } from './style';
 //---> Assets
-const Logo = require('@Assets/images/logo.png')
+const Logo = require('@Assets/images/logo.png');
 
 class Login extends Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class Login extends Component {
   }
 
   render() {
-    const {email, password, isRemember} = this.state;
+    const { email, password, isRemember } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -67,7 +67,7 @@ class Login extends Component {
               type="number"
               maxLength={20}
               style={[DefaultStyle.inputs]}
-              onChangeText={text => this.setState({email: text})}
+              onChangeText={text => this.setState({ email: text })}
             />
             <TextInput
               label="비밀번호"
@@ -77,14 +77,14 @@ class Login extends Component {
               secureTextEntry={true}
               maxLength={20}
               style={[DefaultStyle.inputs, S.inputPass]}
-              onChangeText={text => this.setState({password: text})}
+              onChangeText={text => this.setState({ password: text })}
             />
             <View style={S.plusFormLogin}>
               <View style={S.rememberLogin}>
                 <Checkbox
                   status={isRemember ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    this.setState({isRemember: !isRemember});
+                    this.setState({ isRemember: !isRemember });
                   }}
                 />
                 <Text style={[S.fontS14]}>자동 로그인</Text>
@@ -114,7 +114,13 @@ class Login extends Component {
             </Button>
             <View style={[S.plusFormLogin, S.forgot]}>
               <Text style={[S.ask, S.fontS14]}>유플로우가 처음이신가요?</Text>
-              <Text style={[S.mrL10, S.fontS14]}>회원가입</Text>
+              <Text
+                style={[S.mrL10, S.fontS14]}
+                onPress={() => {
+                  this.navigation.navigate('Register');
+                }}>
+                회원가입
+              </Text>
             </View>
           </View>
         </ScrollView>

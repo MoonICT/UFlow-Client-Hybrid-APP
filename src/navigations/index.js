@@ -27,8 +27,8 @@ import initStore from '@Store/index';
 
 import Global from '@Screeens/Global';
 import LoginScreen from '@Screeens/Login';
-import ForgotIDScreen from '@Screeens/ForgotID';
-// import ForgotPassScreen from '@Screeens/ForgotPass';
+import FindIDScreen from '@Screeens/FindID';
+import FindPassWordScreen from '@Screeens/FindPassWord';
 import HomeScreen from '@Screeens/Home';
 import SearchScreen from '@Screeens/Search';
 import SampleScreen from '@Screeens/Sample';
@@ -45,9 +45,35 @@ import RegisterIntro from '@Screeens/RegisterWH/RegisterIntro';
 import RegisterMoreIntro from '@Screeens/RegisterWH/MoreInfo';
 import RegisterInfoFloor from '@Screeens/RegisterWH/RegisterInfoFloor';
 import RegisterContractConditions from '@Screeens/RegisterWH/ContractConditions';
-import DetailsWH from '@Screeens/DetailsWH';
+import Register from '@Screeens/Register';
+import Terms from '@Screeens/Terms';
 
-// import CustomTabBar from '@Components/organisms/CustomTabBar';
+import DetailsWH from '@Screeens/DetailsWH';
+import DetailsLocationWH from '@Screeens/DetailsWH/DetailsLocation';
+import InquiryWH from '@Screeens/DetailsWH/InquiryWH';
+import DetailsInquiryWH from '@Screeens/DetailsWH/DetailsInquiryWH';
+import CreateInquiryWH from '@Screeens/DetailsWH/CreateInquiryWH';
+
+import Annoucement from '@Screeens/Annoucement';
+import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
+import FAQ from '@Screeens/FAQ';
+
+import TenantMypage from '@Screeens/TenantMypage';
+import Quotation from '@Screeens/TenantMypage/Quotation';
+import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
+import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
+import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
+import Chat from '@Screeens/TenantMypage/Chat';
+import StorageAgreement from '@Screeens/TenantMypage/StorageAgreement';
+import DetailsManager from '@Screeens/TenantMypage/DetailsManager';
+import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
+
+import Mypage from '@Screeens/Mypage';
+import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
+import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
+
+import Inquiry from '@Screeens/Inquiry';
+import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
 import { color } from '@Themes/colors';
 
@@ -69,7 +95,7 @@ const TabScreenOptions = ({ route }) => ({
         icon = 'magnify';
         break;
       // TODO change route
-      case 'RegisterWH':
+      case 'TenantMypage':
         icon = 'forum';
         break;
       case 'SampleScreen':
@@ -105,7 +131,7 @@ const TabScreen = () => {
         options={{ headerShown: false }}
       />
       {/* TODO Change route */}
-      <Tab.Screen name="RegisterWH" component={RegisterWH} />
+      <Tab.Screen name="TenantMypage" component={TenantMypage} />
       <Tab.Screen
         name="SampleScreen"
         component={SampleScreen}
@@ -140,13 +166,28 @@ const App = () => {
                   options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
-                  name="ForgotID"
-                  component={ForgotIDScreen}
+                  name="FindID"
+                  component={FindIDScreen}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="FindPassWord"
+                  component={FindPassWordScreen}
                   options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
                   name="testScreen"
                   component={TextFeild}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="Register"
+                  component={Register}
+                  options={{ headerShown: false }}
+                />
+                <AuthStack.Screen
+                  name="Terms"
+                  component={Terms}
                   options={{ headerShown: false }}
                 />
               </AuthStack.Navigator>
@@ -238,6 +279,126 @@ const App = () => {
                 <RootStack.Screen
                   name="DetailsWH"
                   component={DetailsWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsLocationWH"
+                  component={DetailsLocationWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="InquiryWH"
+                  component={InquiryWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsInquiryWH"
+                  component={DetailsInquiryWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="CreateInquiryWH"
+                  component={CreateInquiryWH}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Annoucement"
+                  component={Annoucement}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailAnnoucement"
+                  component={DetailAnnoucement}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="FAQ"
+                  component={FAQ}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Quotation"
+                  component={Quotation}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="QuotationTrust"
+                  component={QuotationTrust}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="AvaliableChate"
+                  component={AvaliableChate}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ContractDetails"
+                  component={ContractDetails}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Mypage"
+                  component={Mypage}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="WithdrawalInformation"
+                  component={WithdrawalInformation}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ConfirmPass"
+                  component={ConfirmPass}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Inquiry"
+                  component={Inquiry}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailInquiry"
+                  component={DetailInquiry}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Chatting"
+                  component={Chat}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="StorageAgreement"
+                  component={StorageAgreement}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsManager"
+                  component={DetailsManager}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="DetailsSettlement"
+                  component={DetailsSettlement}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

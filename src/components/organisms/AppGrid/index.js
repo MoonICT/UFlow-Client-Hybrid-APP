@@ -2,9 +2,9 @@
  * @author [Life]
  * @desc [description]
  * */
-import React, {Component, Fragment} from 'react';
-import {StyleSheet, ScrollView, Text, View, Platform} from 'react-native';
-import {List, Button} from 'react-native-paper';
+import React, { Component, Fragment } from 'react';
+import { ScrollView, Text } from 'react-native';
+import { Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 
 class AppGrid extends Component {
@@ -16,12 +16,10 @@ class AppGrid extends Component {
     };
   }
   handlePress = item => {
-    console.log('item', item);
-    this.setState({active: item.title, content: item.content});
+    this.setState({ active: item.title, content: item.content });
   };
   render() {
-    const {data} = this.props;
-    console.log('active', this.state.active);
+    const { data, titleProps } = this.props;
 
     const tabItem =
       data &&
@@ -34,7 +32,10 @@ class AppGrid extends Component {
                 ? '#000000'
                 : 'rgba(0, 0, 0, 0.54)'
             }
-            onPress={() => this.handlePress(item)}
+            onPress={() => {
+              this.handlePress(item);
+              titleProps && titleProps(item.title);
+            }}
             style={[
               DefaultStyle._tabItem,
               this.state.active === item.title
@@ -50,7 +51,9 @@ class AppGrid extends Component {
         <ScrollView horizontal={true} style={DefaultStyle._tabGrid}>
           {tabItem}
         </ScrollView>
-        <Text style={DefaultStyle._contentGrid}>{this.state.content}</Text>
+        {this.state.content ? (
+          <Text style={DefaultStyle._contentGrid}>{this.state.content}</Text>
+        ) : null}
       </Fragment>
     );
   }

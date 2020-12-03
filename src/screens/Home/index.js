@@ -10,12 +10,12 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-11-17 18:18:09
+ * @modify date 2020-12-02 19:33:47
  * @desc [description]
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -23,28 +23,18 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Dimensions,
+  TextInput as TextInputNormal,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {
-  Avatar,
-  Button,
-  Card,
-  Title,
-  Paragraph,
-  Appbar,
-  Menu,
-  Divider,
-  List,
-  TextInput,
-} from 'react-native-paper';
+import { Button, Appbar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Video from 'react-native-video';
+// import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-player';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import {color} from '@Themes/colors';
+import { color } from '@Themes/colors';
 
 import ActionCreator from '../../actions';
 import Carousel from '@Components/organisms/Carousel';
@@ -59,11 +49,12 @@ import Footer from '@Components/organisms/Footer';
 // import Menus from '@Components/organisms/Menu';
 // import TreeViews from '@Components/organisms/TreeView';
 
-import {styles} from './styles';
+import { styles } from './styles';
 
 import mainBG from '@Assets/images/main-bg.png';
-import symbolsBG from '@Assets/images/symbol.png';
-import factoryBG from '@Assets/images/factory.png';
+// import symbolsBG from '@Assets/images/symbol.png';
+// import factoryBG from '@Assets/images/factory.png';
+import boxMain from '@Assets/images/box_main_1.png';
 import cardBG from '@Assets/images/card-img.png';
 import stepBG from '@Assets/images/step.png';
 import slogan1 from '@Assets/images/slogan1.png';
@@ -203,42 +194,58 @@ const slidesSteps = [
   {
     img: stepBG,
     step: 'Step 1. 창고 임대 진행 및 완료',
-    title: `안전한 대금 보호 시스템과 혹시 모를\n
-  위험요소를 위한 안심보험 가입까지!`,
-    content: `에스크로 방식의 대금보호시스템을 통해 대금 
-  걱정 없이 창고 관리에만 집중하실 수 있습니다.
-  안심 재물보험 가입으로 혹시 모를 
-  위험요소까지 보장해 드립니다.`,
+    title:
+      '안전한 대금 보호 시스템과 혹시 모를\n' +
+      '위험요소를 위한 안심보험 가입까지!',
+    content:
+      '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
+      '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
+      '안심 재물보험 가입으로 혹시 모를\n' +
+      '위험요소까지 보장해 드립니다.\n\n' +
+      '• 안전한 대금 보호 시스템과 혹시 모를\n' +
+      '위험요소를 위한 안심보험 가입까지!',
   },
   {
     img: stepBG,
     step: 'Step 2. 창고 임대 진행 및 완료',
-    title: `안전한 대금 보호 시스템과 혹시 모를\n
-  위험요소를 위한 안심보험 가입까지!`,
-    content: `에스크로 방식의 대금보호시스템을 통해 대금 
-  걱정 없이 창고 관리에만 집중하실 수 있습니다.
-  안심 재물보험 가입으로 혹시 모를 
-  위험요소까지 보장해 드립니다.`,
+    title:
+      '안전한 대금 보호 시스템과 혹시 모를\n' +
+      '위험요소를 위한 안심보험 가입까지!',
+    content:
+      '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
+      '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
+      '안심 재물보험 가입으로 혹시 모를\n' +
+      '위험요소까지 보장해 드립니다.\n\n' +
+      '• 안전한 대금 보호 시스템과 혹시 모를\n' +
+      '위험요소를 위한 안심보험 가입까지!',
   },
   {
     img: stepBG,
     step: 'Step 3. 창고 임대 진행 및 완료',
-    title: `안전한 대금 보호 시스템과 혹시 모를\n
-  위험요소를 위한 안심보험 가입까지!`,
-    content: `에스크로 방식의 대금보호시스템을 통해 대금 
-  걱정 없이 창고 관리에만 집중하실 수 있습니다.
-  안심 재물보험 가입으로 혹시 모를 
-  위험요소까지 보장해 드립니다.`,
+    title:
+      '안전한 대금 보호 시스템과 혹시 모를\n' +
+      '위험요소를 위한 안심보험 가입까지!',
+    content:
+      '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
+      '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
+      '안심 재물보험 가입으로 혹시 모를\n' +
+      '위험요소까지 보장해 드립니다.\n\n' +
+      '• 안전한 대금 보호 시스템과 혹시 모를\n' +
+      '위험요소를 위한 안심보험 가입까지!',
   },
   {
     img: stepBG,
     step: 'Step 4. 창고 임대 진행 및 완료',
-    title: `안전한 대금 보호 시스템과 혹시 모를\n
-  위험요소를 위한 안심보험 가입까지!`,
-    content: `에스크로 방식의 대금보호시스템을 통해 대금 
-  걱정 없이 창고 관리에만 집중하실 수 있습니다.
-  안심 재물보험 가입으로 혹시 모를 
-  위험요소까지 보장해 드립니다.`,
+    title:
+      '안전한 대금 보호 시스템과 혹시 모를\n' +
+      '위험요소를 위한 안심보험 가입까지!',
+    content:
+      '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
+      '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
+      '안심 재물보험 가입으로 혹시 모를\n' +
+      '위험요소까지 보장해 드립니다.\n\n' +
+      '• 안전한 대금 보호 시스템과 혹시 모를\n' +
+      '위험요소를 위한 안심보험 가입까지!',
   },
 ];
 
@@ -274,10 +281,10 @@ const data = [
   {
     titleList: '창고 등록',
     listItem: [
-      {titleItem: '공급사 등록'},
-      {titleItem: '수요사 등록'},
-      {titleItem: '회원 조회'},
-      {titleItem: '기본 조회'},
+      { titleItem: '공급사 등록' },
+      { titleItem: '수요사 등록' },
+      { titleItem: '회원 조회' },
+      { titleItem: '기본 조회' },
     ],
   },
   {
@@ -303,6 +310,7 @@ class Home extends Component {
       isShow: false,
       expanded: true,
     };
+    this.navigation = props.navigation;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -313,7 +321,7 @@ class Home extends Component {
     console.log('::componentWillUnmount::');
   }
 
-  _renderItem = ({item}) => {
+  _renderItem = ({ item }) => {
     return (
       <View style={styles.slide}>
         <View style={styles.overlay} />
@@ -326,20 +334,20 @@ class Home extends Component {
     );
   };
 
-  _renderProductItem = ({item}) => {
-    return <ProductCard data={{...item, img: cardBG}} />;
+  _renderProductItem = ({ item }) => {
+    return <ProductCard data={{ ...item, img: cardBG }} />;
   };
 
-  _renderStepItem = ({item}) => {
-    return <StepCard data={{...item}} />;
+  _renderStepItem = ({ item }) => {
+    return <StepCard data={{ ...item }} />;
   };
 
   _onDone = () => {
-    this.setState({showRealApp: true});
+    this.setState({ showRealApp: true });
   };
 
   render() {
-    const {showPopup} = this.props;
+    const { showPopup } = this.props;
     // const {isShow, expanded} = this.state;
 
     return (
@@ -372,7 +380,7 @@ class Home extends Component {
               renderItem: this._renderItem,
               showNextButton: false,
               showDoneButton: false,
-              dotStyle: {backgroundColor: '#757575', width: 8, height: 8},
+              dotStyle: { backgroundColor: '#757575', width: 8, height: 8 },
               activeDotStyle: {
                 borderColor: 'white',
                 borderWidth: 1,
@@ -385,12 +393,20 @@ class Home extends Component {
           {/**### INTRO ###*/}
           <View style={styles.intro}>
             <View style={[styles.introImage]}>
-              <Image source={symbolsBG} style={styles.introSymbolImage} />
-              <Image source={factoryBG} style={styles.introFactoryImage} />
+              <Image source={boxMain} style={styles.introSymbolImage} />
+              {/* <Image source={factoryBG} style={styles.introFactoryImage} /> */}
             </View>
             {/*--Content--*/}
             <View style={styles.introRow}>
-              <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text>
+              {/* <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text> */}
+              <TextInputNormal
+                placeholder="어떤 창고를 찾고 계시나요?"
+                style={styles.introInput}
+                placeholderTextColor="white"
+                textAlignVertical="center"
+                numberOfLines={1}
+                ellipsizeMode="start"
+              />
               {<Icon name="search" size={24} color="white" />}
             </View>
 
@@ -472,7 +488,7 @@ class Home extends Component {
                 sliderWidth={328}
                 itemWidth={160}
                 renderItem={this._renderProductItem}
-                onSnapToItem={index => this.setState({activeIndex: index})}
+                onSnapToItem={index => this.setState({ activeIndex: index })}
               />
             </View>
           </View>
@@ -502,9 +518,10 @@ class Home extends Component {
                 '편리하고 안전하게 창고를 임대 & 매매하세요.'}
             </Text>
             <View style={styles.mainCallForBindingSearch}>
-              <TextInput
-                label="이메일을 입력해주세요."
+              <TextInputNormal
+                placeholder="이메일을 입력해주세요."
                 style={styles.mainCallForBindingSearchInput}
+                placeholderTextColor="rgba(0, 0, 0, 0.54)"
               />
               <TouchableOpacity
                 mode="contained"
@@ -553,12 +570,14 @@ class Home extends Component {
                   backgroundColor: 'rgba(0, 0, 0, 0.26)',
                   width: 8,
                   height: 8,
+                  marginTop: 150,
                 },
                 activeDotStyle: {
                   borderColor: 'rgba(0, 0, 0, 0.54)',
                   borderWidth: 1,
                   width: 10,
                   height: 10,
+                  marginTop: 150,
                 },
               }}
             />
@@ -578,14 +597,23 @@ class Home extends Component {
 
           {/**___Video Intro__*/}
           <View style={styles.mainVideo}>
-            <Video
-              source={{uri: 'https://www.youtube.com/watch?v=6hwz2mMTgIY'}}
+            {/* <Video
+              source={{ uri: 'https://www.youtube.com/watch?v=6hwz2mMTgIY' }}
               ref={ref => {
                 this.player = ref;
               }} // Store reference
               onBuffer={this.onBuffer}
               onError={this.videoError}
               style={styles.backgroundVideo}
+            /> */}
+
+            <VideoPlayer
+              video={{
+                uri: 'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
+              }}
+              // style={styles.backgroundVideo}
+              thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+              autoplay={true}
             />
           </View>
 
@@ -603,7 +631,7 @@ class Home extends Component {
                     name="check"
                     size={12}
                     color="white"
-                    style={{marginLeft: 14}}
+                    style={{ marginLeft: 14 }}
                   />
                 }
                 <Text style={[styles.font9, styles.introColumText]}>
@@ -616,7 +644,7 @@ class Home extends Component {
                     name="check"
                     size={12}
                     color="white"
-                    style={{marginLeft: 14}}
+                    style={{ marginLeft: 14 }}
                   />
                 }
                 <Text style={[styles.font9, styles.introColumText]}>
@@ -629,7 +657,7 @@ class Home extends Component {
                     name="check"
                     size={12}
                     color="white"
-                    style={{marginLeft: 14}}
+                    style={{ marginLeft: 14 }}
                   />
                 }
                 <Text style={[styles.font9, styles.introColumText]}>
@@ -637,7 +665,9 @@ class Home extends Component {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.mainCallBTN}>
+            <TouchableOpacity
+              style={styles.mainCallBTN}
+              onPress={() => this.navigation.navigate('RegisterWH')}>
               <Text style={[styles.blueColor, styles.medium, styles.font15]}>
                 무료로 회원 가입하기
               </Text>

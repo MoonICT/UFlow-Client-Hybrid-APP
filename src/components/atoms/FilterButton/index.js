@@ -1,6 +1,6 @@
 /**
  * @author [Deokin]
- * @modify date 2020-11-13
+ * @modify date 2020-11-24 18:39:26
  */
 
 import React, { Component } from 'react';
@@ -19,13 +19,14 @@ class FilterButton extends Component {
   }
 
   render () {
+    const {styleLabel} = this.props;
     return (
       <TouchableOpacity {...this.props} style={[
         this.props.isToggle ? styles.buttonOn : styles.buttonOff,
         styles.button,
         this.props.style
       ]}>
-        <Text>{this.props.label}</Text>
+        <Text style={styleLabel}>{this.props.label}</Text>
         {this.props.isToggle ?
           <Icon name={'menu-up'} style={[styles.icon, { color: '#000' }]} /> :
           <Icon name={'menu-down'} style={[styles.icon, { color: 'rgba(0, 0, 0, 0.47)' }]} />}

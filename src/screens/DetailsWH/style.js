@@ -16,9 +16,6 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     // padding: 24,
   },
-  backgroundPage: {
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-  },
   titleWH: {
     backgroundColor: '#f2453d',
     borderTopRightRadius: 15,
@@ -153,12 +150,7 @@ export const styles = StyleSheet.create({
   activeText: {
     color: 'white',
   },
-  headerCard: {
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+ 
   imageHeader: {
     width: 50,
     height: 50,
@@ -242,6 +234,8 @@ export const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     padding: 16,
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -253,6 +247,9 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal',
   },
+  titleCompleted: {
+    color: 'rgba(255, 109, 0, 0.87)',
+  },
   contentInquiry: {
     color: 'rgba(0, 0, 0, 0.87)',
     lineHeight: 20,
@@ -263,6 +260,19 @@ export const styles = StyleSheet.create({
   },
   footerInquiry: {
     color: 'rgba(0, 0, 0, 0.47)',
+    marginTop: 2,
+    lineHeight: 20,
+    letterSpacing: 0,
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontWeight: 'normal',
+  },
+  detailInquiry: {
+    width: '100%',
+    marginTop: 24,
+  },
+  textDetail: {
+    color: 'rgba(0, 0, 0, 0.87)',
     lineHeight: 20,
     letterSpacing: 0,
     fontFamily: 'NotoSansCJKkr-Regular',

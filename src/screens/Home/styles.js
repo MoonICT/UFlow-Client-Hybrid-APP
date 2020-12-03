@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-11-17 18:20:50
+ * @modify date 2020-12-02 19:10:11
  * @desc [description]
  */
 
@@ -75,6 +75,7 @@ export const styles = StyleSheet.create({
   },
   btnAction: {
     width: 88,
+    height: 30,
     lineHeight: 30,
     marginRight: 17,
     backgroundColor: color.primary.main,
@@ -82,6 +83,8 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
   },
   //====================Slide==============================
   carousel: {
@@ -151,8 +154,8 @@ export const styles = StyleSheet.create({
     top: -6,
   },
   introSymbolImage: {
-    width: 91,
-    height: 122,
+    width: 167,
+    height: 114,
   },
   introTitle: {
     fontFamily: 'NotoSansCJKkr-Bold',
@@ -160,6 +163,16 @@ export const styles = StyleSheet.create({
     letterSpacing: -0.5,
     lineHeight: 28,
     color: color.primary.constrast,
+  },
+  introInput: {
+    width: '90%',
+    fontFamily: 'NotoSansCJKkr-Bold',
+    fontSize: 24,
+    // letterSpacing: -0.5,
+    // lineHeight: 28,
+    lineHeight: 0,
+    padding: 0,
+    color: color.point.main,
   },
   introRow: {
     display: 'flex',
@@ -269,6 +282,8 @@ export const styles = StyleSheet.create({
     minWidth: 217,
     height: 42,
     borderRadius: 3,
+    backgroundColor: color.misc.white,
+    padding: 8,
   },
 
   mainCallForBindingSearchBTN: {
@@ -309,7 +324,8 @@ export const styles = StyleSheet.create({
   },
 
   carouselStep: {
-    height: 425,
+    height: 500,
+    textAlign: 'center',
   },
 
   //---->main slogan
@@ -338,6 +354,13 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 224,
     paddingBottom: 60,
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 
   //--->main Call
@@ -377,8 +400,8 @@ export const styles = StyleSheet.create({
   //--->main Help
   mainHelp: {
     backgroundColor: color.misc.white,
-    paddingTop: 12,
-    paddingBottom: 12,
+    // paddingTop: 12,
+    // paddingBottom: 12,
     overflow: 'hidden',
   },
   mainHelpText: {

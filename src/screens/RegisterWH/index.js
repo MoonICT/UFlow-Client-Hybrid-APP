@@ -172,17 +172,17 @@ class RegisterWH extends Component {
           </TouchableOpacity>
         </View>
         <Dialog
-          style={S.popup}
+          style={DefaultStyle.popup}
           visible={this.state.visible}
           onDismiss={this.hideDialog}>
           <Dialog.Content>
-            <View style={S.imagePopup} />
+            <View style={DefaultStyle.imagePopup} />
           </Dialog.Content>
-          <Dialog.Title style={[DefaultStyle._titleDialog, S.titleDialog]}>
+          <Dialog.Title style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
             창고 등록 완료
           </Dialog.Title>
           <Dialog.Content>
-            <Paragraph style={S.contentDialog}>
+            <Paragraph style={DefaultStyle.contentDialog}>
               UFLOW 관리자가 입력하신 정보를 
               확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 `
               {'>'}` 내 창고]에서 확인해 주세요.

@@ -40,6 +40,7 @@ import card from '@Assets/images/card-img.png';
 import circle from '@Assets/images/avatars-circle-icon.png';
 import mainBG from '@Assets/images/main-bg.png';
 import cardBG from '@Assets/images/card-img.png';
+import mapLink from '@Assets/images/mapLink.png';
 
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -172,7 +173,7 @@ class RegisterWH extends Component {
             }}
           />
         </Appbars>
-        <ScrollView style={S.backgroundPage}>
+        <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
             <Text style={S.titleWH}>제휴창고</Text>
             <Text style={S.describeTitle}>보관창고, 수탁창고</Text>
@@ -221,8 +222,8 @@ class RegisterWH extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={DefaultStyle._cardBody}>
-                <View style={S.headerCard}>
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
                   <View style={S.imageHeader} />
                   <Checkbox
                     checked={this.state.checked}
@@ -275,8 +276,8 @@ class RegisterWH extends Component {
                 </View>
               </View>
 
-              <View style={DefaultStyle._cardBody}>
-                <View style={S.headerCard}>
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
                   <View style={S.imageHeader} />
                   <Checkbox
                     checked={this.state.checked2}
@@ -333,9 +334,9 @@ class RegisterWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <Text style={S.title}>창고 정보</Text>
-              <View style={DefaultStyle._cardBody}>
-                <View style={S.headerCard}>
-                  <Text style={S.textHeaderCard}>
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
+                  <Text style={S._headerCardTitle}>
                     인천터미널 부근 리모델링 창고
                   </Text>
                 </View>
@@ -361,9 +362,14 @@ class RegisterWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>창고 정보</Text>
               <Text style={S.titleDescribe}>인천광역시 서구 석남동 650-31</Text>
-              <View style={DefaultStyle._cardBody}>
+              <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
-                  <ImageBackground source style={S.imageMap} />
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.navigation.navigate('DetailsLocationWH');
+                    }}>
+                    <ImageBackground source={mapLink} style={S.imageMap} />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -372,7 +378,7 @@ class RegisterWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <Text style={S.title}>추가 정보</Text>
-              <View style={DefaultStyle._cardBody}>
+              <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.table}>
                     <View style={S.tableRow}>
@@ -425,7 +431,7 @@ class RegisterWH extends Component {
               <View style>
                 <AppGrid data={dataTab} />
               </View>
-              <View style={DefaultStyle._cardBody}>
+              <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.table}>
                     <View style={S.tableRow}>
@@ -487,15 +493,15 @@ class RegisterWH extends Component {
                 </View>
               </View>
 
-              <View style={DefaultStyle._cardBody}>
+              <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.inquirys}>
-                    <View style={S.rightInquiry}>
+                    <View style={S.leftInquiry}>
                       <Text style={S.titleInquiry}>미답변</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
-                    <View style={S.leftInquiry}>
+                    <View style={S.rightInquiry}>
                       <IconButton
                         style={S.btnIcon}
                         icon="lock"
@@ -504,12 +510,12 @@ class RegisterWH extends Component {
                     </View>
                   </View>
                   <View style={S.inquirys}>
-                    <View style={S.rightInquiry}>
+                    <View style={S.leftInquiry}>
                       <Text style={S.titleInquiry}>미답변</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
-                    <View style={S.leftInquiry}>
+                    <View style={S.rightInquiry}>
                       <IconButton
                         style={S.btnIcon}
                         icon="lock"
@@ -518,12 +524,12 @@ class RegisterWH extends Component {
                     </View>
                   </View>
                   <View style={S.inquirys}>
-                    <View style={S.rightInquiry}>
-                      <Text style={S.titleInquiry}>미답변</Text>
+                    <View style={S.leftInquiry}>
+                      <Text style={[S.titleInquiry,S.titleCompleted]}>답변완료</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
-                    <View style={S.leftInquiry}>
+                    <View style={S.rightInquiry}>
                       <IconButton
                         style={S.btnIcon}
                         icon="lock"
@@ -532,12 +538,12 @@ class RegisterWH extends Component {
                     </View>
                   </View>
                   <View style={S.inquirys}>
-                    <View style={S.rightInquiry}>
+                    <View style={S.leftInquiry}>
                       <Text style={S.titleInquiry}>미답변</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
-                    <View style={S.leftInquiry}>
+                    <View style={S.rightInquiry}>
                       <IconButton
                         style={S.btnIcon}
                         icon="lock"
@@ -547,7 +553,7 @@ class RegisterWH extends Component {
                   </View>
                   <TouchableOpacity
                     style={S.btnViewAll}
-                    onPress={() => console.log('viewall')}>
+                    onPress={() => this.navigation.navigate('InquiryWH')}>
                     <Text style={S.textViewAll}>전체보기</Text>
                   </TouchableOpacity>
                 </View>

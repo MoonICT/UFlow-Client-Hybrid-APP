@@ -9,5 +9,6 @@ export default StyleSheet.create({
   },
   textField: {
     marginBottom: 30,
+    // flex: 1,
   },
 });
