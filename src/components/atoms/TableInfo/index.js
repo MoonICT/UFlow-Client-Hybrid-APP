@@ -8,6 +8,7 @@
 import React, { Component, Fragment } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
+import PropTypes from 'prop-types';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -20,7 +21,14 @@ class TableInfo extends Component {
   }
 
   render() {
-    const { data, styleLeft, styleRight, borderRow,style } = this.props;
+    const {
+      data,
+      styleLeft,
+      styleRight,
+      borderRow,
+      style,
+      borderBottom,
+    } = this.props;
     return (
       <Fragment>
         {data &&
@@ -31,6 +39,7 @@ class TableInfo extends Component {
                   DefaultStyle._rowTable,
                   style,
                   borderRow === false ? DefaultStyle._border0 : null,
+                  borderBottom === true ? DefaultStyle._borderBottom : null,
                 ]}
                 key={index}>
                 <View style={[DefaultStyle._leftInfoTable, styleLeft]}>
@@ -63,4 +72,13 @@ class TableInfo extends Component {
   }
 }
 
+// Check Props Type.
+TableInfo.protoType = {
+  data: PropTypes.array,
+  borderRow: PropTypes.bool,
+  style: PropTypes.object,
+  styleRight: PropTypes.object,
+  styleLeft: PropTypes.object,
+  label: PropTypes.string,
+};
 export default TableInfo;

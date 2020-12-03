@@ -740,7 +740,7 @@ export default StyleSheet.create({
   },
   _borderBottom: {
     borderBottomWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderColor: '#e0e0e0',
   },
   _margin0: {
     marginBottom: 0,
