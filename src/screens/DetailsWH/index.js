@@ -175,7 +175,7 @@ class RegisterWH extends Component {
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
-            <Text style={S.titleWH}>제휴창고</Text>
+            <Text style={DefaultStyle._titleWH}>제휴창고</Text>
             <Text style={S.describeTitle}>보관창고, 수탁창고</Text>
             <Text style={S.header}>에이씨티앤코아물류</Text>
             <View style={S.labels}>
