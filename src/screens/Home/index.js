@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-12-02 19:33:47
+ * @modify date 2020-12-03 11:31:18
  * @desc [description]
  */
 
@@ -76,7 +76,7 @@ import logoWhite from '@Assets/images/logo-white.png';
 
 const slides = [
   {
-    key: 'somethun',
+    key: 0,
     title: '좋은 창고 구하는 기술,\n유플로우',
     text: `유플로우는 비즈니스와 창고를 연결하고,
     더 나은 기업 물류 시스템을 만듭니다.
@@ -88,7 +88,7 @@ const slides = [
     backgroundColor: '#59b2ab',
   },
   {
-    key: 'somethun',
+    key: 1,
     title: '좋은 창고 구하는 기술,\n유플로우',
     text: `유플로우는 비즈니스와 창고를 연결하고,
     더 나은 기업 물류 시스템을 만듭니다.
@@ -100,7 +100,7 @@ const slides = [
     backgroundColor: '#59b2ab',
   },
   {
-    key: 'somethun',
+    key: 2,
     title: '좋은 창고 구하는 기술,\n유플로우',
     text: `유플로우는 비즈니스와 창고를 연결하고,
     더 나은 기업 물류 시스템을 만듭니다.
@@ -112,7 +112,7 @@ const slides = [
     backgroundColor: '#59b2ab',
   },
   {
-    key: 'somethun',
+    key: 3,
     title: '좋은 창고 구하는 기술,\n유플로우',
     text: `유플로우는 비즈니스와 창고를 연결하고,
     더 나은 기업 물류 시스템을 만듭니다.
@@ -124,7 +124,7 @@ const slides = [
     backgroundColor: '#59b2ab',
   },
   {
-    key: 'somethun',
+    key: 4,
     title: '좋은 창고 구하는 기술,\n유플로우',
     text: `유플로우는 비즈니스와 창고를 연결하고,
     더 나은 기업 물류 시스템을 만듭니다.
@@ -323,13 +323,24 @@ class Home extends Component {
 
   _renderItem = ({ item }) => {
     return (
-      <View style={styles.slide}>
+      <View style={styles.slide} key={item.key}>
         <View style={styles.overlay} />
         <View style={styles.content}>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.text}>{item.text}</Text>
         </View>
-        <Image source={item.image} />
+        {/* <Image source={item.image} /> */}
+        <VideoPlayer
+          video={{
+            uri:
+              'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
+          }}
+          videoWidth={360}
+          videoHeight={640}
+          style={styles.backgroundVideo}
+          thumbnail={item.image}
+          autoplay={true}
+        />
       </View>
     );
   };
@@ -609,7 +620,8 @@ class Home extends Component {
 
             <VideoPlayer
               video={{
-                uri: 'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
+                uri:
+                  'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
               }}
               // style={styles.backgroundVideo}
               thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
