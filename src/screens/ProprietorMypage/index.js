@@ -32,6 +32,7 @@ import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
 import InOutManager from './InOutManager';
 import SettlementManagement from './SettlementManagement';
+import ContractManager from '@Screeens/page/ContractManager';
 import InterestWH from './InterestWH';
 import ActionCreator from '../../actions';
 
@@ -40,6 +41,9 @@ import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const data = [
+  {
+    title: '내 창고',
+  },
   {
     title: '견적･계약 관리',
   },
@@ -169,11 +173,16 @@ class ProprietorMypage extends Component {
             this.navigation.navigate('RegisterWH');
             this.props.imageAction([]);
           }}>
-          <Text style={[DefaultStyle._textButton,DefaultStyle._textInline]}>신규 등록</Text>
+          <Text style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
+            신규 등록
+          </Text>
         </TouchableOpacity>
       </View>
     );
     switch (title) {
+      case '견적･계약 관리':
+        viewComponent = <ContractManager navigation={this.navigation} />;
+        break;
       case '입･출고 관리':
         viewComponent = <InOutManager navigation={this.navigation} />;
         break;

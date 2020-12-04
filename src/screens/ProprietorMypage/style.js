@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
   options: {
     flexDirection: 'row',
     flex: 1,
-    // justifyContent: 'flex-end',
+    justifyContent: 'flex-end',
   },
   optionSelect: {
     minWidth: 110,

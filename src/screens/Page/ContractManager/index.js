@@ -19,17 +19,13 @@ import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '../../components/organisms/AppBar';
+import Appbars from '../../../components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
-import InOutManager from './InOutManager';
-import SettlementManagement from './SettlementManagement';
-import InterestWH from './InterestWH';
-import ActionCreator from '../../actions';
 
 import card from '@Assets/images/card-img.png';
-import { styles as S } from './style';
+import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const data = [
@@ -61,79 +57,63 @@ const dataSelect = [
 ];
 const dataSelect2 = [
   {
-    label: '견적 요청',
-    value: '견적 요청',
+    label: '상태',
+    value: '상태',
   },
   {
-    label: '견적 응답',
-    value: '견적 응답',
+    label: '상태2',
+    value: '상태2',
   },
   {
-    label: '견적 승인',
-    value: '견적 승인',
-  },
-  {
-    label: '계약 진행 중',
-    value: '계약 진행 중',
-  },
-  {
-    label: '계약 완료',
-    value: '계약 완료',
-  },
-  {
-    label: '계약 취소',
-    value: '계약 취소',
-  },
-  {
-    label: '전체',
-    value: '전체',
+    label: '상태3',
+    value: '상태3',
   },
 ];
 const dataSteps = [
   {
     title: '견적요청',
     status: true,
-    number: 2,
+    number: 25,
   },
   {
-    title: '견적요청',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '견적요청',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '견적요청',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '견적요청',
+    title: '견적응답',
     status: true,
-    number: 2,
+    number: 12,
   },
   {
-    title: '견적요청',
-    number: 2,
-    status: true,
+    title: '견적승인',
+    status: false,
+    number: 0,
+  },
+  {
+    title: '계약진행중',
+    status: false,
+    number: 0,
+  },
+  {
+    title: '계약완료',
+    status: false,
+    number: 0,
+  },
+  {
+    title: '계약승인',
+    number: 0,
+    status: false,
   },
 ];
 
 const dataInfo = [
   {
-    type: '창고 유형',
-    value: '보관창고, 수탁창고',
+    type: '요청자',
+    value: 'abc123',
   },
   {
-    type: '견적 금액',
+    type: '요청 창고 유형',
+    value: '보관',
+  },
+  {
+    type: '요청 견적 금액',
     value: '577,000원',
-  },
-  {
-    type: '창고 주소',
-    value: '인천광역시 서구 석남동 650-31',
   },
   {
     type: '견적 요청일',
@@ -141,11 +121,34 @@ const dataInfo = [
   },
   {
     type: '견적 상태',
-    value: '견적 요청',
+    value: '견적 응답',
+    highlight: false,
+  },
+];
+const dataInfo2 = [
+  {
+    type: '창고 유형',
+    value: '보관창고, 수탁창고',
+  },
+  {
+    type: '견적 금액',
+    value: '보관',
+  },
+  {
+    type: '창고 주소',
+    value: '577,000원',
+  },
+  {
+    type: '견적 요청일',
+    value: '2020.10.26',
+  },
+  {
+    type: '견적 상태',
+    value: '견적 응답',
     highlight: true,
   },
 ];
-class TenantMypage extends Component {
+class ContractManager extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -202,7 +205,8 @@ class TenantMypage extends Component {
           </View>
         );
       });
-    let viewComponent = (
+
+    return (
       <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
         <View style={DefaultStyle._titleCard}>
           <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
@@ -228,63 +232,12 @@ class TenantMypage extends Component {
               type: 'Commission',
             })
           }
-          headerTitle={'에이씨티앤코아물류1'}
+          headerTitle={'에이씨티앤코아물류'}
           data={dataInfo}
           borderRow={false}
           styleLeft={S.styleLeftTable}
           styleRight={S.styleRightTable}
           bgrImage={card}
-          footer={
-            <TouchableOpacity
-              style={DefaultStyle._btnOutline}
-              onPress={() => {}}>
-              <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-            </TouchableOpacity>
-          }
-        />
-
-        <CardMypage
-          onPressHeader={() =>
-            this.navigation.navigate('Quotation', {
-              status: 'Answerd',
-              type: 'Commission',
-            })
-          }
-          headerTitle={'에이씨티앤코아물류2'}
-          data={dataInfo}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          bgrImage={card}
-          footer={
-            <TouchableOpacity
-              style={DefaultStyle._btnOutline}
-              onPress={() => {}}>
-              <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-            </TouchableOpacity>
-          }
-        />
-
-        <CardMypage
-          onPressHeader={() =>
-            this.navigation.navigate('QuotationTrust', {
-              status: 'notAnswerd',
-              type: 'Commission',
-            })
-          }
-          headerTitle={'에이씨티앤코아물류3'}
-          data={dataInfo}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          bgrImage={card}
-          footer={
-            <TouchableOpacity
-              style={DefaultStyle._btnOutline}
-              onPress={() => {}}>
-              <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-            </TouchableOpacity>
-          }
         />
 
         <CardMypage
@@ -294,8 +247,8 @@ class TenantMypage extends Component {
               type: 'Commission',
             })
           }
-          headerTitle={'에이씨티앤코아물류3'}
-          data={dataInfo}
+          headerTitle={'태영종합물류센터'}
+          data={dataInfo2}
           borderRow={false}
           styleLeft={S.styleLeftTable}
           styleRight={S.styleRightTable}
@@ -319,96 +272,6 @@ class TenantMypage extends Component {
           }
         />
       </View>
-    );
-    switch (title) {
-      case '입･출고 관리':
-        viewComponent = <InOutManager navigation={this.navigation} />;
-        break;
-      case '정산관리':
-        viewComponent = <SettlementManagement navigation={this.navigation} />;
-        break;
-      case '관심 창고':
-        viewComponent = <InterestWH navigation={this.navigation} />;
-        break;
-      default:
-      // code block
-    }
-
-    return (
-      <SafeAreaView style={S.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="마이페이지"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars>
-        <ScrollView>
-          <AppGrid data={data} titleProps={e => this.setState({ title: e })} />
-          {viewComponent}
-        </ScrollView>
-
-        <Dialog
-          visible={this.state.visibleConfirm}
-          onDismiss={this.hideConfirm}>
-          <Dialog.Title style={DefaultStyle._titleDialog}>
-            Alert Title
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph>
-              창고주에게 응답 받은 견적 금액으로 계약을 진행하시겠습니까?
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              color="rgba(0, 0, 0, 0.54)"
-              style={[DefaultStyle._buttonElement]}
-              onPress={this.hideConfirm}>
-              아니오
-            </Button>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={this.showDialog}>
-              네
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-
-        <Dialog
-          style={DefaultStyle.popup}
-          visible={this.state.visible}
-          onDismiss={this.hideDialog}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup} />
-          </Dialog.Content>
-          <Dialog.Title
-            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            회원정보 수정 완료
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={DefaultStyle.contentDialog}>
-              회원정보가 수정되었습니다.
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={() => {
-                this.hideDialog();
-                this.hideConfirm();
-                this.navigation.navigate('AvaliableChate');
-              }}>
-              확인
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </SafeAreaView>
     );
   }
 
@@ -448,4 +311,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TenantMypage);
+)(ContractManager);
