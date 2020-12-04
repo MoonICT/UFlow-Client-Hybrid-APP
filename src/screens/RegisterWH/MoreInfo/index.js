@@ -65,7 +65,7 @@ class RegisterMoreInfo extends Component {
   }
 
   render() {
-    const { imageStore } = this.props;
+    const { imageStore, route } = this.props;
     const {
       checked,
       checkMedicine,
@@ -95,7 +95,11 @@ class RegisterMoreInfo extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="부가 정보"
+            title={
+              route && route.params && route.params.type === 'ModifyWH'
+                ? '부가 정보 수정'
+                : '부가 정보'
+            }
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -106,45 +110,43 @@ class RegisterMoreInfo extends Component {
             <View style={S.titleBody}>
               <Text style={S.textTitleBody}>부가 정보</Text>
             </View>
-            <Card style={S.cards}>
-              <View style>
-                <Select
-                  data={dataSelect}
-                  labelSelected="준공일"
-                  colorLabel="#000000"
-                />
-                <TextField
-                  labelTextField="대지면적"
-                  textRight="평"
-                  defaultValue="0"
-                  colorLabel="#000000"
-                />
-                <TextField
-                  labelTextField="건축면적"
-                  textRight="평"
-                  defaultValue="0"
-                  colorLabel="#000000"
-                />
-                <TextField
-                  labelTextField="연면적"
-                  textRight="평"
-                  defaultValue="0"
-                  colorLabel="#000000"
-                />
-                <TextField
-                  labelTextField="전용면적"
-                  textRight="평"
-                  defaultValue="0"
-                  colorLabel="#000000"
-                />
-                <TextField
-                  labelTextField="공용면적"
-                  textRight="평"
-                  defaultValue="0"
-                  colorLabel="#000000"
-                />
-              </View>
-            </Card>
+            <View style>
+              <Select
+                data={dataSelect}
+                labelSelected="준공일"
+                colorLabel="#000000"
+              />
+              <TextField
+                labelTextField="대지면적"
+                textRight="평"
+                defaultValue="0"
+                colorLabel="#000000"
+              />
+              <TextField
+                labelTextField="건축면적"
+                textRight="평"
+                defaultValue="0"
+                colorLabel="#000000"
+              />
+              <TextField
+                labelTextField="연면적"
+                textRight="평"
+                defaultValue="0"
+                colorLabel="#000000"
+              />
+              <TextField
+                labelTextField="전용면적"
+                textRight="평"
+                defaultValue="0"
+                colorLabel="#000000"
+              />
+              <TextField
+                labelTextField="공용면적"
+                textRight="평"
+                defaultValue="0"
+                colorLabel="#000000"
+              />
+            </View>
           </View>
 
           <View style={S.bodyCard}>
@@ -190,7 +192,7 @@ class RegisterMoreInfo extends Component {
                 가격 협의 가능<Text style={S.textNote}>*</Text>
               </Text>
             </View>
-            <View style={[S.options,S.optionsFooter]}>
+            <View style={[S.options, S.optionsFooter]}>
               <View style={S.optionCheck}>
                 <Checkbox
                   status={checkBuilding ? 'checked' : 'unchecked'}

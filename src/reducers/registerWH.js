@@ -9,10 +9,9 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     // TODO Action 추가 시 아래에 정의.
+    case types.DATA_IMAGE_REGISTER:
+      return dataImage(state, action.listImage);
     case types.UPLOAD_IMAGE_REGISTER:
-      // var abc = handlePicker(state, action);
-      // console.log('abc', abc);
-      // return handlePicker(state, action);
       return upImage(state, action.image);
     case types.REMOVE_IMAGE_REGISTER:
       return removeImg(state, action.id);
@@ -20,6 +19,23 @@ export default (state = defaultState, action) => {
       return ContractConditions(state, action.data);
     default:
       return state;
+  }
+};
+
+let dataImage = (state, listImage) => {
+  console.log('state', state);
+  console.log('listImage', listImage);
+  try {
+    // let imageUpload = [...state.imageData];
+    // imageUpload.push(image);
+    let result = {
+      ...state,
+      imageData: listImage,
+    };
+    return result;
+  } catch (e) {
+    console.log('error_origin_reducer', e);
+    return state;
   }
 };
 

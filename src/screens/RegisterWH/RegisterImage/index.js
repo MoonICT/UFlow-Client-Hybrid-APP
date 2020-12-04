@@ -122,7 +122,7 @@ class RegisterImage extends Component {
 
   // }
   render() {
-    const { imageStore } = this.props;
+    const { imageStore,route } = this.props;
     console.log('imageStore', imageStore);
     const listImg =
       imageStore &&

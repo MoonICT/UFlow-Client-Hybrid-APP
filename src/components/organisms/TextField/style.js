@@ -8,7 +8,7 @@ export default StyleSheet.create({
     paddingLeft: 5,
   },
   textField: {
-    marginBottom: 30,
+    marginBottom: 20,
     // flex: 1,
   },
 });

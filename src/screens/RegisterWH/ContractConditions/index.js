@@ -39,7 +39,7 @@ class RegisterContractConditions extends Component {
     this.navigation = props.navigation;
   }
   render() {
-    // const { imageStore } = this.props;
+    const { imageStore, route } = this.props;
     const { checked } = this.state;
     const dataSelect = [
       {
@@ -60,7 +60,11 @@ class RegisterContractConditions extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="계약 조건"
+            title={
+              route && route.params && route.params.type === 'ModifyWH'
+                ? '계약 조건 수정'
+                : '계약 조건'
+            }
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}

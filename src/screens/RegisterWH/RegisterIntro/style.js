@@ -24,9 +24,10 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.15,
     padding: 16,
     paddingRight: 24,
-    color: 'rgba(0, 0, 0, 0.54)',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
+    textAlignVertical: 'top',
   },
   inputLoction: {
     height: 56,

@@ -41,6 +41,13 @@ export const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.87)',
     lineHeight: 20,
   },
+  textRepresentative: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 99,
+    backgroundColor: '#2196f3',
+  },
   bgrRegister: {
     backgroundColor: '#fafafa',
     height: 622,
