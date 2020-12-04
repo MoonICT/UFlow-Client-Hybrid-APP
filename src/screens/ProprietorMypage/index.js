@@ -15,7 +15,14 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
+import {
+  Appbar,
+  Text,
+  Dialog,
+  Paragraph,
+  Button,
+  Switch,
+} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -49,78 +56,6 @@ const data = [
     title: '관심 창고',
   },
 ];
-const dataSelect = [
-  {
-    label: '1개월',
-    value: '1개월',
-  },
-  {
-    label: '2개월',
-    value: '2개월',
-  },
-];
-const dataSelect2 = [
-  {
-    label: '견적 요청',
-    value: '견적 요청',
-  },
-  {
-    label: '견적 응답',
-    value: '견적 응답',
-  },
-  {
-    label: '견적 승인',
-    value: '견적 승인',
-  },
-  {
-    label: '계약 진행 중',
-    value: '계약 진행 중',
-  },
-  {
-    label: '계약 완료',
-    value: '계약 완료',
-  },
-  {
-    label: '계약 취소',
-    value: '계약 취소',
-  },
-  {
-    label: '전체',
-    value: '전체',
-  },
-];
-const dataSteps = [
-  {
-    title: '견적요청',
-    status: true,
-    number: 2,
-  },
-  {
-    title: '견적요청',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '견적요청',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '견적요청',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '견적요청',
-    status: true,
-    number: 2,
-  },
-  {
-    title: '견적요청',
-    number: 2,
-    status: true,
-  },
-];
 
 const dataInfo = [
   {
@@ -128,28 +63,32 @@ const dataInfo = [
     value: '보관창고, 수탁창고',
   },
   {
-    type: '견적 금액',
-    value: '577,000원',
-  },
-  {
     type: '창고 주소',
     value: '인천광역시 서구 석남동 650-31',
   },
   {
-    type: '견적 요청일',
-    value: '2020.10.26',
+    type: '요약',
+    value: '상온/냉동/냉장/보세 12,345평',
   },
   {
-    type: '견적 상태',
-    value: '견적 요청',
-    highlight: true,
+    type: '보관 가능 기간',
+    value: '2020.10.21 - 2023.10.27',
+  },
+  {
+    type: '보관비',
+    value: '20,000원',
+  },
+  {
+    type: '관리비',
+    value: '5,000원',
   },
 ];
-class TenantMypage extends Component {
+const listImage = [card, card, card];
+class ProprietorMypage extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { visible: false, visibleConfirm: false };
+    this.state = { isSwitchOn: true, visibleConfirm: false };
     this.navigation = props.navigation;
   }
 
@@ -172,161 +111,67 @@ class TenantMypage extends Component {
   hideConfirm = () => this.setState({ visibleConfirm: false });
   render() {
     const { imageStore, workComplete } = this.props;
-    const { title } = this.state;
+    const { title, isSwitchOn } = this.state;
     console.log('title', title);
-    const viewStep =
-      dataSteps &&
-      dataSteps.map((item, index) => {
-        return (
-          <View style={S.step} key={index}>
-            <View style={S.stepLeft}>
-              <Text style={S.textStep}>{item.title}</Text>
-
+    let viewComponent = (
+      <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+        <View style={DefaultStyle._titleCard}>
+          <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
+            내 창고
+          </Text>
+        </View>
+        <CardMypage
+          headerComponent={
+            <View style>
               <Text
                 style={[
-                  S.textNumber,
-                  item.status === true ? S.textNumberActive : null,
+                  DefaultStyle._titleWH,
+                  { padding: 15, marginLeft: 16, marginTop: 16 },
                 ]}>
-                {item.number}
+                상온창고
+              </Text>
+              <Text style={[DefaultStyle._headerCardTitle, { paddingTop: 4 }]}>
+                에이씨티앤코아물류
               </Text>
             </View>
-            {(index + 1) % 3 === 0 ? null : (
-              <View style={S.rightStep}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            )}
-          </View>
-        );
-      });
-    let viewComponent = (
-      <Fragment>
-        <View style={DefaultStyle._cards}>
-          <View style={DefaultStyle._titleCard}>
-            <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
-              견적･계약 관리
-            </Text>
-          </View>
-          <View style={DefaultStyle._card}>
-            <View style={S.steps}>{viewStep}</View>
-          </View>
-        </View>
-
-        <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-          <View style={S.options}>
-            <View style={S.optionSelect}>
-              <Select data={dataSelect} style={S.select} />
-            </View>
-            <View style={[S.optionSelect, S.selectLong]}>
-              <Select data={dataSelect2} style={S.select} />
-            </View>
-          </View>
-
-          <CardMypage
-            onPressHeader={() =>
-              this.navigation.navigate('Quotation', {
-                status: 'notAnswerd',
-                type: 'Commission',
-              })
-            }
-            headerTitle={'에이씨티앤코아물류1'}
-            data={dataInfo}
-            borderRow={false}
-            styleLeft={S.styleLeftTable}
-            styleRight={S.styleRightTable}
-            bgrImage={card}
-            footer={
-              <TouchableOpacity
-                style={DefaultStyle._btnOutline}
-                onPress={() => {}}>
-                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-              </TouchableOpacity>
-            }
-          />
-
-          <CardMypage
-            onPressHeader={() =>
-              this.navigation.navigate('Quotation', {
-                status: 'Answerd',
-                type: 'Commission',
-              })
-            }
-            headerTitle={'에이씨티앤코아물류2'}
-            data={dataInfo}
-            borderRow={false}
-            styleLeft={S.styleLeftTable}
-            styleRight={S.styleRightTable}
-            bgrImage={card}
-            footer={
-              <TouchableOpacity
-                style={DefaultStyle._btnOutline}
-                onPress={() => {}}>
-                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-              </TouchableOpacity>
-            }
-          />
-
-          <CardMypage
-            onPressHeader={() =>
-              this.navigation.navigate('QuotationTrust', {
-                status: 'notAnswerd',
-                type: 'Commission',
-              })
-            }
-            headerTitle={'에이씨티앤코아물류3'}
-            data={dataInfo}
-            borderRow={false}
-            styleLeft={S.styleLeftTable}
-            styleRight={S.styleRightTable}
-            bgrImage={card}
-            footer={
-              <TouchableOpacity
-                style={DefaultStyle._btnOutline}
-                onPress={() => {}}>
-                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-              </TouchableOpacity>
-            }
-          />
-
-          <CardMypage
-            onPressHeader={() =>
-              this.navigation.navigate('QuotationTrust', {
-                status: 'Answerd',
-                type: 'Commission',
-              })
-            }
-            headerTitle={'에이씨티앤코아물류3'}
-            data={dataInfo}
-            borderRow={false}
-            styleLeft={S.styleLeftTable}
-            styleRight={S.styleRightTable}
-            bgrImage={card}
-            footer={
-              <View style={DefaultStyle._listBtn}>
-                <TouchableOpacity
-                  style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
-                  onPress={() => console.log('견적 재요청')}>
-                  <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
-                  onPress={() => this.showConfirm()}>
-                  <Text
-                    style={[
-                      DefaultStyle._textButton,
-                      DefaultStyle._textInline,
-                    ]}>
-                    견적 승인
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            }
-          />
-        </View>
-      </Fragment>
+          }
+          rightHeader={
+            <Switch
+              value={isSwitchOn}
+              onValueChange={() => {
+                this.setState({ isSwitchOn: !isSwitchOn });
+              }}
+            />
+          }
+          data={dataInfo}
+          borderRow={false}
+          styleLeft={S.styleLeftTable}
+          styleRight={S.styleRightTable}
+          bgrImage={card}
+          footer={
+            <TouchableOpacity
+              style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
+              onPress={() => {
+                this.navigation.navigate('RegisterWH', {
+                  type: 'ModifyWH',
+                });
+                this.props.imageAction(listImage);
+              }}>
+              <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                상세정보 수정하기
+              </Text>
+            </TouchableOpacity>
+          }
+        />
+        <TouchableOpacity
+          style={DefaultStyle._btnInline}
+          onPress={() => {
+            this.navigation.navigate('RegisterWH');
+            this.props.imageAction([]);
+          }}>
+          <Text style={[DefaultStyle._textButton,DefaultStyle._textInline]}>신규 등록</Text>
+        </TouchableOpacity>
+      </View>
     );
     switch (title) {
       case '입･출고 관리':
@@ -444,9 +289,9 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
+    imageAction: action => {
+      dispatch(ActionCreator.dataImage(action));
+    },
     // countDown: diff => {
     //   dispatch(ActionCreator.countDown(diff));
     // },
@@ -456,4 +301,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TenantMypage);
+)(ProprietorMypage);

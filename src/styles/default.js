@@ -273,9 +273,12 @@ export default StyleSheet.create({
     marginBottom: 18,
   },
   _textSelected: {
-    padding: 10,
+    margin: 4,
     color: '#000000',
     borderRadius: 4,
+    height: 'auto',
+    minHeight: 50,
+    lineHeight: 24,
     fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
     fontWeight: 'normal',
@@ -954,5 +957,15 @@ export default StyleSheet.create({
   },
   _statusSuccess: {
     backgroundColor: '#4caf50',
+  },
+
+  _listElement: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 'auto',
+  },
+  _element: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });

@@ -42,7 +42,7 @@ class RegisterInfo extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { isSwitchOn: false };
+    this.state = { isSwitchOn: false, value: 1 };
 
     this.navigation = props.navigation;
   }
@@ -63,8 +63,10 @@ class RegisterInfo extends Component {
   onToggleSwitch = () => this.setState({ isSwitchOn: !this.state.isSwitchOn });
 
   render() {
-    const { imageStore } = this.props;
+    const { imageStore, route } = this.props;
+    const { value } = this.state;
     // console.log('this.state.value', this.state.value);
+    console.log('route', route);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -74,7 +76,11 @@ class RegisterInfo extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="창고 정보"
+            title={
+              route && route.params && route.params.type === 'ModifyWH'
+                ? '창고 정보 수정'
+                : '창고 정보'
+            }
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -96,7 +102,10 @@ class RegisterInfo extends Component {
           <View style={S.bodyCard}>
             <View style={S.titleBody}>
               <Text style={S.textTitleBody}>
-                보관유형 상세정보<Text style={S.textNote}>*</Text>
+                {route && route.params && route.params.type === 'ModifyWH'
+                  ? '보관유형 상세정보'
+                  : '임대유형 상세정보'}
+                <Text style={S.textNote}>*</Text>
               </Text>
               <View style={S.rightTitle}>
                 <TouchableOpacity
@@ -107,15 +116,16 @@ class RegisterInfo extends Component {
                 <IconButton
                   style={S.btnIcon}
                   icon="delete"
+                  color={'rgba(0, 0, 0, 0.54)'}
                   onPress={() => console.log('remove')}
                 />
               </View>
             </View>
-            <Form />
+            <Form valueTab={value} />
           </View>
           <View style={S.footerRegister}>
-            <View style={[S.titleBody,S.titleFooter]}>
-              <Text style={[S.textTitleBody,S.textFooter]}>
+            <View style={[S.titleBody, S.titleFooter]}>
+              <Text style={[S.textTitleBody, S.textFooter]}>
                 가격 협의 가능<Text style={S.textNote}>*</Text>
               </Text>
               <View style={S.rightTitle}>
@@ -127,7 +137,9 @@ class RegisterInfo extends Component {
               </View>
             </View>
             <View style={SS.textsFooter}>
-              <Text style={SS.textFooter}>가격 협의 가능 선택 시 임차인이 견적 요청</Text>
+              <Text style={SS.textFooter}>
+                가격 협의 가능 선택 시 임차인이 견적 요청
+              </Text>
               <Text style={SS.textFooter}>할 때 가격 협의가 가능합니다.</Text>
             </View>
             <TouchableOpacity
@@ -137,7 +149,7 @@ class RegisterInfo extends Component {
                 imageStore.length > 2 ? S.activeBtnSubmit : null,
               ]}
               // disabled={imageStore.length > 2 ? false : true}
-              >
+            >
               <Text
                 style={[
                   S.textSubmit,

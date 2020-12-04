@@ -34,6 +34,7 @@ class CardMypage extends Component {
       bgrImage,
       headerTitle,
       headerComponent,
+      rightHeader,
       onPressHeader,
       footer,
       style,
@@ -52,11 +53,15 @@ class CardMypage extends Component {
           )}
 
           <View style={DefaultStyle.rightTitleHeader}>
-            <Icon
-              name="arrow-forward-ios"
-              size={12}
-              color="rgba(0, 0, 0, 0.87)"
-            />
+            {rightHeader ? (
+              rightHeader
+            ) : (
+              <Icon
+                name="arrow-forward-ios"
+                size={12}
+                color="rgba(0, 0, 0, 0.87)"
+              />
+            )}
           </View>
         </TouchableOpacity>
         <View style={[DefaultStyle._bodyCard, style]}>

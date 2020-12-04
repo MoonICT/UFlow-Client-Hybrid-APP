@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -58,7 +58,7 @@ class FormInfo extends Component {
   _removeImage = () => console.log('_removeImage');
 
   render() {
-    const { data } = this.props;
+    const { data, valueTab } = this.props;
     const dataSelect = [
       {
         label: '상온',
@@ -90,7 +90,16 @@ class FormInfo extends Component {
         value: '일(Day)2',
       },
     ];
-
+    const time = [
+      {
+        label: '회',
+        value: '회',
+      },
+      {
+        label: '회2',
+        value: '회2',
+      },
+    ];
     const storage = [
       {
         label: '2020.10.10 - 2021.10.10',
@@ -101,7 +110,7 @@ class FormInfo extends Component {
         value: '2020.10.10 - 2021.10.10 2',
       },
     ];
-    
+
     const costs = [
       {
         label: '일반관리비',
@@ -113,21 +122,109 @@ class FormInfo extends Component {
       },
     ];
     return (
-      <Card style={S.cards}>
-        <View style>
-          <Select data={dataSelect} labelSelected="보관유형" />
-          <Select data={settlement} labelSelected="정산단위" />
-          <Select data={calculation} labelSelected="산정기준" />
-          <TextField labelTextField="가용면적(평)" textRight="m2" />
-          <Select data={storage} labelSelected="보관 가능 기간" />
-          <TextField labelTextField="보관료" textRight="원" defaultValue="5000"/>
-          <Select data={costs} labelSelected="관리비" />
-          <TextField  textRight="m2" defaultValue="5000"/>
-          <TextField labelTextField="비고"  />
+      <Fragment>
+        {valueTab === 1 ? (
+          <Card style={S.cards}>
+            <View style>
+              <Select data={dataSelect} labelSelected="보관유형" />
+              <Select data={settlement} labelSelected="정산단위" />
+              <Select data={calculation} labelSelected="산정기준" />
+              <View style={DefaultStyle._listElement}>
+                <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <TextField
+                    labelTextField="전용면적"
+                    textRight="평"
+                    valueProps={e => console.log('e', e)}
+                  />
+                </View>
+                <View style={DefaultStyle._element}>
+                  <TextField
+                    labelTextField="전용면적"
+                    defaultValue="1200"
+                    textRight="m2"
+                  />
+                </View>
+              </View>
+              <View style={DefaultStyle._listElement}>
+                <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <TextField labelTextField="공용면적" textRight="평" />
+                </View>
+                <View style={DefaultStyle._element}>
+                  <TextField
+                    labelTextField="공용면적"
+                    defaultValue="1200"
+                    textRight="m2"
+                  />
+                </View>
+              </View>
+              <View style={DefaultStyle._listElement}>
+                <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <TextField labelTextField="임대면적" textRight="평" />
+                </View>
+                <View style={DefaultStyle._element}>
+                  <TextField
+                    labelTextField="임대면적"
+                    defaultValue="1200"
+                    textRight="m2"
+                  />
+                </View>
+              </View>
+              <Select data={storage} labelSelected="보관 가능 기간" />
+              <TextField
+                labelTextField="보관단가"
+                textRight="원"
+                defaultValue="1000"
+              />
+              <View style={DefaultStyle._listElement}>
+                <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <Select data={costs} labelSelected="관리단가" />
+                </View>
+                <View style={DefaultStyle._element}>
+                  <TextField defaultValue="1000" textRight="원" />
+                </View>
+              </View>
+              <TextField labelTextField="비고" />
+            </View>
+          </Card>
+        ) : (
+          <Card style={S.cards}>
+            <View style>
+              <Select data={dataSelect} labelSelected="보관유형" />
+              <Select data={settlement} labelSelected="정산단위" />
+              <Select data={time} labelSelected="산정기준" />
+              <View style={DefaultStyle._listElement}>
+                <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <TextField
+                    labelTextField="전용면적"
+                    textRight="평"
+                    valueProps={e => console.log('e', e)}
+                  />
+                </View>
+                <IconButton
+                  style={{ marginBottom: 15 }}
+                  size={25}
+                  icon="plus-circle-outline"
+                  color={'rgba(0, 0, 0, 0.54)'}
+                  onPress={() => console.log('add')}
+                />
+              </View>
 
-
-        </View>
-      </Card>
+              <TextField
+                labelTextField="입고비"
+                textRight="원"
+                defaultValue="5000"
+              />
+              <TextField
+                labelTextField="출고비"
+                textRight="원"
+                defaultValue="5000"
+              />
+              <TextField labelTextField="인건비" textRight="원" />
+              <TextField labelTextField="비고" />
+            </View>
+          </Card>
+        )}
+      </Fragment>
     );
   }
 

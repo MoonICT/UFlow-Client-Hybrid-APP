@@ -15,12 +15,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {
-  Appbar,
-  Searchbar,
-  Text,
-
-} from 'react-native-paper';
+import { Appbar, Searchbar, Text } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -63,7 +58,8 @@ class RegisterIntro extends Component {
     console.log('textLogistic', textLogistic);
   };
   render() {
-    const { imageStore } = this.props;
+    const { imageStore, route } = this.props;
+    console.log('route', route);
     // console.log('this.state.value', this.state.value);
     return (
       <SafeAreaView style={S.container}>
@@ -84,7 +80,8 @@ class RegisterIntro extends Component {
           <View style={S.bodyCard}>
             <View style={S.titleBody}>
               <Text style={S.textTitleBody}>
-                제목<Text style={S.textNote}>*</Text>
+                {route && route.params.type === 'ModifyWH' ? '제목' : '창고명'}
+                <Text style={S.textNote}>*</Text>
               </Text>
             </View>
             <TextInput
@@ -100,7 +97,7 @@ class RegisterIntro extends Component {
           <View style={S.bodyCard}>
             <View style={S.titleBody}>
               <Text style={S.textTitleBody}>
-                제목<Text style={S.textNote}>*</Text>
+                창고 소개<Text style={S.textNote}>*</Text>
               </Text>
             </View>
             <TextInput
@@ -109,11 +106,13 @@ class RegisterIntro extends Component {
               numberOfLines={4}
               onChangeText={text => this.onChangeIntro(text)}
               value={this.state.textIntro}
-              placeholder={'상세 설명 작성 주의사항'}
+              placeholder={
+                '상세 설명 작성 주의사항              - 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)              - 중개수수료를 언급한 내용은 입력할 수 없습니다. (중개수수료 무료, 공짜, 반값 등)                     * 주의사항 위반시 허위정보로 간주되어 게시물 삭제 및 이용의 제한이 있을 수 있습니다.              * 유플로우의 창고 등록 규정에 위반되는 금칙어는 등록이 블가합니다. '
+              }
             />
           </View>
 
-          <View style={[S.bodyCard,S.mrBottom0]}>
+          <View style={[S.bodyCard, S.mrBottom0]}>
             <View style={S.titleBody}>
               <Text style={S.textTitleBody}>
                 위치<Text style={S.textNote}>*</Text>
@@ -137,11 +136,11 @@ class RegisterIntro extends Component {
               style={[SS.inputIntro, SS.inputLoction]}
               onChangeText={text => this.onChangeLogistic(text)}
               value={this.state.textIntro}
-              placeholder={'에이씨티앤코아물류'}
+              defaultValue={'에이씨티앤코아물류'}
             />
           </View>
 
-          <View style={[S.footerRegister,S.footerIntro]}>
+          <View style={[S.footerRegister, S.footerIntro]}>
             <TouchableOpacity
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[

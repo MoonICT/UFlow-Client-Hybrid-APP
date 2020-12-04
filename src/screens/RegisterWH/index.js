@@ -52,7 +52,7 @@ class RegisterWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
   render() {
-    const { imageStore, workComplete } = this.props;
+    const { imageStore, workComplete, route } = this.props;
     console.log('this.state', this.state);
     return (
       <SafeAreaView style={S.container}>
@@ -63,7 +63,11 @@ class RegisterWH extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="창고 정보 등록"
+            title={
+              route && route.params && route.params.type === 'ModifyWH'
+                ? '창고 정보 수정'
+                : '창고 정보 등록'
+            }
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -74,7 +78,12 @@ class RegisterWH extends Component {
             style={S.imageRegister}
             onPress={() => this.navigation.navigate('RegisterImage')}>
             {imageStore.length > 0 ? (
-              <Image style={S.ImageUpload} source={imageStore[0]} />
+              <Fragment>
+                <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
+                  대표이미지
+                </Text>
+                <Image style={S.ImageUpload} source={imageStore[0]} />
+              </Fragment>
             ) : (
               <Fragment>
                 <Image source={ignore3} style={S.ImageStyle} />
@@ -85,10 +94,23 @@ class RegisterWH extends Component {
 
           <TouchableOpacity
             style={S.btnTypeRegister}
-            onPress={() => this.navigation.navigate('RegisterInfo')}>
-            <Text style={S.textLeftBtn}>사진 추가</Text>
+            onPress={() =>
+              this.navigation.navigate('RegisterInfo', {
+                type: route && route.params && route.params.type,
+              })
+            }>
+            <Text style={S.textLeftBtn}>
+              {route && route.params && route.params.type === 'ModifyWH'
+                ? '창고 정보 수정'
+                : '사진 추가'}
+            </Text>
             <View style={S.rightBtn}>
-              <Text style={S.textRightBtn}>입력하세요</Text>
+              {route && route.params && route.params.type === 'ModifyWH' ? (
+                <Text style={S.completeText}>작업완료</Text>
+              ) : (
+                <Text style={S.textRightBtn}>입력하세요</Text>
+              )}
+
               <Icon
                 name="arrow-forward-ios"
                 size={12}
@@ -99,7 +121,11 @@ class RegisterWH extends Component {
 
           <TouchableOpacity
             style={S.btnTypeRegister}
-            onPress={() => this.navigation.navigate('RegisterIntro')}>
+            onPress={() =>
+              this.navigation.navigate('RegisterIntro', {
+                type: route && route.params && route.params.type,
+              })
+            }>
             <Text style={S.textLeftBtn}>창고 소개</Text>
             <View style={S.rightBtn}>
               <Text style={S.textRightBtn}>입력하세요</Text>
@@ -113,7 +139,11 @@ class RegisterWH extends Component {
 
           <TouchableOpacity
             style={S.btnTypeRegister}
-            onPress={() => this.navigation.navigate('RegisterMoreIntro')}>
+            onPress={() =>
+              this.navigation.navigate('RegisterMoreIntro', {
+                type: route && route.params.type,
+              })
+            }>
             <Text style={S.textLeftBtn}>부가 정보</Text>
             <View style={S.rightBtn}>
               <Text style={S.textRightBtn}>입력하세요</Text>
@@ -127,7 +157,11 @@ class RegisterWH extends Component {
 
           <TouchableOpacity
             style={S.btnTypeRegister}
-            onPress={() => this.navigation.navigate('RegisterInfoFloor')}>
+            onPress={() =>
+              this.navigation.navigate('RegisterInfoFloor', {
+                type: route && route.params.type,
+              })
+            }>
             <Text style={S.textLeftBtn}>층별 상세 정보</Text>
             <View style={S.rightBtn}>
               <Text style={S.textRightBtn}>입력하세요</Text>
@@ -142,7 +176,9 @@ class RegisterWH extends Component {
           <TouchableOpacity
             style={S.btnTypeRegister}
             onPress={() =>
-              this.navigation.navigate('RegisterContractConditions')
+              this.navigation.navigate('RegisterContractConditions', {
+                type: route && route.params.type,
+              })
             }>
             <Text style={S.textLeftBtn}>계약 조건</Text>
             <View style={S.rightBtn}>
@@ -178,14 +214,15 @@ class RegisterWH extends Component {
           <Dialog.Content>
             <View style={DefaultStyle.imagePopup} />
           </Dialog.Content>
-          <Dialog.Title style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
             창고 등록 완료
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              UFLOW 관리자가 입력하신 정보를 
-              확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 `
-              {'>'}` 내 창고]에서 확인해 주세요.
+              UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴
+              예정입니다. 자세한 내용은 [마이페이지 `{'>'}` 내 창고]에서 확인해
+              주세요.
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
