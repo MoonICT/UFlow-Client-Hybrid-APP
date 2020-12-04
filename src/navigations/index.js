@@ -68,6 +68,8 @@ import StorageAgreement from '@Screeens/TenantMypage/StorageAgreement';
 import DetailsManager from '@Screeens/TenantMypage/DetailsManager';
 import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
 
+import ProprietorMypage from '@Screeens/ProprietorMypage';
+
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
 import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
@@ -399,6 +401,12 @@ const App = () => {
                 <RootStack.Screen
                   name="DetailsSettlement"
                   component={DetailsSettlement}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ProprietorMypage"
+                  component={ProprietorMypage}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

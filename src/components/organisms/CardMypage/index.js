@@ -33,6 +33,7 @@ class CardMypage extends Component {
       borderRow,
       bgrImage,
       headerTitle,
+      headerComponent,
       onPressHeader,
       footer,
       style,
@@ -44,7 +45,12 @@ class CardMypage extends Component {
         <TouchableOpacity
           style={DefaultStyle._headerCard}
           onPress={onPressHeader}>
-          <Text style={DefaultStyle._headerCardTitle}>{headerTitle}</Text>
+          {headerComponent ? (
+            headerComponent
+          ) : (
+            <Text style={DefaultStyle._headerCardTitle}>{headerTitle}</Text>
+          )}
+
           <View style={DefaultStyle.rightTitleHeader}>
             <Icon
               name="arrow-forward-ios"
