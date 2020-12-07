@@ -64,7 +64,7 @@ import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
 import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
 import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
 import Chat from '@Screeens/TenantMypage/Chat';
-import StorageAgreement from '@Screeens/TenantMypage/StorageAgreement';
+// import StorageAgreement from '@Screeens/TenantMypage/StorageAgreement';
 import DetailsManager from '@Screeens/TenantMypage/DetailsManager';
 import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
 
@@ -72,6 +72,7 @@ import ProprietorMypage from '@Screeens/ProprietorMypage';
 
 import Quotation from '@Screeens/Page/Quotation';
 import ResponseInformation from '@Screeens/Page/ResponseInformation';
+import StorageAgreement from '@Screeens/Page/StorageAgreement';
 // import ContractDetails from '@Screeens/Page/ContractDetails';
 // import DetailsManager from '@Screeens/Page/DetailsManager';
 
