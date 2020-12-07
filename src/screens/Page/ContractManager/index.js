@@ -5,17 +5,11 @@
  */
 
 // Global Imports
-import React, { Component, Fragment } from 'react';
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import React, { Component } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -25,26 +19,9 @@ import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
 
 import card from '@Assets/images/card-img.png';
-import { styles as S } from './style';
+import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const data = [
-  {
-    title: '견적･계약 관리',
-  },
-  {
-    title: '입･출고 관리',
-  },
-  {
-    title: '정산관리',
-  },
-  {
-    title: '문의내역',
-  },
-  {
-    title: '관심 창고',
-  },
-];
 const dataSelect = [
   {
     label: '1개월',
@@ -67,38 +44,6 @@ const dataSelect2 = [
   {
     label: '상태3',
     value: '상태3',
-  },
-];
-const dataSteps = [
-  {
-    title: '견적요청',
-    status: true,
-    number: 25,
-  },
-  {
-    title: '견적응답',
-    status: true,
-    number: 12,
-  },
-  {
-    title: '견적승인',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '계약진행중',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '계약완료',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '계약승인',
-    number: 0,
-    status: false,
   },
 ];
 
@@ -174,9 +119,14 @@ class ContractManager extends Component {
 
   hideConfirm = () => this.setState({ visibleConfirm: false });
   render() {
-    const { imageStore, workComplete } = this.props;
-    const { title } = this.state;
-    console.log('title', title);
+    const {
+      dataSteps,
+      dataEstimate,
+      dataRequest,
+      dataReply,
+      type,
+      typeWH,
+    } = this.props;
     const viewStep =
       dataSteps &&
       dataSteps.map((item, index) => {
@@ -229,7 +179,11 @@ class ContractManager extends Component {
           onPressHeader={() =>
             this.navigation.navigate('Quotation', {
               status: 'notAnswerd',
-              type: 'Commission',
+              type,
+              typeWH,
+              dataEstimate,
+              dataRequest,
+              dataReply,
             })
           }
           headerTitle={'에이씨티앤코아물류'}
@@ -242,9 +196,12 @@ class ContractManager extends Component {
 
         <CardMypage
           onPressHeader={() =>
-            this.navigation.navigate('QuotationTrust', {
+            this.navigation.navigate('Quotation', {
               status: 'Answerd',
-              type: 'Commission',
+              type,
+              dataEstimate,
+              dataRequest,
+              dataReply,
             })
           }
           headerTitle={'태영종합물류센터'}

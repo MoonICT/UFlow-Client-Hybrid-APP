@@ -62,6 +62,7 @@ export default class TextField extends Component {
         <TextInput
           onFocus={() => this.onFocusChange()}
           onBlur={() => this.onBlurChange()}
+          textAlignVertical="top"
           style={[DefaultStyle._inputTextField, styleProps]}
           onChangeText={text => {
             this.onChangeText(text);

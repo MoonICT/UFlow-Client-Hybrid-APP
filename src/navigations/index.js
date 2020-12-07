@@ -59,7 +59,7 @@ import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
 import FAQ from '@Screeens/FAQ';
 
 import TenantMypage from '@Screeens/TenantMypage';
-import Quotation from '@Screeens/TenantMypage/Quotation';
+// import Quotation from '@Screeens/TenantMypage/Quotation';
 import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
 import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
 import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
@@ -69,6 +69,11 @@ import DetailsManager from '@Screeens/TenantMypage/DetailsManager';
 import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
 
 import ProprietorMypage from '@Screeens/ProprietorMypage';
+
+import Quotation from '@Screeens/Page/Quotation';
+import ResponseInformation from '@Screeens/Page/ResponseInformation';
+// import ContractDetails from '@Screeens/Page/ContractDetails';
+// import DetailsManager from '@Screeens/Page/DetailsManager';
 
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
@@ -407,6 +412,12 @@ const App = () => {
                 <RootStack.Screen
                   name="ProprietorMypage"
                   component={ProprietorMypage}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ResponseInformation"
+                  component={ResponseInformation}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
