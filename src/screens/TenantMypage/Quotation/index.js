@@ -23,7 +23,7 @@ import DefaultStyle from '@Styles/default';
 // import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
 
-import Appbars from '../../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '../../../actions';
 import { styles as S } from '../style';
 import { styles as SS } from './style';

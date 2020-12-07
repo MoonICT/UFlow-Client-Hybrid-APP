@@ -28,7 +28,7 @@ import {
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import Dialogs from '@Components/organisms/Dialog';
 import Checkbox from '@Components/atoms/Checkbox';
 import AppGrid from '@Components/organisms/AppGrid';

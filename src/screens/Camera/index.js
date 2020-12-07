@@ -13,7 +13,7 @@ import {connect} from 'react-redux';
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import ActionCreator from '../../actions';
-import BarcodeScanner from '../../components/organisms/BarcodeScanner';
+import BarcodeScanner from '@Components/organisms/BarcodeScanner';
 
 class Camera extends Component {
   constructor(props) {

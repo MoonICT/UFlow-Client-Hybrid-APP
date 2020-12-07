@@ -13,7 +13,7 @@ import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
 import ProductCard from '@Components/organisms/ProductCard';
