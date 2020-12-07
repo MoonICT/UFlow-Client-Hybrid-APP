@@ -26,13 +26,13 @@ import {
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
 import InOutManager from './InOutManager';
 import SettlementManagement from './SettlementManagement';
-import ContractManager from '@Screeens/page/ContractManager';
+import ContractManager from '../Page/ContractManager';
 import InterestWH from './InterestWH';
 import ActionCreator from '../../actions';
 

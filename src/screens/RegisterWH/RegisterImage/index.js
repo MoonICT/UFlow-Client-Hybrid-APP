@@ -23,7 +23,7 @@ import { Appbar, Text, IconButton } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '../../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '../../../actions';
 // import ignore2 from '@Assets/images/ignore2x.png';
 // import ignore1 from '@Assets/images/ignore.png';

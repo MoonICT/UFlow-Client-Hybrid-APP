@@ -14,7 +14,7 @@ import { Appbar, Text, Switch } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '../../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
 
 import ActionCreator from '../../../actions';

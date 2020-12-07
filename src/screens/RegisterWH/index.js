@@ -20,7 +20,7 @@ import { Dialog, Appbar, Paragraph, Text, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import Dialogs from '@Components/organisms/Dialog';
 
 import ActionCreator from '../../actions';

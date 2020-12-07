@@ -23,7 +23,7 @@ import DefaultStyle from '@Styles/default';
 // import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
 import CardMypage from '@Components/organisms/CardMypage';
-import Appbars from '../../../components/organisms/AppBar';
+import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '../../../actions';
 import Icon from 'react-native-vector-icons/Entypo';
 
