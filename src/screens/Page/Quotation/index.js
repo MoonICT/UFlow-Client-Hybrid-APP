@@ -141,7 +141,9 @@ class Quotation extends Component {
                       <TouchableOpacity
                         onPress={() => {
                           // this.props.dataAction(this.state);
-                          this.navigation.navigate('ResponseInformation',{typeWH});
+                          this.navigation.navigate('ResponseInformation', {
+                            typeWH,
+                          });
                         }}
                         style={[
                           DefaultStyle._btnOutline,
@@ -165,6 +167,7 @@ class Quotation extends Component {
                   onPress={() => {
                     // this.props.dataAction(this.state);
                     console.log('견적 재요청 :>> ');
+                    this.navigation.navigate('StorageAgreement', { type });
                   }}
                   style={[
                     type === 'ProprietorMypage'
