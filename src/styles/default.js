@@ -918,7 +918,9 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     color: '#ff6d00',
-    padding: 8,
+    padding: 6,
+    paddingRight: 16,
+    paddingLeft: 16,
   },
   _textInline: {
     color: '#ffffff',

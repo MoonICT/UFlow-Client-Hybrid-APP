@@ -30,7 +30,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { Button, Appbar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 // import Video from 'react-native-video';
-import VideoPlayer from 'react-native-video-player';
+// import VideoPlayer from 'react-native-video-player';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
@@ -330,17 +330,19 @@ class Home extends Component {
           <Text style={styles.text}>{item.text}</Text>
         </View>
         {/* <Image source={item.image} /> */}
-        <VideoPlayer
-          video={{
-            uri:
-              'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
-          }}
-          videoWidth={360}
-          videoHeight={640}
-          style={styles.backgroundVideo}
-          thumbnail={item.image}
-          autoplay={true}
-        />
+        {
+        //   <VideoPlayer
+        //   video={{
+        //     uri:
+        //       'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
+        //   }}
+        //   videoWidth={360}
+        //   videoHeight={640}
+        //   style={styles.backgroundVideo}
+        //   thumbnail={item.image}
+        //   autoplay={true}
+        // />
+        }
       </View>
     );
   };
@@ -617,16 +619,17 @@ class Home extends Component {
               onError={this.videoError}
               style={styles.backgroundVideo}
             /> */}
-
-            <VideoPlayer
-              video={{
-                uri:
-                  'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
-              }}
-              // style={styles.backgroundVideo}
-              thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-              autoplay={true}
-            />
+{
+            // <VideoPlayer
+            //   video={{
+            //     uri:
+            //       'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
+            //   }}
+            //   // style={styles.backgroundVideo}
+            //   thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+            //   autoplay={true}
+            // />
+          }
           </View>
 
           {/**___Call__*/}

@@ -23,6 +23,8 @@ import Appbars from '../../components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
+import ContractManager from '@Screeens/Page/ContractManager';
+
 import InOutManager from './InOutManager';
 import SettlementManagement from './SettlementManagement';
 import InterestWH from './InterestWH';
@@ -145,6 +147,117 @@ const dataInfo = [
     highlight: true,
   },
 ];
+const dataEstimate = [
+  {
+    type: '창고명',
+    value: '에이씨티앤코아물류',
+  },
+  {
+    type: '창고주',
+    value: '(주)에이씨티앤코아물류',
+  },
+  {
+    type: '위치',
+    value: '인천광역시 서구 석남동 650-31',
+  },
+  {
+    type: '선택 창고 유형',
+    value: '보관 요청',
+    highlight: true,
+  },
+  {
+    type: '보관유형',
+    value: '저온',
+  },
+  {
+    type: '정산단위',
+    value: ' 제곱미터(m²)',
+  },
+  {
+    type: '산정기준',
+    value: '일(Day)',
+  },
+  {
+    type: '가용면적',
+    value: '5,000원',
+  },
+  {
+    type: '보관 가능기간',
+    value: '2020.10.10 - 2021.10.10)',
+  },
+  {
+    type: '관리비',
+    value: '입고비(5,000원)',
+  },
+];
+
+const dataRequest = [
+  {
+    type: '요청 일시',
+    value: '2020.10.26',
+  },
+  {
+    type: '요청 보관기간',
+    value: '2020.11.10 - 2021.01.10',
+  },
+  {
+    type: '요청 가용 면적',
+    value: '1,000평',
+  },
+  {
+    type: '정산단위',
+    value: '제곱미터(m²)',
+  },
+  {
+    type: '산정기준',
+    value: '일(Day)',
+  },
+  {
+    type: '요청 보관비',
+    value: '19,000원',
+  },
+  {
+    type: '요청 관리비',
+    value: '일반관리비(7,000원)',
+  },
+  {
+    type: '추가 요청사항',
+  },
+];
+
+const dataReply = [
+  {
+    type: '요청 일시',
+    value: '2020.10.26',
+  },
+  {
+    type: '요청 보관기간',
+    value: '2020.11.10 - 2021.01.10',
+  },
+  {
+    type: '요청 가용 면적',
+    value: '1,000평',
+  },
+  {
+    type: '정산단위',
+    value: '정산단위',
+  },
+  {
+    type: '산정기준',
+    value: '일(Day)',
+  },
+  {
+    type: '보관비',
+    value: ' 20,000원',
+  },
+  {
+    type: '관리비',
+    value: '일반관리비(5,000원)',
+  },
+  {
+    type: '추가 요청사항',
+  },
+];
 class TenantMypage extends Component {
   constructor(props) {
     super(props);
@@ -174,151 +287,42 @@ class TenantMypage extends Component {
     const { imageStore, workComplete } = this.props;
     const { title } = this.state;
     console.log('title', title);
-    const viewStep =
-      dataSteps &&
-      dataSteps.map((item, index) => {
-        return (
-          <View style={S.step} key={index}>
-            <View style={S.stepLeft}>
-              <Text style={S.textStep}>{item.title}</Text>
+    // const viewStep =
+    //   dataSteps &&
+    //   dataSteps.map((item, index) => {
+    //     return (
+    //       <View style={S.step} key={index}>
+    //         <View style={S.stepLeft}>
+    //           <Text style={S.textStep}>{item.title}</Text>
 
-              <Text
-                style={[
-                  S.textNumber,
-                  item.status === true ? S.textNumberActive : null,
-                ]}>
-                {item.number}
-              </Text>
-            </View>
-            {(index + 1) % 3 === 0 ? null : (
-              <View style={S.rightStep}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            )}
-          </View>
-        );
-      });
+    //           <Text
+    //             style={[
+    //               S.textNumber,
+    //               item.status === true ? S.textNumberActive : null,
+    //             ]}>
+    //             {item.number}
+    //           </Text>
+    //         </View>
+    //         {(index + 1) % 3 === 0 ? null : (
+    //           <View style={S.rightStep}>
+    //             <Icon
+    //               name="arrow-forward-ios"
+    //               size={12}
+    //               color="rgba(0, 0, 0, 0.54)"
+    //             />
+    //           </View>
+    //         )}
+    //       </View>
+    //     );
+    //   });
     let viewComponent = (
-      <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-        <View style={DefaultStyle._titleCard}>
-          <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
-            견적･계약 관리
-          </Text>
-        </View>
-        <View style={DefaultStyle._card}>
-          <View style={S.steps}>{viewStep}</View>
-        </View>
-        <View style={S.options}>
-          <View style={S.optionSelect}>
-            <Select data={dataSelect} style={S.select} />
-          </View>
-          <View style={[S.optionSelect, S.selectLong]}>
-            <Select data={dataSelect2} style={S.select} />
-          </View>
-        </View>
-
-        <CardMypage
-          onPressHeader={() =>
-            this.navigation.navigate('Quotation', {
-              status: 'notAnswerd',
-              type: 'Commission',
-            })
-          }
-          headerTitle={'에이씨티앤코아물류1'}
-          data={dataInfo}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          bgrImage={card}
-          footer={
-            <TouchableOpacity
-              style={DefaultStyle._btnOutline}
-              onPress={() => {}}>
-              <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-            </TouchableOpacity>
-          }
-        />
-
-        <CardMypage
-          onPressHeader={() =>
-            this.navigation.navigate('Quotation', {
-              status: 'Answerd',
-              type: 'Commission',
-            })
-          }
-          headerTitle={'에이씨티앤코아물류2'}
-          data={dataInfo}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          bgrImage={card}
-          footer={
-            <TouchableOpacity
-              style={DefaultStyle._btnOutline}
-              onPress={() => {}}>
-              <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-            </TouchableOpacity>
-          }
-        />
-
-        <CardMypage
-          onPressHeader={() =>
-            this.navigation.navigate('QuotationTrust', {
-              status: 'notAnswerd',
-              type: 'Commission',
-            })
-          }
-          headerTitle={'에이씨티앤코아물류3'}
-          data={dataInfo}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          bgrImage={card}
-          footer={
-            <TouchableOpacity
-              style={DefaultStyle._btnOutline}
-              onPress={() => {}}>
-              <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-            </TouchableOpacity>
-          }
-        />
-
-        <CardMypage
-          onPressHeader={() =>
-            this.navigation.navigate('QuotationTrust', {
-              status: 'Answerd',
-              type: 'Commission',
-            })
-          }
-          headerTitle={'에이씨티앤코아물류3'}
-          data={dataInfo}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          bgrImage={card}
-          footer={
-            <View style={DefaultStyle._listBtn}>
-              <TouchableOpacity
-                style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
-                onPress={() => console.log('견적 재요청')}>
-                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
-                onPress={() => this.showConfirm()}>
-                <Text
-                  style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                  견적 승인
-                </Text>
-              </TouchableOpacity>
-            </View>
-          }
-        />
-      </View>
+      <ContractManager
+        dataSteps={dataSteps}
+        navigation={this.navigation}
+        dataEstimate={dataEstimate}
+        dataRequest={dataRequest}
+        dataReply={dataReply}
+      />
     );
     switch (title) {
       case '입･출고 관리':
