@@ -96,7 +96,9 @@ class Login extends Component {
                   아이디 찾기
                 </Text>
                 <Text style={S.rectangle}>|</Text>
-                <Text style={[S.fontS14]}>비밀번호 찾기</Text>
+                <Text style={[S.fontS14]}
+                onPress={() => this.navigation.navigate('FindPassWord')}
+                >비밀번호 찾기</Text>
               </View>
             </View>
             <Button

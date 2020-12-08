@@ -435,6 +435,24 @@ const App = () => {
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
+                <RootStack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="FindID"
+                  component={FindIDScreen}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="FindPassWord"
+                  component={FindPassWordScreen}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
               </RootStack.Navigator>
             )}
           </Global>

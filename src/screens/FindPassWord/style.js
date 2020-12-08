@@ -6,7 +6,7 @@
  * @desc [description]
  */
 
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   mrL10: {
@@ -61,5 +61,23 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     marginLeft: 9,
     marginRight: 9,
+  },
+
+  imageBgr: {
+    margin: 50,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: 157,
+    height: 160,
+  },
+  body: {
+    paddingRight: 16,
+    paddingLeft: 16,
+  },
+  textConfirm: {
+    color: '#ffffff',
+    lineHeight: 26,
+    fontSize: 15,
+    padding: 8,
   },
 });

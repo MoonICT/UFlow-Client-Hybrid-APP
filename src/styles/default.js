@@ -14,11 +14,16 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  _container: {
+    width: windowWidth,
+    height: '100%',
+    backgroundColor: 'white',
+  },
   row: {
     flexDirection: 'row',
     margin: 'auto',
-    marginRight: 10,
-    marginLeft: 10,
+    // marginRight: 10,
+    // marginLeft: 10,
   },
   btn: {
     marginBottom: 12,
@@ -37,8 +42,10 @@ export default StyleSheet.create({
   },
   headerTitle: {
     fontSize: 16,
-    color: 'black',
+    color: 'rgba(0, 0, 0, 0.76)',
     lineHeight: 21,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontWeight: '500',
   },
   rightTitle: {
     fontFamily: 'NotoSansCJKkr-Medium',
