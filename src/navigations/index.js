@@ -79,6 +79,7 @@ import StorageAgreement from '@Screeens/Page/StorageAgreement';
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
 import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
+import More from '@Screeens/More';
 
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
@@ -103,10 +104,10 @@ const TabScreenOptions = ({ route }) => ({
         icon = 'magnify';
         break;
       // TODO change route
-      case 'TenantMypage':
+      case 'SampleScreen':
         icon = 'forum';
         break;
-      case 'SampleScreen':
+      case 'More':
         icon = 'dots-horizontal';
         break;
     }
@@ -139,10 +140,10 @@ const TabScreen = () => {
         options={{ headerShown: false }}
       />
       {/* TODO Change route */}
-      <Tab.Screen name="TenantMypage" component={TenantMypage} />
+      <Tab.Screen name="SampleScreen" component={SampleScreen} />
       <Tab.Screen
-        name="SampleScreen"
-        component={SampleScreen}
+        name="More"
+        component={More}
         options={{ headerShown: true }}
       />
     </Tab.Navigator>
@@ -419,6 +420,18 @@ const App = () => {
                 <RootStack.Screen
                   name="ResponseInformation"
                   component={ResponseInformation}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="TenantMypage"
+                  component={TenantMypage}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="More"
+                  component={More}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
