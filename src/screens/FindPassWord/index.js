@@ -1,23 +1,25 @@
-/**
- * @author [Peter]
- * @email [hoangvanlam9988@mail.com]
- * @create date 2020-11-09 14:05:49
- * @modify date 2020-11-24 19:17:40
- * @desc [description]
- */
-
 // Global Imports
-import React, {Component} from 'react';
-import {SafeAreaView, View, ScrollView} from 'react-native';
-import {connect} from 'react-redux';
+import React, { Component, Fragment } from 'react';
+import {
+  SafeAreaView,
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {TextInput, Appbar, Checkbox, Text, Button} from 'react-native-paper';
+import { Paragraph, Appbar, Dialog, Text, Button } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
+import Appbars from '@Components/organisms/AppBar';
+import TextField from '@Components/organisms/TextField';
+import illust3 from '@Assets/images/illust3.png';
+import illust13 from '@Assets/images/illust13.png';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import ActionCreator from '../../actions';
-import {styles as S} from './style';
+import { styles as S } from './style';
 
 class ForgotPass extends Component {
   constructor(props) {
@@ -25,8 +27,12 @@ class ForgotPass extends Component {
     this.webView = null;
     this.state = {
       email: '',
-      password: '',
-      isRemember: false,
+      newPass: '',
+      confirmNewPass: '',
+      visible: false,
+      visiblePass: false,
+      isConfirmPass: false,
+      isConfirmEmail: false,
     };
     this.navigation = props.navigation;
   }
@@ -40,71 +46,158 @@ class ForgotPass extends Component {
   componentWillUnmount() {
     console.log('::componentWillUnmount::');
   }
-
+  showDialog = () => this.setState({ visible: true });
+  hideDialog = () => this.setState({ visible: false });
+  showConfirmPass = () => this.setState({ visiblePass: true });
+  hideConfirmPass = () => this.setState({ visiblePass: false });
   render() {
-    const {email, password, isRemember} = this.state;
-
+    const {
+      email,
+      isConfirmEmail,
+      newPass,
+      confirmNewPass,
+      visible,
+      visiblePass,
+    } = this.state;
     return (
-      <SafeAreaView style={DefaultStyle.container}>
-        <Appbar.Header style={DefaultStyle.header}>
+      <SafeAreaView style={DefaultStyle._container}>
+        <Appbars>
           <Appbar.Action
-            icon="close"
-            color="white"
-            onPress={() => console.log('hello')}
+            icon="arrow-left"
+            color="black"
+            onPress={() => this.navigation.goBack()}
           />
-        </Appbar.Header>
+          <Appbar.Content
+            title={
+              isConfirmEmail === false ? '비밀번호 찾기' : '비밀번호 재설정'
+            }
+            color="black"
+            fontSize="16"
+            titleStyle={DefaultStyle.headerTitle}
+          />
+        </Appbars>
         <ScrollView>
-          <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text>
-          <View style={S.formLogin}>
-            <TextInput
-              label="이메일"
-              mode="outlined"
-              value={email}
-              type="number"
-              maxLength={20}
-              style={[S.inputs]}
-              onChangeText={text => this.setState({email: text})}
-            />
-            <TextInput
-              label="비밀번호"
-              mode="outlined"
-              value={password}
-              type="text"
-              secureTextEntry={true}
-              maxLength={20}
-              style={[S.inputs, S.inputPass]}
-              onChangeText={text => this.setState({password: text})}
-            />
-            <View style={S.plusFormLogin}>
-              <View style={S.rememberLogin}>
-                <Checkbox
-                  status={isRemember ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    this.setState({isRemember: !isRemember});
-                  }}
+          {isConfirmEmail === false ? (
+            <Fragment>
+              <Image style={S.imageBgr} source={illust13} />
+              <View style={S.body}>
+                <Text
+                  style={[DefaultStyle._textTitleCard, { marginBottom: 18 }]}>
+                  이메일 주소를 입력해 주세요.
+                </Text>
+                <TextField
+                  labelTextField="이메일"
+                  colorLabel="#000000"
+                  styleProps={{ borderColor: '#d7d7d7' }}
+                  valueProps={e => this.setState({ email: e })}
                 />
-                <Text>자동 로그인</Text>
+                <TouchableOpacity
+                  style={[DefaultStyle._btnInline]}
+                  onPress={() => {
+                    email !== '' ? this.showDialog() : null;
+                  }}>
+                  <Text style={[DefaultStyle._textButton, S.textConfirm]}>
+                    확인
+                  </Text>
+                </TouchableOpacity>
               </View>
-              <View style={S.ortherLink}>
-                <Text>아이디 찾기</Text>
-                <Text style={S.rectangle}>|</Text>
-                <Text>비밀번호 찾기</Text>
-              </View>
+            </Fragment>
+          ) : (
+            <View style={[S.body, { marginTop: 24 }]}>
+              <Text style={[DefaultStyle._textTitleCard, { marginBottom: 18 }]}>
+                인증이 완료되었습니다.{'\n'}
+                새로운 비밀번호를 설정해 주세요.
+              </Text>
+              <TextField
+                labelTextField="새로운 비밀번호"
+                colorLabel="#000000"
+                styleProps={{ borderColor: '#d7d7d7' }}
+                textContentType="password"
+                secureTextEntry={true}
+                valueProps={e => this.setState({ newPass: e })}
+              />
+              <TextField
+                labelTextField="새로운 비밀번호 확인"
+                colorLabel="#000000"
+                styleProps={{ borderColor: '#d7d7d7' }}
+                textContentType="password"
+                secureTextEntry={true}
+                valueProps={e => this.setState({ confirmNewPass: e })}
+              />
+              <TouchableOpacity
+                style={[DefaultStyle._btnInline]}
+                onPress={() => {
+                  newPass !== '' && confirmNewPass !== ''
+                    ? this.showConfirmPass()
+                    : null;
+                }}>
+                <Text style={[DefaultStyle._textButton, S.textConfirm]}>
+                  확인
+                </Text>
+              </TouchableOpacity>
             </View>
+          )}
+        </ScrollView>
+
+        {/* Popup Confirm Email*/}
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={visible}
+          onDismiss={this.hideDialog}>
+          <Dialog.Content>
+            <Image style={[S.imageBgr, { margin: 0 }]} source={illust13} />
+          </Dialog.Content>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            이메일 전송 완료
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              입력하신 이메일로 비밀번호 재설정 메일을 발송했습니다. 이메일을
+              확인해 주세요.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              mode="contained"
-              style={[DefaultStyle.containerBTN, S.loginBtn]}
+              style={DefaultStyle._buttonElement}
               onPress={() => {
-                this.navigation.navigate('Home');
+                this.hideDialog();
+                this.setState({ isConfirmEmail: true });
               }}>
               확인
             </Button>
-            <View style={[S.plusFormLogin, S.forgot]}>
-              <Text>유플로우가 처음이신가요?</Text>
-              <Text style={S.mrL10}>회원가입</Text>
-            </View>
-          </View>
-        </ScrollView>
+          </Dialog.Actions>
+        </Dialog>
+        {/* Popup Confirm Password*/}
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={visiblePass}
+          onDismiss={this.hideConfirmPass}>
+          <Dialog.Content>
+            <Image style={[S.imageBgr, { margin: 0 }]} source={illust3} />
+          </Dialog.Content>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            비밀번호 재설정 완료
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              비밀번호 재설정을 완료했습니다.{'\n'}
+              변경하신 비밀번호로 다시 로그인을{'\n'}
+              진행해 주세요.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => {
+                this.hideConfirmPass();
+                this.setState({ isConfirmEmail: true });
+              }}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
       </SafeAreaView>
     );
   }

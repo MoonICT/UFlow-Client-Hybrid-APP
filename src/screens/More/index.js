@@ -1,5 +1,5 @@
 // Global Imports
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   SafeAreaView,
   View,
@@ -205,7 +205,7 @@ class More extends Component {
             </Text>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+              onPress={() => this.navigation.navigate('Login')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>
               </View>
@@ -219,7 +219,7 @@ class More extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+              onPress={() => this.navigation.navigate('FindPassWord')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>
               </View>
@@ -233,7 +233,7 @@ class More extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+              onPress={() => this.navigation.navigate('FindID')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>긴급차량지원</Text>
               </View>
