@@ -32,7 +32,7 @@ import {
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';

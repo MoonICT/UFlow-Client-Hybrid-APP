@@ -18,6 +18,15 @@ class AppGrid extends Component {
   handlePress = item => {
     this.setState({ active: item.title, content: item.content });
   };
+
+  componentWillReceiveProps(newProps) {
+    const dataTitle = newProps.dataTitle;
+    const data = newProps.data;
+    const value = newProps.value;
+    if (value < data.length) {
+      this.setState({ active: dataTitle.title });
+    }
+  }
   render() {
     const { data, titleProps } = this.props;
 
@@ -34,7 +43,7 @@ class AppGrid extends Component {
             }
             onPress={() => {
               this.handlePress(item);
-              titleProps && titleProps(item.title);
+              titleProps && titleProps(item.title, index);
             }}
             style={[
               DefaultStyle._tabItem,

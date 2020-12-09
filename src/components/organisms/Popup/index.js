@@ -10,7 +10,7 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 import {Modal, Portal, Button} from 'react-native-paper';
 import {connect} from 'react-redux';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import {styles} from './style';
 
 class Popup extends Component {

@@ -23,7 +23,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import Dialogs from '@Components/organisms/Dialog';
 
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 import ignore2 from '@Assets/images/ignore2x.png';
 import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
@@ -141,7 +141,7 @@ class RegisterWH extends Component {
             style={S.btnTypeRegister}
             onPress={() =>
               this.navigation.navigate('RegisterMoreIntro', {
-                type: route && route.params.type,
+                type: route && route.params && route.params.type,
               })
             }>
             <Text style={S.textLeftBtn}>부가 정보</Text>
@@ -159,7 +159,7 @@ class RegisterWH extends Component {
             style={S.btnTypeRegister}
             onPress={() =>
               this.navigation.navigate('RegisterInfoFloor', {
-                type: route && route.params.type,
+                type: route && route.params && route.params.type,
               })
             }>
             <Text style={S.textLeftBtn}>층별 상세 정보</Text>
@@ -177,7 +177,7 @@ class RegisterWH extends Component {
             style={S.btnTypeRegister}
             onPress={() =>
               this.navigation.navigate('RegisterContractConditions', {
-                type: route && route.params.type,
+                type: route && route.params && route.params.type,
               })
             }>
             <Text style={S.textLeftBtn}>계약 조건</Text>

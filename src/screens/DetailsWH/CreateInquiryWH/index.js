@@ -17,7 +17,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
 
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 class CreateInquiryWH extends Component {

@@ -5,8 +5,8 @@
  * @desc [description]
  */
 
-import React, {Component} from 'react';
-import {List} from 'react-native-paper';
+import React, { Component } from 'react';
+import { List } from 'react-native-paper';
 //Local Import
 // import {styles} from './style';
 import DefaultStyle from '@Styles/default';
@@ -28,6 +28,7 @@ class Lists extends Component {
       listItems.map((item, index) => {
         return (
           <List.Accordion
+          color={'green'}
             style={[DefaultStyle._titleList]}
             key={index}
             title={item.titleList}

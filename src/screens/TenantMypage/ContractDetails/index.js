@@ -24,7 +24,7 @@ import DefaultStyle from '@Styles/default';
 import TableInfo from '@Components/atoms/TableInfo';
 import CardMypage from '@Components/organisms/CardMypage';
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import Icon from 'react-native-vector-icons/Entypo';
 
 import { styles as S } from '../style';

@@ -27,7 +27,7 @@ import DefaultStyle from '@Styles/default';
 import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
 
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import ignore2 from '@Assets/images/ignore2x.png';
 import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';

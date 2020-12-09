@@ -18,7 +18,7 @@ import illust13 from '@Assets/images/illust13.png';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 import { styles as S } from './style';
 
 class ForgotPass extends Component {

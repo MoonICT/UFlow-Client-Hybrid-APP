@@ -17,7 +17,7 @@ import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 import { styles as S } from './style';
 //---> Assets
 

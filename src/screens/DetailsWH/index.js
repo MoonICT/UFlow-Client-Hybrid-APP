@@ -35,7 +35,7 @@ import AppGrid from '@Components/organisms/AppGrid';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import ProductCard from '@Components/organisms/ProductCard';
 
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 import card from '@Assets/images/card-img.png';
 import circle from '@Assets/images/avatars-circle-icon.png';
 import mainBG from '@Assets/images/main-bg.png';

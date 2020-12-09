@@ -31,7 +31,7 @@ import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
 import ContractManager from '@Screeens/Page/ContractManager';
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 
 import card from '@Assets/images/card-img.png';
 import { styles as S } from './style';

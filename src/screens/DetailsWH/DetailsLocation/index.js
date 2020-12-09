@@ -14,7 +14,7 @@ import { Appbar, Text, IconButton } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import mapImg from '@Assets/images/mapImg.png';
 import { styles as S } from '../style';
 import { styles as SS } from './style';

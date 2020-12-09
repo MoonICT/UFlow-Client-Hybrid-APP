@@ -80,6 +80,7 @@ import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
 import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 import More from '@Screeens/More';
+import Consulting from '@Screeens/Consulting';
 
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
@@ -450,6 +451,18 @@ const App = () => {
                 <RootStack.Screen
                   name="FindPassWord"
                   component={FindPassWordScreen}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Register"
+                  component={Register}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Consulting"
+                  component={Consulting}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
