@@ -32,7 +32,7 @@ import {
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import { styles as S } from '../style';

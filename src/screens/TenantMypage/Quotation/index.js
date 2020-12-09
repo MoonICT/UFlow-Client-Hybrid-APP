@@ -24,7 +24,7 @@ import DefaultStyle from '@Styles/default';
 import TableInfo from '@Components/atoms/TableInfo';
 
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 

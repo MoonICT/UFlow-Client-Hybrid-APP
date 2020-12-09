@@ -26,7 +26,7 @@ import CardMypage from '@Components/organisms/CardMypage';
 import TextField from '@Components/organisms/TextField';
 
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import Icon from 'react-native-vector-icons/Fontisto';
 import card from '@Assets/images/card-img.png';
 

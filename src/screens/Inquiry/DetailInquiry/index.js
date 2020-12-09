@@ -15,7 +15,7 @@ import { Appbar, Text } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 // import { styles as SS } from './style';
 class RegisterInfo extends Component {

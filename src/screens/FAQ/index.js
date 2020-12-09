@@ -19,7 +19,7 @@ import ProductCard from '@Components/organisms/ProductCard';
 import AppGrid from '@Components/organisms/AppGrid';
 import Accordion from '@Components/organisms/Accordion';
 
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 import cardBG from '@Assets/images/card-img.png';
 
 import { styles as S } from './style';

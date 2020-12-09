@@ -22,7 +22,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
 
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 
 import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';

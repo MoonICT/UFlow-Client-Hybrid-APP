@@ -17,7 +17,7 @@ import Appbars from '@Components/organisms/AppBar';
 
 import ProductCard from '@Components/organisms/ProductCard';
 
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 import cardBG from '@Assets/images/card-img.png';
 
 import { styles as S } from './style';

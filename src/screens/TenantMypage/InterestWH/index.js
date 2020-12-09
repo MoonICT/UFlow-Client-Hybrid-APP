@@ -24,7 +24,7 @@ import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import CardMypage from '@Components/organisms/CardMypage';
 
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import Icon from 'react-native-vector-icons/Fontisto';
 
 import { styles as S } from '../style';

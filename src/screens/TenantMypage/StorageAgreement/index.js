@@ -25,7 +25,7 @@ import TableInfo from '@Components/atoms/TableInfo';
 import Checkbox from '@Components/atoms/Checkbox';
 
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '../../../actions';
+import ActionCreator from '@Actions';
 import Icon from 'react-native-vector-icons/Entypo';
 
 import { styles as S } from '../style';

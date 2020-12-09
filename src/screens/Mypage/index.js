@@ -33,7 +33,7 @@ import Dialogs from '@Components/organisms/Dialog';
 import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
 
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 

@@ -36,7 +36,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DefaultStyle from '../../styles/default';
 import { color } from '@Themes/colors';
 
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 // import CarouselSnapPagi from '@Components/organisms/CarouselSnapPagi';

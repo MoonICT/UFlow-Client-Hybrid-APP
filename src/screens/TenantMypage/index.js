@@ -28,7 +28,7 @@ import ContractManager from '@Screeens/Page/ContractManager';
 import InOutManager from './InOutManager';
 import SettlementManagement from './SettlementManagement';
 import InterestWH from './InterestWH';
-import ActionCreator from '../../actions';
+import ActionCreator from '@Actions';
 
 import card from '@Assets/images/card-img.png';
 import { styles as S } from './style';
