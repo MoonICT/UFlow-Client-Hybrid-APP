@@ -63,7 +63,7 @@ import TenantMypage from '@Screeens/TenantMypage';
 import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
 import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
 import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
-import Chat from '@Screeens/TenantMypage/Chat';
+import Chatting from '@Screeens/TenantMypage/Chat';
 // import StorageAgreement from '@Screeens/TenantMypage/StorageAgreement';
 import DetailsManager from '@Screeens/TenantMypage/DetailsManager';
 import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
@@ -81,6 +81,7 @@ import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
 import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
+import Chat from '@Screeens/Chat';
 
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
@@ -390,7 +391,7 @@ const App = () => {
                 />
                 <RootStack.Screen
                   name="Chatting"
-                  component={Chat}
+                  component={Chatting}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
@@ -463,6 +464,12 @@ const App = () => {
                 <RootStack.Screen
                   name="Consulting"
                   component={Consulting}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Chat"
+                  component={Chat}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
