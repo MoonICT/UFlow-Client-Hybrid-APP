@@ -241,19 +241,20 @@ class AvaliableChate extends Component {
         </Appbars>
         <ScrollView>
           <AppGrid data={data} />
-          <View style={DefaultStyle._cards}>
-            <View style={DefaultStyle._titleCard}>
-              <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
-                견적･계약 관리
-              </Text>
+          <View style={DefaultStyle._body}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={[DefaultStyle._textTitleCard]}>견적･계약 관리</Text>
             </View>
             <View style={DefaultStyle._card}>
               <View style={S.steps}>{viewStep}</View>
             </View>
-          </View>
 
-          <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-            <View style={S.options}>
+            <View
+              style={[
+                DefaultStyle._listElement,
+                DefaultStyle._flexEnd,
+                S.options,
+              ]}>
               <View style={S.optionSelect}>
                 <Select data={dataSelect} style={S.select} />
               </View>
@@ -261,7 +262,6 @@ class AvaliableChate extends Component {
                 <Select data={dataSelect2} style={S.select} />
               </View>
             </View>
-
             <CardMypage
               onPressHeader={() =>
                 this.navigation.navigate('ContractDetails', {
@@ -272,8 +272,8 @@ class AvaliableChate extends Component {
               headerTitle={'에이씨티앤코아물류'}
               data={dataInfo}
               borderRow={false}
-              styleLeft={S.styleLeftTable}
-              styleRight={S.styleRightTable}
+              styleLeft={DefaultStyle._leftTableCard}
+              styleRight={DefaultStyle._rightTableCard}
               bgrImage={card}
               footer={
                 <TouchableOpacity
@@ -289,7 +289,6 @@ class AvaliableChate extends Component {
                 </TouchableOpacity>
               }
             />
-
             <CardMypage
               onPressHeader={() =>
                 this.navigation.navigate('ContractDetails', {

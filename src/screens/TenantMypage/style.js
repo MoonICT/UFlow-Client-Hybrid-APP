@@ -83,9 +83,7 @@ export const styles = StyleSheet.create({
     marginBottom: -16,
   },
   options: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'flex-end',
+    marginTop: 10,
   },
   optionSelect: {
     minWidth: 110,
@@ -162,5 +160,9 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-
+  boxNodata: {
+    margin: 59,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

@@ -8,6 +8,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { color } from '../themes/colors';
 import { theme } from '../themes/index';
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default StyleSheet.create({
   // 페이지 공통 스타일.
@@ -16,7 +17,8 @@ export default StyleSheet.create({
   },
   _container: {
     width: windowWidth,
-    height: '100%',
+    height: windowHeight,
+    paddingBottom: 24,
     backgroundColor: 'white',
   },
   row: {
@@ -75,6 +77,13 @@ export default StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 0,
     color: 'rgba(0, 0, 0, 0.87)',
+    lineHeight: 21,
+  },
+  _textDF3: {
+    fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.54)',
     lineHeight: 21,
   },
   _textTitleDF: {
@@ -277,7 +286,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
-    marginBottom: 18,
+    // marginBottom: 18,
   },
   _textSelected: {
     margin: 4,
@@ -396,7 +405,11 @@ export default StyleSheet.create({
     margin: 0,
     borderRadius: 0,
   },
-
+  _imageDialog: {
+    marginTop: 50,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
   /**Popup custom*/
   imagePopup: {
     width: '100%',
@@ -611,10 +624,14 @@ export default StyleSheet.create({
     height: 36,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: 'rgba(151, 151, 151, 0.54)',
+    borderColor: 'rgba(0, 0, 0, 0.1)',
     backgroundColor: '#fff',
     color: '#424242',
     justifyContent: 'center',
+    padding: 4,
+    paddingLeft: 15,
+    fontSize: 14,
+    marginTop: 8,
   },
   _searchIcon: {
     position: 'absolute',
@@ -625,10 +642,10 @@ export default StyleSheet.create({
   },
   _searchRightIcon: {
     position: 'absolute',
-    top: 0,
+    top: 18,
     right: 10,
     // fontSize: 24,
-    lineHeight: 36,
+    // lineHeight: 36,
     margin: 0,
   },
 
@@ -693,6 +710,22 @@ export default StyleSheet.create({
   },
 
   /**the boxes in the component */
+  _body: {
+    padding: 16,
+    backgroundColor: '#ffffff',
+  },
+  _titleBody: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  _textTitleBody: {
+    color: color.text.primary,
+    fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 21,
+  },
   _cards: {
     padding: 16,
     backgroundColor: '#ffffff',
@@ -718,6 +751,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    // alignSelf: 'center',
   },
   _textTitleCard: {
     color: color.text.primary,
@@ -727,7 +761,7 @@ export default StyleSheet.create({
     fontStyle: 'normal',
     lineHeight: 21,
     // paddingTop: 8,
-    paddingBottom: 6,
+    // paddingBottom: 6,
   },
   _textRightTitleCard: {
     color: color.text.primary,
@@ -742,7 +776,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e5e5ea',
     borderRadius: 8,
-    marginTop: 12,
+    marginTop: 16,
     marginBottom: 18,
   },
   _headerCard: {
@@ -759,6 +793,11 @@ export default StyleSheet.create({
     color: color.text.primary,
     lineHeight: 21,
     padding: 16,
+  },
+  _avatarHeader: {
+    padding: 16,
+    width: 50,
+    height: 50,
   },
   rightTitleHeader: {
     marginRight: 16,
@@ -784,6 +823,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
+
   /**Button confirm footer*/
   footerRegister: {
     flex: 1,
@@ -905,6 +945,15 @@ export default StyleSheet.create({
   _completeInfoTable: {
     color: 'rgba(0, 0, 0, 0.54)',
   },
+  _leftTableCard: {
+    backgroundColor: '#fff',
+    paddingLeft: 0,
+  },
+  _rightTableCard: {
+    fontFamily: 'NotoSansCJKkr-Medium',
+    paddingLeft: 0,
+  },
+
   /**Button */
   _btnOutline: {
     borderColor: '#ff6d00',
@@ -956,7 +1005,7 @@ export default StyleSheet.create({
     borderRadius: 10,
     color: '#ffffff',
     marginLeft: 8,
-    marginBottom: 6,
+    // marginBottom: 6,
     paddingLeft: 6,
     paddingRight: 6,
     lineHeight: 20,
@@ -970,11 +1019,15 @@ export default StyleSheet.create({
 
   _listElement: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
     margin: 'auto',
+    // flex: 1,
   },
   _element: {
     flex: 1,
     justifyContent: 'center',
+  },
+  _flexEnd: {
+    justifyContent: 'flex-end',
   },
 });

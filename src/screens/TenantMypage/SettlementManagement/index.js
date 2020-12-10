@@ -111,7 +111,7 @@ class SettlementManagement extends Component {
         </View>
 
         <View style={S.filter}>
-          <View style={[S.options, { justifyContent: 'flex-start' }]}>
+          <View style={[DefaultStyle._listElement, S.options]}>
             <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={dataStart} style={S.select} />
             </View>
@@ -124,7 +124,7 @@ class SettlementManagement extends Component {
             </View>
           </View>
           <TextField
-            styleProps={S.searchInput}
+            styleProps={DefaultStyle._inputSearch}
             placeholder="창고명 검색"
             valueProps={text => console.log('text', text)}
             rightComponent={

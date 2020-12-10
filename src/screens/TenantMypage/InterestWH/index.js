@@ -11,6 +11,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Image,
   TextInput,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -26,6 +27,7 @@ import CardMypage from '@Components/organisms/CardMypage';
 
 import ActionCreator from '@Actions';
 import Icon from 'react-native-vector-icons/Fontisto';
+import box from '@Assets/images/box.png';
 
 import { styles as S } from '../style';
 
@@ -56,11 +58,23 @@ const dataLogistics = [
   },
 ];
 
+const dataList = [
+  {
+    data: dataLogistics,
+    title: '에이씨티앤코아물류',
+  },
+  {
+    data: dataLogistics,
+    title: '에이씨티앤코아물류2',
+  },
+];
 class SettlementManagement extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = {};
+    this.state = {
+      listItem: dataList,
+    };
 
     this.navigation = props.navigation;
   }
@@ -68,123 +82,72 @@ class SettlementManagement extends Component {
   render() {
     // const { imageStore } = this.props;
     const { route } = this.props;
+    const { listItem } = this.state;
+    let view =
+      listItem &&
+      listItem.map((item, index) => {
+        return (
+          <CardMypage
+            key={index}
+            onPressHeader={() => {}}
+            headerComponent={
+              <View style>
+                <Text
+                  style={[
+                    DefaultStyle._titleWH,
+                    { padding: 15, marginLeft: 16, marginTop: 16 },
+                  ]}>
+                  상온창고
+                </Text>
+                <Text
+                  style={[DefaultStyle._headerCardTitle, { paddingTop: 4 }]}>
+                  {item.title}
+                </Text>
+              </View>
+            }
+            data={item.data}
+            borderRow={false}
+            styleLeft={DefaultStyle._leftTableCard}
+            styleRight={DefaultStyle._rightTableCard}
+            footer={
+              <View
+                style={[
+                  DefaultStyle._listBtn,
+                  { marginTop: 0, marginBottom: 0, padding: 16, paddingTop: 0 },
+                ]}>
+                <TouchableOpacity
+                  style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
+                  onPress={() => {}}>
+                  <Text
+                    style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                    삭제
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            }
+          />
+        );
+      });
     return (
-      <View style={DefaultStyle._cards}>
+      <View style={DefaultStyle._body}>
         <View style={DefaultStyle._titleCard}>
-          <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
-            관심 창고
+          <Text style={[DefaultStyle._textTitleCard]}>관심 창고</Text>
+          <Text
+            style={DefaultStyle._textRightTitleCard}
+            onPress={() => this.setState({ listItem: [] })}>
+            전체삭제
           </Text>
-          <Text style={DefaultStyle._textRightTitleCard}>전체삭제</Text>
         </View>
-
-        <CardMypage
-          onPressHeader={() => {}}
-          headerComponent={
-            <View style>
-              <Text
-                style={[
-                  DefaultStyle._titleWH,
-                  { padding: 15, marginLeft: 16, marginTop: 16 },
-                ]}>
-                상온창고
-              </Text>
-              <Text style={[DefaultStyle._headerCardTitle, { paddingTop: 4 }]}>
-                에이씨티앤코아물류
-              </Text>
-            </View>
-          }
-          data={dataLogistics}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          footer={
-            <View
-              style={[
-                DefaultStyle._listBtn,
-                { marginTop: 0, marginBottom: 0, padding: 16, paddingTop: 0 },
-              ]}>
-              <TouchableOpacity
-                style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
-                onPress={() => {}}>
-                <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                  삭제
-                </Text>
-              </TouchableOpacity>
-            </View>
-          }
-        />
-        <CardMypage
-          onPressHeader={() => {}}
-          headerComponent={
-            <View style>
-              <Text
-                style={[
-                  DefaultStyle._titleWH,
-                  { padding: 15, marginLeft: 16, marginTop: 16 },
-                ]}>
-                상온창고
-              </Text>
-              <Text style={[DefaultStyle._headerCardTitle, { paddingTop: 4 }]}>
-                에이씨티앤코아물류
-              </Text>
-            </View>
-          }
-          data={dataLogistics}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          footer={
-            <View
-              style={[
-                DefaultStyle._listBtn,
-                { marginTop: 0, marginBottom: 0, padding: 16, paddingTop: 0 },
-              ]}>
-              <TouchableOpacity
-                style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
-                onPress={() => {}}>
-                <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                  삭제
-                </Text>
-              </TouchableOpacity>
-            </View>
-          }
-        />
-        <CardMypage
-          onPressHeader={() => {}}
-          headerComponent={
-            <View style>
-              <Text
-                style={[
-                  DefaultStyle._titleWH,
-                  { padding: 15, marginLeft: 16, marginTop: 16 },
-                ]}>
-                상온창고
-              </Text>
-              <Text style={[DefaultStyle._headerCardTitle, { paddingTop: 4 }]}>
-                에이씨티앤코아물류
-              </Text>
-            </View>
-          }
-          data={dataLogistics}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          footer={
-            <View
-              style={[
-                DefaultStyle._listBtn,
-                { marginTop: 0, marginBottom: 0, padding: 16, paddingTop: 0 },
-              ]}>
-              <TouchableOpacity
-                style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
-                onPress={() => {}}>
-                <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                  삭제
-                </Text>
-              </TouchableOpacity>
-            </View>
-          }
-        />
+        {listItem.length > 0 ? (
+          view
+        ) : (
+          <View style={S.boxNodata}>
+            <Image source={box} />
+            <Text style={[DefaultStyle._textDF3, { marginTop: 40 }]}>
+              관심 창고로 등록한 창고가 없습니다.
+            </Text>
+          </View>
+        )}
       </View>
     );
   }

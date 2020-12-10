@@ -11,7 +11,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TextInput,
+  Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -27,6 +27,7 @@ import Checkbox from '@Components/atoms/Checkbox';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import Icon from 'react-native-vector-icons/Entypo';
+import illust11 from '@Assets/images/illust11.png';
 
 import { styles as S } from '../style';
 import { styles as SS } from './style';
@@ -37,15 +38,11 @@ class StorageAgreement extends Component {
     this.webView = null;
     this.state = {
       checked: false,
-      visible: false,
     };
 
     this.navigation = props.navigation;
   }
 
-  showDialog = () => this.setState({ visible: true });
-
-  hideDialog = () => this.setState({ visible: false });
   render() {
     const { imageStore, route } = this.props;
     const type = route && route.params && route.params.type;
@@ -290,7 +287,14 @@ class StorageAgreement extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
-                onPress={() => this.showDialog()}>
+                onPress={() => {
+                  this.props.showPopup({
+                    image: illust11,
+                    title: '견적 등록 완료',
+                    type: 'confirm',
+                    content: `계약서 등록을 완료했습니다.\n  UFLOW 계약 담당자가\n  계약서를 확인 후 승인할 예정입니다.`,
+                  });
+                }}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
                   계약서 등록
                 </Text>
@@ -298,30 +302,6 @@ class StorageAgreement extends Component {
             </View>
           </View>
         </ScrollView>
-        <Dialog
-          style={DefaultStyle.popup}
-          visible={this.state.visible}
-          onDismiss={this.hideDialog}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup} />
-          </Dialog.Content>
-          <Dialog.Title
-            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            회원정보 수정 완료
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={DefaultStyle.contentDialog}>
-              회원정보가 수정되었습니다.
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={this.hideDialog}>
-              확인
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
       </SafeAreaView>
     );
   }
@@ -353,9 +333,12 @@ function mapDispatchToProps(dispatch) {
     dataAction: action => {
       dispatch(ActionCreator.ContractConditions(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+    hidePopup: status => {
+      dispatch(ActionCreator.hide(status));
+    },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
+    },
   };
 }
 

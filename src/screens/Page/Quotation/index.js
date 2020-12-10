@@ -11,7 +11,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TextInput,
+  Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -25,6 +25,8 @@ import TableInfo from '@Components/atoms/TableInfo';
 
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
+import warehouse1 from '@Assets/images/warehouse-1.png';
+
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 
@@ -56,7 +58,7 @@ class Quotation extends Component {
       },
     ];
     return (
-      <SafeAreaView style={S.container}>
+      <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -98,7 +100,7 @@ class Quotation extends Component {
 
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCardTitle}>
-                <View style={S.avatarHeader} />
+                <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
               </View>
               <View
               // style={DefaultStyle._bodyCard}
@@ -113,7 +115,7 @@ class Quotation extends Component {
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
               <Text style={DefaultStyle._textTitleCard}>견적 요청 정보</Text>
-              <View style={DefaultStyle.rightTitleHeader}>
+              <View>
                 <Select data={dataSelect} style={SS.optionSelect} />
               </View>
             </View>

@@ -13,6 +13,7 @@ import { Paragraph, Appbar, Dialog, Text, Button } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
+import DialogScreen from '@Components/organisms/Dialog';
 import illust3 from '@Assets/images/illust3.png';
 import illust13 from '@Assets/images/illust13.png';
 
@@ -79,7 +80,7 @@ class ForgotPass extends Component {
         <ScrollView>
           {isConfirmEmail === false ? (
             <Fragment>
-              <Image style={S.imageBgr} source={illust13} />
+              <Image style={DefaultStyle._imageDialog} source={illust13} />
               <View style={S.body}>
                 <Text
                   style={[DefaultStyle._textTitleCard, { marginBottom: 18 }]}>
@@ -140,12 +141,13 @@ class ForgotPass extends Component {
         </ScrollView>
 
         {/* Popup Confirm Email*/}
+        <DialogScreen />
         <Dialog
           style={DefaultStyle.popup}
           visible={visible}
           onDismiss={this.hideDialog}>
           <Dialog.Content>
-            <Image style={[S.imageBgr, { margin: 0 }]} source={illust13} />
+            <Image style={DefaultStyle._imageDialog} source={illust13} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -174,7 +176,7 @@ class ForgotPass extends Component {
           visible={visiblePass}
           onDismiss={this.hideConfirmPass}>
           <Dialog.Content>
-            <Image style={[S.imageBgr, { margin: 0 }]} source={illust3} />
+            <Image style={DefaultStyle._imageDialog} source={illust3} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>

@@ -27,8 +27,8 @@ export const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     marginLeft: -16,
     marginRight: -16,
-    paddingLeft: 16,
-    paddingRight: 16,
+    padding: 16,
+    paddingTop: 0,
   },
   amount: {
     lineHeight: 20,

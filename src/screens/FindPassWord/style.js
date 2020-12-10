@@ -63,13 +63,6 @@ export const styles = StyleSheet.create({
     marginRight: 9,
   },
 
-  imageBgr: {
-    margin: 50,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width: 157,
-    height: 160,
-  },
   body: {
     paddingRight: 16,
     paddingLeft: 16,
