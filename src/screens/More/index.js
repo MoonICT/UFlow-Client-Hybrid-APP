@@ -34,7 +34,7 @@ class More extends Component {
     super(props);
     this.webView = null;
     this.state = {
-      isLogin: false,
+      isLogin: true,
     };
     this.navigation = props.navigation;
   }
@@ -134,7 +134,7 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+                  onPress={() => this.navigation.navigate('Inquiry')}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={inquiry} />
                     <Text style={DefaultStyle.titleItem}>문의내역</Text>
@@ -205,7 +205,7 @@ class More extends Component {
             </Text>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('Login')}>
+              onPress={() => this.navigation.navigate('Consulting')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>
               </View>
@@ -258,7 +258,7 @@ class More extends Component {
             </Text>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+              onPress={() => this.navigation.navigate('Notification')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>이용방법</Text>
               </View>
@@ -272,7 +272,7 @@ class More extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+              onPress={() => this.navigation.navigate('Annoucement')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>공지사항</Text>
               </View>
@@ -286,7 +286,7 @@ class More extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+              onPress={() => this.navigation.navigate('Question')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>문의하기</Text>
               </View>
@@ -300,7 +300,7 @@ class More extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+              onPress={() => this.navigation.navigate('FAQ')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>자주 묻는 질문</Text>
               </View>

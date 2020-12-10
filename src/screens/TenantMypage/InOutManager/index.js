@@ -147,7 +147,7 @@ class InOutManager extends Component {
         </Text>
 
         <View style={S.filter}>
-          <View style={[S.options, { justifyContent: 'flex-start' }]}>
+          <View style={[DefaultStyle._listElement]}>
             <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={dataStart} style={S.select} />
             </View>
@@ -160,7 +160,7 @@ class InOutManager extends Component {
             </View>
           </View>
           <TextField
-            styleProps={S.searchInput}
+            styleProps={DefaultStyle._inputSearch}
             placeholder="검색어를 입력해 주세요."
             valueProps={text => console.log('text', text)}
             rightComponent={

@@ -82,6 +82,7 @@ import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
 import Chat from '@Screeens/Chat';
+import Question from '@Screeens/Question';
 
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
@@ -470,6 +471,18 @@ const App = () => {
                 <RootStack.Screen
                   name="Chat"
                   component={Chat}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Question"
+                  component={Question}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Terms"
+                  component={Terms}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

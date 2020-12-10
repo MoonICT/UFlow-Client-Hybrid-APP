@@ -83,9 +83,7 @@ export const styles = StyleSheet.create({
     marginBottom: -16,
   },
   options: {
-    flexDirection: 'row',
-    // flex: 1,
-    justifyContent: 'flex-end',
+    marginTop: 10,
   },
   optionSelect: {
     minWidth: 110,
@@ -113,7 +111,7 @@ export const styles = StyleSheet.create({
     minWidth: 130,
   },
   avatarHeader: {
-    backgroundColor: '#d8d8d8',
+    // backgroundColor: '#d8d8d8',
     padding: 16,
     width: 50,
     height: 50,

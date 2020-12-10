@@ -6,12 +6,14 @@
  * @desc [description]
  */
 
-import React, {Component} from 'react';
-import {View, Text} from 'react-native';
-import {Modal, Portal, Button} from 'react-native-paper';
-import {connect} from 'react-redux';
+import React, { Component, Fragment } from 'react';
+import { View, Text, Image } from 'react-native';
+import { Modal, Portal, Button, Dialog, Paragraph } from 'react-native-paper';
+import { connect } from 'react-redux';
 import ActionCreator from '@Actions';
-import {styles} from './style';
+import DefaultStyle from '@Styles/default';
+import { styles } from './style';
+import illust11 from '@Assets/images/illust11.png';
 
 class Popup extends Component {
   constructor(props) {
@@ -19,27 +21,56 @@ class Popup extends Component {
   }
 
   render() {
-    const {popup, title, content, hidePopup} = this.props;
-
+    const { popup, title, content, hidePopup, type,image } = this.props;
+    console.log('type :>> ', type);
     return (
-      <Portal>
-        <Modal
-          visible={popup}
-          onDismiss={hidePopup}
-          contentContainerStyle={styles.container}>
-          <View style={styles.content}>
-            <Text style={styles.headContent}>{title}</Text>
-            <Text style={styles.textContent}>{content}</Text>
-          </View>
-          <View style={styles.action}>
-            <Button onPress={() => hidePopup()} style={styles.actionButton}>
-              취소
-            </Button>
-            <View style={styles.borderHave} />
-            <Button style={styles.actionButton}>확인</Button>
-          </View>
-        </Modal>
-      </Portal>
+      <Fragment>
+        {type === 'confirm' ? (
+          <Portal>
+            <Dialog
+              style={DefaultStyle.popup}
+              visible={popup}
+              onDismiss={hidePopup}>
+              <Dialog.Content>
+                <Image style={[DefaultStyle._imageDialog]} source={image} />
+              </Dialog.Content>
+              <Dialog.Title
+                style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+                {title}
+              </Dialog.Title>
+              <Dialog.Content>
+                <Paragraph style={DefaultStyle.contentDialog}>
+                  {content}
+                </Paragraph>
+              </Dialog.Content>
+              <Dialog.Actions style={DefaultStyle._buttonPopup}>
+                <Button style={DefaultStyle._buttonElement} onPress={hidePopup}>
+                  확인
+                </Button>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
+        ) : (
+          <Portal>
+            <Modal
+              visible={popup}
+              onDismiss={hidePopup}
+              contentContainerStyle={styles.container}>
+              <View style={styles.content}>
+                <Text style={styles.headContent}>{title}</Text>
+                <Text style={styles.textContent}>{content}</Text>
+              </View>
+              <View style={styles.action}>
+                <Button onPress={() => hidePopup()} style={styles.actionButton}>
+                  취소
+                </Button>
+                <View style={styles.borderHave} />
+                <Button style={styles.actionButton}>확인</Button>
+              </View>
+            </Modal>
+          </Portal>
+        )}
+      </Fragment>
     );
   }
 }
@@ -50,6 +81,8 @@ function mapStateToProps(state) {
     popup: state.popup.show,
     content: state.popup.content,
     title: state.popup.title,
+    type: state.popup.type,
+    image: state.popup.image,
   };
 }
 

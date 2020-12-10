@@ -113,6 +113,11 @@ export default class Sample extends Component {
             style={DefaultStyle.btn}>
             <Text>{'Chat Sample'}</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Terms')}
+            style={DefaultStyle.btn}>
+            <Text>{'Terms Sample'}</Text>
+          </TouchableOpacity>
           <View style={styles.button}>
             {/*<Button
             title="카카오톡 공유하기"
