@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   textBtn: {
     textAlign: 'center',
     color: 'rgba(0, 0, 0, 0.38)',
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 15,
     fontWeight: 'normal',
     fontStyle: 'normal',

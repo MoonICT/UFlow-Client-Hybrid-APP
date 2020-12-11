@@ -20,20 +20,20 @@ export const styles = StyleSheet.create({
   textTotalFees: {
     color: color.text.secondary,
     lineHeight: 21,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
   },
   textTotal: {
     color: color.text.primary,
     lineHeight: 21,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     marginLeft: 4,
   },
   textBody: {
     color: color.text.secondary,
     lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     textAlign: 'center',
     marginTop: 66,
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
   textProcessing: {
     color: color.text.primary,
     lineHeight: 21,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
   },
   popupHeader: {
@@ -76,7 +76,7 @@ export const styles = StyleSheet.create({
   textAttach: {
     color: color.text.secondary,
     lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     textDecorationLine: 'underline',
   },
@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
     lineHeight: 24,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
   },
   listBtnProcess: {
@@ -124,7 +124,7 @@ export const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.87)',
     fontSize: 16,
     lineHeight: 21,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   footerCheckInfo: {
     padding: 16,

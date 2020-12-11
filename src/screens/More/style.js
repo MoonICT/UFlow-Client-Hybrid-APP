@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   textInfo: {
     color: '#000',
     fontWeight: '500',
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   listPage: {
     padding: 0,
@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   textLogout: {
     color: 'rgba(0, 0, 0, 0.47)',
     fontWeight: '500',
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
     lineHeight: 48,
     paddingLeft: 16,

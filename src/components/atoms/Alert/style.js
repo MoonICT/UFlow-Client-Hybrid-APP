@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'left',
     marginBottom: 4,
-    fontFamily: theme.fonts.medium.fontFamily
+    // fontFamily: theme.fonts.medium.fontFamily
   },
   content: {
     fontSize: 14,

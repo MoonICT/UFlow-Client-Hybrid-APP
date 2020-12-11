@@ -603,7 +603,7 @@ class Home extends Component {
             </Text>
             <View style={styles.mainSloganContent}>
               {slidesSlogans.map((v, i) => {
-                return <SloganCard data={v} index={i} />;
+                return <SloganCard data={v} index={i} key={'slogan'+i} />;
               })}
             </View>
           </View>

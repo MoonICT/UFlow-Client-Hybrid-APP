@@ -20,10 +20,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   regular: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
   },
   medium: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   bold: {
     fontFamily: 'NotoSansCJKkr-Bold',

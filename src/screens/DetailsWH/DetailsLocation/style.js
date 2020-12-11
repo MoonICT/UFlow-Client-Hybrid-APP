@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     paddingRight: 13,
     lineHeight: 23,
     letterSpacing: 0,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 13,
     fontWeight: '500',
     textAlign: 'center',

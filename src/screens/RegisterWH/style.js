@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   },
   textImage: {
     textAlign: 'left',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   },
   textBgr: {
     textAlign: 'left',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
   },
   textLeftBtn: {
     textAlign: 'left',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.87)',
@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
   },
   textRightBtn: {
     textAlign: 'right',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.54)',
@@ -100,7 +100,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#4caf50',
     borderRadius: 10,
     textAlign: 'right',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     fontStyle: 'normal',
     color: '#ffffff',
@@ -122,7 +122,7 @@ export const styles = StyleSheet.create({
   activeBtnSubmit: { backgroundColor: '#ff6d00' },
   textSubmit: {
     textAlign: 'center',
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 15,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.54)',
@@ -172,7 +172,7 @@ export const styles = StyleSheet.create({
   },
   textTitleBody: {
     color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -199,7 +199,7 @@ export const styles = StyleSheet.create({
     padding: 6,
     paddingLeft: 17,
     paddingRight: 17,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -221,7 +221,7 @@ export const styles = StyleSheet.create({
   searchRegister: {
     height: 56,
     alignSelf: 'center',
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
   },
   footerIntro: {
@@ -241,7 +241,7 @@ export const styles = StyleSheet.create({
   },
   labelCheck: {
     color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     lineHeight: 20,

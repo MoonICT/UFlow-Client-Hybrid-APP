@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
   textContent: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.87)',
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   },
   descript:{
     color: 'rgba(0, 0, 0, 0.87)',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
   }

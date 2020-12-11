@@ -32,10 +32,10 @@ export const styles = StyleSheet.create({
     fontSize: 34,
   },
   regular: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
   },
   medium: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   bold: {
     fontFamily: 'NotoSansCJKkr-Bold',
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
   notifiAppbar: {
     color: 'white',
     letterSpacing: -0.3,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   btnAction: {
     width: 88,
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
     lineHeight: 30,
     marginRight: 17,
     backgroundColor: color.primary.main,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -186,7 +186,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   introColumText: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontWeight: 'normal',
     fontStyle: 'normal',
     color: color.primary.constrast,

@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   },
   titleLogin: {
     textAlign: 'center',
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
     fontStyle: 'normal',

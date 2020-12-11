@@ -11,34 +11,34 @@ import { color } from './colors';
 
 const fontConfig = {
   default: {
-    black: {
-      fontFamily: 'NotoSansCJKkr-Black',
-      fontWeight: 'normal',
-    },
+    // black: {
+    //   fontFamily: 'NotoSansCJKkr-Black',
+    //   fontWeight: 'normal',
+    // },
     bold: {
       fontFamily: 'NotoSansCJKkr-Bold',
       fontWeight: 'normal',
     },
-    medium: {
-      fontFamily: 'NotoSansCJKkr-Medium',
-      fontWeight: 'normal',
-    },
-    regular: {
-      fontFamily: 'NotoSansCJKkr-Regular',
-      fontWeight: 'normal',
-    },
-    demilight: {
-      fontFamily: 'NotoSansCJKkr-DemiLight',
-      fontWeight: 'normal',
-    },
-    light: {
-      fontFamily: 'NotoSansCJKkr-Light',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'NotoSansCJKkr-Thin',
-      fontWeight: 'normal',
-    },
+    // medium: {
+    //   fontFamily: 'NotoSansCJKkr-Medium',
+    //   fontWeight: 'normal',
+    // },
+    // regular: {
+    //   fontFamily: 'NotoSansCJKkr-Regular',
+    //   fontWeight: 'normal',
+    // },
+    // demilight: {
+    //   fontFamily: 'NotoSansCJKkr-DemiLight',
+    //   fontWeight: 'normal',
+    // },
+    // light: {
+    //   fontFamily: 'NotoSansCJKkr-Light',
+    //   fontWeight: 'normal',
+    // },
+    // thin: {
+    //   fontFamily: 'NotoSansCJKkr-Thin',
+    //   fontWeight: 'normal',
+    // },
   },
 };
 

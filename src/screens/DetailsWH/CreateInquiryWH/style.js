@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.87)',
     lineHeight: 20,
     letterSpacing: 0,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: 'normal',
   },
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   },
   textTitleBody: {
     color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
     fontStyle: 'normal',

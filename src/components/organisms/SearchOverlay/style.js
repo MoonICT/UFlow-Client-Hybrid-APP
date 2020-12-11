@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     color: 'rgba(0, 0, 0, 0.87)',
-    fontFamily: theme.fonts.medium.fontFamily,
+    // fontFamily: theme.fonts.medium.fontFamily,
   },
   listItemDescription: {
     fontSize: 14,

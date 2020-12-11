@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -40,7 +40,27 @@
 	<key>NSCameraUsageDescription</key>
 	<string>제품의 바코드 스캔을 위해 카메라 접근을 허용합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Zocial.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>AntDesign.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>fonts/NotoSansCJKkr-Bold.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -60,32 +80,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Zocial.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>AntDesign.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>fonts/NotoSansCJKkr-Regular.ttf</string>
-		<string>fonts/NotoSansCJKkr-Black.ttf</string>
-		<string>fonts/NotoSansCJKkr-Bold.ttf</string>
-		<string>fonts/NotoSansCJKkr-DemiLight.ttf</string>
-		<string>fonts/NotoSansCJKkr-Light.ttf</string>
-		<string>fonts/NotoSansCJKkr-Medium.ttf</string>
-		<string>fonts/NotoSansCJKkr-Thin.ttf</string>
-		<string>NotoSansCJKkr-Regular.otf</string>
-	</array>
 </dict>
 </plist>

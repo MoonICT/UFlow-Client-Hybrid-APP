@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   infoContent: {
     color: 'rgba(0, 0, 0, 0.54)',
     lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     // textAlign: 'center',
   },

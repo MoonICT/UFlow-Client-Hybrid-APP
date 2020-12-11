@@ -91,11 +91,11 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   filterLabelMain: {
-    fontFamily: theme.fonts.medium.fontFamily,
+    // fontFamily: theme.fonts.medium.fontFamily,
     color: 'rgba(0, 0, 0, 0.87)',
   },
   filterLabelSub: {
-    fontFamily: theme.fonts.regular.fontFamily,
+    // fontFamily: theme.fonts.regular.fontFamily,
     color: 'rgba(0, 0, 0, 0.54)',
     marginLeft: 6,
   },

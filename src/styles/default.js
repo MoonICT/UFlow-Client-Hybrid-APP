@@ -46,11 +46,11 @@ export default StyleSheet.create({
     fontSize: 16,
     color: 'rgba(0, 0, 0, 0.76)',
     lineHeight: 21,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontWeight: '500',
   },
   rightTitle: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
     lineHeight: 21,
@@ -65,14 +65,14 @@ export default StyleSheet.create({
   },
 
   _textDF: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     letterSpacing: 0,
     color: 'rgba(0, 0, 0, 0.87)',
     lineHeight: 21,
   },
   _textDF2: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
     fontWeight: '500',
     letterSpacing: 0,
@@ -80,7 +80,7 @@ export default StyleSheet.create({
     lineHeight: 21,
   },
   _textDF3: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     letterSpacing: 0,
     color: 'rgba(0, 0, 0, 0.54)',
@@ -114,7 +114,7 @@ export default StyleSheet.create({
   // },
   childTextTitle: {
     color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -163,7 +163,7 @@ export default StyleSheet.create({
   /** Text BTN */
   _textPrimary: {
     backgroundColor: 'white',
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -295,7 +295,7 @@ export default StyleSheet.create({
     height: 'auto',
     minHeight: 50,
     lineHeight: 24,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -315,7 +315,7 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingLeft: 5,
     paddingRight: 5,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -335,7 +335,7 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingLeft: 5,
     paddingRight: 5,
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 12,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -345,7 +345,7 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
     color: '#000000',
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -360,7 +360,7 @@ export default StyleSheet.create({
     top: 14,
     color: color.text.secondary,
     lineHeight: 24,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -383,7 +383,7 @@ export default StyleSheet.create({
     fontSize: 20,
     color: color.text.primary,
     fontWeight: '500',
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     marginTop: 15,
     marginBottom: 17,
   },
@@ -436,12 +436,12 @@ export default StyleSheet.create({
   },
 
   _labelSwitch: {
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
   },
 
   _pagination: {
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 14,
   },
 
@@ -467,14 +467,14 @@ export default StyleSheet.create({
     marginRight: 0,
     textAlign: 'right',
     fontSize: 16,
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontWeight: '500',
   },
   _leftTitle: {
     color: 'rgba(255, 109, 0, 0.87)',
     textAlign: 'left',
     fontSize: 16,
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontWeight: '500',
   },
   _contentApp: {
@@ -501,7 +501,7 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
   },
   _itemBreadcrumb: {
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
     color: color.text.primary,
     flexDirection: 'row',
@@ -521,7 +521,7 @@ export default StyleSheet.create({
     color: color.text.primary,
   },
   _separator: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     color: color.text.secondary,
     paddingLeft: 10,
@@ -537,7 +537,7 @@ export default StyleSheet.create({
   },
 
   _contentAccordion: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
     color: '#000000',
   },
@@ -558,7 +558,7 @@ export default StyleSheet.create({
     borderRadius: 4,
   },
   _titleList: {
-    fontFamily: theme.fonts.regular.fontFamily,
+    // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 16,
     color: color.text.primary,
     padding: 0,
@@ -567,7 +567,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   _itemList: {
-    fontFamily: theme.fonts.regular.fontFamily,
+    // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 16,
     color: color.text.primary,
     padding: 0,
@@ -604,7 +604,7 @@ export default StyleSheet.create({
   },
   _tabItem: {
     color: color.text.secondary,
-    fontFamily: theme.fonts.medium.fontFamily,
+    // fontFamily: theme.fonts.medium.fontFamily,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -614,7 +614,7 @@ export default StyleSheet.create({
   },
   _contentGrid: {
     color: color.text.secondary,
-    fontFamily: theme.fonts.regular.fontFamily,
+    // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -653,7 +653,7 @@ export default StyleSheet.create({
   _wrapperFooter: {
     backgroundColor: color.secondary.main,
     color: 'rgba(255, 255, 255, 0.87)',
-    fontFamily: theme.fonts.regular.fontFamily,
+    // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     padding: 16,
   },
@@ -686,7 +686,7 @@ export default StyleSheet.create({
   },
   _copyrightFooter: {
     color: 'rgba(255, 255, 255, 0.54)',
-    fontFamily: theme.fonts.regular.fontFamily,
+    // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
   },
   _titleFooter: {
@@ -698,14 +698,14 @@ export default StyleSheet.create({
     lineHeight: 20,
     marginRight: 12,
     marginBottom: 8,
-    fontFamily: theme.fonts.regular.fontFamily,
+    // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
   },
   _contentFooter: {},
   _textContentFooter: {
     color: 'rgba(255, 255, 255, 0.54)',
     lineHeight: 20,
-    fontFamily: theme.fonts.regular.fontFamily,
+    // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 12,
   },
 
@@ -720,7 +720,7 @@ export default StyleSheet.create({
   },
   _textTitleBody: {
     color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -755,7 +755,7 @@ export default StyleSheet.create({
   },
   _textTitleCard: {
     color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -765,7 +765,7 @@ export default StyleSheet.create({
   },
   _textRightTitleCard: {
     color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -787,7 +787,7 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   _headerCardTitle: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
     color: color.text.primary,
@@ -844,7 +844,7 @@ export default StyleSheet.create({
   activeBtnSubmit: { backgroundColor: '#ff6d00' },
   textSubmit: {
     textAlign: 'center',
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 15,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.54)',
@@ -868,14 +868,14 @@ export default StyleSheet.create({
     padding: 16,
   },
   titleItem: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.87)',
     lineHeight: 20,
   },
   contentItem: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.47)',
@@ -884,7 +884,7 @@ export default StyleSheet.create({
 
   /**Search */
   _search: {
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -911,14 +911,14 @@ export default StyleSheet.create({
   },
   _leftTitleTable: {
     lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: 'rgba(0, 0, 0, 0.87)',
   },
   _leftContentTable: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 9,
     lineHeight: 9,
     fontStyle: 'normal',
@@ -930,7 +930,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     flex: 2,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     fontWeight: '500',
@@ -950,7 +950,7 @@ export default StyleSheet.create({
     paddingLeft: 0,
   },
   _rightTableCard: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     paddingLeft: 0,
   },
 
@@ -970,7 +970,7 @@ export default StyleSheet.create({
   },
   _textButton: {
     lineHeight: 24,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
     fontWeight: '500',
     color: '#ff6d00',
@@ -1009,7 +1009,7 @@ export default StyleSheet.create({
     paddingLeft: 6,
     paddingRight: 6,
     lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     textAlign: 'center',
   },

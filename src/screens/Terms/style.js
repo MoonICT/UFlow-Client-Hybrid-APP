@@ -14,7 +14,7 @@ const windowWidth = Dimensions.get('window').width;
 export const styles = StyleSheet.create({
   appBarTitle: {
     fontSize: 16,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     color: 'rgba(0, 0, 0, 0.76)',
   },
   container: {
@@ -38,10 +38,10 @@ export const styles = StyleSheet.create({
 
   /**Font */
   fontRegular: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
   },
   fontMedium: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   fontBold: {
     fontFamily: 'NotoSansCJKkr-Bold',

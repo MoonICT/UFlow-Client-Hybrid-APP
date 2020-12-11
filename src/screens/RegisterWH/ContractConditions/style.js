@@ -25,13 +25,13 @@ export const styles = StyleSheet.create({
     padding: 16,
     paddingRight: 24,
     color: 'rgba(0, 0, 0, 0.54)',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
   },
   inputLoction: {
     height: 56,
     marginTop: 24,
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
   },
   titleRadio: {
     paddingBottom: 0,

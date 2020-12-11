@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   labelCheck: {
     color: color.text.primary,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     lineHeight: 20,

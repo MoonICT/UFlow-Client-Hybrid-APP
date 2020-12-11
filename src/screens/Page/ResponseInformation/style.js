@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     height: 56,
     width: 'auto',
     lineHeight: 24,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
     fontStyle: 'normal',
     color: color.text.secondary,

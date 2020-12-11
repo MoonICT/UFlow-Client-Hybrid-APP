@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.87)',
     fontSize: 16,
     lineHeight: 21,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   footerCheckInfo: {
     padding: 16,

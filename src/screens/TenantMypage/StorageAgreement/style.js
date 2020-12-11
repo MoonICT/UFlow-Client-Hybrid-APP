@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
   describe: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     letterSpacing: 0,
     color: color.text.secondary,
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     marginTop: 16,
   },
   textRegister: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
     letterSpacing: 0.15,
     color: color.text.primary,
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 14,
   },
   textSuccess: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     letterSpacing: 0.4,
     color: '#4caf50',
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   textAttach: {
-    fontFamily: 'NotoSansCJKkr-파일첨부',
+    // fontFamily: 'NotoSansCJKkr-파일첨부',
     fontSize: 15,
     letterSpacing: 0,
     color: color.text.primary,

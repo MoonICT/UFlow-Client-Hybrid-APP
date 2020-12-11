@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   },
   textCheck: {
     color: '#000000',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
   },
   textBtnFooter: {
     color: 'rgba(0, 0, 0, 0.87)',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'normal',

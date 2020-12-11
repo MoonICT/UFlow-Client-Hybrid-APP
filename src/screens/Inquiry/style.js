@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   status: {
     color: 'rgba(33, 150, 243, 0.87)',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
   },
   titleItem: {
     color: 'rgba(0, 0, 0, 0.87)',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
   },
   textContent: {
     color: 'rgba(0, 0, 0, 0.87)',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'normal',
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
   },
   textAnswers: {
     color: 'rgba(0, 0, 0, 0.87)',
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'normal',

@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     height: 36,
     width: 'auto',
     lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.47)',
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   },
   amount: {
     lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.87)',

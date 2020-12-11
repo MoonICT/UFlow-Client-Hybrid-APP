@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
   textFooter: {
     color: color.text.secondary,
     lineHeight: 20,
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
     fontWeight: '500',
     fontStyle: 'normal',

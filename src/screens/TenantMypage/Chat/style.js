@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
   },
   name: {
     lineHeight: 21,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 15,
     fontWeight: '500',
     color: color.text.primary,
@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 2,
     lineHeight: 23,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 13,
     fontWeight: '500',
   },
@@ -94,7 +94,7 @@ export const styles = StyleSheet.create({
   },
   time: {
     lineHeight: 19,
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 12,
     fontWeight: '500',
     color: 'rgba(0, 0, 0, 0.54)',
@@ -126,7 +126,7 @@ export const styles = StyleSheet.create({
   },
 
   content: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
     fontWeight: '500',
     color: color.text.primary,

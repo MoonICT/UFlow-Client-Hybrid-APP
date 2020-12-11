@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     paddingRight: 24,
   },
   headContent: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
     fontStyle: 'normal',
     fontSize: 20,
     lineHeight: 64,
