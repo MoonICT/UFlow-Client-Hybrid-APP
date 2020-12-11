@@ -378,7 +378,7 @@ class ProprietorMypage extends Component {
     let viewComponent = (
       <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
         <View style={DefaultStyle._titleCard}>
-          <Text style={[DefaultStyle._textTitleCard, S.textTitleTenant]}>
+          <Text style={[DefaultStyle._textTitleCard]}>
             내 창고
           </Text>
         </View>
@@ -388,7 +388,7 @@ class ProprietorMypage extends Component {
               <Text
                 style={[
                   DefaultStyle._titleWH,
-                  { padding: 15, marginLeft: 16, marginTop: 16 },
+                  // { padding: 15, marginLeft: 16, marginTop: 16 },
                 ]}>
                 상온창고
               </Text>

@@ -38,11 +38,36 @@ import CarouselSnap from '@Components/organisms/CarouselSnap';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Form from './form';
+
 class RegisterInfo extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { isSwitchOn: false, value: 1 };
+    this.state = {
+      isSwitchOn: false,
+      value: 1,
+      // listForm: dataForm,
+      numberSlide: 0,
+      formData: [
+        {
+          key: 0,
+          storageType: '',
+          settlementUnit: '',
+          calculationStandard: '',
+          exclusiveArea: '',
+          exclusiveArea2: '',
+          commonArea: '',
+          commonArea2: '',
+          rentalArea: '',
+          rentalArea2: '',
+          storagePeriod: '',
+          storageUnitPrice: '',
+          managementUnitCost: '',
+          managementUnitCost2: '',
+          remark: '',
+        },
+      ],
+    };
 
     this.navigation = props.navigation;
   }
@@ -57,16 +82,56 @@ class RegisterInfo extends Component {
     console.log('::componentWillUnmount::');
   }
 
-  _addImage = () => console.log('_addImage');
-  _removeImage = () => console.log('_removeImage');
+  _addForm = () => {
+    let lengths = this.state.formData.length;
+    let list = this.state.formData;
+    list.push({
+      key: lengths,
+      storageType: '',
+      settlementUnit: '',
+      calculationStandard: '',
+      exclusiveArea: '',
+      exclusiveArea2: '',
+      commonArea: '',
+      commonArea2: '',
+      rentalArea: '',
+      rentalArea2: '',
+      storagePeriod: '',
+      storageUnitPrice: '',
+      managementUnitCost: '',
+      managementUnitCost2: '',
+      remark: '',
+    });
+    this.setState({ formData: list });
+  };
+  _removeForm = () => console.log('_removeImage');
 
   onToggleSwitch = () => this.setState({ isSwitchOn: !this.state.isSwitchOn });
 
+  _renderItem = ({ item }) => {
+    return (
+      <Form
+        valueTab={this.state.value}
+        number={this.state.numberSlide}
+        key={item.key}
+        formData={this.state.formData[this.state.numberSlide]}
+        valueForm={e => {
+          let index = this.state.formData.findIndex(
+            el => el.key === this.state.numberSlide,
+          );
+          this.setState({
+            ...(this.state.formData[index] = e),
+          });
+        }}
+      />
+    );
+  };
   render() {
     const { imageStore, route } = this.props;
-    const { value } = this.state;
+    const { value, listForm, numberSlide ,formData} = this.state;
     // console.log('this.state.value', this.state.value);
-    console.log('route', route);
+    console.log('formData', this.state.formData);
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -110,18 +175,41 @@ class RegisterInfo extends Component {
               <View style={S.rightTitle}>
                 <TouchableOpacity
                   style={S.btnAdd}
-                  onPress={() => console.log('add')}>
+                  onPress={() => this._addForm()}>
                   <Text style={S.textAdd}>추가</Text>
                 </TouchableOpacity>
                 <IconButton
                   style={S.btnIcon}
                   icon="delete"
                   color={'rgba(0, 0, 0, 0.54)'}
-                  onPress={() => console.log('remove')}
+                  onPress={() => this._removeForm()}
                 />
               </View>
             </View>
-            <Form valueTab={value} />
+            <Carousel
+              // style={styles.carousel}
+              custom={{
+                data: formData,
+                renderItem: this._renderItem,
+                showNextButton: false,
+                showDoneButton: false,
+                onSlideChange: e => {
+                  this.setState({ numberSlide: e });
+                },
+                dotStyle: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.12)',
+                  width: 8,
+                  height: 8,
+                  marginTop: 100,
+                },
+                activeDotStyle: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.54)',
+                  width: 8,
+                  height: 8,
+                  marginTop: 100,
+                },
+              }}
+            />
           </View>
           <View style={S.footerRegister}>
             <View style={[S.titleBody, S.titleFooter]}>

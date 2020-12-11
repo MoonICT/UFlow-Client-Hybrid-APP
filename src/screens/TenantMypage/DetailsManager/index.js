@@ -309,7 +309,7 @@ class DetailsManager extends Component {
             </View>
 
             <View style={S.filter}>
-              <View style={[S.options, { justifyContent: 'flex-start' }]}>
+              <View style={[DefaultStyle._listElement, { marginBottom: -10 }]}>
                 <View style={[S.optionSelect, S.optionSelectLeft]}>
                   <Select data={dataStart} style={[S.select]} />
                 </View>
@@ -318,7 +318,7 @@ class DetailsManager extends Component {
                   <Select data={dataEnd} style={S.select} />
                 </View>
               </View>
-              <View style={[S.options, { justifyContent: 'flex-start' }]}>
+              <View style={[DefaultStyle._listElement, { marginBottom: -10 }]}>
                 <View style={[S.optionSelect, S.optionSelectLeft]}>
                   <Select data={dataAll} style={S.select} />
                 </View>
@@ -364,7 +364,7 @@ class DetailsManager extends Component {
             <View style={DefaultStyle._card}>
               <View
                 style={[
-                  DefaultStyle._headerCardTitle,
+                  DefaultStyle._headerCard,
                   DefaultStyle._borderBottom,
                 ]}>
                 <View

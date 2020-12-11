@@ -253,7 +253,7 @@ class AvaliableChate extends Component {
               style={[
                 DefaultStyle._listElement,
                 DefaultStyle._flexEnd,
-                S.options,
+                DefaultStyle._optionList,
               ]}>
               <View style={S.optionSelect}>
                 <Select data={dataSelect} style={S.select} />

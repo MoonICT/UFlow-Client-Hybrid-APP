@@ -95,7 +95,7 @@ class SettlementManagement extends Component {
                 <Text
                   style={[
                     DefaultStyle._titleWH,
-                    { padding: 15, marginLeft: 16, marginTop: 16 },
+                    // { padding: 15, marginLeft: 16, marginTop: 16 },
                   ]}>
                   상온창고
                 </Text>

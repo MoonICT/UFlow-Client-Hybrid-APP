@@ -111,7 +111,7 @@ class SettlementManagement extends Component {
         </View>
 
         <View style={S.filter}>
-          <View style={[DefaultStyle._listElement, S.options]}>
+          <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
             <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={dataStart} style={S.select} />
             </View>

@@ -147,7 +147,7 @@ class InOutManager extends Component {
         </Text>
 
         <View style={S.filter}>
-          <View style={[DefaultStyle._listElement]}>
+          <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
             <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={dataStart} style={S.select} />
             </View>

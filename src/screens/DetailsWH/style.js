@@ -88,7 +88,11 @@ export const styles = StyleSheet.create({
   background: {
     marginLeft: -16,
     marginTop: 24,
-    marginBottom: 23,
+    marginBottom: 14,
+  },
+  backgroundImage: {
+    width: windowWidth,
+    height: 240,
   },
   iconBackground: {
     position: 'absolute',
@@ -111,11 +115,6 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
-  },
-  tabBar: {
-    flexDirection: 'row',
-    flex: 1,
-    alignSelf: 'flex-start',
   },
   btnTabBarLeft: {
     borderWidth: 1,

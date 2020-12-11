@@ -165,7 +165,7 @@ class ContractManager extends Component {
           <View style={S.steps}>{viewStep}</View>
         </View>
         <View
-          style={[DefaultStyle._listElement, DefaultStyle._flexEnd, S.options]}>
+          style={[DefaultStyle._listElement, DefaultStyle._flexEnd, DefaultStyle._optionList]}>
           <View style={S.optionSelect}>
             <Select data={dataSelect} style={S.select} />
           </View>

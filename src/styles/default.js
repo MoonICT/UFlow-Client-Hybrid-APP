@@ -286,7 +286,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
-    // marginBottom: 18,
+    marginBottom: 18,
   },
   _textSelected: {
     margin: 4,
@@ -725,6 +725,8 @@ export default StyleSheet.create({
     fontWeight: '500',
     fontStyle: 'normal',
     lineHeight: 21,
+    marginBottom: 24,
+    marginTop: 6,
   },
   _cards: {
     padding: 16,
@@ -785,6 +787,8 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
+    padding: 16,
+
   },
   _headerCardTitle: {
     // fontFamily: 'NotoSansCJKkr-Medium',
@@ -792,7 +796,7 @@ export default StyleSheet.create({
     fontWeight: '500',
     color: color.text.primary,
     lineHeight: 21,
-    padding: 16,
+    // padding: 16,
   },
   _avatarHeader: {
     padding: 16,
@@ -1019,9 +1023,7 @@ export default StyleSheet.create({
 
   _listElement: {
     flexDirection: 'row',
-    // alignItems: 'center',
     margin: 'auto',
-    // flex: 1,
   },
   _element: {
     flex: 1,
@@ -1029,5 +1031,8 @@ export default StyleSheet.create({
   },
   _flexEnd: {
     justifyContent: 'flex-end',
+  },
+  _optionList: {
+    marginBottom: -18,
   },
 });
