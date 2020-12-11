@@ -175,7 +175,7 @@ class RegisterWH extends Component {
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
-            <Text style={DefaultStyle._titleWH}>제휴창고</Text>
+            <Text style={[DefaultStyle._titleWH,{backgroundColor:'#4caf50'}]}>제휴창고</Text>
             <Text style={S.describeTitle}>보관창고, 수탁창고</Text>
             <Text style={S.header}>에이씨티앤코아물류</Text>
             <View style={S.labels}>
@@ -190,8 +190,8 @@ class RegisterWH extends Component {
               <Image style={S.iconBackground} source={circle} />
             </View>
             <View style={S.info}>
-              <Text style={S.title}>창고 정보</Text>
-              <View style={S.tabBar}>
+              <Text style={DefaultStyle._textTitleBody}>창고 정보</Text>
+              <View style={DefaultStyle.row}>
                 <TouchableOpacity
                   style={[
                     S.btnTabBarLeft,

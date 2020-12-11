@@ -99,7 +99,7 @@ class Quotation extends Component {
             </View>
 
             <View style={DefaultStyle._card}>
-              <View style={DefaultStyle._headerCardTitle}>
+              <View style={DefaultStyle._headerCard}>
                 <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
               </View>
               <View
@@ -115,7 +115,7 @@ class Quotation extends Component {
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
               <Text style={DefaultStyle._textTitleCard}>견적 요청 정보</Text>
-              <View>
+              <View style={DefaultStyle._optionList}>
                 <Select data={dataSelect} style={SS.optionSelect} />
               </View>
             </View>

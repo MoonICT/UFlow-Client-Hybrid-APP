@@ -207,7 +207,7 @@ class ContractDetails extends Component {
             </View>
 
             <View style={DefaultStyle._card}>
-              <View style={DefaultStyle._headerCardTitle}>
+              <View style={DefaultStyle._headerCard}>
                 <View style={S.avatarHeader} />
               </View>
               <View style={DefaultStyle._infoTable}>
