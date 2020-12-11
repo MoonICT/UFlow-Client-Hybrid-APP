@@ -40,7 +40,30 @@ class FormInfo extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { title: 'Profile Photo', confirm: false, value: 1 };
+    this.state = {
+      title: 'Profile Photo',
+      confirm: false,
+      value: 1,
+      dataForm: [
+        {
+          id: 0,
+          storageType: '',
+          settlementUnit: '',
+          calculationStandard: '',
+          exclusiveArea: '',
+          exclusiveArea2: '',
+          commonArea: '',
+          commonArea2: '',
+          rentalArea: '',
+          rentalArea2: '',
+          storagePeriod: '',
+          storageUnitPrice: '',
+          managementUnitCost: '',
+          managementUnitCost2: '',
+          remark: '',
+        },
+      ],
+    };
     this.navigation = props.navigation;
   }
 
@@ -58,7 +81,8 @@ class FormInfo extends Component {
   _removeImage = () => console.log('_removeImage');
 
   render() {
-    const { data, valueTab } = this.props;
+    const { data, valueTab, number, valueForm, formData } = this.props;
+    const { dataForm } = this.state;
     const dataSelect = [
       {
         label: '상온',
@@ -67,6 +91,10 @@ class FormInfo extends Component {
       {
         label: '상온2',
         value: '상온2',
+      },
+      {
+        label: '상온3',
+        value: '상온3',
       },
     ];
 
@@ -126,15 +154,35 @@ class FormInfo extends Component {
         {valueTab === 1 ? (
           <Card style={S.cards}>
             <View style>
-              <Select data={dataSelect} labelSelected="보관유형" />
-              <Select data={settlement} labelSelected="정산단위" />
-              <Select data={calculation} labelSelected="산정기준" />
+              <Select
+                data={dataSelect}
+                valueProps={e => {
+                  // let index = dataForm.findIndex(el => el.id === number);
+                  // this.setState({
+                  //   ...(dataForm[index].storageType = e),
+                  // });
+                  let dataF = formData;
+                  dataF.storageType = e;
+                  valueForm && valueForm(dataF);
+                }}
+                labelSelected="보관유형"
+              />
+              <Select
+                data={settlement}
+                labelSelected="정산단위"
+                valueProps={e => this.setState({ settlementUnit: e })}
+              />
+              <Select
+                data={calculation}
+                labelSelected="산정기준"
+                valueProps={e => this.setState({ calculationStandard: e })}
+              />
               <View style={DefaultStyle._listElement}>
                 <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                   <TextField
                     labelTextField="전용면적"
                     textRight="평"
-                    valueProps={e => console.log('e', e)}
+                    valueProps={e => this.setState({ exclusiveArea: e })}
                   />
                 </View>
                 <View style={DefaultStyle._element}>
@@ -142,48 +190,75 @@ class FormInfo extends Component {
                     labelTextField="전용면적"
                     defaultValue="1200"
                     textRight="m2"
+                    valueProps={e => this.setState({ exclusiveArea2: e })}
                   />
                 </View>
               </View>
               <View style={DefaultStyle._listElement}>
                 <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-                  <TextField labelTextField="공용면적" textRight="평" />
+                  <TextField
+                    labelTextField="공용면적"
+                    textRight="평"
+                    valueProps={e => this.setState({ commonArea: e })}
+                  />
                 </View>
                 <View style={DefaultStyle._element}>
                   <TextField
                     labelTextField="공용면적"
                     defaultValue="1200"
                     textRight="m2"
+                    valueProps={e => this.setState({ commonArea2: e })}
                   />
                 </View>
               </View>
               <View style={DefaultStyle._listElement}>
                 <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-                  <TextField labelTextField="임대면적" textRight="평" />
+                  <TextField
+                    labelTextField="임대면적"
+                    textRight="평"
+                    valueProps={e => this.setState({ rentalArea: e })}
+                  />
                 </View>
                 <View style={DefaultStyle._element}>
                   <TextField
                     labelTextField="임대면적"
                     defaultValue="1200"
                     textRight="m2"
+                    valueProps={e => this.setState({ rentalArea2: e })}
                   />
                 </View>
               </View>
-              <Select data={storage} labelSelected="보관 가능 기간" />
+              <Select
+                data={storage}
+                labelSelected="보관 가능 기간"
+                valueProps={e => this.setState({ storagePeriod: e })}
+              />
               <TextField
                 labelTextField="보관단가"
                 textRight="원"
                 defaultValue="1000"
+                valueProps={e => this.setState({ storageUnitPrice: e })}
               />
               <View style={DefaultStyle._listElement}>
                 <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-                  <Select data={costs} labelSelected="관리단가" />
+                  <Select
+                    data={costs}
+                    labelSelected="관리단가"
+                    valueProps={e => this.setState({ managementUnitCost: e })}
+                  />
                 </View>
                 <View style={DefaultStyle._element}>
-                  <TextField defaultValue="1000" textRight="원" />
+                  <TextField
+                    defaultValue="1000"
+                    textRight="원"
+                    valueProps={e => this.setState({ managementUnitCost2: e })}
+                  />
                 </View>
               </View>
-              <TextField labelTextField="비고" />
+              <TextField
+                labelTextField="비고"
+                valueProps={e => this.setState({ remark: e })}
+              />
             </View>
           </Card>
         ) : (

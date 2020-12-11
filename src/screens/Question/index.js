@@ -74,10 +74,9 @@ class Question extends Component {
         <ScrollView>
           <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
             <View style={DefaultStyle._titleCard}>
-              <Text style={DefaultStyle._textTitleCard}>
+              <Text style={DefaultStyle._textTitleBody}>
                 유플로우에 궁금하신 점을 {'\n'}
                 문의해 주세요.
-                <Text style={DefaultStyle.childTextTitle}>문의해 주세요.</Text>
               </Text>
             </View>
             <Select data={dataSelect} />
