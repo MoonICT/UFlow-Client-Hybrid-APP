@@ -387,7 +387,9 @@ class Home extends Component {
               mode="contained"
               style={[DefaultStyle.containerBTN, styles.btnAction]}
               color="red"
-              onPress={() => showPopup()}>
+              // onPress={() => showPopup()}
+              onPress={() => this.navigation.navigate('Register')}
+              >
               회원가입
             </Button>
           </View>

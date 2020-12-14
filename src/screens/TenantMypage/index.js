@@ -262,7 +262,11 @@ class TenantMypage extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { visible: false, visibleConfirm: false };
+    this.state = {
+      visible: false,
+      visibleConfirm: false,
+      title: props.route.params.title,
+    };
     this.navigation = props.navigation;
   }
 
@@ -284,9 +288,8 @@ class TenantMypage extends Component {
 
   hideConfirm = () => this.setState({ visibleConfirm: false });
   render() {
-    const { imageStore, workComplete } = this.props;
+    const { imageStore, workComplete, route } = this.props;
     const { title } = this.state;
-    console.log('title', title);
     // const viewStep =
     //   dataSteps &&
     //   dataSteps.map((item, index) => {
@@ -354,7 +357,7 @@ class TenantMypage extends Component {
           />
         </Appbars>
         <ScrollView>
-          <AppGrid data={data} titleProps={e => this.setState({ title: e })} />
+          <AppGrid data={data} title={title} titleProps={e => this.setState({ title: e })} />
           {viewComponent}
         </ScrollView>
 
