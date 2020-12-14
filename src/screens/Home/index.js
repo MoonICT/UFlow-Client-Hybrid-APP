@@ -35,6 +35,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import { color } from '@Themes/colors';
+import FCMService from '@Services/FCMService';
 
 import ActionCreator from '@Actions';
 import Carousel from '@Components/organisms/Carousel';
@@ -311,6 +312,7 @@ class Home extends Component {
       expanded: true,
     };
     this.navigation = props.navigation;
+    this.fcm = new FCMService();
   }
 
   shouldComponentUpdate(nextProps, nextState) {

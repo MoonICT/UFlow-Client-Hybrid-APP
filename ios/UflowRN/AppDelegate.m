@@ -4,6 +4,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import <Firebase.h>
 #import <RNSplashScreen.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
@@ -47,6 +48,11 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  // Firebase
+  if ([FIRApp defaultApp] == nil) {
+      [FIRApp configure];
+    }
   
   // RN Splash Screen
   [RNSplashScreen show];

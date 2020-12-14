@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "431126651411",
+    "firebase_url": "https://uflow-292502.firebaseio.com",
+    "project_id": "uflow-292502",
+    "storage_bucket": "uflow-292502.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431126651411:android:1f262c0b6d789a2b44d5e6",
+        "android_client_info": {
+          "package_name": "com.uflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431126651411-9kvgbire9tvanjr4o1bi6lo85m5ghuqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrgeP0pYNYRhyxw8fTBYBdItufDglt2hg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431126651411-9kvgbire9tvanjr4o1bi6lo85m5ghuqs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "431126651411-ahvn32b2scv6k0e9bsdubj3vsib77c5s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.uflow"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

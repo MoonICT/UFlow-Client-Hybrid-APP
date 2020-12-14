@@ -87,7 +87,7 @@ statusCodes[(exports.NOT_EXTENDED = 510)] = 'Not Extended';
 statusCodes[(exports.NETWORK_AUTHENTICATION_REQUIRED = 511)] =
   'Network Authentication Required';
 
-exports.getStatusText = function(statusCode) {
+exports.getStatusText = function (statusCode) {
   if (statusCodes.hasOwnProperty(statusCode)) {
     return statusCodes[statusCode];
   } else {
