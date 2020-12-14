@@ -16,9 +16,6 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingBottom: 24,
   },
-  containerRegister: {
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-  },
 
   bodyRegister: { flex: 1 },
   imageRegister: {
@@ -109,28 +106,7 @@ export const styles = StyleSheet.create({
     padding: 6,
     paddingBottom: 3,
   },
-  btnSubmit: {
-    borderRadius: 21,
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-    width: windowWidth - 32,
-    justifyContent: 'center',
-    marginBottom: 24,
-    bottom: 0,
-    alignItems: 'center',
-    padding: 8,
-  },
-  activeBtnSubmit: { backgroundColor: '#ff6d00' },
-  textSubmit: {
-    textAlign: 'center',
-    // fontFamily: 'NotoSansCJKkr-Medium',
-    fontSize: 15,
-    fontStyle: 'normal',
-    color: 'rgba(0, 0, 0, 0.54)',
-    lineHeight: 26,
-  },
-  textActiveSubmit: {
-    color: '#ffffff',
-  },
+
   ImageUpload: {
     width: '100%',
     height: 238,
@@ -193,17 +169,6 @@ export const styles = StyleSheet.create({
     borderColor: color.primary.main,
     borderRadius: 18,
   },
-  textAdd: {
-    color: color.primary.main,
-    lineHeight: 24,
-    padding: 6,
-    paddingLeft: 17,
-    paddingRight: 17,
-    // fontFamily: 'NotoSansCJKkr-Medium',
-    fontSize: 14,
-    fontWeight: '500',
-    fontStyle: 'normal',
-  },
   cards: {
     borderWidth: 1,
     borderColor: '#e5e5ea',
@@ -211,12 +176,6 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
 
-  footerRegister: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingLeft: 14,
-    paddingRight: 14,
-  },
   textFooter: { paddingBottom: 2 },
   searchRegister: {
     height: 56,

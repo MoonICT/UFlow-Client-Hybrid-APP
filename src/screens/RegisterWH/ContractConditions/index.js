@@ -70,7 +70,7 @@ class RegisterContractConditions extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={S.containerRegister}>
+        <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={S.bodyCard}>
             <View style={S.titleBody}>
               <Text style={[S.textTitleBody, SS.titleRadio]}>정산조건</Text>
@@ -165,7 +165,7 @@ class RegisterContractConditions extends Component {
             </View>
           </View>
 
-          <View style={[S.footerRegister, S.footerIntro]}>
+          <View style={[DefaultStyle.footerRegister, S.footerIntro]}>
             <TouchableOpacity
               onPress={() => {
                 this.navigation.navigate('RegisterWH');

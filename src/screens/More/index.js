@@ -104,7 +104,7 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+                  onPress={() => this.navigation.navigate('InOutManager')}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={transport} />
                     <Text style={DefaultStyle.titleItem}>입･출고관리</Text>
@@ -219,7 +219,7 @@ class More extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('FindPassWord')}>
+              onPress={() => this.navigation.navigate('Annoucement')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>
               </View>
@@ -233,7 +233,7 @@ class More extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('FindID')}>
+              onPress={() => this.navigation.navigate('FindPassWord')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
                 <Text style={DefaultStyle.titleItem}>긴급차량지원</Text>
               </View>

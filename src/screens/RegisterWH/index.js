@@ -196,7 +196,7 @@ class RegisterWH extends Component {
             </View>
           </TouchableOpacity>
         </ScrollView>
-        <View style={S.footerRegister}>
+        <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
             style={[S.btnSubmit, S.activeBtnSubmit]}
             onPress={() => {

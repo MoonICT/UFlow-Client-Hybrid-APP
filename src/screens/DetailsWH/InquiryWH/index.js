@@ -65,10 +65,10 @@ class RegisterInfo extends Component {
             color="rgba(0, 0, 0, 0.47)"
             title="문의하기"
             onPress={() => this.navigation.navigate('CreateInquiryWH')}
-            titleStyle={DefaultStyle.rightTitle}
+            titleStyle={DefaultStyle._textHeaderRight}
           />
         </Appbars>
-        <ScrollView style={S.containerRegister}>
+        <ScrollView style={DefaultStyle.backgroundGray}>
           <TouchableOpacity
             onPress={() => {
               this.navigation.navigate('DetailsInquiryWH');

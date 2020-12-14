@@ -193,7 +193,7 @@ class RegisterImage extends Component {
             </View>
           )}
           
-          <View style={S.footerRegister}>
+          <View style={DefaultStyle.footerRegister}>
             <TouchableOpacity
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[

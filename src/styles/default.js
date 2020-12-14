@@ -47,9 +47,9 @@ export default StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.76)',
     lineHeight: 21,
     // fontFamily: 'NotoSansCJKkr-Medium',
-    fontWeight: '500',
+    fontWeight: 'bold',
   },
-  rightTitle: {
+  _textHeaderRight: {
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     fontWeight: '500',
@@ -722,7 +722,7 @@ export default StyleSheet.create({
     color: color.text.primary,
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontStyle: 'normal',
     lineHeight: 21,
     marginBottom: 24,
@@ -753,13 +753,12 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // alignSelf: 'center',
   },
   _textTitleCard: {
     color: color.text.primary,
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontStyle: 'normal',
     lineHeight: 21,
     // paddingTop: 8,
@@ -788,7 +787,6 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     padding: 16,
-
   },
   _headerCardTitle: {
     // fontFamily: 'NotoSansCJKkr-Medium',
@@ -840,7 +838,7 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
     width: windowWidth - 32,
     justifyContent: 'center',
-    marginBottom: 24,
+    marginBottom: 8,
     bottom: 0,
     alignItems: 'center',
     padding: 8,
@@ -944,7 +942,7 @@ export default StyleSheet.create({
     paddingRight: 16,
   },
   _highlightInfoTable: {
-    color: '#ff6d00',
+    color: color.primary.main,
   },
   _completeInfoTable: {
     color: 'rgba(0, 0, 0, 0.54)',
@@ -960,7 +958,7 @@ export default StyleSheet.create({
 
   /**Button */
   _btnOutline: {
-    borderColor: '#ff6d00',
+    borderColor: color.primary.main,
     borderWidth: 1,
     borderRadius: 21,
     flex: 1,
@@ -968,7 +966,7 @@ export default StyleSheet.create({
   },
   _btnInline: {
     alignItems: 'center',
-    backgroundColor: '#ff6d00',
+    backgroundColor: color.primary.main,
     borderRadius: 21,
     flex: 1,
   },
@@ -977,7 +975,7 @@ export default StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 14,
     fontWeight: '500',
-    color: '#ff6d00',
+    color: color.primary.main,
     padding: 6,
     paddingRight: 16,
     paddingLeft: 16,

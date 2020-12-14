@@ -105,7 +105,7 @@ class RegisterMoreInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={S.containerRegister}>
+        <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={S.bodyCard}>
             <View style={S.titleBody}>
               <Text style={S.textTitleBody}>부가 정보</Text>
@@ -186,7 +186,7 @@ class RegisterMoreInfo extends Component {
             </View>
           </View>
 
-          <View style={S.footerRegister}>
+          <View style={DefaultStyle.footerRegister}>
             <View style={[S.titleBody, S.titleFooter]}>
               <Text style={[S.textTitleBody, S.textFooter]}>
                 가격 협의 가능<Text style={S.textNote}>*</Text>
