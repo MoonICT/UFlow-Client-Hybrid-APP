@@ -24,7 +24,7 @@ import LocalNotificationService from '../../services/LocalNotificationService';
 import DefaultStyle from '../../styles/default';
 import Styles from './style';
 
-export default class TextFeild extends Component {
+export default class TextField extends Component {
   constructor(props) {
     super(props);
     this.countNotification = 0;

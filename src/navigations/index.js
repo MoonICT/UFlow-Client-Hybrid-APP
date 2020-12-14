@@ -36,7 +36,7 @@ import WebviewScreen from '@Screeens/Webview';
 import CameraScreen from '@Screeens/Camera';
 import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
-import TextFeild from '@Screeens/TextField';
+import TextField from '@Screeens/TextField';
 import testScreen from '@Screeens/testScreen';
 import RegisterWH from '@Screeens/RegisterWH';
 import RegisterImage from '@Screeens/RegisterWH/RegisterImage';
@@ -189,7 +189,7 @@ const App = () => {
                 />
                 <AuthStack.Screen
                   name="testScreen"
-                  component={TextFeild}
+                  component={TextField}
                   options={{ headerShown: false }}
                 />
                 <AuthStack.Screen
@@ -235,8 +235,8 @@ const App = () => {
                   options={{ headerShown: true }}
                 />
                 <RootStack.Screen
-                  name="TextFeild"
-                  component={TextFeild}
+                  name="TextField"
+                  component={TextField}
                   headerMode={true}
                   options={{ headerShown: true }}
                 />

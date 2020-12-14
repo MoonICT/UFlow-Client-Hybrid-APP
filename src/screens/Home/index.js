@@ -331,17 +331,17 @@ class Home extends Component {
         </View>
         {/* <Image source={item.image} /> */}
         {
-        //   <VideoPlayer
-        //   video={{
-        //     uri:
-        //       'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
-        //   }}
-        //   videoWidth={360}
-        //   videoHeight={640}
-        //   style={styles.backgroundVideo}
-        //   thumbnail={item.image}
-        //   autoplay={true}
-        // />
+          //   <VideoPlayer
+          //   video={{
+          //     uri:
+          //       'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
+          //   }}
+          //   videoWidth={360}
+          //   videoHeight={640}
+          //   style={styles.backgroundVideo}
+          //   thumbnail={item.image}
+          //   autoplay={true}
+          // />
         }
       </View>
     );
@@ -368,10 +368,19 @@ class Home extends Component {
         {/**### APPBAR ###*/}
         <AppBars style={[styles.appBar]}>
           <View style={[styles.actionBar]}>
-            <Appbar.Action icon="menu" color="white" onPress={() => {}} />
-            {/* <Text styles={[styles.notifiAppbar, styles.font14]}>
-              더 많은 혜택을 위해 회원가입하러 가기
-            </Text> */}
+            {/* <Appbar.Action icon="menu" color="white" onPress={() => {}} />
+             */}
+            <Appbar.Content
+              title={
+                <Text style={[styles.notifiAppbar, styles.font14]}>
+                  더 많은 혜택을 위해
+                  <Text style={{ color: '#ff6d00' }}> 회원가입 </Text>
+                  하러 가기
+                </Text>
+              }
+              titleStyle={DefaultStyle.headerTitle}
+            />
+
             <Button
               mode="contained"
               style={[DefaultStyle.containerBTN, styles.btnAction]}
@@ -507,6 +516,7 @@ class Home extends Component {
           </View>
 
           {/**____MainCallForBinding___*/}
+          {/**
           <View style={styles.mainCallForBinding}>
             <Text
               style={[
@@ -550,8 +560,9 @@ class Home extends Component {
               </TouchableOpacity>
             </View>
           </View>
-
+          */}
           {/**___MainStep__*/}
+          {/**
           <View style={styles.mainStep}>
             <View style={[styles.mainStepViewTitle]}>
               <Text style={[styles.mainStepTitle, styles.bold, styles.font24]}>
@@ -595,22 +606,23 @@ class Home extends Component {
               }}
             />
           </View>
-
+          */}
           {/**___Slogan__*/}
+          {/**
           <View style={styles.mainSlogan}>
             <Text style={[styles.mainSloganTitle, styles.bold, styles.font24]}>
               {'빠르고 편리하고 안전한\n' + '좋은 창고, 유플로우'}
             </Text>
             <View style={styles.mainSloganContent}>
               {slidesSlogans.map((v, i) => {
-                return <SloganCard data={v} index={i} key={'slogan'+i} />;
+                return <SloganCard data={v} index={i} key={'slogan' + i} />;
               })}
             </View>
           </View>
-
+          */}
           {/**___Video Intro__*/}
-          <View style={styles.mainVideo}>
-            {/* <Video
+          {/*  <View style={styles.mainVideo}>
+             <Video
               source={{ uri: 'https://www.youtube.com/watch?v=6hwz2mMTgIY' }}
               ref={ref => {
                 this.player = ref;
@@ -618,19 +630,19 @@ class Home extends Component {
               onBuffer={this.onBuffer}
               onError={this.videoError}
               style={styles.backgroundVideo}
-            /> */}
-{
-            // <VideoPlayer
-            //   video={{
-            //     uri:
-            //       'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
-            //   }}
-            //   // style={styles.backgroundVideo}
-            //   thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-            //   autoplay={true}
-            // />
-          }
-          </View>
+            /> 
+            {
+              // <VideoPlayer
+              //   video={{
+              //     uri:
+              //       'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
+              //   }}
+              //   // style={styles.backgroundVideo}
+              //   thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+              //   autoplay={true}
+              // />
+            }
+          </View>*/}
 
           {/**___Call__*/}
           <View style={styles.mainCall}>
@@ -640,6 +652,7 @@ class Home extends Component {
             </Text>
             <View
               style={[styles.introRow, styles.mainCallRow, styles.introBottom]}>
+              {/** 
               <View style={styles.introColum}>
                 {
                   <Icon
@@ -679,24 +692,38 @@ class Home extends Component {
                   안전한 보험, 계약 시스템
                 </Text>
               </View>
+            */}
+
+              <Text
+                style={[
+                  styles.font14,
+                  styles.introColumText,
+                  styles.mainAppDowloadTitle,
+                ]}>
+                혹시 창고를 보유하고 계신가요?{'\n'}
+                창고 등록 탭에서 창고를 등록해보세요.
+              </Text>
             </View>
             <TouchableOpacity
               style={styles.mainCallBTN}
               onPress={() => this.navigation.navigate('RegisterWH')}>
-              <Text style={[styles.blueColor, styles.medium, styles.font15]}>
-                무료로 회원 가입하기
+              <Text style={[styles.btnMainCall,styles.blueColor, styles.medium, styles.font15]}>
+                {/**무료로 회원 가입하기 */}
+                창고 등록하기
               </Text>
             </TouchableOpacity>
           </View>
 
           {/**___Help__*/}
+          {/**
           <ScrollView style={[styles.mainHelp]} horizontal={true}>
             <Text style={[styles.mainHelpText, styles.bold, styles.font34]}>
               1588.1333. HELP@UFLOW.CO.KR
             </Text>
           </ScrollView>
-
+          */}
           {/**___App Download__*/}
+          {/**
           <View style={[styles.mainAppDowload]}>
             <Image source={logoWhite} />
             <Text
@@ -714,9 +741,16 @@ class Home extends Component {
               <Image source={appstore2} style={styles.appSupportBTN} />
             </View>
           </View>
-
+          */}
           {/**__Footer___ */}
+          {/**
           <Footer data={data} />
+          */}
+          <View style={styles.copyRight}>
+            <Text style={[styles.textCopyRight,styles.font9]}>
+              Copyright © 2020 Uflow Inc. 모든 권리 보유.{'\n'}v 1(20201112)
+            </Text>
+          </View>
         </ScrollView>
       </SafeAreaView>
     );

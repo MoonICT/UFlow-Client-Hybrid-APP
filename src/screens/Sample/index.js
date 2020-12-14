@@ -57,9 +57,9 @@ export default class Sample extends Component {
             <Text>{'Geolocation Sample'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('TextFeild')}
+            onPress={() => this.props.navigation.navigate('TextField')}
             style={DefaultStyle.btn}>
-            <Text>{'TextFeild Sample'}</Text>
+            <Text>{'TextField Sample'}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

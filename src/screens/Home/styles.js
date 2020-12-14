@@ -166,14 +166,22 @@ export const styles = StyleSheet.create({
   },
   introInput: {
     width: '90%',
-    fontFamily: 'NotoSansCJKkr-Bold',
+    // fontFamily: 'NotoSansCJKkr-Bold',
     fontSize: 24,
-    // letterSpacing: -0.5,
-    // lineHeight: 28,
-    lineHeight: 0,
+    letterSpacing: -0.5,
+    lineHeight: 32,
+    fontWeight: 'bold',
+    // lineHeight: 0,
     padding: 0,
     color: color.point.main,
   },
+  searchInput: {
+    // fontFamily: 'NotoSansCJKkr-Bold',
+    fontSize: 24,
+    // letterSpacing: -0.5,
+    // lineHeight: 32,
+  },
+
   introRow: {
     display: 'flex',
     flexDirection: 'row',
@@ -387,18 +395,25 @@ export const styles = StyleSheet.create({
   mainCallTitle: {
     letterSpacing: -0.3,
     color: color.misc.white,
+    lineHeight: 24,
   },
 
   mainCallBTN: {
-    width: 178,
-    height: 42,
+    // width: 178,
+    // height: 42,
     backgroundColor: color.misc.white,
     borderRadius: 21,
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 24,
   },
-
+  btnMainCall: {
+    padding: 8,
+    paddingLeft: 22,
+    paddingRight: 21,
+    lineHeight: 26,
+  },
   //--->main Help
   mainHelp: {
     backgroundColor: color.misc.white,
@@ -436,5 +451,15 @@ export const styles = StyleSheet.create({
   appSupportBTN: {
     width: 142,
     height: 42,
+  },
+  copyRight: {
+    backgroundColor: '#fafafa',
+  },
+  textCopyRight: {
+    textAlign: 'center',
+    color: 'rgba(0, 0, 0, 0.47)',
+    letterSpacing: -0.3,
+    lineHeight: 13,
+    padding: 20,
   },
 });
