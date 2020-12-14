@@ -11,7 +11,7 @@ class AppGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: props.data && props.data[0].title,
+      active: props.title ? props.title : props.data && props.data[0].title,
       content: props.data && props.data[0].content,
     };
   }
@@ -29,7 +29,6 @@ class AppGrid extends Component {
   }
   render() {
     const { data, titleProps } = this.props;
-
     const tabItem =
       data &&
       data.map((item, index) => {

@@ -104,7 +104,8 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('InOutManager')}>
+                  onPress={() => this.navigation.navigate('TenantMypage',{title: '입･출고 관리'})}
+                  >
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={transport} />
                     <Text style={DefaultStyle.titleItem}>입･출고관리</Text>
@@ -119,7 +120,8 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+                  onPress={() => this.navigation.navigate('TenantMypage',{title: '정산관리'})}
+                  >
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={account} />
                     <Text style={DefaultStyle.titleItem}>정산관리</Text>
@@ -185,7 +187,7 @@ class More extends Component {
                   onPress={() => this.navigation.navigate('RegisterWH')}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={addwarehouse} />
-                    <Text style={DefaultStyle.titleItem}>내 창고</Text>
+                    <Text style={DefaultStyle.titleItem}>창고등록</Text>
                   </View>
                   <View style={DefaultStyle.rightItem}>
                     <Icon
