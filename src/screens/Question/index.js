@@ -68,7 +68,7 @@ class Question extends Component {
             onPress={() => {
               this.showDialog();
             }}
-            titleStyle={DefaultStyle.rightTitle}
+            titleStyle={DefaultStyle._textHeaderRight}
           />
         </Appbars>
         <ScrollView>

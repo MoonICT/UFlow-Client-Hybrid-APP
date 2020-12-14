@@ -62,7 +62,7 @@ class RegisterIntro extends Component {
     console.log('route', route);
     // console.log('this.state.value', this.state.value);
     return (
-      <SafeAreaView style={S.container}>
+      <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -73,13 +73,13 @@ class RegisterIntro extends Component {
             title="창고 소개"
             color="black"
             fontSize="12"
-            style={DefaultStyle.headerTitle}
+            titleStyle={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={S.containerRegister}>
-          <View style={S.bodyCard}>
-            <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>
+        <ScrollView style={DefaultStyle.backgroundGray}>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleCard}>
+              <Text style={DefaultStyle._textTitleCard}>
                 {route && route.params.type === 'ModifyWH' ? '제목' : '창고명'}
                 <Text style={S.textNote}>*</Text>
               </Text>
@@ -140,19 +140,19 @@ class RegisterIntro extends Component {
             />
           </View>
 
-          <View style={[S.footerRegister, S.footerIntro]}>
+          <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
             <TouchableOpacity
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
-                S.btnSubmit,
-                imageStore.length > 2 ? S.activeBtnSubmit : null,
+                DefaultStyle.btnSubmit,
+                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
               ]}
               // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
-                  S.textSubmit,
-                  imageStore.length > 2 ? S.textActiveSubmit : null,
+                  DefaultStyle.textSubmit,
+                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
                 ]}>
                 확인
               </Text>

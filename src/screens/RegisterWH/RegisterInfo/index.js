@@ -128,12 +128,12 @@ class RegisterInfo extends Component {
   };
   render() {
     const { imageStore, route } = this.props;
-    const { value, listForm, numberSlide ,formData} = this.state;
+    const { value, listForm, numberSlide, formData } = this.state;
     // console.log('this.state.value', this.state.value);
     console.log('formData', this.state.formData);
 
     return (
-      <SafeAreaView style={S.container}>
+      <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -151,7 +151,7 @@ class RegisterInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={S.containerRegister}>
+        <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={SS.tabBar}>
             <TouchableOpacity
               style={this.state.value === 1 ? SS.btnTabBar : null}
@@ -164,22 +164,21 @@ class RegisterInfo extends Component {
               <Text style={SS.textTabBar}>수탁</Text>
             </TouchableOpacity>
           </View>
-          <View style={S.bodyCard}>
-            <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>
+          <View style={DefaultStyle._cards}>
+            <View style={[DefaultStyle._titleCard, { marginBottom: 12 }]}>
+              <Text style={DefaultStyle._textTitleCard}>
                 {route && route.params && route.params.type === 'ModifyWH'
                   ? '보관유형 상세정보'
                   : '임대유형 상세정보'}
                 <Text style={S.textNote}>*</Text>
               </Text>
-              <View style={S.rightTitle}>
+              <View style={DefaultStyle._titleBody}>
                 <TouchableOpacity
                   style={S.btnAdd}
                   onPress={() => this._addForm()}>
-                  <Text style={S.textAdd}>추가</Text>
+                  <Text style={DefaultStyle._textButton}>추가</Text>
                 </TouchableOpacity>
                 <IconButton
-                  style={S.btnIcon}
                   icon="delete"
                   color={'rgba(0, 0, 0, 0.54)'}
                   onPress={() => this._removeForm()}
@@ -211,12 +210,12 @@ class RegisterInfo extends Component {
               }}
             />
           </View>
-          <View style={S.footerRegister}>
-            <View style={[S.titleBody, S.titleFooter]}>
-              <Text style={[S.textTitleBody, S.textFooter]}>
+          <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
+            <View style={DefaultStyle._titleCard}>
+              <Text style={DefaultStyle._textTitleCard}>
                 가격 협의 가능<Text style={S.textNote}>*</Text>
               </Text>
-              <View style={S.rightTitle}>
+              <View>
                 <Switch
                   // thumbColor={color.primary.main}
                   value={this.state.isSwitchOn}
@@ -233,15 +232,15 @@ class RegisterInfo extends Component {
             <TouchableOpacity
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
-                S.btnSubmit,
-                imageStore.length > 2 ? S.activeBtnSubmit : null,
+                DefaultStyle.btnSubmit,
+                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
               ]}
               // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
-                  S.textSubmit,
-                  imageStore.length > 2 ? S.textActiveSubmit : null,
+                  DefaultStyle.textSubmit,
+                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
                 ]}>
                 확인
               </Text>

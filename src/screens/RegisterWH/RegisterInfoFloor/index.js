@@ -80,7 +80,7 @@ class RegisterInfoFloor extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={S.containerRegister}>
+        <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={[S.bodyCard, SS.bodyInfoFloor]}>
             <View style={S.titleBody}>
               <Text style={S.textTitleBody}>층별 상세 정보</Text>
@@ -88,7 +88,7 @@ class RegisterInfoFloor extends Component {
                 <TouchableOpacity
                   style={S.btnAdd}
                   onPress={() => console.log('add')}>
-                  <Text style={S.textAdd}>추가</Text>
+                  <Text style={DefaultStyle._textButton}>추가</Text>
                 </TouchableOpacity>
                 <IconButton
                   style={S.btnIcon}
@@ -99,7 +99,7 @@ class RegisterInfoFloor extends Component {
             </View>
             <Form />
           </View>
-          <View style={[S.footerRegister, S.footerIntro]}>
+          <View style={[DefaultStyle.footerRegister, S.footerIntro]}>
             <TouchableOpacity
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[

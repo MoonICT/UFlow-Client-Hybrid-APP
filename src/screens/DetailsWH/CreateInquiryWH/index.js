@@ -49,7 +49,7 @@ class CreateInquiryWH extends Component {
             color="rgba(0, 0, 0, 0.47)"
             title="등록"
             onPress={() => console.log('up :>> ')}
-            titleStyle={DefaultStyle.rightTitle}
+            titleStyle={DefaultStyle._textHeaderRight}
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
