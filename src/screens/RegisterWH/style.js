@@ -191,7 +191,7 @@ export const styles = StyleSheet.create({
   },
   options: {
     flexDirection: 'row',
-    marginTop: 20,
+    // marginTop: 20,
   },
   optionCheck: {
     flexDirection: 'row',

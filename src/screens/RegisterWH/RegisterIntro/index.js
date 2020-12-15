@@ -79,7 +79,7 @@ class RegisterIntro extends Component {
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleCard}>
-              <Text style={DefaultStyle._textTitleCard}>
+              <Text style={DefaultStyle._textTitleBody}>
                 {route && route.params.type === 'ModifyWH' ? '제목' : '창고명'}
                 <Text style={S.textNote}>*</Text>
               </Text>
@@ -94,9 +94,9 @@ class RegisterIntro extends Component {
             />
           </View>
 
-          <View style={S.bodyCard}>
-            <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={DefaultStyle._textTitleBody}>
                 창고 소개<Text style={S.textNote}>*</Text>
               </Text>
             </View>
@@ -107,14 +107,20 @@ class RegisterIntro extends Component {
               onChangeText={text => this.onChangeIntro(text)}
               value={this.state.textIntro}
               placeholder={
-                '상세 설명 작성 주의사항              - 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)              - 중개수수료를 언급한 내용은 입력할 수 없습니다. (중개수수료 무료, 공짜, 반값 등)                     * 주의사항 위반시 허위정보로 간주되어 게시물 삭제 및 이용의 제한이 있을 수 있습니다.              * 유플로우의 창고 등록 규정에 위반되는 금칙어는 등록이 블가합니다. '
+                `상세 설명 작성 주의사항
+
+  - 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)              
+  - 중개수수료를 언급한 내용은 입력할 수 없습니다. (중개수수료 무료, 공짜, 반값 등)  
+
+  * 주의사항 위반시 허위정보로 간주되어 게시물 삭제 및 이용의 제한이 있을 수 있습니다.      
+  * 유플로우의 창고 등록 규정에 위반되는 금칙어는 등록이 블가합니다. `
               }
             />
           </View>
 
-          <View style={[S.bodyCard, S.mrBottom0]}>
-            <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>
+          <View style={DefaultStyle._body}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={DefaultStyle._textTitleBody}>
                 위치<Text style={S.textNote}>*</Text>
               </Text>
             </View>

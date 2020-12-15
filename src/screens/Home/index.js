@@ -383,15 +383,14 @@ class Home extends Component {
               titleStyle={DefaultStyle.headerTitle}
             />
 
-            <Button
+            <TouchableOpacity
               mode="contained"
               style={[DefaultStyle.containerBTN, styles.btnAction]}
               color="red"
               // onPress={() => showPopup()}
-              onPress={() => this.navigation.navigate('Register')}
-              >
-              회원가입
-            </Button>
+              onPress={() => this.navigation.navigate('Register')}>
+              <Text style={styles.textBtnAction}>회원가입</Text>
+            </TouchableOpacity>
           </View>
           <View style={[DefaultStyle.divider]} />
         </AppBars>
@@ -711,7 +710,13 @@ class Home extends Component {
             <TouchableOpacity
               style={styles.mainCallBTN}
               onPress={() => this.navigation.navigate('RegisterWH')}>
-              <Text style={[styles.btnMainCall,styles.blueColor, styles.medium, styles.font15]}>
+              <Text
+                style={[
+                  styles.btnMainCall,
+                  styles.blueColor,
+                  styles.medium,
+                  styles.font15,
+                ]}>
                 {/**무료로 회원 가입하기 */}
                 창고 등록하기
               </Text>
@@ -751,7 +756,7 @@ class Home extends Component {
           <Footer data={data} />
           */}
           <View style={styles.copyRight}>
-            <Text style={[styles.textCopyRight,styles.font9]}>
+            <Text style={[styles.textCopyRight, styles.font9]}>
               Copyright © 2020 Uflow Inc. 모든 권리 보유.{'\n'}v 1(20201112)
             </Text>
           </View>

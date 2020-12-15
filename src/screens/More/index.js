@@ -61,7 +61,7 @@ class More extends Component {
             </Text>
             <TouchableOpacity
               style={[DefaultStyle.btnItem, S.infoUser]}
-              onPress={() => {}}>
+              onPress={() => this.navigation.navigate('SampleScreen')}>
               <View style={DefaultStyle.leftItem}>
                 <Text style={[DefaultStyle.titleItem, S.textInfo]}>
                   {isLogin === false ? '로그인' : '하혜정'}
@@ -104,8 +104,11 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('TenantMypage',{title: '입･출고 관리'})}
-                  >
+                  onPress={() =>
+                    this.navigation.navigate('TenantMypage', {
+                      title: '입･출고 관리',
+                    })
+                  }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={transport} />
                     <Text style={DefaultStyle.titleItem}>입･출고관리</Text>
@@ -120,8 +123,11 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('TenantMypage',{title: '정산관리'})}
-                  >
+                  onPress={() =>
+                    this.navigation.navigate('TenantMypage', {
+                      title: '정산관리',
+                    })
+                  }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={account} />
                     <Text style={DefaultStyle.titleItem}>정산관리</Text>
