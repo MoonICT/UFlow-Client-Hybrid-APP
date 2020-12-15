@@ -67,6 +67,8 @@ import slogan5 from '@Assets/images/slogan5.png';
 import appstore1 from '@Assets/images/appstore-1.png';
 import appstore2 from '@Assets/images/appstore-2.png';
 import logoWhite from '@Assets/images/logo-white.png';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Account } from '@Services/apis';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
@@ -314,7 +316,6 @@ class Home extends Component {
     this.navigation = props.navigation;
     this.fcm = new FCMService();
   }
-
   shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
@@ -360,10 +361,23 @@ class Home extends Component {
   _onDone = () => {
     this.setState({ showRealApp: true });
   };
-
+  getItem = () => {
+    Account.getMe()
+      .then(res => {
+        console.log('::::: API Sign in :::::', res);
+        const status = res.status;
+        if (status === 200) {
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
   render() {
-    const { showPopup } = this.props;
-    // const {isShow, expanded} = this.state;
+    const { showPopup, route } = this.props;
+    console.log('route :>> ', route);
+    const { token } = this.state;
+    console.log('token :>> ', token);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -388,7 +402,8 @@ class Home extends Component {
               style={[DefaultStyle.containerBTN, styles.btnAction]}
               color="red"
               // onPress={() => showPopup()}
-              onPress={() => this.navigation.navigate('Register')}>
+              // onPress={() => this.navigation.navigate('Register')}
+              onPress={() => this.getItem()}>
               <Text style={styles.textBtnAction}>회원가입</Text>
             </TouchableOpacity>
           </View>
@@ -769,6 +784,32 @@ class Home extends Component {
     console.log('::componentDidMount::');
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
+    const value = await AsyncStorage.getItem('token');
+    if (value) {
+      this.setState({ token: value });
+      Account.getMe()
+        .then(res => {
+          console.log('::::: Get Me :::::', res);
+          const status = res.status;
+          if (status === 200) {
+          }
+        })
+        .catch(err => {
+          console.log('errHome', err);
+        });
+    }
+
+    // async () => {
+    //   try {
+    //     const value = await AsyncStorage.getItem('token');
+    //     if (value !== null) {
+    //       // We have data!!f
+    //       console.log('value', value);
+    //     }
+    //   } catch (error) {
+    //     // Error retrieving data
+    //   }
+    // };
     /** Complete Initialize. */
     SplashScreen.hide();
   }
