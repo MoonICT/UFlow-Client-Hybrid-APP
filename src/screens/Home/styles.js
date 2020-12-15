@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     zIndex: 888888,
   },
   appBar: {
-    height: 47,
+    height: 50,
     // backgroundColor: 'transparent',
     backgroundColor: color.misc.black,
     position: 'absolute',
@@ -74,9 +74,9 @@ export const styles = StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr-Medium',
   },
   btnAction: {
-    width: 88,
+    borderRadius: 15,
+    width: 68,
     height: 30,
-    lineHeight: 30,
     marginRight: 17,
     backgroundColor: color.primary.main,
     // fontFamily: 'NotoSansCJKkr-Medium',
@@ -85,6 +85,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: 0,
+    // marginHorizontal: 10,
+  },
+  textBtnAction: {
+    lineHeight: 23,
+    margin: 0,
+    color: 'white',
+    fontSize: 13,
   },
   //====================Slide==============================
   carousel: {
@@ -133,8 +140,9 @@ export const styles = StyleSheet.create({
   //=====================Content=========================
   //-->intro
   intro: {
+    marginTop: 50,
     height: 349,
-    paddingTop: 60,
+    paddingTop: 80,
     paddingRight: 37,
     paddingLeft: 34,
     backgroundColor: color.primary.main,

@@ -106,9 +106,9 @@ class RegisterMoreInfo extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={S.bodyCard}>
-            <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>부가 정보</Text>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={DefaultStyle._textTitleBody}>부가 정보</Text>
             </View>
             <View style>
               <Select
@@ -149,10 +149,10 @@ class RegisterMoreInfo extends Component {
             </View>
           </View>
 
-          <View style={S.bodyCard}>
-            <View style={S.titleBody}>
-              <Text style={[S.textTitleBody, S.textFooter]}>
-                추가옵션<Text style={S.textNote}>*</Text>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={[DefaultStyle._textTitleBody]}>
+                추가옵션<Text style={DefaultStyle._textNote}>*</Text>
               </Text>
             </View>
             <View style={S.options}>
@@ -186,10 +186,10 @@ class RegisterMoreInfo extends Component {
             </View>
           </View>
 
-          <View style={DefaultStyle.footerRegister}>
-            <View style={[S.titleBody, S.titleFooter]}>
-              <Text style={[S.textTitleBody, S.textFooter]}>
-                가격 협의 가능<Text style={S.textNote}>*</Text>
+          <View style={DefaultStyle._body}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={DefaultStyle._textTitleBody}>
+                가격 협의 가능<Text style={DefaultStyle._textNote}>*</Text>
               </Text>
             </View>
             <View style={[S.options, S.optionsFooter]}>
@@ -224,15 +224,15 @@ class RegisterMoreInfo extends Component {
             <TouchableOpacity
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
-                S.btnSubmit,
-                imageStore.length > 2 ? S.activeBtnSubmit : null,
+                DefaultStyle.btnSubmit,
+                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
               ]}
               // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
-                  S.textSubmit,
-                  imageStore.length > 2 ? S.textActiveSubmit : null,
+                  DefaultStyle.textSubmit,
+                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
                 ]}>
                 확인
               </Text>

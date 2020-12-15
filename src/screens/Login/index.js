@@ -19,9 +19,17 @@ import DefaultStyle from '../../styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
+import { Account } from '@Services/apis';
+// import Cookie from 'js-cookie';
+// import getConfig from 'next/config';
+
 //---> Assets
 const Logo = require('@Assets/images/logo.png');
-
+// const {
+//   publicRuntimeConfig: {
+//     env: { ACCESS_TOKEN_NAME },
+//   },
+// } = getConfig();
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +52,25 @@ class Login extends Component {
     console.log('::componentWillUnmount::');
   }
 
+  handleOnClickLogin = data => {
+    console.log(data);
+    // setValues({ ...values, data });
+    // Sign in
+    Account.signIn({
+      email: data.email,
+      password: data.password,
+    })
+      .then(res => {
+        console.log('::::: API Sign in :::::', res);
+        // Cookie.set(ACCESS_TOKEN_NAME, res.access_token, { expires: 180 });
+        // window.location.href = '/';
+      })
+      .catch(err => {
+        console.log(err);
+        // TODO change dialog
+        alert('이메일과 비밀번호를 확인해주세요.');
+      });
+  };
   render() {
     const { email, password, isRemember } = this.state;
 
@@ -96,9 +123,11 @@ class Login extends Component {
                   아이디 찾기
                 </Text>
                 <Text style={S.rectangle}>|</Text>
-                <Text style={[S.fontS14]}
-                onPress={() => this.navigation.navigate('FindPassWord')}
-                >비밀번호 찾기</Text>
+                <Text
+                  style={[S.fontS14]}
+                  onPress={() => this.navigation.navigate('FindPassWord')}>
+                  비밀번호 찾기
+                </Text>
               </View>
             </View>
             <Button
@@ -110,7 +139,8 @@ class Login extends Component {
               ]}
               color="red"
               onPress={() => {
-                this.navigation.navigate('Home');
+                // this.navigation.navigate('Home');
+                this.handleOnClickLogin({email:'chonglye@aartkorea.com',password:'aart1234!'});
               }}>
               확인
             </Button>

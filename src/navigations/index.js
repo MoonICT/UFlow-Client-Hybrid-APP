@@ -107,7 +107,7 @@ const TabScreenOptions = ({ route }) => ({
         icon = 'magnify';
         break;
       // TODO change route
-      case 'SampleScreen':
+      case 'Chat':
         icon = 'forum';
         break;
       case 'More':
@@ -143,7 +143,7 @@ const TabScreen = () => {
         options={{ headerShown: false }}
       />
       {/* TODO Change route */}
-      <Tab.Screen name="SampleScreen" component={SampleScreen} />
+      <Tab.Screen name="Chat" component={Chat} />
       <Tab.Screen
         name="More"
         component={More}
@@ -469,8 +469,8 @@ const App = () => {
                   options={{ headerShown: false }}
                 />
                 <RootStack.Screen
-                  name="Chat"
-                  component={Chat}
+                  name="SampleScreen"
+                  component={SampleScreen}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

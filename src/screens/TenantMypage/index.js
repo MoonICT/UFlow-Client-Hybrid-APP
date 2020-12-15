@@ -265,7 +265,7 @@ class TenantMypage extends Component {
     this.state = {
       visible: false,
       visibleConfirm: false,
-      title: props.route.params.title,
+      title: props.route.params && props.route.params.title,
     };
     this.navigation = props.navigation;
   }
@@ -357,7 +357,11 @@ class TenantMypage extends Component {
           />
         </Appbars>
         <ScrollView>
-          <AppGrid data={data} title={title} titleProps={e => this.setState({ title: e })} />
+          <AppGrid
+            data={data}
+            title={title}
+            titleProps={e => this.setState({ title: e })}
+          />
           {viewComponent}
         </ScrollView>
 

@@ -761,8 +761,6 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     fontStyle: 'normal',
     lineHeight: 21,
-    // paddingTop: 8,
-    // paddingBottom: 6,
   },
   _textRightTitleCard: {
     color: color.text.primary,
@@ -825,7 +823,9 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-
+  _textNote: {
+    color: color.primary.main,
+  },
   /**Button confirm footer*/
   footerRegister: {
     flex: 1,

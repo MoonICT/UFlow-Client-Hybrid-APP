@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   inputIntro: {
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderColor: '#d7d7d7',
     lineHeight: 24,
     letterSpacing: 0.15,
     padding: 16,
