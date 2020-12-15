@@ -1,12 +1,15 @@
 import { Axios, parseQuery } from '@Services/http';
-import { mainAxios } from '../libs/axios';
+import { mainAxios, mainAxiosToken } from '../libs/axios';
 
 export const signIn = async data => {
-  console.log('data :>> ', data);
   return await mainAxios.post('/api/v1/account/login', {
     email: data.email,
     password: data.password,
   });
+};
+
+export const getMe = async () => {
+  return await mainAxiosToken.get('/api/v1/me');
 };
 
 // export const signIn = ({ email = '', password = '' }) => {

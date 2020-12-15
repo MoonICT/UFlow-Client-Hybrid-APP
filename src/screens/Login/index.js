@@ -22,7 +22,7 @@ import { styles as S } from './style';
 import { Account } from '@Services/apis';
 // import Cookie from 'js-cookie';
 // import getConfig from 'next/config';
-
+import AsyncStorage from '@react-native-community/async-storage';
 //---> Assets
 const Logo = require('@Assets/images/logo.png');
 // const {
@@ -52,6 +52,25 @@ class Login extends Component {
     console.log('::componentWillUnmount::');
   }
 
+  _storeData = async () => {
+    try {
+      await AsyncStorage.setItem('token', 'I like to save it.');
+    } catch (error) {
+      // Error saving data
+    }
+  };
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('token');
+
+      if (value !== null) {
+        // We have data!!
+        console.log('AsyncStorage', value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
   handleOnClickLogin = data => {
     console.log(data);
     // setValues({ ...values, data });
@@ -62,13 +81,15 @@ class Login extends Component {
     })
       .then(res => {
         console.log('::::: API Sign in :::::', res);
-        // Cookie.set(ACCESS_TOKEN_NAME, res.access_token, { expires: 180 });
-        // window.location.href = '/';
+        const status = res.status;
+        if (status === 200) {
+          const access_token = res.data.access_token;
+          AsyncStorage.setItem('token', access_token);
+          this.navigation.navigate('Home');
+        }
       })
       .catch(err => {
-        console.log(err);
-        // TODO change dialog
-        alert('이메일과 비밀번호를 확인해주세요.');
+        console.log('err', err);
       });
   };
   render() {
@@ -92,7 +113,7 @@ class Login extends Component {
               mode="outlined"
               value={email}
               type="number"
-              maxLength={20}
+              maxLength={30}
               style={[DefaultStyle.inputs]}
               onChangeText={text => this.setState({ email: text })}
             />
@@ -119,7 +140,10 @@ class Login extends Component {
               <View style={S.ortherLink}>
                 <Text
                   style={[S.fontS14]}
-                  onPress={() => this.navigation.navigate('ForgotID')}>
+                  onPress={() => {
+                    // this.navigation.navigate('ForgotID');
+                    this._retrieveData();
+                  }}>
                   아이디 찾기
                 </Text>
                 <Text style={S.rectangle}>|</Text>
@@ -140,7 +164,10 @@ class Login extends Component {
               color="red"
               onPress={() => {
                 // this.navigation.navigate('Home');
-                this.handleOnClickLogin({email:'chonglye@aartkorea.com',password:'aart1234!'});
+                this.handleOnClickLogin({
+                  email,
+                  password,
+                });
               }}>
               확인
             </Button>
