@@ -52,25 +52,6 @@ class Login extends Component {
     console.log('::componentWillUnmount::');
   }
 
-  _storeData = async () => {
-    try {
-      await AsyncStorage.setItem('token', 'I like to save it.');
-    } catch (error) {
-      // Error saving data
-    }
-  };
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('token');
-
-      if (value !== null) {
-        // We have data!!
-        console.log('AsyncStorage', value);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  };
   handleOnClickLogin = data => {
     console.log(data);
     // setValues({ ...values, data });
@@ -86,6 +67,7 @@ class Login extends Component {
           const access_token = res.data.access_token;
           AsyncStorage.setItem('token', access_token);
           this.navigation.navigate('Home');
+          this.props.loginAccount(true);
         }
       })
       .catch(err => {
@@ -141,8 +123,7 @@ class Login extends Component {
                 <Text
                   style={[S.fontS14]}
                   onPress={() => {
-                    // this.navigation.navigate('ForgotID');
-                    this._retrieveData();
+                    this.navigation.navigate('FindID');
                   }}>
                   아이디 찾기
                 </Text>
@@ -215,6 +196,9 @@ function mapDispatchToProps(dispatch) {
     },
     countDown: diff => {
       dispatch(ActionCreator.countDown(diff));
+    },
+    loginAccount: action => {
+      dispatch(ActionCreator.loginAccount(action));
     },
   };
 }
