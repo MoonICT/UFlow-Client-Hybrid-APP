@@ -20,7 +20,7 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import DoneRegister from './done';
-
+import TextField from '@Components/organisms/TextField';
 //---> Assets
 
 class Register extends Component {
@@ -28,7 +28,7 @@ class Register extends Component {
     super(props);
     this.webView = null;
     this.state = {
-      name: '',
+      fullName: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -57,7 +57,7 @@ class Register extends Component {
 
   render() {
     let {
-      name,
+      fullName,
       email,
       password,
       confirmPassword,
@@ -91,6 +91,7 @@ class Register extends Component {
       terms = terms;
     }
 
+    console.log('this.state :>> ', this.state);
     return (
       <>
         {isDone ? (
@@ -107,55 +108,70 @@ class Register extends Component {
                 style={S.appBarTitle}
               />
             </Appbars>
-            <ScrollView>
-              <View style={S.content}>
-                <Text style={[S.titleLogin, S.fontMedium]}>
+            <ScrollView style={DefaultStyle.backgroundWhiteDF2}>
+              <View style={DefaultStyle._cards}>
+                <Text style={DefaultStyle._textTitleBody}>
                   {'회원가입을 위해\n' + '아래 정보를 적어주세요.'}
                 </Text>
                 <View style={S.formLogin}>
-                  <TextInput
-                    label="이름"
-                    mode="outlined"
-                    value={name}
+                  <TextField
+                    multiline={true}
+                    labelTextField={'이름'}
+                    colorLabel="#000000"
+                    styleProps={{ borderColor: '#d7d7d7' }}
+                    placeholder="이름"
+                    onChangeText={text => this.setState({ fullName: text })}
+                    value={fullName}
                     type="text"
-                    maxLength={20}
-                    style={[DefaultStyle.inputs]}
-                    onChangeText={text => this.setState({ email: text })}
-                  />
-                  <TextInput
-                    label="이메일"
                     mode="outlined"
+                    maxLength={30}
+                  />
+                  <TextField
+                    multiline={true}
+                    labelTextField={'이메일'}
+                    colorLabel="#000000"
+                    styleProps={{ borderColor: '#d7d7d7' }}
+                    placeholder="이메일"
+                    onChangeText={text => this.setState({ email: text })}
                     value={email}
                     type="text"
-                    maxLength={20}
-                    style={[DefaultStyle.inputs, S.inputPass]}
-                    onChangeText={text => this.setState({ password: text })}
-                  />
-                  <TextInput
-                    label="비밀번호"
                     mode="outlined"
+                    maxLength={30}
+                  />
+                  <TextField
+                    multiline={true}
+                    labelTextField={'비밀번호'}
+                    colorLabel="#000000"
+                    styleProps={{ borderColor: '#d7d7d7' }}
+                    placeholder="비밀번호"
+                    onChangeText={text => this.setState({ password: text })}
                     value={password}
                     type="text"
-                    secureTextEntry={true}
-                    maxLength={20}
-                    style={[DefaultStyle.inputs, S.inputPass]}
-                    onChangeText={text => this.setState({ password: text })}
-                  />
-                  <TextInput
-                    label="비밀번호 확인"
                     mode="outlined"
+                    maxLength={20}
+                    secureTextEntry={true}
+                  />
+                  <TextField
+                    multiline={true}
+                    labelTextField={'비밀번호 확인'}
+                    colorLabel="#000000"
+                    styleProps={{ borderColor: '#d7d7d7' }}
+                    placeholder="비밀번호 확인"
+                    onChangeText={text =>
+                      this.setState({ confirmPassword: text })
+                    }
                     value={confirmPassword}
                     type="text"
-                    secureTextEntry={true}
+                    mode="outlined"
                     maxLength={20}
-                    style={[DefaultStyle.inputs, S.inputPass]}
-                    onChangeText={text => this.setState({ password: text })}
+                    secureTextEntry={true}
                   />
                 </View>
               </View>
               {/**Terms */}
-              <View style={S.terms}>
-                <Text style={[S.termsText, S.fontMedium]}>유의사항</Text>
+              <View
+                style={[DefaultStyle._body, DefaultStyle.backgroundWhiteDF2]}>
+                <Text style={DefaultStyle._textTitleBody}>유의사항</Text>
                 <View style={[S.termsList]}>
                   {/** ----------Terms ------------*/}
                   <View style={S.itemTerm}>

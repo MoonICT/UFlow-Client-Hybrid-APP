@@ -402,8 +402,9 @@ class Home extends Component {
               style={[DefaultStyle.containerBTN, styles.btnAction]}
               color="red"
               // onPress={() => showPopup()}
-              // onPress={() => this.navigation.navigate('Register')}
-              onPress={() => this.getItem()}>
+              onPress={() => this.navigation.navigate('Register')}
+              // onPress={() => this.getItem()}
+              >
               <Text style={styles.textBtnAction}>회원가입</Text>
             </TouchableOpacity>
           </View>

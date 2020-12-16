@@ -349,7 +349,7 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
-    padding: 15,
+    padding: 13,
     paddingRight: 50,
     lineHeight: 24,
     minHeight: 36,
@@ -859,7 +859,9 @@ export default StyleSheet.create({
   backgroundGray: {
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
-
+  backgroundWhiteDF2: {
+    backgroundColor: '#fafafa',
+  },
   /**List Item */
   btnItem: {
     borderBottomWidth: 1,
