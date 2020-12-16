@@ -1,5 +1,6 @@
 import { Axios, parseQuery } from '@Services/http';
 import { mainAxios, mainAxiosToken } from '../libs/axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const signIn = async data => {
   return await mainAxios.post('/api/v1/account/login', {
@@ -8,8 +9,28 @@ export const signIn = async data => {
   });
 };
 
+export const signUp = async reqBody => {
+  console.log('reqBody :>> ', reqBody);
+  return await mainAxios.post('/api/v1/account/signup', {
+    email: reqBody.email,
+    password: reqBody.password,
+    fullName: reqBody.fullName,
+    mobile: reqBody.mobile,
+    serviceTerms: reqBody.serviceTerms,
+    terms: reqBody.terms,
+    marketing: reqBody.marketing,
+  });
+};
+
 export const getMe = async () => {
-  return await mainAxiosToken.get('/api/v1/me');
+  const token = await AsyncStorage.getItem('token');
+  console.log('token :>> ', token);
+  return await mainAxios.get('/api/v1/me', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // Accept: 'application/json',
+    },
+  });
 };
 
 // export const signIn = ({ email = '', password = '' }) => {
@@ -37,18 +58,18 @@ export const getMe = async () => {
  * }
  * @returns
  */
-export const signUp = reqBody => {
-  return Axios.request({
-    methodType: 'POST',
-    url: `/api/v1/account/signup`,
-    payload: reqBody,
-    config: {
-      headers: {
-        contentType: 'application/json',
-      },
-    },
-  });
-};
+// export const signUp = reqBody => {
+//   return Axios.request({
+//     methodType: 'POST',
+//     url: `/api/v1/account/signup`,
+//     payload: reqBody,
+//     config: {
+//       headers: {
+//         contentType: 'application/json',
+//       },
+//     },
+//   });
+// };
 
 /**
  * 이메일 체크

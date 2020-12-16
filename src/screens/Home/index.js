@@ -361,23 +361,11 @@ class Home extends Component {
   _onDone = () => {
     this.setState({ showRealApp: true });
   };
-  getItem = () => {
-    Account.getMe()
-      .then(res => {
-        console.log('::::: API Sign in :::::', res);
-        const status = res.status;
-        if (status === 200) {
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
-  };
+
   render() {
-    const { showPopup, route } = this.props;
-    console.log('route :>> ', route);
+    const { showPopup, route,isLogin } = this.props;
+    console.log('isLoginHome :>> ', isLogin);
     const { token } = this.state;
-    console.log('token :>> ', token);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -404,7 +392,7 @@ class Home extends Component {
               // onPress={() => showPopup()}
               onPress={() => this.navigation.navigate('Register')}
               // onPress={() => this.getItem()}
-              >
+            >
               <Text style={styles.textBtnAction}>회원가입</Text>
             </TouchableOpacity>
           </View>
@@ -785,20 +773,20 @@ class Home extends Component {
     console.log('::componentDidMount::');
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
-    const value = await AsyncStorage.getItem('token');
-    if (value) {
-      this.setState({ token: value });
-      Account.getMe()
-        .then(res => {
-          console.log('::::: Get Me :::::', res);
-          const status = res.status;
-          if (status === 200) {
-          }
-        })
-        .catch(err => {
-          console.log('errHome', err);
-        });
-    }
+    // const value = await AsyncStorage.getItem('token');
+    // Account.getMe()
+    //   .then(res => {
+    //     console.log('::::: Get Me :::::', res);
+    //     const status = res.status;
+    //     if (status === 200) {
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log('errHome', err);
+    //   });
+    // if (value) {
+    //   this.setState({ token: value });
+    // }
 
     // async () => {
     //   try {
@@ -826,6 +814,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
+    isLogin: state.login,
   };
 }
 

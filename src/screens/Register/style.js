@@ -131,6 +131,10 @@ export const styles = StyleSheet.create({
     marginRight: 16,
     backgroundColor: color.grey._300,
   },
+  titleDone: {
+    marginBottom: 12,
+    marginTop: 50,
+  },
   contentDone: {
     display: 'flex',
     flexDirection: 'column',

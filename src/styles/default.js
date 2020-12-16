@@ -1035,4 +1035,10 @@ export default StyleSheet.create({
   _optionList: {
     marginBottom: -18,
   },
+  _textErrorInput: {
+    color: color.error.main,
+    fontSize: 12,
+    bottom: 20,
+    zIndex: 9,
+  },
 });

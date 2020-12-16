@@ -28,13 +28,14 @@ import transport from '@Assets/images/more-transport.png';
 import warehouse from '@Assets/images/more-warehouse.png';
 
 //---> Assets
-
+import AsyncStorage from '@react-native-community/async-storage';
+import { Account } from '@Services/apis';
 class More extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      isLogin: true,
+      isLogin: false,
     };
     this.navigation = props.navigation;
   }
@@ -50,7 +51,10 @@ class More extends Component {
   }
 
   render() {
-    let { isLogin } = this.state;
+    let { isLogin, email, fullName } = this.state;
+    const { route } = this.props;
+
+    console.log('routeMore :>> ', route);
 
     return (
       <SafeAreaView style={S.container}>
@@ -64,12 +68,12 @@ class More extends Component {
               onPress={() => this.navigation.navigate('SampleScreen')}>
               <View style={DefaultStyle.leftItem}>
                 <Text style={[DefaultStyle.titleItem, S.textInfo]}>
-                  {isLogin === false ? '로그인' : '하혜정'}
+                  {isLogin === false ? '로그인' : fullName}
                 </Text>
                 <Text style={DefaultStyle.contentItem}>
                   {isLogin === false
                     ? '로그인 후 더 많은 정보를 확인해보세요.'
-                    : 'haharu@aartkorea.com'}
+                    : email}
                 </Text>
               </View>
               <View style={DefaultStyle.rightItem}>
@@ -336,7 +340,25 @@ class More extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    const value = await AsyncStorage.getItem('token');
+    Account.getMe()
+      .then(res => {
+        console.log('::::: Get Me :::::', res);
+        const status = res.status;
+        if (status === 200) {
+          this.setState({
+            isLogin: true,
+            email: res.data.email,
+            fullName: res.data.fullName,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('errHome', err);
+      });
+    if (value) {
+      this.setState({ token: value });
+    }
     SplashScreen.hide();
   }
 

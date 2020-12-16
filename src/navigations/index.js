@@ -209,6 +209,7 @@ const App = () => {
                   name="Home"
                   component={TabScreen}
                   options={{ headerShown: false }}
+                  initialParams={{item: 'aaaaa'}}
                 />
                 <RootStack.Screen
                   name="Webview"

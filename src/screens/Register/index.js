@@ -22,7 +22,8 @@ import { styles as S } from './style';
 import DoneRegister from './done';
 import TextField from '@Components/organisms/TextField';
 //---> Assets
-
+import { Account } from '@Services/apis';
+import AsyncStorage from '@react-native-community/async-storage';
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -32,15 +33,24 @@ class Register extends Component {
       email: '',
       password: '',
       confirmPassword: '',
+      mobile: '',
       isRemember: false,
-      terms: false,
-      terms1: false,
-      terms2: false,
-      terms3: false,
-      terms31: false,
-      terms32: false,
-      terms33: false,
+      termsAll: false,
+      checkTerms: false,
+      checkMarketing: false,
       isDone: false,
+      serviceTerms: false,
+      terms: {
+        privacy: false,
+        location: false,
+        financial: false,
+        // requiredValid: false,
+      },
+      marketing: {
+        sms: false,
+        email: false,
+        kakao: false,
+      },
     };
     this.navigation = props.navigation;
   }
@@ -54,6 +64,57 @@ class Register extends Component {
   componentWillUnmount() {
     console.log('::componentWillUnmount::');
   }
+  handleOnClickSubmit = () => {
+    let signUpTemp = {};
+    signUpTemp.email = this.state.email;
+    signUpTemp.password = this.state.password;
+    signUpTemp.fullName = this.state.fullName;
+    signUpTemp.mobile = this.state.mobile;
+    signUpTemp.serviceTerms = this.state.serviceTerms;
+    signUpTemp.terms = this.state.terms;
+    signUpTemp.marketing = this.state.marketing;
+
+    Account.signUp(signUpTemp)
+      .then(res => {
+        console.log('::::: API Sign Up Ok :::::', res);
+        this.setState({ isDone: true });
+        // go to the home after 5sec
+        const access_token = res.data.access_token;
+        AsyncStorage.setItem('token', access_token);
+        this.props.loginAccount(true);
+        setTimeout(() => {
+          // router.push('/');
+        }, 5000);
+      })
+      .catch(err => {
+        console.log('::::: API Sign Up Error :::::', err);
+
+        if (err.response) {
+          if (err.response.status >= 400 && err.response.status < 500) {
+            // TODO Handle the alert message.
+            const errData = err.response.data;
+            console.log('::: Error Code :', errData.code);
+            console.log('::: Error Message :', errData.message);
+            // TODO Create dialog components
+            alert(errData.message);
+          } else {
+            // TODO Handle the alert "Please contact your administrator.".
+            const errData = err.response.data;
+            console.log('::: Error Code :', errData.code);
+          }
+        }
+      });
+  };
+
+  onChangeEmail(e) {
+    this.setState({ email: e });
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(this.state.email) === true) {
+      this.setState({ errorEmail: false });
+    } else {
+      this.setState({ errorEmail: true });
+    }
+  }
 
   render() {
     let {
@@ -61,37 +122,16 @@ class Register extends Component {
       email,
       password,
       confirmPassword,
+      mobile,
       // isRemember,
+      termsAll,
+      serviceTerms,
       terms,
-      terms1,
-      terms2,
-      terms3,
-      terms31,
-      terms32,
-      terms33,
+      marketing,
+      checkMarketing,
       isDone,
+      errorEmail,
     } = this.state;
-
-    if (terms3) {
-      terms31 = true;
-      terms32 = true;
-      terms33 = true;
-    } else {
-      terms3 = false;
-      if (terms31 && terms32 && terms33) {
-        terms3 = true;
-      } else {
-        terms3 = false;
-      }
-    }
-
-    if (terms1 && terms2 && terms3) {
-      terms = true;
-    } else {
-      terms = terms;
-    }
-
-    console.log('this.state :>> ', this.state);
     return (
       <>
         {isDone ? (
@@ -132,14 +172,21 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="이메일"
-                    onChangeText={text => this.setState({ email: text })}
+                    onChangeText={text => {
+                      // this.setState({ email: text });
+                      this.onChangeEmail(text);
+                    }}
                     value={email}
                     type="text"
                     mode="outlined"
                     maxLength={30}
                   />
+                  {errorEmail === true ? (
+                    <Text style={DefaultStyle._textErrorInput}>
+                      잘못된 형식
+                    </Text>
+                  ) : null}
                   <TextField
-                    multiline={true}
                     labelTextField={'비밀번호'}
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
@@ -149,10 +196,10 @@ class Register extends Component {
                     type="text"
                     mode="outlined"
                     maxLength={20}
+                    textContentType="password"
                     secureTextEntry={true}
                   />
                   <TextField
-                    multiline={true}
                     labelTextField={'비밀번호 확인'}
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
@@ -164,8 +211,27 @@ class Register extends Component {
                     type="text"
                     mode="outlined"
                     maxLength={20}
+                    textContentType="password"
                     secureTextEntry={true}
                   />
+                  <TextField
+                    labelTextField={'휴대폰번호'}
+                    colorLabel="#000000"
+                    styleProps={{ borderColor: '#d7d7d7' }}
+                    placeholder="휴대폰번호"
+                    onChangeText={text => {
+                      this.setState({
+                        mobile: text.replace(/[^0-9]/g, ''),
+                      });
+                      // this.validations(text);
+                    }}
+                    keyboardType="numeric"
+                    value={mobile}
+                    type="telephoneNumber"
+                    mode="outlined"
+                    maxLength={20}
+                  />
+                  {this.state.error === true ? 'abc' : null}
                 </View>
               </View>
               {/**Terms */}
@@ -176,10 +242,24 @@ class Register extends Component {
                   {/** ----------Terms ------------*/}
                   <View style={S.itemTerm}>
                     <Checkbox
-                      status={terms ? 'checked' : 'unchecked'}
+                      status={termsAll ? 'checked' : 'unchecked'}
                       onPress={() => {
                         this.setState({
-                          terms: !terms,
+                          termsAll: !termsAll,
+                          checkMarketing: !termsAll,
+                          serviceTerms: !termsAll,
+                          terms: {
+                            ...terms,
+                            privacy: !termsAll,
+                            location: !termsAll,
+                            financial: !termsAll,
+                          },
+                          marketing: {
+                            ...marketing,
+                            kakao: !termsAll,
+                            sms: !termsAll,
+                            email: !termsAll,
+                          },
                         });
                       }}
                     />
@@ -188,9 +268,11 @@ class Register extends Component {
                   {/** ----------Terms 1 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
-                      status={terms1 ? 'checked' : 'unchecked'}
+                      status={serviceTerms ? 'checked' : 'unchecked'}
                       onPress={() => {
-                        this.setState({ terms1: !terms1 });
+                        this.setState({
+                          serviceTerms: !serviceTerms,
+                        });
                       }}
                     />
                     <Text
@@ -204,9 +286,14 @@ class Register extends Component {
                   {/** ----------Terms 2 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
-                      status={terms2 ? 'checked' : 'unchecked'}
+                      status={terms.privacy ? 'checked' : 'unchecked'}
                       onPress={() => {
-                        this.setState({ terms2: !terms2 });
+                        this.setState({
+                          terms: {
+                            ...terms,
+                            privacy: !terms.privacy,
+                          },
+                        });
                       }}
                     />
                     <Text
@@ -220,13 +307,58 @@ class Register extends Component {
                   {/** ----------Terms 3 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
-                      status={terms3 ? 'checked' : 'unchecked'}
+                      status={terms.location ? 'checked' : 'unchecked'}
                       onPress={() => {
                         this.setState({
-                          terms3: !terms3,
-                          terms31: !terms31,
-                          terms32: !terms32,
-                          terms33: !terms33,
+                          terms: {
+                            ...terms,
+                            location: !terms.location,
+                          },
+                        });
+                      }}
+                    />
+                    <Text
+                      style={[S.fontS14]}
+                      onPress={() =>
+                        this.navigation.navigate('Terms', { id: 2 })
+                      }>
+                      위치기반서비스 이용약관 (필수)
+                    </Text>
+                  </View>
+                  {/** ----------Terms 4 ------------*/}
+                  <View style={[S.itemTerm, S.itemTermMr]}>
+                    <Checkbox
+                      status={terms.financial ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        this.setState({
+                          terms: {
+                            ...terms,
+                            financial: !terms.financial,
+                          },
+                        });
+                      }}
+                    />
+                    <Text
+                      style={[S.fontS14]}
+                      onPress={() =>
+                        this.navigation.navigate('Terms', { id: 2 })
+                      }>
+                      전자금융거래이용약관 사용 여부 (필수)
+                    </Text>
+                  </View>
+                  {/** ----------Terms 5 ------------*/}
+                  <View style={[S.itemTerm, S.itemTermMr]}>
+                    <Checkbox
+                      status={checkMarketing ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        this.setState({
+                          checkMarketing: !checkMarketing,
+                          marketing: {
+                            ...marketing,
+                            kakao: !checkMarketing,
+                            sms: !checkMarketing,
+                            email: !checkMarketing,
+                          },
                         });
                       }}
                     />
@@ -235,28 +367,36 @@ class Register extends Component {
                       onPress={() =>
                         this.navigation.navigate('Terms', { id: 3 })
                       }>
-                      위치기반서비스 이용약관 (필수)
+                      마케팅 활용 수신동의 (선택)
                     </Text>
                   </View>
                   {/** ---------------Terms 3 child------------*/}
                   <View style={[S.itemTermCL, S.itemTermMr]}>
                     <View style={[S.itemTerm, S.itemTermMr]}>
                       <Checkbox
-                        status={terms31 ? 'checked' : 'unchecked'}
+                        status={marketing.kakao ? 'checked' : 'unchecked'}
                         onPress={() => {
                           this.setState({
-                            terms31: !terms31,
+                            marketing: {
+                              ...marketing,
+                              kakao: !marketing.kakao,
+                            },
                           });
                         }}
                       />
-                      <Text style={[S.fontS14]}>알림</Text>
+                      <Text style={[S.fontS14]}>카카오 알림</Text>
                     </View>
 
                     <View style={[S.itemTerm, S.itemTermMr]}>
                       <Checkbox
-                        status={terms32 ? 'checked' : 'unchecked'}
+                        status={marketing.sms ? 'checked' : 'unchecked'}
                         onPress={() => {
-                          this.setState({ terms32: !terms32 });
+                          this.setState({
+                            marketing: {
+                              ...marketing,
+                              sms: !marketing.sms,
+                            },
+                          });
                         }}
                       />
                       <Text style={[S.fontS14]}>SMS</Text>
@@ -264,9 +404,14 @@ class Register extends Component {
 
                     <View style={[S.itemTerm, S.itemTermMr]}>
                       <Checkbox
-                        status={terms33 ? 'checked' : 'unchecked'}
+                        status={marketing.email ? 'checked' : 'unchecked'}
                         onPress={() => {
-                          this.setState({ terms33: !terms33 });
+                          this.setState({
+                            marketing: {
+                              ...marketing,
+                              email: !marketing.email,
+                            },
+                          });
                         }}
                       />
                       <Text style={[S.fontS14]}>Email</Text>
@@ -283,7 +428,7 @@ class Register extends Component {
                   ]}
                   color="red"
                   onPress={() => {
-                    this.setState({ isDone: true });
+                    this.handleOnClickSubmit();
                   }}>
                   확인
                 </Button>
