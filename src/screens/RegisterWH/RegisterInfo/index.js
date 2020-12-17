@@ -50,14 +50,14 @@ class RegisterInfo extends Component {
       numberSlide: 0,
       formData: [
         {
-          key: 0,
-          storageType: '',
-          settlementUnit: '',
-          calculationStandard: '',
+          // key: 0,
+          typeCode: '0001',
+          calUnitDvCode: 'CU01',
+          calStdDvCode: '',
           exclusiveArea: '',
           exclusiveArea2: '',
-          commonArea: '',
-          commonArea2: '',
+          cmnArea: '',
+          cmnArea2: '',
           rentalArea: '',
           rentalArea2: '',
           storagePeriod: '',
@@ -86,10 +86,10 @@ class RegisterInfo extends Component {
     let lengths = this.state.formData.length;
     let list = this.state.formData;
     list.push({
-      key: lengths,
-      storageType: '',
-      settlementUnit: '',
-      calculationStandard: '',
+      // key: lengths,
+      typeCode: '0001',
+      calUnitDvCode: 'CU01',
+      calStdDvCode: '',
       exclusiveArea: '',
       exclusiveArea2: '',
       commonArea: '',
@@ -116,9 +116,10 @@ class RegisterInfo extends Component {
         key={item.key}
         formData={this.state.formData[this.state.numberSlide]}
         valueForm={e => {
-          let index = this.state.formData.findIndex(
-            el => el.key === this.state.numberSlide,
-          );
+          // let index = this.state.formData.findIndex(
+          //   el => el.key === this.state.numberSlide,
+          // );
+          let index = this.state.numberSlide;
           this.setState({
             ...(this.state.formData[index] = e),
           });
@@ -130,7 +131,8 @@ class RegisterInfo extends Component {
     const { imageStore, route } = this.props;
     const { value, listForm, numberSlide, formData } = this.state;
     // console.log('this.state.value', this.state.value);
-    console.log('formData', this.state.formData);
+    // console.log('formData', this.state.formData);
+    // console.log('numberSlide', numberSlide);
 
     return (
       <SafeAreaView style={DefaultStyle._container}>

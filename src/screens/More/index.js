@@ -51,8 +51,8 @@ class More extends Component {
   }
 
   render() {
-    let { isLogin, email, fullName } = this.state;
-    const { route } = this.props;
+    let {  email, fullName } = this.state;
+    const { route, isLogin } = this.props;
 
     console.log('routeMore :>> ', route);
 
@@ -373,6 +373,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
+    isLogin: state.home.isLogin,
   };
 }
 

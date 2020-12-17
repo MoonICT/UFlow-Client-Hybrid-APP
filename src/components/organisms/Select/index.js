@@ -14,9 +14,8 @@ import DefaultStyle from '@Styles/default';
 export default class Selected extends Component {
   constructor(props) {
     super(props);
-    this.countNotification = 0;
     this.state = {
-      checked: props.data[0].value,
+      selectedValue: props.data[0].value,
     };
   }
 
@@ -36,7 +35,7 @@ export default class Selected extends Component {
         );
       });
     return (
-      <View style={DefaultStyle._selected} valueState={this.state.checked}>
+      <View style={DefaultStyle._selected}>
         {labelSelected ? (
           <Text
             style={[

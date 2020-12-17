@@ -46,9 +46,9 @@ class FormInfo extends Component {
       value: 1,
       dataForm: [
         {
-          id: 0,
-          storageType: '',
-          settlementUnit: '',
+          // id: 0,
+          typeCode: '',
+          calUnitDvCode: '',
           calculationStandard: '',
           exclusiveArea: '',
           exclusiveArea2: '',
@@ -82,40 +82,108 @@ class FormInfo extends Component {
 
   render() {
     const { data, valueTab, number, valueForm, formData } = this.props;
-    const { dataForm } = this.state;
+    const { dataForm, commonAreaState, commonAreaState2 } = this.state;
     const dataSelect = [
       {
+        label: '냉동',
+        value: '0001',
+      },
+      {
+        label: '냉장',
+        value: '0002',
+      },
+      {
         label: '상온',
-        value: '상온',
+        value: '0003',
       },
       {
-        label: '상온2',
-        value: '상온2',
+        label: '위험물',
+        value: '0004',
       },
       {
-        label: '상온3',
-        value: '상온3',
+        label: '기타',
+        value: '9100',
       },
     ];
 
     const settlement = [
       {
-        label: '제곱미터(m²)',
-        value: '제곱미터(m²)',
+        label: '제곱미터(㎡)',
+        value: 'CU01',
       },
       {
-        label: '제곱미터(m²)2',
-        value: '제곱미터(m²)2',
+        label: '평',
+        value: 'CU02',
+      },
+      {
+        label: '파렛트',
+        value: 'CU03',
+      },
+      {
+        label: '중량',
+        value: 'CU04',
+      },
+      {
+        label: 'BOX',
+        value: 'CU05',
+      },
+      {
+        label: 'PCS',
+        value: 'CU06',
+      },
+      {
+        label: 'CBM',
+        value: 'CU07',
+      },
+      {
+        label: '명수',
+        value: 'CU08',
+      },
+      {
+        label: '건수',
+        value: 'CU09',
+      },
+      {
+        label: '횟수',
+        value: 'CU010',
+      },
+      {
+        label: '일수',
+        value: 'CU011',
+      },
+      {
+        label: '월수',
+        value: 'CU011',
       },
     ];
     const calculation = [
       {
-        label: '일(Day)',
-        value: '일(Day)',
+        label: '회',
+        value: 'CS01',
       },
       {
-        label: '일(Day)2',
-        value: '일(Day)2',
+        label: '건',
+        value: 'CS02',
+      },
+      {
+        label: '일',
+        value: 'CS03',
+      },
+      {
+        label: '월',
+        value: 'CS04',
+      },
+      {
+        label: '분기',
+        value: 'CS05',
+      },
+      {
+        label: '반기',
+        value: 'CS06',
+      },
+      {
+        label: '연',
+        value: 'CS07',
       },
     ];
     const time = [
@@ -149,6 +217,9 @@ class FormInfo extends Component {
         value: '일반관리비 2',
       },
     ];
+    // let commonA = parseInt(commonAreaState) * 2;
+    console.log('commonAreaState2 :>> ', commonAreaState2);
+
     return (
       <Fragment>
         {valueTab === 1 ? (
@@ -159,10 +230,10 @@ class FormInfo extends Component {
                 valueProps={e => {
                   // let index = dataForm.findIndex(el => el.id === number);
                   // this.setState({
-                  //   ...(dataForm[index].storageType = e),
+                  //   ...(dataForm[index].typeCode = e),
                   // });
                   let dataF = formData;
-                  dataF.storageType = e;
+                  dataF.typeCode = e;
                   valueForm && valueForm(dataF);
                 }}
                 labelSelected="보관유형"
@@ -170,12 +241,22 @@ class FormInfo extends Component {
               <Select
                 data={settlement}
                 labelSelected="정산단위"
-                valueProps={e => this.setState({ settlementUnit: e })}
+                valueProps={e => {
+                  // this.setState({ calUnitDvCode: e })
+                  let dataF = formData;
+                  dataF.calUnitDvCode = e;
+                  valueForm && valueForm(dataF);
+                }}
               />
               <Select
                 data={calculation}
                 labelSelected="산정기준"
-                valueProps={e => this.setState({ calculationStandard: e })}
+                valueProps={e => {
+                  // this.setState({ calculationStandard: e });
+                  let dataF = formData;
+                  dataF.calStdDvCode = e;
+                  valueForm && valueForm(dataF);
+                }}
               />
               <View style={DefaultStyle._listElement}>
                 <View style={[DefaultStyle._element, { marginRight: 12 }]}>
@@ -190,6 +271,7 @@ class FormInfo extends Component {
                     labelTextField="전용면적"
                     defaultValue="1200"
                     textRight="m2"
+                    keyboardType="numeric"
                     valueProps={e => this.setState({ exclusiveArea2: e })}
                   />
                 </View>
@@ -199,15 +281,36 @@ class FormInfo extends Component {
                   <TextField
                     labelTextField="공용면적"
                     textRight="평"
-                    valueProps={e => this.setState({ commonArea: e })}
+                    valueProps={e => {
+                      console.log('commonAreaState :>> ', e);
+                      const value = parseInt(e.replace(/[^0-9]/g, ''));
+                      const valueCover = (value * 2).toString();
+                      this.setState({ commonAreaState2: valueCover });
+                      let dataF = formData;
+                      dataF.commonArea = e.replace(/[^0-9]/g, '');
+                      valueForm && valueForm(dataF);
+                    }}
+                    value={commonAreaState2 === '' ? '0' : formData.commonArea}
+                    keyboardType="numeric"
                   />
                 </View>
                 <View style={DefaultStyle._element}>
                   <TextField
                     labelTextField="공용면적"
-                    defaultValue="1200"
+                    defaultValue={''}
                     textRight="m2"
-                    valueProps={e => this.setState({ commonArea2: e })}
+                    valueProps={e => {
+                      const value = parseInt(e.replace(/[^0-9]/g, ''));
+                      const valueCover = (value / 2).toString();
+                      this.setState({
+                        commonAreaState2: e.replace(/[^0-9]/g, ''),
+                      });
+                      // formData.commonArea
+                      let dataF = formData;
+                      dataF.commonArea = valueCover;
+                      valueForm && valueForm(dataF);
+                    }}
+                    value={formData.commonArea === '' ? '0' : commonAreaState2}
                   />
                 </View>
               </View>
