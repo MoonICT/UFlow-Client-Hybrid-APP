@@ -52,8 +52,8 @@ class RegisterWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
   render() {
-    const { imageStore, workComplete, route } = this.props;
-    console.log('this.state', this.state);
+    const { imageStore, workComplete, route, dataWH } = this.props;
+    console.log('dataWH', dataWH);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -95,22 +95,18 @@ class RegisterWH extends Component {
           <TouchableOpacity
             style={S.btnTypeRegister}
             onPress={() =>
-              this.navigation.navigate('RegisterInfo', {
+              this.navigation.navigate('RegisterIntro', {
                 type: route && route.params && route.params.type,
               })
             }>
-            <Text style={S.textLeftBtn}>
-              {route && route.params && route.params.type === 'ModifyWH'
-                ? '창고 정보 수정'
-                : '사진 추가'}
-            </Text>
+            <Text style={S.textLeftBtn}>창고 소개</Text>
             <View style={S.rightBtn}>
-              {route && route.params && route.params.type === 'ModifyWH' ? (
+              {(route && route.params && route.params.type === 'ModifyWH') ||
+              (dataWH && dataWH.name) ? (
                 <Text style={S.completeText}>작업완료</Text>
               ) : (
                 <Text style={S.textRightBtn}>입력하세요</Text>
               )}
-
               <Icon
                 name="arrow-forward-ios"
                 size={12}
@@ -118,17 +114,26 @@ class RegisterWH extends Component {
               />
             </View>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={S.btnTypeRegister}
             onPress={() =>
-              this.navigation.navigate('RegisterIntro', {
+              this.navigation.navigate('RegisterInfo', {
                 type: route && route.params && route.params.type,
               })
             }>
-            <Text style={S.textLeftBtn}>창고 소개</Text>
+            <Text style={S.textLeftBtn}>
+              {route && route.params && route.params.type === 'ModifyWH'
+                ? '창고 정보 수정'
+                : '창고 정보'}
+            </Text>
             <View style={S.rightBtn}>
-              <Text style={S.textRightBtn}>입력하세요</Text>
+              {(route && route.params && route.params.type === 'ModifyWH') ||
+              (dataWH && dataWH.keeps) ? (
+                <Text style={S.completeText}>작업완료</Text>
+              ) : (
+                <Text style={S.textRightBtn}>입력하세요</Text>
+              )}
+
               <Icon
                 name="arrow-forward-ios"
                 size={12}
@@ -146,7 +151,12 @@ class RegisterWH extends Component {
             }>
             <Text style={S.textLeftBtn}>부가 정보</Text>
             <View style={S.rightBtn}>
-              <Text style={S.textRightBtn}>입력하세요</Text>
+              {(route && route.params && route.params.type === 'ModifyWH') ||
+              (dataWH && dataWH.siteArea) ? (
+                <Text style={S.completeText}>작업완료</Text>
+              ) : (
+                <Text style={S.textRightBtn}>입력하세요</Text>
+              )}
               <Icon
                 name="arrow-forward-ios"
                 size={12}
@@ -164,7 +174,12 @@ class RegisterWH extends Component {
             }>
             <Text style={S.textLeftBtn}>층별 상세 정보</Text>
             <View style={S.rightBtn}>
-              <Text style={S.textRightBtn}>입력하세요</Text>
+              {(route && route.params && route.params.type === 'ModifyWH') ||
+              (dataWH && dataWH.floors) ? (
+                <Text style={S.completeText}>작업완료</Text>
+              ) : (
+                <Text style={S.textRightBtn}>입력하세요</Text>
+              )}
               <Icon
                 name="arrow-forward-ios"
                 size={12}
@@ -253,8 +268,9 @@ class RegisterWH extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
+    dataWH: state.registerWH,
   };
 }
 

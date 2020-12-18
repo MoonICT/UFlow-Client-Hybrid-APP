@@ -81,13 +81,13 @@ class RegisterImage extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        let imageData = [{ uri: response.uri }];
-        imageData.push();
+        let pimages = [{ uri: response.uri }];
+        pimages.push();
         this.props.registerAction({ uri: response.uri });
         this.setState({
           avatar: { uri: response.uri },
           title: 'Updating...',
-          imgData: imageData,
+          imgData: pimages,
         });
         fetch('http://localhost:3000/api/upload', {
           method: 'POST',
@@ -232,7 +232,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
   };
 }
 

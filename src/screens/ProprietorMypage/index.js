@@ -558,7 +558,7 @@ class ProprietorMypage extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
   };
 }

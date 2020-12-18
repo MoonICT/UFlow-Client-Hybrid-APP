@@ -43,12 +43,38 @@ class RegisterMoreInfo extends Component {
     super(props);
     this.webView = null;
     this.state = {
-      checked: false,
-      checkMedicine: false,
-      checkDanger: false,
-      checkBuilding: false,
-      checkInventory: false,
-      checkCompensation: false,
+      addOptDvCode:
+        props.dataMoreInfo && props.dataMoreInfo.addOptDvCode
+          ? props.dataMoreInfo.addOptDvCode
+          : ['', '', ''],
+      insrDvCode:
+        props.dataMoreInfo && props.dataMoreInfo.insrDvCode
+          ? props.dataMoreInfo.insrDvCode
+          : ['', '', ''],
+      usblYmdFrom:
+        props.dataMoreInfo && props.dataMoreInfo.usblYmdFrom
+          ? props.dataMoreInfo.usblYmdFrom
+          : '',
+      siteArea:
+        props.dataMoreInfo && props.dataMoreInfo.siteArea
+          ? props.dataMoreInfo.siteArea
+          : '',
+      bldgArea:
+        props.dataMoreInfo && props.dataMoreInfo.bldgArea
+          ? props.dataMoreInfo.bldgArea
+          : '',
+      totalArea:
+        props.dataMoreInfo && props.dataMoreInfo.totalArea
+          ? props.dataMoreInfo.totalArea
+          : '',
+      prvtArea:
+        props.dataMoreInfo && props.dataMoreInfo.prvtArea
+          ? props.dataMoreInfo.prvtArea
+          : '',
+      cmnArea:
+        props.dataMoreInfo && props.dataMoreInfo.cmnArea
+          ? props.dataMoreInfo.cmnArea
+          : '',
     };
 
     this.navigation = props.navigation;
@@ -65,26 +91,18 @@ class RegisterMoreInfo extends Component {
   }
 
   render() {
-    const { imageStore, route } = this.props;
+    const { imageStore, route, dataMoreInfo } = this.props;
     const {
-      checked,
-      checkMedicine,
-      checkDanger,
-      checkBuilding,
-      checkInventory,
-      checkCompensation,
+      addOptDvCode,
+      insrDvCode,
+      usblYmdFrom,
+      siteArea,
+      bldgArea,
+      totalArea,
+      prvtArea,
+      cmnArea,
     } = this.state;
-    // console.log('this.state.value', this.state.value);
-    const dataSelect = [
-      {
-        label: 'YYYY.MM.DD',
-        value: 'YYYY.MM.DD',
-      },
-      {
-        label: 'YYYY.MM.DD2',
-        value: 'YYYY.MM.DD2',
-      },
-    ];
+    console.log('dataMoreInfo', dataMoreInfo);
 
     return (
       <SafeAreaView style={S.container}>
@@ -111,40 +129,73 @@ class RegisterMoreInfo extends Component {
               <Text style={DefaultStyle._textTitleBody}>부가 정보</Text>
             </View>
             <View style>
+              {/**
               <Select
                 data={dataSelect}
                 labelSelected="준공일"
                 colorLabel="#000000"
               />
+             */}
+              <TextField
+                labelTextField="준공일"
+                colorLabel="#000000"
+                placeholder="YYYY.MM.DD"
+                value={usblYmdFrom}
+                valueProps={e => {
+                  // this.setState({ usblYmdFrom: e });
+                  let d = new Date(e).getTime();
+                  this.setState({ usblYmdFrom: d });
+                }}
+              />
               <TextField
                 labelTextField="대지면적"
                 textRight="평"
-                defaultValue="0"
+                placeholder="0"
                 colorLabel="#000000"
+                value={siteArea}
+                valueProps={e => {
+                  this.setState({ siteArea: e });
+                }}
               />
               <TextField
                 labelTextField="건축면적"
                 textRight="평"
-                defaultValue="0"
+                placeholder="0"
                 colorLabel="#000000"
+                value={bldgArea}
+                valueProps={e => {
+                  this.setState({ bldgArea: e });
+                }}
               />
               <TextField
                 labelTextField="연면적"
                 textRight="평"
-                defaultValue="0"
+                placeholder="0"
                 colorLabel="#000000"
+                value={totalArea}
+                valueProps={e => {
+                  this.setState({ totalArea: e });
+                }}
               />
               <TextField
                 labelTextField="전용면적"
                 textRight="평"
-                defaultValue="0"
+                placeholder="0"
                 colorLabel="#000000"
+                value={prvtArea}
+                valueProps={e => {
+                  this.setState({ prvtArea: e });
+                }}
               />
               <TextField
                 labelTextField="공용면적"
                 textRight="평"
-                defaultValue="0"
+                placeholder="0"
                 colorLabel="#000000"
+                value={cmnArea}
+                valueProps={e => {
+                  this.setState({ cmnArea: e });
+                }}
               />
             </View>
           </View>
@@ -158,27 +209,35 @@ class RegisterMoreInfo extends Component {
             <View style={S.options}>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={checked ? 'checked' : 'unchecked'}
+                  status={addOptDvCode[0] === '0001' ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    this.setState({ checked: !checked });
+                    addOptDvCode[0] === '0001'
+                      ? this.setState({ ...(addOptDvCode[0] = '') })
+                      : this.setState({ ...(addOptDvCode[0] = '0001') });
                   }}
                 />
                 <Text style={S.labelCheck}>보세</Text>
               </View>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={checkMedicine ? 'checked' : 'unchecked'}
+                  status={addOptDvCode[1] === '0002' ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    this.setState({ checkMedicine: !checkMedicine });
+                    // this.setState({ checkMedicine: !checkMedicine });
+                    addOptDvCode[1] === '0002'
+                      ? this.setState({ ...(addOptDvCode[1] = '') })
+                      : this.setState({ ...(addOptDvCode[1] = '0002') });
                   }}
                 />
                 <Text style={S.labelCheck}>의약품</Text>
               </View>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={checkDanger ? 'checked' : 'unchecked'}
+                  status={addOptDvCode[2] === '0003' ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    this.setState({ checkDanger: !checkDanger });
+                    // this.setState({ checkDanger: !checkDanger });
+                    addOptDvCode[2] === '0003'
+                      ? this.setState({ ...(addOptDvCode[2] = '') })
+                      : this.setState({ ...(addOptDvCode[2] = '0003') });
                   }}
                 />
                 <Text style={S.labelCheck}>위험물</Text>
@@ -195,34 +254,55 @@ class RegisterMoreInfo extends Component {
             <View style={[S.options, S.optionsFooter]}>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={checkBuilding ? 'checked' : 'unchecked'}
+                  status={insrDvCode[0] === '0001' ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    this.setState({ checkBuilding: !checkBuilding });
+                    // this.setState({ checkBuilding: !checkBuilding });
+                    insrDvCode[0] === '0001'
+                      ? this.setState({ ...(insrDvCode[0] = '') })
+                      : this.setState({ ...(insrDvCode[0] = '0001') });
                   }}
                 />
                 <Text style={S.labelCheck}>건물보험</Text>
               </View>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={checkInventory ? 'checked' : 'unchecked'}
+                  status={insrDvCode[1] === '0002' ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    this.setState({ checkInventory: !checkInventory });
+                    // this.setState({ checkInventory: !checkInventory });
+                    insrDvCode[1] === '0002'
+                      ? this.setState({ ...(insrDvCode[1] = '') })
+                      : this.setState({ ...(insrDvCode[1] = '0002') });
                   }}
                 />
                 <Text style={S.labelCheck}>재고보험</Text>
               </View>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={checkCompensation ? 'checked' : 'unchecked'}
+                  status={insrDvCode[2] === '0003' ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    this.setState({ checkCompensation: !checkCompensation });
+                    // this.setState({ checkCompensation: !checkCompensation });
+                    insrDvCode[2] === '0003'
+                      ? this.setState({ ...(insrDvCode[2] = '') })
+                      : this.setState({ ...(insrDvCode[2] = '0003') });
                   }}
                 />
                 <Text style={S.labelCheck}>영업배상보험</Text>
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => this.navigation.navigate('RegisterWH')}
+              onPress={() => {
+                this.navigation.navigate('RegisterWH');
+                this.props.updateInfo({
+                  addOptDvCode,
+                  insrDvCode,
+                  usblYmdFrom,
+                  siteArea,
+                  bldgArea,
+                  totalArea,
+                  prvtArea,
+                  cmnArea,
+                });
+              }}
               style={[
                 DefaultStyle.btnSubmit,
                 imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
@@ -260,15 +340,16 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
+    dataMoreInfo: state.registerWH,
   };
 }
 
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    registerAction: action => {
-      dispatch(ActionCreator.uploadImage(action));
+    updateInfo: action => {
+      dispatch(ActionCreator.updateInfo(action));
     },
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));

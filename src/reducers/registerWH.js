@@ -3,7 +3,10 @@ import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const defaultState = {
-  imageData: [],
+  pimages: [],
+  // data: {
+  //   test: 1,
+  // },
 };
 
 export default (state = defaultState, action) => {
@@ -17,6 +20,8 @@ export default (state = defaultState, action) => {
       return removeImg(state, action.id);
     case types.CONTRACT_CONDITIONS:
       return ContractConditions(state, action.data);
+    case types.UPDATE_INFO_WH:
+      return updateInfo(state, action.data);
     default:
       return state;
   }
@@ -26,11 +31,11 @@ let dataImage = (state, listImage) => {
   console.log('state', state);
   console.log('listImage', listImage);
   try {
-    // let imageUpload = [...state.imageData];
+    // let imageUpload = [...state.pimages];
     // imageUpload.push(image);
     let result = {
       ...state,
-      imageData: listImage,
+      pimages: listImage,
     };
     return result;
   } catch (e) {
@@ -41,11 +46,11 @@ let dataImage = (state, listImage) => {
 
 let upImage = (state, image) => {
   try {
-    let imageUpload = [...state.imageData];
+    let imageUpload = [...state.pimages];
     imageUpload.push(image);
     let result = {
       ...state,
-      imageData: imageUpload,
+      pimages: imageUpload,
     };
     return result;
   } catch (e) {
@@ -56,14 +61,14 @@ let upImage = (state, image) => {
 
 let removeImg = (state, id) => {
   try {
-    let imageList = [...state.imageData];
+    let imageList = [...state.pimages];
     imageList.slice(id);
     let imageL = imageList.filter((item, index) => {
       return index !== id;
     });
     let result = {
       ...state,
-      imageData: imageL,
+      pimages: imageL,
     };
     return result;
   } catch (e) {
@@ -73,11 +78,28 @@ let removeImg = (state, id) => {
 };
 
 let ContractConditions = (state, data) => {
-  console.log('action', data);
+  // console.log('action', data);
   try {
     let result = {
       ...state,
       workComplete: data,
+    };
+    return result;
+  } catch (e) {
+    console.log('error_origin_reducer', e);
+    return state;
+  }
+};
+
+let updateInfo = (state, data) => {
+  console.log('state', state);
+  console.log('data', data);
+
+  try {
+    let result = {
+      ...state,
+      ...data,
+      // name: data.name,
     };
     return result;
   } catch (e) {

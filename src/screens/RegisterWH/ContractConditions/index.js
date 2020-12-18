@@ -71,9 +71,9 @@ class RegisterContractConditions extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={S.bodyCard}>
-            <View style={S.titleBody}>
-              <Text style={[S.textTitleBody, SS.titleRadio]}>정산조건</Text>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={DefaultStyle._textTitleBody}>정산조건</Text>
             </View>
             <View style={S.options}>
               <View style={S.optionCheck}>
@@ -86,9 +86,9 @@ class RegisterContractConditions extends Component {
               </View>
             </View>
           </View>
-          <View style={S.bodyCard}>
-            <View style={S.titleBody}>
-              <Text style={[[S.textTitleBody, SS.titleRadio]]}>정산조건</Text>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={DefaultStyle._textTitleBody}>정산조건</Text>
             </View>
             <View style={S.options}>
               <View style={S.optionCheck}>
@@ -123,9 +123,9 @@ class RegisterContractConditions extends Component {
               </View>
             </View>
           </View>
-          <View style={S.bodyCard}>
-            <View style={S.titleBody}>
-              <Text style={S.textTitleBody}>거래조건</Text>
+          <View style={DefaultStyle._cards}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={DefaultStyle._textTitleBody}>거래조건</Text>
             </View>
             <View style>
               <Select
@@ -149,9 +149,9 @@ class RegisterContractConditions extends Component {
             </View>
           </View>
 
-          <View style={[S.bodyCard, S.mrBottom0]}>
-            <View style={S.titleBody}>
-              <Text style={[S.textTitleBody, SS.titleRadio]}>청구조건</Text>
+          <View style={DefaultStyle._body}>
+            <View style={DefaultStyle._titleBody}>
+              <Text style={DefaultStyle._textTitleBody}>청구조건</Text>
             </View>
             <View style={S.options}>
               <View style={S.optionCheck}>
@@ -165,21 +165,24 @@ class RegisterContractConditions extends Component {
             </View>
           </View>
 
-          <View style={[DefaultStyle.footerRegister, S.footerIntro]}>
+          <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
             <TouchableOpacity
               onPress={() => {
                 this.navigation.navigate('RegisterWH');
-                this.props.dataAction(this.state);
+                // this.props.updateInfo({
+
+                // });
               }}
               style={[
-                S.btnSubmit,
-                this.state.checked ? S.activeBtnSubmit : null,
+                DefaultStyle.btnSubmit,
+                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
               ]}
-              disabled={this.state.checked ? false : true}>
+              // disabled={imageStore.length > 2 ? false : true}
+            >
               <Text
                 style={[
-                  S.textSubmit,
-                  this.state.checked ? S.textActiveSubmit : null,
+                  DefaultStyle.textSubmit,
+                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
                 ]}>
                 확인
               </Text>
@@ -207,7 +210,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
   };
 }
 

@@ -36,7 +36,7 @@ import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 
-class FormInfo extends Component {
+class FormTrusts extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -82,14 +82,7 @@ class FormInfo extends Component {
 
   render() {
     const { data, valueTab, number, valueForm, formData } = this.props;
-    const {
-      splyAmount,
-      mgmtChrg,
-      commonAreaState2,
-      remark,
-      usblYmdFrom,
-      usblYmdTo,
-    } = this.state;
+    const { dataForm, commonAreaState, commonAreaState2 } = this.state;
     const dataSelect = [
       {
         label: '냉동',
@@ -226,34 +219,24 @@ class FormInfo extends Component {
     ];
     // let commonA = parseInt(commonAreaState) * 2;
     // console.log('commonAreaState2 :>> ', commonAreaState2);
-    let timeForm = new Date();
-    timeForm.setTime(formData.usblYmdFrom);
-    let timeTo = new Date();
-    timeTo.setTime(formData.usblYmdTo);
-    let timeFormCover = timeForm.toLocaleDateString();
-    let timeToCover = timeTo.toLocaleDateString();
 
     return (
       <Card style={S.cards}>
         <View style>
           <Select
             data={dataSelect}
+            labelSelected="보관유형"
+            selectedValue={formData.typeCode}
             valueProps={e => {
-              // let index = dataForm.findIndex(el => el.id === number);
-              // this.setState({
-              //   ...(dataForm[index].typeCode = e),
-              // });
               let dataF = formData;
               dataF.typeCode = e;
               valueForm && valueForm(dataF);
             }}
-            selectedValue={formData.typeCode}
-            labelSelected="보관유형"
           />
           <Select
             data={settlement}
-            selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
+            selectedValue={formData.calUnitDvCode}
             valueProps={e => {
               // this.setState({ calUnitDvCode: e })
               let dataF = formData;
@@ -262,9 +245,9 @@ class FormInfo extends Component {
             }}
           />
           <Select
-            data={calculation}
-            selectedValue={formData.calStdDvCode}
+            data={time}
             labelSelected="산정기준"
+            selectedValue={formData.calStdDvCode}
             valueProps={e => {
               // this.setState({ calculationStandard: e });
               let dataF = formData;
@@ -272,84 +255,9 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          <View style={DefaultStyle._listElement}>
-            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-              <TextField
-                labelTextField="전용면적"
-                textRight="평"
-                // valueProps={e => this.setState({ exclusiveArea: e })}
-              />
-            </View>
-            <View style={DefaultStyle._element}>
-              <TextField
-                labelTextField="전용면적"
-                defaultValue="1200"
-                textRight="m2"
-                keyboardType="numeric"
-                // valueProps={e => this.setState({ exclusiveArea2: e })}
-              />
-            </View>
-          </View>
-          <View style={DefaultStyle._listElement}>
-            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-              <TextField
-                labelTextField="공용면적"
-                textRight="평"
-                valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value * 2).toString();
-                  this.setState({ commonAreaState2: valueCover });
-                  let dataF = formData;
-                  dataF.commonArea = e.replace(/[^0-9]/g, '');
-                  valueForm && valueForm(dataF);
-                }}
-                value={commonAreaState2 === '' ? '0' : formData.commonArea}
-                keyboardType="numeric"
-              />
-            </View>
-            <View style={DefaultStyle._element}>
-              <TextField
-                labelTextField="공용면적"
-                defaultValue={''}
-                textRight="m2"
-                valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value / 2).toString();
-                  this.setState({
-                    commonAreaState2: e.replace(/[^0-9]/g, ''),
-                  });
-                  // formData.commonArea
-                  let dataF = formData;
-                  dataF.commonArea = valueCover;
-                  valueForm && valueForm(dataF);
-                }}
-                value={formData.commonArea === '' ? '0' : commonAreaState2}
-              />
-            </View>
-          </View>
-          <View style={DefaultStyle._listElement}>
-            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-              <TextField
-                labelTextField="임대면적"
-                textRight="평"
-                // valueProps={e => this.setState({ rentalArea: e })}
-              />
-            </View>
-            <View style={DefaultStyle._element}>
-              <TextField
-                labelTextField="임대면적"
-                defaultValue="1200"
-                textRight="m2"
-                // valueProps={e => this.setState({ rentalArea2: e })}
-              />
-            </View>
-          </View>
-
           <TextField
-            labelTextField="보관 가능 기간"
+            labelTextField="수탁 가능 기간"
             placeholder="YYYY.MM.DD"
-            // defaultValue={formData.usblYmdFrom}
-            value={timeFormCover}
             valueProps={e => {
               // this.setState({ usblYmdFrom: e });
               let d = new Date(e).getTime();
@@ -360,9 +268,8 @@ class FormInfo extends Component {
             }}
           />
           <TextField
-            labelTextField="보관 가능 기간"
+            labelTextField="수탁 가능 기간"
             placeholder="YYYY.MM.DD"
-            value={timeToCover}
             valueProps={e => {
               let d = new Date(e).getTime();
               let dataF = formData;
@@ -371,10 +278,27 @@ class FormInfo extends Component {
               this.setState({ usblYmdTo: d });
             }}
           />
+          {/**    <View style={DefaultStyle._listElement}>
+            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+              <TextField
+                labelTextField="전용면적"
+                textRight="평"
+                valueProps={e => console.log('e', e)}
+              />
+            </View>
+            <IconButton
+              style={{ marginBottom: 15 }}
+              size={25}
+              icon="plus-circle-outline"
+              color={'rgba(0, 0, 0, 0.54)'}
+              onPress={() => console.log('add')}
+            />
+          </View>  */}
           <TextField
             labelTextField="보관단가"
+            textRight="개"
             value={formData.splyAmount}
-            textRight="원"
+            defaultValue="1000"
             valueProps={e => {
               this.setState({ splyAmount: e });
               let dataF = formData;
@@ -383,41 +307,80 @@ class FormInfo extends Component {
             }}
           />
           <TextField
-            labelTextField="관리단가"
-            value={formData.mgmtChrg}
+            labelTextField="입고단가"
             textRight="원"
+            defaultValue="1000"
+            value={formData.whinChrg}
             valueProps={e => {
-              this.setState({ mgmtChrg: e });
+              this.setState({ whinChrg: e });
               let dataF = formData;
-              dataF.mgmtChrg = e;
+              dataF.whinChrg = e;
               valueForm && valueForm(dataF);
             }}
           />
-          {/** 
-               <View style={DefaultStyle._listElement}>
-                <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-                  <Select
-                    data={costs}
-                    labelSelected="관리단가"
-                    valueProps={e => this.setState({ managementUnitCost: e })}
-                  />
-                </View>
-                <View style={DefaultStyle._element}>
-                  <TextField
-                    defaultValue="1000"
-                    textRight="원"
-                    valueProps={e => this.setState({ managementUnitCost2: e })}
-                  />
-                </View>
-              </View>
-              */}
+          <TextField
+            labelTextField="출고단가"
+            textRight="원"
+            defaultValue="1000"
+            value={formData.whinChrg}
+            valueProps={e => {
+              this.setState({ whoutChrg: e });
+              let dataF = formData;
+              dataF.whinChrg = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
+          <TextField
+            labelTextField="인건단가 (선택)"
+            textRight="원"
+            value={formData.psnChrg}
+            valueProps={e => {
+              this.setState({ psnChrg: e });
+              let dataF = formData;
+              dataF.psnChrg = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
+          <TextField
+            labelTextField="가공단가 (선택)"
+            value={formData.mnfctChrg}
+            textRight="원"
+            valueProps={e => {
+              this.setState({ mnfctChrg: e });
+              let dataF = formData;
+              dataF.mnfctChrg = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
+          <TextField
+            labelTextField="택배단가 (선택)"
+            textRight="원"
+            value={formData.dlvyChrg}
+            valueProps={e => {
+              this.setState({ dlvyChrg: e });
+              let dataF = formData;
+              dataF.dlvyChrg = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
+          <TextField
+            labelTextField="운송단가 (선택)"
+            textRight="원"
+            value={formData.shipChrg}
+            valueProps={e => {
+              this.setState({ shipChrg: e });
+              let dataF = formData;
+              dataF.shipChrg = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
+          <TextField labelTextField="기타" />
 
           <TextField
             labelTextField="비고"
             value={formData.remark}
             valueProps={e => {
               this.setState({ remark: e });
-              this.setState({ mgmtChrg: e });
               let dataF = formData;
               dataF.remark = e;
               valueForm && valueForm(dataF);
@@ -467,4 +430,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FormInfo);
+)(FormTrusts);

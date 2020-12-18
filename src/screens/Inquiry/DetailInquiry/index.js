@@ -135,7 +135,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
   };
 }
 
