@@ -30,6 +30,8 @@ import ActionCreator from '@Actions';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
 import ImagePicker from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
+import { Warehouse } from '@Services/apis';
 
 const createFormData = (photo, body) => {
   const data = new FormData();
@@ -37,6 +39,7 @@ const createFormData = (photo, body) => {
   data.append('photo', {
     name: photo.fileName,
     type: photo.type,
+    files: photo,
     uri:
       Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
   });
@@ -48,6 +51,11 @@ const createFormData = (photo, body) => {
   return data;
 };
 
+const passFile = value => {
+  let data = new FormData();
+  data.append('files', value);
+  return data;
+};
 class RegisterImage extends Component {
   constructor(props) {
     super(props);
@@ -89,7 +97,7 @@ class RegisterImage extends Component {
           title: 'Updating...',
           imgData: pimages,
         });
-        fetch('http://localhost:3000/api/upload', {
+        fetch('http://api.uflow.voltpage.net/api/v1/file/images', {
           method: 'POST',
           // eslint-disable-next-line no-undef
           headers: new Headers({
@@ -122,7 +130,7 @@ class RegisterImage extends Component {
 
   // }
   render() {
-    const { imageStore,route } = this.props;
+    const { imageStore, route } = this.props;
     console.log('imageStore', imageStore);
     const listImg =
       imageStore &&
@@ -192,19 +200,19 @@ class RegisterImage extends Component {
               </View>
             </View>
           )}
-          
+
           <View style={DefaultStyle.footerRegister}>
             <TouchableOpacity
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
-                S.btnSubmit,
-                imageStore.length > 2 ? S.activeBtnSubmit : null,
+                DefaultStyle.btnSubmit,
+                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
               ]}
               disabled={imageStore.length > 2 ? false : true}>
               <Text
                 style={[
-                  S.textSubmit,
-                  imageStore.length > 2 ? S.textActiveSubmit : null,
+                  DefaultStyle.textSubmit,
+                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
                 ]}>
                 확인
               </Text>
