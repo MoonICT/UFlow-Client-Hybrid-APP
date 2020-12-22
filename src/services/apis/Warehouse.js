@@ -1,4 +1,29 @@
-import { Axios, parseQuery } from '@Services/http'
+import { Axios, parseQuery } from '@Services/http';
+import { mainAxios, mainAxiosToken } from '../libs/axios';
+import AsyncStorage from '@react-native-community/async-storage';
+
+export const uploadImage = async formData => {
+  // const token = await AsyncStorage.getItem('token');
+  // console.log('token :>> ', token);
+  console.log('formData :>> ', formData);
+  return await mainAxios.post('/api/v1/file/images', {
+    formData,
+    headers: {
+      // Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+export const registerWH = async data => {
+  console.log('data :>> ', data);
+  const token = await AsyncStorage.getItem('token');
+  // return await mainAxios.get('/api/v1/warehouse', data, {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //     // Accept: 'application/json',
+  //   },
+  // });
+};
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인
  * @returns {Promise<unknown>}
@@ -10,10 +35,10 @@ export const hasWarehouse = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -43,7 +68,7 @@ export const hasWarehouse = () => {
  * }
  * @returns {Promise<unknown>}
  */
-export const addBusinessInfo = ( businessInfo ) => {
+export const addBusinessInfo = businessInfo => {
   return Axios.request({
     methodType: 'POST',
     url: `/api/v1/warehouse/business-info`,
@@ -51,10 +76,10 @@ export const addBusinessInfo = ( businessInfo ) => {
     payload: businessInfo,
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -64,7 +89,7 @@ export const addBusinessInfo = ( businessInfo ) => {
  * @param size (노출 사이즈 20)
  * @returns {Promise<unknown>}
  */
-export const searchAddress = ( { addressQuery = '' , page = 0, size= 20 } ) => {
+export const searchAddress = ({ addressQuery = '', page = 0, size = 20 }) => {
   console.log(addressQuery, 'addressQuery');
   return Axios.request({
     methodType: 'GET',
@@ -76,10 +101,10 @@ export const searchAddress = ( { addressQuery = '' , page = 0, size= 20 } ) => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -93,10 +118,10 @@ export const listAddOptDvCode = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -110,10 +135,10 @@ export const listInsrDvCode = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -127,10 +152,10 @@ export const listSttsDbCode = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -144,10 +169,10 @@ export const listAprchMthdDvCode = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -161,10 +186,10 @@ export const listFlrDvCode = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -178,10 +203,10 @@ export const listGdsTypeCode = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -195,10 +220,10 @@ export const listCalUnitDvCode = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -212,10 +237,10 @@ export const listCalStdDvCode = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -329,7 +354,7 @@ export const listCalStdDvCode = () => {
  *   }
  * @returns {Promise<unknown>}
  */
-export const registWhrg = (whrgBody) => {
+export const registWhrg = whrgBody => {
   return Axios.request({
     methodType: 'POST',
     url: `/api/v1/warehouse`,
@@ -337,10 +362,10 @@ export const registWhrg = (whrgBody) => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -348,16 +373,16 @@ export const registWhrg = (whrgBody) => {
  * @param id 창고 ID
  * @returns {Promise<unknown>}
  */
-export const getWhrg = ( { id = '' } ) => {
+export const getWhrg = ({ id = '' }) => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/${id}`,
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -365,7 +390,14 @@ export const getWhrg = ( { id = '' } ) => {
  * @param id 창고 ID
  * @returns {Promise<unknown>}
  */
-export const pageWhrg = ( { query = '', startDate = '', endDate = '', size = 20, page = 0, sort = "createdDate,desc"} ) => {
+export const pageWhrg = ({
+  query = '',
+  startDate = '',
+  endDate = '',
+  size = 20,
+  page = 0,
+  sort = 'createdDate,desc',
+}) => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse${parseQuery({
@@ -374,12 +406,12 @@ export const pageWhrg = ( { query = '', startDate = '', endDate = '', size = 20,
       endDate: endDate,
       size: size,
       page: page,
-      sort: sort
+      sort: sort,
     })}`,
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };

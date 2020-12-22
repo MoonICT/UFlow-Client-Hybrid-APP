@@ -29,6 +29,7 @@ import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Warehouse } from '@Services/apis';
 
 class RegisterWH extends Component {
   constructor(props) {
@@ -51,6 +52,18 @@ class RegisterWH extends Component {
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
+  submit = () => {
+    Warehouse.registerWH(this.props.dataWH)
+      .then(res => {
+        console.log('::::: API Sign in :::::', res);
+        const status = res.status;
+        if (status === 200) {
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
   render() {
     const { imageStore, workComplete, route, dataWH } = this.props;
     console.log('dataWH', dataWH);
@@ -213,11 +226,13 @@ class RegisterWH extends Component {
         </ScrollView>
         <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
-            style={[S.btnSubmit, S.activeBtnSubmit]}
+            style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
             onPress={() => {
               this.showDialog();
+              this.submit();
             }}>
-            <Text style={[S.textSubmit, S.textActiveSubmit]}>
+            <Text
+              style={[DefaultStyle.textSubmit, DefaultStyle.textActiveSubmit]}>
               창고 등록하기
             </Text>
           </TouchableOpacity>
