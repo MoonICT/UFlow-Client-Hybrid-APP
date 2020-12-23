@@ -75,10 +75,11 @@ import ResponseInformation from '@Screeens/Page/ResponseInformation';
 import StorageAgreement from '@Screeens/Page/StorageAgreement';
 // import ContractDetails from '@Screeens/Page/ContractDetails';
 // import DetailsManager from '@Screeens/Page/DetailsManager';
-
 import Mypage from '@Screeens/Mypage';
-import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
-import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
+
+import MypageInfo from '@Screeens/MypageInfo';
+import WithdrawalInformation from '@Screeens/MypageInfo/WithdrawalInformation';
+import ConfirmPass from '@Screeens/MypageInfo/ConfirmPass';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
 import Chat from '@Screeens/Chat';
@@ -209,7 +210,7 @@ const App = () => {
                   name="Home"
                   component={TabScreen}
                   options={{ headerShown: false }}
-                  initialParams={{item: 'aaaaa'}}
+                  initialParams={{ item: 'aaaaa' }}
                 />
                 <RootStack.Screen
                   name="Webview"
@@ -362,8 +363,8 @@ const App = () => {
                   options={{ headerShown: false }}
                 />
                 <RootStack.Screen
-                  name="Mypage"
-                  component={Mypage}
+                  name="MypageInfo"
+                  component={MypageInfo}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
@@ -484,6 +485,12 @@ const App = () => {
                 <RootStack.Screen
                   name="Terms"
                   component={Terms}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Mypage"
+                  component={Mypage}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

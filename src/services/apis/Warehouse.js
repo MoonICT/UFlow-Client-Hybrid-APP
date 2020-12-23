@@ -24,6 +24,24 @@ export const registerWH = async data => {
   //   },
   // });
 };
+export const myWH = async () => {
+  const token = await AsyncStorage.getItem('token');
+  return await mainAxios.get('/api/v1/warehouse/list/owner', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
+export const contractManager = async (type) => {
+  const token = await AsyncStorage.getItem('token');
+  return await mainAxios.get(`/api/v1/mypage/estmt-cntr?userType=${type}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인
  * @returns {Promise<unknown>}

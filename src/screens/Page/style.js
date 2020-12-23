@@ -85,6 +85,7 @@ export const styles = StyleSheet.create({
   optionSelect: {
     minWidth: 110,
     marginLeft: 8,
+    marginTop: 16,
   },
   optionSelectLeft: {
     marginLeft: 0,
