@@ -1009,12 +1009,13 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     color: color.primary.main,
-    padding: 6,
+    padding: 5,
     paddingRight: 16,
     paddingLeft: 16,
   },
   _textInline: {
     color: '#ffffff',
+    padding: 6,
   },
   /**List Button */
   _listBtn: {

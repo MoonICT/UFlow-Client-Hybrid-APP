@@ -33,9 +33,18 @@ export const myWH = async () => {
     },
   });
 };
-export const contractManager = async (type) => {
+export const contractManager = async type => {
   const token = await AsyncStorage.getItem('token');
   return await mainAxios.get(`/api/v1/mypage/estmt-cntr?userType=${type}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
+export const quotation = async type => {
+  const token = await AsyncStorage.getItem('token');
+  return await mainAxios.get(`/api/v1/estimate/${type}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',

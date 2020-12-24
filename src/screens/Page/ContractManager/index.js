@@ -77,7 +77,185 @@ class ContractManager extends Component {
   showConfirm = () => this.setState({ visibleConfirm: true });
 
   hideConfirm = () => this.setState({ visibleConfirm: false });
+  cover = value => {
+    switch (value.status) {
+      case 'RQ00':
+        // code block
+        return {
+          data: [
+            {
+              type: '창고 유형',
+              value: '보관창고, 수탁창고',
+            },
+            {
+              type: '견적 금액',
+              value:
+                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            },
+            {
+              type: '창고 주소',
+              value: value.info.address,
+            },
+            {
+              type: '견적 요청일',
+              value: value.createdDate,
+            },
+            {
+              type: '견적 상태',
+              value: '견적 요청',
+              highlight: true,
+            },
+          ],
+          listBtnOwner: true,
 
+          footerTitle: '견적 재요청',
+          navigation: '',
+        };
+      case 'RS00':
+        // code block
+        return {
+          data: [
+            {
+              type: '요청자',
+              value: value.type2 === 'TRUST' ? '수탁' : '보관',
+            },
+            {
+              type: '요청 창고 유형',
+              value: '보관',
+            },
+            {
+              type: '요청 견적 금액',
+              value:
+                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            },
+            {
+              type: '견적 요청일',
+              value: value.createdDate,
+            },
+            {
+              type: '견적 상태',
+              value: '견적 응답',
+              highlight: false,
+            },
+          ],
+          listBtnTenant: true,
+        };
+      case '1100':
+        // code block
+        return {
+          data: [
+            {
+              type: '요청자',
+              value: 'abc123',
+            },
+            {
+              type: '요청 창고 유형',
+              value: '보관',
+            },
+            {
+              type: '요청 견적 금액',
+              value:
+                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            },
+            {
+              type: '견적 요청일',
+              value: value.createdDate,
+            },
+            {
+              type: '견적 상태',
+              value: '계약 요청',
+              highlight: this.state.valueTab === 'OWNER' ? false : true,
+            },
+          ],
+          footerTitle: 'test',
+          // navigation: '',
+        };
+      case '4100':
+        // code block
+        return {
+          data: [
+            {
+              type: '창고 유형',
+              value: '보관창고, 수탁창고',
+            },
+            {
+              type: '견적 금액',
+              value:
+                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            },
+            {
+              type: '창고 주소',
+              value: value.info.address,
+            },
+            {
+              type: '견적 요청일',
+              value: value.createdDate,
+            },
+            {
+              type: '견적 승인일',
+              value: '2020.10.26',
+            },
+            {
+              type: '견적 상태',
+              value: '계약 진행 중',
+              highlight: true,
+            },
+          ],
+          footerTitle: '계약서 작성',
+          navigation: '',
+        };
+      case '5100':
+        // code block
+        return {
+          data: [
+            {
+              type: '창고 유형',
+              value: '보관창고, 수탁창고',
+            },
+            {
+              type: '견적 금액',
+              value:
+                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            },
+            {
+              type: '창고 주소',
+              value: value.info.address,
+            },
+            {
+              type: '견적 요청일',
+              value: value.createdDate,
+            },
+            {
+              type: '견적 승인일',
+              value: '2020.10.26',
+            },
+            {
+              type: '견적 상태',
+              value: '계약 완료',
+              highlight: false,
+            },
+          ],
+          footerTitle: '입출고 관리',
+          navigation: '',
+        };
+      // code block
+    }
+  };
   render() {
     const {
       dataSteps,
@@ -122,12 +300,12 @@ class ContractManager extends Component {
     const viewProprietor =
       dataApi &&
       dataApi.map((item, index) => {
-        let dataTable = cover(item).data;
-        let listBtnOwner = cover(item).listBtnOwner;
-        let listBtnTenant = cover(item).listBtnTenant;
-        let titleButton = cover(item).footerTitle;
-        let textNavigation = cover(item).navigation;
-        let listBtn = cover(item).listBtn;
+        let dataTable = this.cover(item).data;
+        let listBtnOwner = this.cover(item).listBtnOwner;
+        let listBtnTenant = this.cover(item).listBtnTenant;
+        let titleButton = this.cover(item).footerTitle;
+        let textNavigation = this.cover(item).navigation;
+        let listBtn = this.cover(item).listBtn;
         return (
           <Fragment key={index}>
             <CardMypage
@@ -158,13 +336,26 @@ class ContractManager extends Component {
                 <Fragment>
                   {(listBtnOwner === true && valueTab === 'OWNER') ||
                   (listBtnTenant === true && valueTab === 'TENANT') ? (
-                    <View style={DefaultStyle._listBtn}>
+                    <View style={DefaultStyle.row}>
                       <TouchableOpacity
                         style={[
                           DefaultStyle._btnOutline,
                           DefaultStyle._btnLeft,
                         ]}
-                        onPress={() => console.log('견적 응답')}>
+                        onPress={() =>
+                          this.navigation.navigate('Quotation', {
+                            // status: 'Answerd',
+                            type: valueTab,
+                            dataEstimate,
+                            dataRequest,
+                            dataReply,
+                            typeWH: item.type2,
+                            warehouseRegNo: item.warehouseRegNo,
+                            warehSeq: item.warehSeq,
+                            rentUserNo: item.rentUserNo,
+                            status: item.status,
+                          })
+                        }>
                         <Text style={DefaultStyle._textButton}>
                           {valueTab === 'OWNER' ? '견적 응답' : '견적 재요청'}
                         </Text>
@@ -184,7 +375,7 @@ class ContractManager extends Component {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                  ) : (
+                  ) : titleButton ? (
                     <TouchableOpacity
                       style={DefaultStyle._btnInline}
                       onPress={() => console.log(titleButton)}>
@@ -196,7 +387,7 @@ class ContractManager extends Component {
                         {titleButton}
                       </Text>
                     </TouchableOpacity>
-                  )}
+                  ) : null}
                 </Fragment>
               }
             />
@@ -334,7 +525,6 @@ class ContractManager extends Component {
   componentDidUpdate(prevProps, prevState) {
     let valueState = this.state.valueTab;
     let valuePrev = prevState.valueTab;
-    console.log('aaaaa', valueState, valuePrev);
     if (valueState !== valuePrev) {
       Warehouse.contractManager(valueState)
         .then(res => {
@@ -375,184 +565,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(ContractManager);
-
-const cover = value => {
-  console.log('value', value);
-  switch (value.status) {
-    case 'RQ00':
-      // code block
-      return {
-        data: [
-          {
-            type: '창고 유형',
-            value: '보관창고, 수탁창고',
-          },
-          {
-            type: '견적 금액',
-            value:
-              (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-              (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-              (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-              (value.cntrKeep && value.cntrKeep.estimatedPrice),
-          },
-          {
-            type: '창고 주소',
-            value: value.info.address,
-          },
-          {
-            type: '견적 요청일',
-            value: value.createdDate,
-          },
-          {
-            type: '견적 상태',
-            value: '견적 요청',
-            highlight: true,
-          },
-        ],
-        listBtnOwner: true,
-
-        footerTitle: '견적 재요청',
-        navigation: '',
-      };
-    case 'RS00':
-      // code block
-      return {
-        data: [
-          {
-            type: '요청자',
-            value: value.type2 === 'TRUST' ? '수탁' : '보관',
-          },
-          {
-            type: '요청 창고 유형',
-            value: '보관',
-          },
-          {
-            type: '요청 견적 금액',
-            value:
-              (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-              (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-              (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-              (value.cntrKeep && value.cntrKeep.estimatedPrice),
-          },
-          {
-            type: '견적 요청일',
-            value: value.createdDate,
-          },
-          {
-            type: '견적 상태',
-            value: '견적 응답',
-            highlight: false,
-          },
-        ],
-        listBtnTenant: true,
-      };
-    case '1100':
-      // code block
-      return {
-        data: [
-          {
-            type: '요청자',
-            value: 'abc123',
-          },
-          {
-            type: '요청 창고 유형',
-            value: '보관',
-          },
-          {
-            type: '요청 견적 금액',
-            value:
-              (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-              (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-              (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-              (value.cntrKeep && value.cntrKeep.estimatedPrice),
-          },
-          {
-            type: '견적 요청일',
-            value: value.createdDate,
-          },
-          {
-            type: '견적 상태',
-            value: '계약 요청',
-            highlight: true,
-          },
-        ],
-        // footerTitle: 'test',
-        // navigation: '',
-      };
-    case '4100':
-      // code block
-      return {
-        data: [
-          {
-            type: '창고 유형',
-            value: '보관창고, 수탁창고',
-          },
-          {
-            type: '견적 금액',
-            value:
-              (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-              (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-              (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-              (value.cntrKeep && value.cntrKeep.estimatedPrice),
-          },
-          {
-            type: '창고 주소',
-            value: value.info.address,
-          },
-          {
-            type: '견적 요청일',
-            value: value.createdDate,
-          },
-          {
-            type: '견적 승인일',
-            value: '2020.10.26',
-          },
-          {
-            type: '견적 상태',
-            value: '계약 진행 중',
-            highlight: true,
-          },
-        ],
-        footerTitle: '계약서 작성',
-        navigation: '',
-      };
-    case '5100':
-      // code block
-      return {
-        data: [
-          {
-            type: '창고 유형',
-            value: '보관창고, 수탁창고',
-          },
-          {
-            type: '견적 금액',
-            value:
-              (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-              (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-              (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-              (value.cntrKeep && value.cntrKeep.estimatedPrice),
-          },
-          {
-            type: '창고 주소',
-            value: value.info.address,
-          },
-          {
-            type: '견적 요청일',
-            value: value.createdDate,
-          },
-          {
-            type: '견적 승인일',
-            value: '2020.10.26',
-          },
-          {
-            type: '견적 상태',
-            value: '계약 완료',
-            highlight: false,
-          },
-        ],
-        footerTitle: '입출고 관리',
-        navigation: '',
-      };
-    // code block
-  }
-};
