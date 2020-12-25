@@ -2,8 +2,8 @@
  * @author [Life]
  * @desc [description]
  * */
-import React, {Component} from 'react';
-import {View, Button, Platform} from 'react-native';
+import React, { Component } from 'react';
+import { View, Button, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import DefaultStyle from '@Styles/default';
 
@@ -14,16 +14,11 @@ class DatePicker extends Component {
   }
 
   render() {
-    const {show} = this.props;
+    const { show } = this.props;
     return (
       <View>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            is24Hour={true}
-            display="default"
-            {...this.props}
-          />
+        {show === true && (
+          <DateTimePicker is24Hour={true} display="default" {...this.props} />
         )}
       </View>
     );

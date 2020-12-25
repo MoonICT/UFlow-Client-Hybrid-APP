@@ -312,12 +312,15 @@ class ContractManager extends Component {
               key={index}
               onPressHeader={() =>
                 this.navigation.navigate('Quotation', {
-                  status: 'notAnswerd',
-                  type,
-                  typeWH,
+                  type: valueTab,
                   dataEstimate,
                   dataRequest,
                   dataReply,
+                  typeWH: item.type2,
+                  warehouseRegNo: item.warehouseRegNo,
+                  warehSeq: item.warehSeq,
+                  rentUserNo: item.rentUserNo,
+                  status: item.status,
                 })
               }
               headerTitle={item.info.warehouse}
@@ -343,7 +346,7 @@ class ContractManager extends Component {
                           DefaultStyle._btnLeft,
                         ]}
                         onPress={() =>
-                          this.navigation.navigate('Quotation', {
+                          this.navigation.navigate('ResponseQuotation', {
                             // status: 'Answerd',
                             type: valueTab,
                             dataEstimate,

@@ -1073,4 +1073,20 @@ export default StyleSheet.create({
     bottom: 20,
     zIndex: 9,
   },
+  _btnDate: {
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 4,
+  },
+  _textDate: {
+    color: color.text.secondary,
+    padding: 14,
+    paddingTop: 17,
+    paddingBottom: 17,
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  _labelDate: {
+    position: 'absolute',
+  },
 });
