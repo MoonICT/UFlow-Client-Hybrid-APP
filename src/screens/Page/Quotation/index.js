@@ -40,7 +40,6 @@ class Quotation extends Component {
     this.navigation = props.navigation;
   }
   coverStatus = value => {
-    console.log('value', value);
     switch (value) {
       case 'RQ00':
         // code block
@@ -75,17 +74,18 @@ class Quotation extends Component {
     }
   };
   coverTime = value => {
-    let time;
-    time.setDate(value);
+    let time = new Date();
+    time.setTime(value);
     let changeTime = time.toLocaleDateString();
     console.log('changeTime', changeTime);
   };
   render() {
     // const { imageStore } = this.props;
     const { route } = this.props;
-    const dataEstimate = route && route.params && route.params.dataEstimate;
-    const dataRequest = route && route.params && route.params.dataRequest;
-    const dataReply = route && route.params && route.params.dataReply;
+    const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
+    // const dataRequest = route && route.params && route.params.dataRequest;
+    const warehSeq = route && route.params && route.params.warehSeq;
+    const rentUserNo = route && route.params && route.params.rentUserNo;
     const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
     const status = route && route.params && route.params.status;
@@ -101,7 +101,7 @@ class Quotation extends Component {
         value: '2020.10.26 (1차)2',
       },
     ];
-    const { dataApi } = this.state;
+    const { dataApi, urlProps } = this.state;
 
     let dataInfo = dataApi &&
       typeWH === 'KEEP' && [
@@ -151,6 +151,99 @@ class Quotation extends Component {
           value: dataApi.whrgMgmtKeep.mgmtChrg,
         },
       ];
+
+    let viewRequest =
+      dataApi &&
+      dataApi.estmtKeeps.map((item, index) => {
+        let dataRequest = [
+          {
+            type: '요청 일시',
+            value: item.occrYmd,
+          },
+          {
+            type: '요청 보관 기간',
+            value: item.from + ' - ' + item.to,
+          },
+          {
+            type: '요청 가용 면적',
+            value: item.rntlValue,
+          },
+          {
+            type: '정산단위',
+            value: this.coverStatus(status).processing,
+            highlight: true,
+          },
+          {
+            type: '보관유형',
+            value: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
+          },
+          {
+            type: '보관비',
+            value: item.splyAmount,
+          },
+          {
+            type: '관리비',
+            value: item.mgmtChrg,
+          },
+          {
+            type: '추가 요청사항',
+            value: item.remark,
+          },
+        ];
+
+        return (
+          <Fragment key={index}>
+            {item.estmtDvCd === 'RQ00' ? (
+              <View
+                style={[DefaultStyle._cards, DefaultStyle._margin0]}
+                key={index}>
+                {(dataApi.estmtKeeps[index - 1] &&
+                  dataApi.estmtKeeps[index - 1].estmtDvCd !== 'RQ00') ||
+                !dataApi.estmtKeeps[index - 1] ? (
+                  <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
+                    <Text style={DefaultStyle._textTitleCard}>
+                      견적 요청 정보
+                    </Text>
+                    <View style={DefaultStyle._optionList}>
+                      <Select data={dataSelect} style={SS.optionSelect} />
+                    </View>
+                  </View>
+                ) : null}
+                <View style={DefaultStyle._card}>
+                  <View style={DefaultStyle._infoTable}>
+                    <TableInfo data={dataRequest} />
+                  </View>
+                </View>
+                <View style={DefaultStyle._footerCards}>
+                  <Text style={SS.amount}>예상 견적 금액</Text>
+                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
+                </View>
+              </View>
+            ) : null}
+            {item.estmtDvCd === 'RS00' ? (
+              <View
+                style={[DefaultStyle._cards, DefaultStyle._margin0]}
+                key={index}>
+                <View style={DefaultStyle._card}>
+                  <View style={DefaultStyle._headerCard}>
+                    <Text style={DefaultStyle._headerCardTitle}>
+                      견적 응답 정보
+                    </Text>
+                  </View>
+                  <View style={DefaultStyle._infoTable}>
+                    <TableInfo data={dataRequest} />
+                  </View>
+                </View>
+                <View style={DefaultStyle._footerCards}>
+                  <Text style={SS.amount}>예상 견적 금액</Text>
+                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
+                </View>
+              </View>
+            ) : null}
+          </Fragment>
+        );
+      });
+
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -207,26 +300,64 @@ class Quotation extends Component {
             </View>
           </View>
 
+          {viewRequest}
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-            <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
-              <Text style={DefaultStyle._textTitleCard}>견적 요청 정보</Text>
-              <View style={DefaultStyle._optionList}>
-                <Select data={dataSelect} style={SS.optionSelect} />
-              </View>
-            </View>
-
             <View style={DefaultStyle._card}>
-              <View style={DefaultStyle._infoTable}>
-                <TableInfo data={dataRequest} />
+              <View style={DefaultStyle._headerCard}>
+                <Text style={DefaultStyle._headerCardTitle}>
+                  견적 응답 정보
+                </Text>
+                {type === 'OWNER' ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      // this.props.dataAction(this.state);
+                      this.navigation.navigate('ResponseQuotation', {
+                        typeWH,
+                        warehouseRegNo,
+                        warehSeq,
+                        rentUserNo,
+                        status,
+                      });
+                    }}
+                    style={[
+                      DefaultStyle._btnOutline,
+                      { flex: 0, marginRight: 16 },
+                    ]}
+                    // disabled={this.state.checked ? false : true}
+                  >
+                    <Text style={DefaultStyle._textButton}>견적 응답하기</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
+              <Text style={S.noticeWaitting}>
+                {type === 'OWNER'
+                  ? '아직 응답하지 않았습니다.'
+                  : '  창고주가 보내주신 견적 요청서를 확인하고 있습니다. 견적 응답이 올 때까지 잠시만 기다려 주세요.'}
+              </Text>
             </View>
-            <View style={DefaultStyle._footerCards}>
-              <Text style={SS.amount}>예상 견적 금액</Text>
-              <Text style={SS.total}>577,000원</Text>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                // this.props.dataAction(this.state);
+                console.log('견적 재요청 :>> ');
+                this.navigation.navigate('StorageAgreement', { type });
+              }}
+              style={[
+                type === 'OWNER'
+                  ? DefaultStyle._btnInline
+                  : DefaultStyle._btnOutline,
+              ]}
+              // disabled={this.state.checked ? false : true}
+            >
+              <Text
+                style={[
+                  DefaultStyle._textButton,
+                  type === 'OWNER' ? DefaultStyle._textInline : null,
+                ]}>
+                견적 재요청
+              </Text>
+            </TouchableOpacity>
           </View>
-
-          <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+          {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             {route.params.status === 'notAnswerd' ? (
               <Fragment>
                 <View style={DefaultStyle._card}>
@@ -238,7 +369,7 @@ class Quotation extends Component {
                       <TouchableOpacity
                         onPress={() => {
                           // this.props.dataAction(this.state);
-                          this.navigation.navigate('ResponseInformation', {
+                          this.navigation.navigate('ResponseQuotation', {
                             typeWH,
                           });
                         }}
@@ -320,6 +451,7 @@ class Quotation extends Component {
               </Fragment>
             )}
           </View>
+         */}
         </ScrollView>
       </SafeAreaView>
     );
@@ -342,11 +474,21 @@ class Quotation extends Component {
       warehSeq +
       '/' +
       rentUserNo;
+    let urlProps =
+      type +
+      '/warehouse/' +
+      warehouseRegNo +
+      '/' +
+      typeWH +
+      '/' +
+      warehSeq +
+      '/' +
+      rentUserNo;
     await Warehouse.quotation(url)
       .then(res => {
         const status = res.status;
         if (status === 200) {
-          this.setState({ dataApi: res.data });
+          this.setState({ dataApi: res.data, urlProps: urlProps });
         }
       })
       .catch(err => {
@@ -386,3 +528,11 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Quotation);
+
+const coverUnit = value => {
+  switch (value.status) {
+    case 'RQ00':
+      // code block
+      return;
+  }
+};

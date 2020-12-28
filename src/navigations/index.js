@@ -71,7 +71,7 @@ import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
 import ProprietorMypage from '@Screeens/ProprietorMypage';
 
 import Quotation from '@Screeens/Page/Quotation';
-import ResponseInformation from '@Screeens/Page/ResponseInformation';
+import ResponseQuotation from '@Screeens/Page/ResponseQuotation';
 import StorageAgreement from '@Screeens/Page/StorageAgreement';
 // import ContractDetails from '@Screeens/Page/ContractDetails';
 // import DetailsManager from '@Screeens/Page/DetailsManager';
@@ -108,7 +108,7 @@ const TabScreenOptions = ({ route }) => ({
         icon = 'magnify';
         break;
       // TODO change route
-      case 'Chat':
+      case 'Mypage':
         icon = 'forum';
         break;
       case 'More':
@@ -144,7 +144,7 @@ const TabScreen = () => {
         options={{ headerShown: false }}
       />
       {/* TODO Change route */}
-      <Tab.Screen name="Chat" component={Chat} />
+      <Tab.Screen name="Mypage" component={Mypage} />
       <Tab.Screen
         name="More"
         component={More}
@@ -423,8 +423,8 @@ const App = () => {
                   options={{ headerShown: false }}
                 />
                 <RootStack.Screen
-                  name="ResponseInformation"
-                  component={ResponseInformation}
+                  name="ResponseQuotation"
+                  component={ResponseQuotation}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />

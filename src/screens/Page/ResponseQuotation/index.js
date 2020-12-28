@@ -6,7 +6,13 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+  Button,
+} from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Text, Appbar } from 'react-native-paper';
@@ -23,6 +29,7 @@ import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/AntDesign';
+import DatePicker from '@Components/organisms/DatePicker';
 
 const dataStoragePeriod = [
   {
@@ -95,14 +102,14 @@ const dataInfo2 = [
     highlight: true,
   },
 ];
-class ResponseInformation extends Component {
+class ResponseQuotation extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      responseArea: '',
-      storageCost: '',
-      expenses: '',
+      rntlValue: '',
+      splyAmount: '',
+      mgmtChrg: '',
       visible: false,
       requestConsignment: '',
       storageFee: '',
@@ -110,6 +117,13 @@ class ResponseInformation extends Component {
       laborCost: '',
       processingPrice: '',
       courierPrice: '',
+      mode: 'date',
+      from: new Date(),
+      showFrom: false,
+      to: new Date(),
+      showTo: false,
+      isSubmit: false,
+ 
     };
     this.navigation = props.navigation;
   }
@@ -131,15 +145,38 @@ class ResponseInformation extends Component {
   showConfirm = () => this.setState({ visibleConfirm: true });
 
   hideConfirm = () => this.setState({ visibleConfirm: false });
+  showDatepicker = () => {
+    this.setState({ showFrom: true });
+  };
+
+  onChangeFrom = (event, selectedDate) => {
+    console.log('event', event);
+    console.log('selectedDate', selectedDate);
+    const currentDate = selectedDate || this.state.from;
+    this.setState({ from: currentDate, showFrom: false });
+  };
+  showDatepickerTo = () => {
+    this.setState({ showTo: true });
+  };
+
+  onChangeTo = (event, selectedDate) => {
+    const currentDate = selectedDate || this.state.to;
+    this.setState({ to: currentDate, showTo: false });
+  };
   render() {
     const { route } = this.props;
+    const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
+    const warehSeq = route && route.params && route.params.warehSeq;
+    const rentUserNo = route && route.params && route.params.rentUserNo;
+    const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
+    const status = route && route.params && route.params.status;
     const {
-      storagePeriodStart,
-      storagePeriodEnd,
-      responseArea,
-      storageCost,
-      expenses,
+      from,
+      to,
+      rntlValue,
+      splyAmount,
+      mgmtChrg,
       visible,
       requestConsignment,
       storageFee,
@@ -147,7 +184,13 @@ class ResponseInformation extends Component {
       laborCost,
       processingPrice,
       courierPrice,
+      showFrom,
+      mode,
+      showTo,
+      isSubmit,
     } = this.state;
+    console.log('route', route);
+    console.log('this.state', this.state);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -205,7 +248,7 @@ class ResponseInformation extends Component {
               ) : null}
             </View>
 
-            {typeWH === 'Trust' ? (
+            {typeWH === 'TRUST' ? (
               <Fragment>
                 <View style={[S.row, { justifyContent: 'center' }]}>
                   <View style={{ flex: 1 }}>
@@ -214,7 +257,7 @@ class ResponseInformation extends Component {
                       colorLabel="#000000"
                       labelSelected="수탁 기간 "
                       style={SS.select}
-                      valueProps={e => this.setState({ storagePeriodStart: e })}
+                      valueProps={e => this.setState({ from: e })}
                     />
                   </View>
                   <Text style={SS.hyphen}>-</Text>
@@ -223,7 +266,7 @@ class ResponseInformation extends Component {
                     <Select
                       data={dataStoragePeriod2}
                       style={SS.select}
-                      valueProps={e => this.setState({ storagePeriodEnd: e })}
+                      valueProps={e => this.setState({ to: e })}
                     />
                   </View>
                 </View>
@@ -244,7 +287,7 @@ class ResponseInformation extends Component {
                   labelTextField="입고단가"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ expenses: e })}
+                  valueProps={e => this.setState({ mgmtChrg: e })}
                 />
                 <TextField
                   colorLabel="#000000"
@@ -280,37 +323,38 @@ class ResponseInformation extends Component {
                   labelTextField="추가 요청 사항"
                   placeholder="내용입력"
                   numberOfLines={5}
+                  textAlignVertical="top"
                   multiline={true}
-                  valueProps={e => this.setState({ additionalRequests: e })}
+                  valueProps={e => this.setState({ remark: e })}
                 />
                 <TouchableOpacity
                   onPress={() => {
                     // this.props.dataAction(this.state);
-                    // this.navigation.navigate('ResponseInformation');
+                    // this.navigation.navigate('ResponseQuotation');
                     console.log('submit :>> ');
                   }}
                   style={[
                     DefaultStyle._btnInline,
-                    storagePeriodStart !== '' &&
-                    storagePeriodEnd !== '' &&
+                    from !== '' &&
+                    to !== '' &&
                     requestConsignment !== '' &&
                     storageFee !== '' &&
                     shipPrice !== '' &&
                     laborCost !== '' &&
                     processingPrice !== '' &&
-                    expenses !== ''
+                    mgmtChrg !== ''
                       ? null
                       : SS.btnDisabled,
                   ]}
                   disabled={
-                    storagePeriodStart !== '' &&
-                    storagePeriodEnd !== '' &&
+                    from !== '' &&
+                    to !== '' &&
                     requestConsignment !== '' &&
                     storageFee !== '' &&
                     shipPrice !== '' &&
                     laborCost !== '' &&
                     processingPrice !== '' &&
-                    expenses !== ''
+                    mgmtChrg !== ''
                       ? false
                       : true
                   }>
@@ -318,14 +362,14 @@ class ResponseInformation extends Component {
                     style={[
                       DefaultStyle._textButton,
                       SS.textSubmit,
-                      storagePeriodStart !== '' &&
-                      storagePeriodEnd !== '' &&
+                      from !== '' &&
+                      to !== '' &&
                       requestConsignment !== '' &&
                       storageFee !== '' &&
                       shipPrice !== '' &&
                       laborCost !== '' &&
                       processingPrice !== '' &&
-                      expenses !== ''
+                      mgmtChrg !== ''
                         ? null
                         : SS.textDisabled,
                     ]}>
@@ -335,24 +379,70 @@ class ResponseInformation extends Component {
               </Fragment>
             ) : (
               <Fragment>
-                <View style={[S.row, { justifyContent: 'center' }]}>
+                <View
+                  style={[
+                    S.row,
+                    { justifyContent: 'center', marginBottom: 18 },
+                  ]}>
                   <View style={{ flex: 1 }}>
-                    <Select
+                    <TouchableOpacity
+                      onPress={this.showDatepicker}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {from.toLocaleDateString()}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        보관 기간
+                      </Text>
+                      <DatePicker
+                        mode={mode}
+                        show={showFrom}
+                        onChange={this.onChangeFrom}
+                        value={from}
+                        testID="dateTimePicker"
+                      />
+                    </TouchableOpacity>
+                    {/**<Select
                       data={dataStoragePeriod}
                       colorLabel="#000000"
                       labelSelected="보관유형"
                       style={SS.select}
-                      valueProps={e => this.setState({ storagePeriodStart: e })}
-                    />
+                      valueProps={e => this.setState({ from: e })}
+                    /> */}
                   </View>
                   <Text style={SS.hyphen}>-</Text>
 
                   <View style={{ flex: 1 }}>
-                    <Select
+                    <TouchableOpacity
+                      onPress={this.showDatepickerTo}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {to.toLocaleDateString()}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        보관 기간{' '}
+                      </Text>
+                      <DatePicker
+                        mode={mode}
+                        show={showTo}
+                        onChange={this.onChangeTo}
+                        value={to}
+                        testID="dateTimePickerTo"
+                      />
+                    </TouchableOpacity>
+                    {/**<Select
                       data={dataStoragePeriod2}
                       style={SS.select}
-                      valueProps={e => this.setState({ storagePeriodEnd: e })}
-                    />
+                      valueProps={e => this.setState({ to: e })}
+                    />*/}
                   </View>
                 </View>
                 <TextField
@@ -360,21 +450,21 @@ class ResponseInformation extends Component {
                   labelTextField="응답 면적"
                   textRight="m2"
                   placeholder="0"
-                  valueProps={e => this.setState({ responseArea: e })}
+                  valueProps={e => this.setState({ rntlValue: e })}
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="보관비 (평)"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ storageCost: e })}
+                  valueProps={e => this.setState({ splyAmount: e })}
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="관리비"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ expenses: e })}
+                  valueProps={e => this.setState({ mgmtChrg: e })}
                 />
                 <TextField
                   colorLabel="#000000"
@@ -382,30 +472,31 @@ class ResponseInformation extends Component {
                   placeholder="내용입력"
                   numberOfLines={5}
                   multiline={true}
-                  valueProps={e => this.setState({ additionalRequests: e })}
+                  textAlignVertical="top"
+                  valueProps={e => this.setState({ remark: e })}
                 />
                 <TouchableOpacity
                   onPress={() => {
                     // this.props.dataAction(this.state);
-                    // this.navigation.navigate('ResponseInformation');
+                    // this.navigation.navigate('ResponseQuotation');
                     console.log('submit :>> ');
                   }}
                   style={[
                     DefaultStyle._btnInline,
-                    storagePeriodStart !== '' &&
-                    storagePeriodEnd !== '' &&
-                    responseArea !== '' &&
-                    storageCost !== '' &&
-                    expenses !== ''
+                    from !== '' &&
+                    to !== '' &&
+                    rntlValue !== '' &&
+                    splyAmount !== '' &&
+                    mgmtChrg !== ''
                       ? null
                       : SS.btnDisabled,
                   ]}
                   disabled={
-                    storagePeriodStart !== '' &&
-                    storagePeriodEnd !== '' &&
-                    responseArea !== '' &&
-                    storageCost !== '' &&
-                    expenses !== ''
+                    from !== '' &&
+                    to !== '' &&
+                    rntlValue !== '' &&
+                    splyAmount !== '' &&
+                    mgmtChrg !== ''
                       ? false
                       : true
                   }>
@@ -413,11 +504,11 @@ class ResponseInformation extends Component {
                     style={[
                       DefaultStyle._textButton,
                       SS.textSubmit,
-                      storagePeriodStart !== '' &&
-                      storagePeriodEnd !== '' &&
-                      responseArea !== '' &&
-                      storageCost !== '' &&
-                      expenses !== ''
+                      from !== '' &&
+                      to !== '' &&
+                      rntlValue !== '' &&
+                      splyAmount !== '' &&
+                      mgmtChrg !== ''
                         ? null
                         : SS.textDisabled,
                     ]}>
@@ -435,9 +526,33 @@ class ResponseInformation extends Component {
   /** when after render DOM */
   async componentDidMount() {
     console.log('::componentDidMount::');
+
     SplashScreen.hide();
   }
-
+  // static getDerivedStateFromProps(props, state) {
+  //   console.log('props', props);
+  //   console.log('state', state);
+  //   // Return null to indicate no change to state.
+  //   return null;
+  // }
+  // getSnapshotBeforeUpdate(prevProps, prevState) {
+  //   console.log("getSnapshotBeforeUpdate",prevState);
+  //   return { oldValue: prevState.value };
+  // }
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
+    console.log('nextState', nextState);
+    // if (
+    //   nextState.from !== '' &&
+    //   nextState.to !== '' &&
+    //   nextState.rntlValue !== '' &&
+    //   nextState.splyAmount !== '' &&
+    //   nextState.mgmtChrg !== ''
+    // ) {
+    //   this.setState({ isSubmit: true });
+    // } else {
+    //   this.setState({ isSubmit: false });
+    // }
+  }
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
@@ -468,4 +583,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ResponseInformation);
+)(ResponseQuotation);
