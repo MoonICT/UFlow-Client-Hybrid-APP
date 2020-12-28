@@ -154,6 +154,7 @@ class Quotation extends Component {
 
     let viewRequest =
       dataApi &&
+      dataApi.estmtKeeps &&
       dataApi.estmtKeeps.map((item, index) => {
         let dataRequest = [
           {
@@ -307,7 +308,7 @@ class Quotation extends Component {
                 <Text style={DefaultStyle._headerCardTitle}>
                   견적 응답 정보
                 </Text>
-                {type === 'OWNER' ? (
+                {type === 'OWNER' && status === 'RS00' ? (
                   <TouchableOpacity
                     onPress={() => {
                       // this.props.dataAction(this.state);
@@ -330,9 +331,29 @@ class Quotation extends Component {
                 ) : null}
               </View>
               <Text style={S.noticeWaitting}>
-                {type === 'OWNER'
-                  ? '아직 응답하지 않았습니다.'
-                  : '  창고주가 보내주신 견적 요청서를 확인하고 있습니다. 견적 응답이 올 때까지 잠시만 기다려 주세요.'}
+                {type === 'OWNER' ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      // this.props.dataAction(this.state);
+                      this.navigation.navigate('ResponseQuotation', {
+                        typeWH,
+                        warehouseRegNo,
+                        warehSeq,
+                        rentUserNo,
+                        status,
+                      });
+                    }}
+                    style={[
+                      DefaultStyle._btnOutline,
+                      { flex: 0, marginRight: 16 },
+                    ]}
+                    // disabled={this.state.checked ? false : true}
+                  >
+                    <Text style={DefaultStyle._textButton}>견적 응답하기</Text>
+                  </TouchableOpacity>
+                ) : (
+                  '  창고주가 보내주신 견적 요청서를 확인하고 있습니다. 견적 응답이 올 때까지 잠시만 기다려 주세요.'
+                )}
               </Text>
             </View>
             <TouchableOpacity
@@ -487,14 +508,16 @@ class Quotation extends Component {
     await Warehouse.quotation(url)
       .then(res => {
         const status = res.status;
+        console.log('res', res);
         if (status === 200) {
           this.setState({ dataApi: res.data, urlProps: urlProps });
+          // this.props.quotationData(res.data);
         }
       })
       .catch(err => {
         console.log('err', err);
       });
-    SplashScreen.hide();
+    // SplashScreen.hide();
   }
 
   /** when update state or props */
@@ -515,8 +538,8 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    dataAction: action => {
-      dispatch(ActionCreator.ContractConditions(action));
+    quotationData: action => {
+      dispatch(ActionCreator.quotationData(action));
     },
     // countDown: diff => {
     //   dispatch(ActionCreator.countDown(diff));

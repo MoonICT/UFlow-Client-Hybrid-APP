@@ -51,6 +51,16 @@ export const quotation = async type => {
     },
   });
 };
+export const responQuotation = async value => {
+  console.log('type', value);
+  const token = await AsyncStorage.getItem('token');
+  return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인
  * @returns {Promise<unknown>}

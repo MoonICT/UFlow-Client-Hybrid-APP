@@ -22,29 +22,50 @@ import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
+import ActionCreator from '@Actions';
 
 const dataSelect = [
   {
-    label: '1개월',
-    value: '1개월',
+    label: '계약유형',
+    value: '',
   },
   {
-    label: '2개월',
-    value: '2개월',
+    label: '보관',
+    value: 'KEEP',
+  },
+  {
+    label: '수탁',
+    value: 'TRUST',
   },
 ];
 const dataSelect2 = [
   {
-    label: '상태',
-    value: '상태',
+    label: '견적･계약 상태',
+    value: '',
   },
   {
-    label: '상태2',
-    value: '상태2',
+    label: '견적요청',
+    value: 'RQ00',
   },
   {
-    label: '상태3',
-    value: '상태3',
+    label: '견적응답',
+    value: 'RS00',
+  },
+  {
+    label: '계약협의',
+    value: '1100',
+  },
+  {
+    label: '계약요청대기',
+    value: '2100',
+  },
+  {
+    label: '계약중',
+    value: '4100',
+  },
+  {
+    label: '계약완료',
+    value: '5100',
   },
 ];
 
@@ -56,6 +77,8 @@ class ContractManager extends Component {
       visible: false,
       visibleConfirm: false,
       valueTab: 'OWNER',
+      contractType: '',
+      contractStatus: '',
     };
     this.navigation = props.navigation;
   }
@@ -85,15 +108,15 @@ class ContractManager extends Component {
           data: [
             {
               type: '창고 유형',
-              value: '보관창고, 수탁창고',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
             {
               type: '견적 금액',
               value:
-                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
             },
             {
               type: '창고 주소',
@@ -109,9 +132,9 @@ class ContractManager extends Component {
               highlight: true,
             },
           ],
-          listBtnOwner: true,
-
-          footerTitle: '견적 재요청',
+          // listBtnOwner: true,
+          footerTitle:
+            this.state.valueTab === 'OWNER' ? '견적 응답' : '견적 재요청',
           navigation: '',
         };
       case 'RS00':
@@ -119,20 +142,20 @@ class ContractManager extends Component {
         return {
           data: [
             {
-              type: '요청자',
-              value: value.type2 === 'TRUST' ? '수탁' : '보관',
+              type: '창고 유형',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
             {
-              type: '요청 창고 유형',
-              value: '보관',
-            },
-            {
-              type: '요청 견적 금액',
+              type: '견적 금액',
               value:
-                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+            },
+            {
+              type: '창고 주소',
+              value: value.info.address,
             },
             {
               type: '견적 요청일',
@@ -141,7 +164,7 @@ class ContractManager extends Component {
             {
               type: '견적 상태',
               value: '견적 응답',
-              highlight: false,
+              highlight: true,
             },
           ],
           listBtnTenant: true,
@@ -151,49 +174,16 @@ class ContractManager extends Component {
         return {
           data: [
             {
-              type: '요청자',
-              value: 'abc123',
-            },
-            {
-              type: '요청 창고 유형',
-              value: '보관',
-            },
-            {
-              type: '요청 견적 금액',
-              value:
-                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                (value.cntrKeep && value.cntrKeep.estimatedPrice),
-            },
-            {
-              type: '견적 요청일',
-              value: value.createdDate,
-            },
-            {
-              type: '견적 상태',
-              value: '계약 요청',
-              highlight: this.state.valueTab === 'OWNER' ? false : true,
-            },
-          ],
-          footerTitle: 'test',
-          // navigation: '',
-        };
-      case '4100':
-        // code block
-        return {
-          data: [
-            {
               type: '창고 유형',
-              value: '보관창고, 수탁창고',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
             {
               type: '견적 금액',
               value:
-                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
             },
             {
               type: '창고 주소',
@@ -204,17 +194,75 @@ class ContractManager extends Component {
               value: value.createdDate,
             },
             {
-              type: '견적 승인일',
-              value: '2020.10.26',
-            },
-            {
               type: '견적 상태',
-              value: '계약 진행 중',
+              value: value.type2 === 'OWNER' ? '계약 요청' : '계약중',
               highlight: true,
             },
           ],
-          footerTitle: '계약서 작성',
-          navigation: '',
+        };
+
+      case '2100':
+        // code block
+        return {
+          data: [
+            {
+              type: '창고 유형',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
+            },
+            {
+              type: '견적 금액',
+              value:
+                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+            },
+            {
+              type: '창고 주소',
+              value: value.info.address,
+            },
+            {
+              type: '견적 요청일',
+              value: value.createdDate,
+            },
+            {
+              type: '견적 상태',
+              value: '계약요청대기',
+              highlight: true,
+            },
+          ],
+        };
+
+      case '4100':
+        // code block
+        return {
+          data: [
+            {
+              type: '창고 유형',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
+            },
+            {
+              type: '견적 금액',
+              value:
+                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+            },
+            {
+              type: '창고 주소',
+              value: value.info.address,
+            },
+            {
+              type: '견적 요청일',
+              value: value.createdDate,
+            },
+            {
+              type: '견적 상태',
+              value: '계약중',
+              highlight: true,
+            },
+          ],
         };
       case '5100':
         // code block
@@ -222,15 +270,15 @@ class ContractManager extends Component {
           data: [
             {
               type: '창고 유형',
-              value: '보관창고, 수탁창고',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
             {
               type: '견적 금액',
               value:
-                (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
             },
             {
               type: '창고 주소',
@@ -241,19 +289,12 @@ class ContractManager extends Component {
               value: value.createdDate,
             },
             {
-              type: '견적 승인일',
-              value: '2020.10.26',
-            },
-            {
               type: '견적 상태',
               value: '계약 완료',
               highlight: false,
             },
           ],
-          footerTitle: '입출고 관리',
-          navigation: '',
         };
-      // code block
     }
   };
   render() {
@@ -264,10 +305,33 @@ class ContractManager extends Component {
       dataReply,
       type,
       typeWH,
+      dataContractWH,
     } = this.props;
-    const { valueTab, dataApi } = this.state;
-    console.log('dataApi :>> ', dataApi);
-
+    const { valueTab, dataApi, contractType, contractStatus } = this.state;
+    // Data Filter type and status
+    let dataFilter =
+      dataContractWH &&
+      dataContractWH.filter(el => {
+        let types;
+        let status;
+        if (contractType === '') {
+          types = el.type2 === 'KEEP' || el.type2 === 'TRUST';
+        } else {
+          types = el.type2 === contractType;
+        }
+        if (contractStatus !== '') {
+          status = el.status === contractStatus;
+        } else {
+          status =
+            el.status === 'RQ00' ||
+            el.status === 'RS00' ||
+            el.status === '1100' ||
+            el.status === '2100' ||
+            el.status === '4100' ||
+            el.status === '5100';
+        }
+        return types && status;
+      });
     const viewStep =
       dataSteps &&
       dataSteps.map((item, index) => {
@@ -298,14 +362,11 @@ class ContractManager extends Component {
       });
 
     const viewProprietor =
-      dataApi &&
-      dataApi.map((item, index) => {
-        let dataTable = this.cover(item).data;
-        let listBtnOwner = this.cover(item).listBtnOwner;
-        let listBtnTenant = this.cover(item).listBtnTenant;
-        let titleButton = this.cover(item).footerTitle;
-        let textNavigation = this.cover(item).navigation;
-        let listBtn = this.cover(item).listBtn;
+      dataFilter &&
+      dataFilter.map((item, index) => {
+        let dataTable = this.cover(item) && this.cover(item).data;
+        let listBtnTenant = this.cover(item) && this.cover(item).listBtnTenant;
+        let titleButton = this.cover(item) && this.cover(item).footerTitle;
         return (
           <Fragment key={index}>
             <CardMypage
@@ -319,6 +380,7 @@ class ContractManager extends Component {
                   typeWH: item.type2,
                   warehouseRegNo: item.warehouseRegNo,
                   warehSeq: item.warehSeq,
+                  seq: item.seq,
                   rentUserNo: item.rentUserNo,
                   status: item.status,
                 })
@@ -337,8 +399,8 @@ class ContractManager extends Component {
               }
               footer={
                 <Fragment>
-                  {(listBtnOwner === true && valueTab === 'OWNER') ||
-                  (listBtnTenant === true && valueTab === 'TENANT') ? (
+                  {// (listBtnOwner === true && valueTab === 'OWNER') ||
+                  listBtnTenant === true && valueTab === 'TENANT' ? (
                     <View style={DefaultStyle.row}>
                       <TouchableOpacity
                         style={[
@@ -355,12 +417,16 @@ class ContractManager extends Component {
                             typeWH: item.type2,
                             warehouseRegNo: item.warehouseRegNo,
                             warehSeq: item.warehSeq,
+                            seq: item.seq,
                             rentUserNo: item.rentUserNo,
                             status: item.status,
                           })
                         }>
                         <Text style={DefaultStyle._textButton}>
-                          {valueTab === 'OWNER' ? '견적 응답' : '견적 재요청'}
+                          {
+                            // valueTab === 'OWNER' ? '견적 응답' :
+                            '견적 재요청'
+                          }
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
@@ -380,12 +446,12 @@ class ContractManager extends Component {
                     </View>
                   ) : titleButton ? (
                     <TouchableOpacity
-                      style={DefaultStyle._btnInline}
+                      style={DefaultStyle._btnOutline}
                       onPress={() => console.log(titleButton)}>
                       <Text
                         style={[
                           DefaultStyle._textButton,
-                          DefaultStyle._textInline,
+                          // DefaultStyle._textInline,
                         ]}>
                         {titleButton}
                       </Text>
@@ -475,11 +541,25 @@ class ContractManager extends Component {
             DefaultStyle._flexEnd,
             DefaultStyle._optionList,
           ]}>
-          <View style={S.optionSelect}>
-            <Select data={dataSelect} style={S.select} />
+          <View style={[S.optionSelect, S.selectLong]}>
+            <Select
+              data={dataSelect}
+              style={S.select}
+              valueProps={e => {
+                this.setState({ contractType: e });
+                this.props.filterTypeContractData({ type: e });
+              }}
+            />
           </View>
           <View style={[S.optionSelect, S.selectLong]}>
-            <Select data={dataSelect2} style={S.select} />
+            <Select
+              data={dataSelect2}
+              style={S.select}
+              valueProps={e => {
+                this.setState({ contractStatus: e });
+                this.props.filterTypeContractData({ status: e });
+              }}
+            />
           </View>
         </View>
         {viewProprietor}
@@ -494,7 +574,8 @@ class ContractManager extends Component {
       .then(res => {
         const status = res.status;
         if (status === 200) {
-          this.setState({ dataApi: res.data.data.content });
+          // this.setState({ dataApi: res.data.data.content });
+          this.props.contractData({ dataApi: res.data.data.content });
         }
       })
       .catch(err => {
@@ -533,7 +614,8 @@ class ContractManager extends Component {
         .then(res => {
           const status = res.status;
           if (status === 200) {
-            this.setState({ dataApi: res.data.data.content });
+            // this.setState({ dataApi: res.data.data.content });
+            this.props.contractData({ dataApi: res.data.data.content });
           }
         })
         .catch(err => {
@@ -547,7 +629,7 @@ class ContractManager extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.pimages,
+    dataContractWH: state.warehouse.dataContractWH,
     workComplete: state.registerWH.workComplete,
   };
 }
@@ -555,12 +637,12 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+    contractData: action => {
+      dispatch(ActionCreator.contractData(action));
+    },
+    filterTypeContractData: action => {
+      dispatch(ActionCreator.filterContractData(action));
+    },
   };
 }
 

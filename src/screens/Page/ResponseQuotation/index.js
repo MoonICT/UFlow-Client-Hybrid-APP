@@ -30,6 +30,7 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/AntDesign';
 import DatePicker from '@Components/organisms/DatePicker';
+import { Warehouse } from '@Services/apis';
 
 const dataStoragePeriod = [
   {
@@ -123,7 +124,7 @@ class ResponseQuotation extends Component {
       to: new Date(),
       showTo: false,
       isSubmit: false,
- 
+      remark: '',
     };
     this.navigation = props.navigation;
   }
@@ -150,8 +151,6 @@ class ResponseQuotation extends Component {
   };
 
   onChangeFrom = (event, selectedDate) => {
-    console.log('event', event);
-    console.log('selectedDate', selectedDate);
     const currentDate = selectedDate || this.state.from;
     this.setState({ from: currentDate, showFrom: false });
   };
@@ -167,6 +166,7 @@ class ResponseQuotation extends Component {
     const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
     const warehSeq = route && route.params && route.params.warehSeq;
+    const seq = route && route.params && route.params.seq;
     const rentUserNo = route && route.params && route.params.rentUserNo;
     const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
@@ -480,6 +480,7 @@ class ResponseQuotation extends Component {
                     // this.props.dataAction(this.state);
                     // this.navigation.navigate('ResponseQuotation');
                     console.log('submit :>> ');
+                    this.setState({ isSubmit: true });
                   }}
                   style={[
                     DefaultStyle._btnInline,
@@ -556,6 +557,64 @@ class ResponseQuotation extends Component {
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
+    let warehouseRegNo =
+      this.props.route && this.props.route.params.warehouseRegNo;
+    let warehSeq = this.props.route && this.props.route.params.warehSeq;
+    let rentUserNo = this.props.route && this.props.route.params.rentUserNo;
+    const status = this.props.route && this.props.route.params.status;
+
+    let type =
+      this.props.route && this.props.route.params.type === 'OWNER'
+        ? 'owner'
+        : 'tenant';
+    let typeWH =
+      this.props.route && this.props.route.params.typeWH === 'TRUST'
+        ? 'trust'
+        : 'keep';
+    let url =
+      type +
+      '/warehouse/' +
+      warehouseRegNo +
+      '/' +
+      typeWH +
+      '/' +
+      warehSeq +
+      '/' +
+      rentUserNo;
+
+    if (prevState.isSubmit !== this.state.isSubmit) {
+      Warehouse.responQuotation({
+        type: url,
+        data: {
+          warehouseRegNo: warehouseRegNo,
+          seq: this.props.route && this.props.route.params.seq,
+          from: Date.parse(this.state.from),
+          to: Date.parse(this.state.to),
+          rntlValue: parseInt(this.state.rntlValue),
+          mgmtChrg: parseInt(this.state.mgmtChrg),
+          splyAmount: parseInt(this.state.splyAmount),
+          remark: this.state.remark,
+        },
+      })
+        .then(res => {
+          // const status = res.status;
+          if (res.status === 200) {
+            console.log('res', res);
+            this.navigation.navigate('ResponseQuotation', {
+              typeWH,
+              warehouseRegNo,
+              warehSeq,
+              rentUserNo,
+              status,
+            });
+            // this.setState({ dataApi: res.data.data.content });
+            // this.props.contractData({ dataApi: res.data.data.content });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
   }
 }
 
