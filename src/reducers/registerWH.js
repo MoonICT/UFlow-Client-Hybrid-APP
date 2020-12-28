@@ -78,7 +78,7 @@ let removeImg = (state, id) => {
 };
 
 let ContractConditions = (state, data) => {
-  // console.log('action', data);
+  console.log('action', data);
   try {
     let result = {
       ...state,
@@ -92,8 +92,8 @@ let ContractConditions = (state, data) => {
 };
 
 let updateInfo = (state, data) => {
-  console.log('state', state);
-  console.log('data', data);
+  console.log('stateRedux', state);
+  console.log('dataRedux', data);
 
   try {
     let result = {
