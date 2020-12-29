@@ -30,6 +30,7 @@ import { Warehouse } from '@Services/apis';
 
 import { styles as S } from '../style';
 import { styles as SS } from './style';
+import RequestView from './requestView';
 
 class Quotation extends Component {
   constructor(props) {
@@ -395,7 +396,10 @@ class Quotation extends Component {
             </View>
           </View>
 
-          {typeWH === 'KEEP' ? viewRequest : viewRequestTrust}
+          {
+            // typeWH === 'KEEP' ? viewRequest : viewRequestTrust
+          }
+          <RequestView data={dataApi} typeWH={typeWH && typeWH} />
           {type === 'OWNER' && status === 'RQ00' ? (
             <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
               <View style={DefaultStyle._card}>
