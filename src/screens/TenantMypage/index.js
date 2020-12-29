@@ -23,7 +23,7 @@ import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
-import ContractManager from '@Screeens/Page/ContractManager';
+import ContractManager from '@Screeens/Mypage/ContractManager';
 
 import InOutManager from './InOutManager';
 import SettlementManagement from './SettlementManagement';

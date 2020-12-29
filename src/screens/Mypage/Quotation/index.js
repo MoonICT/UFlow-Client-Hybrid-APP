@@ -30,6 +30,7 @@ import { Warehouse } from '@Services/apis';
 
 import { styles as S } from '../style';
 import { styles as SS } from './style';
+import RequestView from './requestView';
 
 class Quotation extends Component {
   constructor(props) {
@@ -103,7 +104,7 @@ class Quotation extends Component {
     ];
     const { dataApi, urlProps } = this.state;
 
-    let dataInfo = dataApi &&
+    let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
         {
           type: '창고명',
@@ -119,7 +120,8 @@ class Quotation extends Component {
         },
         {
           type: '선택 창고 유형',
-          value: this.coverStatus(status).processing,
+          // value: this.coverStatus(status).processing,
+          value: '임대 요청',
           highlight: true,
         },
         {
@@ -245,6 +247,99 @@ class Quotation extends Component {
         );
       });
 
+    let viewRequestTrust =
+      dataApi &&
+      dataApi.estmtTrusts &&
+      dataApi.estmtTrusts.map((item, index) => {
+        let dataRequest = [
+          {
+            type: '요청 일시',
+            value: item.occrYmd,
+          },
+          {
+            type: '요청 보관 기간',
+            value: item.from + ' - ' + item.to,
+          },
+          {
+            type: '요청 가용 면적',
+            value: item.rntlValue,
+          },
+          {
+            type: '정산단위',
+            value: this.coverStatus(status).processing,
+            highlight: true,
+          },
+          {
+            type: '보관유형',
+            // value: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
+          },
+          {
+            type: '보관비',
+            value: item.splyAmount,
+          },
+          {
+            type: '관리비',
+            value: item.mgmtChrg,
+          },
+          {
+            type: '추가 요청사항',
+            value: item.remark,
+          },
+        ];
+
+        return (
+          <Fragment key={index}>
+            {item.estmtDvCd === 'RQ00' ? (
+              <View
+                style={[DefaultStyle._cards, DefaultStyle._margin0]}
+                key={index}>
+                {(dataApi.estmtTrusts[index - 1] &&
+                  dataApi.estmtTrusts[index - 1].estmtDvCd !== 'RQ00') ||
+                !dataApi.estmtTrusts[index - 1] ? (
+                  <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
+                    <Text style={DefaultStyle._textTitleCard}>
+                      견적 요청 정보
+                    </Text>
+                    <View style={DefaultStyle._optionList}>
+                      <Select data={dataSelect} style={SS.optionSelect} />
+                    </View>
+                  </View>
+                ) : null}
+                <View style={DefaultStyle._card}>
+                  <View style={DefaultStyle._infoTable}>
+                    <TableInfo data={dataRequest} />
+                  </View>
+                </View>
+                <View style={DefaultStyle._footerCards}>
+                  <Text style={SS.amount}>예상 견적 금액</Text>
+                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
+                </View>
+              </View>
+            ) : null}
+            {item.estmtDvCd === 'RS00' ? (
+              <View
+                style={[DefaultStyle._cards, DefaultStyle._margin0]}
+                key={index}>
+                <View style={DefaultStyle._card}>
+                  <View style={DefaultStyle._headerCard}>
+                    <Text style={DefaultStyle._headerCardTitle}>
+                      견적 응답 정보
+                    </Text>
+                  </View>
+                  <View style={DefaultStyle._infoTable}>
+                    <TableInfo data={dataRequest} />
+                  </View>
+                </View>
+                <View style={DefaultStyle._footerCards}>
+                  <Text style={SS.amount}>예상 견적 금액</Text>
+                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
+                </View>
+              </View>
+            ) : null}
+          </Fragment>
+        );
+      });
+
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -295,89 +390,77 @@ class Quotation extends Component {
               // style={DefaultStyle._bodyCard}
               >
                 <View style={DefaultStyle._infoTable}>
-                  <TableInfo data={dataInfo} />
+                  <TableInfo data={dataKeep} />
                 </View>
               </View>
             </View>
           </View>
 
-          {viewRequest}
-          <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-            <View style={DefaultStyle._card}>
-              <View style={DefaultStyle._headerCard}>
-                <Text style={DefaultStyle._headerCardTitle}>
-                  견적 응답 정보
+          {
+            // typeWH === 'KEEP' ? viewRequest : viewRequestTrust
+          }
+          <RequestView data={dataApi} typeWH={typeWH && typeWH} />
+          {type === 'OWNER' && status === 'RQ00' ? (
+            <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
+                  <Text style={DefaultStyle._headerCardTitle}>
+                    견적 응답 정보
+                  </Text>
+                </View>
+                <Text style={S.noticeWaitting}>
+                  {type === 'OWNER' ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        // this.props.dataAction(this.state);
+                        this.navigation.navigate('ResponseQuotation', {
+                          typeWH,
+                          warehouseRegNo,
+                          warehSeq,
+                          rentUserNo,
+                          status,
+                        });
+                      }}
+                      style={[
+                        DefaultStyle._btnOutline,
+                        { flex: 0, marginRight: 16 },
+                      ]}
+                      // disabled={this.state.checked ? false : true}
+                    >
+                      <Text style={DefaultStyle._textButton}>
+                        견적 응답하기
+                      </Text>
+                    </TouchableOpacity>
+                  ) : (
+                    '창고주가 보내주신 견적 요청서를 확인하고 있습니다. 견적 응답이 올 때까지 잠시만 기다려 주세요.'
+                  )}
                 </Text>
-                {type === 'OWNER' && status === 'RS00' ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      // this.props.dataAction(this.state);
-                      this.navigation.navigate('ResponseQuotation', {
-                        typeWH,
-                        warehouseRegNo,
-                        warehSeq,
-                        rentUserNo,
-                        status,
-                      });
-                    }}
-                    style={[
-                      DefaultStyle._btnOutline,
-                      { flex: 0, marginRight: 16 },
-                    ]}
-                    // disabled={this.state.checked ? false : true}
-                  >
-                    <Text style={DefaultStyle._textButton}>견적 응답하기</Text>
-                  </TouchableOpacity>
-                ) : null}
               </View>
-              <Text style={S.noticeWaitting}>
-                {type === 'OWNER' ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      // this.props.dataAction(this.state);
-                      this.navigation.navigate('ResponseQuotation', {
-                        typeWH,
-                        warehouseRegNo,
-                        warehSeq,
-                        rentUserNo,
-                        status,
-                      });
-                    }}
-                    style={[
-                      DefaultStyle._btnOutline,
-                      { flex: 0, marginRight: 16 },
-                    ]}
-                    // disabled={this.state.checked ? false : true}
-                  >
-                    <Text style={DefaultStyle._textButton}>견적 응답하기</Text>
-                  </TouchableOpacity>
-                ) : (
-                  '  창고주가 보내주신 견적 요청서를 확인하고 있습니다. 견적 응답이 올 때까지 잠시만 기다려 주세요.'
-                )}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                // this.props.dataAction(this.state);
-                console.log('견적 재요청 :>> ');
-                this.navigation.navigate('StorageAgreement', { type });
-              }}
-              style={[
-                type === 'OWNER'
-                  ? DefaultStyle._btnInline
-                  : DefaultStyle._btnOutline,
-              ]}
-              // disabled={this.state.checked ? false : true}
-            >
-              <Text
+              {/**
+              <TouchableOpacity
+                onPress={() => {
+                  // this.props.dataAction(this.state);
+                  console.log('견적 재요청 :>> ');
+                  this.navigation.navigate('StorageAgreement', { type });
+                }}
                 style={[
-                  DefaultStyle._textButton,
-                  type === 'OWNER' ? DefaultStyle._textInline : null,
-                ]}>
-                견적 재요청
-              </Text>
-            </TouchableOpacity>
-          </View>
+                  type === 'OWNER'
+                    ? DefaultStyle._btnInline
+                    : DefaultStyle._btnOutline,
+                ]}
+                // disabled={this.state.checked ? false : true}
+              >
+                <Text
+                  style={[
+                    DefaultStyle._textButton,
+                    type === 'OWNER' ? DefaultStyle._textInline : null,
+                  ]}>
+                  견적 재요청
+                </Text>
+              </TouchableOpacity>  
+            */}
+            </View>
+          ) : null}
           {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             {route.params.status === 'notAnswerd' ? (
               <Fragment>

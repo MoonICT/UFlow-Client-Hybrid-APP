@@ -70,9 +70,9 @@ import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
 
 import ProprietorMypage from '@Screeens/ProprietorMypage';
 
-import Quotation from '@Screeens/Page/Quotation';
-import ResponseQuotation from '@Screeens/Page/ResponseQuotation';
-import StorageAgreement from '@Screeens/Page/StorageAgreement';
+import Quotation from '@Screeens/Mypage/Quotation';
+import ResponseQuotation from '@Screeens/Mypage/ResponseQuotation';
+import StorageAgreement from '@Screeens/Mypage/StorageAgreement';
 // import ContractDetails from '@Screeens/Page/ContractDetails';
 // import DetailsManager from '@Screeens/Page/DetailsManager';
 import Mypage from '@Screeens/Mypage';
@@ -158,7 +158,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = true;
+let isLogin = false;
 
 const App = () => {
   return (
