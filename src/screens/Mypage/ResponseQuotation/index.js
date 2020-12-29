@@ -189,7 +189,7 @@ class ResponseQuotation extends Component {
       showTo,
       isSubmit,
     } = this.state;
-    console.log('route', route);
+    console.log('routeRespon', route);
     console.log('this.state', this.state);
     return (
       <SafeAreaView style={S.container}>
@@ -250,58 +250,96 @@ class ResponseQuotation extends Component {
 
             {typeWH === 'TRUST' ? (
               <Fragment>
-                <View style={[S.row, { justifyContent: 'center' }]}>
+                <View
+                  style={[
+                    S.row,
+                    { justifyContent: 'center', marginBottom: 18 },
+                  ]}>
                   <View style={{ flex: 1 }}>
-                    <Select
-                      data={dataStoragePeriod}
-                      colorLabel="#000000"
-                      labelSelected="수탁 기간 "
-                      style={SS.select}
-                      valueProps={e => this.setState({ from: e })}
-                    />
+                    <TouchableOpacity
+                      onPress={this.showDatepicker}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {from.toLocaleDateString()}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        수탁 기간
+                      </Text>
+                      <DatePicker
+                        mode={mode}
+                        show={showFrom}
+                        onChange={this.onChangeFrom}
+                        value={from}
+                        testID="dateTimePicker"
+                      />
+                    </TouchableOpacity>
                   </View>
                   <Text style={SS.hyphen}>-</Text>
-
                   <View style={{ flex: 1 }}>
-                    <Select
-                      data={dataStoragePeriod2}
-                      style={SS.select}
-                      valueProps={e => this.setState({ to: e })}
-                    />
+                    <TouchableOpacity
+                      onPress={this.showDatepickerTo}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {to.toLocaleDateString()}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        수탁 기간
+                      </Text>
+                      <DatePicker
+                        mode={mode}
+                        show={showTo}
+                        onChange={this.onChangeTo}
+                        value={to}
+                        testID="dateTimePickerTo"
+                      />
+                    </TouchableOpacity>
+                    {/**<Select
+                  data={dataStoragePeriod2}
+                  style={SS.select}
+                  valueProps={e => this.setState({ to: e })}
+                />*/}
                   </View>
                 </View>
                 <TextField
                   colorLabel="#000000"
                   labelTextField="수탁 요청 사항"
-                  valueProps={e => this.setState({ requestConsignment: e })}
+                  valueProps={e => this.setState({ rntlValue: e })}
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="보관비"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ storageFee: e })}
+                  valueProps={e => this.setState({ splyAmount: e })}
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="입고단가"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ mgmtChrg: e })}
+                  valueProps={e => this.setState({ whinChrg: e })}
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="출고단가"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ shipPrice: e })}
+                  valueProps={e => this.setState({ whoutChrg: e })}
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="인건단가"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ laborCost: e })}
+                  valueProps={e => this.setState({ psnChrg: e })}
                 />
 
                 <TextField
@@ -309,14 +347,21 @@ class ResponseQuotation extends Component {
                   labelTextField="가공단가"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ processingPrice: e })}
+                  valueProps={e => this.setState({ mnfctChrg: e })}
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="택배단가 "
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ courierPrice: e })}
+                  valueProps={e => this.setState({ dlvyChrg: e })}
+                />
+                <TextField
+                  colorLabel="#000000"
+                  labelTextField="운송단가"
+                  textRight="원"
+                  placeholder="0"
+                  valueProps={e => this.setState({ shipChrg: e })}
                 />
                 <TextField
                   colorLabel="#000000"
@@ -406,16 +451,8 @@ class ResponseQuotation extends Component {
                         testID="dateTimePicker"
                       />
                     </TouchableOpacity>
-                    {/**<Select
-                      data={dataStoragePeriod}
-                      colorLabel="#000000"
-                      labelSelected="보관유형"
-                      style={SS.select}
-                      valueProps={e => this.setState({ from: e })}
-                    /> */}
                   </View>
                   <Text style={SS.hyphen}>-</Text>
-
                   <View style={{ flex: 1 }}>
                     <TouchableOpacity
                       onPress={this.showDatepickerTo}
@@ -428,7 +465,7 @@ class ResponseQuotation extends Component {
                           DefaultStyle._labelTextField,
                           { color: '#000000' },
                         ]}>
-                        보관 기간{' '}
+                        보관 기간
                       </Text>
                       <DatePicker
                         mode={mode}

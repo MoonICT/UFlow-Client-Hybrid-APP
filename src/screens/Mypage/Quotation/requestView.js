@@ -6,53 +6,32 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Card, Text, RadioButton } from 'react-native-paper';
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 import Select from '@Components/organisms/Select';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 // import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
-
-import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '@Actions';
-import warehouse1 from '@Assets/images/warehouse-1.png';
-import { Warehouse } from '@Services/apis';
-
-import { styles as S } from '../style';
 import { styles as SS } from './style';
 
-class requestView extends Component {
+class RequestView extends Component {
   constructor(props) {
     super(props);
-    this.webView = null;
     this.state = {};
-
-    this.navigation = props.navigation;
   }
   coverStatus = value => {
     switch (value) {
       case 'RQ00':
-        // code block
         return { processing: '견적 요청', data: [] };
       case 'RS00':
-        // code block
         return {
           data: [],
           processing: '견적 응답',
         };
 
       case '1100':
-        // code block
         return {
           data: [],
           processing: '계약 요청',
@@ -73,17 +52,14 @@ class requestView extends Component {
       // code block
     }
   };
-  coverTime = value => {
-    let time = new Date();
-    time.setTime(value);
-    let changeTime = time.toLocaleDateString();
-    console.log('changeTime', changeTime);
-  };
+  // coverTime = value => {
+  //   let time = new Date();
+  //   time.setTime(value);
+  //   let changeTime = time.toLocaleDateString();
+  //   console.log('changeTime', changeTime);
+  // };
   render() {
     const { route, data, typeWH } = this.props;
-    console.log('tessssssssssssssss', data);
-    console.log('typeWH', typeWH);
-
     const dataSelect = [
       {
         label: '2020.10.26 (1차)',
@@ -193,6 +169,7 @@ class requestView extends Component {
       data &&
       data.estmtTrusts &&
       data.estmtTrusts.map((item, index) => {
+        console.log('item', item.estimatedPrice);
         let dataRequest = [
           {
             type: '창고명',
@@ -270,7 +247,7 @@ class requestView extends Component {
                 <View style={DefaultStyle._card}>
                   <View style={DefaultStyle._headerCard}>
                     <Text style={DefaultStyle._headerCardTitle}>
-                      견적 응답 정보
+                      견적 요청 정보
                     </Text>
                   </View>
                   <View style={DefaultStyle._infoTable}>
@@ -309,22 +286,7 @@ function mapStateToProps(state) {
   };
 }
 
-/** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
-  return {
-    quotationData: action => {
-      dispatch(ActionCreator.quotationData(action));
-    },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(requestView);
+export default RequestView;
 
 const coverUnit = value => {
   switch (value.status) {

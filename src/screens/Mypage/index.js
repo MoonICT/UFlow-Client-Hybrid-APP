@@ -30,7 +30,7 @@ import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
-import ContractManager from '@Screeens/Page/ContractManager';
+import ContractManager from './ContractManager';
 import ActionCreator from '@Actions';
 
 import card from '@Assets/images/card-img.png';
@@ -442,11 +442,11 @@ class ProprietorMypage extends Component {
           <ContractManager
             dataSteps={dataSteps}
             navigation={this.navigation}
-            type="ProprietorMypage"
-            typeWH="Trust"
-            dataEstimate={dataEstimate}
-            dataRequest={dataRequest}
-            dataReply={dataReply}
+            // type="ProprietorMypage"
+            // typeWH="Trust"
+            // dataEstimate={dataEstimate}
+            // dataRequest={dataRequest}
+            // dataReply={dataReply}
           />
         );
         break;

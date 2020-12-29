@@ -540,6 +540,7 @@ class ContractManager extends Component {
             DefaultStyle._listElement,
             DefaultStyle._flexEnd,
             DefaultStyle._optionList,
+            { marginTop: 16 },
           ]}>
           <View style={[S.optionSelect, S.selectLong]}>
             <Select
