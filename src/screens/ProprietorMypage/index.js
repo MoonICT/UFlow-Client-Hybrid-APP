@@ -30,7 +30,7 @@ import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
-import ContractManager from '@Screeens/Page/ContractManager';
+import ContractManager from '@Screeens/Mypage/ContractManager';
 import ActionCreator from '@Actions';
 
 import card from '@Assets/images/card-img.png';
