@@ -20,6 +20,7 @@ import {
 } from 'react-native-paper';
 import { Provider } from 'react-redux';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // Local Imports
 //---> Screens
@@ -93,6 +94,9 @@ import { color } from '@Themes/colors';
 //Custom Theme
 import { theme } from '../themes';
 
+//Contants
+import { TOKEN } from 'contant';
+
 const store = initStore();
 
 // 메인 탭 옵션 설정.(Sample)
@@ -158,7 +162,9 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = true;
+let isLogin = false;
+const login = AsyncStorage.getItem(TOKEN);
+console.log('login===>', login);
 
 const App = () => {
   return (

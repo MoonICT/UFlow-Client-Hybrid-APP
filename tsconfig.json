@@ -28,6 +28,7 @@
       "@Store": ["src/store/*"],
       "@Styles": ["src/styles/*"],
       "@Themes": ["src/themes/*"],
+      "@Constant": ["src/constant/*"],
       "@Static/*": ["public/*"]
     }
   },

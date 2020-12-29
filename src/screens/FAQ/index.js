@@ -14,56 +14,104 @@ import { Appbar, List, Searchbar } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-
-import ProductCard from '@Components/organisms/ProductCard';
 import AppGrid from '@Components/organisms/AppGrid';
 import Accordion from '@Components/organisms/Accordion';
-
-import ActionCreator from '@Actions';
-import cardBG from '@Assets/images/card-img.png';
-
 import { styles as S } from './style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { FAQ } from '@Services/apis';
 
-const dataList = [
+import { debounce } from 'lodash'
+
+const tabDutyDvCode = [
   {
-    title: '간편결제(계좌이쳬)로 결제하면 현금영수증을 발급할 수 있나요?',
-    content:
-      '카카오페이(계좌이체), 네이버페이(계좌이체), 토스(계좌이체)로 결제 시,결제가 완료된 주문 건에 대하여 발급되며, 영업일 기준 최대 1일 정도 소요됩니다.• 경로 : 주문내역 > 간편결제(계좌이체) 주문 선택 > ‘현금 영수증 보기’ 클릭',
+    id: '',
+    title: 'Top 10'
   },
   {
-    title: '결제 취소는 어떻게 하나요?',
-    content: '결제 취소는 어떻게 하나요?',
-  },
-];
-const data = [
-  {
-    title: 'TOP10',
-    // content: dataList,
+    id: 'WHRG',
+    title: '창고등록'
   },
   {
-    title: '회원가입',
+    id: 'RTWH',
+    title: '공유창고'
   },
   {
-    title: '창고조회',
+    id: 'WHSR',
+    title: '창고조회'
   },
   {
-    title: '창고등록',
+    id: 'WHMC',
+    title: '창고매칭'
   },
   {
-    title: '창고등록5',
+    id: 'PRMM',
+    title: '프리미엄'
   },
   {
-    title: '창고등록6',
+    id: 'FFMT',
+    title: '풀필먼트'
+  },
+  {
+    id: 'CSSP',
+    title: '고객지원'
+  },
+  {
+    id: 'CNTR',
+    title: '계약'
+  },
+  {
+    id: 'MBSP',
+    title: '회원가입'
+  },
+  {
+    id: 'MANG',
+    title: '관리자'
+  },
+  {
+    id: 'SRVY',
+    title: '설문'
   },
 ];
 
 class RegisterWH extends Component {
+
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { active: 0, checked: true, checked2: false, activeIndex: 0 };
+    this.state = {
+      active: 0,
+      checked: true,
+      checked2: false,
+      activeIndex: 0,
+      dutyDvCode: '',
+      faqList: [],
+    };
     this.navigation = props.navigation;
+  }
+
+  /** when after render DOM */
+  async componentDidMount() {
+    this.fetchData()
+  }
+
+  fetchData(params) {
+    FAQ.getFAQList({ ...params, dutyDvCode: this.state.dutyDvCode })
+      .then(res => {
+        console.log('::::: FAQ List :::::', res);
+        if (res.status === 200) {
+          this.setState({
+            faqList: res.data._embedded.faqs,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+    SplashScreen.hide();
+  }
+
+  /** when update state or props */
+  componentDidUpdate(prevProps, prevState) {
+    // console.log('::componentDidUpdate::');
   }
 
   /** listener when change props */
@@ -73,36 +121,58 @@ class RegisterWH extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+    // console.log('::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
 
-  _renderProductItem = ({ item }) => {
-    return <ProductCard data={{ ...item, img: cardBG }} />;
-  };
   render() {
-    const { imageStore, workComplete } = this.props;
+
+    const { faqList } = this.state;
+    console.log('faqList -> ', faqList);
+
+    const Divider = () => {
+      return (
+        <View style={S.divider}></View>
+      )
+    }
+
+    const handleQueryChange = debounce((query) => {
+      this.fetchData({ query: query })
+    }, 500)
+
+    const handleClickTab = (tabName, index) => {
+      // console.log('tabName -> ', tabName);
+      // console.log('index -> ', index);
+      this.setState({ dutyDvCode: tabDutyDvCode[index].id }, function () {
+        this.fetchData()
+      });
+    }
+
     const items =
-      dataList &&
-      dataList.map((item, index) => {
+      faqList && faqList.length > 0 &&
+      faqList.map((item, index) => {
         return (
-          <List.Accordion
-            key={index}
-            style={DefaultStyle._titleAccordion}
-            title={item.title}
-            titleStyle={[DefaultStyle._contentAccordion,S.title]}
-            id={`${index}`}>
-            <List.Item
-              numberOfLines={5}
-              description={item.content}
-              titleStyle={S.descript}
-            />
-          </List.Accordion>
+          <View>
+            <List.Accordion
+              key={index}
+              style={DefaultStyle._titleAccordion}
+              title={item.qstnCountent}
+              titleStyle={[DefaultStyle._contentAccordion, S.title]}
+              id={`${index}`}>
+              <List.Item
+                numberOfLines={5}
+                description={item.rplyContent}
+                titleStyle={S.descript}
+              />
+            </List.Accordion>
+            <Divider />
+          </View>
         );
       });
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -123,29 +193,21 @@ class RegisterWH extends Component {
             <Searchbar
               inputStyle={S.searchInput}
               placeholder="검색하기"
-              onChangeText={query => {
-                this.setState({ firstQuery: query });
-              }}
+              // onChangeText={query => {
+              //   this.setState({ firstQuery: query });
+              // }}
+              onChangeText={(query) => handleQueryChange(query)}
               value={this.state.firstQuery}
             />
           </View>
-          <AppGrid data={data} />
+          <AppGrid data={tabDutyDvCode} titleProps={handleClickTab} />
           <Accordion type="group">{items}</Accordion>
         </ScrollView>
       </SafeAreaView>
     );
   }
 
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
 
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
 /** map state with store states redux store */
@@ -162,9 +224,6 @@ function mapDispatchToProps(dispatch) {
   return {
     // countUp: diff => {
     //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
     // },
   };
 }

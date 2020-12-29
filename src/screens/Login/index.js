@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2020-11-24 19:30:27
+ * @modify date 2020-12-29 13:58:32
  * @desc [description]
  */
 
@@ -19,7 +19,9 @@ import DefaultStyle from '../../styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
-import { Account } from '@Services/apis';
+// import { Account } from '@Services/apis';
+import { Account } from '../../services/apis';
+
 // import Cookie from 'js-cookie';
 // import getConfig from 'next/config';
 import AsyncStorage from '@react-native-community/async-storage';
