@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2020-12-30 14:51:14
+ * @modify date 2020-12-30 16:04:34
  * @desc [description]
  */
 
@@ -103,15 +103,7 @@ class ProductCard extends Component {
             <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
               {data?.name}
             </Text>
-
-            {data.keep && data.trust ? (
-              <View
-                style={{ borderTop: '1px #eaeaea solid', margin: '10px 0' }}
-              />
-            ) : (
-              ''
-            )}
-
+            
             {/* Badge */}
             <View style={styles.cardAction}>
               <TouchableOpacity
