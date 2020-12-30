@@ -95,7 +95,7 @@ import { color } from '@Themes/colors';
 import { theme } from '../themes';
 
 //Contants
-import { TOKEN } from 'contant';
+// import { TOKEN } from '@Constant';
 
 const store = initStore();
 
@@ -163,8 +163,8 @@ const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 let isLogin = false;
-const login = AsyncStorage.getItem(TOKEN);
-console.log('login===>', login);
+// const login = AsyncStorage.getItem(TOKEN);
+console.log('login===>', isLogin);
 
 const App = () => {
   return (

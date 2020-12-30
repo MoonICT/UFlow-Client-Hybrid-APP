@@ -78,7 +78,7 @@ class Quotation extends Component {
     let time = new Date();
     time.setTime(value);
     let changeTime = time.toLocaleDateString();
-    console.log('changeTime', changeTime);
+    return changeTime;
   };
   render() {
     // const { imageStore } = this.props;
@@ -90,7 +90,7 @@ class Quotation extends Component {
     const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
     const status = route && route.params && route.params.status;
-    console.log('route3333', route);
+    console.log('routeQutation', route);
 
     const dataSelect = [
       {
@@ -102,8 +102,7 @@ class Quotation extends Component {
         value: '2020.10.26 (1차)2',
       },
     ];
-    const { dataApi, urlProps } = this.state;
-
+    const { dataApi } = this.state;
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
         {
@@ -138,207 +137,90 @@ class Quotation extends Component {
         },
         {
           type: '가용면적',
-          value: dataApi.whrgMgmtKeep.cmnArea,
+          value: dataApi.whrgMgmtKeep.usblValue,
         },
         {
-          type: '보관 가능기간',
+          type: '임대 가능 기간',
           value: this.coverTime(dataApi.whrgMgmtKeep.usblYmdFrom),
         },
         {
-          type: '보관비',
+          type: '보관단가',
           value: dataApi.whrgMgmtKeep.splyAmount,
         },
         {
-          type: '관리비',
+          type: '관리단가',
           value: dataApi.whrgMgmtKeep.mgmtChrg,
         },
       ];
-
-    let viewRequest =
-      dataApi &&
-      dataApi.estmtKeeps &&
-      dataApi.estmtKeeps.map((item, index) => {
-        let dataRequest = [
-          {
-            type: '요청 일시',
-            value: item.occrYmd,
-          },
-          {
-            type: '요청 보관 기간',
-            value: item.from + ' - ' + item.to,
-          },
-          {
-            type: '요청 가용 면적',
-            value: item.rntlValue,
-          },
-          {
-            type: '정산단위',
-            value: this.coverStatus(status).processing,
-            highlight: true,
-          },
-          {
-            type: '보관유형',
-            value: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
-          },
-          {
-            type: '보관비',
-            value: item.splyAmount,
-          },
-          {
-            type: '관리비',
-            value: item.mgmtChrg,
-          },
-          {
-            type: '추가 요청사항',
-            value: item.remark,
-          },
-        ];
-
-        return (
-          <Fragment key={index}>
-            {item.estmtDvCd === 'RQ00' ? (
-              <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0]}
-                key={index}>
-                {(dataApi.estmtKeeps[index - 1] &&
-                  dataApi.estmtKeeps[index - 1].estmtDvCd !== 'RQ00') ||
-                !dataApi.estmtKeeps[index - 1] ? (
-                  <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
-                    <Text style={DefaultStyle._textTitleCard}>
-                      견적 요청 정보
-                    </Text>
-                    <View style={DefaultStyle._optionList}>
-                      <Select data={dataSelect} style={SS.optionSelect} />
-                    </View>
-                  </View>
-                ) : null}
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest} />
-                  </View>
-                </View>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={SS.amount}>예상 견적 금액</Text>
-                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
-                </View>
-              </View>
-            ) : null}
-            {item.estmtDvCd === 'RS00' ? (
-              <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0]}
-                key={index}>
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._headerCard}>
-                    <Text style={DefaultStyle._headerCardTitle}>
-                      견적 응답 정보
-                    </Text>
-                  </View>
-                  <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest} />
-                  </View>
-                </View>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={SS.amount}>예상 견적 금액</Text>
-                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
-                </View>
-              </View>
-            ) : null}
-          </Fragment>
-        );
-      });
-
-    let viewRequestTrust =
-      dataApi &&
-      dataApi.estmtTrusts &&
-      dataApi.estmtTrusts.map((item, index) => {
-        let dataRequest = [
-          {
-            type: '요청 일시',
-            value: item.occrYmd,
-          },
-          {
-            type: '요청 보관 기간',
-            value: item.from + ' - ' + item.to,
-          },
-          {
-            type: '요청 가용 면적',
-            value: item.rntlValue,
-          },
-          {
-            type: '정산단위',
-            value: this.coverStatus(status).processing,
-            highlight: true,
-          },
-          {
-            type: '보관유형',
-            // value: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
-          },
-          {
-            type: '보관비',
-            value: item.splyAmount,
-          },
-          {
-            type: '관리비',
-            value: item.mgmtChrg,
-          },
-          {
-            type: '추가 요청사항',
-            value: item.remark,
-          },
-        ];
-
-        return (
-          <Fragment key={index}>
-            {item.estmtDvCd === 'RQ00' ? (
-              <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0]}
-                key={index}>
-                {(dataApi.estmtTrusts[index - 1] &&
-                  dataApi.estmtTrusts[index - 1].estmtDvCd !== 'RQ00') ||
-                !dataApi.estmtTrusts[index - 1] ? (
-                  <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
-                    <Text style={DefaultStyle._textTitleCard}>
-                      견적 요청 정보
-                    </Text>
-                    <View style={DefaultStyle._optionList}>
-                      <Select data={dataSelect} style={SS.optionSelect} />
-                    </View>
-                  </View>
-                ) : null}
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest} />
-                  </View>
-                </View>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={SS.amount}>예상 견적 금액</Text>
-                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
-                </View>
-              </View>
-            ) : null}
-            {item.estmtDvCd === 'RS00' ? (
-              <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0]}
-                key={index}>
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._headerCard}>
-                    <Text style={DefaultStyle._headerCardTitle}>
-                      견적 응답 정보
-                    </Text>
-                  </View>
-                  <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest} />
-                  </View>
-                </View>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={SS.amount}>예상 견적 금액</Text>
-                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
-                </View>
-              </View>
-            ) : null}
-          </Fragment>
-        );
-      });
+    let dataTrust = dataApi &&
+      typeWH === 'TRUST' && [
+        {
+          type: '창고명',
+          value: dataApi.warehouse.warehouse,
+        },
+        {
+          type: '창고주',
+          value: dataApi.warehouse.owner,
+        },
+        {
+          type: '위치',
+          value: dataApi.warehouse.address,
+        },
+        {
+          type: '선택 창고 유형',
+          // value: this.coverStatus(status).processing,
+          value: '수탁',
+          highlight: true,
+        },
+        {
+          type: '보관유형',
+          value: dataApi.whrgMgmtTrust.typeCode.stdDetailCodeName,
+        },
+        {
+          type: '정산단위',
+          value: dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
+        },
+        {
+          type: '산정기준',
+          value: dataApi.whrgMgmtTrust.calStdDvCode.stdDetailCodeName,
+        },
+        {
+          type: '수탁 가능 기간',
+          value: this.coverTime(dataApi.whrgMgmtTrust.usblYmdFrom),
+        },
+        {
+          type: '수탁 가용 수량',
+          value: dataApi.whrgMgmtTrust.usblValue,
+        },
+        {
+          type: '보관단가',
+          value: dataApi.whrgMgmtTrust.splyAmount,
+        },
+        {
+          type: '입고단가',
+          value: dataApi.whrgMgmtTrust.whinChrg,
+        },
+        {
+          type: '출고단가',
+          value: dataApi.whrgMgmtTrust.whoutChrg,
+        },
+        {
+          type: '인건단가',
+          value: dataApi.whrgMgmtTrust.psnChrg,
+        },
+        {
+          type: '가용면적',
+          value: dataApi.whrgMgmtTrust.mnfctChrg,
+        },
+        {
+          type: '택배단가',
+          value: dataApi.whrgMgmtTrust.dlvyChrg,
+        },
+        {
+          type: '운송단가',
+          value: dataApi.whrgMgmtTrust.shipChrg,
+        },
+      ];
 
     return (
       <SafeAreaView style={DefaultStyle._container}>
@@ -390,7 +272,7 @@ class Quotation extends Component {
               // style={DefaultStyle._bodyCard}
               >
                 <View style={DefaultStyle._infoTable}>
-                  <TableInfo data={dataKeep} />
+                  <TableInfo data={typeWH === 'KEEP' ? dataKeep : dataTrust} />
                 </View>
               </View>
             </View>
@@ -400,7 +282,8 @@ class Quotation extends Component {
             // typeWH === 'KEEP' ? viewRequest : viewRequestTrust
           }
           <RequestView data={dataApi} typeWH={typeWH && typeWH} />
-          {type === 'OWNER' && status === 'RQ00' ? (
+          {// type === 'OWNER' &&
+          status === 'RQ00' ? (
             <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
@@ -419,6 +302,7 @@ class Quotation extends Component {
                           warehSeq,
                           rentUserNo,
                           status,
+                          type,
                         });
                       }}
                       style={[
