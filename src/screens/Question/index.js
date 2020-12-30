@@ -55,9 +55,9 @@ class QuestionScreen extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  handleChangeEmail = (e) => this.setState({ email: e })
+  handleChangeEmail = (value) => this.setState({ email: value })
 
-  handleChangeContent = (e) => this.setState({ content: e })
+  handleChangeContent = (value) => this.setState({ content: value })
 
   onSubmit = () => {
     this.fetchData();
