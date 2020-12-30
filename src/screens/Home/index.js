@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-12-03 11:31:18
+ * @modify date 2020-12-30 10:44:51
  * @desc [description]
  */
 
@@ -68,7 +68,7 @@ import appstore1 from '@Assets/images/appstore-1.png';
 import appstore2 from '@Assets/images/appstore-2.png';
 import logoWhite from '@Assets/images/logo-white.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Account } from '@Services/apis';
+import { Account, Warehouse } from '@Services/apis';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
@@ -363,7 +363,7 @@ class Home extends Component {
   };
 
   render() {
-    const { showPopup, route,isLogin } = this.props;
+    const { showPopup, route, isLogin } = this.props;
     console.log('isLoginHome :>> ', isLogin);
     const { token } = this.state;
 
@@ -819,7 +819,8 @@ function mapStateToProps(state) {
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps(dispatch) {
+async function mapDispatchToProps(dispatch) {
+  const page = await Warehouse.listRecommend();
   return {
     showPopup: status => {
       dispatch(
