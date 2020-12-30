@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2020-12-29 13:58:32
+ * @modify date 2020-12-30 09:41:21
  * @desc [description]
  */
 
@@ -56,6 +56,7 @@ class Login extends Component {
 
   handleOnClickLogin = data => {
     console.log(data);
+    this.navigation.navigate('Home');
     // setValues({ ...values, data });
     // Sign in
     Account.signIn({
