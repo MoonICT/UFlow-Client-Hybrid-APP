@@ -162,7 +162,7 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-let isLogin = false;
+let isLogin = true;
 // const login = AsyncStorage.getItem(TOKEN);
 console.log('login===>', isLogin);
 
