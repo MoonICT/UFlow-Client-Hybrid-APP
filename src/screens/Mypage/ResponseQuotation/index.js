@@ -136,7 +136,7 @@ class ResponseQuotation extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   togglePopupInfo = () => this.setState({ visible: !this.state.visible });

@@ -15,8 +15,8 @@ export default (state = defaultState, action) => {
 };
 
 let loginAccount = (state, isLogin) => {
-  console.log('state', state);
-  console.log('isLogin', isLogin);
+  // console.log('state', state);
+  // console.log('isLogin', isLogin);
   try {
     // let imageUpload = [...state.pimages];
     // imageUpload.push(image);

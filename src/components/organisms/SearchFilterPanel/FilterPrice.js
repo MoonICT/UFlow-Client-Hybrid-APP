@@ -115,7 +115,7 @@ class FilterPrice extends Component {
   }
 
   componentWillUnmount () {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {

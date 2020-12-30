@@ -51,7 +51,7 @@ class Login extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   handleOnClickLogin = data => {
