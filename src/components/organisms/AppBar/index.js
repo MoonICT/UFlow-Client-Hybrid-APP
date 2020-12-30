@@ -21,7 +21,7 @@ class AppBars extends Component {
   render() {
     const {children} = this.props;
     return (
-      <View style={[DefaultStyle.header, styles.container]} {...this.props}>
+      <View style={[DefaultStyle.header, styles.container, this.props.customStyle]} {...this.props}>
         {children}
       </View>
     );
