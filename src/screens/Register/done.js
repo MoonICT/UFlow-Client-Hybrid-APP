@@ -40,7 +40,7 @@ class DoneRegister extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   render() {

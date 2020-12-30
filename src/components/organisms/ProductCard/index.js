@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2020-11-24 18:27:19
+ * @modify date 2020-12-30 16:04:34
  * @desc [description]
  */
 
@@ -16,14 +16,31 @@ import { Card } from 'react-native-paper';
 import cardBG from '@Assets/images/card-img.png';
 
 class ProductCard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       isHorizontal: this.props.type === 'HORIZONTAL',
     };
   }
 
-  render () {
+  badgeColor = code => {
+    switch (code.toString()) {
+      case '0001': // 냉동
+        return 'blue';
+      case '0002': // 냉장
+        return 'green';
+      case '0003': // 상온
+        return 'orange';
+      case '0004': // 위험물
+        return 'red';
+      case '9100': // 기타
+        return 'gray';
+      default:
+        return 'gray';
+    }
+  };
+
+  render() {
     let { data } = this.props;
     if (data === undefined) {
       data = {
@@ -33,39 +50,60 @@ class ProductCard extends Component {
         price: '12,345평',
         address: '경기도 화천시 부평읍',
         totalPrice: '60,000원/평',
-        badgeType: true
+        badgeType: true,
       };
     }
 
     return (
       <View
-        style={[styles.container, { height: this.state.isHorizontal ? 124 : 261 }, this.props.isShadow && styles.shadow]}>
-        <View style={[styles.innerWrap, (this.state.isHorizontal && styles.innerWrapHorizon)]}>
-
+        style={[
+          styles.container,
+          { height: this.state.isHorizontal ? 124 : 261 },
+          this.props.isShadow && styles.shadow,
+        ]}>
+        <View
+          style={[
+            styles.innerWrap,
+            this.state.isHorizontal && styles.innerWrapHorizon,
+          ]}>
           {/** Image */}
           <View style={styles.imageWrap}>
-            <Card.Cover source={data.img}
-                        style={[styles.cardImage, (this.state.isHorizontal && styles.cardImageHorizon)]} />
-            <View style={[styles.badge, (data.badgeType && styles.badgeRed)]}>
+            <Card.Cover
+              source={{ uri: data.img }}
+              style={[
+                styles.cardImage,
+                this.state.isHorizontal && styles.cardImageHorizon,
+              ]}
+            />
+            <View style={[styles.badge, data.badgeType && styles.badgeRed]}>
               <Text style={[styles.badgeLabel]}>
-                {data.badge ? '가맹창고' : '제휴창고'}
+                {data?.badge ? '가맹창고' : '제휴창고'}
               </Text>
             </View>
           </View>
 
           {/** Contents */}
-          <View style={[styles.contentWrap, (this.state.isHorizontal && styles.contentWrapHorizon)]}>
+          <View
+            style={[
+              styles.contentWrap,
+              this.state.isHorizontal && styles.contentWrapHorizon,
+            ]}>
+            {/* Title */}
+            <Text
+              style={[
+                styles.fontColor2,
+                styles.medium,
+                styles.font14,
+                { marginBottom: 3 },
+              ]}>
+              {data?.name}
+            </Text>
 
             {/* Category */}
-            <Text style={[styles.fontColor1, styles.regular, styles.font9,]}>
-              {data.type}
+            <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
+              {data?.name}
             </Text>
-
-            {/* Title */}
-            <Text style={[styles.fontColor2, styles.medium, styles.font14, { marginBottom: 3, }]}>
-              {data.title}
-            </Text>
-
+            
             {/* Badge */}
             <View style={styles.cardAction}>
               <TouchableOpacity
@@ -117,7 +155,7 @@ class ProductCard extends Component {
 // Check Props Type.
 ProductCard.defaultProps = {
   isShadow: true,
-}
+};
 ProductCard.protoType = {
   data: PropTypes.object,
   type: PropTypes.string, // VERTICAL(Default), HORIZONTAL

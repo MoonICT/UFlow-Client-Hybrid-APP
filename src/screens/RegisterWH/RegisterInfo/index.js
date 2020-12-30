@@ -107,7 +107,7 @@ class RegisterInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   _addForm = valueTab => {

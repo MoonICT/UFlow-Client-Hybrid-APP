@@ -452,13 +452,17 @@ export const pageWhrg = ({
   });
 };
 
+//=====================================================================================================================
+/** WareHouse Home Page */
+
 /**
  * 추천 알고리즘 창고
  * @returns {Promise<unknown>}
-**/
-export const listRecommend = () => {
-  return Axios.request({
+ **/
+export const listRecommend = async () => {
+  const data = await mainAxios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/recommend`,
   });
+  return data;
 };
