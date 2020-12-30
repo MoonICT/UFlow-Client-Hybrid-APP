@@ -89,6 +89,7 @@ class Quotation extends Component {
     console.log('routeQutation', route);
 
     const { dataApi } = this.state;
+    console.log('dataApiQuatation', dataApi);
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
         {
@@ -281,7 +282,6 @@ class Quotation extends Component {
                   {type === 'OWNER' ? (
                     <TouchableOpacity
                       onPress={() => {
-                        // this.props.dataAction(this.state);
                         this.navigation.navigate('ResponseQuotation', {
                           typeWH,
                           warehouseRegNo,
@@ -306,29 +306,63 @@ class Quotation extends Component {
                   )}
                 </Text>
               </View>
-              {/**
-              <TouchableOpacity
-                onPress={() => {
-                  // this.props.dataAction(this.state);
-                  console.log('견적 재요청 :>> ');
-                  this.navigation.navigate('StorageAgreement', { type });
-                }}
-                style={[
-                  type === 'OWNER'
-                    ? DefaultStyle._btnInline
-                    : DefaultStyle._btnOutline,
-                ]}
-                // disabled={this.state.checked ? false : true}
-              >
-                <Text
+              {type === 'TENANT' ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    // this.props.dataAction(this.state);
+                    this.navigation.navigate('ResponseQuotation', {
+                      typeWH,
+                      warehouseRegNo,
+                      warehSeq,
+                      rentUserNo,
+                      status,
+                      type,
+                    });
+                  }}
                   style={[
-                    DefaultStyle._textButton,
-                    type === 'OWNER' ? DefaultStyle._textInline : null,
-                  ]}>
-                  견적 재요청
-                </Text>
-              </TouchableOpacity>  
-            */}
+                    type === 'OWNER'
+                      ? DefaultStyle._btnInline
+                      : DefaultStyle._btnOutline,
+                  ]}
+                  // disabled={this.state.checked ? false : true}
+                >
+                  <Text style={[DefaultStyle._textButton]}>견적 재요청</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          ) : null}
+          {
+            //BUTTON RESQUEST QUATATION AND CONTRACT REQUIREMENTS
+            type === 'TENANT' && status === 'RS00' ? (
+            <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+              <View style={DefaultStyle._listBtn}>
+                <TouchableOpacity
+                  style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
+                  onPress={() => {
+                    this.navigation.navigate('ResponseQuotation', {
+                      typeWH,
+                      warehouseRegNo,
+                      warehSeq,
+                      rentUserNo,
+                      status,
+                      type,
+                    });
+                  }}
+                  >
+                  <Text style={DefaultStyle._textButton}>견적 재요청</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
+                  onPress={() => this.navigation.navigate('ConfirmPass')}>
+                  <Text
+                    style={[
+                      DefaultStyle._textButton,
+                      DefaultStyle._textInline,
+                    ]}>
+                    계약 요청
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           ) : null}
           {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
