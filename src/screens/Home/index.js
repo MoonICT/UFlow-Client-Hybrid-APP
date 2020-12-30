@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-12-03 11:31:18
+ * @modify date 2020-12-30 14:26:17
  * @desc [description]
  */
 
@@ -68,7 +68,7 @@ import appstore1 from '@Assets/images/appstore-1.png';
 import appstore2 from '@Assets/images/appstore-2.png';
 import logoWhite from '@Assets/images/logo-white.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Account } from '@Services/apis';
+import { Account, Warehouse } from '@Services/apis';
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
@@ -312,16 +312,18 @@ class Home extends Component {
       activeIndex: 0,
       isShow: false,
       expanded: true,
+      whList: [],
     };
     this.navigation = props.navigation;
     this.fcm = new FCMService();
   }
+
   shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   _renderItem = ({ item }) => {
@@ -351,7 +353,8 @@ class Home extends Component {
   };
 
   _renderProductItem = ({ item }) => {
-    return <ProductCard data={{ ...item, img: cardBG }} />;
+    console.log("item",item);
+    return <ProductCard data={{ ...item, img: item.thumbnail || cardBG }} />;
   };
 
   _renderStepItem = ({ item }) => {
@@ -362,10 +365,30 @@ class Home extends Component {
     this.setState({ showRealApp: true });
   };
 
+  /** Check Change Status of Props */
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.defaultList !== prevState.defaultList) {
+  //     return { defaultList: nextProps.defaultList };
+  //   }
+  //   return null;
+  // }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.defaultList !== this.props.defaultList) {
+  //     console.log('defaultList==>', this.props.defaultList);
+  //     //Perform some operation here
+  //     this.setState({ whList: this.props.defaultList });
+  //   }
+  // }
+
+  /*=======================================================*/
+
   render() {
-    const { showPopup, route,isLogin } = this.props;
+    const { showPopup, route, isLogin } = this.props;
     console.log('isLoginHome :>> ', isLogin);
-    const { token } = this.state;
+    const { whList } = this.state;
+
+    console.log('whList======>', whList);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -513,7 +536,7 @@ class Home extends Component {
             <View style={styles.mainProductList}>
               <CarouselSnap
                 layout={'default'}
-                data={slidesProduct}
+                data={whList}
                 sliderWidth={328}
                 itemWidth={160}
                 renderItem={this._renderProductItem}
@@ -770,47 +793,27 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    // console.log('::componentDidMount::');
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
-    // const value = await AsyncStorage.getItem('token');
-    // Account.getMe()
-    //   .then(res => {
-    //     console.log('::::: Get Me :::::', res);
-    //     const status = res.status;
-    //     if (status === 200) {
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log('errHome', err);
-    //   });
-    // if (value) {
-    //   this.setState({ token: value });
-    // }
-
-    // async () => {
-    //   try {
-    //     const value = await AsyncStorage.getItem('token');
-    //     if (value !== null) {
-    //       // We have data!!f
-    //       console.log('value', value);
-    //     }
-    //   } catch (error) {
-    //     // Error retrieving data
-    //   }
-    // };
     /** Complete Initialize. */
-    SplashScreen.hide();
-  }
+    let page = await Warehouse.listRecommend();
+    page = page?.data;
 
-  // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+    let list =
+      page._embedded && page._embedded.warehouses
+        ? page._embedded.warehouses
+        : [];
+    console.log('++++++list: ', list);
+    this.setState({ whList: list });
+
+    
+    SplashScreen.hide();
   }
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps(state) {
+async function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,

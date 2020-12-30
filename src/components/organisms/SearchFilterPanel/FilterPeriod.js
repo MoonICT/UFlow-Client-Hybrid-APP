@@ -86,7 +86,7 @@ class FilterPeriod extends Component {
   }
 
   componentWillUnmount () {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {

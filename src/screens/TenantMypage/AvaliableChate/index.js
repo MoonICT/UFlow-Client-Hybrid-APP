@@ -184,7 +184,7 @@ class AvaliableChate extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });

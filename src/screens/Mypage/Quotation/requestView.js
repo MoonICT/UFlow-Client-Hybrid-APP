@@ -77,7 +77,7 @@ class RequestView extends Component {
       data.estmtKeeps.map((item, index) => {
         let dataRequest = [
           {
-            type: '요청 일시',
+            type: item.estmtDvCd === 'RQ00' ? '요청 일시' : '응답 일시',
             value: item.occrYmd,
           },
           {
@@ -172,41 +172,49 @@ class RequestView extends Component {
         console.log('item', item.estimatedPrice);
         let dataRequest = [
           {
-            type: '창고명',
-            value: data.warehouse.warehouse,
+            type: item.estmtDvCd === 'RQ00' ? '요청 일시' : '응답 일시',
+            value: item.occrYmd,
           },
           {
-            type: '창고주',
+            type: '수탁기간',
             value: data.warehouse.owner,
           },
           {
-            type: '위치',
+            type: '수탁 요청 수량',
+            value: data.warehouse.owner,
+          },
+          {
+            type: '요청 보관비',
             value: data.warehouse.address,
           },
           {
-            type: '선택 창고 유형',
+            type: '요청 입고단가',
             // value: this.coverStatus(status).processing,
             value: '수탁',
             highlight: true,
           },
           {
-            type: '보관유형',
+            type: '요청 출고단가',
             value: item.estmtDvCd,
           },
           {
-            type: '정산단위',
+            type: '요청 인건단가',
             value: item.calUnitDvCode,
           },
           {
-            type: '관리비',
+            type: '요청 가공단가',
             value: item.calStdDvCode,
           },
           {
-            type: '수탁 가능 기간',
+            type: '요청 택배단가',
             value: item.from + ' - ' + item.to,
           },
           {
-            type: '수탁 가용 수량',
+            type: '요청 운송단가',
+            value: item.from + ' - ' + item.to,
+          },
+          {
+            type: '추가 요청 사항',
             value: item.from + ' - ' + item.to,
           },
         ];
@@ -234,10 +242,6 @@ class RequestView extends Component {
                     <TableInfo data={dataRequest} />
                   </View>
                 </View>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={SS.amount}>예상 견적 금액</Text>
-                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
-                </View>
               </View>
             ) : null}
             {item.estmtDvCd === 'RS00' ? (
@@ -253,10 +257,6 @@ class RequestView extends Component {
                   <View style={DefaultStyle._infoTable}>
                     <TableInfo data={dataRequest} />
                   </View>
-                </View>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={SS.amount}>예상 견적 금액</Text>
-                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
                 </View>
               </View>
             ) : null}

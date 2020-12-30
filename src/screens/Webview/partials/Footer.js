@@ -91,7 +91,7 @@ export default class Footer extends Component {
   // 컴포넌트가 소멸된 시점에(DOM에서 삭제된 후) 실행되는 메소드다.
   // 컴포넌트 내부에서 타이머나 비동기 API를 사용하고 있을 때, 이를 제거하기에 유용하다.
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
     if (Platform.OS === 'android') {
       BackHandler.removeEventListener('hardwareBackPress', this._handleBackButtonClick.bind(this));
     }

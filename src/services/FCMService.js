@@ -88,7 +88,7 @@ class FCMService {
       });
     }
     this.token = fcmToken;
-    console.log('::::: FCM Device Token | ' + Platform.OS + ' :::::', fcmToken);
+    // console.log('::::: FCM Device Token | ' + Platform.OS + ' :::::', fcmToken);
   }
 
   /**
