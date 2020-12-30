@@ -51,7 +51,7 @@ class FormInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   onChangeText = () => console.log('_addImage');

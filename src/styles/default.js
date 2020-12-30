@@ -49,6 +49,13 @@ export default StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontWeight: 'bold',
   },
+  headerTitleWhite: {
+    fontSize: 16,
+    color: 'white',
+    lineHeight: 21,
+    // fontFamily: 'NotoSansCJKkr-Medium',
+    fontWeight: 'bold',
+  },
   _textHeaderRight: {
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
