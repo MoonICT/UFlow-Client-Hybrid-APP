@@ -24,7 +24,6 @@ import DefaultStyle from '@Styles/default';
 import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
 import CardMypage from '@Components/organisms/CardMypage';
-import ResponseTrust from './trust';
 
 import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
