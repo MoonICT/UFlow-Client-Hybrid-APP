@@ -14,9 +14,7 @@ import {
   Image,
 } from 'react-native';
 import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Card, Text, RadioButton } from 'react-native-paper';
-import Select from '@Components/organisms/Select';
+import { Appbar, Text } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -29,7 +27,6 @@ import warehouse1 from '@Assets/images/warehouse-1.png';
 import { Warehouse } from '@Services/apis';
 
 import { styles as S } from '../style';
-import { styles as SS } from './style';
 import RequestView from './requestView';
 
 class Quotation extends Component {
@@ -84,7 +81,6 @@ class Quotation extends Component {
     // const { imageStore } = this.props;
     const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
-    // const dataRequest = route && route.params && route.params.dataRequest;
     const warehSeq = route && route.params && route.params.warehSeq;
     const rentUserNo = route && route.params && route.params.rentUserNo;
     const type = route && route.params && route.params.type;
@@ -92,16 +88,6 @@ class Quotation extends Component {
     const status = route && route.params && route.params.status;
     console.log('routeQutation', route);
 
-    const dataSelect = [
-      {
-        label: '2020.10.26 (1차)',
-        value: '2020.10.26 (1차)',
-      },
-      {
-        label: '2020.10.26 (1차)2',
-        value: '2020.10.26 (1차)2',
-      },
-    ];
     const { dataApi } = this.state;
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
@@ -462,6 +448,8 @@ class Quotation extends Component {
       warehSeq +
       '/' +
       rentUserNo;
+    let urlTenant = type + '/' + warehouseRegNo + '/' + typeWH + '/' + warehSeq;
+
     let urlProps =
       type +
       '/warehouse/' +
@@ -472,12 +460,24 @@ class Quotation extends Component {
       warehSeq +
       '/' +
       rentUserNo;
-    await Warehouse.quotation(url)
+
+    let urlPropsTenant =
+      type + '/warehouse/' + warehouseRegNo + '/' + typeWH + '/' + warehSeq;
+    console.log('urlTenant', urlTenant);
+    await Warehouse.quotation(
+      this.props.route.params.type === 'OWNER' ? url : urlTenant,
+    )
       .then(res => {
         const status = res.status;
         console.log('res', res);
         if (status === 200) {
-          this.setState({ dataApi: res.data, urlProps: urlProps });
+          this.setState({
+            dataApi: res.data,
+            urlProps:
+              this.props.route.params.type === 'OWNER'
+                ? urlProps
+                : urlPropsTenant,
+          });
           // this.props.quotationData(res.data);
         }
       })
@@ -508,9 +508,6 @@ function mapDispatchToProps(dispatch) {
     quotationData: action => {
       dispatch(ActionCreator.quotationData(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 
@@ -518,11 +515,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Quotation);
-
-const coverUnit = value => {
-  switch (value.status) {
-    case 'RQ00':
-      // code block
-      return;
-  }
-};
