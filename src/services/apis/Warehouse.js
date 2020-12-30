@@ -52,7 +52,6 @@ export const quotation = async type => {
   });
 };
 export const responQuotation = async value => {
-  console.log('type', value);
   const token = await AsyncStorage.getItem('token');
   return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
     headers: {
