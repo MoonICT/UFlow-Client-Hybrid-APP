@@ -300,14 +300,12 @@ class ContractManager extends Component {
   render() {
     const {
       dataSteps,
-      dataEstimate,
-      dataRequest,
-      dataReply,
       type,
       typeWH,
       dataContractWH,
     } = this.props;
     const { valueTab, dataApi, contractType, contractStatus } = this.state;
+    console.log('dataContractWH', dataContractWH)
     // Data Filter type and status
     let dataFilter =
       dataContractWH &&
@@ -374,9 +372,6 @@ class ContractManager extends Component {
               onPressHeader={() =>
                 this.navigation.navigate('Quotation', {
                   type: valueTab,
-                  dataEstimate,
-                  dataRequest,
-                  dataReply,
                   typeWH: item.type2,
                   warehouseRegNo: item.warehouseRegNo,
                   warehSeq: item.warehSeq,
@@ -411,9 +406,6 @@ class ContractManager extends Component {
                           this.navigation.navigate('ResponseQuotation', {
                             // status: 'Answerd',
                             type: valueTab,
-                            dataEstimate,
-                            dataRequest,
-                            dataReply,
                             typeWH: item.type2,
                             warehouseRegNo: item.warehouseRegNo,
                             warehSeq: item.warehSeq,
