@@ -451,3 +451,14 @@ export const pageWhrg = ({
     },
   });
 };
+
+/**
+ * 추천 알고리즘 창고
+ * @returns {Promise<unknown>}
+**/
+export const listRecommend = () => {
+  return Axios.request({
+    methodType: 'GET',
+    url: `/api/v1/warehouse/recommend`,
+  });
+};
