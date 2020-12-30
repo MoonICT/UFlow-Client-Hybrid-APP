@@ -136,7 +136,7 @@ class FilterScale extends Component {
   }
 
   componentWillUnmount () {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {

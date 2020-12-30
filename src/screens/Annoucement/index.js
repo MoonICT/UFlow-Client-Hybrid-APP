@@ -27,16 +27,6 @@ class RegisterWH extends Component {
     this.navigation = props.navigation;
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    console.log('::componentWillUnmount::');
-  }
-
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
@@ -88,6 +78,16 @@ class RegisterWH extends Component {
     );
   }
 
+  /** listener when change props */
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
+
+  /** when exits screen */
+  componentWillUnmount() {
+  //console.log('//::componentWillUnmount::');
+  }
+
   /** when after render DOM */
   async componentDidMount() {
     Annoucement.getListAnnoucement()
@@ -125,9 +125,6 @@ function mapDispatchToProps(dispatch) {
   return {
     // countUp: diff => {
     //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
     // },
   };
 }

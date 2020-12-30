@@ -71,7 +71,7 @@ class RegisterImage extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   _addImage = () => console.log('_addImage');

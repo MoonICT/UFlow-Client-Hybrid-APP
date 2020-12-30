@@ -52,7 +52,6 @@ export const quotation = async type => {
   });
 };
 export const responQuotation = async value => {
-  console.log('type', value);
   const token = await AsyncStorage.getItem('token');
   return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
     headers: {
@@ -451,4 +450,19 @@ export const pageWhrg = ({
       },
     },
   });
+};
+
+//=====================================================================================================================
+/** WareHouse Home Page */
+
+/**
+ * 추천 알고리즘 창고
+ * @returns {Promise<unknown>}
+ **/
+export const listRecommend = async () => {
+  const data = await mainAxios.request({
+    methodType: 'GET',
+    url: `/api/v1/warehouse/recommend`,
+  });
+  return data;
 };

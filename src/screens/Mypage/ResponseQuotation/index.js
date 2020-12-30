@@ -32,77 +32,6 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import DatePicker from '@Components/organisms/DatePicker';
 import { Warehouse } from '@Services/apis';
 
-const dataStoragePeriod = [
-  {
-    label: '2020.10.26',
-    value: '2020.10.26',
-  },
-  {
-    label: '2020.10.27',
-    value: '2020.10.27',
-  },
-];
-const dataStoragePeriod2 = [
-  {
-    label: '2021.10.30',
-    value: '2021.10.30',
-  },
-  {
-    label: '2021.10.30',
-    value: '2021.10.30',
-  },
-  {
-    label: '상태3',
-    value: '상태3',
-  },
-];
-
-const dataInfo = [
-  {
-    type: '요청자',
-    value: 'abc123',
-  },
-  {
-    type: '요청 창고 유형',
-    value: '보관',
-  },
-  {
-    type: '요청 견적 금액',
-    value: '577,000원',
-  },
-  {
-    type: '견적 요청일',
-    value: '2020.10.26',
-  },
-  {
-    type: '견적 상태',
-    value: '견적 응답',
-    highlight: false,
-  },
-];
-const dataInfo2 = [
-  {
-    type: '창고 유형',
-    value: '보관창고, 수탁창고',
-  },
-  {
-    type: '견적 금액',
-    value: '보관',
-  },
-  {
-    type: '창고 주소',
-    value: '577,000원',
-  },
-  {
-    type: '견적 요청일',
-    value: '2020.10.26',
-  },
-  {
-    type: '견적 상태',
-    value: '견적 응답',
-    highlight: true,
-  },
-];
 class ResponseQuotation extends Component {
   constructor(props) {
     super(props);
@@ -111,13 +40,13 @@ class ResponseQuotation extends Component {
       rntlValue: '',
       splyAmount: '',
       mgmtChrg: '',
+      whinChrg: '',
+      whoutChrg: '',
+      psnChrg: '',
+      mnfctChrg: '',
+      dlvyChrg: '',
+      shipChrg: '',
       visible: false,
-      requestConsignment: '',
-      storageFee: '',
-      shipPrice: '',
-      laborCost: '',
-      processingPrice: '',
-      courierPrice: '',
       mode: 'date',
       from: new Date(),
       showFrom: false,
@@ -136,7 +65,7 @@ class ResponseQuotation extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   togglePopupInfo = () => this.setState({ visible: !this.state.visible });
@@ -178,18 +107,18 @@ class ResponseQuotation extends Component {
       splyAmount,
       mgmtChrg,
       visible,
-      requestConsignment,
-      storageFee,
-      shipPrice,
-      laborCost,
-      processingPrice,
-      courierPrice,
+      whinChrg,
+      whoutChrg,
+      psnChrg,
+      mnfctChrg,
+      dlvyChrg,
+      shipChrg,
       showFrom,
       mode,
       showTo,
       isSubmit,
     } = this.state;
-    console.log('route', route);
+    console.log('routeRespon', route);
     console.log('this.state', this.state);
     return (
       <SafeAreaView style={S.container}>
@@ -250,73 +179,145 @@ class ResponseQuotation extends Component {
 
             {typeWH === 'TRUST' ? (
               <Fragment>
-                <View style={[S.row, { justifyContent: 'center' }]}>
+                <View
+                  style={[
+                    S.row,
+                    { justifyContent: 'center', marginBottom: 18 },
+                  ]}>
                   <View style={{ flex: 1 }}>
-                    <Select
-                      data={dataStoragePeriod}
-                      colorLabel="#000000"
-                      labelSelected="수탁 기간 "
-                      style={SS.select}
-                      valueProps={e => this.setState({ from: e })}
-                    />
+                    <TouchableOpacity
+                      onPress={this.showDatepicker}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {from.toLocaleDateString()}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        수탁 기간
+                      </Text>
+                      <DatePicker
+                        mode={mode}
+                        show={showFrom}
+                        onChange={this.onChangeFrom}
+                        value={from}
+                        testID="dateTimePicker"
+                      />
+                    </TouchableOpacity>
                   </View>
                   <Text style={SS.hyphen}>-</Text>
-
                   <View style={{ flex: 1 }}>
-                    <Select
-                      data={dataStoragePeriod2}
-                      style={SS.select}
-                      valueProps={e => this.setState({ to: e })}
-                    />
+                    <TouchableOpacity
+                      onPress={this.showDatepickerTo}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {to.toLocaleDateString()}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        수탁 기간
+                      </Text>
+                      <DatePicker
+                        mode={mode}
+                        show={showTo}
+                        onChange={this.onChangeTo}
+                        value={to}
+                        testID="dateTimePickerTo"
+                      />
+                    </TouchableOpacity>
                   </View>
                 </View>
                 <TextField
                   colorLabel="#000000"
                   labelTextField="수탁 요청 사항"
-                  valueProps={e => this.setState({ requestConsignment: e })}
+                  keyboardType="numeric"
+                  value={rntlValue}
+                  onChangeText={e =>
+                    this.setState({ rntlValue: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="보관비"
                   textRight="원"
+                  keyboardType="numeric"
+                  value={splyAmount}
                   placeholder="0"
-                  valueProps={e => this.setState({ storageFee: e })}
+                  onChangeText={e =>
+                    this.setState({ splyAmount: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="입고단가"
                   textRight="원"
+                  keyboardType="numeric"
+                  value={whinChrg}
                   placeholder="0"
-                  valueProps={e => this.setState({ mgmtChrg: e })}
+                  onChangeText={e =>
+                    this.setState({ whinChrg: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="출고단가"
                   textRight="원"
+                  keyboardType="numeric"
+                  value={whoutChrg}
                   placeholder="0"
-                  valueProps={e => this.setState({ shipPrice: e })}
+                  onChangeText={e =>
+                    this.setState({ whoutChrg: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="인건단가"
+                  keyboardType="numeric"
+                  value={psnChrg}
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ laborCost: e })}
+                  onChangeText={e =>
+                    this.setState({ psnChrg: e.replace(/[^0-9]/g, '') })
+                  }
                 />
 
                 <TextField
                   colorLabel="#000000"
                   labelTextField="가공단가"
                   textRight="원"
+                  keyboardType="numeric"
+                  value={mnfctChrg}
                   placeholder="0"
-                  valueProps={e => this.setState({ processingPrice: e })}
+                  onChangeText={e =>
+                    this.setState({ mnfctChrg: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="택배단가 "
                   textRight="원"
+                  keyboardType="numeric"
+                  value={dlvyChrg}
                   placeholder="0"
-                  valueProps={e => this.setState({ courierPrice: e })}
+                  onChangeText={e =>
+                    this.setState({ dlvyChrg: e.replace(/[^0-9]/g, '') })
+                  }
+                />
+                <TextField
+                  colorLabel="#000000"
+                  labelTextField="운송단가"
+                  textRight="원"
+                  keyboardType="numeric"
+                  value={shipChrg}
+                  placeholder="0"
+                  onChangeText={e =>
+                    this.setState({ shipChrg: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
@@ -337,24 +338,28 @@ class ResponseQuotation extends Component {
                     DefaultStyle._btnInline,
                     from !== '' &&
                     to !== '' &&
-                    requestConsignment !== '' &&
-                    storageFee !== '' &&
-                    shipPrice !== '' &&
-                    laborCost !== '' &&
-                    processingPrice !== '' &&
-                    mgmtChrg !== ''
+                    rntlValue !== '' &&
+                    splyAmount !== '' &&
+                    whinChrg !== '' &&
+                    whoutChrg !== '' &&
+                    psnChrg !== '' &&
+                    mnfctChrg !== '' &&
+                    dlvyChrg !== '' &&
+                    shipChrg !== ''
                       ? null
                       : SS.btnDisabled,
                   ]}
                   disabled={
                     from !== '' &&
                     to !== '' &&
-                    requestConsignment !== '' &&
-                    storageFee !== '' &&
-                    shipPrice !== '' &&
-                    laborCost !== '' &&
-                    processingPrice !== '' &&
-                    mgmtChrg !== ''
+                    rntlValue !== '' &&
+                    splyAmount !== '' &&
+                    whinChrg !== '' &&
+                    whoutChrg !== '' &&
+                    psnChrg !== '' &&
+                    mnfctChrg !== '' &&
+                    dlvyChrg !== '' &&
+                    shipChrg !== ''
                       ? false
                       : true
                   }>
@@ -364,12 +369,14 @@ class ResponseQuotation extends Component {
                       SS.textSubmit,
                       from !== '' &&
                       to !== '' &&
-                      requestConsignment !== '' &&
-                      storageFee !== '' &&
-                      shipPrice !== '' &&
-                      laborCost !== '' &&
-                      processingPrice !== '' &&
-                      mgmtChrg !== ''
+                      rntlValue !== '' &&
+                      splyAmount !== '' &&
+                      whinChrg !== '' &&
+                      whoutChrg !== '' &&
+                      psnChrg !== '' &&
+                      mnfctChrg !== '' &&
+                      dlvyChrg !== '' &&
+                      shipChrg !== ''
                         ? null
                         : SS.textDisabled,
                     ]}>
@@ -406,16 +413,8 @@ class ResponseQuotation extends Component {
                         testID="dateTimePicker"
                       />
                     </TouchableOpacity>
-                    {/**<Select
-                      data={dataStoragePeriod}
-                      colorLabel="#000000"
-                      labelSelected="보관유형"
-                      style={SS.select}
-                      valueProps={e => this.setState({ from: e })}
-                    /> */}
                   </View>
                   <Text style={SS.hyphen}>-</Text>
-
                   <View style={{ flex: 1 }}>
                     <TouchableOpacity
                       onPress={this.showDatepickerTo}
@@ -428,7 +427,7 @@ class ResponseQuotation extends Component {
                           DefaultStyle._labelTextField,
                           { color: '#000000' },
                         ]}>
-                        보관 기간{' '}
+                        보관 기간
                       </Text>
                       <DatePicker
                         mode={mode}
@@ -438,33 +437,40 @@ class ResponseQuotation extends Component {
                         testID="dateTimePickerTo"
                       />
                     </TouchableOpacity>
-                    {/**<Select
-                      data={dataStoragePeriod2}
-                      style={SS.select}
-                      valueProps={e => this.setState({ to: e })}
-                    />*/}
                   </View>
                 </View>
                 <TextField
                   colorLabel="#000000"
                   labelTextField="응답 면적"
                   textRight="m2"
+                  keyboardType="numeric"
+                  value={rntlValue}
                   placeholder="0"
-                  valueProps={e => this.setState({ rntlValue: e })}
+                  valueProps={e =>
+                    this.setState({ rntlValue: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="보관비 (평)"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ splyAmount: e })}
+                  keyboardType="numeric"
+                  value={splyAmount}
+                  valueProps={e =>
+                    this.setState({ splyAmount: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
                   labelTextField="관리비"
                   textRight="원"
                   placeholder="0"
-                  valueProps={e => this.setState({ mgmtChrg: e })}
+                  keyboardType="numeric"
+                  value={mgmtChrg}
+                  valueProps={e =>
+                    this.setState({ mgmtChrg: e.replace(/[^0-9]/g, '') })
+                  }
                 />
                 <TextField
                   colorLabel="#000000"
@@ -479,7 +485,7 @@ class ResponseQuotation extends Component {
                   onPress={() => {
                     // this.props.dataAction(this.state);
                     // this.navigation.navigate('ResponseQuotation');
-                    console.log('submit :>> ');
+                    // console.log('submit :>> ');
                     this.setState({ isSubmit: true });
                   }}
                   style={[
@@ -530,29 +536,8 @@ class ResponseQuotation extends Component {
 
     SplashScreen.hide();
   }
-  // static getDerivedStateFromProps(props, state) {
-  //   console.log('props', props);
-  //   console.log('state', state);
-  //   // Return null to indicate no change to state.
-  //   return null;
-  // }
-  // getSnapshotBeforeUpdate(prevProps, prevState) {
-  //   console.log("getSnapshotBeforeUpdate",prevState);
-  //   return { oldValue: prevState.value };
-  // }
   UNSAFE_componentWillUpdate(nextProps, nextState) {
     console.log('nextState', nextState);
-    // if (
-    //   nextState.from !== '' &&
-    //   nextState.to !== '' &&
-    //   nextState.rntlValue !== '' &&
-    //   nextState.splyAmount !== '' &&
-    //   nextState.mgmtChrg !== ''
-    // ) {
-    //   this.setState({ isSubmit: true });
-    // } else {
-    //   this.setState({ isSubmit: false });
-    // }
   }
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
@@ -583,24 +568,42 @@ class ResponseQuotation extends Component {
       rentUserNo;
 
     if (prevState.isSubmit !== this.state.isSubmit) {
+      let dataState;
+      this.props.route && this.props.route.params.typeWH === 'TRUST'
+        ? (dataState = {
+            warehouseRegNo: warehouseRegNo,
+            seq: this.props.route && this.props.route.params.seq,
+            from: Date.parse(this.state.from),
+            to: Date.parse(this.state.to),
+            rntlValue: parseInt(this.state.rntlValue),
+            splyAmount: parseInt(this.state.splyAmount),
+            whinChrg: parseInt(this.state.whinChrg),
+            whoutChrg: parseInt(this.state.whoutChrg),
+            psnChrg: parseInt(this.state.psnChrg),
+            mnfctChrg: parseInt(this.state.mnfctChrg),
+            dlvyChrg: parseInt(this.state.dlvyChrg),
+            shipChrg: parseInt(this.state.shipChrg),
+            remark: this.state.remark,
+          })
+        : (dataState = {
+            warehouseRegNo: warehouseRegNo,
+            seq: this.props.route && this.props.route.params.seq,
+            from: Date.parse(this.state.from),
+            to: Date.parse(this.state.to),
+            rntlValue: parseInt(this.state.rntlValue),
+            mgmtChrg: parseInt(this.state.mgmtChrg),
+            splyAmount: parseInt(this.state.splyAmount),
+            remark: this.state.remark,
+          });
       Warehouse.responQuotation({
         type: url,
-        data: {
-          warehouseRegNo: warehouseRegNo,
-          seq: this.props.route && this.props.route.params.seq,
-          from: Date.parse(this.state.from),
-          to: Date.parse(this.state.to),
-          rntlValue: parseInt(this.state.rntlValue),
-          mgmtChrg: parseInt(this.state.mgmtChrg),
-          splyAmount: parseInt(this.state.splyAmount),
-          remark: this.state.remark,
-        },
+        data: dataState,
       })
         .then(res => {
           // const status = res.status;
           if (res.status === 200) {
             console.log('res', res);
-            this.navigation.navigate('ResponseQuotation', {
+            this.navigation.navigate('Quotation', {
               typeWH,
               warehouseRegNo,
               warehSeq,

@@ -41,5 +41,9 @@ export const styles = StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#d7d7d7',
   }
 });
