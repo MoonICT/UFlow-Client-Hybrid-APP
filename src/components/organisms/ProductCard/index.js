@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2020-12-30 16:04:34
+ * @modify date 2020-12-31 10:29:04
  * @desc [description]
  */
 
@@ -101,8 +101,11 @@ class ProductCard extends Component {
 
             {/* Category */}
             <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-              {data?.name}
+              {data.keep ? '보관창고' : ''}
+              {data.keep && data.trust ? ', ' : ''}
+              {data.trust ? '수탁창고' : ''}
             </Text>
+            
             
             {/* Badge */}
             <View style={styles.cardAction}>
