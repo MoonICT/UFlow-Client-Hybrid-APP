@@ -7,7 +7,7 @@
 import React, { Component, Fragment } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 // import { Picker } from '@react-native-community/picker';
-import RNPickerSelect from 'react-native-picker-select';
+// import RNPickerSelect from 'react-native-picker-select';
 // Local Imports
 import { Button, Paragraph, Dialog, Portal } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
@@ -28,7 +28,6 @@ export default class Selected extends Component {
   render() {
     const { data, labelSelected, colorLabel, valueProps } = this.props;
     const { isToggle, selectedValue } = this.state;
-    console.log('dataSelect', selectedValue);
     const items =
       data &&
       data.map((item, index) => {
@@ -38,13 +37,14 @@ export default class Selected extends Component {
             // label={item.label}
             value={item.value}
             style={DefaultStyle._itemSelected}
-            onPress={() =>
+            onPress={() => {
               this.setState({
                 value: item.value,
                 selectedValue: item.label,
                 isToggle: false,
-              })
-            }
+              });
+              valueProps && valueProps(item.value);
+            }}
             // itemStyle={DefaultStyle._itemSelected}
           >
             {item.label}
@@ -79,7 +79,6 @@ export default class Selected extends Component {
               {labelSelected}
             </Text>
           ) : null}
-
           <Text style={DefaultStyle._textDefaultSelected}>{selectedValue}</Text>
           {isToggle === true ? (
             <Icon name={'menu-up'} style={[styles.icon, { color: '#000' }]} />
@@ -95,24 +94,6 @@ export default class Selected extends Component {
             <Dialog.Content>{items}</Dialog.Content>
           </Dialog>
         </Portal>
-        {
-          //   isToggle === true ? (
-          //   <View style={DefaultStyle._selectedBoxView}>
-          //     <View style={DefaultStyle._selectedBox}>{items}</View>
-          //   </View>
-          // ) : null
-        }
-        {/** <RNPickerSelect
-          style={[DefaultStyle._textSelected]}
-          selectedValue={this.state.selectedValue}
-          value={this.state.selectedValue}
-          onValueChange={value => {
-            this.setState({ selectedValue: value });
-            valueProps && valueProps(value);
-          }}
-          items={data}
-          {...this.props}
-        />*/}
         {/** 
         <Picker
           style={DefaultStyle._textSelected}

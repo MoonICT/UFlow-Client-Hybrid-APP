@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { Text, RadioButton } from 'react-native-paper';
+import { styles as S } from '../style';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -17,48 +18,55 @@ class RequestType extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = {
-      checked: 'first',
-    };
-
     this.navigation = props.navigation;
   }
   render() {
-    const { route } = this.props;
-    const { checked } = this.state;
+    const { route, optionStep2, checked } = this.props;
     console.log('route', route);
 
     return (
-      <View>
-        <View style={DefaultStyle.row}>
+      <View style={S.contentAlignLeft}>
+        <Text style={[S.styleTextTitleNomarl, { marginBottom: 20 }]}>
+          2. 몇 평 필요하신가요?
+        </Text>
+        <View style={[DefaultStyle.row,{alignItems:'center', marginBottom: 10}]}>
           <RadioButton
             value="first"
+            color="#ff6d00"
+            uncheckedColor="white"
             status={checked === 'first' ? 'checked' : 'unchecked'}
             onPress={() => {
-              this.setState({ checked: 'first' });
+              optionStep2('first');
             }}
           />
-          <Text>리스트</Text>
+
+          <Text style={{ color: 'white', fontSize: 15 }}>리스트1</Text>
         </View>
-        <View style={DefaultStyle.row}>
+        <View style={[DefaultStyle.row,{alignItems:'center', marginBottom: 10}]}>
           <RadioButton
             value="second"
+            color="#ff6d00"
+            uncheckedColor="white"
             status={checked === 'second' ? 'checked' : 'unchecked'}
             onPress={() => {
-              this.setState({ checked: 'second' });
+              optionStep2('second');
             }}
           />
-          <Text>리스트</Text>
+
+          <Text style={{ color: 'white', fontSize: 15 }}>리스트1</Text>
         </View>
-        <View style={DefaultStyle.row}>
+        <View style={[DefaultStyle.row,{alignItems:'center'}]}>
           <RadioButton
             value="three"
+            color="#ff6d00"
+            uncheckedColor="white"
             status={checked === 'three' ? 'checked' : 'unchecked'}
             onPress={() => {
-              this.setState({ checked: 'three' });
+              optionStep2('three');
             }}
           />
-          <Text>리스트</Text>
+
+          <Text style={{ color: 'white', fontSize: 15 }}>리스트1</Text>
         </View>
       </View>
     );

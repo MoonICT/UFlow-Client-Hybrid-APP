@@ -6,10 +6,10 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity,  } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Text } from 'react-native-paper';
+import { Text,Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -31,21 +31,36 @@ class AttachDocument extends Component {
     const { checked } = this.state;
 
     return (
-      <Fragment>
-        <Text style={[DefaultStyle._textDF, { color: 'rgba(0, 0, 0, 0.54)' }]}>
+      <View style={S.contentAlignLeft}>
+        <Text style={[S.styleTextTitleNomarl, { marginBottom: 10 }]}>
+          4. 첨부 자료를 등록해 주세요.
+        </Text>
+        <Text
+          style={[
+            S.styleTextNomarl,
+            { color: '#d8d8d8', textAlign: 'left', marginTop: 0 },
+          ]}>
           jpg, gif, png, pdf, zip 파일 형식만 업로드 가능합니다. (최대 5MB 이하)
         </Text>
         <View style={S.attach}>
           <View style={S.infoAttach}>
-            <Text style={S.textInfoAttach}>에이아트.pdf</Text>
+            <Text style={[S.textInfoAttach, { color: 'white' }]}>
+              에이아트.pdf
+            </Text>
           </View>
-
           <TouchableOpacity style={S.btnAttach}>
-            <Text style={S.textBtnAttach}>파일첨부</Text>
+            <Text style={[S.textBtnAttach, { color: 'white' }]}>파일첨부</Text>
           </TouchableOpacity>
         </View>
-        <Text style={S.completeAttach}>성공적으로 파일을 등록했습니다.</Text>
-      </Fragment>
+        <Text style={[S.completeAttach, { marginTop: 10,marginBottom:0 }]}>
+          성공적으로 파일을 등록했습니다.
+        </Text>
+        <Button
+          style={[S.styleButton, { marginTop:30 }]}
+          onPress={this.handleNavigationNext}>
+          <Text style={[S.textButton, { width: 175 }]}>확인</Text>
+        </Button>
+      </View>
     );
   }
 
