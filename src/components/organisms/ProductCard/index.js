@@ -2,13 +2,13 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2020-12-30 16:04:34
+ * @modify date 2020-12-31 16:13:15
  * @desc [description]
  */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Alert, Button, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 // Local Imports
 import { styles } from './style';
@@ -26,17 +26,17 @@ class ProductCard extends Component {
   badgeColor = code => {
     switch (code.toString()) {
       case '0001': // 냉동
-        return 'blue';
+        return { label: 'labelBlue', border: 'blueColor' };
       case '0002': // 냉장
-        return 'green';
+        return { label: 'labelGreen', border: 'greenColor' };
       case '0003': // 상온
-        return 'orange';
+        return { label: 'labelPrimary', border: 'primaryColor' };
       case '0004': // 위험물
-        return 'red';
+        return { label: 'labelRed', border: 'redColor' };
       case '9100': // 기타
-        return 'gray';
+        return { label: 'labelGray', border: 'grayColor' };
       default:
-        return 'gray';
+        return { label: 'labelBrow', border: 'browColor' };
     }
   };
 
@@ -58,7 +58,7 @@ class ProductCard extends Component {
       <View
         style={[
           styles.container,
-          { height: this.state.isHorizontal ? 124 : 261 },
+          { height: this.state.isHorizontal ? 124 : '100%' },
           this.props.isShadow && styles.shadow,
         ]}>
         <View
@@ -77,74 +77,206 @@ class ProductCard extends Component {
             />
             <View style={[styles.badge, data.badgeType && styles.badgeRed]}>
               <Text style={[styles.badgeLabel]}>
-                {data?.badge ? '가맹창고' : '제휴창고'}
+                {data?.trust ? '가맹창고' : '제휴창고'}
               </Text>
             </View>
           </View>
 
-          {/** Contents */}
-          <View
-            style={[
-              styles.contentWrap,
-              this.state.isHorizontal && styles.contentWrapHorizon,
-            ]}>
-            {/* Title */}
-            <Text
+          <ScrollView>
+            {/** Contents */}
+            <View
               style={[
-                styles.fontColor2,
-                styles.medium,
-                styles.font14,
-                { marginBottom: 3 },
+                styles.contentWrap,
+                this.state.isHorizontal && styles.contentWrapHorizon,
               ]}>
-              {data?.name}
-            </Text>
+              {/* Title */}
+              <Text
+                style={[
+                  styles.fontColor2,
+                  styles.medium,
+                  styles.font14,
+                  { marginBottom: 3 },
+                ]}>
+                {data?.name}
+              </Text>
 
-            {/* Category */}
-            <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-              {data?.name}
-            </Text>
-            
-            {/* Badge */}
-            <View style={styles.cardAction}>
-              <TouchableOpacity
-                style={[styles.label, styles.labelPrimary]}
-                title={'상온'}>
-                <Text style={[styles.font9, styles.primaryColor]}>상온</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.label, styles.labelBlue]}
-                title={'냉동'}>
-                <Text style={[styles.font9, styles.blueColor]}>냉동</Text>
-              </TouchableOpacity>
+              {/* Category */}
+              <Text
+                style={[
+                  styles.fontColor1,
+                  styles.regular,
+                  styles.font9,
+                  styles.mrb12,
+                ]}>
+                {data.keep ? '보관창고' : ''}
+                {data.keep && data.trust ? ', ' : ''}
+                {data.trust ? '수탁창고' : ''}
+              </Text>
 
-              <TouchableOpacity
-                style={[styles.label, styles.labelGreen]}
-                title={'냉장'}>
-                <Text style={[styles.font9, styles.greenColor]}>냉장</Text>
-              </TouchableOpacity>
+              {/******************** Keep ***************************/}
+              {data?.keep ? (
+                <>
+                  <View>
+                    <Text
+                      style={[styles.fontColor1, styles.regular, styles.font9]}>
+                      <Text style={[styles.bold, styles.blackColor]}>
+                        보관{' '}
+                      </Text>
+                      최대 {data?.keep?.subTitle ? data?.keep?.subTitle : ''}
+                    </Text>
+                  </View>
 
-              <TouchableOpacity
-                style={[styles.label, styles.labelGray]}
-                title={'보세'}>
-                <Text style={[styles.font9, styles.grayColor]}>보세</Text>
-              </TouchableOpacity>
+                  {/* Badge */}
+                  {data.keep.gdsTypeCodes ? (
+                    <View style={[styles.cardAction, styles.mrt2]}>
+                      {data.keep.gdsTypeCodes.map((keepItem, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          style={[
+                            styles.label,
+                            styles[
+                              this.badgeColor(keepItem?.stdDetailCode).label
+                            ],
+                          ]}
+                          title={keepItem?.stdDetailCodeName}>
+                          <Text
+                            style={[
+                              styles.font9,
+                              styles[
+                                this.badgeColor(keepItem?.stdDetailCode).border
+                              ],
+                            ]}>
+                            {/* EX : 상온 */}
+                            {keepItem?.stdDetailCodeName}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  ) : (
+                    <Text>{''}</Text>
+                  )}
+
+                  {/** Price */}
+                  {data?.keep?.splyAmount ? (
+                    <Text
+                      style={[styles.fontColor1, styles.regular, styles.font9]}>
+                      ･보관단가{' '}
+                      <Text style={[styles.bold, styles.blackColor]}>
+                        {data?.keep?.splyAmount.toLocaleString()}
+                      </Text>
+                      원 ~/
+                      {data?.keep?.unit}
+                    </Text>
+                  ) : (
+                    <Text>{''}</Text>
+                  )}
+
+                  {data?.keep?.mgmtChrg ? (
+                    <Text
+                      style={[styles.fontColor1, styles.regular, styles.font9]}>
+                      ･보관단가{' '}
+                      <Text style={[styles.bold, styles.blackColor]}>
+                        {data?.keep?.mgmtChrg.toLocaleString()}
+                      </Text>
+                      원 ~/
+                      {data?.keep?.unit}
+                    </Text>
+                  ) : (
+                    <Text>{''}</Text>
+                  )}
+                  {/** Close Price */}
+                  {/*============== */}
+                </>
+              ) : (
+                <Text>{''}</Text>
+              )}
+
+              {data?.keep && data?.trust ? (
+                <View style={styles.line} />
+              ) : (
+                <Text>{''}</Text>
+              )}
+
+              {/***************** Trust ************************/}
+              {data?.trust ? (
+                <>
+                  <View>
+                    <Text
+                      style={[styles.fontColor1, styles.regular, styles.font9]}>
+                      <Text
+                        style={[styles.bold, styles.blackColor, styles.font9]}>
+                        보관{' '}
+                      </Text>
+                      최대 {data?.trust?.subTitle ? data?.trust?.subTitle : ''}
+                    </Text>
+                  </View>
+
+                  {/* Badge */}
+                  {data.trust.gdsTypeCodes ? (
+                    <View style={[styles.cardAction, styles.mrt2]}>
+                      {data.trust.gdsTypeCodes.map((trustItem, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          style={[
+                            styles.label,
+                            styles[
+                              this.badgeColor(trustItem?.stdDetailCode).label
+                            ],
+                          ]}
+                          title={trustItem?.stdDetailCodeName}>
+                          <Text
+                            style={[
+                              styles.font9,
+                              styles[
+                                this.badgeColor(trustItem?.stdDetailCode).border
+                              ],
+                            ]}>
+                            {/* EX : 상온 */}
+                            {trustItem?.stdDetailCodeName}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  ) : (
+                    <Text>{''}</Text>
+                  )}
+
+                  {/** Price */}
+                  {data?.trust?.whinChrg ? (
+                    <Text
+                      style={[styles.fontColor1, styles.regular, styles.font9]}>
+                      ･보관단가{' '}
+                      <Text style={[styles.bold, styles.blackColor]}>
+                        {data?.trust?.whinChrg.toLocaleString()}
+                      </Text>
+                      원 ~/
+                      {data?.trust?.unit}
+                    </Text>
+                  ) : (
+                    <Text>{''}</Text>
+                  )}
+
+                  {data?.trust?.whoutChrg ? (
+                    <Text
+                      style={[styles.fontColor1, styles.regular, styles.font9]}>
+                      ･보관단가{' '}
+                      <Text style={[styles.bold, styles.blackColor]}>
+                        {data?.trust?.whoutChrg.toLocaleString()}
+                      </Text>
+                      원 ~/
+                      {data?.trust?.unit}
+                    </Text>
+                  ) : (
+                    <Text>{''}</Text>
+                  )}
+                  {/** Close Price */}
+                  {/*============================================================== */}
+                </>
+              ) : (
+                <Text>{''}</Text>
+              )}
             </View>
-
-            {/* Area */}
-            <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-              {data.price}
-            </Text>
-
-            {/* Address */}
-            <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-              {data.address}
-            </Text>
-
-            {/* Price */}
-            <Text style={[styles.medium, styles.font14, { marginTop: 22 }]}>
-              {data.totalPrice}
-            </Text>
-          </View>
+          </ScrollView>
         </View>
       </View>
       // );

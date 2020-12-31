@@ -1,5 +1,5 @@
 import { Axios, parseQuery } from '@Services/http';
-import { mainAxios, mainAxiosToken } from '../libs/axios';
+import { mainAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const uploadImage = async formData => {

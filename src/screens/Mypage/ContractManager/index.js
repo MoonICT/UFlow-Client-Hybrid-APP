@@ -90,7 +90,7 @@ class ContractManager extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -298,14 +298,8 @@ class ContractManager extends Component {
     }
   };
   render() {
-    const {
-      dataSteps,
-      type,
-      typeWH,
-      dataContractWH,
-    } = this.props;
+    const { dataSteps, type, typeWH, dataContractWH } = this.props;
     const { valueTab, dataApi, contractType, contractStatus } = this.state;
-    console.log('dataContractWH', dataContractWH)
     // Data Filter type and status
     let dataFilter =
       dataContractWH &&

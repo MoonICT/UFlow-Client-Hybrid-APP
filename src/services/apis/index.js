@@ -5,5 +5,15 @@ import * as WarehouseOut from './WarehouseOut';
 import * as Annoucement from './Annoucement';
 import * as FAQ from './FAQ';
 import * as Question from './Question';
+import * as MediaUpload from './MediaUpload';
 
-export { Sample, Account, Warehouse, WarehouseOut, Annoucement, FAQ, Question };
+export {
+  Sample,
+  Account,
+  Warehouse,
+  WarehouseOut,
+  Annoucement,
+  FAQ,
+  Question,
+  MediaUpload,
+};

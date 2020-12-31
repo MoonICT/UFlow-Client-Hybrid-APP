@@ -118,8 +118,6 @@ class ResponseQuotation extends Component {
       showTo,
       isSubmit,
     } = this.state;
-    console.log('routeRespon', route);
-    console.log('this.state', this.state);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>

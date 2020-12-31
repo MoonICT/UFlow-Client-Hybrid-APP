@@ -13,6 +13,9 @@ target 'UflowRN' do
   # you should disable these next few lines.
   use_flipper!('Flipper' => '0.58.0') # should match the version of your Flipper client app
 
+
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   post_install do |installer|
     flipper_post_install(installer)
   end

@@ -169,7 +169,6 @@ class RequestView extends Component {
       data &&
       data.estmtTrusts &&
       data.estmtTrusts.map((item, index) => {
-        console.log('item', item.estimatedPrice);
         let dataRequest = [
           {
             type: item.estmtDvCd === 'RQ00' ? '요청 일시' : '응답 일시',
