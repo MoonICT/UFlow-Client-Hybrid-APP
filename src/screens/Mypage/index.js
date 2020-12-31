@@ -350,8 +350,12 @@ const dataReplyTrust = [
 class ProprietorMypage extends Component {
   constructor(props) {
     super(props);
-    this.webView = null;
-    this.state = { isSwitchOn: true, visibleConfirm: false };
+    this.state = {
+      isSwitchOn: true,
+      visibleConfirm: false,
+      title: props.route.params && props.route.params.title,
+    };
+
     this.navigation = props.navigation;
   }
 
@@ -362,7 +366,7 @@ class ProprietorMypage extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -479,7 +483,11 @@ class ProprietorMypage extends Component {
           />
         </Appbars>
         <ScrollView>
-          <AppGrid data={data} titleProps={e => this.setState({ title: e })} />
+          <AppGrid
+            data={data}
+            title={title}
+            titleProps={e => this.setState({ title: e })}
+          />
           {viewComponent}
         </ScrollView>
 

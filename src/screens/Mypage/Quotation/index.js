@@ -331,9 +331,8 @@ class Quotation extends Component {
               ) : null}
             </View>
           ) : null}
-          {
-            //BUTTON RESQUEST QUATATION AND CONTRACT REQUIREMENTS
-            type === 'TENANT' && status === 'RS00' ? (
+          {//BUTTON RESQUEST QUATATION AND CONTRACT REQUIREMENTS
+          type === 'TENANT' && status === 'RS00' ? (
             <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
               <View style={DefaultStyle._listBtn}>
                 <TouchableOpacity
@@ -347,13 +346,18 @@ class Quotation extends Component {
                       status,
                       type,
                     });
-                  }}
-                  >
+                  }}>
                   <Text style={DefaultStyle._textButton}>견적 재요청</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
-                  onPress={() => this.navigation.navigate('ConfirmPass')}>
+                  onPress={() =>
+                    this.navigation.navigate('RequestContract', {
+                      type,
+                      warehouseRegNo,
+                      warehSeq,
+                    })
+                  }>
                   <Text
                     style={[
                       DefaultStyle._textButton,

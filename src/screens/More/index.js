@@ -47,11 +47,11 @@ class More extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   render() {
-    let {  email, fullName } = this.state;
+    let { email, fullName } = this.state;
     const { route, isLogin } = this.props;
 
     console.log('routeMore :>> ', route);
@@ -93,7 +93,11 @@ class More extends Component {
                 </Text>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('TenantMypage')}>
+                  onPress={() =>
+                    this.navigation.navigate('Mypage', {
+                      title: '견적･계약 관리',
+                    })
+                  }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={estimate} />
                     <Text style={DefaultStyle.titleItem}>견적･계약관리</Text>
@@ -109,7 +113,7 @@ class More extends Component {
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
                   onPress={() =>
-                    this.navigation.navigate('TenantMypage', {
+                    this.navigation.navigate('Mypage', {
                       title: '입･출고 관리',
                     })
                   }>

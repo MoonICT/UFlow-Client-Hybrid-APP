@@ -23,7 +23,7 @@ import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
 import ActionCreator from '@Actions';
-
+// import RNPickerSelect from 'react-native-picker-select';
 const dataSelect = [
   {
     label: '계약유형',
@@ -90,7 +90,7 @@ class ContractManager extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -298,14 +298,9 @@ class ContractManager extends Component {
     }
   };
   render() {
-    const {
-      dataSteps,
-      type,
-      typeWH,
-      dataContractWH,
-    } = this.props;
+    const { dataSteps, type, typeWH, dataContractWH } = this.props;
     const { valueTab, dataApi, contractType, contractStatus } = this.state;
-    console.log('dataContractWH', dataContractWH)
+    console.log('dataContractWH', dataContractWH);
     // Data Filter type and status
     let dataFilter =
       dataContractWH &&

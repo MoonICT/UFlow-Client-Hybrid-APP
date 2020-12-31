@@ -74,6 +74,7 @@ import ProprietorMypage from '@Screeens/ProprietorMypage';
 import Quotation from '@Screeens/Mypage/Quotation';
 import ResponseQuotation from '@Screeens/Mypage/ResponseQuotation';
 import StorageAgreement from '@Screeens/Mypage/StorageAgreement';
+import RequestContract from '@Screeens/Mypage/RequestContract';
 // import ContractDetails from '@Screeens/Page/ContractDetails';
 // import DetailsManager from '@Screeens/Page/DetailsManager';
 import Mypage from '@Screeens/Mypage';
@@ -497,6 +498,12 @@ const App = () => {
                 <RootStack.Screen
                   name="Mypage"
                   component={Mypage}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="RequestContract"
+                  component={RequestContract}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
