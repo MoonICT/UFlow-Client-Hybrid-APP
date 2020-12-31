@@ -13,7 +13,13 @@ export const styles = StyleSheet.create({
   boxSection: {
     paddingLeft: 16,
     paddingRight: 16,
-    marginTop:60,
+    marginTop: 60,
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 1,
+    paddingBottom: 60,
+  },
+  footer: {
+    backgroundColor: '#cccccc',
   },
   title: {
     fontSize: 25,
@@ -30,13 +36,13 @@ export const styles = StyleSheet.create({
     color: '#000000',
     marginTop: 10,
   },
-  titleSmall:{
+  titleSmall: {
     fontSize: 18,
     fontWeight: '600',
     letterSpacing: -0.5,
     textAlign: 'center',
     color: '#000000',
-    marginTop:60
+    marginTop: 60,
   },
   boxTarget: {
     flex: 1,
@@ -58,7 +64,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     resizeMode: 'cover',
-    marginTop:30,
+    marginTop: 30,
     justifyContent: 'center',
   },
 });
