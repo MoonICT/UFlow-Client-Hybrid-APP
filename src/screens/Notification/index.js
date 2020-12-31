@@ -36,19 +36,22 @@ const data = [
     title: '카테고리',
   },
   {
-    title: '카테고리',
+    title: '카테고리2',
   },
   {
-    title: '카테고리',
+    title: '카테고리3',
   },
   {
-    title: '카테고리',
+    title: '카테고리4',
   },
 ];
 export default class Notification extends Component {
   constructor(props) {
     super(props);
     this.navigation = props.navigation;
+    this.state = {
+      title: '카테고리',
+    };
   }
   _renderItemCarousel = ({ item }) => {
     return (
@@ -100,6 +103,14 @@ export default class Notification extends Component {
       </View>
     );
   };
+  handleScroll = e => {
+    console.log('titi', e.nativeEvent.contentOffset.y);
+  };
+  getDimesionsHeightSection1 = e => {
+    let { width, height } = e.nativeEvent.layout;
+    console.log('height', height);
+  };
+
   render() {
     let slides = [
       {
@@ -154,6 +165,22 @@ export default class Notification extends Component {
         ),
       },
     ];
+    const { title } = this.state;
+    console.log('title',title);
+    
+    // switch (title) {
+    //   case '입･출고 관리':
+    //     viewComponent = <InOutManager navigation={this.navigation} />;
+    //     break;
+    //   case '정산관리':
+    //     viewComponent = <SettlementManagement navigation={this.navigation} />;
+    //     break;
+    //   case '관심 창고':
+    //     viewComponent = <InterestWH navigation={this.navigation} />;
+    //     break;
+    //   default:
+    //   // code block
+    // }
     return (
       <SafeAreaView style={{ backgroundColor: 'white' }}>
         <Appbars>
@@ -169,14 +196,16 @@ export default class Notification extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView>
+        <ScrollView
+          onScroll={this.handleScroll}
+          ref={view => (this._scrollView = view)}>
           <AppGrid
             data={data}
-            title={'title'}
+            title={title}
             titleProps={e => this.setState({ title: e })}
           />
           {/* section 1 */}
-          <View style={S.boxSection}>
+          <View style={S.boxSection} onLayout={this.getDimesionsHeightSection1}>
             <Text style={S.title}>두번 째 카테고리</Text>
             <Text style={S.description}>
               작업했던 프로젝트를 포트폴리오로{'\n'} 지원할 수 있습니다. 월 평균
@@ -265,13 +294,17 @@ export default class Notification extends Component {
             </View>
           </View>
 
-          <View style={[S.boxSection, { marginTop: 0, marginBottom: 130 }]}>
+          <View
+            style={[
+              S.boxSection,
+              { marginTop: 0, marginBottom: 0, paddingBottom: 80 },
+            ]}>
             {this._renderItemList()}
             {this._renderItemList()}
             {this._renderItemList()}
           </View>
           <View style={S.footer}>
-            <Text>
+            <Text style={S.footerText}>
               Copyright © 2020 Uflow Inc. 모든 권리 보유.{'\n'}v 1(20201112)
             </Text>
           </View>

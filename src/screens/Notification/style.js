@@ -19,14 +19,21 @@ export const styles = StyleSheet.create({
     paddingBottom: 60,
   },
   footer: {
-    backgroundColor: '#cccccc',
+    backgroundColor:'#fafafa',
+    paddingBottom:20,
+    paddingTop:20,
+    marginBottom:45,
   },
   title: {
     fontSize: 25,
     fontWeight: '600',
     letterSpacing: -0.5,
-    textAlign: 'center',
     color: '#000000',
+    textAlign: 'center',
+  },
+  footerText:{
+    color:'#D2D2D2',
+    textAlign: 'center',
   },
   description: {
     fontSize: 14,
