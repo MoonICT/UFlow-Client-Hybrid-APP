@@ -97,7 +97,7 @@ const slidesProduct = [
     totalPrice: '60,000원/평',
   },
 ];
-class RegisterWH extends Component {
+class DetailWH extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -112,7 +112,7 @@ class RegisterWH extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -175,7 +175,10 @@ class RegisterWH extends Component {
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
-            <Text style={[DefaultStyle._titleWH,{backgroundColor:'#4caf50'}]}>제휴창고</Text>
+            <Text
+              style={[DefaultStyle._titleWH, { backgroundColor: '#4caf50' }]}>
+              제휴창고
+            </Text>
             <Text style={S.describeTitle}>보관창고, 수탁창고</Text>
             <Text style={S.header}>에이씨티앤코아물류</Text>
             <View style={S.labels}>
@@ -525,7 +528,9 @@ class RegisterWH extends Component {
                   </View>
                   <View style={S.inquirys}>
                     <View style={S.leftInquiry}>
-                      <Text style={[S.titleInquiry,S.titleCompleted]}>답변완료</Text>
+                      <Text style={[S.titleInquiry, S.titleCompleted]}>
+                        답변완료
+                      </Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
                       <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
                     </View>
@@ -630,4 +635,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegisterWH);
+)(DetailWH);

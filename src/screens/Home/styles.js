@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-12-03 10:42:30
+ * @modify date 2020-12-31 14:27:03
  * @desc [description]
  */
 
@@ -259,6 +259,7 @@ export const styles = StyleSheet.create({
   },
 
   mainProductList: {
+    height: '100%',
     paddingBottom: 60,
   },
 
@@ -394,6 +395,7 @@ export const styles = StyleSheet.create({
     paddingRight: 28,
     display: 'flex',
     alignItems: 'center',
+    marginTop: 80,
   },
 
   mainCallRow: {

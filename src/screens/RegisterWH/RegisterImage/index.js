@@ -30,8 +30,8 @@ import ActionCreator from '@Actions';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
 import ImagePicker from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
-import { Warehouse } from '@Services/apis';
+// import DocumentPicker from 'react-native-document-picker';
+import { MediaUpload } from '@Services/apis';
 
 const createFormData = (photo, body) => {
   const data = new FormData();
@@ -78,8 +78,9 @@ class RegisterImage extends Component {
   _removeImage = () => this.props.removeAction(0);
 
   handlePicker = () => {
-    // console.log('edit');
-    ImagePicker.showImagePicker({}, response => {
+    console.log('edit');
+
+    ImagePicker?.showImagePicker({}, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -97,28 +98,34 @@ class RegisterImage extends Component {
           title: 'Updating...',
           imgData: pimages,
         });
-        fetch('http://api.uflow.voltpage.net/api/v1/file/images', {
-          method: 'POST',
-          // eslint-disable-next-line no-undef
-          headers: new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded', //Specifying the Content-Type
-          }),
-          body: createFormData(response, { id: '123' }),
-        })
-          .then(data => data.json())
-          .then(res => {
-            console.log('upload succes', res);
-            this.setState({
-              avatar2: { uri: response.image },
-              title: 'Profile Photo',
-            });
-          })
-          .catch(error => {
-            console.log('upload error', error);
-            this.setState({
-              title: 'Profile Photo',
-            });
-          });
+
+        // let body = createFormData(response, { id: '123' });
+
+        // let dataUpload = await MediaUpload.uploadImage(body);
+
+        console.log('response===>', response);
+        // fetch('http://api.uflow.voltpage.net/api/v1/file/images', {
+        //   method: 'POST',
+        //   // eslint-disable-next-line no-undef
+        //   headers: new Headers({
+        //     'Content-Type': 'application/x-www-form-urlencoded', //Specifying the Content-Type
+        //   }),
+        //   body: createFormData(response, { id: '123' }),
+        // })
+        //   .then(data => data.json())
+        //   .then(res => {
+        //     console.log('upload succes', res);
+        //     this.setState({
+        //       avatar2: { uri: response.image },
+        //       title: 'Profile Photo',
+        //     });
+        //   })
+        //   .catch(error => {
+        //     console.log('upload error', error);
+        //     this.setState({
+        //       title: 'Profile Photo',
+        //     });
+        //   });
         // here we can call a API to upload image on server
       }
     });
@@ -130,8 +137,8 @@ class RegisterImage extends Component {
 
   // }
   render() {
-    const { imageStore, route } = this.props;
-    console.log('imageStore', imageStore);
+    const { imageStore } = this.props;
+    // console.log('imageStore', imageStore);
     const listImg =
       imageStore &&
       imageStore.map((item, index) => {

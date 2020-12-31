@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 15:58:28
- * @modify date 2020-11-24 18:38:10
+ * @modify date 2020-12-31 14:23:46
  * @desc [description]
  */
 
@@ -21,10 +21,10 @@ export const styles = StyleSheet.create({
     lineHeight: 19,
   },
   regular: {
-    // fontFamily: 'NotoSansCJKkr-Regular',
+    fontFamily: 'NotoSansCJKkr-Regular',
   },
   medium: {
-    // fontFamily: 'NotoSansCJKkr-Medium',
+    fontFamily: 'NotoSansCJKkr-Medium',
   },
   bold: {
     fontFamily: 'NotoSansCJKkr-Bold',
@@ -34,6 +34,9 @@ export const styles = StyleSheet.create({
   },
   fontColor2: {
     color: 'rgba(0, 0, 0, 0.87)',
+  },
+  blackColor: {
+    color: color.misc.black,
   },
   // Colors
   primaryColor: {
@@ -45,8 +48,22 @@ export const styles = StyleSheet.create({
   greenColor: {
     color: color.success.main,
   },
+  redColor: {
+    color: color.secondary.main,
+  },
   grayColor: {
     color: color.grey._600,
+  },
+  browColor: {
+    color: color.brow.main,
+  },
+
+  /************* Margin **************/
+  mrb12: {
+    marginBottom: 12,
+  },
+  mrt2: {
+    marginTop: 2,
   },
 
   /************* Layout **************/
@@ -69,14 +86,15 @@ export const styles = StyleSheet.create({
   innerWrap: {
     flex: 1,
     flexDirection: 'column',
-    overflow: 'hidden',
+    overflow: 'scroll',
   },
   innerWrapHorizon: {
     flex: 1,
     flexDirection: 'row',
   },
   imageWrap: {
-    flex: 1,
+    // flex: 1,
+    minHeight: 104,
   },
   contentWrap: {
     flex: 1,
@@ -114,7 +132,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   badgeRed: {
-    backgroundColor: '#f2453d'
+    backgroundColor: '#f2453d',
   },
   badgeLabel: {
     top: -3,
@@ -142,11 +160,25 @@ export const styles = StyleSheet.create({
   labelGreen: {
     borderColor: color.success.main,
   },
+  labelRed: {
+    borderColor: color.secondary.main,
+  },
   labelGray: {
     borderColor: color.grey._600,
+  },
+  labelBrow: {
+    borderColor: color.brow.main,
   },
   cardAction: {
     flexDirection: 'row',
     marginBottom: 4,
+  },
+
+  /************ Line ************** */
+  line: {
+    borderTopColor: color.line.main,
+    borderTopWidth: 1,
+    marginTop: 6,
+    marginBottom: 6,
   },
 });
