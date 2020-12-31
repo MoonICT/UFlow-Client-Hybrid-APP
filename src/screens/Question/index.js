@@ -6,7 +6,7 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
@@ -14,40 +14,57 @@ import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
-import ProductCard from '@Components/organisms/ProductCard';
-
-import ActionCreator from '@Actions';
-import cardBG from '@Assets/images/card-img.png';
-
 import { styles as S } from './style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
-class Question extends Component {
+import { Question } from '@Services/apis';
+
+class QuestionScreen extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { visible: false };
+    this.state = { visible: false, email: '', content: '' };
     this.navigation = props.navigation;
+  }
+
+  /** when after render DOM */
+  async componentDidMount() {
+
+  }
+
+  fetchData(params) {
+    Question.createQuestion({ ...params, email: this.state.email, content: this.state.content })
+      .then(res => {
+        console.log('::::: Question :::::', res);
+        if (res.status === 200) {
+          this.showDialog();
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+    SplashScreen.hide();
+  }
+
+  /** when update state or props */
+  componentDidUpdate(prevProps, prevState) {
+    console.log('::componentDidUpdate::');
   }
 
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
 
+  handleChangeEmail = (value) => this.setState({ email: value })
+
+  handleChangeContent = (value) => this.setState({ content: value })
+
+  onSubmit = () => {
+    this.fetchData();
+  };
+
   render() {
-    const { imageStore, workComplete } = this.props;
-    const dataSelect = [
-      {
-        label: '문의유형',
-        value: '문의유형',
-      },
-      {
-        label: '문의유형2',
-        value: '문의유형2',
-      },
-    ];
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -65,9 +82,7 @@ class Question extends Component {
           <Appbar.Content
             color="rgba(0, 0, 0, 0.47)"
             title="등록"
-            onPress={() => {
-              this.showDialog();
-            }}
+            onPress={this.onSubmit}
             titleStyle={DefaultStyle._textHeaderRight}
           />
         </Appbars>
@@ -79,17 +94,18 @@ class Question extends Component {
                 문의해 주세요.
               </Text>
             </View>
-            <Select data={dataSelect} />
             <TextField
               labelTextField="이메일"
-              defaultValue="haharu@aartkorea.com"
+              placeholder='Please enter email'
               colorLabel="#000000"
+              onChangeText={this.handleChangeEmail}
             />
             <TextField
               labelTextField="내용"
               colorLabel="#000000"
               numberOfLines={5}
               multiline={true}
+              onChangeText={this.handleChangeContent}
             />
           </View>
         </ScrollView>
@@ -98,7 +114,13 @@ class Question extends Component {
           visible={this.state.visible}
           onDismiss={this.hideDialog}>
           <Dialog.Content>
-            <View style={DefaultStyle.imagePopup} />
+            {/* <View style={DefaultStyle.imagePopup} /> */}
+            <Image
+              style={DefaultStyle.imagePopup}
+              source={{
+                uri: 'https://cdn.discordapp.com/attachments/782864362171400235/793758658881257482/illust-popup-113x.png',
+              }}
+            />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -123,16 +145,6 @@ class Question extends Component {
     );
   }
 
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
 /** map state with store states redux store */
@@ -147,16 +159,11 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Question);
+)(QuestionScreen);

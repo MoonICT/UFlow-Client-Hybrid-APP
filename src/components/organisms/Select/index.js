@@ -5,8 +5,8 @@
  * */
 // Global Imports
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Picker } from '@react-native-community/picker';
+import { Platform ,View, Text } from 'react-native';
+import { Picker,PickerIOS } from '@react-native-community/picker';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -21,6 +21,7 @@ export default class Selected extends Component {
 
   render() {
     const { data, labelSelected, colorLabel, valueProps } = this.props;
+    const checkPlatForm = Platform.OS === "ios";
     const items =
       data &&
       data.map((item, index) => {
@@ -34,6 +35,22 @@ export default class Selected extends Component {
           />
         );
       });
+
+      const itemsIOS =
+      data &&
+      data.map((item, index) => {
+        return (
+          <PickerIOS.Item
+            key={index}
+            label={item.label}
+            value={item.value}
+            style={DefaultStyle._itemSelected}
+            itemStyle={DefaultStyle._itemSelected}
+          />
+        );
+      });
+
+
     return (
       <View style={DefaultStyle._selected}>
         {labelSelected ? (
@@ -45,6 +62,19 @@ export default class Selected extends Component {
             {labelSelected}
           </Text>
         ) : null}
+    {checkPlatForm ?
+        <PickerIOS
+          style={DefaultStyle._textSelected}
+          mode="dropdown"
+          selectedValue={this.state.selectedValue}
+          onValueChange={(itemValue, itemIndex) => {
+            this.setState({ selectedValue: itemValue });
+            valueProps && valueProps(itemValue);
+          }}
+          {...this.props}>
+          {itemsIOS}
+        </PickerIOS>
+:
         <Picker
           style={DefaultStyle._textSelected}
           mode="dropdown"
@@ -55,7 +85,7 @@ export default class Selected extends Component {
           }}
           {...this.props}>
           {items}
-        </Picker>
+        </Picker>}
       </View>
     );
   }
