@@ -93,18 +93,20 @@ class Consulting extends Component {
       stepProgress,
       optionStep3,
     } = this.state;
-
     optionStep2 !== '' &&
+      stepProgress < 5 &&
       this.setState({
-        condionNext: stepProgress < 5 ? true : false,
+        condionNext: true,
         stepProgress: stepProgress < 5 ? 4 : 2,
       });
     optionStep3 !== '' &&
+      stepProgress < 7 &&
       this.setState({
-        condionNext: stepProgress < 7 ? true : false,
-        stepProgress: stepProgress < 7 ? 6 : 4,
+        condionNext: true,
+        stepProgress: 6,
       });
     if (!condionNext) return;
+    stepProgress === 6 && this.setState({ stepProgress: 8 });
     this.setState({ step: step + 1 });
   };
   // onchange input step 1
@@ -130,6 +132,10 @@ class Consulting extends Component {
         condionNext: true,
         stepProgress: 10,
       });
+    } else {
+      this.setState({
+        stepProgress: 8,
+      });
     }
   };
   render() {
@@ -143,7 +149,7 @@ class Consulting extends Component {
       optionStep3,
       inputStep5,
     } = this.state;
-    // console.log('step', step);
+    console.log('stepProgress', stepProgress);
     return (
       <View style={S.container}>
         <View>
@@ -194,7 +200,7 @@ class Consulting extends Component {
             <Button
               mode="contained"
               style={[S.styleButton, { marginTop: 30 }]}
-              onPress={() => alert('a')}>
+              onPress={this.handleNavigationNext}>
               <Text style={[S.textButton, { width: 175 }]}>확인</Text>
             </Button>
           </View>
@@ -234,7 +240,7 @@ class Consulting extends Component {
             <Button
               mode="contained"
               style={[S.styleButton, { marginTop: 30 }]}
-              onPress={() => alert('a')}>
+              onPress={this.handleNavigationNext}>
               <Text style={[S.textButton, { width: 175 }]}>확인</Text>
             </Button>
           </View>
@@ -242,14 +248,16 @@ class Consulting extends Component {
         {/* step 6 */}
         {step === 6 && (
           <View style={S.contentCenter}>
-            <Text style={[S.styleTextTitleNomarl,{textAlign:'center'}]}>
+            <Text style={[S.styleTextTitleNomarl, { textAlign: 'center' }]}>
               문의가 등록되었습니다.{'\n'}감사합니다.
             </Text>
             <Button
               mode="contained"
               style={[S.styleButton, { marginTop: 30 }]}
-              onPress={() => alert('a')}>
-              <Text style={[S.textButton, { width: 175 }]}>처음으로 돌아가기</Text>
+              onPress={this.handleNavigationNext}>
+              <Text style={[S.textButton, { width: 175 }]}>
+                처음으로 돌아가기
+              </Text>
             </Button>
           </View>
         )}
