@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     padding: 5,
   },
   status: {
-    color: 'rgba(33, 150, 243, 0.87)',
+    color: 'rgba(0, 0, 0, 0.47)',
     // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: 'normal',
@@ -90,5 +90,27 @@ export const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     paddingTop: 16,
     paddingBottom: 16,
+  },
+  hyphen: {
+    marginLeft: 2,
+    marginRight: 2,
+    lineHeight: 56,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  select: {
+    height: 56,
+    lineHeight: 20,
+    fontSize: 14,
+    fontStyle: 'normal',
+    color: 'rgba(0, 0, 0, 0.47)',
+    // backgroundColor: 'red'
+  },
+  optionSelect: {
+    marginLeft: 8,
+  },
+  selectLong: {
+    minWidth: 100,
   },
 });
