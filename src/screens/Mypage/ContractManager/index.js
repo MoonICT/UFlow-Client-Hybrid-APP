@@ -23,7 +23,7 @@ import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
 import ActionCreator from '@Actions';
-
+import RNPickerSelect from 'react-native-picker-select';
 const dataSelect = [
   {
     label: '계약유형',
@@ -498,6 +498,14 @@ class ContractManager extends Component {
         <View style={DefaultStyle._titleBody}>
           <Text style={[DefaultStyle._textTitleCard]}>견적･계약 관리</Text>
         </View>
+        <RNPickerSelect
+            onValueChange={(value) => console.log(value)}
+            items={[
+                { label: 'Football', value: 'football' },
+                { label: 'Baseball', value: 'baseball' },
+                { label: 'Hockey', value: 'hockey' },
+            ]}
+        />
         <View style={DefaultStyle._card}>
           <View style={S.steps}>{viewStep}</View>
         </View>
