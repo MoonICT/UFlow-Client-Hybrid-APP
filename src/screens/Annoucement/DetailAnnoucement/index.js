@@ -40,15 +40,15 @@ class RegisterInfo extends Component {
     const { route } = this.props;
     console.log('route -> ', route);
 
-    let contentDetail = route.params.annoucementDetails;
+    let contentDetail = route?.params?.annoucementDetails;
     
-    let title = contentDetail.title;
-    let date = contentDetail.createdDate;
-    let field1 = contentDetail.fileName1;
-    let field2 = contentDetail.fileName2;
-    let field3 = contentDetail.fileName3;
-    let field4 = contentDetail.fileName4;
-    let field5 = contentDetail.fileName5;
+    let title = contentDetail?.title;
+    let date = contentDetail?.createdDate;
+    let field1 = contentDetail?.fileName1;
+    let field2 = contentDetail?.fileName2;
+    let field3 = contentDetail?.fileName3;
+    let field4 = contentDetail?.fileName4;
+    let field5 = contentDetail?.fileName5;
 
     return (
       <SafeAreaView style={S.container}>

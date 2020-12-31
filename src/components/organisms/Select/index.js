@@ -5,9 +5,9 @@
  * */
 // Global Imports
 import React, { Component } from 'react';
-import { Platform ,View, Text } from 'react-native';
-import { Picker,PickerIOS } from '@react-native-community/picker';
-
+import { View, Text } from 'react-native';
+// import { Picker } from '@react-native-community/picker';
+import RNPickerSelect from 'react-native-picker-select';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 
@@ -21,36 +21,19 @@ export default class Selected extends Component {
 
   render() {
     const { data, labelSelected, colorLabel, valueProps } = this.props;
-    const checkPlatForm = Platform.OS === "ios";
-    const items =
-      data &&
-      data.map((item, index) => {
-        return (
-          <Picker.Item
-            key={index}
-            label={item.label}
-            value={item.value}
-            style={DefaultStyle._itemSelected}
-            itemStyle={DefaultStyle._itemSelected}
-          />
-        );
-      });
-
-      const itemsIOS =
-      data &&
-      data.map((item, index) => {
-        return (
-          <PickerIOS.Item
-            key={index}
-            label={item.label}
-            value={item.value}
-            style={DefaultStyle._itemSelected}
-            itemStyle={DefaultStyle._itemSelected}
-          />
-        );
-      });
-
-
+    // const items =
+    //   data &&
+    //   data.map((item, index) => {
+    //     return (
+    //       <Picker.Item
+    //         key={index}
+    //         label={item.label}
+    //         value={item.value}
+    //         style={DefaultStyle._itemSelected}
+    //         itemStyle={DefaultStyle._itemSelected}
+    //       />
+    //     );
+    //   });
     return (
       <View style={DefaultStyle._selected}>
         {labelSelected ? (
@@ -62,30 +45,17 @@ export default class Selected extends Component {
             {labelSelected}
           </Text>
         ) : null}
-    {checkPlatForm ?
-        <PickerIOS
-          style={DefaultStyle._textSelected}
-          mode="dropdown"
+        <RNPickerSelect
+          style={[DefaultStyle._textSelected]}
           selectedValue={this.state.selectedValue}
-          onValueChange={(itemValue, itemIndex) => {
-            this.setState({ selectedValue: itemValue });
-            valueProps && valueProps(itemValue);
+          value={this.state.selectedValue}
+          onValueChange={value => {
+            this.setState({ selectedValue: value });
+            valueProps && valueProps(value);
           }}
-          {...this.props}>
-          {itemsIOS}
-        </PickerIOS>
-:
-        <Picker
-          style={DefaultStyle._textSelected}
-          mode="dropdown"
-          selectedValue={this.state.selectedValue}
-          onValueChange={(itemValue, itemIndex) => {
-            this.setState({ selectedValue: itemValue });
-            valueProps && valueProps(itemValue);
-          }}
-          {...this.props}>
-          {items}
-        </Picker>}
+          items={data}
+          {...this.props}
+        />
       </View>
     );
   }
