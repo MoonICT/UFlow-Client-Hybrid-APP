@@ -25,6 +25,7 @@ import LocalNotificationService from '../../services/LocalNotificationService';
 import DefaultStyle from '../../styles/default';
 import AppGrid from '@Components/organisms/AppGrid';
 import ImgHTW from '@Assets/images/how-to-use.png';
+import iconService from '@Assets/images/ic-service.png';
 import Appbars from '@Components/organisms/AppBar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles as S } from './style';
@@ -71,8 +72,30 @@ export default class Notification extends Component {
             style={{ width: 400, height: 700 }}
           />
         </View>
-        <Text style={S.titleSmall}>{item.titleSmall}</Text>
-        <Text style={S.description}>{item.description2}</Text>
+        <View>
+          <Text style={S.titleSmall}>{item.titleSmall}</Text>
+          <Text style={S.description}>{item.description2}</Text>
+        </View>
+      </View>
+    );
+  };
+  _renderItemList = (url, title, content) => {
+    return (
+      <View style={[DefaultStyle.row]}>
+        <Image
+          style={{
+            width: 50,
+            height: 50,
+          }}
+          source={iconService}
+        />
+        <View style={{ flex: 1 }}>
+          <Text>{'포트폴리오'}</Text>
+          <Text>
+            작업했던 프로젝트를 포트폴리오로 {'\n'} 등록하면 유사한 프로젝트를
+            진행할 확률이{'\n'} 높아집니다.'
+          </Text>
+        </View>
       </View>
     );
   };
@@ -175,6 +198,13 @@ export default class Notification extends Component {
                 style={{ width: 400, height: 700 }}
               />
             </View>
+            {/* {this._renderItemList(
+              (url = {iconService}),
+              (title = '포트폴리오'),
+              (content =
+                '작업했던 프로젝트를 포트폴리오로 등록하면 유사한 프로젝트를 진행할 확률이 높아집니다.'),
+            )} */}
+            {this._renderItemList()}
           </View>
           {/* section 2 */}
           <Carousel
