@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
     alignItems: 'center',
-    marginTop: -100,
+    // marginTop: -100,
   },
   contentAlignLeft: {
     marginTop: -100,
@@ -70,6 +70,7 @@ export const styles = StyleSheet.create({
     borderRadius: 21,
     height: 42,
     marginTop: 25,
+    paddingTop:2,
   },
   textButton: {
     color: 'white',
@@ -98,8 +99,8 @@ export const styles = StyleSheet.create({
   },
   lineMove: {
     backgroundColor: '#ff6d00',
-    height:4,
-    marginTop:-1,
+    height: 4,
+    marginTop: -1,
   },
   valueProgress: {
     fontSize: 14,
@@ -115,6 +116,15 @@ export const styles = StyleSheet.create({
     paddingRight: 0,
     paddingLeft: 5,
   },
+  itemNavigationNone: {
+    width: 32,
+    height: 32,
+    borderColor: 'rgba(215, 215, 215, 0.5)',
+    borderWidth: 1,
+    fontSize: 16,
+    paddingRight: 0,
+    paddingLeft: 5,
+  },
   boxBottom: {
     maxWidth: 70,
     height: 32,
@@ -122,6 +132,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
     backgroundColor: 'transparent',
+  },
+  inputCheckbox: {
+    width: 20,
+    height: 20,
+    borderColor: 'white',
+    backgroundColor:'white',
+    flex:1
+
   },
   // ====
   container: {
@@ -141,6 +159,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
+    backgroundColor: 'red',
   },
   optionRow: {
     flexDirection: 'row',
