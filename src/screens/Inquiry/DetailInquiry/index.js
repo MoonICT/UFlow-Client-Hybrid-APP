@@ -7,7 +7,6 @@
 // Global Imports
 import React, { Component } from 'react';
 import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text } from 'react-native-paper';
 
@@ -15,16 +14,30 @@ import { Appbar, Text } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '@Actions';
 import { styles as S } from '../style';
-// import { styles as SS } from './style';
-class RegisterInfo extends Component {
+import { InquiryAPI } from '@Services/apis';
+
+class DetailInquiry extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { isSwitchOn: false };
+    this.state = {
+      isSwitchOn: false,
+      answer: '',
+    };
 
     this.navigation = props.navigation;
+  }
+
+  /** when after render DOM */
+  async componentDidMount() {
+    console.log('::componentDidMount::');
+    SplashScreen.hide();
+  }
+
+  /** when update state or props */
+  componentDidUpdate(prevProps, prevState) {
+    console.log('::componentDidUpdate::');
   }
 
   /** listener when change props */
@@ -37,12 +50,48 @@ class RegisterInfo extends Component {
     //console.log('//::componentWillUnmount::');
   }
 
+  createAnswer(params) {
+    let defaultParams = {
+      content: this.state.answer,
+      ...params,
+    };
+
+    InquiryAPI.createAnswer(defaultParams)
+      .then(res => {
+        console.log('::::: createAnswer :::::', res);
+        if (res.status === 200) {
+          this.showDialog();
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  }
+
+  onSubmit = (upperQnaSeq, warehouseRegNo) => {
+    this.createAnswer({
+      upperQnaSeq: upperQnaSeq,
+      warehouseRegNo: warehouseRegNo,
+    });
+  };
+
+  showDialog = () => this.setState({ visible: true });
+
   render() {
     const { params } = this.props.route;
-    let dateTime = new Date(params?.inquiryDetails?.date ?? '');
-    let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
-
     console.log('params', params);
+
+    let upperQnaSeq = params.inquiryDetails.id.qnaSeq;
+    let warehouseRegNo = params.inquiryDetails.id.warehouseRegNo;
+
+    let dateTime = new Date(params?.inquiryDetails?.date ?? '');
+    let dateStr =
+      dateTime.getFullYear() +
+      '.' +
+      dateTime.getMonth() +
+      '.' +
+      dateTime.getDate();
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -61,11 +110,11 @@ class RegisterInfo extends Component {
         <ScrollView>
           {params && params.inquiryDetails && params.type === 'TENANT' ? (
             <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-              {params.inquiryDetails.complete === false ?
+              {params.inquiryDetails.complete === false ? (
                 <Text style={[S.status]}>답변 완료</Text>
-                :
+              ) : (
                 <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
-              }
+              )}
               <Text style={S.titleItem}>
                 {params?.inquiryDetails?.content ?? ''}
               </Text>
@@ -76,35 +125,41 @@ class RegisterInfo extends Component {
                     {params?.inquiryDetails?.answer?.content ?? ''}
                   </Text>
                 </View>
-              )
-              }
+              )}
             </View>
           ) : (
-              <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
+            <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
+              {params.inquiryDetails.complete === true ? (
+                <Text style={S.status}>답변 완료</Text>
+              ) : (
                 <Text style={S.status}>답변 대기 중</Text>
-                <Text style={S.titleItem}>
-                  [문의유형] 안녕하세요. 문의 드릴 게 있습니다.
-                </Text>
-                <Text style={DefaultStyle.contentItem}>2020.10.29</Text>
+              )}
+              <Text style={S.titleItem}>
+                {params?.inquiryDetails?.content ?? ''}
+              </Text>
+              <Text style={DefaultStyle.contentItem}>{dateStr ?? ''}</Text>
+              {params.inquiryDetails.complete === true ? (
                 <View style={S.content}>
                   <Text style={S.textContent}>
-                    작성한 문의 내용이 노출됩니다.
+                    {params?.inquiryDetails?.answer?.content ?? ''}
                   </Text>
                 </View>
+              ) : (
                 <View style={S.answers}>
                   <TextField
                     placeholder=" 답변 내용을 입력해 주세요."
                     colorLabel="#000000"
-                    valueProps={e => console.log('e', e)}
+                    valueProps={e => this.setState({ answer: e })}
                     numberOfLines={5}
                     multiline
                     textAlignVertical="top"
                   />
                   <TouchableOpacity
-                    style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
-                    onPress={() => {
-                      // this.showDialog();
-                    }}>
+                    style={[
+                      DefaultStyle.btnSubmit,
+                      DefaultStyle.activeBtnSubmit,
+                    ]}
+                    onPress={() => this.onSubmit(upperQnaSeq, warehouseRegNo)}>
                     <Text
                       style={[
                         DefaultStyle.textSubmit,
@@ -114,50 +169,13 @@ class RegisterInfo extends Component {
                     </Text>
                   </TouchableOpacity>
                 </View>
-              </View>
-            )}
+              )}
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
     );
   }
-
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
-/** map state with store states redux store */
-function mapStateToProps(state) {
-  // console.log('++++++mapStateToProps: ', state);
-  return {
-    // count: state.home.count,
-    imageStore: state.registerWH.pimages,
-  };
-}
-
-/** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
-  return {
-    registerAction: action => {
-      dispatch(ActionCreator.uploadImage(action));
-    },
-    removeAction: action => {
-      dispatch(ActionCreator.removeImage(action));
-    },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RegisterInfo);
+export default DetailInquiry;

@@ -6,6 +6,7 @@ import * as Annoucement from './Annoucement';
 import * as FAQ from './FAQ';
 import * as Question from './Question';
 import * as MediaUpload from './MediaUpload';
+import * as InquiryAPI from './InquiryAPI';
 
 export {
   Sample,
@@ -16,4 +17,5 @@ export {
   FAQ,
   Question,
   MediaUpload,
+  InquiryAPI,
 };

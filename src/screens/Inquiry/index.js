@@ -244,11 +244,11 @@ class Inquiry extends Component {
                   <TouchableOpacity
                     style={DefaultStyle.btnItem}
                     onPress={() =>
-                      this.navigation.navigate('DetailInquiry')
+                      this.navigation.navigate('DetailInquiry', { inquiryDetails: item})
                     }>
                     <View style={DefaultStyle.leftItem}>
                       {item.complete === false ?
-                        <Text style={[S.status]}>답변 완료</Text>
+                        <Text style={[S.status]}>답변 대기 중</Text>
                         :
                         <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
                       }
@@ -276,7 +276,7 @@ class Inquiry extends Component {
                     }>
                     <View style={DefaultStyle.leftItem}>
                       {item.complete === false ?
-                        <Text style={[S.status]}>답변 완료</Text>
+                        <Text style={[S.status]}>답변 대기 중</Text>
                         :
                         <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
                       }
