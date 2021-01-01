@@ -34,12 +34,15 @@ class RegisterInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   render() {
     const { params } = this.props.route;
-    console.log('params', params.status);
+    let dateTime = new Date(params?.inquiryDetails?.date ?? '');
+    let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
+
+    console.log('params', params);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -56,63 +59,63 @@ class RegisterInfo extends Component {
           />
         </Appbars>
         <ScrollView>
-          {params.status === 'waitting' ? (
+          {params && params.inquiryDetails && params.type === 'TENANT' ? (
             <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-              <Text style={S.status}>답변 대기 중</Text>
+              {params.inquiryDetails.complete === false ?
+                <Text style={[S.status]}>답변 완료</Text>
+                :
+                <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
+              }
               <Text style={S.titleItem}>
-                [문의유형] 안녕하세요. 문의 드릴 게 있습니다.
+                {params?.inquiryDetails?.content ?? ''}
               </Text>
-              <Text style={DefaultStyle.contentItem}>2020.10.29</Text>
-              <View style={S.content}>
-                <Text style={S.textContent}>
-                  작성한 문의 내용이 노출됩니다.
-                </Text>
-              </View>
-              <View style={S.answers}>
-                <TextField
-                  placeholder=" 답변 내용을 입력해 주세요."
-                  colorLabel="#000000"
-                  valueProps={e => console.log('e', e)}
-                  numberOfLines={5}
-                  multiline
-                  textAlignVertical="top"
-                />
-                <TouchableOpacity
-                  style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
-                  onPress={() => {
-                    // this.showDialog();
-                  }}>
-                  <Text
-                    style={[
-                      DefaultStyle.textSubmit,
-                      DefaultStyle.textActiveSubmit,
-                    ]}>
-                    답변완료
+              <Text style={DefaultStyle.contentItem}>{dateStr ?? ''}</Text>
+              {params.inquiryDetails.complete === true && (
+                <View style={[S.answers, S.answerContents]}>
+                  <Text style={[S.textAnswers, { marginBottom: 15 }]}>
+                    {params?.inquiryDetails?.answer?.content ?? ''}
                   </Text>
-                </TouchableOpacity>
-              </View>
+                </View>
+              )
+              }
             </View>
           ) : (
-            <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-              <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
-              <Text style={S.titleItem}>
-                [문의유형] 안녕하세요. 문의 드릴 게 있습니다.
-              </Text>
-              <Text style={DefaultStyle.contentItem}>2020.10.29</Text>
-              <View style={S.content}>
-                <Text style={S.textContent}>
-                  작성한 문의 내용이 노출됩니다.
+              <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
+                <Text style={S.status}>답변 대기 중</Text>
+                <Text style={S.titleItem}>
+                  [문의유형] 안녕하세요. 문의 드릴 게 있습니다.
                 </Text>
+                <Text style={DefaultStyle.contentItem}>2020.10.29</Text>
+                <View style={S.content}>
+                  <Text style={S.textContent}>
+                    작성한 문의 내용이 노출됩니다.
+                  </Text>
+                </View>
+                <View style={S.answers}>
+                  <TextField
+                    placeholder=" 답변 내용을 입력해 주세요."
+                    colorLabel="#000000"
+                    valueProps={e => console.log('e', e)}
+                    numberOfLines={5}
+                    multiline
+                    textAlignVertical="top"
+                  />
+                  <TouchableOpacity
+                    style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
+                    onPress={() => {
+                      // this.showDialog();
+                    }}>
+                    <Text
+                      style={[
+                        DefaultStyle.textSubmit,
+                        DefaultStyle.textActiveSubmit,
+                      ]}>
+                      답변완료
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={[S.answers, S.answerContents]}>
-                <Text style={S.textAnswers}>안녕하세요. 동원창고입니다.</Text>
-                <Text style={[S.textAnswers, { marginBottom: 15 }]}>
-                  문의에 대한 답변이 노출되는 부분입니다.
-                </Text>
-                <Text style={S.textAnswers}>감사합니다.</Text>
-              </View>
-            </View>
-          )}
+            )}
         </ScrollView>
       </SafeAreaView>
     );
