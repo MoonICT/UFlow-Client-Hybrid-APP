@@ -17,9 +17,17 @@ export const getAllInquiry = async params => {
 };
 
 export const createAnswer = async data => {
-  return await mainAxios.post('/api/v1/warehouse/question/answer', {
+  console.log('formData :>> ', data);
+  const token = await AsyncStorage.getItem('token');
+  let defaultParams = {
     content: data.content,
     upperQnaSeq: data.upperQnaSeq,
     warehouseRegNo: data.warehouseRegNo,
+  }
+  return await mainAxios.post('/api/v1/warehouse/question/answer',  defaultParams , {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      contentType: 'application/json',
+    },
   });
 };

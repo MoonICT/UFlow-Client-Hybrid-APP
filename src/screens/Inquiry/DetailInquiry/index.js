@@ -60,7 +60,7 @@ class DetailInquiry extends Component {
       .then(res => {
         console.log('::::: createAnswer :::::', res);
         if (res.status === 200) {
-          this.showDialog();
+          alert('Create Answer Successful')
         }
       })
       .catch(err => {
@@ -75,7 +75,6 @@ class DetailInquiry extends Component {
     });
   };
 
-  showDialog = () => this.setState({ visible: true });
 
   render() {
     const { params } = this.props.route;
