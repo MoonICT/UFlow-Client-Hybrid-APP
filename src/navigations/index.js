@@ -235,7 +235,7 @@ const App = () => {
                   name="Notification"
                   component={Notification}
                   headerMode={true}
-                  options={{ headerShown: true }}
+                  options={{ headerShown: false }}
                 />
                 <RootStack.Screen
                   name="Geolocations"
