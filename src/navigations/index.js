@@ -60,13 +60,11 @@ import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
 import FAQ from '@Screeens/FAQ';
 
 import TenantMypage from '@Screeens/TenantMypage';
-// import Quotation from '@Screeens/TenantMypage/Quotation';
 import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
 import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
 import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
 import Chatting from '@Screeens/TenantMypage/Chat';
-// import StorageAgreement from '@Screeens/TenantMypage/StorageAgreement';
-import DetailsManager from '@Screeens/TenantMypage/DetailsManager';
+import DetailsManager from '@Screeens/Mypage/DetailsManager';
 import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
 
 import ProprietorMypage from '@Screeens/ProprietorMypage';
@@ -74,9 +72,6 @@ import ProprietorMypage from '@Screeens/ProprietorMypage';
 import Quotation from '@Screeens/Mypage/Quotation';
 import ResponseQuotation from '@Screeens/Mypage/ResponseQuotation';
 import StorageAgreement from '@Screeens/Mypage/StorageAgreement';
-import RequestContract from '@Screeens/Mypage/RequestContract';
-// import ContractDetails from '@Screeens/Page/ContractDetails';
-// import DetailsManager from '@Screeens/Page/DetailsManager';
 import Mypage from '@Screeens/Mypage';
 
 import MypageInfo from '@Screeens/MypageInfo';
@@ -84,7 +79,6 @@ import WithdrawalInformation from '@Screeens/MypageInfo/WithdrawalInformation';
 import ConfirmPass from '@Screeens/MypageInfo/ConfirmPass';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
-import Chat from '@Screeens/Chat';
 import Question from '@Screeens/Question';
 
 import Inquiry from '@Screeens/Inquiry';
@@ -164,9 +158,6 @@ const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 let isLogin = true;
-// const login = AsyncStorage.getItem(TOKEN);
-console.log('login===>', isLogin);
-
 const App = () => {
   return (
     <Provider store={store}>

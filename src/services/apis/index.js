@@ -19,3 +19,6 @@ export {
   MediaUpload,
   InquiryAPI,
 };
+import * as InOutManagerService from './InOutManagerService';
+
+export { Sample, Account, Warehouse, WarehouseOut, Annoucement, FAQ, InOutManagerService };
