@@ -76,8 +76,6 @@ import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
 import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 import MypageInfo from '@Screeens/MypageInfo';
-import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
-import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 import Information from '@Screeens/Mypage/Information';
 import RequestContract from '@Screeens/Mypage/RequestContract';
 import More from '@Screeens/More';
