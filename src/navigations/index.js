@@ -80,8 +80,8 @@ import RequestContract from '@Screeens/Mypage/RequestContract';
 import Mypage from '@Screeens/Mypage';
 
 import MypageInfo from '@Screeens/MypageInfo';
-import WithdrawalInformation from '@Screeens/MypageInfo/WithdrawalInformation';
-import ConfirmPass from '@Screeens/MypageInfo/ConfirmPass';
+import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
+import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
 import Chat from '@Screeens/Chat';
