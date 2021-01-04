@@ -31,6 +31,7 @@ import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
 import ContractManager from './ContractManager';
+import InOutManager from './InOutManager';
 import ActionCreator from '@Actions';
 
 import card from '@Assets/images/card-img.png';
@@ -379,7 +380,6 @@ class Mypage extends Component {
   render() {
     const { imageStore, workComplete } = this.props;
     const { title, isSwitchOn } = this.state;
-    console.log('title', title);
     let viewComponent = (
       <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
         <View style={DefaultStyle._titleCard}>
@@ -454,9 +454,9 @@ class Mypage extends Component {
           />
         );
         break;
-      // case '입･출고 관리':
-      //   viewComponent = <InOutManager navigation={this.navigation} />;
-      //   break;
+      case '입･출고 관리':
+        viewComponent = <InOutManager navigation={this.navigation} />;
+        break;
       // case '정산관리':
       //   viewComponent = <SettlementManagement navigation={this.navigation} />;
       //   break;

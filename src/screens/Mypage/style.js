@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
   },
   select: {
     paddingLeft: 0,
-    height: 36,
+    height: 57.9,
     width: 'auto',
     lineHeight: 20,
     // fontFamily: 'NotoSansCJKkr-Regular',
