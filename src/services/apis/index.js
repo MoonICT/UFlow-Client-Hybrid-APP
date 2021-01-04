@@ -8,6 +8,7 @@ import * as Question from './Question';
 import * as MediaUpload from './MediaUpload';
 import * as InquiryAPI from './InquiryAPI';
 import * as InOutManagerService from './InOutManagerService';
+import * as MyPage from './MyPage';
 
 export {
   Sample,
@@ -20,4 +21,5 @@ export {
   MediaUpload,
   InquiryAPI,
   InOutManagerService,
+  MyPage,
 };
