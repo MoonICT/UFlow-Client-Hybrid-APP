@@ -17,6 +17,8 @@
           "@Store": "./src/store",
           "@Styles": "./src/styles",
           "@Themes": "./src/themes",
+          "@Utils": "./src/utils",
+          "@Constant": "./src/constant",
           "@Static": "./public"
         }
       }
