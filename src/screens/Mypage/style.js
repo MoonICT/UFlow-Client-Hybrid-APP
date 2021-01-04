@@ -197,15 +197,16 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
     // textAlign: 'right',
     textDecorationLine: 'underline',
-  listChecks: {
-    flex: 1,
-    marginBottom: 8,
   },
-  checkItem: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  textCheck: {
-    paddingTop: 8,
-  },
+  // listChecks: {
+  //   flex: 1,
+  //   marginBottom: 8,
+  // },
+  // checkItem: {
+  //   flexDirection: 'row',
+  //   flex: 1,
+  // },
+  // textCheck: {
+  //   paddingTop: 8,
+  // },
 });
