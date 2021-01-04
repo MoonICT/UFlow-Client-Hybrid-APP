@@ -347,7 +347,7 @@ const dataReplyTrust = [
     type: '추가 요청 사항',
   },
 ];
-class ProprietorMypage extends Component {
+class Mypage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -591,4 +591,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ProprietorMypage);
+)(Mypage);

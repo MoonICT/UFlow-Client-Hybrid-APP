@@ -12,10 +12,10 @@ import { mainMediaAxios } from '../libs/axios';
  * Upload Image
  * @returns {Promise<unknown>}
  **/
-export const uploadImage = async (body) => {
+export const uploadImage =  (body) => {
   mainMediaAxios.body = body;
-  const data = await mainMediaAxios.request({
-    methodType: 'POST',
+  const data =  mainMediaAxios.request({
+    method: 'POST',
     url: '/api/v1/file/images',
   });
   return data;

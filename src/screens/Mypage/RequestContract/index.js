@@ -32,7 +32,7 @@ import ActionCreator from '@Actions';
 import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import { Warehouse } from '@Services/apis';
 
 class RequestContract extends Component {
   constructor(props) {
@@ -68,7 +68,6 @@ class RequestContract extends Component {
     const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
     const status = route && route.params && route.params.status;
-console.log('routeRequestContract', route)
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -186,7 +185,28 @@ console.log('routeRequestContract', route)
   /** when after render DOM */
   async componentDidMount() {
     console.log('::componentDidMount::');
-    SplashScreen.hide();
+    let warehSeq = this.props.route.params.warehSeq;
+    let warehouseRegNo = this.props.route.params.warehouseRegNo;
+    let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
+    let typeWH = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+    let data =
+      this.props.route.params.typeWH === 'TRUST'
+        ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
+        : { warehouseRegNo, mgmtKeepSeq: warehSeq };
+    await Warehouse.requestContract({ typeWH, data })
+      .then(res => {
+        const status = res.status;
+        console.log('res', res);
+        if (status === 200) {
+          this.setState({
+            dataApi: res.data,
+          });
+          // this.props.quotationData(res.data);
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
   }
 
   /** when update state or props */

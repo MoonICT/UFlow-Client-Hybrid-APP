@@ -60,6 +60,18 @@ export const responQuotation = async value => {
     },
   });
 };
+
+export const requestContract = async value => {
+  const token = await AsyncStorage.getItem('token');
+  console.log('token', token);
+  console.log('valueAXIOS', value);
+  return await mainAxios.post(`/api/v1/contract/${value.typeWH}`, value.data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인
  * @returns {Promise<unknown>}

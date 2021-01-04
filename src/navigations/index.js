@@ -78,10 +78,11 @@ import RequestContract from '@Screeens/Mypage/RequestContract';
 // import ContractDetails from '@Screeens/Page/ContractDetails';
 // import DetailsManager from '@Screeens/Page/DetailsManager';
 import Mypage from '@Screeens/Mypage';
-
+import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
+import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 import MypageInfo from '@Screeens/MypageInfo';
-import WithdrawalInformation from '@Screeens/MypageInfo/WithdrawalInformation';
-import ConfirmPass from '@Screeens/MypageInfo/ConfirmPass';
+import Information from '@Screeens/Mypage/Information';
+
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
 import Chat from '@Screeens/Chat';
@@ -504,6 +505,12 @@ const App = () => {
                 <RootStack.Screen
                   name="RequestContract"
                   component={RequestContract}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Information"
+                  component={Information}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
