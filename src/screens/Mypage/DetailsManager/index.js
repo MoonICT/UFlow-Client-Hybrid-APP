@@ -35,11 +35,10 @@ import TextField from '@Components/organisms/TextField';
 
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
-import Icon from 'react-native-vector-icons/Fontisto';
-
+import {formatDateV1} from '@Utils/dateFormat';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
-
+import { InOutManagerService } from '@Services/apis'
 const dataStart = [
   {
     label: 'YYYY.MM.DD',
@@ -77,44 +76,6 @@ const selectRequest = [
   {
     label: '입고 요청',
     value: '입고 요청',
-  },
-];
-const dataInfo = [
-  {
-    type: '창고명',
-    value: '에이씨티앤코아물류',
-  },
-  {
-    type: '창고주',
-    value: '(주)에이씨티앤코아물류',
-  },
-  {
-    type: '위치',
-    value: '인천광역시 서구 석남동 650-31',
-  },
-  {
-    type: '보관유형',
-    value: '상온',
-  },
-  {
-    type: '정산단위',
-    value: '파렛트',
-  },
-  {
-    type: '산정기준',
-    value: '회',
-  },
-  {
-    type: '물동량',
-    value: '400',
-  },
-  {
-    type: '수탁 기간',
-    value: '2020.10.10 - 2021.10.10',
-  },
-  {
-    type: '보관비',
-    value: '5,000원',
   },
 ];
 const dataProgress = [
@@ -202,22 +163,194 @@ const viewProgress = [
     type: '보관비',
   },
 ];
-class DetailsManager extends Component {
+export default class DetailsManager extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
+    let {rentWarehNo, type} = props.route.params
     this.state = {
+      rentWarehNo,
+      type,
       visible: false,
       confirm: false,
+      dataInfo: [],
+      responseFilter: [],
       isProgress: false,
       isCancel: false,
       cancelRequest: false,
       isToggle: false,
       receiptCancel: false,
+      filter: {
+        query: '',
+        contractType: 2100,
+        rangeTime: '',
+        startDate: new Date(),
+        endDate: new Date()
+      },
+      isOpenStart: false,
+      isOpenEnd: false,
+      rangeDay: [
+        {
+          value: '', label: '전체'
+        },
+        {
+          value: '7', label: '7일'
+        },
+        {
+          value: '15', label: '15일'
+        },
+        {
+          value: '30', label: '1개월'
+        },
+        {
+          value: '90', label: '3개월'
+        },
+        {
+          value: '180', label: '6개월'
+        },
+        {
+          value: '365', label: '1년'
+        }
+      ]
     };
 
     this.navigation = props.navigation;
   }
+
+  componentDidMount() {
+    this.getAllData()
+  }
+
+
+  async getAllData(){
+    let { filter, type, rentWarehNo } = this.state;
+    let {startDate, endDate, query, contractType} = filter;
+    let params = {
+      startDate,
+      endDate,
+      query,
+      id: rentWarehNo,
+      rangeDate: '',
+      type: type,
+      contractType
+    };
+    await InOutManagerService.getDetail(params).then((res) => {
+      console.log('ressssss', res)
+      let header = res.data.header;
+      const dataInfo = [
+        {
+          type: '창고명',
+          value: header.warehouse,
+        },
+        {
+          type: '창고주',
+          value: header.owner,
+        },
+        {
+          type: '위치',
+          value: header.address,
+        },
+        {
+          type: '보관유형',
+          value: header.gdsTypeCode,
+        },
+        {
+          type: '정산단위',
+          value: header.cntrTrustResBody.calUnitDvCode.stdDetailCode,
+        },
+        {
+          type: '산정기준',
+          value: header.cntrTrustResBody.calStdDvCode.stdDetailCode,
+        },
+        {
+          type: '물동량',
+          value: '400',
+        },
+        {
+          type: '수탁 기간',
+          value: ` ${formatDateV1(header?.cntrTrustResBody?.id?.cntrYmdForm ?? '')} ~ ${formatDateV1(header?.cntrTrustResBody?.id?.cntrYmdTo ?? '')}`,
+        },
+        {
+          type: '보관비',
+          value: header.cntrTrustResBody?.value ?? '-',
+        },
+      ];
+
+
+      let responseFilter = res.data.data.content.map((item, index) => {
+        let division = ''
+        switch(true) {
+          case item.type === 'IMPORT' && item.status === '1100':
+            devision = '입고 요청'
+            break;
+          case item.type === 'IMPORT' && item.status === '1200':
+            '입고 확정'
+            break;
+          case item.type === 'IMPORT' && item.status === '9100':
+            devision = '입고 요청 취소'
+            break;
+          case item.type === 'EXPORT' && item.status === '2100':
+            devision = '출고 요청'
+            break;
+          case item.type === 'EXPORT' && item.status === '2200':
+            devision = '출고 확정'
+            break;
+          case item.type === 'EXPORT' && item.status === '9500':
+            devision = '출고 요청 취소'
+            break;
+        }
+        return {
+          dataProgress: [
+            {
+              type: '작성 일시',
+              value: ` ${formatDateV1(item.createdDate ?? '')}`,
+            },
+            {
+              type: '작성자',
+              value: '임차인(ID)',
+            },
+            {
+              type: '구분',
+              value: devision,
+            },
+            {
+              type: '예정/ 확정 일시',
+              value: '입고예정 : 2020.11.10 09:05:00',
+            },
+            {
+              type: '입고량',
+              value: '100',
+            },
+            {
+              type: '출고량',
+            },
+            {
+              type: '재고',
+            },
+            {
+              type: '적용단가',
+              value: '950/PLT',
+            },
+            {
+              type: '입고비',
+              value: '95,000원',
+            },
+            {
+              type: '출고비',
+            },
+            {
+              type: '보관비',
+            }
+          ]
+        }
+      })
+      this.setState({
+        dataInfo, responseFilter
+      })
+    })
+  }
+
+
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
@@ -227,7 +360,7 @@ class DetailsManager extends Component {
   render() {
     // const { imageStore } = this.props;
     const { route } = this.props;
-    const { isProgress, isToggle, receiptCancel } = this.state;
+    const { isProgress, isToggle, receiptCancel, dataInfo, responseFilter } = this.state;
 
     const processing =
       isProgress === true ? (
@@ -236,10 +369,17 @@ class DetailsManager extends Component {
         </View>
       ) : (
         <Fragment>
-          <TableInfo
-            data={dataProgress}
-            style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
-          />
+          {
+            responseFilter.length > 0 && responseFilter.map((item, index) => {
+              return (
+                <TableInfo
+                data={item.dataProgress}
+                style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
+              />
+              )
+            })
+          }
+
           <View style={[DefaultStyle._listBtn, SS.listBtnProcess]}>
             <TouchableOpacity
               onPress={() => {
@@ -588,40 +728,5 @@ class DetailsManager extends Component {
     );
   }
 
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
-/** map state with store states redux store */
-function mapStateToProps(state) {
-  // console.log('++++++mapStateToProps: ', state);
-  return {
-    // count: state.home.count,
-    imageStore: state.registerWH.pimages,
-  };
-}
-
-/** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
-  return {
-    dataAction: action => {
-      dispatch(ActionCreator.ContractConditions(action));
-    },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DetailsManager);
