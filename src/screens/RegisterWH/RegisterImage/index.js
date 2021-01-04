@@ -99,11 +99,11 @@ class RegisterImage extends Component {
           imgData: pimages,
         });
 
-        // let body = createFormData(response, { id: '123' });
+        let body = passFile(response);
 
-        // let dataUpload = await MediaUpload.uploadImage(body);
+        let dataUpload = MediaUpload.uploadImage(body);
 
-        console.log('response===>', response);
+        console.log('dataUpload===>', dataUpload);
         // fetch('http://api.uflow.voltpage.net/api/v1/file/images', {
         //   method: 'POST',
         //   // eslint-disable-next-line no-undef

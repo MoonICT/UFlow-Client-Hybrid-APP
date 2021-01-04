@@ -356,6 +356,7 @@ class Quotation extends Component {
                       type,
                       warehouseRegNo,
                       warehSeq,
+                      typeWH,
                     })
                   }>
                   <Text
