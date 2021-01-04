@@ -162,6 +162,17 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  listChecks: {
+    flex: 1,
+    marginBottom: 8,
+  },
+  checkItem: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  textCheck: {
+    paddingTop: 8,
+  },
   checks: {},
   listChecks: {
     flexDirection: 'row',
@@ -198,4 +209,15 @@ export const styles = StyleSheet.create({
     // textAlign: 'right',
     textDecorationLine: 'underline',
   },
+  // listChecks: {
+  //   flex: 1,
+  //   marginBottom: 8,
+  // },
+  // checkItem: {
+  //   flexDirection: 'row',
+  //   flex: 1,
+  // },
+  // textCheck: {
+  //   paddingTop: 8,
+  // },
 });

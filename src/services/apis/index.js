@@ -7,7 +7,9 @@ import * as FAQ from './FAQ';
 import * as Question from './Question';
 import * as MediaUpload from './MediaUpload';
 import * as InquiryAPI from './InquiryAPI';
+import * as MyPage from './MyPage';
 import * as InOutManagerService from './InOutManagerService';
+import * as LogisticsKnowledgeService from './LogisticsKnowledgeService';
 
 export {
   Sample,
@@ -19,5 +21,7 @@ export {
   Question,
   MediaUpload,
   InquiryAPI,
+  MyPage,
   InOutManagerService,
+  LogisticsKnowledgeService,
 };

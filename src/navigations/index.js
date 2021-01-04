@@ -85,6 +85,8 @@ import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
+import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
+
 import { color } from '@Themes/colors';
 
 //Custom Theme
@@ -502,6 +504,12 @@ const App = () => {
                 <RootStack.Screen
                   name="Information"
                   component={Information}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="LogisticsKnowledge"
+                  component={LogisticsKnowledge}
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
