@@ -129,6 +129,11 @@ export default class Sample extends Component {
             <Text>{'Login Sample'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Information')}
+            style={DefaultStyle.btn}>
+            <Text>{'Information Sample'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => this.props.navigation.navigate('WithdrawalInformation')}
             style={DefaultStyle.btn}>
             <Text>{'WithdrawalInformation Sample'}</Text>

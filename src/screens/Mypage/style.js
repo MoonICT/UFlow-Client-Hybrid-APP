@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
   },
   select: {
     paddingLeft: 0,
-    height: 36,
+    height: 57.9,
     width: 'auto',
     lineHeight: 20,
     // fontFamily: 'NotoSansCJKkr-Regular',
@@ -172,5 +172,41 @@ export const styles = StyleSheet.create({
   },
   textCheck: {
     paddingTop: 8,
+  },
+  checks: {},
+  listChecks: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 24,
+  },
+  checkItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 23,
+  },
+  checkChildren: {
+    marginLeft: 25,
+  },
+  textCheck: {
+    color: '#000000',
+    // fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 20,
+  },
+  btnFooter: {
+    alignSelf: 'flex-end',
+    marginBottom: 24,
+  },
+  textBtnFooter: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    // fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 20,
+    // textAlign: 'right',
+    textDecorationLine: 'underline',
   },
 });

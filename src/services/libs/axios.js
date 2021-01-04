@@ -16,9 +16,8 @@ const headerDict = {
 };
 
 const headerMediaDict = {
-  Accept: 'application/json',
-  Authorization: `Bearer ${token}`,
-  'Content-Type': 'application/x-www-form-urlencoded',
+  // Accept: 'application/json',
+  'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
 };
 
 export const mainAxios = axios.create({
@@ -40,6 +39,6 @@ export const reserveAxios = axios.create({
 
 export const mainMediaAxios = axios.create({
   baseURL: `${configURL.API_SERVER_ADDRESS}`,
-  headers: headerMediaDict,
-  withCredentials: true,
+  headers: { 'Content-Type': 'multipart/form-data' },
+  // withCredentials: true,
 });

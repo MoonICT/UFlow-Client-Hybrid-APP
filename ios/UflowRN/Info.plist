@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>제품의 바코드 스캔을 위해 카메라 접근을 허용합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Zocial.ttf</string>

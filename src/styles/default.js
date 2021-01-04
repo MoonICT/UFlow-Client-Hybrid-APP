@@ -826,6 +826,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 16,
+    marginBottom: 16
   },
   _textTitleCard: {
     color: color.text.primary,
