@@ -24,6 +24,18 @@ export const styles = StyleSheet.create({
     paddingTop:20,
     marginBottom:45,
   },
+  tabTopbar:{
+    position:'absolute',
+    top:48,
+    width:'100%',
+    zIndex:99999,
+    backgroundColor:'white'
+  }, 
+  boxSelect:{
+    marginTop:20,
+    paddingLeft:16,
+    paddingRight:16,
+  },  
   title: {
     fontSize: 25,
     fontWeight: '600',

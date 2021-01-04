@@ -28,6 +28,46 @@ class AppGrid extends Component {
     }
   }
   render() {
+    if (this.props.type === 'controlTitleActive') {
+      const { data, titleProps } = this.props;
+      const tabItem =
+        data &&
+        data.map((item, index) => {
+          return (
+            <Button
+              key={index}
+              color={
+                
+                this.props.titleActive === item.title
+                  ? '#000000'
+                  : 'rgba(0, 0, 0, 0.54)'
+              }
+              onPress={() => {
+                this.handlePress(item);
+                titleProps && titleProps(item.title, index);
+              }}
+              style={[
+                DefaultStyle._tabItem,
+                
+                this.props.titleActive === item.title
+                  ? DefaultStyle._tabItemActive
+                  : '',
+              ]}>
+              {item.title}
+            </Button>
+          );
+        });
+      return (
+        <Fragment>
+          <ScrollView horizontal={true} style={DefaultStyle._tabGrid}>
+            {tabItem}
+          </ScrollView>
+          {this.state.content ? (
+            <Text style={DefaultStyle._contentGrid}>{this.state.content}</Text>
+          ) : null}
+        </Fragment>
+      );
+    }
     const { data, titleProps } = this.props;
     const tabItem =
       data &&

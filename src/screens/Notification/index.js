@@ -27,6 +27,7 @@ import AppGrid from '@Components/organisms/AppGrid';
 import ImgHTW from '@Assets/images/how-to-use.png';
 import iconService from '@Assets/images/ic-service.png';
 import Appbars from '@Components/organisms/AppBar';
+import Select from '@Components/organisms/Select';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles as S } from './style';
 import Carousel from '@Components/organisms/Carousel';
@@ -51,7 +52,7 @@ export default class Notification extends Component {
     this.navigation = props.navigation;
     this.myRef = React.createRef();
     this.state = {
-      title: '카테고리',
+      title: 'null',
       heightSection1: 0,
       heightSection2: 0,
       heightSection3: 0,
@@ -62,7 +63,7 @@ export default class Notification extends Component {
     return (
       <View style={[S.boxSection, { marginBottom: 60, paddingBottom: 100 }]}>
         <Text style={S.title}>{item.title}</Text>
-        {item.description}
+        <Text style={S.description}>{item.description}</Text>
         <View style={S.boxTarget}>
           <Text style={S.textTarget}>{item.textTarget}</Text>
           <Icon.Button
@@ -108,26 +109,78 @@ export default class Notification extends Component {
       </View>
     );
   };
-  handleScroll = e => {
-    console.log('titi', e.nativeEvent.contentOffset.y);
+  handleScroll = (e) => {
+    const {
+      title,
+      heightSection1,
+      heightSection2,
+      heightSection3,
+      heightSection4,
+    } = this.state;
+    let scrollY = e.nativeEvent.contentOffset.y;
+
+    if (scrollY <= heightSection1) {
+      this.setState({ title: '카테고리' });
+    } else if (
+      heightSection1 < scrollY &&
+      scrollY < heightSection1 + heightSection2
+    ) {
+      this.setState({ title: '카테고리2' });
+    } else if (
+      scrollY > heightSection1 + heightSection2 &&
+      scrollY < heightSection1 + heightSection2 + heightSection3
+    ) {
+      this.setState({ title: '카테고리3' });
+    }
+    console.log('scrollY', scrollY);
+    console.log(
+      'heightSection1+heightSection1',
+      heightSection2 + heightSection1,
+    );
   };
-  // getDimesionsHeightSection1 = e => {
-  //   let { height } = e.nativeEvent.layout;
-  //   this.setState({ heightSection1: height });
-  // };
-  getDimesionsHeightSection2 = e => {
+  getDimesionsHeightSection1 = (e) => {
     let { height } = e.nativeEvent.layout;
     this.setState({ heightSection1: height });
   };
-  getDimesionsHeightSection3 = e => {
+  getDimesionsHeightSection2 = (e) => {
     let { height } = e.nativeEvent.layout;
-    this.setState({ heightSection1: height });
+    this.setState({ heightSection2: height });
   };
-  getDimesionsHeightSection4 = e => {
+  getDimesionsHeightSection3 = (e) => {
     let { height } = e.nativeEvent.layout;
-    this.setState({ heightSection1: height });
+    this.setState({ heightSection3: height });
   };
 
+  handleChangeTitle = (e) => {
+    const { heightSection1, heightSection2, heightSection3 } = this.state;
+    console.log('handle title');
+    switch (e) {
+      case '카테고리':
+        this.myRef.current?.scrollTo({
+          y: 50,
+          animated: true,
+        });
+        break;
+      case '카테고리2':
+        this.myRef.current?.scrollTo({
+          y: heightSection1 + 100,
+          animated: true,
+        });
+        break;
+      case '카테고리3':
+        this.myRef.current?.scrollTo({
+          y: heightSection1 + heightSection2 + 50,
+          animated: true,
+        });
+        break;
+      case '카테고리4':
+        this.myRef.current?.scrollTo({
+          y: heightSection1 + heightSection2 + heightSection3 + 50,
+          animated: true,
+        });
+        break;
+    }
+  };
   render() {
     let slides = [
       {
@@ -190,33 +243,37 @@ export default class Notification extends Component {
       heightSection4,
     } = this.state;
     console.log('title', title);
-    console.log('heightSection1', heightSection1);
-    switch (title) {
-      case '카테고리2':
-        this.myRef.current?.scrollTo({
-          y: 500 + 100,
-          animated: true,
-        });
-        break;
-      case '카테고리3':
-        this.myRef.current?.scrollTo({
-          y: 600 + 100,
-          animated: true,
-        });
-        break;
-      case '카테고리4':
-        this.myRef.current?.scrollTo({
-          y: 900 + 100,
-          animated: true,
-        });
-        break;
-      default:
-        this.myRef.current?.scrollTo({
-          y: 100,
-          animated: true,
-        });
-    }
 
+    const calculation = [
+      {
+        label: '회',
+        value: 'CS01',
+      },
+      {
+        label: '건',
+        value: 'CS02',
+      },
+      {
+        label: '일',
+        value: 'CS03',
+      },
+      {
+        label: '월',
+        value: 'CS04',
+      },
+      {
+        label: '분기',
+        value: 'CS05',
+      },
+      {
+        label: '반기',
+        value: 'CS06',
+      },
+      {
+        label: '연',
+        value: 'CS07',
+      },
+    ];
     return (
       <SafeAreaView style={{ backgroundColor: 'white' }}>
         <Appbars>
@@ -232,14 +289,23 @@ export default class Notification extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView onScroll={this.handleScroll} ref={this.myRef}>
+        <View style={S.tabTopbar}>
+          <View style={S.boxSelect}>
+          <Select data={calculation} />
+          </View>
           <AppGrid
+            type="controlTitleActive"
+            titleActive={title}
             data={data}
             title={title}
-            titleProps={e => this.setState({ title: e })}
+            titleProps={(e) => this.handleChangeTitle(e)}
           />
+        </View>
+        <ScrollView onScroll={this.handleScroll} ref={this.myRef}>
           {/* section 1 */}
-          <View style={S.boxSection} onLayout={e=>this.setState({ heightSection1: e })}>
+          <View
+            style={[S.boxSection, { marginTop: 100 }]}
+            onLayout={this.getDimesionsHeightSection1}>
             <Text style={S.title}>두번 째 카테고리</Text>
             <Text style={S.description}>
               작업했던 프로젝트를 포트폴리오로{'\n'} 지원할 수 있습니다. 월 평균
@@ -271,9 +337,6 @@ export default class Notification extends Component {
               custom={{
                 data: slides,
                 renderItem: this._renderItemCarousel,
-                onSlideChange: e => {
-                  this.setState({ numberSlide: e });
-                },
                 dotStyle: {
                   backgroundColor: '#cccccc',
                   width: 8,
@@ -291,7 +354,9 @@ export default class Notification extends Component {
           </View>
 
           {/* section 3 */}
-          <View style={[S.boxSection, { marginTop: 0, marginBottom: 30 }]} onLayout={this.getDimesionsHeightSection3}>
+          <View
+            style={[S.boxSection, { marginTop: 0, marginBottom: 30 }]}
+            onLayout={this.getDimesionsHeightSection3}>
             <Text style={S.title}>두번 째 카테고리</Text>
             <Text style={S.description}>
               작업했던 프로젝트를 포트폴리오로{'\n'} 지원할 수 있습니다. 월 평균
@@ -331,7 +396,6 @@ export default class Notification extends Component {
           </View>
 
           <View
-          onLayout={this.getDimesionsHeightSection4}
             style={[
               S.boxSection,
               { marginTop: 0, marginBottom: 0, paddingBottom: 80 },
