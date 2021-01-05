@@ -14,7 +14,7 @@ import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import Appbars from '@Components/organisms/AppBar';
+// import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
 // import DoneRegister from './done';
@@ -27,10 +27,14 @@ import save from '@Assets/images/more-save.png';
 import transport from '@Assets/images/more-transport.png';
 import warehouse from '@Assets/images/more-warehouse.png';
 
+import { AuthContext } from '@Store/context';
+
 //---> Assets
 import AsyncStorage from '@react-native-community/async-storage';
 import { Account } from '@Services/apis';
 class More extends Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.webView = null;
@@ -53,6 +57,7 @@ class More extends Component {
   render() {
     let { email, fullName } = this.state;
     const { route, isLogin } = this.props;
+    const { signOut } = this.context;
 
     console.log('routeMore :>> ', route);
 
@@ -331,7 +336,7 @@ class More extends Component {
           </View>
 
           <View style={S.footerMore}>
-            <TouchableOpacity onPress={() => console.log('로그아웃 :>> ')}>
+            <TouchableOpacity onPress={() => signOut()}>
               {isLogin === false ? null : (
                 <Text style={S.textLogout}>로그아웃</Text>
               )}

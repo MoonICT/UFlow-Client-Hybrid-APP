@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2021-01-05 10:54:30
+ * @modify date 2021-01-05 19:56:02
  * @desc [description]
  */
 
@@ -69,7 +69,7 @@ class ProductCard extends Component {
           {/** Image */}
           <View style={styles.imageWrap}>
             <Card.Cover
-              source={{ uri: data?.img }}
+              source={data.img ? data?.img : { uri: data.thumbnail }}
               style={[
                 styles.cardImage,
                 this.state.isHorizontal && styles.cardImageHorizon,
