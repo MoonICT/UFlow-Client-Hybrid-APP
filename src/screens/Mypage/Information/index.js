@@ -18,6 +18,8 @@ import {
 } from 'react-native-paper';
 
 import AppGrid from '@Components/organisms/AppGrid';
+import MypageInfo from "./MypageInfo";
+import MypageBusinessInfo from "./MypageBusinessInfo";
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -47,7 +49,7 @@ class Information extends Component {
       checkMail: false,
       firstQuery: '',
       visible: false,
-      tabInfo: '',
+      tabInfo: '기본 정보',
       userInfo: {},
     };
     this.navigation = props.navigation;
@@ -106,79 +108,8 @@ class Information extends Component {
           <View style={{ flex: 1 }}>
             <AppGrid data={tabSelect} titleProps={this.handleClickTab} />
           </View>
-          {tabInfo === '사업자 등록 정보' ?
-            <View>
-              <Text>Tab 2</Text>
-            </View>
-            :
-            <View style={[DefaultStyle._cards]}>
-              <View style={[DefaultStyle._titleCard, { marginBottom: -4 }]}>
-                <Text style={DefaultStyle._textTitleBody}>거래조건</Text>
-              </View>
-              <View style>
-                <TextField
-                  labelTextField="이름"
-                  placeholder="하혜정"
-                  colorLabel="#000000"
-                />
-                <TextField
-                  labelTextField="이메일"
-                  placeholder="haharu@aartkorea.com"
-                  colorLabel="#000000"
-                />
-                <TextField labelTextField="현재 비밀번호" colorLabel="#000000" />
-                <TextField labelTextField="새 비밀번호" colorLabel="#000000" />
-                <TextField
-                  labelTextField="새 비밀번호 확인"
-                  colorLabel="#000000"
-                />
-              </View>
-              <View style={S.checks}>
-                <View style={S.checkItem}>
-                  <Checkbox
-                    status={checkAll ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                      this.setState({
-                        checkAll: !checkAll,
-                        checkSMS: !checkAll,
-                        checkMail: !checkAll,
-                      });
-                    }}
-                  />
-                  <Text style={S.textCheck}>마케팅 수신 동의</Text>
-                </View>
-                <View style={[S.checkItem, S.checkChildren]}>
-                  <Checkbox
-                    status={checkSMS ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                      this.setState({ checkSMS: !checkSMS });
-                    }}
-                  />
-                  <Text style={S.textCheck}>SMS</Text>
-                </View>
-                <View style={[S.checkItem, S.checkChildren]}>
-                  <Checkbox
-                    status={checkMail ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                      this.setState({ checkMail: !checkMail });
-                    }}
-                  />
-                  <Text style={S.textCheck}>이메일</Text>
-                </View>
-              </View>
-            </View>
-          }
-          <View style={S.btn}>
-            <Button
-              mode="contained"
-              style={[{ width: '95%', margin: 12, borderRadius: 24, height: 40, marginBottom: 24 }, DefaultStyle._primary,]}
-              color="red"
-              onPress={() => {
-                this.navigation.navigate('Home');
-              }}>
-              확인
-            </Button>
-          </View>
+          {tabInfo === '기본 정보' && <MypageInfo />}
+          {tabInfo === '사업자 등록 정보' && <MypageBusinessInfo />}
         </ScrollView>
         <Dialog
           style={DefaultStyle.popup}

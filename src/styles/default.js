@@ -36,6 +36,48 @@ export default StyleSheet.create({
     paddingRight: 12,
     textAlign: 'center',
   },
+  line: {
+    width:'100%',
+    height:1,
+    backgroundColor: color.input.default_border,
+  },
+  mt_20: {
+    marginTop:20
+  },
+  mb_20: {
+    marginBottom:20
+  },
+  mr_20: {
+    marginRight:20
+  },
+  mb_0: {
+    marginBottom:0
+  },
+  pt_20: {
+    paddingTop:20
+  },
+  pb_0: {
+    paddingBottom:0
+  },
+  p_12: {
+    padding:12
+  },
+  _colorMuted:{
+    color: 'rgba(0, 0, 0, 0.87)'
+  },
+  w_50:{
+    width: '50%'
+  },
+  d_flex:{
+    display: 'flex',
+  },
+  d_flex_center:{
+    display: 'flex',
+    alignItems: 'center'
+  },
+  flex_1:{
+    flex: 1
+  },
   header: {
     height: 48,
     display: 'flex',
@@ -1039,6 +1081,13 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderRadius: 21,
     flex: 1,
+    alignItems: 'center',
+  },
+  _btnOutlineMuted: {
+    borderColor: 'rgba(0, 0, 0, 0.5)',
+    borderWidth: 1,
+    height:42,
+    borderRadius: 21,
     alignItems: 'center',
   },
   _btnInline: {
