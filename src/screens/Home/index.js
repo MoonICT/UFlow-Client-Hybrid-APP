@@ -794,13 +794,13 @@ class Home extends Component {
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
     /** Complete Initialize. */
-    let page = await Warehouse.listRecommend();
-    page = page?.data;
-    let list =
-      page._embedded && page._embedded.warehouses
-        ? page._embedded.warehouses
-        : [];
-    this.setState({ whList: list });
+    // let page = await Warehouse.listRecommend();
+    // page = page?.data;
+    // let list =
+    //   page._embedded && page._embedded.warehouses
+    //     ? page._embedded.warehouses
+    //     : [];
+    // this.setState({ whList: list });
     SplashScreen.hide();
   }
 }

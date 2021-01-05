@@ -15,6 +15,7 @@ import DefaultStyle from '@Styles/default';
 // import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
 import { styles as SS } from './style';
+import { styles as S } from '../style';
 
 class RequestView extends Component {
   constructor(props) {
@@ -136,8 +137,8 @@ class RequestView extends Component {
                   </View>
                 </View>
                 <View style={DefaultStyle._footerCards}>
-                  <Text style={SS.amount}>예상 견적 금액</Text>
-                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
+                  <Text style={S.amount}>예상 견적 금액</Text>
+                  <Text style={S.total}>{item.estimatedPrice}원</Text>
                 </View>
               </View>
             ) : null}
@@ -156,8 +157,8 @@ class RequestView extends Component {
                   </View>
                 </View>
                 <View style={DefaultStyle._footerCards}>
-                  <Text style={SS.amount}>예상 견적 금액</Text>
-                  <Text style={SS.total}>{item.estimatedPrice}원</Text>
+                  <Text style={S.amount}>예상 견적 금액</Text>
+                  <Text style={S.total}>{item.estimatedPrice}원</Text>
                 </View>
               </View>
             ) : null}

@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
   textTabBar: {
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 14,
     fontWeight: '500',
     fontStyle: 'normal',

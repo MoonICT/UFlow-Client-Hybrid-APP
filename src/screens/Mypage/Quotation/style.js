@@ -30,19 +30,4 @@ export const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 0,
   },
-  amount: {
-    lineHeight: 20,
-    // fontFamily: 'NotoSansCJKkr-Regular',
-    fontSize: 14,
-    fontStyle: 'normal',
-    color: 'rgba(0, 0, 0, 0.87)',
-  },
-  total: {
-    lineHeight: 32,
-    fontFamily: 'NotoSansCJKkr-Bold',
-    fontSize: 24,
-    fontStyle: 'normal',
-    color: '#000000',
-    marginLeft: 12,
-  },
 });

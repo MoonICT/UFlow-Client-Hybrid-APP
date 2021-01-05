@@ -33,39 +33,41 @@ class TableInfo extends Component {
       <Fragment>
         {data &&
           data.map((item, index) => {
-            return (
-              <View
-                style={[
-                  DefaultStyle._rowTable,
-                  style,
-                  borderRow === false ? DefaultStyle._border0 : null,
-                  borderBottom === true ? DefaultStyle._borderBottom : null,
-                ]}
-                key={index}>
-                <View style={[DefaultStyle._leftInfoTable, styleLeft]}>
-                  <Text style={DefaultStyle._leftTitleTable}>
-                    {item.type && item.type}
-                  </Text>
-                  {item.note ? (
-                    <Text style={DefaultStyle._leftContentTable}>
-                      {item.note}
-                    </Text>
-                  ) : null}
-                </View>
-                <Text
+            let viewComponent =
+              item.type !== undefined ? (
+                <View
                   style={[
-                    DefaultStyle._rightInfoTable,
-                    styleRight,
-                    item && item.highlight === true
-                      ? DefaultStyle._highlightInfoTable
-                      : item.highlight === false
-                      ? DefaultStyle._completeInfoTable
-                      : null,
-                  ]}>
-                  {item.value ? item.value : '-'}
-                </Text>
-              </View>
-            );
+                    DefaultStyle._rowTable,
+                    style,
+                    borderRow === false ? DefaultStyle._border0 : null,
+                    borderBottom === true ? DefaultStyle._borderBottom : null,
+                  ]}
+                  key={index}>
+                  <View style={[DefaultStyle._leftInfoTable, styleLeft]}>
+                    <Text style={DefaultStyle._leftTitleTable}>
+                      {item.type && item.type}
+                    </Text>
+                    {item.note ? (
+                      <Text style={DefaultStyle._leftContentTable}>
+                        {item.note}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <Text
+                    style={[
+                      DefaultStyle._rightInfoTable,
+                      styleRight,
+                      item && item.highlight === true
+                        ? DefaultStyle._highlightInfoTable
+                        : item.highlight === false
+                        ? DefaultStyle._completeInfoTable
+                        : null,
+                    ]}>
+                    {item.value ? item.value : '-'}
+                  </Text>
+                </View>
+              ) : null;
+            return viewComponent;
           })}
       </Fragment>
     );

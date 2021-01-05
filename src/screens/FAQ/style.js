@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     lineHeight: 24,
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
   },
   title: {
     lineHeight: 20,
