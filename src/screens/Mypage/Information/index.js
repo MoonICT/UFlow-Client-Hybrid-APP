@@ -6,8 +6,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+import { SafeAreaView, View, ScrollView } from 'react-native';
 import {
   Checkbox,
   Appbar,
@@ -18,11 +17,26 @@ import {
   Paragraph,
 } from 'react-native-paper';
 
+import AppGrid from '@Components/organisms/AppGrid';
+
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';
+
+import { getUserInfo } from '@Services/apis/MyPage';
+
+const tabSelect = [
+  {
+    id: 'tab1',
+    title: '기본 정보'
+  },
+  {
+    id: 'tab2',
+    title: '사업자 등록 정보'
+  },
+]
 
 class Information extends Component {
   constructor(props) {
@@ -33,8 +47,17 @@ class Information extends Component {
       checkMail: false,
       firstQuery: '',
       visible: false,
+      tabInfo: '',
+      userInfo: {},
     };
     this.navigation = props.navigation;
+  }
+
+  /** when after render DOM */
+  async componentDidMount() {
+    console.log('::componentDidMount::');
+    this.getInfoUser();
+    SplashScreen.hide();
   }
 
   /** listener when change props */
@@ -42,11 +65,28 @@ class Information extends Component {
     return true;
   }
 
+
+  async getInfoUser() {
+    await getUserInfo().then((res) => {
+      console.log('res', res.data)
+      if (res.status === 200) {
+        this.setState({ userInfo: res.data})
+      }
+    })
+  }
+
+  handleClickTab = (tabName, index) => {
+    this.setState({ tabInfo: tabSelect[index].title });
+  }
+
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
+
   render() {
-    const { checkAll, checkSMS, checkMail, firstQuery } = this.state;
+
+    const { checkAll, checkSMS, checkMail, tabInfo, userInfo } = this.state;
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -62,134 +102,82 @@ class Information extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={DefaultStyle._cards}>
-            <View style={DefaultStyle._titleCard}>
-              <Text style={DefaultStyle._textTitleBody}>거래조건</Text>
-            </View>
-            <View style>
-              <TextField
-                labelTextField="이름"
-                placeholder="하혜정"
-                colorLabel="#000000"
-              />
-              <TextField
-                labelTextField="이메일"
-                placeholder="haharu@aartkorea.com"
-                colorLabel="#000000"
-              />
-              <TextField labelTextField="현재 비밀번호" colorLabel="#000000" />
-              <TextField labelTextField="새 비밀번호" colorLabel="#000000" />
-              <TextField
-                labelTextField="새 비밀번호 확인"
-                colorLabel="#000000"
-              />
-            </View>
-            <View style={S.checks}>
-              <View style={S.checkItem}>
-                <Checkbox
-                  status={checkAll ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    this.setState({
-                      checkAll: !checkAll,
-                      checkSMS: !checkAll,
-                      checkMail: !checkAll,
-                    });
-                  }}
-                />
-                <Text style={S.textCheck}>마케팅 수신 동의</Text>
-              </View>
-              <View style={[S.checkItem, S.checkChildren]}>
-                <Checkbox
-                  status={checkSMS ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    this.setState({ checkSMS: !checkSMS });
-                  }}
-                />
-                <Text style={S.textCheck}>SMS</Text>
-              </View>
-              <View style={[S.checkItem, S.checkChildren]}>
-                <Checkbox
-                  status={checkMail ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    this.setState({ checkMail: !checkMail });
-                  }}
-                />
-                <Text style={S.textCheck}>이메일</Text>
-              </View>
-            </View>
+        <ScrollView>
+          <View style={{ flex: 1 }}>
+            <AppGrid data={tabSelect} titleProps={this.handleClickTab} />
           </View>
-          <View style={DefaultStyle._cards}>
-            <View style={DefaultStyle._titleCard}>
-              <Text style={DefaultStyle._textTitleBody}>회사 정보</Text>
+          {tabInfo === '사업자 등록 정보' ?
+            <View>
+              <Text>Tab 2</Text>
             </View>
-            <View style>
-              <TextField labelTextField="회사명" colorLabel="#000000" />
-              <TextField labelTextField="담당자명" colorLabel="#000000" />
-              <View style={S.multiTextField}>
+            :
+            <View style={[DefaultStyle._cards]}>
+              <View style={[DefaultStyle._titleCard, { marginBottom: -4 }]}>
+                <Text style={DefaultStyle._textTitleBody}>거래조건</Text>
+              </View>
+              <View style>
                 <TextField
-                  styleProps={{ marginRight: 8 }}
-                  labelTextField="직함"
+                  labelTextField="이름"
+                  placeholder="하혜정"
                   colorLabel="#000000"
                 />
                 <TextField
-                  styleProps={{ marginLeft: 8 }}
-                  labelTextField="부서명"
+                  labelTextField="이메일"
+                  placeholder="haharu@aartkorea.com"
+                  colorLabel="#000000"
+                />
+                <TextField labelTextField="현재 비밀번호" colorLabel="#000000" />
+                <TextField labelTextField="새 비밀번호" colorLabel="#000000" />
+                <TextField
+                  labelTextField="새 비밀번호 확인"
                   colorLabel="#000000"
                 />
               </View>
-
-              <TextField
-                labelTextField="담당자 전화번호"
-                colorLabel="#000000"
-              />
-              <TextField labelTextField="담당자 이메일" colorLabel="#000000" />
+              <View style={S.checks}>
+                <View style={S.checkItem}>
+                  <Checkbox
+                    status={checkAll ? 'checked' : 'unchecked'}
+                    onPress={() => {
+                      this.setState({
+                        checkAll: !checkAll,
+                        checkSMS: !checkAll,
+                        checkMail: !checkAll,
+                      });
+                    }}
+                  />
+                  <Text style={S.textCheck}>마케팅 수신 동의</Text>
+                </View>
+                <View style={[S.checkItem, S.checkChildren]}>
+                  <Checkbox
+                    status={checkSMS ? 'checked' : 'unchecked'}
+                    onPress={() => {
+                      this.setState({ checkSMS: !checkSMS });
+                    }}
+                  />
+                  <Text style={S.textCheck}>SMS</Text>
+                </View>
+                <View style={[S.checkItem, S.checkChildren]}>
+                  <Checkbox
+                    status={checkMail ? 'checked' : 'unchecked'}
+                    onPress={() => {
+                      this.setState({ checkMail: !checkMail });
+                    }}
+                  />
+                  <Text style={S.textCheck}>이메일</Text>
+                </View>
+              </View>
             </View>
-          </View>
-
-          <View style={[DefaultStyle._cards, S.cardFooter]}>
-            <View style={DefaultStyle._titleCard}>
-              <Text style={DefaultStyle._textTitleCard}>위치</Text>
-            </View>
-            <View style>
-              <Searchbar
-                inputStyle={DefaultStyle._search}
-                style={{ marginBottom: 24 }}
-                placeholder="예)번동10-1, 강북구 번동"
-                onChangeText={query => {
-                  this.setState({ firstQuery: query });
-                }}
-                value={firstQuery}
-              />
-              <TextField
-                placeholder="인천광역시 중구 서해대로94번길 100"
-                colorLabel="#000000"
-              />
-
-              <TextField
-                defaultValue="에이씨티앤코아물류"
-                colorLabel="#000000"
-                valueProps={e => console.log('e', e)}
-              />
-              <TouchableOpacity
-                style={S.btnFooter}
-                onPress={() =>
-                  this.navigation.navigate('WithdrawalInformation')
-                }>
-                <Text style={S.textBtnFooter}>회원탈퇴</Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
-              onPress={() => this.showDialog()}>
-              <Text
-                style={[
-                  DefaultStyle.textSubmit,
-                  DefaultStyle.textActiveSubmit,
-                ]}>
-                확인
-              </Text>
-            </TouchableOpacity>
+          }
+          <View style={S.btn}>
+            <Button
+              mode="contained"
+              style={[{ width: '95%', margin: 12, borderRadius: 24, height: 40, marginBottom: 24 }, DefaultStyle._primary,]}
+              color="red"
+              onPress={() => {
+                this.navigation.navigate('Home');
+              }}>
+              확인
+            </Button>
           </View>
         </ScrollView>
         <Dialog
