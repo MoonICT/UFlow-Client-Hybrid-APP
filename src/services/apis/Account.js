@@ -3,7 +3,7 @@ import { mainAxios, mainAxiosToken } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const signIn = async data => {
-  console.log('data==>', data);
+  // console.log('data==>', data);
   return await mainAxios.post('/api/v1/account/login', {
     email: data.email,
     password: data.password,

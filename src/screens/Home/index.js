@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-05 10:46:27
+ * @modify date 2021-01-05 19:55:15
  * @desc [description]
  */
 
@@ -39,7 +39,7 @@ import FCMService from '@Services/FCMService';
 
 import ActionCreator from '@Actions';
 import Carousel from '@Components/organisms/Carousel';
-import CarouselSnap from '@Components/organisms/CarouselSnap';
+// import CarouselSnap from '@Components/organisms/CarouselSnap';
 // import CarouselSnapPagi from '@Components/organisms/CarouselSnapPagi';
 import AppBars from '@Components/organisms/AppBar';
 import ProductCard from '@Components/organisms/ProductCard';
@@ -352,8 +352,30 @@ class Home extends Component {
     );
   };
 
-  _renderProductItem = ({ item }) => {
-    return <ProductCard data={{ ...item, img: item.thumbnail || cardBG }} />;
+  _renderProductItem = item => {
+    // console.log('item==>', item);
+    const { whList } = this.state;
+    const cardItem = [];
+
+    whList.map((v, i) => {
+      cardItem.push(
+        <View key={i} style={styles.mainProductItem}>
+          {item?.thumbnail !== null ? (
+            <ProductCard data={item} />
+          ) : (
+            <ProductCard data={{ ...item, img: cardBG }} />
+          )}
+        </View>,
+      );
+    });
+
+    // if (item.thumbnail === null || item.thumbnail === '') {
+    //   cardItem.push(<ProductCard data={{ ...item, img: cardBG }} />);
+    // } else {
+    //   cardItem.push(<ProductCard data={item} />);
+    // }
+
+    return cardItem;
   };
 
   _renderStepItem = ({ item }) => {
@@ -364,28 +386,12 @@ class Home extends Component {
     this.setState({ showRealApp: true });
   };
 
-  /** Check Change Status of Props */
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.defaultList !== prevState.defaultList) {
-  //     return { defaultList: nextProps.defaultList };
-  //   }
-  //   return null;
-  // }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevProps.defaultList !== this.props.defaultList) {
-  //     console.log('defaultList==>', this.props.defaultList);
-  //     //Perform some operation here
-  //     this.setState({ whList: this.props.defaultList });
-  //   }
-  // }
-
-  /*=======================================================*/
-
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
     const { whList } = this.state;
+
+    console.log('whList==>', whList);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -531,14 +537,21 @@ class Home extends Component {
 
             {/**___Product List___*/}
             <View style={styles.mainProductList}>
-              <CarouselSnap
+              {/* <CarouselSnap
                 layout={'default'}
                 data={whList}
                 sliderWidth={328}
                 itemWidth={160}
                 renderItem={this._renderProductItem}
                 onSnapToItem={index => this.setState({ activeIndex: index })}
-              />
+              /> */}
+              {/* {whList.map((v, i) => {
+                <View key={i} style={styles.mainProductItem}>
+                  {this._renderProductItem(v)}
+                </View>;
+              })} */}
+
+              {this._renderProductItem()}
             </View>
           </View>
 

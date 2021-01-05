@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-06 10:43:36
- * @modify date 2020-11-24 18:27:45
+ * @modify date 2021-01-05 17:32:31
  * @desc [description]
  */
 
@@ -22,7 +22,7 @@ class Popup extends Component {
 
   render() {
     const { popup, title, content, hidePopup, type,image } = this.props;
-    console.log('type :>> ', type);
+    // console.log('type :>> ', type);
     return (
       <Fragment>
         {type === 'confirm' ? (

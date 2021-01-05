@@ -1,3 +1,1 @@
-const TOKEN = 'TOKEN';
-
-export { TOKEN };
+export const TOKEN = 'TOKEN';

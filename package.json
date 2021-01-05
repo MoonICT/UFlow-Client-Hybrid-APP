@@ -59,8 +59,6 @@
     "react-native-status-bar-height": "^2.6.0",
     "react-native-vector-icons": "^7.1.0",
     "react-native-version-check": "3.4.2",
-    "react-native-video": "^5.1.0-alpha8",
-    "react-native-video-player": "^0.10.1",
     "react-native-webview": "8.2.1",
     "react-redux": "7.2.1",
     "redux": "4.0.5",
