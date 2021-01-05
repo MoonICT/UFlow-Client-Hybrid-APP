@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-12-31 16:14:09
+ * @modify date 2021-01-05 10:46:27
  * @desc [description]
  */
 
@@ -794,13 +794,13 @@ class Home extends Component {
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
     /** Complete Initialize. */
-    // let page = await Warehouse.listRecommend();
-    // page = page?.data;
-    // let list =
-    //   page._embedded && page._embedded.warehouses
-    //     ? page._embedded.warehouses
-    //     : [];
-    // this.setState({ whList: list });
+    let page = await Warehouse.listRecommend();
+    page = page?.data;
+    let list =
+      page?._embedded && page?._embedded?.warehouses
+        ? page?._embedded?.warehouses
+        : [];
+    this.setState({ whList: list });
     SplashScreen.hide();
   }
 }
