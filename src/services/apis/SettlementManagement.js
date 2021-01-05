@@ -5,9 +5,9 @@ export const getAll = async (params) => {
   const token = await AsyncStorage.getItem('token');
 
   let type = params.type;
-  let url = '/api/v1/rtwh/warehouse-rented/tenant'
+  let url = '/api/v1/mypage/settlement/tenant'
   if(type === 'owner') {
-    url = '/api/v1/rtwh/warehouse-rented/owner'
+    url = '/api/v1/mypage/settlement/owner'
   }
   return await mainAxios.get(`${url}`, 
   {
@@ -56,6 +56,3 @@ export const createImport = async (body) => {
     }
   });
 };
-
-
-
