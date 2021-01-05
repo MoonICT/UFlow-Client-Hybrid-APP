@@ -16,3 +16,17 @@ export const cancelMembership = async data => {
   });
 };
 
+export const getUserInfo = async params => {
+  const token = await AsyncStorage.getItem('token');
+  let url = '/api/v1/me';
+  return await mainAxios.get(`${url}`, {
+    params: {
+      ...params,
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      contentType: 'application/json',
+    },
+  });
+};
+
