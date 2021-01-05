@@ -81,7 +81,6 @@ import RequestContract from '@Screeens/Mypage/RequestContract';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
 import Question from '@Screeens/Question';
-import RequestContract from '@Screeens/Mypage/RequestContract';
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
