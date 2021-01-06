@@ -18,14 +18,14 @@ export const uploadImage = async formData => {
   });
 };
 export const registerWH = async data => {
-  console.log('data :>> ', data);
+  console.log('dataregisterWH :>> ', data);
   const token = await AsyncStorage.getItem(TOKEN);
-  // return await mainAxios.get('/api/v1/warehouse', data, {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //     // Accept: 'application/json',
-  //   },
-  // });
+  return await mainAxios.post('/api/v1/warehouse', data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // Accept: 'application/json',
+    },
+  });
 };
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
@@ -56,6 +56,7 @@ export const quotation = async type => {
 };
 export const responQuotation = async value => {
   const token = await AsyncStorage.getItem(TOKEN);
+  console.log('responQuotation', value)
   return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
     headers: {
       Authorization: `Bearer ${token}`,
