@@ -8,7 +8,7 @@
  * */
 
 // Global Imports
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 // import { Text, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,7 +19,7 @@ import {
   IconButton,
 } from 'react-native-paper';
 import { Provider } from 'react-redux';
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // Local Imports
 //---> Screens
@@ -92,7 +92,7 @@ import { color } from '@Themes/colors';
 import { theme } from '../themes';
 
 //Contants
-// import { TOKEN } from '@Constant';
+import { TOKEN } from '@Constant';
 
 const store = initStore();
 
@@ -159,14 +159,17 @@ const TabScreen = () => {
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-// let isLogin = false;
-// isLogin = async () => await AsyncStorage.getItem(TOKEN);
-
-// console.log('isLogin==>', isLogin);
-
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isLogin, setIsLogin] = useState(null);
+  const [isLogin, setIsLogin] = useState(false);
+
+  // useEffect(() => {
+  //   AsyncStorage.getItem(TOKEN).then(v => {
+  //     // console.log('v==>', v);
+  //     setIsLogin(v !== '');
+  //   });
+  // }, []);
+
   const authContext = useMemo(() => {
     return {
       login: () => {
@@ -180,6 +183,8 @@ const App = () => {
       signOut: () => {
         setIsLoading(false);
         setIsLogin(false);
+        let a = AsyncStorage.removeItem(TOKEN);
+        console.log('a==>', a);
       },
     };
   }, []);
@@ -481,7 +486,12 @@ const App = () => {
                   />
                 </AuthStack.Navigator>
               ) : (
-                <RootStack.Navigator initialRouteName="Login">
+                <RootStack.Navigator initialRouteName="Home">
+                  <AuthStack.Screen
+                    name="Home"
+                    component={TabScreen}
+                    options={{ headerShown: false }}
+                  />
                   <AuthStack.Screen
                     name="FindID"
                     component={FindIDScreen}

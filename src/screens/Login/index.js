@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-06 10:23:25
+ * @modify date 2021-01-06 14:28:39
  * @desc [description]
  */
 
@@ -66,10 +66,10 @@ class Login extends Component {
       password: data.password,
     });
 
-    console.log('loginData==>', loginData);
+    // console.log('loginData==>', loginData);
 
-    if (loginData.status === 200) {
-      const access_token = loginData.data.access_token;
+    if (loginData?.status === 200) {
+      const access_token = loginData?.data?.access_token;
       AsyncStorage.setItem(TOKEN, access_token);
       login();
     } else {
