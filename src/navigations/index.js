@@ -491,6 +491,12 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
+                  <RootStack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
                 </AuthStack.Navigator>
               ) : (
                 <RootStack.Navigator initialRouteName="Login">

@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-06 17:37:10
+ * @modify date 2021-01-06 18:11:57
  * @desc [description]
  */
 
@@ -78,6 +78,10 @@ import { Warehouse } from '@Services/apis'; //Account,
 // const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
 import { AuthContext } from '@Store/context';
+
+import AsyncStorage from '@react-native-community/async-storage';
+//Contants
+import { TOKEN } from '@Constant';
 
 const slides = [
   {
@@ -317,6 +321,7 @@ class Home extends Component {
       isShow: false,
       expanded: true,
       whList: [],
+      isLogin: false,
     };
     this.navigation = props.navigation;
     this.fcm = new FCMService();
@@ -393,11 +398,11 @@ class Home extends Component {
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
-    // const { whList } = this.state;
-    const { getLoginStatus } = this.context;
+    const { isLogin } = this.state;
+    // const { getLoginStatus } = this.context;
 
     // console.log('whList==>', whList);
-    const isLogin = getLoginStatus();
+    // const isLogin = getLoginStatus();
     console.log('isLogin Hello==>', isLogin);
 
     return (
@@ -822,13 +827,19 @@ class Home extends Component {
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
     /** Complete Initialize. */
-    // let page = await Warehouse.listRecommend();
-    // page = page?.data;
-    // let list =
-    //   page?._embedded && page?._embedded?.warehouses
-    //     ? page?._embedded?.warehouses
-    //     : [];
-    // this.setState({ whList: list });
+    let page = await Warehouse.listRecommend();
+    page = page?.data;
+    let list =
+      page?._embedded && page?._embedded?.warehouses
+        ? page?._embedded?.warehouses
+        : [];
+    this.setState({ whList: list });
+
+    AsyncStorage.getItem(TOKEN).then(v => {
+      // console.log('v==>', v);
+      this.setState({ isLogin: v !== '' || v !== null });
+    });
+
     SplashScreen.hide();
   }
 }

@@ -57,13 +57,13 @@ class More extends Component {
   }
 
   render() {
-    let { email, fullName } = this.state;
+    let { email, fullName, isLogin } = this.state;
     // const { route, isLogin } = this.props;
-    const { signOut, getLoginStatus } = this.context;
+    const { signOut } = this.context;
 
     // console.log('routeMore :>> ', route);
-    const isLogin = getLoginStatus();
-    console.log('isLogin Hello==>', isLogin);
+    // const isLogin = getLoginStatus();
+    console.log('isLogin More==>', isLogin);
 
     return (
       <SafeAreaView style={S.container}>
@@ -376,6 +376,7 @@ class More extends Component {
     if (value) {
       this.setState({ token: value });
     }
+
     SplashScreen.hide();
   }
 

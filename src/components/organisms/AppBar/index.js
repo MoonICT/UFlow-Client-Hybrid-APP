@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 15:58:18
- * @modify date 2021-01-06 17:10:44
+ * @modify date 2021-01-06 18:11:04
  * @desc [description]
  */
 
@@ -22,9 +22,7 @@ class AppBars extends Component {
     const { children, isHide = false } = this.props;
     return (
       <>
-        {isHide ? (
-          <Text>{''}</Text>
-        ) : (
+        {isHide ? null : (
           <View
             style={[
               DefaultStyle.header,
