@@ -84,7 +84,7 @@ import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
-import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
+// import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
 
 import { color } from '@Themes/colors';
 

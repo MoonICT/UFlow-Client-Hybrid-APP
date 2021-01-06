@@ -771,6 +771,7 @@ export default StyleSheet.create({
     // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     padding: 16,
+    paddingBottom:70
   },
   _menuFooter: {
     borderBottomWidth: 1,

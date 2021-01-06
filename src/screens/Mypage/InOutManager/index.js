@@ -158,20 +158,21 @@ export default class InOutManager extends Component {
 
 
   onChangeStart = (event, selectedDate) => {
-    let {isOpenEnd} = this.state
+    let {isOpenStart} = this.state
     if(event.type == 'dismissed') {
       this.setState({
-        isOpenEnd: !isOpenEnd
+        isOpenStart: !isOpenStart
       })
     } else {
+      let filter =  {...this.state.filter}
+      filter.startDate = event.nativeEvent.timestamp
       this.setState({
-        startDate: event.nativeEvent.timestamp,
-        isOpenEnd: !isOpenEnd
+        filter: filter,
+        isOpenStart: !isOpenStart
       }, () => {
         this.getAllData()
       })
     }
-
   }
 
   onChangeEnd = (event, selectedDate) => {
@@ -181,8 +182,10 @@ export default class InOutManager extends Component {
         isOpenEnd: !isOpenEnd
       })
     } else {
+      let filter =  {...this.state.filter}
+      filter.endDate = event.nativeEvent.timestamp
       this.setState({
-        endDate: event.nativeEvent.timestamp,
+        filter: filter,
         isOpenEnd: !isOpenEnd
       },() => {
         this.getAllData()
@@ -216,7 +219,7 @@ export default class InOutManager extends Component {
 
   render() {
     const { valueTab, isOpenStart, isOpenEnd, rangeDay, dataCard } = this.state;
-    let {startDate, endDate, query} = this.state.filter;
+    let {startDate, endDate} = this.state.filter;
     return (
       <View style={DefaultStyle._cards}>
 
@@ -273,7 +276,7 @@ export default class InOutManager extends Component {
                   onPress={()=>this.showDateStart()}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                    {startDate.toLocaleDateString()}
+                    {formatDateV1(startDate)}
                   </Text>
                   <Text
                     style={[
@@ -304,7 +307,7 @@ export default class InOutManager extends Component {
                   onPress={()=>this.showDateEnd()}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                    {endDate.toLocaleDateString()}
+                    {formatDateV1(endDate)}
                   </Text>
                   <Text
                     style={[
