@@ -15,6 +15,6 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
   },
   info: {
-    marginBottom: 16,
+    // marginBottom: 16,
   },
 });

@@ -110,14 +110,16 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
-            {
-              type: '견적 금액',
-              value:
-                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
-            },
+            value.type2 === 'TRUST'
+              ? {}
+              : {
+                  type: '견적 금액',
+                  value:
+                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                      (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                      (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -145,14 +147,16 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
-            {
-              type: '견적 금액',
-              value:
-                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
-            },
+            value.type2 === 'TRUST'
+              ? {}
+              : {
+                  type: '견적 금액',
+                  value:
+                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                      (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                      (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -177,14 +181,16 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
-            {
-              type: '견적 금액',
-              value:
-                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
-            },
+            value.type2 === 'TRUST'
+              ? {}
+              : {
+                  type: '견적 금액',
+                  value:
+                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                      (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                      (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -209,14 +215,16 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
-            {
-              type: '견적 금액',
-              value:
-                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
-            },
+            value.type2 === 'TRUST'
+              ? {}
+              : {
+                  type: '견적 금액',
+                  value:
+                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                      (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                      (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -241,14 +249,16 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
-            {
-              type: '견적 금액',
-              value:
-                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
-            },
+            value.type2 === 'TRUST'
+              ? {}
+              : {
+                  type: '견적 금액',
+                  value:
+                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                      (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                      (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -272,14 +282,16 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
             },
-            {
-              type: '견적 금액',
-              value:
-                ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
-            },
+            value.type2 === 'TRUST'
+              ? {}
+              : {
+                  type: '견적 금액',
+                  value:
+                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                      (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+                      (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -324,6 +336,7 @@ class ContractManager extends Component {
         }
         return types && status;
       });
+    console.log('dataFilter', dataFilter);
     const viewStep =
       dataSteps &&
       dataSteps.map((item, index) => {
@@ -364,15 +377,20 @@ class ContractManager extends Component {
             <CardMypage
               key={index}
               onPressHeader={() =>
-                this.navigation.navigate('Quotation', {
-                  type: valueTab,
-                  typeWH: item.type2,
-                  warehouseRegNo: item.warehouseRegNo,
-                  warehSeq: item.warehSeq,
-                  seq: item.seq,
-                  rentUserNo: item.rentUserNo,
-                  status: item.status,
-                })
+                this.navigation.navigate(
+                  item.status === 'RQ00' || item.status === 'RS00'
+                    ? 'Quotation'
+                    : 'RequestContract',
+                  {
+                    type: valueTab,
+                    typeWH: item.type2,
+                    warehouseRegNo: item.warehouseRegNo,
+                    warehSeq: item.warehSeq,
+                    seq: item.seq,
+                    rentUserNo: item.rentUserNo,
+                    status: item.status,
+                  },
+                )
               }
               headerTitle={item.info.warehouse}
               data={dataTable}
@@ -420,13 +438,26 @@ class ContractManager extends Component {
                           DefaultStyle._btnInline,
                           DefaultStyle._btnRight,
                         ]}
-                        onPress={() => this.showConfirm()}>
+                        onPress={() => {
+                          this.setState({
+                            isConfirmRequest: !this.state.isConfirmRequest,
+                            dataProps: {
+                              type: valueTab,
+                              typeWH: item.type2,
+                              warehouseRegNo: item.warehouseRegNo,
+                              warehSeq: item.warehSeq,
+                              seq: item.seq,
+                              rentUserNo: item.rentUserNo,
+                              status: item.status,
+                            },
+                          });
+                        }}>
                         <Text
                           style={[
                             DefaultStyle._textButton,
                             DefaultStyle._textInline,
                           ]}>
-                          견적 승인
+                          계약 요청
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -568,30 +599,8 @@ class ContractManager extends Component {
       .catch(err => {
         console.log('err', err);
       });
-    // console.log('getWH :>> ', getWH);
-    // if (getWH.status === 200) {
-    //   const dataCT = getWH.data.data.content;
-    //   // console.log('dataCT:>> ', dataCT);
-    //   this.state = { data: dataCT };
-    // }
-    // SplashScreen.hide();
   }
 
-  // async componentWillUpdate(nextProps, nextState) {
-  //   console.log('Component WILL UPDATE!', nextState);
-  //   const type = nextState.valueTab;
-  //   // await Warehouse.contractManager(type)
-  //   //   .then(res => {
-  //   //     console.log('::::: API Sign in :::::', res);
-  //   //     const status = res.status;
-  //   //     if (status === 200) {
-  //   //       this.setState({ dataApi: res.data.data.content });
-  //   //     }
-  //   //   })
-  //   //   .catch(err => {
-  //   //     console.log('err', err);
-  //   // });
-  // }
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     let valueState = this.state.valueTab;
@@ -603,6 +612,39 @@ class ContractManager extends Component {
           if (status === 200) {
             // this.setState({ dataApi: res.data.data.content });
             this.props.contractData({ dataApi: res.data.data.content });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
+
+    if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
+      let warehSeq = this.state.dataProps.warehSeq;
+      let warehouseRegNo = this.state.dataProps.warehouseRegNo;
+      let rentUserNo = this.state.dataProps.rentUserNo;
+      // let status = this.state.dataProps.status;
+      let type = this.state.valueTab;
+      let typeWH = this.state.dataProps.typeWH === 'TRUST' ? 'trust' : 'tenant';
+      let data =
+        this.state.dataProps.typeWH === 'TRUST'
+          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
+          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
+      console.log('typeWH', typeWH);
+      console.log('data', data);
+      Warehouse.requestContract({ typeWH, data })
+        .then(res => {
+          console.log('res', res);
+          if (res.status === 200) {
+            console.log('resRequestContract', res);
+            this.navigation.navigate('RequestContract', {
+              type,
+              warehouseRegNo,
+              warehSeq,
+              typeWH: this.state.dataProps.typeWH,
+              rentUserNo,
+              status: '1100',
+            });
           }
         })
         .catch(err => {

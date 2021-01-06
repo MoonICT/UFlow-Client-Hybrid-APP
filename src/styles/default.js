@@ -907,7 +907,7 @@ export default StyleSheet.create({
   _headerCardTitle: {
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '600',
     color: color.text.primary,
     lineHeight: 21,
     // padding: 16,
