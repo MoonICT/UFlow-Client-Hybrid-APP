@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 15:58:28
- * @modify date 2020-12-31 14:23:46
+ * @modify date 2021-01-06 11:24:10
  * @desc [description]
  */
 
@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
   /************* Layout **************/
   container: {
     borderRadius: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffff',
   },
   shadow: {
     // for iOS
@@ -172,6 +172,7 @@ export const styles = StyleSheet.create({
   cardAction: {
     flexDirection: 'row',
     marginBottom: 4,
+    flexWrap: 'wrap',
   },
 
   /************ Line ************** */

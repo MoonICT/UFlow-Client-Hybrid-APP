@@ -49,8 +49,11 @@ export function formatDate(date: string) {
   }
   
   export function formatDateV1(date: string) {
+    if(!date) {
+      return ''
+    }
     const d = new Date(date);
-    return `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()}`;
+    return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
   }
   
   export function formatDateV2(date: string) {

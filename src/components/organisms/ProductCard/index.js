@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2020-12-31 16:13:15
+ * @modify date 2021-01-06 11:23:12
  * @desc [description]
  */
 
@@ -69,7 +69,7 @@ class ProductCard extends Component {
           {/** Image */}
           <View style={styles.imageWrap}>
             <Card.Cover
-              source={{ uri: data.img }}
+              source={data.img ? data?.img : { uri: data.thumbnail }}
               style={[
                 styles.cardImage,
                 this.state.isHorizontal && styles.cardImageHorizon,
@@ -82,201 +82,199 @@ class ProductCard extends Component {
             </View>
           </View>
 
-          <ScrollView>
-            {/** Contents */}
-            <View
+          {/* <ScrollView> */}
+          {/** Contents */}
+          <View
+            style={[
+              styles.contentWrap,
+              this.state.isHorizontal && styles.contentWrapHorizon,
+            ]}>
+            {/* Title */}
+            <Text
               style={[
-                styles.contentWrap,
-                this.state.isHorizontal && styles.contentWrapHorizon,
+                styles.fontColor2,
+                styles.medium,
+                styles.font14,
+                { marginBottom: 3 },
               ]}>
-              {/* Title */}
-              <Text
-                style={[
-                  styles.fontColor2,
-                  styles.medium,
-                  styles.font14,
-                  { marginBottom: 3 },
-                ]}>
-                {data?.name}
-              </Text>
+              {data?.name}
+            </Text>
 
-              {/* Category */}
-              <Text
-                style={[
-                  styles.fontColor1,
-                  styles.regular,
-                  styles.font9,
-                  styles.mrb12,
-                ]}>
-                {data.keep ? '보관창고' : ''}
-                {data.keep && data.trust ? ', ' : ''}
-                {data.trust ? '수탁창고' : ''}
-              </Text>
+            {/* Category */}
+            <Text
+              style={[
+                styles.fontColor1,
+                styles.regular,
+                styles.font9,
+                styles.mrb12,
+              ]}>
+              {data.keep ? '보관창고' : ''}
+              {data.keep && data.trust ? ', ' : ''}
+              {data.trust ? '수탁창고' : ''}
+            </Text>
 
-              {/******************** Keep ***************************/}
-              {data?.keep ? (
-                <>
-                  <View>
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        보관{' '}
-                      </Text>
-                      최대 {data?.keep?.subTitle ? data?.keep?.subTitle : ''}
-                    </Text>
-                  </View>
+            {/******************** Keep ***************************/}
+            {data?.keep ? (
+              <>
+                <View>
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    <Text style={[styles.bold, styles.blackColor]}>보관 </Text>
+                    최대 {data?.keep?.subTitle ? data?.keep?.subTitle : ''}
+                  </Text>
+                </View>
 
-                  {/* Badge */}
-                  {data.keep.gdsTypeCodes ? (
-                    <View style={[styles.cardAction, styles.mrt2]}>
-                      {data.keep.gdsTypeCodes.map((keepItem, index) => (
-                        <TouchableOpacity
-                          key={index}
+                {/* Badge */}
+                {data.keep.gdsTypeCodes ? (
+                  <View style={[styles.cardAction, styles.mrt2]}>
+                    {data.keep.gdsTypeCodes.map((keepItem, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        style={[
+                          styles.label,
+                          styles[
+                            this.badgeColor(keepItem?.stdDetailCode).label
+                          ],
+                        ]}
+                        title={keepItem?.stdDetailCodeName}>
+                        <Text
                           style={[
-                            styles.label,
+                            styles.font9,
                             styles[
-                              this.badgeColor(keepItem?.stdDetailCode).label
+                              this.badgeColor(keepItem?.stdDetailCode).border
                             ],
-                          ]}
-                          title={keepItem?.stdDetailCodeName}>
-                          <Text
-                            style={[
-                              styles.font9,
-                              styles[
-                                this.badgeColor(keepItem?.stdDetailCode).border
-                              ],
-                            ]}>
-                            {/* EX : 상온 */}
-                            {keepItem?.stdDetailCodeName}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  ) : (
-                    <Text>{''}</Text>
-                  )}
-
-                  {/** Price */}
-                  {data?.keep?.splyAmount ? (
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･보관단가{' '}
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        {data?.keep?.splyAmount.toLocaleString()}
-                      </Text>
-                      원 ~/
-                      {data?.keep?.unit}
-                    </Text>
-                  ) : (
-                    <Text>{''}</Text>
-                  )}
-
-                  {data?.keep?.mgmtChrg ? (
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･보관단가{' '}
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        {data?.keep?.mgmtChrg.toLocaleString()}
-                      </Text>
-                      원 ~/
-                      {data?.keep?.unit}
-                    </Text>
-                  ) : (
-                    <Text>{''}</Text>
-                  )}
-                  {/** Close Price */}
-                  {/*============== */}
-                </>
-              ) : (
-                <Text>{''}</Text>
-              )}
-
-              {data?.keep && data?.trust ? (
-                <View style={styles.line} />
-              ) : (
-                <Text>{''}</Text>
-              )}
-
-              {/***************** Trust ************************/}
-              {data?.trust ? (
-                <>
-                  <View>
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      <Text
-                        style={[styles.bold, styles.blackColor, styles.font9]}>
-                        보관{' '}
-                      </Text>
-                      최대 {data?.trust?.subTitle ? data?.trust?.subTitle : ''}
-                    </Text>
+                          ]}>
+                          {/* EX : 상온 */}
+                          {keepItem?.stdDetailCodeName}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
                   </View>
+                ) : (
+                  <Text>{''}</Text>
+                )}
 
-                  {/* Badge */}
-                  {data.trust.gdsTypeCodes ? (
-                    <View style={[styles.cardAction, styles.mrt2]}>
-                      {data.trust.gdsTypeCodes.map((trustItem, index) => (
-                        <TouchableOpacity
-                          key={index}
+                {/** Price */}
+                {data?.keep?.splyAmount ? (
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    ･보관단가{' '}
+                    <Text style={[styles.bold, styles.blackColor]}>
+                      {data?.keep?.splyAmount.toLocaleString()}
+                    </Text>
+                    원 ~/
+                    {data?.keep?.unit}
+                  </Text>
+                ) : (
+                  <Text>{''}</Text>
+                )}
+
+                {data?.keep?.mgmtChrg ? (
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    ･보관단가{' '}
+                    <Text style={[styles.bold, styles.blackColor]}>
+                      {data?.keep?.mgmtChrg.toLocaleString()}
+                    </Text>
+                    원 ~/
+                    {data?.keep?.unit}
+                  </Text>
+                ) : (
+                  <Text>{''}</Text>
+                )}
+                {/** Close Price */}
+                {/*============== */}
+              </>
+            ) : (
+              <Text>{''}</Text>
+            )}
+
+            {data?.keep && data?.trust ? (
+              <View style={styles.line} />
+            ) : (
+              <Text>{''}</Text>
+            )}
+
+            {/***************** Trust ************************/}
+            {data?.trust ? (
+              <>
+                <View>
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    <Text
+                      style={[styles.bold, styles.blackColor, styles.font9]}>
+                      보관{' '}
+                    </Text>
+                    최대 {data?.trust?.subTitle ? data?.trust?.subTitle : ''}
+                  </Text>
+                </View>
+
+                {/* Badge */}
+                {data.trust.gdsTypeCodes ? (
+                  <View style={[styles.cardAction, styles.mrt2]}>
+                    {data.trust.gdsTypeCodes.map((trustItem, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        style={[
+                          styles.label,
+                          styles[
+                            this.badgeColor(trustItem?.stdDetailCode).label
+                          ],
+                        ]}
+                        title={trustItem?.stdDetailCodeName}>
+                        <Text
                           style={[
-                            styles.label,
+                            styles.font9,
                             styles[
-                              this.badgeColor(trustItem?.stdDetailCode).label
+                              this.badgeColor(trustItem?.stdDetailCode).border
                             ],
-                          ]}
-                          title={trustItem?.stdDetailCodeName}>
-                          <Text
-                            style={[
-                              styles.font9,
-                              styles[
-                                this.badgeColor(trustItem?.stdDetailCode).border
-                              ],
-                            ]}>
-                            {/* EX : 상온 */}
-                            {trustItem?.stdDetailCodeName}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  ) : (
-                    <Text>{''}</Text>
-                  )}
+                          ]}>
+                          {/* EX : 상온 */}
+                          {trustItem?.stdDetailCodeName}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                ) : (
+                  <Text>{''}</Text>
+                )}
 
-                  {/** Price */}
-                  {data?.trust?.whinChrg ? (
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･보관단가{' '}
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        {data?.trust?.whinChrg.toLocaleString()}
-                      </Text>
-                      원 ~/
-                      {data?.trust?.unit}
+                {/** Price */}
+                {data?.trust?.whinChrg ? (
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    ･보관단가{' '}
+                    <Text style={[styles.bold, styles.blackColor]}>
+                      {data?.trust?.whinChrg.toLocaleString()}
                     </Text>
-                  ) : (
-                    <Text>{''}</Text>
-                  )}
+                    원 ~/
+                    {data?.trust?.unit}
+                  </Text>
+                ) : (
+                  <Text>{''}</Text>
+                )}
 
-                  {data?.trust?.whoutChrg ? (
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･보관단가{' '}
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        {data?.trust?.whoutChrg.toLocaleString()}
-                      </Text>
-                      원 ~/
-                      {data?.trust?.unit}
+                {data?.trust?.whoutChrg ? (
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    ･보관단가{' '}
+                    <Text style={[styles.bold, styles.blackColor]}>
+                      {data?.trust?.whoutChrg.toLocaleString()}
                     </Text>
-                  ) : (
-                    <Text>{''}</Text>
-                  )}
-                  {/** Close Price */}
-                  {/*============================================================== */}
-                </>
-              ) : (
-                <Text>{''}</Text>
-              )}
-            </View>
-          </ScrollView>
+                    원 ~/
+                    {data?.trust?.unit}
+                  </Text>
+                ) : (
+                  <Text>{''}</Text>
+                )}
+                {/** Close Price */}
+                {/*============================================================== */}
+              </>
+            ) : (
+              <Text>{''}</Text>
+            )}
+          </View>
+          {/* </ScrollView> */}
         </View>
       </View>
       // );

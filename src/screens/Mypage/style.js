@@ -162,28 +162,39 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  checks: {},
   listChecks: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 24,
+    flex: 1,
+    marginBottom: 8,
   },
   checkItem: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 23,
+    flex: 1,
   },
+  textCheck: {
+    paddingTop: 8,
+  },
+  checks: {},
+  // listChecks: {
+  //   flexDirection: 'row',
+  //   flexWrap: 'wrap',
+  //   marginBottom: 24,
+  // },
+  // checkItem: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   marginRight: 23,
+  // },
   checkChildren: {
     marginLeft: 25,
   },
-  textCheck: {
-    color: '#000000',
-    // fontFamily: 'NotoSansCJKkr-Regular',
-    fontSize: 14,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    lineHeight: 20,
-  },
+  // textCheck: {
+  //   color: '#000000',
+  //   // fontFamily: 'NotoSansCJKkr-Regular',
+  //   fontSize: 14,
+  //   fontWeight: 'normal',
+  //   fontStyle: 'normal',
+  //   lineHeight: 20,
+  // },
   btnFooter: {
     alignSelf: 'flex-end',
     marginBottom: 24,

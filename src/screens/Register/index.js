@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-24 13:57:48
- * @modify date 2020-11-24 18:36:02
+ * @modify date 2021-01-06 11:38:11
  * @desc [description]
  */
 
@@ -24,6 +24,11 @@ import TextField from '@Components/organisms/TextField';
 //---> Assets
 import { Account } from '@Services/apis';
 import AsyncStorage from '@react-native-community/async-storage';
+
+
+//Contants
+import { TOKEN } from '@Constant';
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -80,7 +85,7 @@ class Register extends Component {
         this.setState({ isDone: true });
         // go to the home after 5sec
         const access_token = res.data.access_token;
-        AsyncStorage.setItem('token', access_token);
+        AsyncStorage.setItem(TOKEN, access_token);
         this.props.loginAccount(true);
         setTimeout(() => {
           // router.push('/');

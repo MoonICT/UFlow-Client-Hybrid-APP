@@ -34,129 +34,16 @@ import TableInfo from '@Components/atoms/TableInfo';
 import TextField from '@Components/organisms/TextField';
 
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '@Actions';
-import Icon from 'react-native-vector-icons/Fontisto';
-
+import DatePicker from '@react-native-community/datetimepicker';
+import { formatDateV1 } from '@Utils/dateFormat';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
+import { InOutManagerService } from '@Services/apis';
 
-const dataStart = [
-  {
-    label: 'YYYY.MM.DD',
-    value: 'YYYY.MM.DD',
-  },
-];
-const dataEnd = [
-  {
-    label: 'YYYY.MM.DD',
-    value: 'YYYY.MM.DD',
-  },
-  {
-    label: 'YYYY.MM.DD2',
-    value: 'YYYY.MM.DD2',
-  },
-];
-const dataAll = [
-  {
-    label: '전체',
-    value: '전체',
-  },
-  {
-    label: '2전체',
-    value: '2전체',
-  },
-];
-
-const selectNumber = [
-  {
-    label: '10개씩 보기',
-    value: '10개씩 보기',
-  },
-];
 const selectRequest = [
   {
     label: '입고 요청',
     value: '입고 요청',
-  },
-];
-const dataInfo = [
-  {
-    type: '창고명',
-    value: '에이씨티앤코아물류',
-  },
-  {
-    type: '창고주',
-    value: '(주)에이씨티앤코아물류',
-  },
-  {
-    type: '위치',
-    value: '인천광역시 서구 석남동 650-31',
-  },
-  {
-    type: '보관유형',
-    value: '상온',
-  },
-  {
-    type: '정산단위',
-    value: '파렛트',
-  },
-  {
-    type: '산정기준',
-    value: '회',
-  },
-  {
-    type: '물동량',
-    value: '400',
-  },
-  {
-    type: '수탁 기간',
-    value: '2020.10.10 - 2021.10.10',
-  },
-  {
-    type: '보관비',
-    value: '5,000원',
-  },
-];
-const dataProgress = [
-  {
-    type: '작성 일시',
-    value: '2020.11.10 09:05:00',
-  },
-  {
-    type: '작성자',
-    value: '임차인(ID)',
-  },
-  {
-    type: '구분',
-    value: '입고 요청',
-  },
-  {
-    type: '예정/ 확정 일시',
-    value: '입고예정 : 2020.11.10 09:05:00',
-  },
-  {
-    type: '입고량',
-    value: '100',
-  },
-  {
-    type: '출고량',
-  },
-  {
-    type: '재고',
-  },
-  {
-    type: '적용단가',
-    value: '950/PLT',
-  },
-  {
-    type: '입고비',
-    value: '95,000원',
-  },
-  {
-    type: '출고비',
-  },
-  {
-    type: '보관비',
   },
 ];
 
@@ -202,32 +89,358 @@ const viewProgress = [
     type: '보관비',
   },
 ];
-class DetailsManager extends Component {
+
+var searchTimerQuery;
+export default class DetailsManager extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
+    let { rentWarehNo, type } = props.route.params
     this.state = {
+      rentWarehNo,
+      type,
       visible: false,
       confirm: false,
+      dataInfo: [],
+      responseFilter: [],
       isProgress: false,
       isCancel: false,
       cancelRequest: false,
       isToggle: false,
+      resBody: {},
       receiptCancel: false,
+      filter: {
+        query: '',
+        contractType: 2100,
+        rangeTime: '',
+        startDate: new Date(),
+        endDate: new Date()
+      },
+      isOpenStart: false,
+      isOpenEnd: false,
+      isOpenTimeCreateImport: false,
+      timeCreateImport: new Date(),
+      valueCreateImport: 0,
+      rangeDay: [
+        {
+          value: '', label: '전체'
+        },
+        {
+          value: '7', label: '7일'
+        },
+        {
+          value: '15', label: '15일'
+        },
+        {
+          value: '30', label: '1개월'
+        },
+        {
+          value: '90', label: '3개월'
+        },
+        {
+          value: '180', label: '6개월'
+        },
+        {
+          value: '365', label: '1년'
+        }
+      ],
+      limitRow : [
+        {
+          label: '5개씩 보기',
+          value: '5',
+        },
+        {
+          label: '10개씩 보기',
+          value: '10',
+        },
+        {
+          label: '15개씩 보기',
+          value: '15',
+        },
+        {
+          label: '20개씩 보기',
+          value: '20',
+        }
+      ]
     };
 
     this.navigation = props.navigation;
   }
+
+  componentDidMount() {
+    this.getAllData()
+  }
+
+
+  async getAllData() {
+    let { filter, type, rentWarehNo } = this.state;
+    let { startDate, endDate, query, contractType } = filter;
+    let params = {
+      startDate,
+      endDate,
+      query,
+      id: rentWarehNo,
+      rangeDate: '',
+      type: type,
+      contractType
+    };
+    await InOutManagerService.getDetail(params).then((res) => {
+      let header = res.data.header;
+      let resBody = res.data.header.cntrTrustResBody;
+      const dataInfo = [
+        {
+          type: '창고명',
+          value: header.warehouse,
+        },
+        {
+          type: '창고주',
+          value: header.owner,
+        },
+        {
+          type: '위치',
+          value: header.address,
+        },
+        {
+          type: '보관유형',
+          value: header.gdsTypeCode,
+        },
+        {
+          type: '정산단위',
+          value: header.cntrTrustResBody.calUnitDvCode.stdDetailCode,
+        },
+        {
+          type: '산정기준',
+          value: header.cntrTrustResBody.calStdDvCode.stdDetailCode,
+        },
+        {
+          type: '물동량',
+          value: '400',
+        },
+        {
+          type: '수탁 기간',
+          value: ` ${formatDateV1(header?.cntrTrustResBody?.id?.cntrYmdForm ?? '')} ~ ${formatDateV1(header?.cntrTrustResBody?.id?.cntrYmdTo ?? '')}`,
+        },
+        {
+          type: '보관비',
+          value: header.cntrTrustResBody?.value ?? '-',
+        },
+      ];
+
+
+      let responseFilter = res.data.data.content.map((item, index) => {
+        var division = ''
+        switch (true) {
+          case item.type === 'IMPORT' && item.status === '1100':
+            devision = '입고 요청'
+            break;
+          case item.type === 'IMPORT' && item.status === '1200':
+            '입고 확정'
+            break;
+          case item.type === 'IMPORT' && item.status === '9100':
+            devision = '입고 요청 취소'
+            break;
+          case item.type === 'EXPORT' && item.status === '2100':
+            devision = '출고 요청'
+            break;
+          case item.type === 'EXPORT' && item.status === '2200':
+            devision = '출고 확정'
+            break;
+          case item.type === 'EXPORT' && item.status === '9500':
+            devision = '출고 요청 취소'
+            break;
+        }
+        return {
+          dataProgress: [
+            {
+              type: '작성 일시',
+              value: ` ${formatDateV1(item.createdDate ?? '')}`,
+            },
+            {
+              type: '작성자',
+              value: '임차인(ID)',
+            },
+            {
+              type: '구분',
+              value: devision,
+            },
+            {
+              type: '예정/ 확정 일시',
+              value: item.type === 'IMPORT' ? `출고예정1 : ${formatDateV1(item.rtwhWhinResBody.whinExpct)}` : `입고 확정 : ${formatDateV1(item.rtwhWhoutResBody.decis)}`,
+            },
+            {
+              type: '입고량',
+              value: item.type === 'IMPORT' && item.rtwhWhinResBody.whinExpctQty !== null ? item.rtwhWhinResBody.whinExpctQty : item.type === 'EXPORT' && item.rtwhWhoutResBody.decisQty !== null ? item.rtwhWhoutResBody.decisQty : "-",
+            },
+            {
+              type: '출고량',
+              value: item.type === 'IMPORT' && item.rtwhWhinResBody.whinDecisQty !== null ? item.rtwhWhinResBody.whinDecisQty : item.type === 'EXPORT' && item.rtwhWhoutResBody.expctQty !== null ? item.rtwhWhoutResBody.expctQty : "-"
+            },
+            {
+              type: '재고',
+              value: item.stockQty
+            },
+            {
+              type: '적용단가',
+              value: resBody.whinChrg ? resBody.whinChrg : "-" + '/PLT',
+            },
+            {
+              type: '입고비',
+              value: resBody.whinChrg ? resBody.whinChrg + '원' : "-",
+            },
+            {
+              type: '출고비',
+              value: resBody.whoutChrg ? resBody.whoutChrg + '원' : "-"
+            },
+            {
+              type: '보관비',
+              value: '-'
+            }
+          ]
+        }
+      })
+      this.setState({
+        dataInfo, responseFilter, resBody
+      })
+    })
+  }
+
+
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
   showConfirm = () => this.setState({ confirm: true });
 
   hideConfirm = () => this.setState({ confirm: false });
+
+  showDateStart = () => {
+    let { isOpenStart } = this.state
+    this.setState({
+      isOpenStart: !isOpenStart
+    })
+  }
+  showTimeCreateImport = () => {
+    let { isOpenTimeCreateImport } = this.state
+    this.setState({
+      isOpenTimeCreateImport: !isOpenTimeCreateImport
+    })
+  }
+
+  showDateEnd = () => {
+    let { isOpenEnd } = this.state
+    this.setState({
+      isOpenEnd: !isOpenEnd
+    })
+  }
+
+
+  onChangeStart = (event, selectedDate) => {
+    let { isOpenStart } = this.state;
+    if (event.type == 'dismissed') {
+      this.setState({
+        isOpenStart: !isOpenStart
+      })
+    } else {
+      let filter =  {...this.state.filter}
+      filter.startDate = event.nativeEvent.timestamp
+      this.setState({
+        filter: filter,
+        isOpenStart: !isOpenStart
+      }, () => {
+        this.getAllData()
+      })
+    }
+  }
+
+  onChangeEnd = (event, selectedDate) => {
+    let { isOpenEnd } = this.state
+    if (event.type == 'dismissed') {
+      this.setState({
+        isOpenEnd: !isOpenEnd
+      })
+    } else {
+      let filter =  {...this.state.filter}
+      filter.endDate = event.nativeEvent.timestamp
+      this.setState({
+        filter,
+        isOpenEnd: !isOpenEnd
+      }, () => {
+        this.getAllData()
+      })
+    }
+  };
+
+  onChangeEnd = (event, selectedDate) => {
+    let { isOpenEnd } = this.state
+    if (event.type == 'dismissed') {
+      this.setState({
+        isOpenEnd: !isOpenEnd
+      })
+    } else {
+      this.setState({
+        endDate: event.nativeEvent.timestamp,
+        isOpenEnd: !isOpenEnd
+      }, () => {
+        this.getAllData()
+      })
+    }
+  };
+  onChangeTimeCreateImport = (event, selectedDate) => {
+    let { isOpenTimeCreateImport } = this.state
+    if (event.type == 'dismissed') {
+      this.setState({
+        isOpenTimeCreateImport: !isOpenTimeCreateImport
+      })
+    } else {
+      this.setState({
+        timeCreateImport: event.nativeEvent.timestamp,
+        isOpenTimeCreateImport: !isOpenTimeCreateImport
+      })
+    }
+  };
+
+  onChangeRangeDay = (event, selectedDate) => {
+  };
+  onChangeLimitRow = (event, selectedDate) => {
+  };
+
+  onChangeValueImport = (e) => {
+    
+    if (searchTimerQuery) {
+      clearTimeout(searchTimerQuery);
+    }
+    searchTimerQuery = setTimeout(async () => {
+      this.setState({
+        valueCreateImport: this.inputValueCreateImport.state.value
+      }, () => {
+        this.getAllData()
+      })
+    }, 500);
+  }
+
+  async createImport() {
+    let {rentWarehNo, timeCreateImport, valueCreateImport} = this.state
+    let body = {
+      rentWarehNo,
+      whinExpct: timeCreateImport.getTime(),
+      whinExpctQty: valueCreateImport
+    }
+    await InOutManagerService.createImport(body).then(res => {
+      if(res.data.msg !== 'success') {
+        return
+      }
+      this.showConfirm();
+      this.hideDialog();
+    })
+
+  }
+
+
   render() {
-    // const { imageStore } = this.props;
     const { route } = this.props;
-    const { isProgress, isToggle, receiptCancel } = this.state;
+    const { isProgress, isToggle, receiptCancel, dataInfo, responseFilter } = this.state;
+
+    const { isOpenStart, isOpenEnd, rangeDay, limitRow, isOpenTimeCreateImport, timeCreateImport } = this.state;
+    let { startDate, endDate } = this.state.filter;
 
     const processing =
       isProgress === true ? (
@@ -235,41 +448,51 @@ class DetailsManager extends Component {
           <Text style={SS.textBody}>등록한 입･출고 내역이 없습니다.</Text>
         </View>
       ) : (
-        <Fragment>
-          <TableInfo
-            data={dataProgress}
-            style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
-          />
-          <View style={[DefaultStyle._listBtn, SS.listBtnProcess]}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('송장정보 확인');
-              }}
-              style={[
-                DefaultStyle._btnOutline,
-                DefaultStyle._btnLeft,
-                SS.btnProcess,
-              ]}>
-              <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                송장정보 확인
+          <Fragment>
+            {
+              responseFilter.length > 0 && responseFilter.map((item, index) => {
+                return (
+                  <View style={{ paddingTop: 40 }}>
+                    <TableInfo
+                      data={item.dataProgress}
+                      style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
+                    />
+                  </View>
+
+                )
+              })
+            }
+
+            <View style={[DefaultStyle._listBtn, SS.listBtnProcess]}>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('송장정보 확인');
+                }}
+                style={[
+                  DefaultStyle._btnOutline,
+                  DefaultStyle._btnLeft,
+                  SS.btnProcess,
+                ]}>
+                <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                  송장정보 확인
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ isCancel: true });
-              }}
-              style={[
-                DefaultStyle._btnOutline,
-                DefaultStyle._btnRight,
-                SS.btnProcess,
-              ]}>
-              <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                입고요청 취소
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ isCancel: true });
+                }}
+                style={[
+                  DefaultStyle._btnOutline,
+                  DefaultStyle._btnRight,
+                  SS.btnProcess,
+                ]}>
+                <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                  입고요청 취소
               </Text>
-            </TouchableOpacity>
-          </View>
-        </Fragment>
-      );
+              </TouchableOpacity>
+            </View>
+          </Fragment>
+        );
 
     return (
       <SafeAreaView style={S.container}>
@@ -309,21 +532,77 @@ class DetailsManager extends Component {
             </View>
 
             <View style={S.filter}>
-              <View style={[DefaultStyle._listElement, { marginBottom: -10 }]}>
-                <View style={[S.optionSelect, S.optionSelectLeft]}>
-                  <Select data={dataStart} style={[S.select]} />
+              <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
+                <View style={[S.optionSelect, S.optionSelectLeft, { height: 40, marginBottom: 45 }]}>
+                  <View style={{ flex: 1 }}>
+                    <TouchableOpacity
+                      onPress={() => this.showDateStart()}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {formatDateV1(startDate)}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        수탁 기간
+                      </Text>
+                      {
+                        isOpenStart &&
+                        <DatePicker
+                          mode={'date'}
+                          show={isOpenStart}
+                          onChange={(e) => this.onChangeStart(e)}
+                          value={startDate}
+                          testID="dateTimePicker"
+                        />
+                      }
+                    </TouchableOpacity>
+                  </View>
                 </View>
+
                 <Text style={S.hyphen}>-</Text>
+
                 <View style={[S.optionSelect, S.optionSelectLeft]}>
-                  <Select data={dataEnd} style={S.select} />
+
+                  <View style={{ flex: 1 }}>
+                    <TouchableOpacity
+                      onPress={() => this.showDateEnd()}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {formatDateV1(endDate)}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        수탁 기간
+                      </Text>
+                      {
+                        isOpenEnd &&
+                        <DatePicker
+                          mode={'date'}
+                          show={isOpenEnd}
+                          onChange={(e) => this.onChangeEnd(e)}
+                          value={endDate}
+                          testID="dateTimePicker"
+                        />
+                      }
+
+                    </TouchableOpacity>
+                  </View>
                 </View>
+
               </View>
               <View style={[DefaultStyle._listElement, { marginBottom: -10 }]}>
                 <View style={[S.optionSelect, S.optionSelectLeft]}>
-                  <Select data={dataAll} style={S.select} />
+                  <Select data={rangeDay} style={S.select} onChange={this.onChangeRangeDay} />
                 </View>
                 <View style={[S.optionSelect, S.optionSelectLeft]}>
-                  <Select data={selectNumber} style={S.select} />
+                  {/* <Select data={selectNumber} style={S.select} /> */}
+                  <Select data={limitRow} style={S.select} onChange={this.onChangeLimitRow} />
                 </View>
                 <View style={[S.optionSelect, S.optionSelectLeft]}>
                   <Select data={selectRequest} style={S.select} />
@@ -414,12 +693,12 @@ class DetailsManager extends Component {
                     </View>
                   </Fragment>
                 ) : (
-                  <View style={DefaultStyle._bodyCard}>
-                    <Text style={SS.textBody}>
-                      등록한 입･출고 내역이 없습니다.
+                    <View style={DefaultStyle._bodyCard}>
+                      <Text style={SS.textBody}>
+                        등록한 입･출고 내역이 없습니다.
                     </Text>
-                  </View>
-                )
+                    </View>
+                  )
               ) : null}
             </View>
           </View>
@@ -435,50 +714,53 @@ class DetailsManager extends Component {
           <Dialog.Content>
             <View style={SS.bodyPopup}>
               <Text style={DefaultStyle._textTitleCard}>입고 예정일</Text>
-              <Select data={dataStart} style={S.select} />
-              <Select data={dataStart} style={S.select} />
+
+
+              <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
+                <View style={[S.optionSelect, S.optionSelectLeft, { height: 40, marginBottom: 45, marginTop: 15, width: '100%' }]}>
+                  <View style={{ flex: 1 }}>
+                    <TouchableOpacity
+                      onPress={() => this.showTimeCreateImport()}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {formatDateV1(timeCreateImport)}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        수탁 기간
+                      </Text>
+                      {
+                        isOpenTimeCreateImport &&
+                        <DatePicker
+                          mode={'date'}
+                          show={isOpenTimeCreateImport}
+                          onChange={(e) => this.onChangeTimeCreateImport(e)}
+                          value={timeCreateImport}
+                          testID="dateTimePicker"
+                        />
+                      }
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+              </View>
+
 
               <Text style={DefaultStyle._textTitleCard}>
-                입고 예정 파렛트 수량
+              입고 예정 수량
+
+
               </Text>
               <TextField
+                ref={el => this.inputValueCreateImport = el}
                 textRight="P"
                 styleRight={{ top: 5 }}
                 styleProps={SS.inputStyle}
+                onChange={(e) => this.onChangeValueImport(e)}
               />
-              <Text style={DefaultStyle._textTitleCard}>송장 등록하기</Text>
-              <View style={SS.attachments}>
-                <TouchableOpacity
-                  style={[
-                    DefaultStyle._btnOutline,
-                    { borderColor: 'rgba(0, 0, 0, 0.5)', width: '100%' },
-                  ]}>
-                  <Text
-                    style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                    엑셀 다운
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={SS.infoAttach}>
-                <Text style={SS.textAttach}>20201111_파일명.jpg</Text>
-                <IconButton
-                  style={SS.btnRemove}
-                  icon="close-circle"
-                  size={16}
-                  color="rgba(0, 0, 0, 0.54)"
-                  onPress={() => console.log('remove')}
-                />
-              </View>
-              <View style={SS.infoAttach}>
-                <Text style={SS.textAttach}>20201111_파일명.jpg</Text>
-                <IconButton
-                  style={SS.btnRemove}
-                  icon="close-circle"
-                  size={16}
-                  color="rgba(0, 0, 0, 0.54)"
-                  onPress={() => console.log('remove')}
-                />
-              </View>
             </View>
           </Dialog.Content>
           <Dialog.Actions style={SS.footerPopup}>
@@ -492,8 +774,7 @@ class DetailsManager extends Component {
             <Button
               style={SS.btnPopup}
               onPress={() => {
-                this.showConfirm();
-                this.hideDialog();
+                this.createImport()
               }}>
               확인
             </Button>
@@ -522,7 +803,9 @@ class DetailsManager extends Component {
               style={DefaultStyle._buttonElement}
               onPress={() => {
                 this.hideConfirm();
-                this.setState({ isProgress: true });
+                this.setState({ isProgress: true }, ()=>{
+                  this.getAllData();
+                });
               }}>
               확인
             </Button>
@@ -588,40 +871,5 @@ class DetailsManager extends Component {
     );
   }
 
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
-/** map state with store states redux store */
-function mapStateToProps(state) {
-  // console.log('++++++mapStateToProps: ', state);
-  return {
-    // count: state.home.count,
-    imageStore: state.registerWH.pimages,
-  };
-}
-
-/** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
-  return {
-    dataAction: action => {
-      dispatch(ActionCreator.ContractConditions(action));
-    },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DetailsManager);

@@ -11,6 +11,9 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
+  optionSelect: {
+    padding: 0
+  },
   totalFees: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -20,13 +23,11 @@ export const styles = StyleSheet.create({
   textTotalFees: {
     color: color.text.secondary,
     lineHeight: 21,
-    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 12,
   },
   textTotal: {
     color: color.text.primary,
     lineHeight: 21,
-    // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
     marginLeft: 4,
   },

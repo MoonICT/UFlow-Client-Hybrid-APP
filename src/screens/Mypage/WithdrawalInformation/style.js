@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   listBtn: {
     flexDirection: 'row',
     marginBottom: 24,
-    marginTop: 100,
+    marginTop: 80,
   },
   btnCancel: {
     borderColor: 'rgba(0, 0, 0, 0.12)',
@@ -39,4 +39,5 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
+
 });

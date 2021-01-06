@@ -33,27 +33,9 @@ import { InOutManagerService } from '@Services/apis'
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import DatePicker from '@react-native-community/datetimepicker';
-
+import {formatDateV1} from '@Utils/dateFormat';
+import {SIGNED_CONTRACT} from '@Constant/enumCode'
 var searchTimerQuery;
-const dataCompletion = [
-  {
-    type: '창고 주소',
-    value: '서울특별시 성동구 성수2가 3동 279-25',
-  },
-  {
-    type: '수탁 기간',
-    value: '2020.10.26 - 2020.12.09',
-  },
-  {
-    type: '진행 상태',
-    value: '수탁 완료',
-    highlight: false,
-  },
-  {
-    type: '입출고료 합계',
-    value: '1,900,000원',
-  },
-];
 export default class InOutManager extends Component {
   constructor(props) {
     super(props);
@@ -120,23 +102,27 @@ export default class InOutManager extends Component {
       let newData = res.data.data.content.map((item) => {
         return {
           image: card,
+          statusCode: item.cntrDvCode,
+          rentWarehNo: item.rentWarehNo,
+          status: item.status,
+          name: item.name,
           labelList: [
             {
               type: '창고 주소',
-              value: item.warehouseRegNo || '',
+              value: item.rentWarehNo || '',
             },
             {
               type: '수탁 기간',
-              value: `${item.cntrYmdForm} - ${item.cntrYmdTo}`,
+              value: `${formatDateV1(item.cntrYmdForm)} - ${formatDateV1(item.cntrYmdTo)}`,
             },
             {
               type: '진행 상태',
               value: '수탁 진행 중',
-              highlight: true,
+              highlight:  item.cntrDvCode == SIGNED_CONTRACT.code ? true : false,
             },
             {
               type: '입출고료 합계',
-              value: item.amount,
+              value: item.totalWhrg,
             }
           ]
         }
@@ -172,20 +158,21 @@ export default class InOutManager extends Component {
 
 
   onChangeStart = (event, selectedDate) => {
-    let {isOpenEnd} = this.state
+    let {isOpenStart} = this.state
     if(event.type == 'dismissed') {
       this.setState({
-        isOpenEnd: !isOpenEnd
+        isOpenStart: !isOpenStart
       })
     } else {
+      let filter =  {...this.state.filter}
+      filter.startDate = event.nativeEvent.timestamp
       this.setState({
-        startDate: event.nativeEvent.timestamp,
-        isOpenEnd: !isOpenEnd
+        filter: filter,
+        isOpenStart: !isOpenStart
       }, () => {
         this.getAllData()
       })
     }
-
   }
 
   onChangeEnd = (event, selectedDate) => {
@@ -195,8 +182,10 @@ export default class InOutManager extends Component {
         isOpenEnd: !isOpenEnd
       })
     } else {
+      let filter =  {...this.state.filter}
+      filter.endDate = event.nativeEvent.timestamp
       this.setState({
-        endDate: event.nativeEvent.timestamp,
+        filter: filter,
         isOpenEnd: !isOpenEnd
       },() => {
         this.getAllData()
@@ -214,7 +203,6 @@ export default class InOutManager extends Component {
       clearTimeout(searchTimerQuery);
     }
     searchTimerQuery = setTimeout(async () => {
-      console.log('inputKeyWord', this.inputKeyWord)
       this.setState({
         query: this.inputKeyWord.state.value
       }, () => {
@@ -231,7 +219,7 @@ export default class InOutManager extends Component {
 
   render() {
     const { valueTab, isOpenStart, isOpenEnd, rangeDay, dataCard } = this.state;
-    let {startDate, endDate, query} = this.state.filter;
+    let {startDate, endDate} = this.state.filter;
     return (
       <View style={DefaultStyle._cards}>
 
@@ -288,7 +276,7 @@ export default class InOutManager extends Component {
                   onPress={()=>this.showDateStart()}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                    {startDate.toLocaleDateString()}
+                    {formatDateV1(startDate)}
                   </Text>
                   <Text
                     style={[
@@ -319,7 +307,7 @@ export default class InOutManager extends Component {
                   onPress={()=>this.showDateEnd()}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                    {endDate.toLocaleDateString()}
+                    {formatDateV1(endDate)}
                   </Text>
                   <Text
                     style={[
@@ -368,8 +356,11 @@ export default class InOutManager extends Component {
             return (
               <CardMypage
                   key={index}
-                  onPressHeader={() => this.navigation.navigate('DetailsManager')}
-                  headerTitle={'에이씨티앤코아물류'}
+                  onPressHeader={() => this.navigation.navigate('DetailsManager',{
+                    rentWarehNo: item.rentWarehNo,
+                    type: valueTab
+                  })}
+                  headerTitle={item.name}
                   data={item.labelList}
                   borderRow={false}
                   styleLeft={S.styleLeftTable}
@@ -410,7 +401,7 @@ export default class InOutManager extends Component {
 
         
 
-        <CardMypage
+        {/* <CardMypage
           onPressHeader={() => this.navigation.navigate('DetailsManager')}
           headerTitle={'에이씨티앤코아물류3'}
           data={dataCompletion}
@@ -418,7 +409,7 @@ export default class InOutManager extends Component {
           styleLeft={S.styleLeftTable}
           styleRight={S.styleRightTable}
           bgrImage={card}
-        />
+        /> */}
       </View>
     );
   }
