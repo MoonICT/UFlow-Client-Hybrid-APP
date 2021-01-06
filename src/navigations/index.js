@@ -497,6 +497,11 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
+                  <AuthStack.Screen
+                    name="FindPassWord"
+                    component={FindPassWordScreen}
+                    options={{ headerShown: false }}
+                  />
                 </AuthStack.Navigator>
               ) : (
                 <RootStack.Navigator initialRouteName="Login">
