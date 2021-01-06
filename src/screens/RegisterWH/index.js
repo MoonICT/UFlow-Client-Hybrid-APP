@@ -44,18 +44,12 @@ class RegisterWH extends Component {
     return true;
   }
 
-  /** when exits screen */
-  componentWillUnmount() {
-    console.log('::componentWillUnmount::');
-  }
-
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
   submit = () => {
     Warehouse.registerWH(this.props.dataWH)
       .then(res => {
-        console.log('::::: API Sign in :::::', res);
         const status = res.status;
         if (status === 200) {
         }
