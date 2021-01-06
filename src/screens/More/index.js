@@ -29,6 +29,9 @@ import warehouse from '@Assets/images/more-warehouse.png';
 
 import { AuthContext } from '@Store/context';
 
+import { TOKEN } from '@Constant';
+
+
 //---> Assets
 import AsyncStorage from '@react-native-community/async-storage';
 import { Account } from '@Services/apis';
@@ -349,7 +352,7 @@ class More extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    const value = await AsyncStorage.getItem('token');
+    const value = await AsyncStorage.getItem(TOKEN);
     Account.getMe()
       .then(res => {
         console.log('::::: Get Me :::::', res);

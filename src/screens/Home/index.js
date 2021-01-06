@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-06 10:27:05
+ * @modify date 2021-01-06 11:12:06
  * @desc [description]
  */
 
@@ -354,16 +354,16 @@ class Home extends Component {
 
   _renderProductItem = item => {
     // console.log('item==>', item);
-    const { whList } = this.state;
+    let { whList } = this.state;
     const cardItem = [];
-
-    whList.map((v, i) => {
+    whList = whList.slice(0, 4);
+    whList?.map((v, i) => {
       cardItem.push(
         <View key={i} style={styles.mainProductItem}>
-          {item?.thumbnail !== null ? (
-            <ProductCard data={item} />
+          {v?.thumbnail !== null ? (
+            <ProductCard data={v} />
           ) : (
-            <ProductCard data={{ ...item, img: cardBG }} />
+            <ProductCard data={{ ...v, img: cardBG }} />
           )}
         </View>,
       );
