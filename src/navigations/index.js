@@ -209,11 +209,12 @@ const App = () => {
                     component={TabScreen}
                     options={{ headerShown: false }}
                   />
-                  {/* <AuthStack.Screen
-                    name="testScreen"
-                    component={TextField}
+                  <RootStack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    headerMode={false}
                     options={{ headerShown: false }}
-                  /> */}
+                  />
                   <AuthStack.Screen
                     name="Register"
                     component={Register}
