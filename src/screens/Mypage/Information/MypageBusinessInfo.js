@@ -6,7 +6,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import {
   Checkbox,
   Appbar,
@@ -25,6 +25,8 @@ import { styles as S } from '../style';
 import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
 import { Entrp } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {daumAddress} from "@Services/utils/daumAddress";
 
 const tabSelect = [
   {
@@ -75,7 +77,8 @@ class MypageBusinessInfo extends Component {
       imageList: [],
       businessInfo: WarehouseProprietorInfo,
       selectedInfoIndex: 0,
-      isCert: false
+      isCert: false,
+      photo: null
     };
     this.navigation = props.navigation;
   }
@@ -110,6 +113,20 @@ class MypageBusinessInfo extends Component {
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
+
+  handleChoosePhoto = () => {
+    const options={
+      title:'select a photo',
+      takePhotoButtonTitle:'Take a Photo',
+      chooseFrmoLibraryButtonTitle:'Choose from Gallery',
+      quality:1
+  };
+    launchImageLibrary(options, response => {
+      if (response.uri) {
+        this.setState({ photo: response });
+      }
+    });
+  };
 
   /**
      * Set business data
@@ -158,9 +175,59 @@ class MypageBusinessInfo extends Component {
     this.setBusinessData(listBusinessInfo[i]);
   }
 
+  handleOnSubmit = () => {
+    const { businessInfo } = this.state;
+
+    console.log('businessInfo123',businessInfo);
+
+    Entrp.update(businessInfo).then(res => {
+      console.log('::::: API Add Business Info  :::::', res)
+      // setIsComplete(true)
+    }).catch(err => {
+      if (err.response && err.response.status >= 500) {
+        alert('서버에러:' + err.response.message)
+      }
+    });
+  };
+
+  getKakaoAddress = () => {
+    daumAddress((data) => {
+
+      // 주소-좌표 변환 객체를 생성합니다
+      const geocoder = new kakao.maps.services.Geocoder();
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch(data.roadAddress, function (result, status) {
+        // 정상적으로 검색이 완료됐으면
+        if (status === kakao.maps.services.Status.OK) {
+
+          // set 주소
+          this.setState({
+            businessInfo: {
+              ...businessInfo,
+              jibunAddr: {
+                ...businessInfo.jibunAddr,
+                zipNo: data.zonecode,
+                address: data.jibunAddress,
+              },
+              roadAddr: {
+                ...businessInfo.roadAddr,
+                zipNo: data.zonecode,
+                address: data.roadAddress,
+              },
+              gps: {
+                latitude: result[0].y,
+                longitude: result[0].x
+              },
+            }
+          })
+        }
+      });
+    })
+  }
+
+
   render() {
-    const { listBusinessInfo, selectedInfoIndex,businessInfo } = this.state;
-    console.log('businessInfo', businessInfo);
+    const { listBusinessInfo, selectedInfoIndex,businessInfo, photo } = this.state;
 
     return (
       <>
@@ -222,9 +289,18 @@ class MypageBusinessInfo extends Component {
             <Text style={DefaultStyle._textDF}>- 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.</Text>
             <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>- 사진은 한 파일에 10MB 까지 등록이 가능합니다.</Text>
 
+            {photo && (
+            <Image
+                source={{ uri: photo.uri,
+                  type: "image/jpeg",
+                  name: photo.filename  }}
+                style={{ width: 125, height: 125,marginBottom:20}}
+
+              />
+            )}
             <TouchableOpacity
               style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-              onPress={() => console.log(titleButton)}>
+              onPress={this.handleChoosePhoto}>
               <Text
                 style={[
                   DefaultStyle._textButton,
@@ -235,11 +311,11 @@ class MypageBusinessInfo extends Component {
             </TouchableOpacity>
             <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex, DefaultStyle.mb_20]}>
               <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
-                <TextField colorLabel="#000000" styleProps={DefaultStyle.mb_0} />
+                <TextField colorLabel="#000000" styleProps={DefaultStyle.mb_0} value={businessInfo.roadAddr.zipNo}/>
               </View>
               <TouchableOpacity
                 style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                onPress={() => console.log(titleButton)}>
+                onPress={this.getKakaoAddress}>
                 <Text
                   style={[
                     DefaultStyle._textButton,
@@ -363,9 +439,7 @@ class MypageBusinessInfo extends Component {
             mode="contained"
             style={[{ width: '95%', margin: 12, borderRadius: 24, height: 40, marginBottom: 24 }, DefaultStyle._primary,]}
             color="red"
-            onPress={() => {
-              console.log(businessInfo)
-            }}>
+            onPress={this.handleOnSubmit}>
             확인
           </Button>
         </View>

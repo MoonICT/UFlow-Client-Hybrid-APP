@@ -59,42 +59,14 @@ export const duplicate = ({number = ""}) => {
  * @param gps : 위치
  * @returns {Promise<*>}
  */
-export const update = ({
-                         oriId = "",
-                         id = "",
-                         name = "",
-                         repreNm = "",
-                         inchgNm = "",
-                         position = "",
-                         corpNumber = "",
-                         number = "",
-                         email = "",
-                         taxBillEmail = "",
-                         regFile = "",
-                         phone = "",
-                         jibunAddr = {},
-                         roadAddr = {},
-                         gps = {},
-                       }) => {
-  return Axios.putRequest({
-    url: `/api/v1/entrp`,
-    requiresToken: true,
-    payload: {
-      oriId: oriId,
-      id: id,
-      name: name,
-      repreNm: repreNm,
-      inchgNm: inchgNm,
-      position: position,
-      corpNumber: corpNumber,
-      number: number,
-      email: email,
-      taxBillEmail: taxBillEmail,
-      regFile: regFile,
-      phone: phone,
-      jibunAddr: jibunAddr,
-      roadAddr: roadAddr,
-      gps: gps,
+export const update = async payload => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  return mainAxios.put(`/api/v1/entrp`,payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // Accept: 'application/json',
+      },
     }
-  })
+  )
 };
