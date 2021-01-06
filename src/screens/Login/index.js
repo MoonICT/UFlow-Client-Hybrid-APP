@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-06 10:23:25
+ * @modify date 2021-01-06 17:00:51
  * @desc [description]
  */
 
@@ -57,24 +57,31 @@ class Login extends Component {
     const { showPopup } = this.props;
     const { login } = this.context;
 
+    /** Config test */
+    data.email = 'tenant1@test.com';
+    data.password = 'wotkd123';
+
     if (data.email === '' || data.password === '') {
       showPopup({ title: 'UFLOW', content: '충분한 정보를 입력하십시오 !' });
     }
+
     // Sign in
     let loginData = await Account.signIn({
       email: data.email,
       password: data.password,
     });
 
-    console.log('loginData==>', loginData);
+    // console.log('loginData==>', loginData);
 
     if (loginData.status === 200) {
       const access_token = loginData.data.access_token;
+      console.log('access_token==>', access_token);
       AsyncStorage.setItem(TOKEN, access_token);
       login();
-    } else {
-      showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
     }
+    // } else {
+    //   showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
+    // }
   }
 
   render() {
@@ -86,7 +93,7 @@ class Login extends Component {
           <Appbar.Action
             icon="close"
             color="black"
-            onPress={() => console.log('hello')}
+            onPress={() => this.navigation.navigate('Home')}
           />
         </Appbars>
         <ScrollView>

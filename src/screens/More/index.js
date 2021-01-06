@@ -31,7 +31,6 @@ import { AuthContext } from '@Store/context';
 
 import { TOKEN } from '@Constant';
 
-
 //---> Assets
 import AsyncStorage from '@react-native-community/async-storage';
 import { Account } from '@Services/apis';
@@ -59,10 +58,12 @@ class More extends Component {
 
   render() {
     let { email, fullName } = this.state;
-    const { route, isLogin } = this.props;
-    const { signOut } = this.context;
+    // const { route, isLogin } = this.props;
+    const { signOut, getLoginStatus } = this.context;
 
-    console.log('routeMore :>> ', route);
+    // console.log('routeMore :>> ', route);
+    const isLogin = getLoginStatus();
+    console.log('isLogin Hello==>', isLogin);
 
     return (
       <SafeAreaView style={S.container}>
@@ -73,7 +74,11 @@ class More extends Component {
             </Text>
             <TouchableOpacity
               style={[DefaultStyle.btnItem, S.infoUser]}
-              onPress={() => this.navigation.navigate('SampleScreen')}>
+              onPress={() =>
+                isLogin
+                  ? this.navigation.navigate('Information')
+                  : this.navigation.navigate('Login')
+              }>
               <View style={DefaultStyle.leftItem}>
                 <Text style={[DefaultStyle.titleItem, S.textInfo]}>
                   {isLogin === false ? '로그인' : fullName}

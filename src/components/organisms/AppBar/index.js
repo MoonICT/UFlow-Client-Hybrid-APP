@@ -2,16 +2,16 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 15:58:18
- * @modify date 2020-11-24 18:39:05
+ * @modify date 2021-01-06 17:10:44
  * @desc [description]
  */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 // import {Appbar} from 'react-native-paper';
-import {View} from 'react-native';
+import { View, Text } from 'react-native';
 
 // Local Imports
-import {styles} from './style';
+import { styles } from './style';
 import DefaultStyle from '@Styles/default';
 
 class AppBars extends Component {
@@ -19,11 +19,23 @@ class AppBars extends Component {
     super(props);
   }
   render() {
-    const {children} = this.props;
+    const { children, isHide = false } = this.props;
     return (
-      <View style={[DefaultStyle.header, styles.container, this.props.customStyle]} {...this.props}>
-        {children}
-      </View>
+      <>
+        {isHide ? (
+          <Text>{''}</Text>
+        ) : (
+          <View
+            style={[
+              DefaultStyle.header,
+              styles.container,
+              this.props.customStyle,
+            ]}
+            {...this.props}>
+            {children}
+          </View>
+        )}
+      </>
     );
   }
 }

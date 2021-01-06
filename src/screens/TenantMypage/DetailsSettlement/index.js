@@ -211,7 +211,7 @@ const viewCosts = [
     value: '1,000,000원',
   },
 ];
-class DetailsSettlement extends Component {
+export default class DetailsSettlement extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -235,7 +235,6 @@ class DetailsSettlement extends Component {
     });
   };
   render() {
-    // const { imageStore } = this.props;
     const { route } = this.props;
     const { feeState, toggleFee, toggleCosts } = this.state;
     const dataFee = [
@@ -499,43 +498,4 @@ class DetailsSettlement extends Component {
       </SafeAreaView>
     );
   }
-
-  /** when after render DOM */
-  async componentDidMount() {
-    // console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-  componentWillUpdate(nextProps, nextState) {
-    console.log('Component WILL UPDATE!');
-  }
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    // console.log('::componentDidUpdate::');
-  }
 }
-
-/** map state with store states redux store */
-function mapStateToProps(state) {
-  // console.log('++++++mapStateToProps: ', state);
-  return {
-    // count: state.home.count,
-    imageStore: state.registerWH.pimages,
-  };
-}
-
-/** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
-  return {
-    dataAction: action => {
-      dispatch(ActionCreator.ContractConditions(action));
-    },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DetailsSettlement);

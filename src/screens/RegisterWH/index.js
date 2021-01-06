@@ -58,6 +58,7 @@ class RegisterWH extends Component {
         console.log('::::: API Sign in :::::', res);
         const status = res.status;
         if (status === 200) {
+          this.navigation.navigate('Home')
         }
       })
       .catch(err => {
@@ -66,7 +67,7 @@ class RegisterWH extends Component {
   };
   render() {
     const { imageStore, workComplete, route, dataWH } = this.props;
-    console.log('dataWH', dataWH);
+    console.log('dataWHAll', dataWH);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -204,36 +205,36 @@ class RegisterWH extends Component {
                 />
               </View>
             </TouchableOpacity>
-
-            <TouchableOpacity
-              style={S.btnTypeRegister}
-              onPress={() =>
-                this.navigation.navigate('RegisterContractConditions', {
-                  type: route && route.params && route.params.type,
-                })
-              }>
-              <Text style={S.textLeftBtn}>계약 조건</Text>
-              <View style={S.rightBtn}>
-                {workComplete === undefined ? (
-                  <Text style={S.textRightBtn}>입력하세요</Text>
-                ) : (
-                  <Text style={S.completeText}>작업완료</Text>
-                )}
-
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
+            {
+              // <TouchableOpacity
+              //   style={S.btnTypeRegister}
+              //   onPress={() =>
+              //     this.navigation.navigate('RegisterContractConditions', {
+              //       type: route && route.params && route.params.type,
+              //     })
+              //   }>
+              //   <Text style={S.textLeftBtn}>계약 조건</Text>
+              //   <View style={S.rightBtn}>
+              //     {workComplete === undefined ? (
+              //       <Text style={S.textRightBtn}>입력하세요</Text>
+              //     ) : (
+              //       <Text style={S.completeText}>작업완료</Text>
+              //     )}
+              //     <Icon
+              //       name="arrow-forward-ios"
+              //       size={12}
+              //       color="rgba(0, 0, 0, 0.54)"
+              //     />
+              //   </View>
+              // </TouchableOpacity>
+            }
           </View>
         </ScrollView>
         <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
             style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
             onPress={() => {
-              this.showDialog();
+              // this.showDialog();
               this.submit();
             }}>
             <Text

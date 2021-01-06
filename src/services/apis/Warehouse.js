@@ -18,14 +18,14 @@ export const uploadImage = async formData => {
   });
 };
 export const registerWH = async data => {
-  console.log('data :>> ', data);
+  console.log('dataregisterWH :>> ', data);
   const token = await AsyncStorage.getItem(TOKEN);
-  // return await mainAxios.get('/api/v1/warehouse', data, {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //     // Accept: 'application/json',
-  //   },
-  // });
+  return await mainAxios.post('/api/v1/warehouse', data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // Accept: 'application/json',
+    },
+  });
 };
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
@@ -56,6 +56,7 @@ export const quotation = async type => {
 };
 export const responQuotation = async value => {
   const token = await AsyncStorage.getItem(TOKEN);
+  console.log('responQuotation', value)
   return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -101,6 +102,21 @@ export const chatting = async value => {
       },
     },
   );
+};
+
+export const termsContract = async value => {
+  const token = await AsyncStorage.getItem('token');
+  console.log('value', value);
+  // return await mainAxios.post(
+  //   `/api/v1/chat/contract/4100/${value.url}`,
+  //   value && value.data,
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       Accept: 'application/json',
+  //     },
+  //   },
+  // );
 };
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인
@@ -507,4 +523,20 @@ export const listRecommend = async () => {
     url: `/api/v1/warehouse/recommend`,
   });
   return data;
+};
+
+/**
+ * List All Bussiness Info
+ */
+export const listAllBussinessInfo = () => {
+  return Axios.request({
+    methodType: 'GET',
+    url: `/api/v1/warehouse/tenant/list-all-bussiness-info`,
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json'
+      }
+    }
+  })
 };

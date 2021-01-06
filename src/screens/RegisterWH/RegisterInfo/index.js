@@ -107,12 +107,10 @@ class RegisterInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   _addForm = valueTab => {
-    console.log('valueTab :>> ', valueTab);
-
     let lengths =
       valueTab === 'trusts'
         ? this.state.trusts.length
@@ -156,8 +154,12 @@ class RegisterInfo extends Component {
         });
     this.setState({ keeps: listKeeps, trusts: listTrusts });
   };
-  _removeForm = () => console.log('_removeImage');
-
+  _removeForm = valueTab => {
+    let listKeeps = this.state.keeps;
+    let listTrusts = this.state.trusts;
+    console.log('valueTab :>> ', valueTab);
+    console.log('listKeeps', listKeeps)
+  };
   onToggleSwitch = () =>
     this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
 
@@ -248,7 +250,7 @@ class RegisterInfo extends Component {
                 <IconButton
                   icon="delete"
                   color={'rgba(0, 0, 0, 0.54)'}
-                  onPress={() => this._removeForm()}
+                  onPress={() => this._removeForm(valueTab)}
                 />
               </View>
             </View>
