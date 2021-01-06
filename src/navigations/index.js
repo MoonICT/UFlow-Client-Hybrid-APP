@@ -166,7 +166,7 @@ const App = () => {
   useEffect(() => {
     AsyncStorage.getItem(TOKEN).then(v => {
       // console.log('v==>', v);
-      setIsLogin(v !== '' || v !== null);
+      setIsLogin(v !== '' && v !== null);
     });
   }, []);
 
@@ -488,12 +488,6 @@ const App = () => {
                   <AuthStack.Screen
                     name="LogisticsKnowledge"
                     component={LogisticsKnowledge}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
-                  <RootStack.Screen
-                    name="Login"
-                    component={LoginScreen}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
