@@ -11,7 +11,7 @@ import * as MyPage from './MyPage';
 import * as InOutManagerService from './InOutManagerService';
 import * as LogisticsKnowledgeService from './LogisticsKnowledgeService';
 
-
+import * as SettlementManagementService from './SettlementManagement';
 export {
   Sample,
   Account,
@@ -25,4 +25,5 @@ export {
   MyPage,
   InOutManagerService,
   LogisticsKnowledgeService,
+  SettlementManagementService,
 };

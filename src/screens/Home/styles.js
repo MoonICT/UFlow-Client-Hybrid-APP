@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2020-12-31 14:27:03
+ * @modify date 2021-01-05 19:54:46
  * @desc [description]
  */
 
@@ -259,8 +259,21 @@ export const styles = StyleSheet.create({
   },
 
   mainProductList: {
+    // width: windowWidth,
     height: '100%',
     paddingBottom: 60,
+    display: 'flex',
+    flexDirection: 'row',
+    // backgroundColor: 'red',
+  },
+
+  mainProductItem: {
+    width: 328,
+    height: 160,
+    paddingBottom: 60,
+    display: 'flex',
+    // backgroundColor: 'red',
+    flex: 1,
   },
 
   //--->main binding

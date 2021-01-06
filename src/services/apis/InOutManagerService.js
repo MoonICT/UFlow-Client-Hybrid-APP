@@ -24,7 +24,6 @@ export const getAll = async (params) => {
 
 export const getDetail = async (params) => {
   const token = await AsyncStorage.getItem('token');
-  console.log('pramssssssss', params )
   let type = params.type;
   let url = `/api/v1/rtwh/transaction/tenant/${params.id}`
   if(type === 'owner') {
@@ -41,3 +40,22 @@ export const getDetail = async (params) => {
     }
   });
 };
+
+export const createImport = async (body) => {
+  const token = await AsyncStorage.getItem('token');
+  let type = body.type;
+  let url = `/api/v1/rtwh/whin/tenant`
+  if(type === 'owner') {
+    url = `/api/v1/rtwh/whin/owner`
+  }
+  return await mainAxios.post(`${url}`, body,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    }
+  });
+};
+
+
+

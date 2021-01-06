@@ -33,7 +33,9 @@ class Quotation extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = {};
+    this.state = {
+      isConfirmRequest: false,
+    };
 
     this.navigation = props.navigation;
   }
@@ -89,7 +91,6 @@ class Quotation extends Component {
     console.log('routeQutation', route);
 
     const { dataApi } = this.state;
-    console.log('dataApiQuatation', dataApi);
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
         {
@@ -351,13 +352,17 @@ class Quotation extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
-                  onPress={() =>
-                    this.navigation.navigate('RequestContract', {
-                      type,
-                      warehouseRegNo,
-                      warehSeq,
-                      typeWH,
-                    })
+                  onPress={
+                    () =>
+                      this.setState({
+                        isConfirmRequest: !this.state.isConfirmRequest,
+                      })
+                    // this.navigation.navigate('RequestContract', {
+                    //   type,
+                    //   warehouseRegNo,
+                    //   warehSeq,
+                    //   typeWH,
+                    // })
                   }>
                   <Text
                     style={[
@@ -528,7 +533,38 @@ class Quotation extends Component {
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+    if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
+      let warehSeq = this.props.route.params.warehSeq;
+      let warehouseRegNo = this.props.route.params.warehouseRegNo;
+      let rentUserNo = this.props.route.params.rentUserNo;
+      let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
+      let typeWH =
+        this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+      let data =
+        this.props.route.params.typeWH === 'TRUST'
+          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
+          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
+      Warehouse.requestContract({ typeWH, data })
+        .then(res => {
+          const status = res.status;
+          console.log('res', res);
+          if (status === 200) {
+            // this.setState({
+            //   dataApi: res.data,
+            // });
+            this.navigation.navigate('RequestContract', {
+              type,
+              warehouseRegNo,
+              warehSeq,
+              typeWH,
+              rentUserNo,
+            });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
   }
 }
 
