@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-24 13:57:48
- * @modify date 2021-01-06 13:53:30
+ * @modify date 2021-01-06 14:27:05
  * @desc [description]
  */
 
@@ -78,36 +78,33 @@ class Register extends Component {
     signUpTemp.terms = this.state.terms;
     signUpTemp.marketing = this.state.marketing;
 
-    console.log("signUpTemp",signUpTemp);
+    // console.log("signUpTemp",signUpTemp);
 
     Account.signUp(signUpTemp)
       .then(res => {
-        console.log('::::: API Sign Up Ok :::::', res);
+        // console.log('::::: API Sign Up Ok :::::', res);
         this.setState({ isDone: true });
         // go to the home after 5sec
-        const access_token = res.data.access_token;
+        const access_token = res?.data?.access_token;
         AsyncStorage.setItem(TOKEN, access_token);
         this.props.loginAccount(true);
-        // setTimeout(() => {
-        //   // router.push('/');
-        // }, 5000);
       })
       .catch(err => {
-        console.log('::::: API Sign Up Error :::::', err);
+        // console.log('::::: API Sign Up Error :::::', err);
 
-        if (err.response) {
-          if (err.response.status >= 400 && err.response.status < 500) {
+        if (err?.response) {
+          if (err?.response?.status >= 400 && err?.response?.status < 500) {
             // TODO Handle the alert message.
-            const errData = err.response.data;
-            console.log('::: Error Code :', errData.code);
-            console.log('::: Error Message :', errData.message);
+            const errData = err?.response?.data;
+            // console.log('::: Error Code :', errData.code);
+            // console.log('::: Error Message :', errData.message);
             // TODO Create dialog components
-            alert(errData.message);
+            alert(errData?.message);
           } else {
             // TODO Handle the alert "Please contact your administrator.".
-            const errData = err.response.data;
-            console.log('::: Error Code :', errData.code);
-            alert(errData.message);
+            const errData = err?.response?.data;
+            // console.log('::: Error Code :', errData.code);
+            alert(errData?.message);
           }
         }
       });

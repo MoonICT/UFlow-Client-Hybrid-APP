@@ -31,7 +31,6 @@ import { AuthContext } from '@Store/context';
 
 import { TOKEN } from '@Constant';
 
-
 //---> Assets
 import AsyncStorage from '@react-native-community/async-storage';
 import { Account } from '@Services/apis';
@@ -62,7 +61,7 @@ class More extends Component {
     const { route, isLogin } = this.props;
     const { signOut } = this.context;
 
-    console.log('routeMore :>> ', route);
+    // console.log('routeMore :>> ', route);
 
     return (
       <SafeAreaView style={S.container}>
