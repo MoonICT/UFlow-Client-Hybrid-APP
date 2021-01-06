@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-06 18:20:38
+ * @modify date 2021-01-06 19:38:36
  * @desc [description]
  */
 
@@ -398,20 +398,19 @@ class Home extends Component {
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
-    const { isLogin } = this.state;
-    // const { getLoginStatus } = this.context;
+    const { getLoginStatus } = this.context;
+    const isLog = getLoginStatus();
+    const { isLogin = isLog } = this.state;
 
     // console.log('whList==>', whList);
-    // const isLogin = getLoginStatus();
+
     console.log('isLogin Hello==>', isLogin);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
         {/**### APPBAR ###*/}
-        {isLogin ? (
-          <AppBars
-            style={isLogin ? [styles.appBar] : DefaultStyle.disHide}
-            isHide={isLogin}>
+        {isLogin === false ? (
+          <AppBars style={[styles.appBar]}>
             <View style={[styles.actionBar]}>
               {/* <Appbar.Action icon="menu" color="white" onPress={() => {}} />
                */}
@@ -837,7 +836,7 @@ class Home extends Component {
 
     AsyncStorage.getItem(TOKEN).then(v => {
       // console.log('v==>', v);
-      this.setState({ isLogin: v !== '' || v !== null });
+      this.setState({ isLogin: v !== '' && v !== null });
     });
 
     SplashScreen.hide();

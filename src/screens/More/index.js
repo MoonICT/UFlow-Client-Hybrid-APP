@@ -228,123 +228,131 @@ class More extends Component {
             </Fragment>
           )}
 
-          <View style={[DefaultStyle._cards, S.listPage]}>
-            <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
-              Premium
-            </Text>
-            <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('Consulting')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('Annoucement')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('FindPassWord')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>긴급차량지원</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
+          {isLogin && (
+            <View style={[DefaultStyle._cards, S.listPage]}>
+              <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
+                Premium
+              </Text>
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('Consulting')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('Annoucement')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('FindPassWord')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>긴급차량지원</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
 
-          <View
-            style={[
-              DefaultStyle._cards,
-              S.listPage,
-              isLogin === false ? DefaultStyle._margin0 : null,
-            ]}>
-            <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
-              고객센터
-            </Text>
-            <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('Notification')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>이용방법</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('Annoucement')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>공지사항</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('Question')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>문의하기</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('FAQ')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>자주 묻는 질문</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
+          {isLogin && (
+            <View
+              style={[
+                DefaultStyle._cards,
+                S.listPage,
+                isLogin === false ? DefaultStyle._margin0 : null,
+              ]}>
+              <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
+                고객센터
+              </Text>
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('Notification')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>이용방법</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('Annoucement')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>공지사항</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('Question')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>문의하기</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('FAQ')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>자주 묻는 질문</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
 
           <View style={S.footerMore}>
-            <TouchableOpacity onPress={() => signOut()}>
+            <TouchableOpacity
+              onPress={() => {
+                signOut();
+                this.navigation.navigate('Login');
+              }}>
               {isLogin === false ? null : (
                 <Text style={S.textLogout}>로그아웃</Text>
               )}
@@ -358,6 +366,7 @@ class More extends Component {
   /** when after render DOM */
   async componentDidMount() {
     const value = await AsyncStorage.getItem(TOKEN);
+    console.log('hello==>', value);
     Account.getMe()
       .then(res => {
         console.log('::::: Get Me :::::', res);
