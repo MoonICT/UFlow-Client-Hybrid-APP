@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-06 18:41:36
+ * @modify date 2021-01-06 19:15:33
  * @desc [description]
  */
 
@@ -408,7 +408,7 @@ class Home extends Component {
     return (
       <SafeAreaView style={DefaultStyle.container}>
         {/**### APPBAR ###*/}
-        {!isLogin ? (
+        {isLogin === false ? (
           <AppBars style={[styles.appBar]}>
             <View style={[styles.actionBar]}>
               {/* <Appbar.Action icon="menu" color="white" onPress={() => {}} />
@@ -834,7 +834,7 @@ class Home extends Component {
     this.setState({ whList: list });
 
     AsyncStorage.getItem(TOKEN).then(v => {
-      console.log('v==>', v);
+      // console.log('v==>', v);
       this.setState({ isLogin: v !== '' && v !== null });
     });
 

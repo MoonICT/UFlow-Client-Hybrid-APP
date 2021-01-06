@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-06 18:39:32
+ * @modify date 2021-01-06 19:15:17
  * @desc [description]
  */
 
@@ -38,6 +38,7 @@ class Login extends Component {
       email: '',
       password: '',
       isRemember: false,
+      isLogin: false,
     };
     this.navigation = props.navigation;
   }
@@ -53,7 +54,7 @@ class Login extends Component {
   }
 
   /** Login Handle */
-  async handleOnClickLogin(data) {
+  handleOnClickLogin(data) {
     const { showPopup } = this.props;
     const { login } = this.context;
 
@@ -66,21 +67,31 @@ class Login extends Component {
     }
 
     // Sign in
-    let loginData = await Account.signIn({
+    // let loginData =
+    Account.signIn({
       email: data.email,
       password: data.password,
+    }).then(result => {
+      if (result.status === 200) {
+        const access_token = result.data.access_token;
+        console.log('access_token==>', access_token);
+        setTimeout(() => {
+          AsyncStorage.setItem(TOKEN, access_token);
+        }, 2000);
+        login();
+      }
     });
 
     // console.log('loginData==>', loginData);
 
-    if (loginData.status === 200) {
-      const access_token = loginData.data.access_token;
-      console.log('access_token==>', access_token);
-      setTimeout(() => {
-        AsyncStorage.setItem(TOKEN, access_token);
-      }, 2000);
-      login();
-    }
+    // if (loginData.status === 200) {
+    //   const access_token = loginData.data.access_token;
+    //   console.log('access_token==>', access_token);
+    //   setTimeout(() => {
+    //     AsyncStorage.setItem(TOKEN, access_token);
+    //   }, 2000);
+    //   login();
+    // }
 
     // } else {
     //   showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
@@ -88,7 +99,7 @@ class Login extends Component {
   }
 
   render() {
-    const { email, password, isRemember } = this.state;
+    const { email, password, isRemember, isLogin } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -96,7 +107,7 @@ class Login extends Component {
           <Appbar.Action
             icon="close"
             color="black"
-            onPress={() => this.navigation.navigate('Home')}
+            onPress={() => isLogin && this.navigation.navigate('Home')}
           />
         </Appbars>
         <ScrollView>
@@ -184,6 +195,10 @@ class Login extends Component {
   /** when after render DOM */
   async componentDidMount() {
     console.log('::componentDidMount::');
+    AsyncStorage.getItem(TOKEN).then(v => {
+      // console.log('v==>', v);
+      this.setState({ isLogin: v !== '' && v !== null });
+    });
     SplashScreen.hide();
   }
 

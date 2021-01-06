@@ -186,12 +186,10 @@ const App = () => {
         setIsLogin(false);
       },
       signOut: () => {
-        console.log('isLogin==>', isLogin);
-
-        setIsLoading(false);
-        setIsLogin(false);
-        // AsyncStorage.removeItem(TOKEN);
-        console.log('isLogin==>', isLogin);
+        AsyncStorage.removeItem(TOKEN).then(() => {
+          setIsLoading(false);
+          setIsLogin(false);
+        });
       },
     };
   }, []);
@@ -493,7 +491,7 @@ const App = () => {
                   />
                 </AuthStack.Navigator>
               ) : (
-                <RootStack.Navigator initialRouteName="Login">
+                <RootStack.Navigator initialRouteName="Home">
                   <RootStack.Screen
                     name="More"
                     component={More}

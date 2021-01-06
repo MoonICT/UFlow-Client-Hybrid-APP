@@ -348,7 +348,11 @@ class More extends Component {
           )}
 
           <View style={S.footerMore}>
-            <TouchableOpacity onPress={() => signOut()}>
+            <TouchableOpacity
+              onPress={() => {
+                signOut();
+                this.navigation.navigate('Login');
+              }}>
               {isLogin === false ? null : (
                 <Text style={S.textLogout}>로그아웃</Text>
               )}
