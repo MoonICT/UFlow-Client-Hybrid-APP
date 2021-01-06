@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-06 18:21:25
+ * @modify date 2021-01-06 18:39:32
  * @desc [description]
  */
 
@@ -76,9 +76,12 @@ class Login extends Component {
     if (loginData.status === 200) {
       const access_token = loginData.data.access_token;
       console.log('access_token==>', access_token);
-      AsyncStorage.setItem(TOKEN, access_token);
+      setTimeout(() => {
+        AsyncStorage.setItem(TOKEN, access_token);
+      }, 2000);
       login();
     }
+
     // } else {
     //   showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
     // }

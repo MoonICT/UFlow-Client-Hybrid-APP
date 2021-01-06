@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-06 18:32:25
+ * @modify date 2021-01-06 18:41:36
  * @desc [description]
  */
 
@@ -408,10 +408,8 @@ class Home extends Component {
     return (
       <SafeAreaView style={DefaultStyle.container}>
         {/**### APPBAR ###*/}
-        {isLogin ? (
-          <AppBars
-            style={isLogin ? [styles.appBar] : DefaultStyle.disHide}
-            isHide={isLogin}>
+        {!isLogin ? (
+          <AppBars style={[styles.appBar]}>
             <View style={[styles.actionBar]}>
               {/* <Appbar.Action icon="menu" color="white" onPress={() => {}} />
                */}
