@@ -182,7 +182,7 @@ class DetailWH extends Component {
           <View style={DefaultStyle._cards}>
             <Text
               style={[DefaultStyle._titleWH, { backgroundColor: '#4caf50' }]}>
-              제휴창고
+              {/* {whrgData.name} */}
             </Text>
             <Text style={S.describeTitle}>보관창고, 수탁창고</Text>
             <Text style={S.header}>에이씨티앤코아물류</Text>
@@ -614,10 +614,12 @@ class DetailWH extends Component {
 
   async getDataWH(){
     let params = {
-      id: 'RG20210101241'
+      id: 'RG20210104262'
     };
     await Warehouse.getWhrg(params).then((res) => {
       let whrgData = res;
+      // console.log('whrgData123',whrgData);
+      console.log('name',whrgData.name);
     })
   }
 

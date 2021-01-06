@@ -833,7 +833,6 @@ class Home extends Component {
         ? page?._embedded?.warehouses
         : [];
     this.setState({ whList: list });
-
     AsyncStorage.getItem(TOKEN).then(v => {
       // console.log('v==>', v);
       this.setState({ isLogin: v !== '' && v !== null });
