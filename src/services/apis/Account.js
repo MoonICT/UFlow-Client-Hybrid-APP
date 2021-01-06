@@ -37,6 +37,37 @@ export const getMe = async () => {
   });
 };
 
+export const me = () => {
+  return Axios.getRequest({
+    url: `/api/v1/me`,
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json'
+      }
+    }
+  })
+};
+
+export const editMyInfo = async payload => {
+  console.log(payload);
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.post(`/api/v1/me/update-info`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
+
+// export const editMyInfo = (payload) => {
+//   return Axios.postRequest({
+//     url: '/api/v1/me/update-info',
+//     payload: payload,
+//     requiresToken: true,
+//     });
+//   };
+
 // export const signIn = ({ email = '', password = '' }) => {
 //   console.log('email :>> ', email);
 //   return Axios.request({

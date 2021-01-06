@@ -524,3 +524,19 @@ export const listRecommend = async () => {
   });
   return data;
 };
+
+/**
+ * List All Bussiness Info
+ */
+export const listAllBussinessInfo = () => {
+  return Axios.request({
+    methodType: 'GET',
+    url: `/api/v1/warehouse/tenant/list-all-bussiness-info`,
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json'
+      }
+    }
+  })
+};

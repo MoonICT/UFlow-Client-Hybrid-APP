@@ -18,7 +18,7 @@ export default class Selected extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: props.data[0].label,
+      selectedValue: props.data[0] && props.data[0].label,
       isToggle: false,
     };
   }
@@ -26,7 +26,7 @@ export default class Selected extends Component {
 
   _hideSelect = () => this.setState({ isToggle: false });
   render() {
-    const { data, labelSelected, colorLabel, valueProps } = this.props;
+    const { data, labelSelected, colorLabel, valueProps, indexProps } = this.props;
     const { isToggle, selectedValue } = this.state;
     const items =
       data &&
@@ -44,6 +44,7 @@ export default class Selected extends Component {
                 isToggle: false,
               });
               valueProps && valueProps(item.value);
+              indexProps && indexProps(item.value, index);
             }}
             // itemStyle={DefaultStyle._itemSelected}
           >
