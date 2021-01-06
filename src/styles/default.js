@@ -296,8 +296,10 @@ export default StyleSheet.create({
     marginBottom: 18,
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 6,
+    padding: 13,
     paddingLeft: 14,
+    minHeight: 50,
+    alignItems: 'center',
   },
   _textSelected: {
     margin: 4,

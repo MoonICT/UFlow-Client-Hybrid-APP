@@ -70,20 +70,6 @@ class ContractInformation extends Component {
     switch (status) {
       case '1100':
         viewComponent = (
-          <TermsContract
-            status={status}
-            warehouseRegNo={warehouseRegNo}
-            rentUserNo={rentUserNo}
-            warehSeq={warehSeq}
-            type={type}
-            warehouse={warehouse}
-            rentUser={rentUser}
-          />
-        );
-        break;
-
-      case '2100':
-        viewComponent = (
           <TouchableOpacity
             style={[
               DefaultStyle.btnSubmit,
@@ -110,6 +96,20 @@ class ContractInformation extends Component {
               채팅 바로가기
             </Text>
           </TouchableOpacity>
+        );
+        break;
+
+      case '2100':
+        viewComponent = (
+          <TermsContract
+            status={status}
+            warehouseRegNo={warehouseRegNo}
+            rentUserNo={rentUserNo}
+            warehSeq={warehSeq}
+            type={type}
+            warehouse={warehouse}
+            rentUser={rentUser}
+          />
         );
         break;
 

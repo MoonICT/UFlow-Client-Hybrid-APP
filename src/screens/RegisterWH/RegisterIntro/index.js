@@ -33,6 +33,24 @@ class RegisterIntro extends Component {
         props.dataIntro && props.dataIntro.description
           ? props.dataIntro.description
           : '',
+      address: {
+        zipNo: '123456',
+        sidoName: '서울시',
+        skkCd: '',
+        skkName: '마포구',
+        bjdongCd: '',
+        bjdongName: '서교동',
+        hjdongCd: '',
+        hjdongName: '서교동',
+        roadNmCd: '도로명 코드',
+        address: '서울시 마포구 독막로 9길 13',
+        detail: '101',
+      },
+      roadAddr: {
+        zipNo: '123456',
+        address: '서울시 마포구 독막로 9길 13',
+        detail: '101',
+      },
       gps:
         props.dataIntro && props.dataIntro.gps
           ? props.dataIntro.gps
@@ -40,6 +58,7 @@ class RegisterIntro extends Component {
               latitude: 0,
               longitude: 0,
             },
+      isActive: false,
     };
 
     this.navigation = props.navigation;
@@ -52,7 +71,7 @@ class RegisterIntro extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   _addImage = () => console.log('_addImage');
@@ -71,8 +90,13 @@ class RegisterIntro extends Component {
     console.log('textLogistic', textLogistic);
   };
   render() {
-    const { imageStore, route, dataIntro } = this.props;
-    const { name, description, gps } = this.state;
+    const { route, dataIntro } = this.props;
+    const { name, description, gps, address, roadAddr } = this.state;
+
+    let isActive;
+    if (name !== '' && description !== '') {
+      isActive = true;
+    }
 
     console.log('dataIntro', dataIntro);
     // console.log('this.state', this.state);
@@ -94,7 +118,7 @@ class RegisterIntro extends Component {
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
-            <View style={DefaultStyle._titleCard}>
+            <View style={DefaultStyle._titleBody}>
               <Text style={DefaultStyle._textTitleBody}>
                 {route && route.params.type === 'ModifyWH' ? '제목' : '창고명'}
                 <Text style={S.textNote}>*</Text>
@@ -164,20 +188,27 @@ class RegisterIntro extends Component {
 
           <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
             <TouchableOpacity
+              disabled={isActive === true ? false : true}
               onPress={() => {
                 this.navigation.navigate('RegisterWH');
-                this.props.updateInfo({ name, description, gps });
+                this.props.updateInfo({
+                  name,
+                  description,
+                  gps,
+                  address,
+                  roadAddr,
+                });
               }}
               style={[
                 DefaultStyle.btnSubmit,
-                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
+                isActive === true ? DefaultStyle.activeBtnSubmit : '',
               ]}
               // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
+                  isActive === true ? DefaultStyle.textActiveSubmit : '',
                 ]}>
                 확인
               </Text>
@@ -205,7 +236,6 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.pimages,
     dataIntro: state.registerWH,
   };
 }
@@ -216,12 +246,6 @@ function mapDispatchToProps(dispatch) {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));
     },
-    removeAction: action => {
-      dispatch(ActionCreator.removeImage(action));
-    },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 
