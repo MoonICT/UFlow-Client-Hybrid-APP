@@ -15,7 +15,6 @@ target 'UflowRN' do
 
 
 
-  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   post_install do |installer|
     flipper_post_install(installer)
