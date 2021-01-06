@@ -1,11 +1,34 @@
 import { Axios, parseQuery } from '@Services/http';
-import { mainAxios } from '../libs/axios';
+import { mainAxios, mainAxiosToken } from '../libs/axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const signIn = async data => {
-  console.log('data :>> ', data);
+  // console.log('data==>', data);
   return await mainAxios.post('/api/v1/account/login', {
     email: data.email,
     password: data.password,
+  });
+};
+
+export const signUp = async reqBody => {
+  return await mainAxios.post('/api/v1/account/signup', {
+    email: reqBody.email,
+    password: reqBody.password,
+    fullName: reqBody.fullName,
+    mobile: reqBody.mobile,
+    serviceTerms: reqBody.serviceTerms,
+    terms: reqBody.terms,
+    marketing: reqBody.marketing,
+  });
+};
+
+export const getMe = async () => {
+  const token = await AsyncStorage.getItem('token');
+  return await mainAxios.get('/api/v1/me', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // Accept: 'application/json',
+    },
   });
 };
 
@@ -34,18 +57,18 @@ export const signIn = async data => {
  * }
  * @returns
  */
-export const signUp = reqBody => {
-  return Axios.request({
-    methodType: 'POST',
-    url: `/api/v1/account/signup`,
-    payload: reqBody,
-    config: {
-      headers: {
-        contentType: 'application/json',
-      },
-    },
-  });
-};
+// export const signUp = reqBody => {
+//   return Axios.request({
+//     methodType: 'POST',
+//     url: `/api/v1/account/signup`,
+//     payload: reqBody,
+//     config: {
+//       headers: {
+//         contentType: 'application/json',
+//       },
+//     },
+//   });
+// };
 
 /**
  * 이메일 체크

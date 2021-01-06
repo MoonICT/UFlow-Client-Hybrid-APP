@@ -23,7 +23,7 @@ import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
-import ContractManager from '@Screeens/Page/ContractManager';
+import ContractManager from '@Screeens/Mypage/ContractManager';
 
 import InOutManager from './InOutManager';
 import SettlementManagement from './SettlementManagement';
@@ -277,7 +277,7 @@ class TenantMypage extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -290,34 +290,6 @@ class TenantMypage extends Component {
   render() {
     const { imageStore, workComplete, route } = this.props;
     const { title } = this.state;
-    // const viewStep =
-    //   dataSteps &&
-    //   dataSteps.map((item, index) => {
-    //     return (
-    //       <View style={S.step} key={index}>
-    //         <View style={S.stepLeft}>
-    //           <Text style={S.textStep}>{item.title}</Text>
-
-    //           <Text
-    //             style={[
-    //               S.textNumber,
-    //               item.status === true ? S.textNumberActive : null,
-    //             ]}>
-    //             {item.number}
-    //           </Text>
-    //         </View>
-    //         {(index + 1) % 3 === 0 ? null : (
-    //           <View style={S.rightStep}>
-    //             <Icon
-    //               name="arrow-forward-ios"
-    //               size={12}
-    //               color="rgba(0, 0, 0, 0.54)"
-    //             />
-    //           </View>
-    //         )}
-    //       </View>
-    //     );
-    //   });
     let viewComponent = (
       <ContractManager
         dataSteps={dataSteps}
@@ -439,7 +411,7 @@ class TenantMypage extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
   };
 }

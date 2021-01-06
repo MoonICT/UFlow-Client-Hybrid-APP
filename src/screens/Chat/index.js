@@ -63,7 +63,7 @@ class Consulting extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -161,7 +161,7 @@ class Consulting extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
   };
 }

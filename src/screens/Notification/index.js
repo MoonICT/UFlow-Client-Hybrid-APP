@@ -7,86 +7,145 @@
  * @flow strict-local
  * */
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component, useRef } from 'react';
 import {
   SafeAreaView,
   View,
+  ScrollView,
   Text,
+  Image,
   Alert,
   StyleSheet,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 
 // Local Imports
-import LocalNotificationService from '../../services/LocalNotificationService';
-import DefaultStyle from '../../styles/default';
+import Select from '@Components/organisms/Select';
+import WarehouseRegistration from './warehouseRegistration';
+import WarehouseUse from './warehouseUse';
+import ContractMode from './contractMode';
 
+//Data Footer
+const data = [
+  {
+    titleList: '창고 등록',
+    listItem: [
+      { titleItem: '공급사 등록' },
+      { titleItem: '수요사 등록' },
+      { titleItem: '회원 조회' },
+      { titleItem: '기본 조회' },
+    ],
+  },
+  {
+    titleList: '창고 찾기',
+  },
+  {
+    titleList: '이용 방법',
+  },
+  {
+    titleList: '고객센터',
+  },
+  {
+    titleList: '패밀리사이트',
+  },
+];
+const navitationTitle1 = [
+  {
+    label: '창고 등록',
+    value: '창고 등록',
+  },
+  {
+    label: '창고 이용',
+    value: '창고 이용',
+  },
+  {
+    label: '계약 방식',
+    value: '계약 방식',
+  },
+];
+const navitationTitle2 = [
+  {
+    label: '창고 이용',
+    value: '창고 이용',
+  },
+  {
+    label: '창고 등록',
+    value: '창고 등록',
+  },
+  {
+    label: '계약 방식',
+    value: '계약 방식',
+  },
+];
+const navitationTitle3 = [
+  {
+    label: '계약 방식',
+    value: '계약 방식',
+  },
+  {
+    label: '창고 등록',
+    value: '창고 등록',
+  },
+  {
+    label: '창고 이용',
+    value: '창고 이용',
+  },
+];
 export default class Notification extends Component {
   constructor(props) {
     super(props);
-    this.countNotification = 0;
-    this.idChannel = 'test-channel';
-    this.localNotify = new LocalNotificationService(this._onLocalNotification);
-    this.localNotify.createOrUpdateChannel(this.idChannel, 'Test Channel', 'This is a channel for testing.');
+    this.state = {
+      page: '창고 등록',
+    };
   }
-
-  /**
-   * [LocalNotificationService]
-   * 로컬 알림 클릭 후 앱이 실행되면 실행.(FCM 포함)(for Test)
-   * @param {Notification} notification
-   * */
-  _onLocalNotification(notification) {
-    if (notification.data) {
-      Alert.alert(notification.title, notification.message, [
-        {
-          text: '확인',
-        },
-      ]);
-    }
-  }
-
-  /**
-   * [LocalNotificationService]
-   * 로컬 알림 생성( for Test)
-   * */
-  _createNotification(){
-    this.countNotification++;
-    this.localNotify.pushNotification({
-      id: this.countNotification,
-      title: 'Test',
-      message: 'Test message',
-      data: {},
-      category: this.idChannel
-    });
-  }
-
-  /**
-   * [LocalNotificationService]
-   * 로컬 스케줄 알림 생성( for Test)
-   * */
-  _createScheduleNotification() {
-    this.countNotification++;
-    this.localNotify.scheduleNotification({
-      id: this.countNotification,
-      title: 'Test Local Notification',
-      message: 'This is a local notification for testing.',
-      data: {},
-      date: new Date(Date.now() + 5 * 1000), // in 10 secs
-      category: this.idChannel,
-    });
-  }
-
+  _valueProps = (e) => {
+    this.setState({ page: e });
+    console.log('e', e);
+  };
   render() {
+    const { page } = this.state;
+    console.log('page', page);
     return (
-      <SafeAreaView
-        style={[
-          DefaultStyle.container,
-          {justifyContent: 'center', alignItems: 'center'},
-        ]}>
-        <Text style={{marginBottom: 20, fontSize: 20}}>Local Notification</Text>
-        <TouchableOpacity onPress={() => this._createNotification()} style={{marginBottom: 12}}><Text>{'Create Local Notification'}</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => this._createScheduleNotification()} style={{marginBottom: 12}}><Text>{'Create Local Notification(after 5 secs)'}</Text></TouchableOpacity>
-      </SafeAreaView>
+      <>
+        {page === '창고 등록1' && (
+          <WarehouseRegistration
+            navitationTitle={
+              <Select
+                data={navitationTitle2}
+                valueProps={(e) => {
+                  this.setState({ page: e });
+                }}
+              />
+            }
+          />
+        )}
+        {page === '창고 이용' && (
+          <WarehouseUse
+            navitationTitle={
+              <Select
+                data={navitationTitle2}
+                valueProps={(e) => {
+                  this.setState({ page: e });
+                }}
+              />
+            }
+          />
+        )}
+        {page === '창고 등록' && (
+          <ContractMode
+            navitationTitle={
+              <Select
+                selec
+                data={navitationTitle3}
+                valueProps={(e) => {
+                  this.setState({ page: e });
+                }}
+              />
+            }
+          />
+        )}
+      </>
     );
   }
 }

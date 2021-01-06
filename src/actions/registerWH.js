@@ -28,3 +28,10 @@ export function ContractConditions(data) {
     data: data,
   };
 }
+
+export function updateInfo(data) {
+  return {
+    type: types.UPDATE_INFO_WH,
+    data: data,
+  };
+}

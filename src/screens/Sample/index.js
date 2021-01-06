@@ -104,6 +104,11 @@ export default class Sample extends Component {
             <Text>{'TenantMypage Sample'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Mypage')}
+            style={DefaultStyle.btn}>
+            <Text>{'Mypage Sample'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Consulting')}
             style={DefaultStyle.btn}>
             <Text>{'Consulting Sample'}</Text>
@@ -122,6 +127,21 @@ export default class Sample extends Component {
             onPress={() => this.props.navigation.navigate('Login')}
             style={DefaultStyle.btn}>
             <Text>{'Login Sample'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Information')}
+            style={DefaultStyle.btn}>
+            <Text>{'Information Sample'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('WithdrawalInformation')}
+            style={DefaultStyle.btn}>
+            <Text>{'WithdrawalInformation Sample'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('LogisticsKnowledge')}
+            style={DefaultStyle.btn}>
+            <Text>{'LogisticsKnowledge Sample'}</Text>
           </TouchableOpacity>
           <View style={styles.button}>
             {/*<Button

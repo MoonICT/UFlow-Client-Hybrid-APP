@@ -49,6 +49,13 @@ export default StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontWeight: 'bold',
   },
+  headerTitleWhite: {
+    fontSize: 16,
+    color: 'white',
+    lineHeight: 21,
+    // fontFamily: 'NotoSansCJKkr-Medium',
+    fontWeight: 'bold',
+  },
   _textHeaderRight: {
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 16,
@@ -287,6 +294,10 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
     marginBottom: 18,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 6,
+    paddingLeft: 14,
   },
   _textSelected: {
     margin: 4,
@@ -300,10 +311,18 @@ export default StyleSheet.create({
     fontWeight: 'normal',
     fontStyle: 'normal',
   },
+  _textDefaultSelected: {
+    lineHeight: 24,
+    // fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+  },
   _itemSelected: {
-    paddingLeft: 16,
-    color: 'red',
-    backgroundColor: 'blue',
+    lineHeight: 24,
+    fontSize: 16,
+    marginTop: 6,
+    marginBottom: 6,
   },
   _lableSelected: {
     color: color.text.secondary,
@@ -320,7 +339,30 @@ export default StyleSheet.create({
     fontWeight: 'normal',
     fontStyle: 'normal',
   },
-
+  _selectedBoxView: {
+    position: 'absolute',
+    zIndex: 999,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 8,
+    padding: 16,
+    height: windowHeight,
+    width: windowWidth,
+    top: 0,
+    left: 0,
+    flex: 1,
+  },
+  _selectedBox: {
+    // position: 'absolute',
+    // zIndex: 999,
+    // backgroundColor: 'white',
+    // borderWidth: 1,
+    // borderColor: 'rgba(0, 0, 0, 0.1)',
+    // borderRadius: 8,
+    // padding: 16,
+    // maxHeight: windowHeight / 2,
+  },
   /**TextField */
   textField: {
     marginBottom: 18,
@@ -349,7 +391,7 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
-    padding: 15,
+    padding: 13,
     paddingRight: 50,
     lineHeight: 24,
     minHeight: 36,
@@ -453,6 +495,37 @@ export default StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     height: 'auto',
+  },
+  _tabBar: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-around',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'white',
+    marginLeft: -16,
+    marginRight: -16,
+  },
+  _btnTabBar: {
+    borderColor: '#ff6d00',
+    borderBottomWidth: 2,
+    marginBottom: -1,
+  },
+  _textTabBar: {
+    color: color.text.secondary,
+    fontSize: 14,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 24,
+    padding: 12,
+  },
+  _textActiveTab: {
+    color: color.primary.main,
+    fontSize: 14,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    lineHeight: 24,
+    padding: 12,
   },
   _itemBar: {
     // color: 'red',
@@ -656,6 +729,7 @@ export default StyleSheet.create({
     // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     padding: 16,
+    paddingBottom:70
   },
   _menuFooter: {
     borderBottomWidth: 1,
@@ -753,6 +827,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 16,
+    marginBottom: 16
   },
   _textTitleCard: {
     color: color.text.primary,
@@ -859,7 +935,9 @@ export default StyleSheet.create({
   backgroundGray: {
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
-
+  backgroundWhiteDF2: {
+    backgroundColor: '#fafafa',
+  },
   /**List Item */
   btnItem: {
     borderBottomWidth: 1,
@@ -976,12 +1054,13 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     color: color.primary.main,
-    padding: 6,
+    padding: 5,
     paddingRight: 16,
     paddingLeft: 16,
   },
   _textInline: {
     color: '#ffffff',
+    padding: 6,
   },
   /**List Button */
   _listBtn: {
@@ -1032,5 +1111,27 @@ export default StyleSheet.create({
   },
   _optionList: {
     marginBottom: -18,
+  },
+  _textErrorInput: {
+    color: color.error.main,
+    fontSize: 12,
+    bottom: 20,
+    zIndex: 9,
+  },
+  _btnDate: {
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 4,
+  },
+  _textDate: {
+    color: color.text.secondary,
+    padding: 14,
+    paddingTop: 17,
+    paddingBottom: 17,
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  _labelDate: {
+    position: 'absolute',
   },
 });

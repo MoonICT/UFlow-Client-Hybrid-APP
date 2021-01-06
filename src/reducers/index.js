@@ -3,6 +3,8 @@ import HomeReducer from './homeReducer';
 import PopupReducer from './popupReducer';
 import RegisterWH from './registerWH';
 import SearchReducer from './searchReducer';
+import loginReducer from './loginReducer';
+import warehouseReducer from './warehouseReducer';
 
 export default combineReducers({
   // HomeReducer,
@@ -12,5 +14,7 @@ export default combineReducers({
   popup: PopupReducer,
   registerWH: RegisterWH,
   search: SearchReducer,
+  login: loginReducer,
+  warehouse: warehouseReducer,
   // TODO 분류된 리듀서를 아래에 추가.
 });

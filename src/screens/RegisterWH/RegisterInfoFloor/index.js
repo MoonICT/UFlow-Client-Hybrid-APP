@@ -42,7 +42,25 @@ class RegisterInfoFloor extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { isSwitchOn: false };
+    this.state = {
+      isSwitchOn: false,
+      numberSlide: 0,
+      floors:
+        props.dataInfoFloor && props.dataInfoFloor.floors
+          ? props.dataInfoFloor.floors
+          : [
+              {
+                flrDvCode: 'F1',
+                flrArea: '',
+                opcArea: '',
+                parkArea: '',
+                cmnArea: '',
+                efctvHi: '',
+                dockQty: '',
+                prvtArea: '',
+              },
+            ],
+    };
 
     this.navigation = props.navigation;
   }
@@ -54,16 +72,48 @@ class RegisterInfoFloor extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
-  _addImage = () => console.log('_addImage');
+  _addForm = valueTab => {
+
+    let list = this.state.floors;
+
+    list.push({
+      flrDvCode: 'F1',
+      flrArea: '',
+      opcArea: '',
+      parkArea: '',
+      cmnArea: '',
+      efctvHi: '',
+      dockQty: '',
+      prvtArea: '',
+    });
+
+    this.setState({ floors: list });
+  };
   _removeImage = () => console.log('_removeImage');
 
   onToggleSwitch = () => this.setState({ isSwitchOn: !this.state.isSwitchOn });
-
+  _renderItem = ({ item }) => {
+    return (
+      <Form
+        valueTab={this.state.valueTab}
+        number={this.state.numberSlide}
+        key={item.key}
+        formData={this.state.floors[this.state.numberSlide]}
+        valueForm={e => {
+          let index = this.state.numberSlide;
+          this.setState({
+            ...(this.state.floors[index] = e),
+          });
+        }}
+      />
+    );
+  };
   render() {
-    const { imageStore } = this.props;
+    const { imageStore, dataInfoFloor } = this.props;
+    const { floors } = this.state;
     // console.log('this.state.value', this.state.value);
     return (
       <SafeAreaView style={S.container}>
@@ -87,7 +137,7 @@ class RegisterInfoFloor extends Component {
               <View style={S.rightTitle}>
                 <TouchableOpacity
                   style={S.btnAdd}
-                  onPress={() => console.log('add')}>
+                  onPress={() => this._addForm()}>
                   <Text style={DefaultStyle._textButton}>추가</Text>
                 </TouchableOpacity>
                 <IconButton
@@ -97,21 +147,49 @@ class RegisterInfoFloor extends Component {
                 />
               </View>
             </View>
-            <Form />
+            <Carousel
+              // style={styles.carousel}
+              custom={{
+                data: floors,
+                renderItem: this._renderItem,
+                showNextButton: false,
+                showDoneButton: false,
+                onSlideChange: e => {
+                  this.setState({ numberSlide: e });
+                },
+                dotStyle: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.12)',
+                  width: 8,
+                  height: 8,
+                  marginTop: 100,
+                },
+                activeDotStyle: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.54)',
+                  width: 8,
+                  height: 8,
+                  marginTop: 100,
+                },
+              }}
+            />
           </View>
-          <View style={[DefaultStyle.footerRegister, S.footerIntro]}>
+          <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
             <TouchableOpacity
-              onPress={() => this.navigation.navigate('RegisterWH')}
+              onPress={() => {
+                this.navigation.navigate('RegisterWH');
+                this.props.updateInfo({
+                  floors: floors,
+                });
+              }}
               style={[
-                S.btnSubmit,
-                imageStore.length > 2 ? S.activeBtnSubmit : null,
+                DefaultStyle.btnSubmit,
+                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
               ]}
               // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
-                  S.textSubmit,
-                  imageStore.length > 2 ? S.textActiveSubmit : null,
+                  DefaultStyle.textSubmit,
+                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
                 ]}>
                 확인
               </Text>
@@ -139,15 +217,16 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
+    dataInfoFloor: state.registerWH,
   };
 }
 
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    registerAction: action => {
-      dispatch(ActionCreator.uploadImage(action));
+    updateInfo: action => {
+      dispatch(ActionCreator.updateInfo(action));
     },
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));

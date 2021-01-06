@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2020-12-03 11:31:18
+ * @modify date 2021-01-05 19:55:15
  * @desc [description]
  */
 
@@ -27,7 +27,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Button, Appbar } from 'react-native-paper';
+import { Appbar } from 'react-native-paper'; //Button
 import Icon from 'react-native-vector-icons/MaterialIcons';
 // import Video from 'react-native-video';
 // import VideoPlayer from 'react-native-video-player';
@@ -39,13 +39,13 @@ import FCMService from '@Services/FCMService';
 
 import ActionCreator from '@Actions';
 import Carousel from '@Components/organisms/Carousel';
-import CarouselSnap from '@Components/organisms/CarouselSnap';
+// import CarouselSnap from '@Components/organisms/CarouselSnap';
 // import CarouselSnapPagi from '@Components/organisms/CarouselSnapPagi';
 import AppBars from '@Components/organisms/AppBar';
 import ProductCard from '@Components/organisms/ProductCard';
 import StepCard from '@Components/organisms/StepCard';
-import SloganCard from '@Components/organisms/SloganCard';
-import Footer from '@Components/organisms/Footer';
+// import SloganCard from '@Components/organisms/SloganCard';
+// import Footer from '@Components/organisms/Footer';
 
 // import Menus from '@Components/organisms/Menu';
 // import TreeViews from '@Components/organisms/TreeView';
@@ -57,16 +57,18 @@ import mainBG from '@Assets/images/main-bg.png';
 // import factoryBG from '@Assets/images/factory.png';
 import boxMain from '@Assets/images/box_main_1.png';
 import cardBG from '@Assets/images/card-img.png';
-import stepBG from '@Assets/images/step.png';
-import slogan1 from '@Assets/images/slogan1.png';
-import slogan2 from '@Assets/images/slogan2.png';
-import slogan3 from '@Assets/images/slogan3.png';
-import slogan4 from '@Assets/images/slogan4.png';
-import slogan5 from '@Assets/images/slogan5.png';
+// import stepBG from '@Assets/images/step.png';
+// import slogan1 from '@Assets/images/slogan1.png';
+// import slogan2 from '@Assets/images/slogan2.png';
+// import slogan3 from '@Assets/images/slogan3.png';
+// import slogan4 from '@Assets/images/slogan4.png';
+// import slogan5 from '@Assets/images/slogan5.png';
 
-import appstore1 from '@Assets/images/appstore-1.png';
-import appstore2 from '@Assets/images/appstore-2.png';
-import logoWhite from '@Assets/images/logo-white.png';
+// import appstore1 from '@Assets/images/appstore-1.png';
+// import appstore2 from '@Assets/images/appstore-2.png';
+// import logoWhite from '@Assets/images/logo-white.png';
+// import AsyncStorage from '@react-native-community/async-storage';
+import { Warehouse } from '@Services/apis'; //Account,
 
 // import VersionCheckService from '../../services/VersionCheckService';
 
@@ -138,169 +140,169 @@ const slides = [
   },
 ];
 
-const slidesProduct = [
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-];
+// const slidesProduct = [
+//   {
+//     key: 'somethun',
+//     type: '보관창고',
+//     title: `과천동 상온 50평`,
+//     img: mainBG,
+//     backgroundColor: '#59b2ab',
+//     price: '12,345평',
+//     address: '경기도 화천시 부평읍',
+//     totalPrice: '60,000원/평',
+//   },
+//   {
+//     key: 'somethun',
+//     type: '보관창고',
+//     title: `과천동 상온 50평`,
+//     img: mainBG,
+//     backgroundColor: '#59b2ab',
+//     price: '12,345평',
+//     address: '경기도 화천시 부평읍',
+//     totalPrice: '60,000원/평',
+//   },
+//   {
+//     key: 'somethun',
+//     type: '보관창고',
+//     title: `과천동 상온 50평`,
+//     img: mainBG,
+//     backgroundColor: '#59b2ab',
+//     price: '12,345평',
+//     address: '경기도 화천시 부평읍',
+//     totalPrice: '60,000원/평',
+//   },
+//   {
+//     key: 'somethun',
+//     type: '보관창고',
+//     title: `과천동 상온 50평`,
+//     img: mainBG,
+//     backgroundColor: '#59b2ab',
+//     price: '12,345평',
+//     address: '경기도 화천시 부평읍',
+//     totalPrice: '60,000원/평',
+//   },
+//   {
+//     key: 'somethun',
+//     type: '보관창고',
+//     title: `과천동 상온 50평`,
+//     img: mainBG,
+//     backgroundColor: '#59b2ab',
+//     price: '12,345평',
+//     address: '경기도 화천시 부평읍',
+//     totalPrice: '60,000원/평',
+//   },
+// ];
 
-const slidesSteps = [
-  {
-    img: stepBG,
-    step: 'Step 1. 창고 임대 진행 및 완료',
-    title:
-      '안전한 대금 보호 시스템과 혹시 모를\n' +
-      '위험요소를 위한 안심보험 가입까지!',
-    content:
-      '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
-      '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
-      '안심 재물보험 가입으로 혹시 모를\n' +
-      '위험요소까지 보장해 드립니다.\n\n' +
-      '• 안전한 대금 보호 시스템과 혹시 모를\n' +
-      '위험요소를 위한 안심보험 가입까지!',
-  },
-  {
-    img: stepBG,
-    step: 'Step 2. 창고 임대 진행 및 완료',
-    title:
-      '안전한 대금 보호 시스템과 혹시 모를\n' +
-      '위험요소를 위한 안심보험 가입까지!',
-    content:
-      '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
-      '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
-      '안심 재물보험 가입으로 혹시 모를\n' +
-      '위험요소까지 보장해 드립니다.\n\n' +
-      '• 안전한 대금 보호 시스템과 혹시 모를\n' +
-      '위험요소를 위한 안심보험 가입까지!',
-  },
-  {
-    img: stepBG,
-    step: 'Step 3. 창고 임대 진행 및 완료',
-    title:
-      '안전한 대금 보호 시스템과 혹시 모를\n' +
-      '위험요소를 위한 안심보험 가입까지!',
-    content:
-      '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
-      '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
-      '안심 재물보험 가입으로 혹시 모를\n' +
-      '위험요소까지 보장해 드립니다.\n\n' +
-      '• 안전한 대금 보호 시스템과 혹시 모를\n' +
-      '위험요소를 위한 안심보험 가입까지!',
-  },
-  {
-    img: stepBG,
-    step: 'Step 4. 창고 임대 진행 및 완료',
-    title:
-      '안전한 대금 보호 시스템과 혹시 모를\n' +
-      '위험요소를 위한 안심보험 가입까지!',
-    content:
-      '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
-      '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
-      '안심 재물보험 가입으로 혹시 모를\n' +
-      '위험요소까지 보장해 드립니다.\n\n' +
-      '• 안전한 대금 보호 시스템과 혹시 모를\n' +
-      '위험요소를 위한 안심보험 가입까지!',
-  },
-];
+// const slidesSteps = [
+//   {
+//     img: stepBG,
+//     step: 'Step 1. 창고 임대 진행 및 완료',
+//     title:
+//       '안전한 대금 보호 시스템과 혹시 모를\n' +
+//       '위험요소를 위한 안심보험 가입까지!',
+//     content:
+//       '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
+//       '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
+//       '안심 재물보험 가입으로 혹시 모를\n' +
+//       '위험요소까지 보장해 드립니다.\n\n' +
+//       '• 안전한 대금 보호 시스템과 혹시 모를\n' +
+//       '위험요소를 위한 안심보험 가입까지!',
+//   },
+//   {
+//     img: stepBG,
+//     step: 'Step 2. 창고 임대 진행 및 완료',
+//     title:
+//       '안전한 대금 보호 시스템과 혹시 모를\n' +
+//       '위험요소를 위한 안심보험 가입까지!',
+//     content:
+//       '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
+//       '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
+//       '안심 재물보험 가입으로 혹시 모를\n' +
+//       '위험요소까지 보장해 드립니다.\n\n' +
+//       '• 안전한 대금 보호 시스템과 혹시 모를\n' +
+//       '위험요소를 위한 안심보험 가입까지!',
+//   },
+//   {
+//     img: stepBG,
+//     step: 'Step 3. 창고 임대 진행 및 완료',
+//     title:
+//       '안전한 대금 보호 시스템과 혹시 모를\n' +
+//       '위험요소를 위한 안심보험 가입까지!',
+//     content:
+//       '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
+//       '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
+//       '안심 재물보험 가입으로 혹시 모를\n' +
+//       '위험요소까지 보장해 드립니다.\n\n' +
+//       '• 안전한 대금 보호 시스템과 혹시 모를\n' +
+//       '위험요소를 위한 안심보험 가입까지!',
+//   },
+//   {
+//     img: stepBG,
+//     step: 'Step 4. 창고 임대 진행 및 완료',
+//     title:
+//       '안전한 대금 보호 시스템과 혹시 모를\n' +
+//       '위험요소를 위한 안심보험 가입까지!',
+//     content:
+//       '• 에스크로 방식의 대금보호시스템을 통해 대금\n' +
+//       '걱정 없이 창고 관리에만 집중하실 수 있습니다.\n' +
+//       '안심 재물보험 가입으로 혹시 모를\n' +
+//       '위험요소까지 보장해 드립니다.\n\n' +
+//       '• 안전한 대금 보호 시스템과 혹시 모를\n' +
+//       '위험요소를 위한 안심보험 가입까지!',
+//   },
+// ];
 
-const slidesSlogans = [
-  {
-    img: slogan1,
-    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
-  },
-  {
-    img: slogan2,
-    title: '내게 맞는 공간 한눈에\n' + '비교하고 선택까지',
-  },
-  {
-    img: slogan3,
-    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
-  },
-  {
-    img: slogan4,
-    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
-  },
-  {
-    img: slogan5,
-    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
-  },
-  {
-    img: slogan3,
-    title: '빠르고 편리하게,\n' + '무료로 창고 등록',
-  },
-];
+// const slidesSlogans = [
+//   {
+//     img: slogan1,
+//     title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+//   },
+//   {
+//     img: slogan2,
+//     title: '내게 맞는 공간 한눈에\n' + '비교하고 선택까지',
+//   },
+//   {
+//     img: slogan3,
+//     title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+//   },
+//   {
+//     img: slogan4,
+//     title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+//   },
+//   {
+//     img: slogan5,
+//     title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+//   },
+//   {
+//     img: slogan3,
+//     title: '빠르고 편리하게,\n' + '무료로 창고 등록',
+//   },
+// ];
 
 //Data Footer
-const data = [
-  {
-    titleList: '창고 등록',
-    listItem: [
-      { titleItem: '공급사 등록' },
-      { titleItem: '수요사 등록' },
-      { titleItem: '회원 조회' },
-      { titleItem: '기본 조회' },
-    ],
-  },
-  {
-    titleList: '창고 찾기',
-  },
-  {
-    titleList: '이용 방법',
-  },
-  {
-    titleList: '고객센터',
-  },
-  {
-    titleList: '패밀리사이트',
-  },
-];
+// const data = [
+//   {
+//     titleList: '창고 등록',
+//     listItem: [
+//       { titleItem: '공급사 등록' },
+//       { titleItem: '수요사 등록' },
+//       { titleItem: '회원 조회' },
+//       { titleItem: '기본 조회' },
+//     ],
+//   },
+//   {
+//     titleList: '창고 찾기',
+//   },
+//   {
+//     titleList: '이용 방법',
+//   },
+//   {
+//     titleList: '고객센터',
+//   },
+//   {
+//     titleList: '패밀리사이트',
+//   },
+// ];
 
 class Home extends Component {
   constructor(props) {
@@ -310,6 +312,7 @@ class Home extends Component {
       activeIndex: 0,
       isShow: false,
       expanded: true,
+      whList: [],
     };
     this.navigation = props.navigation;
     this.fcm = new FCMService();
@@ -320,7 +323,7 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   _renderItem = ({ item }) => {
@@ -349,8 +352,30 @@ class Home extends Component {
     );
   };
 
-  _renderProductItem = ({ item }) => {
-    return <ProductCard data={{ ...item, img: cardBG }} />;
+  _renderProductItem = item => {
+    // console.log('item==>', item);
+    const { whList } = this.state;
+    const cardItem = [];
+
+    whList.map((v, i) => {
+      cardItem.push(
+        <View key={i} style={styles.mainProductItem}>
+          {item?.thumbnail !== null ? (
+            <ProductCard data={item} />
+          ) : (
+            <ProductCard data={{ ...item, img: cardBG }} />
+          )}
+        </View>,
+      );
+    });
+
+    // if (item.thumbnail === null || item.thumbnail === '') {
+    //   cardItem.push(<ProductCard data={{ ...item, img: cardBG }} />);
+    // } else {
+    //   cardItem.push(<ProductCard data={item} />);
+    // }
+
+    return cardItem;
   };
 
   _renderStepItem = ({ item }) => {
@@ -362,8 +387,11 @@ class Home extends Component {
   };
 
   render() {
-    const { showPopup } = this.props;
-    // const {isShow, expanded} = this.state;
+    // const { showPopup, route, isLogin } = this.props;
+    // console.log('isLoginHome :>> ', isLogin);
+    const { whList } = this.state;
+
+    console.log('whList==>', whList);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -388,7 +416,9 @@ class Home extends Component {
               style={[DefaultStyle.containerBTN, styles.btnAction]}
               color="red"
               // onPress={() => showPopup()}
-              onPress={() => this.navigation.navigate('Register')}>
+              onPress={() => this.navigation.navigate('Register')}
+              // onPress={() => this.getItem()}
+            >
               <Text style={styles.textBtnAction}>회원가입</Text>
             </TouchableOpacity>
           </View>
@@ -507,14 +537,21 @@ class Home extends Component {
 
             {/**___Product List___*/}
             <View style={styles.mainProductList}>
-              <CarouselSnap
+              {/* <CarouselSnap
                 layout={'default'}
-                data={slidesProduct}
+                data={whList}
                 sliderWidth={328}
                 itemWidth={160}
                 renderItem={this._renderProductItem}
                 onSnapToItem={index => this.setState({ activeIndex: index })}
-              />
+              /> */}
+              {/* {whList.map((v, i) => {
+                <View key={i} style={styles.mainProductItem}>
+                  {this._renderProductItem(v)}
+                </View>;
+              })} */}
+
+              {this._renderProductItem()}
             </View>
           </View>
 
@@ -766,16 +803,18 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    // console.log('::componentDidMount::');
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
     /** Complete Initialize. */
+    let page = await Warehouse.listRecommend();
+    page = page?.data;
+    let list =
+      page?._embedded && page?._embedded?.warehouses
+        ? page?._embedded?.warehouses
+        : [];
+    this.setState({ whList: list });
     SplashScreen.hide();
-  }
-
-  // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
   }
 }
 
@@ -784,6 +823,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
+    isLogin: state.login,
   };
 }
 

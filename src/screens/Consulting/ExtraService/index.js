@@ -6,10 +6,7 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import {
-  View,
-
-} from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Checkbox, Text } from 'react-native-paper';
@@ -24,53 +21,48 @@ class ExtraService extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = {
-      checked: false,
-    };
-
     this.navigation = props.navigation;
   }
   render() {
-    const { route } = this.props;
-    const { checked } = this.state;
+    const { route, optionStep3, checked } = this.props;
 
     return (
-      <View style={S.options}>
+      <View style={S.contentAlignLeft}>
+        <Text style={[S.styleTextTitleNomarl, { marginBottom: 20 }]}>
+          3. 원하시는 유형을 선택해주세요.
+        </Text>
         <View style={S.optionRow}>
           <Checkbox
-            status={checked ? 'checked' : 'unchecked'}
+            status={checked === 'first' ? 'checked' : 'unchecked'}
+            color="#ff6d00"
+            uncheckedColor="white"
             onPress={() => {
-              this.setState({ checked: !checked });
+              optionStep3('first');
             }}
           />
-          <Text style={DefaultStyle._textDF2}>리스트</Text>
+          <Text style={{ color: 'white', fontSize: 15 }}>리스트1</Text>
         </View>
         <View style={S.optionRow}>
           <Checkbox
-            status={checked ? 'checked' : 'unchecked'}
+            status={checked === 'second' ? 'checked' : 'unchecked'}
+            color="#ff6d00"
+            uncheckedColor="white"
             onPress={() => {
-              this.setState({ checked: !checked });
+              optionStep3('second');
             }}
           />
-          <Text style={DefaultStyle._textDF2}>리스트</Text>
+          <Text style={{ color: 'white', fontSize: 15 }}>리스트1</Text>
         </View>
         <View style={S.optionRow}>
           <Checkbox
-            status={checked ? 'checked' : 'unchecked'}
+            status={checked === 'three' ? 'checked' : 'unchecked'}
+            color="#ff6d00"
+            uncheckedColor="white"
             onPress={() => {
-              this.setState({ checked: !checked });
+              optionStep3('three');
             }}
           />
-          <Text style={DefaultStyle._textDF2}>리스트</Text>
-        </View>
-        <View style={S.optionRow}>
-          <Checkbox
-            status={checked ? 'checked' : 'unchecked'}
-            onPress={() => {
-              this.setState({ checked: !checked });
-            }}
-          />
-          <Text style={DefaultStyle._textDF2}>리스트</Text>
+          <Text style={{ color: 'white', fontSize: 15 }}>리스트1</Text>
         </View>
       </View>
     );
@@ -93,7 +85,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
   };
 }
 

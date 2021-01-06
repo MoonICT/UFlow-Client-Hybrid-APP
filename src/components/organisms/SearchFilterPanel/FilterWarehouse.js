@@ -97,7 +97,7 @@ class FilterWarehouse extends Component {
   }
 
   componentWillUnmount () {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {

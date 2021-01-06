@@ -4,48 +4,97 @@
  * @flow strict-local
  * */
 // Global Imports
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Picker } from '@react-native-community/picker';
-
+import React, { Component, Fragment } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+// import { Picker } from '@react-native-community/picker';
+// import RNPickerSelect from 'react-native-picker-select';
 // Local Imports
+import { Button, Paragraph, Dialog, Portal } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { styles } from './style';
 
 export default class Selected extends Component {
   constructor(props) {
     super(props);
-    this.countNotification = 0;
     this.state = {
-      checked: props.data[0].value,
+      selectedValue: props.data[0].label,
+      isToggle: false,
     };
   }
+  _showSelect = () => this.setState({ isToggle: true });
 
+  _hideSelect = () => this.setState({ isToggle: false });
   render() {
     const { data, labelSelected, colorLabel, valueProps } = this.props;
+    const { isToggle, selectedValue } = this.state;
     const items =
       data &&
       data.map((item, index) => {
         return (
-          <Picker.Item
+          <Text
             key={index}
-            label={item.label}
+            // label={item.label}
             value={item.value}
             style={DefaultStyle._itemSelected}
-            itemStyle={DefaultStyle._itemSelected}
-          />
+            onPress={() => {
+              this.setState({
+                value: item.value,
+                selectedValue: item.label,
+                isToggle: false,
+              });
+              valueProps && valueProps(item.value);
+            }}
+            // itemStyle={DefaultStyle._itemSelected}
+          >
+            {item.label}
+          </Text>
         );
       });
+    // const items =
+    //   data &&
+    //   data.map((item, index) => {
+    //     return (
+    //       <Picker.Item
+    //         key={index}
+    //         label={item.label}
+    //          ={item.value}
+    //         style={DefaultStyle._itemSelected}
+    //         itemStyle={DefaultStyle._itemSelected}
+    //       />
+    //     );
+    //   });
     return (
-      <View style={DefaultStyle._selected} valueState={this.state.checked}>
-        {labelSelected ? (
-          <Text
-            style={[
-              DefaultStyle._lableSelected,
-              colorLabel ? { color: colorLabel } : null,
-            ]}>
-            {labelSelected}
-          </Text>
-        ) : null}
+      <Fragment>
+        <TouchableOpacity
+          // {...this.props}
+          onPress={() => this._showSelect()}
+          style={[DefaultStyle._selected]}>
+          {labelSelected ? (
+            <Text
+              style={[
+                DefaultStyle._lableSelected,
+                colorLabel ? { color: colorLabel } : null,
+              ]}>
+              {labelSelected}
+            </Text>
+          ) : null}
+          <Text style={DefaultStyle._textDefaultSelected}>{selectedValue}</Text>
+          {isToggle === true ? (
+            <Icon name={'menu-up'} style={[styles.icon, { color: '#000' }]} />
+          ) : (
+            <Icon
+              name={'menu-down'}
+              style={[styles.icon, { color: 'rgba(0, 0, 0, 0.47)' }]}
+            />
+          )}
+        </TouchableOpacity>
+        <Portal>
+          <Dialog visible={isToggle} onDismiss={() => this._hideSelect()}>
+            <Dialog.Content>{items}</Dialog.Content>
+          </Dialog>
+        </Portal>
+        {/** 
         <Picker
           style={DefaultStyle._textSelected}
           mode="dropdown"
@@ -57,7 +106,8 @@ export default class Selected extends Component {
           {...this.props}>
           {items}
         </Picker>
-      </View>
+       */}
+      </Fragment>
     );
   }
 }

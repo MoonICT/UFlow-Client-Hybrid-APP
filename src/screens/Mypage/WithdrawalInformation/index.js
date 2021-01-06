@@ -12,7 +12,6 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, Checkbox } from 'react-native-paper';
 import TextField from '@Components/organisms/TextField';
@@ -20,32 +19,69 @@ import TextField from '@Components/organisms/TextField';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
+
 class WithdrawalInformation extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      checkService: false,
-      checkVisit: false,
-      checkFunction: false,
-      checkContent: false,
       firstQuery: '',
       visible: false,
+      arrList: [
+        {
+          id: 1,
+          label: '고객서비스',
+          isCheck: false
+        },
+        {
+          id: 2,
+          label: '방문 빈도가 낮음',
+          isCheck: false
+        },
+        {
+          id: 3,
+          label: '서비스 기능 불만',
+          isCheck: false
+        },
+        {
+          id: 4,
+          label: '서비스 내용 불만',
+          isCheck: false
+        }
+      ],
+      arrLabel: []
     };
 
     this.navigation = props.navigation;
   }
+
+  /** when after render DOM */
+  async componentDidMount() {
+    console.log('::componentDidMount::');
+    SplashScreen.hide();
+  }
+
+  /** when update state or props */
+  componentDidUpdate(prevProps, prevState) {
+    console.log('::componentDidUpdate::');
+  }
+
+  onCheck = (item, index) => {
+    let newList = [...this.state.arrList];
+    newList[index].isCheck = !newList[index].isCheck;
+    let arrListCheck = newList.filter((item) => item.isCheck === true);
+    let arrLabelChecked = arrListCheck.map((item) => item.label)
+    this.setState({
+      arrList: newList,
+      arrLabel: arrLabelChecked,
+    })
+  }
+
   render() {
-    // const { imageStore } = this.props;
-    const {
-      checkService,
-      checkVisit,
-      checkFunction,
-      checkContent,
-    } = this.state;
+
+    const { arrList, arrLabel } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -91,52 +127,19 @@ class WithdrawalInformation extends Component {
               </Text>
             </View>
             <View style={S.listChecks}>
-              <View style={S.checkItem}>
-                <Checkbox
-                  status={checkService ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    this.setState({
-                      checkService: !checkService,
-                    });
-                  }}
-                />
-                <Text style={S.textCheck}>고객서비스</Text>
-              </View>
-
-              <View style={S.checkItem}>
-                <Checkbox
-                  status={checkVisit ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    this.setState({
-                      checkVisit: !checkVisit,
-                    });
-                  }}
-                />
-                <Text style={S.textCheck}>방문 빈도가 낮음</Text>
-              </View>
-
-              <View style={S.checkItem}>
-                <Checkbox
-                  status={checkFunction ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    this.setState({
-                      checkFunction: !checkFunction,
-                    });
-                  }}
-                />
-                <Text style={S.textCheck}>서비스 기능 불만</Text>
-              </View>
-              <View style={S.checkItem}>
-                <Checkbox
-                  status={checkContent ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    this.setState({
-                      checkContent: !checkContent,
-                    });
-                  }}
-                />
-                <Text style={S.textCheck}>서비스 내용 불만</Text>
-              </View>
+              {
+                arrList.map((item, index) => {
+                  return (
+                    <View key={index} style={S.checkItem}>
+                      <Checkbox
+                        status={item.isCheck ? 'checked' : 'unchecked'}
+                        onPress={() => this.onCheck(item, index)}
+                      />
+                      <Text style={S.textCheck}>{item.label}</Text>
+                    </View>
+                  )
+                })
+              }
             </View>
             <TextField
               numberOfLines={5}
@@ -146,7 +149,6 @@ class WithdrawalInformation extends Component {
               multiline
               textAlignVertical="top"
             />
-
             <View style={SS.listBtn}>
               <TouchableOpacity
                 style={SS.btnCancel}
@@ -155,7 +157,7 @@ class WithdrawalInformation extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={SS.btnUnsubscribe}
-                onPress={() => this.navigation.navigate('ConfirmPass')}>
+                onPress={() => this.navigation.navigate('ConfirmPass', { arrLabel: arrLabel })}>
                 <Text style={SS.textBtn}>탈퇴하기</Text>
               </TouchableOpacity>
             </View>
@@ -164,41 +166,6 @@ class WithdrawalInformation extends Component {
       </SafeAreaView>
     );
   }
-
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
-/** map state with store states redux store */
-function mapStateToProps(state) {
-  // console.log('++++++mapStateToProps: ', state);
-  return {
-    // count: state.home.count,
-    imageStore: state.registerWH.imageData,
-  };
-}
-
-/** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
-  return {
-    dataAction: action => {
-      dispatch(ActionCreator.ContractConditions(action));
-    },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(WithdrawalInformation);
+export default WithdrawalInformation;

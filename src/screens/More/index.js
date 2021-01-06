@@ -14,7 +14,7 @@ import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import Appbars from '@Components/organisms/AppBar';
+// import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
 // import DoneRegister from './done';
@@ -27,14 +27,19 @@ import save from '@Assets/images/more-save.png';
 import transport from '@Assets/images/more-transport.png';
 import warehouse from '@Assets/images/more-warehouse.png';
 
-//---> Assets
+import { AuthContext } from '@Store/context';
 
+//---> Assets
+import AsyncStorage from '@react-native-community/async-storage';
+import { Account } from '@Services/apis';
 class More extends Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      isLogin: true,
+      isLogin: false,
     };
     this.navigation = props.navigation;
   }
@@ -46,11 +51,15 @@ class More extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   render() {
-    let { isLogin } = this.state;
+    let { email, fullName } = this.state;
+    const { route, isLogin } = this.props;
+    const { signOut } = this.context;
+
+    console.log('routeMore :>> ', route);
 
     return (
       <SafeAreaView style={S.container}>
@@ -64,12 +73,12 @@ class More extends Component {
               onPress={() => this.navigation.navigate('SampleScreen')}>
               <View style={DefaultStyle.leftItem}>
                 <Text style={[DefaultStyle.titleItem, S.textInfo]}>
-                  {isLogin === false ? '로그인' : '하혜정'}
+                  {isLogin === false ? '로그인' : fullName}
                 </Text>
                 <Text style={DefaultStyle.contentItem}>
                   {isLogin === false
                     ? '로그인 후 더 많은 정보를 확인해보세요.'
-                    : 'haharu@aartkorea.com'}
+                    : email}
                 </Text>
               </View>
               <View style={DefaultStyle.rightItem}>
@@ -89,7 +98,11 @@ class More extends Component {
                 </Text>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('TenantMypage')}>
+                  onPress={() =>
+                    this.navigation.navigate('Mypage', {
+                      title: '견적･계약 관리',
+                    })
+                  }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={estimate} />
                     <Text style={DefaultStyle.titleItem}>견적･계약관리</Text>
@@ -105,7 +118,7 @@ class More extends Component {
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
                   onPress={() =>
-                    this.navigation.navigate('TenantMypage', {
+                    this.navigation.navigate('Mypage', {
                       title: '입･출고 관리',
                     })
                   }>
@@ -323,7 +336,7 @@ class More extends Component {
           </View>
 
           <View style={S.footerMore}>
-            <TouchableOpacity onPress={() => console.log('로그아웃 :>> ')}>
+            <TouchableOpacity onPress={() => signOut()}>
               {isLogin === false ? null : (
                 <Text style={S.textLogout}>로그아웃</Text>
               )}
@@ -336,7 +349,25 @@ class More extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    const value = await AsyncStorage.getItem('token');
+    Account.getMe()
+      .then(res => {
+        console.log('::::: Get Me :::::', res);
+        const status = res.status;
+        if (status === 200) {
+          this.setState({
+            isLogin: true,
+            email: res.data.email,
+            fullName: res.data.fullName,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('errHome', err);
+      });
+    if (value) {
+      this.setState({ token: value });
+    }
     SplashScreen.hide();
   }
 
@@ -351,6 +382,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
+    isLogin: state.home.isLogin,
   };
 }
 

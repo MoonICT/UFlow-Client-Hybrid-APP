@@ -16,7 +16,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from '../style';
-// import { styles as SS } from './style';
+
 class RegisterInfo extends Component {
   constructor(props) {
     super(props);
@@ -33,10 +33,23 @@ class RegisterInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   render() {
+    const { route } = this.props;
+    console.log('route -> ', route);
+
+    let contentDetail = route?.params?.annoucementDetails;
+    
+    let title = contentDetail?.title;
+    let date = contentDetail?.createdDate;
+    let field1 = contentDetail?.fileName1;
+    let field2 = contentDetail?.fileName2;
+    let field3 = contentDetail?.fileName3;
+    let field4 = contentDetail?.fileName4;
+    let field5 = contentDetail?.fileName5;
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -54,31 +67,14 @@ class RegisterInfo extends Component {
         </Appbars>
         <ScrollView>
           <View style={S.bodyView}>
-            <Text style={DefaultStyle.titleItem}>
-              SKT 휴대폰 본인확인 서비스 중단 안내
-            </Text>
-            <Text style={DefaultStyle.contentItem}>2020.10.29</Text>
+            <Text style={DefaultStyle.titleItem}>{title}</Text>
+            <Text style={DefaultStyle.contentItem}>{date}</Text>
             <View style={S.content}>
-              <Text style={S.textContent}>
-                안녕하세요. 유플로우입니다. 안정적인 서비스 제공을 위해 SKT
-                휴대폰 본인인증, SKT 알뜰폰 본인인증 시스템 점검이 진행될
-                예정입니다.
-              </Text>
-              <Text style={S.textContent}>
-                점검이 진행되는 동안, 해당 결제 수단의 바로결제 서비스 이용이
-                제한되니 결제 시 참고 부탁드립니다.
-              </Text>
-              <Text style={S.textContent}>
-                • 점검일시 - 20년 10월 30일(금) 오전 3시 ~ 4시 30분 *점검 시간은
-                상황에 따라 조기 종료되거나 연장될 수 있습니다.
-              </Text>
-              <Text style={S.textContent}>
-                • 점검 중 사용이 제한되는 서비스 - SKT 휴대폰 본인인증, SKT
-                알뜰폰 본인인증 서비스
-              </Text>
-              <Text style={S.textContent}>
-                더 나은 서비스 제공을 위해 최선을 다하겠습니다. 감사합니다.
-              </Text>
+              <Text style={S.textContent}>{field1}</Text>
+              <Text style={S.textContent}>{field2}</Text>
+              <Text style={S.textContent}>{field3}</Text>
+              <Text style={S.textContent}>{field4}</Text>
+              <Text style={S.textContent}>{field5}</Text>
             </View>
           </View>
         </ScrollView>
@@ -103,7 +99,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
   };
 }
 
@@ -116,9 +112,6 @@ function mapDispatchToProps(dispatch) {
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 

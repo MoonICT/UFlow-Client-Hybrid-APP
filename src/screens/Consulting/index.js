@@ -6,11 +6,21 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Image,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Text, Checkbox } from 'react-native-paper';
+import { Appbar, Text, Button } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import Bgr from '@Assets/images/bgr-consulting.png';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
@@ -21,225 +31,287 @@ import ExtraService from './ExtraService';
 import AttachDocument from './AttachDocument';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
-
-const data = [
-  {
-    title: '의뢰자 정보',
-  },
-  {
-    title: '의뢰 유형',
-  },
-  {
-    title: '부가 서비스',
-  },
-  {
-    title: '첨부 자료',
-  },
-];
-
 class Consulting extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      visible: false,
-      visibleConfirm: false,
-      title: '의뢰자 정보',
-      isValue: 0,
-      checkAll: false,
+      step: 0,
+      inputStep1: '',
+      stepProgress: 0,
+      condionNext: false,
+      condionPrev: false,
+      optionStep2: '',
+      optionStep3: '',
+      inputStep5: '',
     };
     this.navigation = props.navigation;
   }
-
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    console.log('::componentWillUnmount::');
-  }
-
-  showDialog = () => this.setState({ visible: true });
-
-  hideDialog = () => this.setState({ visible: false });
-
-  showConfirm = () => this.setState({ visibleConfirm: true });
-
-  hideConfirm = () => this.setState({ visibleConfirm: false });
-  render() {
-    const { imageStore, workComplete } = this.props;
-    const { title, isValue, checkAll, checkService, checkPrivacy } = this.state;
-
-    let viewComponent = (
-      <Fragment>
-        <TextField
-          labelTextField="이름"
-          colorLabel="#000000"
-          styleProps={{ borderColor: '#d7d7d7' }}
-          valueProps={e => this.setState({ name: e })}
-          defaultValue="하혜정"
-        />
-        <TextField
-          labelTextField="전화번호"
-          colorLabel="#000000"
-          styleProps={{ borderColor: '#d7d7d7' }}
-          valueProps={e => this.setState({ phone: e })}
-          defaultValue="01012345678"
-        />
-        <TextField
-          labelTextField="이메일"
-          colorLabel="#000000"
-          styleProps={{ borderColor: '#d7d7d7' }}
-          valueProps={e => this.setState({ email: e })}
-          defaultValue="haharu@aartkorea.com"
-        />
-        <TextField
-          labelTextField="이름"
-          colorLabel="#000000"
-          styleProps={{ borderColor: '#d7d7d7' }}
-          valueProps={e => this.setState({ companyName: e })}
-          defaultValue="에이아트"
-        />
-      </Fragment>
-    );
-    switch (title) {
-      case '의뢰 유형':
-        viewComponent = <RequestType navigation={this.navigation} />;
-        break;
-      case '부가 서비스':
-        viewComponent = <ExtraService navigation={this.navigation} />;
-        break;
-      case '첨부 자료':
-        viewComponent = <AttachDocument navigation={this.navigation} />;
-        break;
-      default:
-      // code block
+  // handle option step 2
+  handleOptionStep2 = e => {
+    this.setState({
+      optionStep2: e,
+      stepProgress: e !== '' ? 4 : 2,
+      condionNext: e !== '' ? true : false,
+    });
+  };
+  // handle option step 3
+  handleOptionStep3 = e => {
+    this.setState({
+      optionStep3: e,
+      stepProgress: e !== '' ? 6 : 4,
+      condionNext: e !== '' ? true : false,
+    });
+  };
+  // navigation topbar
+  handleNavigation = () => {
+    const { step } = this.state;
+    console.log('step', step);
+    if (step > 0) {
+      this.setState({ step: step - 1 });
+    } else {
+      this.navigation.goBack();
     }
-
+  };
+  // prev step
+  handleNavigationPrev = () => {
+    const { step, stepProgress, inputStep1 } = this.state;
+    if (step !== 0) {
+      this.setState({ step: step - 1 });
+      this.setState({ condionNext: true });
+    } else {
+      this.setState({ step: 0 });
+    }
+  };
+  // next step
+  handleNavigationNext = () => {
+    this.setState({ condionNext: false, condionPrev: true });
+    const {
+      step,
+      condionNext,
+      optionStep2,
+      stepProgress,
+      optionStep3,
+    } = this.state;
+    optionStep2 !== '' &&
+      stepProgress < 5 &&
+      this.setState({
+        condionNext: true,
+        stepProgress: stepProgress < 5 ? 4 : 2,
+      });
+    optionStep3 !== '' &&
+      stepProgress < 7 &&
+      this.setState({
+        condionNext: true,
+        stepProgress: 6,
+      });
+    if (!condionNext) return;
+    stepProgress === 6 && this.setState({ stepProgress: 8 });
+    this.setState({ step: step + 1 });
+  };
+  // onchange input step 1
+  onChangeInputStep1 = e => {
+    this.setState({ inputStep1: e });
+    if (e !== '') {
+      this.setState({
+        condionNext: true,
+        stepProgress: 2,
+      });
+    } else {
+      this.setState({
+        stepProgress: 0,
+        condionNext: false,
+      });
+    }
+  };
+  // onchange input step 5
+  onChangeInputStep5 = e => {
+    this.setState({ inputStep5: e });
+    if (e !== '') {
+      this.setState({
+        condionNext: true,
+        stepProgress: 10,
+      });
+    } else {
+      this.setState({
+        stepProgress: 8,
+      });
+    }
+  };
+  render() {
+    const {
+      step,
+      stepProgress,
+      inputStep1,
+      condionPrev,
+      condionNext,
+      optionStep2,
+      optionStep3,
+      inputStep5,
+    } = this.state;
+    console.log('stepProgress', stepProgress);
     return (
-      <SafeAreaView style={S.container}>
-        <Appbars>
+      <View style={S.container}>
+        <View>
+          <Image source={Bgr} style={S.bgrImage} />
+        </View>
+        <Appbars customStyle={{ borderBottomColor: '#d7d7d7' }}>
           <Appbar.Action
             icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
+            color="white"
+            onPress={() => this.handleNavigation()}
           />
           <Appbar.Content
-            title="간이진단 무료컨설팅"
-            color="black"
-            fontSize="12"
-            titleStyle={DefaultStyle.headerTitle}
+            title="물류컨설팅"
+            titleStyle={DefaultStyle.headerTitleWhite}
           />
         </Appbars>
-        <ScrollView>
-          <AppGrid
-            data={data}
-            value={isValue}
-            dataTitle={data[isValue]}
-            titleProps={(e, index) => {
-              this.setState({ title: e, isValue: index });
-              // console.log('title :>> ', title, index);
-            }}
-          />
-          <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-            <View style={DefaultStyle._titleCard}>
-              <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
-                의뢰자 정보를 입력해 주세요.{'\n'}
-                (타이틀 최대 2줄 입력 가능)
+        {/* step 0 */}
+        {step === 0 && (
+          <View style={S.contentCenter}>
+            <Text style={S.styleH3}>물류 컨설팅</Text>
+            <Text style={S.styleTextNomarl}>
+              유플로우 물류창고에 임대 관심이 있으시면{'\n'}시작 버튼을
+              눌러주세요.
+            </Text>
+            <Button
+              mode="contained"
+              style={[S.styleButton, { width: 175, margin: 'auto' }]}
+              onPress={() => this.setState({ step: 1 })}>
+              <Text style={[S.textButton, { width: 175 }]}>
+                물류 컨설팅 시작하기
               </Text>
-            </View>
-            {viewComponent}
+            </Button>
           </View>
-          {title === '첨부 자료' ? (
-            <View style={S.footer}>
-              <Text style={[DefaultStyle._textTitleCard, S.textTitleFooter]}>
-                서비스 이용약관
-              </Text>
-              <View style={S.checks}>
-                <View style={S.checkItem}>
-                  <Checkbox
-                    status={checkAll ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                      this.setState({
-                        checkAll: !checkAll,
-                        checkService: !checkAll,
-                        checkPrivacy: !checkAll,
-                      });
-                    }}
-                  />
-                  <Text style={S.textCheck}>전체 동의</Text>
-                </View>
-                <View style={[S.checkItem, S.checkChildren]}>
-                  <Checkbox
-                    status={checkService ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                      this.setState({ checkService: !checkService });
-                    }}
-                  />
-                  <Text style={S.textCheck}>서비스 이용약관 (필수)</Text>
-                </View>
-                <View style={[S.checkItem, S.checkChildren]}>
-                  <Checkbox
-                    status={checkPrivacy ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                      this.setState({ checkPrivacy: !checkPrivacy });
-                    }}
-                  />
-                  <Text style={S.textCheck}>개인정보 취급방침 (필수)</Text>
-                </View>
-              </View>
+        )}
+        {/* step 1 */}
+        {step === 1 && (
+          <View style={S.contentAlignLeft}>
+            <Text style={S.styleTextTitleNomarl}>
+              1. 안녕하세요. 이름이 어떻게 되시나요?
+            </Text>
+            <TextInput
+              placeholderTextColor="#979797"
+              style={S.inputNomarl}
+              value={inputStep1}
+              placeholder="이름을 입력해 주세요"
+              onChangeText={e => this.onChangeInputStep1(e)}
+            />
+            <Button
+              mode="contained"
+              style={[S.styleButton, { marginTop: 30 }]}
+              onPress={this.handleNavigationNext}>
+              <Text style={[S.textButton, { width: 175 }]}>확인</Text>
+            </Button>
+          </View>
+        )}
 
-              <TouchableOpacity
-                style={[DefaultStyle._btnInline, S.btnFooter]}
-                onPress={() => {}}>
-                <Text
-                  style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                  제출하기
-                </Text>
-              </TouchableOpacity>
+        {/* step 2 */}
+        {step === 2 && (
+          <RequestType
+            checked={optionStep2}
+            optionStep2={this.handleOptionStep2}
+          />
+        )}
+
+        {/* step 3 */}
+        {step === 3 && (
+          <ExtraService
+            checked={optionStep3}
+            optionStep3={this.handleOptionStep3}
+          />
+        )}
+        {/* step 4 */}
+        {step === 4 && <AttachDocument />}
+        {/* step 5 */}
+        {step === 5 && (
+          <View style={S.contentAlignLeft}>
+            <Text style={[S.styleTextTitleNomarl]}>
+              5. 전화번호를 알려주시면, 유플로우 담당자가 최대한 빨리
+              연락드리겠습니다.
+            </Text>
+            <TextInput
+              placeholderTextColor="#979797"
+              style={S.inputNomarl}
+              value={inputStep5}
+              placeholder="전화번호를 입력해 주세요"
+              onChangeText={e => this.onChangeInputStep5(e)}
+            />
+            <Button
+              mode="contained"
+              style={[S.styleButton, { marginTop: 30 }]}
+              onPress={this.handleNavigationNext}>
+              <Text style={[S.textButton, { width: 175 }]}>확인</Text>
+            </Button>
+          </View>
+        )}
+        {/* step 6 */}
+        {step === 6 && (
+          <View style={S.contentCenter}>
+            <Text style={[S.styleTextTitleNomarl, { textAlign: 'center' }]}>
+              문의가 등록되었습니다.{'\n'}감사합니다.
+            </Text>
+            <Button
+              mode="contained"
+              style={[S.styleButton, { marginTop: 30 }]}
+              onPress={this.handleNavigationNext}>
+              <Text style={[S.textButton, { width: 175 }]}>
+                처음으로 돌아가기
+              </Text>
+            </Button>
+          </View>
+        )}
+        {step !== 6 && step !== 0 && (
+          <View style={S.contentProgress}>
+            <View>
+              <Text style={S.valueProgress}>
+                {`${stepProgress === 0 ? '' : stepProgress}0%`}
+              </Text>
+              <View style={S.lineDefault}>
+                <View style={[S.lineMove, { width: `${stepProgress}0%` }]} />
+              </View>
             </View>
-          ) : (
-            <View style={{ padding: 16 }}>
-              <TouchableOpacity
-                style={[DefaultStyle._btnInline, S.btnFooter]}
-                onPress={() => {
-                  this.setState({ isValue: isValue + 1 });
-                }}>
-                <Text
-                  style={[
-                    DefaultStyle._textButton,
-                    DefaultStyle._textInline,
-                    S.textBtnFooter,
-                  ]}>
-                  다음
-                </Text>
-              </TouchableOpacity>
+            <View style={S.boxBottom}>
+              <View pointerEvents={condionPrev ? 'auto' : 'none'}>
+                <Icon.Button
+                  size={20}
+                  onPress={this.handleNavigationPrev}
+                  backgroundColor="transparent"
+                  color={condionPrev ? 'white' : 'rgba(215, 215, 215, 0.5)'}
+                  style={
+                    condionPrev
+                      ? [S.itemNavigation, { marginRight: 4 }]
+                      : [S.itemNavigationNone, { marginRight: 4 }]
+                  }
+                  name="chevron-down"
+                />
+              </View>
+              <View pointerEvents={condionNext ? 'auto' : 'none'}>
+                <Icon.Button
+                  size={20}
+                  color={condionNext ? 'white' : 'rgba(215, 215, 215, 0.5)'}
+                  backgroundColor="transparent"
+                  style={condionNext ? S.itemNavigation : S.itemNavigationNone}
+                  onPress={this.handleNavigationNext}
+                  name="chevron-up"
+                />
+              </View>
             </View>
-          )}
-        </ScrollView>
-      </SafeAreaView>
+          </View>
+        )}
+      </View>
     );
   }
-
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+    console.log('inputStep1', inputStep1);
   }
 }
-
 /** map state with store states redux store */
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
   };
 }

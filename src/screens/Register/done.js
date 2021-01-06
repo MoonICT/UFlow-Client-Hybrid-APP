@@ -8,7 +8,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import { SafeAreaView, View, ScrollView,Image } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
@@ -19,6 +19,8 @@ import DefaultStyle from '../../styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
+import illust9 from '@Assets/images/illust9.png';
+
 //---> Assets
 
 class DoneRegister extends Component {
@@ -38,7 +40,7 @@ class DoneRegister extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   render() {
@@ -53,13 +55,13 @@ class DoneRegister extends Component {
           <Appbar.Content
             title="회원가입"
             color="rgba(0, 0, 0, 0.76)"
-            style={S.appBarTitle}
+            titleStyle={DefaultStyle.headerTitle}
           />
         </Appbars>
         <ScrollView>
           <View style={[S.content, S.contentDone]}>
-            <View style={[S.doneImage]} />
-            <Text style={[S.fontMedium, S.fontS16]}>
+            <Image style={DefaultStyle._imageDialog} source={illust9} />
+            <Text style={[DefaultStyle._textTitleCard, S.titleDone]}>
               회원가입이 완료되었습니다.
             </Text>
             <Text style={[S.contentDoneNoti, S.fontRegular, S.fontS14]}>
@@ -74,9 +76,9 @@ class DoneRegister extends Component {
               ]}
               color="red"
               onPress={() => {
-                this.navigation.push('Login');
+                this.navigation.push('Home');
               }}>
-              메인으로
+              홈으로
             </Button>
           </View>
         </ScrollView>

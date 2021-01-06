@@ -10,5 +10,6 @@ import { color } from '@Themes/colors.js';
 export const styles = StyleSheet.create({
   bodyInfoFloor: {
     marginBottom: 0,
+    paddingBottom: 70,
   },
 });

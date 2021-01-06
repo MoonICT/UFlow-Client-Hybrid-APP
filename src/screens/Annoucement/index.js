@@ -15,41 +15,25 @@ import { Appbar, Text } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 
-import ProductCard from '@Components/organisms/ProductCard';
-
-import ActionCreator from '@Actions';
-import cardBG from '@Assets/images/card-img.png';
-
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Annoucement } from '@Services/apis';
 
 class RegisterWH extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { active: 0, checked: true, checked2: false, activeIndex: 0 };
+    this.state = { active: 0, checked: true, checked2: false, activeIndex: 0, annoucementList: [] };
     this.navigation = props.navigation;
-  }
-
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    console.log('::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
 
-  _renderProductItem = ({ item }) => {
-    return <ProductCard data={{ ...item, img: cardBG }} />;
-  };
   render() {
-    const { imageStore, workComplete } = this.props;
+
+    const { annoucementList } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -67,48 +51,57 @@ class RegisterWH extends Component {
           />
         </Appbars>
         <ScrollView>
-          <TouchableOpacity
-            style={DefaultStyle.btnItem}
-            onPress={() => this.navigation.navigate('DetailAnnoucement')}>
-            <View style={DefaultStyle.leftItem}>
-              <Text style={DefaultStyle.titleItem}>
-                SKT 휴대폰 본인확인 서비스 중단 안내
-              </Text>
-              <Text style={DefaultStyle.contentItem}>2020.10.29</Text>
-            </View>
-            <View style={DefaultStyle.rightItem}>
-              <Icon
-                name="arrow-forward-ios"
-                size={12}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={DefaultStyle.btnItem}
-            onPress={() => this.navigation.navigate('DetailAnnoucement')}>
-            <View style={DefaultStyle.leftItem}>
-              <Text style={DefaultStyle.titleItem}>
-                SKT 휴대폰 본인확인 서비스 중단 안내
-              </Text>
-              <Text style={DefaultStyle.contentItem}>2020.10.29</Text>
-            </View>
-            <View style={DefaultStyle.rightItem}>
-              <Icon
-                name="arrow-forward-ios"
-                size={12}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </View>
-          </TouchableOpacity>
+          {annoucementList && annoucementList.length > 0 && annoucementList.map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('DetailAnnoucement', { annoucementDetails: item })}>
+                <View style={DefaultStyle.leftItem}>
+                  <Text style={DefaultStyle.titleItem}>
+                    {item.title}
+                  </Text>
+                  <Text style={DefaultStyle.contentItem}>{item.createdDate}</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+            )
+          })}
         </ScrollView>
       </SafeAreaView>
     );
   }
 
+  /** listener when change props */
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
+
+  /** when exits screen */
+  componentWillUnmount() {
+  //console.log('//::componentWillUnmount::');
+  }
+
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    Annoucement.getListAnnoucement()
+      .then(res => {
+        console.log('::::: Annoucement :::::', res);
+        if (res.status === 200) {
+          this.setState({
+            annoucementList: res.data._embedded.Notice,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
     SplashScreen.hide();
   }
 
@@ -122,7 +115,7 @@ class RegisterWH extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
   };
 }
@@ -132,9 +125,6 @@ function mapDispatchToProps(dispatch) {
   return {
     // countUp: diff => {
     //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
     // },
   };
 }

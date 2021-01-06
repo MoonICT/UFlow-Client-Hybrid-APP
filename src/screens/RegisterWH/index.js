@@ -29,6 +29,7 @@ import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Warehouse } from '@Services/apis';
 
 class RegisterWH extends Component {
   constructor(props) {
@@ -51,9 +52,21 @@ class RegisterWH extends Component {
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
+  submit = () => {
+    Warehouse.registerWH(this.props.dataWH)
+      .then(res => {
+        console.log('::::: API Sign in :::::', res);
+        const status = res.status;
+        if (status === 200) {
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
   render() {
-    const { imageStore, workComplete, route } = this.props;
-    console.log('this.state', this.state);
+    const { imageStore, workComplete, route, dataWH } = this.props;
+    console.log('dataWH', dataWH);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -73,136 +86,158 @@ class RegisterWH extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
+        {/** Close AppBar */}
+
+        {/******* Content *******/}
         <ScrollView>
-          <TouchableOpacity
-            style={S.imageRegister}
-            onPress={() => this.navigation.navigate('RegisterImage')}>
-            {imageStore.length > 0 ? (
-              <Fragment>
-                <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
-                  대표이미지
-                </Text>
-                <Image style={S.ImageUpload} source={imageStore[0]} />
-              </Fragment>
-            ) : (
-              <Fragment>
-                <Image source={ignore3} style={S.ImageStyle} />
-                <Text style={S.textImage}>사진 추가</Text>
-              </Fragment>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={S.btnTypeRegister}
-            onPress={() =>
-              this.navigation.navigate('RegisterInfo', {
-                type: route && route.params && route.params.type,
-              })
-            }>
-            <Text style={S.textLeftBtn}>
-              {route && route.params && route.params.type === 'ModifyWH'
-                ? '창고 정보 수정'
-                : '사진 추가'}
-            </Text>
-            <View style={S.rightBtn}>
-              {route && route.params && route.params.type === 'ModifyWH' ? (
-                <Text style={S.completeText}>작업완료</Text>
+          <View>
+            <TouchableOpacity
+              style={S.imageRegister}
+              onPress={() => this.navigation.navigate('RegisterImage')}>
+              {imageStore.length > 0 ? (
+                <Fragment>
+                  <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
+                    대표이미지
+                  </Text>
+                  <Image style={S.ImageUpload} source={imageStore[0]} />
+                </Fragment>
               ) : (
-                <Text style={S.textRightBtn}>입력하세요</Text>
+                <Fragment>
+                  <Image source={ignore3} style={S.ImageStyle} />
+                  <Text style={S.textImage}>사진 추가</Text>
+                </Fragment>
               )}
+            </TouchableOpacity>
 
-              <Icon
-                name="arrow-forward-ios"
-                size={12}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={S.btnTypeRegister}
+              onPress={() =>
+                this.navigation.navigate('RegisterIntro', {
+                  type: route && route.params && route.params.type,
+                })
+              }>
+              <Text style={S.textLeftBtn}>창고 소개</Text>
+              <View style={S.rightBtn}>
+                {(route && route.params && route.params.type === 'ModifyWH') ||
+                (dataWH && dataWH.name) ? (
+                  <Text style={S.completeText}>작업완료</Text>
+                ) : (
+                  <Text style={S.textRightBtn}>입력하세요</Text>
+                )}
+                <Icon
+                  name="arrow-forward-ios"
+                  size={12}
+                  color="rgba(0, 0, 0, 0.54)"
+                />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={S.btnTypeRegister}
+              onPress={() =>
+                this.navigation.navigate('RegisterInfo', {
+                  type: route && route.params && route.params.type,
+                })
+              }>
+              <Text style={S.textLeftBtn}>
+                {route && route.params && route.params.type === 'ModifyWH'
+                  ? '창고 정보 수정'
+                  : '창고 정보'}
+              </Text>
+              <View style={S.rightBtn}>
+                {(route && route.params && route.params.type === 'ModifyWH') ||
+                (dataWH && dataWH.keeps) ? (
+                  <Text style={S.completeText}>작업완료</Text>
+                ) : (
+                  <Text style={S.textRightBtn}>입력하세요</Text>
+                )}
 
-          <TouchableOpacity
-            style={S.btnTypeRegister}
-            onPress={() =>
-              this.navigation.navigate('RegisterIntro', {
-                type: route && route.params && route.params.type,
-              })
-            }>
-            <Text style={S.textLeftBtn}>창고 소개</Text>
-            <View style={S.rightBtn}>
-              <Text style={S.textRightBtn}>입력하세요</Text>
-              <Icon
-                name="arrow-forward-ios"
-                size={12}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </View>
-          </TouchableOpacity>
+                <Icon
+                  name="arrow-forward-ios"
+                  size={12}
+                  color="rgba(0, 0, 0, 0.54)"
+                />
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={S.btnTypeRegister}
-            onPress={() =>
-              this.navigation.navigate('RegisterMoreIntro', {
-                type: route && route.params && route.params.type,
-              })
-            }>
-            <Text style={S.textLeftBtn}>부가 정보</Text>
-            <View style={S.rightBtn}>
-              <Text style={S.textRightBtn}>입력하세요</Text>
-              <Icon
-                name="arrow-forward-ios"
-                size={12}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={S.btnTypeRegister}
+              onPress={() =>
+                this.navigation.navigate('RegisterMoreIntro', {
+                  type: route && route.params && route.params.type,
+                })
+              }>
+              <Text style={S.textLeftBtn}>부가 정보</Text>
+              <View style={S.rightBtn}>
+                {(route && route.params && route.params.type === 'ModifyWH') ||
+                (dataWH && dataWH.siteArea) ? (
+                  <Text style={S.completeText}>작업완료</Text>
+                ) : (
+                  <Text style={S.textRightBtn}>입력하세요</Text>
+                )}
+                <Icon
+                  name="arrow-forward-ios"
+                  size={12}
+                  color="rgba(0, 0, 0, 0.54)"
+                />
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={S.btnTypeRegister}
-            onPress={() =>
-              this.navigation.navigate('RegisterInfoFloor', {
-                type: route && route.params && route.params.type,
-              })
-            }>
-            <Text style={S.textLeftBtn}>층별 상세 정보</Text>
-            <View style={S.rightBtn}>
-              <Text style={S.textRightBtn}>입력하세요</Text>
-              <Icon
-                name="arrow-forward-ios"
-                size={12}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={S.btnTypeRegister}
+              onPress={() =>
+                this.navigation.navigate('RegisterInfoFloor', {
+                  type: route && route.params && route.params.type,
+                })
+              }>
+              <Text style={S.textLeftBtn}>층별 상세 정보</Text>
+              <View style={S.rightBtn}>
+                {(route && route.params && route.params.type === 'ModifyWH') ||
+                (dataWH && dataWH.floors) ? (
+                  <Text style={S.completeText}>작업완료</Text>
+                ) : (
+                  <Text style={S.textRightBtn}>입력하세요</Text>
+                )}
+                <Icon
+                  name="arrow-forward-ios"
+                  size={12}
+                  color="rgba(0, 0, 0, 0.54)"
+                />
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={S.btnTypeRegister}
-            onPress={() =>
-              this.navigation.navigate('RegisterContractConditions', {
-                type: route && route.params && route.params.type,
-              })
-            }>
-            <Text style={S.textLeftBtn}>계약 조건</Text>
-            <View style={S.rightBtn}>
-              {workComplete === undefined ? (
-                <Text style={S.textRightBtn}>입력하세요</Text>
-              ) : (
-                <Text style={S.completeText}>작업완료</Text>
-              )}
+            <TouchableOpacity
+              style={S.btnTypeRegister}
+              onPress={() =>
+                this.navigation.navigate('RegisterContractConditions', {
+                  type: route && route.params && route.params.type,
+                })
+              }>
+              <Text style={S.textLeftBtn}>계약 조건</Text>
+              <View style={S.rightBtn}>
+                {workComplete === undefined ? (
+                  <Text style={S.textRightBtn}>입력하세요</Text>
+                ) : (
+                  <Text style={S.completeText}>작업완료</Text>
+                )}
 
-              <Icon
-                name="arrow-forward-ios"
-                size={12}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </View>
-          </TouchableOpacity>
+                <Icon
+                  name="arrow-forward-ios"
+                  size={12}
+                  color="rgba(0, 0, 0, 0.54)"
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
         <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
-            style={[S.btnSubmit, S.activeBtnSubmit]}
+            style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
             onPress={() => {
               this.showDialog();
+              this.submit();
             }}>
-            <Text style={[S.textSubmit, S.textActiveSubmit]}>
+            <Text
+              style={[DefaultStyle.textSubmit, DefaultStyle.textActiveSubmit]}>
               창고 등록하기
             </Text>
           </TouchableOpacity>
@@ -253,8 +288,9 @@ class RegisterWH extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
+    dataWH: state.registerWH,
   };
 }
 

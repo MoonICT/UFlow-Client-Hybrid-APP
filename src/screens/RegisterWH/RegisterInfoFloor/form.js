@@ -51,63 +51,125 @@ class FormInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   onChangeText = () => console.log('_addImage');
   _removeImage = () => console.log('_removeImage');
 
   render() {
-    const { data } = this.props;
+    const { data, formData, valueForm } = this.props;
     const dataSelect = [
       {
         label: '1층',
-        value: '1층',
+        value: 'F1',
       },
       {
         label: '2층',
-        value: '2층',
+        value: 'F2',
+      },
+      {
+        label: '3층',
+        value: 'F3',
+      },
+      {
+        label: '지하1층',
+        value: 'B1',
       },
     ];
     return (
       <Card style={S.cards}>
         <View style>
-          <Select data={dataSelect} labelSelected="층 수" />
+          <Select
+            data={dataSelect}
+            selectedValue={formData.flrDvCode}
+            labelSelected="층 수"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.flrDvCode = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
 
           <TextField
             labelTextField="창고면적"
             textRight="m2"
             defaultValue="0"
+            value={formData.flrArea}
             colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.flrArea = e;
+              valueForm && valueForm(dataF);
+            }}
           />
           <TextField
             labelTextField="사무실면적"
             textRight="m2"
             defaultValue="0"
+            value={formData.opcArea}
             colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.opcArea = e;
+              valueForm && valueForm(dataF);
+            }}
           />
           <TextField
             labelTextField="주차장면적"
             textRight="m2"
             defaultValue="0"
+            value={formData.parkArea}
             colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.parkArea = e;
+              valueForm && valueForm(dataF);
+            }}
           />
           <TextField
             labelTextField="공용면적"
             textRight="m2"
             defaultValue="0"
+            value={formData.cmnArea}
             colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.cmnArea = e;
+              valueForm && valueForm(dataF);
+            }}
           />
           <TextField
             labelTextField="유효고"
             defaultValue="0"
+            value={formData.efctvHi}
             colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.efctvHi = e;
+              valueForm && valueForm(dataF);
+            }}
           />
-          <TextField labelTextField="접안방식" colorLabel="#000000" />
+          <TextField
+            labelTextField="접안방식"
+            value={formData.prvtArea}
+            colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.prvtArea = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
           <TextField
             labelTextField="도크 수"
             defaultValue="0"
             colorLabel="#000000"
+            value={formData.dockQty}
+            valueProps={e => {
+              let dataF = formData;
+              dataF.dockQty = e;
+              valueForm && valueForm(dataF);
+            }}
           />
         </View>
       </Card>
@@ -131,7 +193,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
   };
 }
 

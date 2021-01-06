@@ -17,15 +17,52 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from '../style';
+
+import { MyPage } from '@Services/apis';
+
 class WithdrawalInformation extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
       visible: false,
+      passWord: '',
     };
 
     this.navigation = props.navigation;
+  }
+
+  /** when after render DOM */
+  async componentDidMount() {
+    console.log('::componentDidMount::');
+    SplashScreen.hide();
+  }
+
+  /** when update state or props */
+  componentDidUpdate(prevProps, prevState) {
+    console.log('::componentDidUpdate::');
+  }
+
+  cancelMembership(params) {
+    let defaultParams = {
+      password: this.state.passWord,
+      ...params,
+    };
+    MyPage.cancelMembership(defaultParams)
+      .then(res => {
+        console.log('::::: cancelMembership :::::', res);
+        if (res.status === 200) {
+          this.showDialog()
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  }
+
+  onCancelMembership = (labelList) => {
+    let labelString = labelList.toString();
+    this.cancelMembership({ leaveReason: labelString });
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -33,7 +70,7 @@ class WithdrawalInformation extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   render() {
-    // const { imageStore } = this.props;
+    const { params } = this.props.route;
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -51,7 +88,7 @@ class WithdrawalInformation extends Component {
         </Appbars>
         <ScrollView>
           <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-            <View style={DefaultStyle._titleCard}>
+            <View style={DefaultStyle._titleCard, { marginBottom: 24 }}>
               <Text style={DefaultStyle._textTitleCard}>비밀번호 확인</Text>
             </View>
             <View style>
@@ -60,17 +97,20 @@ class WithdrawalInformation extends Component {
                 colorLabel="#000000"
                 textContentType="password"
                 secureTextEntry={true}
+                onChangeText={text => {
+                  this.setState({ passWord: text });
+                }}
               />
             </View>
             <TouchableOpacity
               style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
-              onPress={() => this.showDialog()}>
+              onPress={() => this.onCancelMembership(params.arrLabel)}>
               <Text
                 style={[
                   DefaultStyle.textSubmit,
                   DefaultStyle.textActiveSubmit,
                 ]}>
-                취소하기
+                확인
               </Text>
             </TouchableOpacity>
           </View>
@@ -103,17 +143,6 @@ class WithdrawalInformation extends Component {
       </SafeAreaView>
     );
   }
-
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
 /** map state with store states redux store */
@@ -121,7 +150,7 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
   };
 }
 

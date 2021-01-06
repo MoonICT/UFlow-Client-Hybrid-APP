@@ -30,7 +30,7 @@ import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
-import ContractManager from '@Screeens/Page/ContractManager';
+import ContractManager from '@Screeens/Mypage/ContractManager';
 import ActionCreator from '@Actions';
 
 import card from '@Assets/images/card-img.png';
@@ -361,7 +361,7 @@ class ProprietorMypage extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-    console.log('::componentWillUnmount::');
+  //console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -558,7 +558,7 @@ class ProprietorMypage extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.imageData,
+    imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
   };
 }
