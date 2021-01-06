@@ -7,7 +7,9 @@
  */
 
 import { mainMediaAxios } from '../libs/axios';
-
+import AsyncStorage from '@react-native-community/async-storage';
+import { mainAxios } from '../libs/axios';
+import {TOKEN} from '@Constant'
 /**
  * Upload Image
  * @returns {Promise<unknown>}
@@ -20,3 +22,15 @@ export const uploadImage =  (body) => {
   });
   return data;
 };
+
+export const uploadFile = async (body) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.post(`/api/v1/warehouse/busi-file/upload`, body,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      contentType: 'multipart/form-data'
+    }
+  });
+};
+
