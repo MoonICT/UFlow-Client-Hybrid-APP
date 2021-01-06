@@ -80,7 +80,7 @@ class RegisterImage extends Component {
   handlePicker = () => {
     console.log('edit');
 
-    ImagePicker?.showImagePicker({}, response => {
+    ImagePicker.showImagePicker({}, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {

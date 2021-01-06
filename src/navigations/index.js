@@ -63,7 +63,7 @@ import TenantMypage from '@Screeens/TenantMypage';
 import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
 import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
 import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
-import Chatting from '@Screeens/TenantMypage/Chat';
+import Chatting from '@Screeens/Mypage/Chat';
 import DetailsManager from '@Screeens/Mypage/DetailsManager';
 import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
 

@@ -174,27 +174,27 @@ export const styles = StyleSheet.create({
     paddingTop: 8,
   },
   checks: {},
-  listChecks: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 24,
-  },
-  checkItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 23,
-  },
+  // listChecks: {
+  //   flexDirection: 'row',
+  //   flexWrap: 'wrap',
+  //   marginBottom: 24,
+  // },
+  // checkItem: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   marginRight: 23,
+  // },
   checkChildren: {
     marginLeft: 25,
   },
-  textCheck: {
-    color: '#000000',
-    // fontFamily: 'NotoSansCJKkr-Regular',
-    fontSize: 14,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    lineHeight: 20,
-  },
+  // textCheck: {
+  //   color: '#000000',
+  //   // fontFamily: 'NotoSansCJKkr-Regular',
+  //   fontSize: 14,
+  //   fontWeight: 'normal',
+  //   fontStyle: 'normal',
+  //   lineHeight: 20,
+  // },
   btnFooter: {
     alignSelf: 'flex-end',
     marginBottom: 24,
@@ -209,5 +209,19 @@ export const styles = StyleSheet.create({
     // textAlign: 'right',
     textDecorationLine: 'underline',
   },
- 
+  amount: {
+    lineHeight: 20,
+    // fontFamily: 'NotoSansCJKkr-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    color: 'rgba(0, 0, 0, 0.87)',
+  },
+  total: {
+    lineHeight: 32,
+    fontFamily: 'NotoSansCJKkr-Bold',
+    fontSize: 24,
+    fontStyle: 'normal',
+    color: '#000000',
+    marginLeft: 12,
+  },
 });

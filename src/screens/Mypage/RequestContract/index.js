@@ -6,39 +6,24 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { SafeAreaView, View, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import AppGrid from '@Components/organisms/AppGrid';
-import Select from '@Components/organisms/Select';
-import CardMypage from '@Components/organisms/CardMypage';
 import TableInfo from '@Components/atoms/TableInfo';
-
 import warehouse1 from '@Assets/images/warehouse-1.png';
+import ContractInformation from './ContractInformation';
 
-import ActionCreator from '@Actions';
-
-import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
 
 class RequestContract extends Component {
   constructor(props) {
     super(props);
-    this.webView = null;
-    this.state = { visible: false, visibleConfirm: false };
+    this.state = {};
     this.navigation = props.navigation;
   }
 
@@ -47,27 +32,175 @@ class RequestContract extends Component {
     return true;
   }
 
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
-  }
+  coverTime = value => {
+    let time = new Date();
+    time.setTime(value);
+    let changeTime = time.toLocaleDateString();
+    return changeTime;
+  };
+  coverStatus = value => {
+    switch (value) {
+      case '1100':
+        // code block
+        return {
+          data: [],
+          processing: '계약 요청',
+        };
+      case '2100':
+        // code block
+        return {
+          data: [],
+          processing: '계약 요청 대기',
+        };
+      case '4100':
+        // code block
+        return {
+          data: [],
+          processing: '계약 진행 중',
+          processingTrust: '계약 요청 대기',
+        };
+      case '5100':
+        // code block
+        return {
+          data: [],
+          processing: '계약 완료',
+        };
 
-  showDialog = () => this.setState({ visible: true });
-
-  hideDialog = () => this.setState({ visible: false });
-
-  showConfirm = () => this.setState({ visibleConfirm: true });
-
-  hideConfirm = () => this.setState({ visibleConfirm: false });
+      // code block
+    }
+  };
   render() {
-    const { route, workComplete } = this.props;
+    const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
     const warehSeq = route && route.params && route.params.warehSeq;
-    const seq = route && route.params && route.params.seq;
+    // const seq = route && route.params && route.params.seq;
     const rentUserNo = route && route.params && route.params.rentUserNo;
     const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
     const status = route && route.params && route.params.status;
+    console.log('routeRequescontract', route);
+    const { dataApi } = this.state;
+    console.log('dataApiRequest', dataApi);
+
+    let dataKeep = dataApi &&
+      typeWH === 'KEEP' && [
+        {
+          type: '창고명',
+          value: dataApi.warehouse.warehouse,
+        },
+        {
+          type: '창고주',
+          value: dataApi.warehouse.owner,
+        },
+        {
+          type: '위치',
+          value: dataApi.warehouse.address,
+        },
+        {
+          type: '선택 창고 유형',
+          // value: this.coverStatus(status).processing,
+          value: '임대 요청',
+          highlight: true,
+        },
+        {
+          type: '보관유형',
+          value: dataApi.keep.whrgMgmtKeep.typeCode.stdDetailCodeName,
+        },
+        {
+          type: '정산단위',
+          value: dataApi.keep.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
+        },
+        {
+          type: '산정기준',
+          value: dataApi.keep.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
+        },
+        {
+          type: '가용면적',
+          value: dataApi.keep.whrgMgmtKeep.usblValue,
+        },
+        {
+          type: '임대 가능 기간',
+          value: this.coverTime(dataApi.keep.whrgMgmtKeep.usblYmdFrom),
+        },
+        {
+          type: '보관단가',
+          value: dataApi.keep.whrgMgmtKeep.splyAmount,
+        },
+        {
+          type: '관리단가',
+          value: dataApi.keep.whrgMgmtKeep.mgmtChrg,
+        },
+      ];
+    let dataTrust = dataApi &&
+      typeWH === 'TRUST' && [
+        {
+          type: '창고명',
+          value: dataApi.warehouse.warehouse,
+        },
+        {
+          type: '창고주',
+          value: dataApi.warehouse.owner,
+        },
+        {
+          type: '위치',
+          value: dataApi.warehouse.address,
+        },
+        {
+          type: '선택 창고 유형',
+          // value: this.coverStatus(status).processing,
+          value: '수탁',
+          highlight: true,
+        },
+        {
+          type: '보관유형',
+          value: dataApi.trust.whrgMgmtTrust.typeCode.stdDetailCodeName,
+        },
+        {
+          type: '정산단위',
+          value: dataApi.trust.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
+        },
+        {
+          type: '산정기준',
+          value: dataApi.trust.whrgMgmtTrust.calStdDvCode.stdDetailCodeName,
+        },
+        {
+          type: '수탁 가능 기간',
+          value: this.coverTime(dataApi.trust.whrgMgmtTrust.usblYmdFrom),
+        },
+        {
+          type: '수탁 가용 수량',
+          value: dataApi.trust.whrgMgmtTrust.usblValue,
+        },
+        {
+          type: '보관단가',
+          value: dataApi.trust.whrgMgmtTrust.splyAmount,
+        },
+        {
+          type: '입고단가',
+          value: dataApi.trust.whrgMgmtTrust.whinChrg,
+        },
+        {
+          type: '출고단가',
+          value: dataApi.trust.whrgMgmtTrust.whoutChrg,
+        },
+        {
+          type: '인건단가',
+          value: dataApi.trust.whrgMgmtTrust.psnChrg,
+        },
+        {
+          type: '가용면적',
+          value: dataApi.trust.whrgMgmtTrust.mnfctChrg,
+        },
+        {
+          type: '택배단가',
+          value: dataApi.trust.whrgMgmtTrust.dlvyChrg,
+        },
+        {
+          type: '운송단가',
+          value: dataApi.trust.whrgMgmtTrust.shipChrg,
+        },
+      ];
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -84,120 +217,88 @@ class RequestContract extends Component {
           />
         </Appbars>
         <ScrollView>
-          <View style={DefaultStyle._cards}>
-            <View style={[DefaultStyle._titleCard, DefaultStyle._titleStatus]}>
+          <View style={DefaultStyle._body}>
+            <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
               <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
-
               <Text
                 style={[
                   DefaultStyle._statusProcessing,
-                  // status === 'RS00'
-                  //   ? { backgroundColor: 'rgba(0, 0, 0, 0.54)' }
-                  //   : '',
+                  status === '5100' ? { backgroundColor: '#4caf50' } : '',
                 ]}>
-                {
-                  //this.coverStatus(status).processing
-                }
+                {this.coverStatus(status) &&
+                this.coverStatus(status).processingTrust &&
+                typeWH === 'TRUST'
+                  ? this.coverStatus(status).processingTrust
+                  : this.coverStatus(status).processing}
               </Text>
-              {/**
-            <Text
-              style={[
-                DefaultStyle._statusProcessing,
-                DefaultStyle._statusSuccess,
-              ]}>
-              계약 완료
-            </Text>
-             */}
             </View>
 
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>
                 <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
               </View>
-              <View
-              // style={DefaultStyle._bodyCard}
-              >
+              <View>
                 <View style={DefaultStyle._infoTable}>
-                  <TableInfo />
+                  <TableInfo
+                    data={typeWH === 'KEEP' ? dataKeep && dataKeep : dataTrust}
+                  />
                 </View>
               </View>
             </View>
+            {typeWH === 'KEEP' ? (
+              <View style={[DefaultStyle._body, DefaultStyle._margin0]}>
+                <View style={DefaultStyle._footerCards}>
+                  <Text style={S.amount}>예상 견적 금액</Text>
+                  <Text style={S.total}>
+                    {dataApi && dataApi.keep && dataApi.keep.estimatedPrice}원
+                  </Text>
+                </View>
+              </View>
+            ) : null}
+            <ContractInformation
+              warehouseRegNo={warehouseRegNo}
+              rentUserNo={rentUserNo}
+              warehSeq={warehSeq}
+              type={type}
+              status={status}
+              rentUser={
+                dataApi && dataApi.warehouse && dataApi.warehouse.rentUser
+              }
+              warehouse={dataApi && dataApi.warehouse}
+              navigation={this.navigation}
+            />
           </View>
         </ScrollView>
-
-        <Dialog
-          visible={this.state.visibleConfirm}
-          onDismiss={this.hideConfirm}>
-          <Dialog.Title style={DefaultStyle._titleDialog}>
-            Alert Title
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph>
-              창고주에게 응답 받은 견적 금액으로 계약을 진행하시겠습니까?
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              color="rgba(0, 0, 0, 0.54)"
-              style={[DefaultStyle._buttonElement]}
-              onPress={this.hideConfirm}>
-              아니오
-            </Button>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={this.showDialog}>
-              네
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-
-        <Dialog
-          style={DefaultStyle.popup}
-          visible={this.state.visible}
-          onDismiss={this.hideDialog}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup} />
-          </Dialog.Content>
-          <Dialog.Title
-            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            회원정보 수정 완료
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={DefaultStyle.contentDialog}>
-              회원정보가 수정되었습니다.
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={() => {
-                this.hideDialog();
-                this.hideConfirm();
-              }}>
-              확인
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
       </SafeAreaView>
     );
   }
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
+    let rentUserNo = this.props.route.params.rentUserNo;
     let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
     let typeWH = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
-    let data =
-      this.props.route.params.typeWH === 'TRUST'
-        ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
-        : { warehouseRegNo, mgmtKeepSeq: warehSeq };
-    await Warehouse.requestContract({ typeWH, data })
+    let url =
+      type +
+      '/' +
+      warehouseRegNo +
+      '-' +
+      warehSeq +
+      '/' +
+      typeWH +
+      '/' +
+      rentUserNo;
+    let urlTenant = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + typeWH;
+    // console.log('url', url);
+    // console.log('urlTenant', urlTenant);
+    await Warehouse.quotation(
+      this.props.route.params.type === 'OWNER' ? url : urlTenant,
+    )
       .then(res => {
-        const status = res.status;
-        console.log('res', res);
-        if (status === 200) {
+        console.log('resRequest', res);
+        if (res.status === 200) {
           this.setState({
             dataApi: res.data,
           });
@@ -205,7 +306,7 @@ class RequestContract extends Component {
         }
       })
       .catch(err => {
-        console.log('err', err);
+        console.log('errRequest', err);
       });
   }
 

@@ -25,13 +25,13 @@ export const styles = StyleSheet.create({
     padding: 16,
     paddingRight: 24,
     color: 'rgba(0, 0, 0, 0.87)',
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
     fontSize: 16,
     textAlignVertical: 'top',
   },
   inputLoction: {
     height: 56,
     marginTop: 24,
-    fontFamily: 'NotoSansCJKkr',
+    // fontFamily: 'NotoSansCJKkr',
   },
 });
