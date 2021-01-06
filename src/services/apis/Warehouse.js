@@ -465,18 +465,28 @@ export const registWhrg = whrgBody => {
 /**
  * 창고 상세
  * @param id 창고 ID
+ * @param context NextJS Context
  * @returns {Promise<unknown>}
  */
-export const getWhrg = ({ id = '' }) => {
+export const getWhrg = ({ id = '', config = '' }) => {
+  let configDefault = {
+    headers: {
+      contentType: 'application/json'
+    }
+  }
+  if (config) {
+    configDefault = {
+      ...configDefault,
+      ...config
+    }
+  }
+  console.log('API :::::', config)
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/${id}`,
-    config: {
-      headers: {
-        contentType: 'application/json',
-      },
-    },
-  });
+    requiresToken: true,
+    config: configDefault
+  })
 };
 
 /**

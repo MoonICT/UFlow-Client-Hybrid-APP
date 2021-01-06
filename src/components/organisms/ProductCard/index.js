@@ -21,6 +21,8 @@ class ProductCard extends Component {
     this.state = {
       isHorizontal: this.props.type === 'HORIZONTAL',
     };
+    this.navigation = props.navigation;
+    // console.log('navigation', props.navigation);
   }
 
   badgeColor = code => {
@@ -67,21 +69,28 @@ class ProductCard extends Component {
             this.state.isHorizontal && styles.innerWrapHorizon,
           ]}>
           {/** Image */}
-          <View style={styles.imageWrap}>
-            <Card.Cover
-              source={data.img ? data?.img : { uri: data.thumbnail }}
-              style={[
-                styles.cardImage,
-                this.state.isHorizontal && styles.cardImageHorizon,
-              ]}
-            />
-            <View style={[styles.badge, data.badgeType && styles.badgeRed]}>
-              <Text style={[styles.badgeLabel]}>
-                {data?.trust ? '가맹창고' : '제휴창고'}
-              </Text>
+         
+          <TouchableOpacity
+            onPress={() => {
+              this.navigation.navigate('DetailsWH', {
+                id: data.id,
+              });
+            }}>
+            <View style={styles.imageWrap} >
+              <Card.Cover
+                source={data.img ? data?.img : { uri: data.thumbnail }}
+                style={[
+                  styles.cardImage,
+                  this.state.isHorizontal && styles.cardImageHorizon,
+                ]}
+              />
+              <View style={[styles.badge, data.badgeType && styles.badgeRed]}>
+                <Text style={[styles.badgeLabel]}>
+                  {data?.trust ? '가맹창고' : '제휴창고'}
+                </Text>
+              </View>
             </View>
-          </View>
-
+          </TouchableOpacity>
           {/* <ScrollView> */}
           {/** Contents */}
           <View

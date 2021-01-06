@@ -219,11 +219,11 @@ export const styles = StyleSheet.create({
 
   //-->main
   mainProduct: {
-    height: 549,
+    // height: 549,
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 60,
-    paddingBottom: 60,
+    // paddingBottom: 60,
   },
   mainProductTitle: {
     display: 'flex',
@@ -260,23 +260,34 @@ export const styles = StyleSheet.create({
 
   mainProductList: {
     // width: windowWidth,
-    height: '100%',
-    paddingBottom: 60,
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'stretch',
-    justifyContent: 'space-between',
+    // height: '100%',
+    // paddingBottom: 60,
+    // display: 'flex',
+    // flexDirection: 'row',
+    // alignContent: 'stretch',
+    // justifyContent: 'space-between',
     // backgroundColor: 'red',
+    // flex: 1,
+
     flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    marginLeft:-4,
+    marginRight:-4,
   },
 
   mainProductItem: {
     width: '50%',
-    height: 160,
-    paddingBottom: 60,
+    paddingLeft: 4,
+    paddingRight: 4,
+    marginBottom: 8,
+    height: 400,
+    // height: 100,
+    // paddingBottom: 60,
     // display: 'flex',
     // backgroundColor: 'red',
-    flex: 1,
+    // flex: 1,
   },
 
   //--->main binding
