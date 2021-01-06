@@ -103,6 +103,7 @@ class DetailWH extends Component {
     this.webView = null;
     this.state = { active: 0, checked: true, checked2: false, activeIndex: 0 };
     this.navigation = props.navigation;
+    // console.log('navigation', props.navigation);
   }
 
   /** listener when change props */
@@ -122,6 +123,7 @@ class DetailWH extends Component {
   _renderProductItem = ({ item }) => {
     return <ProductCard data={{ ...item, img: cardBG }} />;
   };
+  
   render() {
     const { imageStore, workComplete } = this.props;
     const dataTab = [
