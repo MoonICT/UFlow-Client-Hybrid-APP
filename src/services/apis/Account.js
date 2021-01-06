@@ -2,6 +2,9 @@ import { Axios, parseQuery } from '@Services/http';
 import { mainAxios, mainAxiosToken } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
+//Contants
+import { TOKEN } from '@Constant';
+
 export const signIn = async data => {
   // console.log('data==>', data);
   return await mainAxios.post('/api/v1/account/login', {
@@ -23,7 +26,7 @@ export const signUp = async reqBody => {
 };
 
 export const getMe = async () => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.get('/api/v1/me', {
     headers: {
       Authorization: `Bearer ${token}`,
