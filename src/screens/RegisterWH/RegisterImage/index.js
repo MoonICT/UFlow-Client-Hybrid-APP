@@ -73,9 +73,14 @@ class RegisterImage extends Component {
           data.append('name', singleFile.name);
           data.append('file', singleFile);
           // Please change file upload URL
-          MediaUpload.uploadFile(data).then(res => {
-            if (res.status === 200) {
-              let { url } = res.data;
+          MediaUpload.uploadFile(data).then(respon => {
+            if (respon.status === 200) {
+              let { url } = respon.data;
+              // let pimages = [{ uri: url }];
+              // pimages.push();
+              console.log('url', url);
+
+              // this.props.registerAction({ uri: url });
             }
           });
         } else {
