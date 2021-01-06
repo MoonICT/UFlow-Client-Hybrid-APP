@@ -84,7 +84,7 @@ import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
-// import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
+import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
 
 import { color } from '@Themes/colors';
 
@@ -506,12 +506,12 @@ const App = () => {
                   headerMode={false}
                   options={{ headerShown: false }}
                 />
-                {/* <RootStack.Screen
+                <RootStack.Screen
                   name="LogisticsKnowledge"
                   component={LogisticsKnowledge}
                   headerMode={false}
                   options={{ headerShown: false }}
-                /> */}
+                />
               </RootStack.Navigator>
             )}
           </Global>
