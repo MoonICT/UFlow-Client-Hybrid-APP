@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-06 17:00:51
+ * @modify date 2021-01-06 18:21:25
  * @desc [description]
  */
 
@@ -58,8 +58,8 @@ class Login extends Component {
     const { login } = this.context;
 
     /** Config test */
-    data.email = 'tenant1@test.com';
-    data.password = 'wotkd123';
+    // data.email = 'tenant1@test.com';
+    // data.password = 'wotkd123';
 
     if (data.email === '' || data.password === '') {
       showPopup({ title: 'UFLOW', content: '충분한 정보를 입력하십시오 !' });
