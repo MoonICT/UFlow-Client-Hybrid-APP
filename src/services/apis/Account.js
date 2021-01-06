@@ -5,12 +5,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 //Contants
 import { TOKEN } from '@Constant';
 
-export const signIn = async data => {
+export const signIn = data => {
   // console.log('data==>', data);
-  return await mainAxios.post('/api/v1/account/login', {
+  let res = mainAxios.post('/api/v1/account/login', {
     email: data.email,
     password: data.password,
   });
+
+  return res;
 };
 
 export const signUp = async reqBody => {

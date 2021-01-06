@@ -729,7 +729,7 @@ export default StyleSheet.create({
     // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     padding: 16,
-    paddingBottom:70
+    paddingBottom: 70,
   },
   _menuFooter: {
     borderBottomWidth: 1,
@@ -828,7 +828,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 16,
-    marginBottom: 16
+    marginBottom: 16,
   },
   _textTitleCard: {
     color: color.text.primary,
@@ -1133,5 +1133,9 @@ export default StyleSheet.create({
   },
   _labelDate: {
     position: 'absolute',
+  },
+
+  disHide: {
+    display: 'none',
   },
 });

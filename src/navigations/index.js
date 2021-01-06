@@ -163,15 +163,20 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
 
-  // useEffect(() => {
-  //   AsyncStorage.getItem(TOKEN).then(v => {
-  //     // console.log('v==>', v);
-  //     setIsLogin(v !== '');
-  //   });
-  // }, []);
+  useEffect(() => {
+    AsyncStorage.getItem(TOKEN).then(v => {
+      // console.log('v==>', v);
+      setIsLogin(v !== '' || v !== null);
+    });
+  }, []);
+
+  console.log('isLogin==>', isLogin);
 
   const authContext = useMemo(() => {
     return {
+      getLoginStatus: () => {
+        return isLogin;
+      },
       login: () => {
         setIsLoading(true);
         setIsLogin(true);
@@ -181,10 +186,12 @@ const App = () => {
         setIsLogin(false);
       },
       signOut: () => {
+        console.log('isLogin==>', isLogin);
+
         setIsLoading(false);
         setIsLogin(false);
-        let a = AsyncStorage.removeItem(TOKEN);
-        console.log('a==>', a);
+        // AsyncStorage.removeItem(TOKEN);
+        console.log('isLogin==>', isLogin);
       },
     };
   }, []);
@@ -204,11 +211,11 @@ const App = () => {
                     component={TabScreen}
                     options={{ headerShown: false }}
                   />
-                  <AuthStack.Screen
+                  {/* <AuthStack.Screen
                     name="testScreen"
                     component={TextField}
                     options={{ headerShown: false }}
-                  />
+                  /> */}
                   <AuthStack.Screen
                     name="Register"
                     component={Register}
@@ -219,266 +226,266 @@ const App = () => {
                     component={Terms}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Webview"
                     component={WebviewScreen}
                     headerMode={true}
                     options={{ headerShown: true }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Camera"
                     component={CameraScreen}
                     headerMode={true}
                     options={{ headerShown: true }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Notification"
                     component={Notification}
                     headerMode={true}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Geolocations"
                     component={Geolocations}
                     headerMode={true}
                     options={{ headerShown: true }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="TextField"
                     component={TextField}
                     headerMode={true}
                     options={{ headerShown: true }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="RegisterWH"
                     component={RegisterWH}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="RegisterImage"
                     component={RegisterImage}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="RegisterInfo"
                     component={RegisterInfo}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="RegisterIntro"
                     component={RegisterIntro}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="RegisterMoreIntro"
                     component={RegisterMoreIntro}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="RegisterInfoFloor"
                     component={RegisterInfoFloor}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="RegisterContractConditions"
                     component={RegisterContractConditions}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="DetailsWH"
                     component={DetailsWH}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="DetailsLocationWH"
                     component={DetailsLocationWH}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="InquiryWH"
                     component={InquiryWH}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="DetailsInquiryWH"
                     component={DetailsInquiryWH}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="CreateInquiryWH"
                     component={CreateInquiryWH}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Annoucement"
                     component={Annoucement}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="DetailAnnoucement"
                     component={DetailAnnoucement}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="FAQ"
                     component={FAQ}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Quotation"
                     component={Quotation}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="QuotationTrust"
                     component={QuotationTrust}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="AvaliableChate"
                     component={AvaliableChate}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="ContractDetails"
                     component={ContractDetails}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="MypageInfo"
                     component={MypageInfo}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="WithdrawalInformation"
                     component={WithdrawalInformation}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="ConfirmPass"
                     component={ConfirmPass}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Inquiry"
                     component={Inquiry}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="DetailInquiry"
                     component={DetailInquiry}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Chatting"
                     component={Chatting}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="StorageAgreement"
                     component={StorageAgreement}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="DetailsManager"
                     component={DetailsManager}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="DetailsSettlement"
                     component={DetailsSettlement}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="ProprietorMypage"
                     component={ProprietorMypage}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="ResponseQuotation"
                     component={ResponseQuotation}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="TenantMypage"
                     component={TenantMypage}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="More"
                     component={More}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
 
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Consulting"
                     component={Consulting}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="SampleScreen"
                     component={SampleScreen}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Question"
                     component={Question}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Mypage"
                     component={Mypage}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="RequestContract"
                     component={RequestContract}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Information"
                     component={Information}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="LogisticsKnowledge"
                     component={LogisticsKnowledge}
                     headerMode={false}
@@ -486,18 +493,24 @@ const App = () => {
                   />
                 </AuthStack.Navigator>
               ) : (
-                <RootStack.Navigator initialRouteName="Home">
-                  <AuthStack.Screen
+                <RootStack.Navigator initialRouteName="Login">
+                  <RootStack.Screen
+                    name="More"
+                    component={More}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
                     name="Home"
                     component={TabScreen}
                     options={{ headerShown: false }}
                   />
-                  <AuthStack.Screen
+                  <RootStack.Screen
                     name="FindID"
                     component={FindIDScreen}
                     options={{ headerShown: false }}
                   />
-                  <AuthStack.Screen
+                  <RootStack.Screen
                     name="FindPassWord"
                     component={FindPassWordScreen}
                     options={{ headerShown: false }}
