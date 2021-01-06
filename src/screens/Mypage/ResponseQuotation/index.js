@@ -65,7 +65,7 @@ class ResponseQuotation extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   togglePopupInfo = () => this.setState({ visible: !this.state.visible });
@@ -331,6 +331,7 @@ class ResponseQuotation extends Component {
                     // this.props.dataAction(this.state);
                     // this.navigation.navigate('ResponseQuotation');
                     console.log('submit :>> ');
+                    this.setState({ isSubmit: !isSubmit });
                   }}
                   style={[
                     DefaultStyle._btnInline,
@@ -484,7 +485,7 @@ class ResponseQuotation extends Component {
                     // this.props.dataAction(this.state);
                     // this.navigation.navigate('ResponseQuotation');
                     // console.log('submit :>> ');
-                    this.setState({ isSubmit: true });
+                    this.setState({ isSubmit: !isSubmit });
                   }}
                   style={[
                     DefaultStyle._btnInline,
@@ -564,13 +565,15 @@ class ResponseQuotation extends Component {
       warehSeq +
       '/' +
       rentUserNo;
+    let urlTenant =
+      type + '/warehouse/' + warehouseRegNo + '/' + typeWH + '/' + warehSeq;
 
     if (prevState.isSubmit !== this.state.isSubmit) {
       let dataState;
       this.props.route && this.props.route.params.typeWH === 'TRUST'
         ? (dataState = {
             warehouseRegNo: warehouseRegNo,
-            seq: this.props.route && this.props.route.params.seq,
+            seq: warehSeq,
             from: Date.parse(this.state.from),
             to: Date.parse(this.state.to),
             rntlValue: parseInt(this.state.rntlValue),
@@ -585,7 +588,7 @@ class ResponseQuotation extends Component {
           })
         : (dataState = {
             warehouseRegNo: warehouseRegNo,
-            seq: this.props.route && this.props.route.params.seq,
+            seq: warehSeq,
             from: Date.parse(this.state.from),
             to: Date.parse(this.state.to),
             rntlValue: parseInt(this.state.rntlValue),
@@ -594,7 +597,7 @@ class ResponseQuotation extends Component {
             remark: this.state.remark,
           });
       Warehouse.responQuotation({
-        type: url,
+        type: this.props.route.params.type === 'OWNER' ? url : urlTenant,
         data: dataState,
       })
         .then(res => {
@@ -602,7 +605,8 @@ class ResponseQuotation extends Component {
           if (res.status === 200) {
             console.log('res', res);
             this.navigation.navigate('Quotation', {
-              typeWH,
+              typeWH: this.props.route.params.typeWH,
+              type: this.props.route.params.type,
               warehouseRegNo,
               warehSeq,
               rentUserNo,

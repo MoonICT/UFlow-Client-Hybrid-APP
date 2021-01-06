@@ -135,8 +135,8 @@ export default class SettlementManagement extends Component {
       }
       
       let newRows = res.data.data.content.map((item, index) => {
-        console.log('item.cntrDvCode', item.cntrDvCode)
         return {
+          id: item.id,
           warehouseName: item.warehouseName,
           dataRedwood: [
             {
@@ -155,14 +155,10 @@ export default class SettlementManagement extends Component {
         }
       })
 
-      console.log('newRows', newRows)
 
       this.setState({
         rows: newRows
       })
-
-
-
     })
   }
 
@@ -387,7 +383,9 @@ export default class SettlementManagement extends Component {
             return (
               <CardMypage
                 key = {index}
-                onPressHeader={() => this.navigation.navigate('DetailsSettlement')}
+                onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
+                  id: item.id
+                })}
                 headerTitle={'레드우드'}
                 data={item.dataRedwood}
                 borderBottom={true}

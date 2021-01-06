@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-24 13:57:48
- * @modify date 2020-11-24 18:36:02
+ * @modify date 2021-01-06 14:27:05
  * @desc [description]
  */
 
@@ -24,6 +24,10 @@ import TextField from '@Components/organisms/TextField';
 //---> Assets
 import { Account } from '@Services/apis';
 import AsyncStorage from '@react-native-community/async-storage';
+
+//Contants
+import { TOKEN } from '@Constant';
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -62,7 +66,7 @@ class Register extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
   handleOnClickSubmit = () => {
     let signUpTemp = {};
@@ -74,33 +78,33 @@ class Register extends Component {
     signUpTemp.terms = this.state.terms;
     signUpTemp.marketing = this.state.marketing;
 
+    // console.log("signUpTemp",signUpTemp);
+
     Account.signUp(signUpTemp)
       .then(res => {
-        console.log('::::: API Sign Up Ok :::::', res);
+        // console.log('::::: API Sign Up Ok :::::', res);
         this.setState({ isDone: true });
         // go to the home after 5sec
-        const access_token = res.data.access_token;
-        AsyncStorage.setItem('token', access_token);
+        const access_token = res?.data?.access_token;
+        AsyncStorage.setItem(TOKEN, access_token);
         this.props.loginAccount(true);
-        setTimeout(() => {
-          // router.push('/');
-        }, 5000);
       })
       .catch(err => {
-        console.log('::::: API Sign Up Error :::::', err);
+        // console.log('::::: API Sign Up Error :::::', err);
 
-        if (err.response) {
-          if (err.response.status >= 400 && err.response.status < 500) {
+        if (err?.response) {
+          if (err?.response?.status >= 400 && err?.response?.status < 500) {
             // TODO Handle the alert message.
-            const errData = err.response.data;
-            console.log('::: Error Code :', errData.code);
-            console.log('::: Error Message :', errData.message);
+            const errData = err?.response?.data;
+            // console.log('::: Error Code :', errData.code);
+            // console.log('::: Error Message :', errData.message);
             // TODO Create dialog components
-            alert(errData.message);
+            alert(errData?.message);
           } else {
             // TODO Handle the alert "Please contact your administrator.".
-            const errData = err.response.data;
-            console.log('::: Error Code :', errData.code);
+            const errData = err?.response?.data;
+            // console.log('::: Error Code :', errData.code);
+            alert(errData?.message);
           }
         }
       });
@@ -214,6 +218,11 @@ class Register extends Component {
                     textContentType="password"
                     secureTextEntry={true}
                   />
+                  {confirmPassword !== password ? (
+                    <Text style={DefaultStyle._textErrorInput}>
+                      비밀번호가 안 맞아요
+                    </Text>
+                  ) : null}
                   <TextField
                     labelTextField={'휴대폰번호'}
                     colorLabel="#000000"
@@ -272,6 +281,11 @@ class Register extends Component {
                       onPress={() => {
                         this.setState({
                           serviceTerms: !serviceTerms,
+                          termsAll:
+                            !serviceTerms &&
+                            checkMarketing &&
+                            terms &&
+                            marketing,
                         });
                       }}
                     />
@@ -293,6 +307,11 @@ class Register extends Component {
                             ...terms,
                             privacy: !terms.privacy,
                           },
+                          termsAll:
+                            serviceTerms &&
+                            checkMarketing &&
+                            !terms.privacy &&
+                            marketing,
                         });
                       }}
                     />
@@ -314,6 +333,11 @@ class Register extends Component {
                             ...terms,
                             location: !terms.location,
                           },
+                          termsAll:
+                            serviceTerms &&
+                            checkMarketing &&
+                            !terms.location &&
+                            marketing,
                         });
                       }}
                     />
@@ -335,6 +359,11 @@ class Register extends Component {
                             ...terms,
                             financial: !terms.financial,
                           },
+                          termsAll:
+                            serviceTerms &&
+                            checkMarketing &&
+                            !terms.financial &&
+                            marketing,
                         });
                       }}
                     />
@@ -370,7 +399,7 @@ class Register extends Component {
                       마케팅 활용 수신동의 (선택)
                     </Text>
                   </View>
-                  {/** ---------------Terms 3 child------------*/}
+                  {/** ---------------Terms 5 child------------*/}
                   <View style={[S.itemTermCL, S.itemTermMr]}>
                     <View style={[S.itemTerm, S.itemTermMr]}>
                       <Checkbox
@@ -381,6 +410,10 @@ class Register extends Component {
                               ...marketing,
                               kakao: !marketing.kakao,
                             },
+                            checkMarketing:
+                              !marketing.kakao &&
+                              marketing.sms &&
+                              marketing.email,
                           });
                         }}
                       />
@@ -396,6 +429,10 @@ class Register extends Component {
                               ...marketing,
                               sms: !marketing.sms,
                             },
+                            checkMarketing:
+                              marketing.kakao &&
+                              !marketing.sms &&
+                              marketing.email,
                           });
                         }}
                       />
@@ -411,6 +448,10 @@ class Register extends Component {
                               ...marketing,
                               email: !marketing.email,
                             },
+                            checkMarketing:
+                              marketing.kakao &&
+                              marketing.sms &&
+                              !marketing.email,
                           });
                         }}
                       />
@@ -424,12 +465,15 @@ class Register extends Component {
                   style={[
                     DefaultStyle.containerBTN,
                     S.loginBtn,
-                    DefaultStyle._primary,
+                    termsAll
+                      ? DefaultStyle._primary
+                      : DefaultStyle._textDisabled,
                   ]}
                   color="red"
                   onPress={() => {
                     this.handleOnClickSubmit();
-                  }}>
+                  }}
+                  disabled={!termsAll}>
                   확인
                 </Button>
               </View>

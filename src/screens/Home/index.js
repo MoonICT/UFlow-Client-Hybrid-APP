@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-06 10:27:05
+ * @modify date 2021-01-06 18:41:36
  * @desc [description]
  */
 
@@ -76,6 +76,12 @@ import { Warehouse } from '@Services/apis'; //Account,
 // const windowHeight = Dimensions.get('window').height;
 
 // const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+
+import { AuthContext } from '@Store/context';
+
+import AsyncStorage from '@react-native-community/async-storage';
+//Contants
+import { TOKEN } from '@Constant';
 
 const slides = [
   {
@@ -305,6 +311,8 @@ const slides = [
 // ];
 
 class Home extends Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.webView = null;
@@ -313,6 +321,7 @@ class Home extends Component {
       isShow: false,
       expanded: true,
       whList: [],
+      isLogin: false,
     };
     this.navigation = props.navigation;
     this.fcm = new FCMService();
@@ -354,16 +363,16 @@ class Home extends Component {
 
   _renderProductItem = item => {
     // console.log('item==>', item);
-    const { whList } = this.state;
+    let { whList } = this.state;
     const cardItem = [];
-
-    whList.map((v, i) => {
+    whList = whList.slice(0, 4);
+    whList?.map((v, i) => {
       cardItem.push(
         <View key={i} style={styles.mainProductItem}>
-          {item?.thumbnail !== null ? (
-            <ProductCard data={item} />
+          {v?.thumbnail !== null ? (
+            <ProductCard data={v} />
           ) : (
-            <ProductCard data={{ ...item, img: cardBG }} />
+            <ProductCard data={{ ...v, img: cardBG }} />
           )}
         </View>,
       );
@@ -389,41 +398,46 @@ class Home extends Component {
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
-    const { whList } = this.state;
+    const { isLogin } = this.state;
+    // const { getLoginStatus } = this.context;
 
-    console.log('whList==>', whList);
+    // console.log('whList==>', whList);
+    // const isLogin = getLoginStatus();
+    console.log('isLogin Hello==>', isLogin);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
         {/**### APPBAR ###*/}
-        <AppBars style={[styles.appBar]}>
-          <View style={[styles.actionBar]}>
-            {/* <Appbar.Action icon="menu" color="white" onPress={() => {}} />
-             */}
-            <Appbar.Content
-              title={
-                <Text style={[styles.notifiAppbar, styles.font14]}>
-                  더 많은 혜택을 위해
-                  <Text style={{ color: '#ff6d00' }}> 회원가입 </Text>
-                  하러 가기
-                </Text>
-              }
-              titleStyle={DefaultStyle.headerTitle}
-            />
+        {!isLogin ? (
+          <AppBars style={[styles.appBar]}>
+            <View style={[styles.actionBar]}>
+              {/* <Appbar.Action icon="menu" color="white" onPress={() => {}} />
+               */}
+              <Appbar.Content
+                title={
+                  <Text style={[styles.notifiAppbar, styles.font14]}>
+                    더 많은 혜택을 위해
+                    <Text style={{ color: '#ff6d00' }}> 로그인 </Text>
+                    하러 가기
+                  </Text>
+                }
+                titleStyle={DefaultStyle.headerTitle}
+              />
 
-            <TouchableOpacity
-              mode="contained"
-              style={[DefaultStyle.containerBTN, styles.btnAction]}
-              color="red"
-              // onPress={() => showPopup()}
-              onPress={() => this.navigation.navigate('Register')}
-              // onPress={() => this.getItem()}
-            >
-              <Text style={styles.textBtnAction}>회원가입</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={[DefaultStyle.divider]} />
-        </AppBars>
+              <TouchableOpacity
+                mode="contained"
+                style={[DefaultStyle.containerBTN, styles.btnAction]}
+                color="red"
+                // onPress={() => showPopup()}
+                onPress={() => this.navigation.navigate('Login')}
+                // onPress={() => this.getItem()}
+              >
+                <Text style={styles.textBtnAction}>로그인</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={[DefaultStyle.divider]} />
+          </AppBars>
+        ) : null}
 
         {/**### Content ###*/}
         <ScrollView>
@@ -746,7 +760,11 @@ class Home extends Component {
             </View>
             <TouchableOpacity
               style={styles.mainCallBTN}
-              onPress={() => this.navigation.navigate('RegisterWH')}>
+              onPress={() =>
+                isLogin
+                  ? this.navigation.navigate('RegisterWH')
+                  : this.navigation.navigate('Login')
+              }>
               <Text
                 style={[
                   styles.btnMainCall,
@@ -807,13 +825,19 @@ class Home extends Component {
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
     /** Complete Initialize. */
-    // let page = await Warehouse.listRecommend();
-    // page = page?.data;
-    // let list =
-    //   page?._embedded && page?._embedded?.warehouses
-    //     ? page?._embedded?.warehouses
-    //     : [];
-    // this.setState({ whList: list });
+    let page = await Warehouse.listRecommend();
+    page = page?.data;
+    let list =
+      page?._embedded && page?._embedded?.warehouses
+        ? page?._embedded?.warehouses
+        : [];
+    this.setState({ whList: list });
+
+    AsyncStorage.getItem(TOKEN).then(v => {
+      console.log('v==>', v);
+      this.setState({ isLogin: v !== '' && v !== null });
+    });
+
     SplashScreen.hide();
   }
 }

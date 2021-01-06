@@ -3,7 +3,15 @@ import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const defaultState = {
-  pimages: [],
+  pimages: [
+    {
+      name:
+        'http://files.uflow.voltpage.net/uflow_9449c64b369c488f89cbae79d19c475f.png',
+    },
+  ],
+  whImages: [],
+  thImages: [],
+  entrpNo: '987654321',
   // data: {
   //   test: 1,
   // },

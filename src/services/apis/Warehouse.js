@@ -2,8 +2,11 @@ import { Axios, parseQuery } from '@Services/http';
 import { mainAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
+//Contants
+import { TOKEN } from '@Constant';
+
 export const uploadImage = async formData => {
-  // const token = await AsyncStorage.getItem('token');
+  // const token = await AsyncStorage.getItem(TOKEN);
   // console.log('token :>> ', token);
   console.log('formData :>> ', formData);
   return await mainAxios.post('/api/v1/file/images', {
@@ -15,17 +18,17 @@ export const uploadImage = async formData => {
   });
 };
 export const registerWH = async data => {
-  console.log('data :>> ', data);
-  const token = await AsyncStorage.getItem('token');
-  // return await mainAxios.get('/api/v1/warehouse', data, {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //     // Accept: 'application/json',
-  //   },
-  // });
+  console.log('dataregisterWH :>> ', data);
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.post('/api/v1/warehouse', data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // Accept: 'application/json',
+    },
+  });
 };
 export const myWH = async () => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.get('/api/v1/warehouse/list/owner', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -34,7 +37,7 @@ export const myWH = async () => {
   });
 };
 export const contractManager = async type => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.get(`/api/v1/mypage/estmt-cntr?userType=${type}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -43,7 +46,7 @@ export const contractManager = async type => {
   });
 };
 export const quotation = async type => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.get(`/api/v1/estimate/${type}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -52,7 +55,8 @@ export const quotation = async type => {
   });
 };
 export const responQuotation = async value => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem(TOKEN);
+  console.log('responQuotation', value)
   return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -62,7 +66,7 @@ export const responQuotation = async value => {
 };
 
 export const requestContract = async value => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem(TOKEN);
   console.log('value', value);
   return await mainAxios.post(`/api/v1/contract/${value.typeWH}`, value.data, {
     headers: {
@@ -73,7 +77,7 @@ export const requestContract = async value => {
 };
 
 export const listChat = async url => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem(TOKEN);
   console.log('valueurl', url);
 
   return await mainAxios.get(`/api/v1/chat/contract/${url}`, {
@@ -85,7 +89,7 @@ export const listChat = async url => {
 };
 
 export const chatting = async value => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem(TOKEN);
   console.log('valueurl', value);
 
   return await mainAxios.post(
@@ -98,6 +102,21 @@ export const chatting = async value => {
       },
     },
   );
+};
+
+export const termsContract = async value => {
+  const token = await AsyncStorage.getItem('token');
+  console.log('value', value);
+  // return await mainAxios.post(
+  //   `/api/v1/chat/contract/4100/${value.url}`,
+  //   value && value.data,
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       Accept: 'application/json',
+  //     },
+  //   },
+  // );
 };
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인

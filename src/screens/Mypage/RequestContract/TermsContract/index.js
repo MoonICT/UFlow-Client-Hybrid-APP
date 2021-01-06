@@ -31,13 +31,14 @@ import illust11 from '@Assets/images/illust11.png';
 
 import { styles as S } from '../../style';
 import { styles as SS } from './style';
+import { Warehouse } from '@Services/apis';
 
 class TermsContract extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      checkedAll: false,
+      isSubmit: false,
       checked: false,
       checked2: false,
     };
@@ -56,7 +57,12 @@ class TermsContract extends Component {
       warehouse,
       rentUser,
     } = this.props;
-    const { checkedAll, checked2, checked } = this.state;
+    const { checked2, checked, isSubmit } = this.state;
+    let checkAllUpdate = false;
+    if (checked2 === checked) {
+      checkAllUpdate = checked;
+    }
+    console.log('checkAllUpdate', checked2, checked);
     return (
       <View>
         <View style={DefaultStyle._card}>
@@ -210,12 +216,12 @@ class TermsContract extends Component {
 
         <View style={SS.checkAccept}>
           <Checkbox
-            checked={checkedAll}
+            checked={checkAllUpdate}
             onPress={() =>
               this.setState({
-                checkedAll: !checkedAll,
-                checked2: !checkedAll,
-                checked: !checkedAll,
+                checkedAll: !checkAllUpdate,
+                checked2: !checkAllUpdate,
+                checked: !checkAllUpdate,
               })
             }
           />
@@ -272,11 +278,16 @@ class TermsContract extends Component {
         <View
           style={[DefaultStyle._listBtn, { marginTop: 12, marginBottom: 8 }]}>
           <TouchableOpacity
-            style={[DefaultStyle._btnInline]}
+            style={[
+              DefaultStyle._btnInline,
+              checkAllUpdate === true ? '' : DefaultStyle._oulineDisabled,
+            ]}
+            disabled={checkAllUpdate === true ? false : true}
             onPress={() => {
+              this.setState({ isSubmit: !isSubmit });
               this.props.showPopup({
                 image: illust11,
-                title: '견적 등록 완료',
+                title: '계약서 등록 완료',
                 type: 'confirm',
                 content: `계약서 등록을 완료했습니다.\n  UFLOW 계약 담당자가\n  계약서를 확인 후 승인할 예정입니다.`,
               });
@@ -299,6 +310,34 @@ class TermsContract extends Component {
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
+    if (prevState.isSubmit !== this.state.isSubmit) {
+      // let warehSeq = this.props.route.params.warehSeq;
+      // let warehouseRegNo = this.props.route.params.warehouseRegNo;
+      // let rentUserNo = this.props.route.params.rentUserNo;
+      // let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
+      // let typeWH =
+      //   this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+      // let url = type + '/' + typeWH;
+
+      // Warehouse.termsContract({ url, data })
+      //   .then(res => {
+      //     console.log('res', res);
+      //     if (res.status === 200) {
+      //       console.log('resRequestContract', res);
+      //       this.navigation.navigate('RequestContract', {
+      //         type,
+      //         warehouseRegNo,
+      //         warehSeq,
+      //         typeWH: this.state.dataProps.typeWH,
+      //         rentUserNo,
+      //         status: '1100',
+      //       });
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log('err', err);
+      //   });
+    }
   }
 }
 

@@ -338,8 +338,10 @@ export default StyleSheet.create({
     marginBottom: 18,
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 6,
+    padding: 13,
     paddingLeft: 14,
+    minHeight: 50,
+    alignItems: 'center',
   },
   _textSelected: {
     margin: 4,
@@ -771,7 +773,7 @@ export default StyleSheet.create({
     // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     padding: 16,
-    paddingBottom:70
+    paddingBottom: 70,
   },
   _menuFooter: {
     borderBottomWidth: 1,
@@ -870,7 +872,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 16,
-    marginBottom: 16
+    marginBottom: 16,
   },
   _textTitleCard: {
     color: color.text.primary,
@@ -1182,5 +1184,9 @@ export default StyleSheet.create({
   },
   _labelDate: {
     position: 'absolute',
+  },
+
+  disHide: {
+    display: 'none',
   },
 });

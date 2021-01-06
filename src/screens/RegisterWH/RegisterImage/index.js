@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, IconButton } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
-
+import {TextInput} from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
@@ -29,40 +29,21 @@ import ActionCreator from '@Actions';
 // import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
-import ImagePicker from 'react-native-image-picker';
-// import DocumentPicker from 'react-native-document-picker';
-import { MediaUpload } from '@Services/apis';
-
-const createFormData = (photo, body) => {
-  const data = new FormData();
-
-  data.append('photo', {
-    name: photo.fileName,
-    type: photo.type,
-    files: photo,
-    uri:
-      Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
-  });
-
-  Object.keys(body).forEach(key => {
-    data.append(key, body[key]);
-  });
-
-  return data;
-};
-
-const passFile = value => {
-  let data = new FormData();
-  data.append('files', value);
-  return data;
-};
+import {MediaUpload} from '@Services/apis'
+import DocumentPicker from 'react-native-document-picker';
 class RegisterImage extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { title: 'Profile Photo', confirm: false };
+    this.state = {
+      title: 'Profile Photo',
+      confirm: false,
+      singleFile: null
+  
+  };
     this.navigation = props.navigation;
   }
+
 
   /** listener when change props */
   shouldComponentUpdate(nextProps, nextState) {
@@ -77,65 +58,41 @@ class RegisterImage extends Component {
   _addImage = () => console.log('_addImage');
   _removeImage = () => this.props.removeAction(0);
 
-  handlePicker = () => {
-    console.log('edit');
+  changeContent = (e) => {
+    console.log('e', e)
+  }
 
-    ImagePicker.showImagePicker({}, response => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+  handlePicker = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      });
+      this.setState({ singleFile: res }, async ()=> {
+        if (res != null) {
+          // If file selected then create FormData
+          let {singleFile} = this.state;
+          const data = new FormData();
+          data.append('name', singleFile.name);
+          data.append('file', singleFile);
+          // Please change file upload URL
+          MediaUpload.uploadFile(data).then((res) => {
+            if(res.status === 200) {
+              let {url} = res.data
+            }
+          })
+        } else {
+          // If no file selected the show alert
+          alert('Please Select File first');
+        }  
+      });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
       } else {
-        let pimages = [{ uri: response.uri }];
-        pimages.push();
-        this.props.registerAction({ uri: response.uri });
-        this.setState({
-          avatar: { uri: response.uri },
-          title: 'Updating...',
-          imgData: pimages,
-        });
-
-        let body = passFile(response);
-
-        let dataUpload = MediaUpload.uploadImage(body);
-
-        console.log('dataUpload===>', dataUpload);
-        // fetch('http://api.uflow.voltpage.net/api/v1/file/images', {
-        //   method: 'POST',
-        //   // eslint-disable-next-line no-undef
-        //   headers: new Headers({
-        //     'Content-Type': 'application/x-www-form-urlencoded', //Specifying the Content-Type
-        //   }),
-        //   body: createFormData(response, { id: '123' }),
-        // })
-        //   .then(data => data.json())
-        //   .then(res => {
-        //     console.log('upload succes', res);
-        //     this.setState({
-        //       avatar2: { uri: response.image },
-        //       title: 'Profile Photo',
-        //     });
-        //   })
-        //   .catch(error => {
-        //     console.log('upload error', error);
-        //     this.setState({
-        //       title: 'Profile Photo',
-        //     });
-        //   });
-        // here we can call a API to upload image on server
+        throw err;
       }
-    });
+    }
   };
-  // componentWillUpdate(nextProps, nextState) {
-  //   const state = this.state.avatar;
-  //   // this.props.registerAction(state);
-  //   console.log('Component WILL UPDATE!');
-
-  // }
   render() {
     const { imageStore } = this.props;
     // console.log('imageStore', imageStore);
@@ -178,6 +135,7 @@ class RegisterImage extends Component {
               // this.props.registerAction('44444');
             }}
           />
+
           <Appbar.Action
             icon="delete"
             color="black"
@@ -185,6 +143,8 @@ class RegisterImage extends Component {
           />
         </Appbars>
         <ScrollView>
+
+
           {imageStore.length === 0 ? (
             <View style={S.bgrRegister}>
               <Image source={ignore3} style={S.ImageStyle} />
@@ -230,16 +190,6 @@ class RegisterImage extends Component {
     );
   }
 
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
 /** map state with store states redux store */
