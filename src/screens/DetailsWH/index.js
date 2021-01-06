@@ -45,6 +45,9 @@ import mapLink from '@Assets/images/mapLink.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import { Warehouse } from '@Services/apis'
+
+
 const slidesProduct = [
   {
     key: 'somethun',
@@ -103,7 +106,7 @@ class DetailWH extends Component {
     this.webView = null;
     this.state = { active: 0, checked: true, checked2: false, activeIndex: 0 };
     this.navigation = props.navigation;
-    // console.log('navigation', props.navigation);
+    console.log('navigation', props.navigation);
   }
 
   /** listener when change props */
@@ -605,7 +608,20 @@ class DetailWH extends Component {
   async componentDidMount() {
     console.log('::componentDidMount::');
     SplashScreen.hide();
+    this.getDataWH()
+
   }
+
+  async getDataWH(){
+    let params = {
+      id: 'RG20210101241'
+    };
+    await Warehouse.getWhrg(params).then((res) => {
+      let whrgData = res;
+    })
+  }
+
+  
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
