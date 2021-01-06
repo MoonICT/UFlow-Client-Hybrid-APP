@@ -166,11 +166,11 @@ const App = () => {
   useEffect(() => {
     AsyncStorage.getItem(TOKEN).then(v => {
       // console.log('v==>', v);
-      setIsLogin(v !== '' || v !== null);
+      setIsLogin(v !== '' && v !== null);
     });
   }, []);
 
-  console.log('isLogin==>', isLogin);
+  // console.log('isLogin==>', isLogin);
 
   const authContext = useMemo(() => {
     return {
@@ -186,12 +186,10 @@ const App = () => {
         setIsLogin(false);
       },
       signOut: () => {
-        console.log('isLogin==>', isLogin);
-
-        setIsLoading(false);
-        setIsLogin(false);
-        // AsyncStorage.removeItem(TOKEN);
-        console.log('isLogin==>', isLogin);
+        AsyncStorage.removeItem(TOKEN).then(() => {
+          setIsLoading(false);
+          setIsLogin(false);
+        });
       },
     };
   }, []);
@@ -493,7 +491,7 @@ const App = () => {
                   />
                 </AuthStack.Navigator>
               ) : (
-                <RootStack.Navigator initialRouteName="Login">
+                <RootStack.Navigator initialRouteName="Home">
                   <RootStack.Screen
                     name="More"
                     component={More}
