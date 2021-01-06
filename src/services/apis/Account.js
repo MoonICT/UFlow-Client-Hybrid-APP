@@ -48,7 +48,8 @@ export const me = () => {
 };
 
 export const editMyInfo = async payload => {
-  const token = await AsyncStorage.getItem('token');
+  console.log(payload);
+  const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.post(`/api/v1/me/update-info`, payload, {
     headers: {
       Authorization: `Bearer ${token}`,

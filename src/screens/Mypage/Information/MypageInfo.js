@@ -108,7 +108,7 @@ class MypageInfo extends Component {
       emailRcv: isAgreeSNS.email,
       smsRcv: isAgreeSNS.sms
     }).then(res => {
-      console.log(res);
+      console.log('editMyInfo', res);
     }).catch(err => {
       console.log(err);
     })
@@ -197,7 +197,8 @@ class MypageInfo extends Component {
                 onPress={() => {
                   this.setState({
                     isAgreeSNS:{
-                      sms: !isAgreeSNS.sms
+                      sms: !isAgreeSNS.sms,
+                      email: isAgreeSNS.email
                     }
                   })
                 }}
@@ -210,7 +211,8 @@ class MypageInfo extends Component {
                 onPress={() => {
                   this.setState({
                     isAgreeSNS:{
-                      email: !isAgreeSNS.email
+                      email: !isAgreeSNS.email,
+                      sms: isAgreeSNS.sms
                     }
                   })
                 }}
