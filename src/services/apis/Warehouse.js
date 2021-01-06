@@ -86,8 +86,6 @@ export const listChat = async url => {
 
 export const chatting = async value => {
   const token = await AsyncStorage.getItem('token');
-  console.log('valueurl', value);
-
   return await mainAxios.post(
     `/api/v1/chat/contract/${value.url}`,
     value && value.data,
@@ -98,6 +96,21 @@ export const chatting = async value => {
       },
     },
   );
+};
+
+export const termsContract = async value => {
+  const token = await AsyncStorage.getItem('token');
+  console.log('value', value);
+  // return await mainAxios.post(
+  //   `/api/v1/chat/contract/4100/${value.url}`,
+  //   value && value.data,
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       Accept: 'application/json',
+  //     },
+  //   },
+  // );
 };
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인
