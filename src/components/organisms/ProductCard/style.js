@@ -20,12 +20,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
   },
-  regular: {
-    fontFamily: 'NotoSansCJKkr-Regular',
-  },
-  medium: {
-    fontFamily: 'NotoSansCJKkr-Medium',
-  },
   bold: {
     fontFamily: 'NotoSansCJKkr-Bold',
   },
@@ -117,6 +111,7 @@ export const styles = StyleSheet.create({
   },
   cardImageHorizon: {
     height: 124,
+    width: 124,
     borderRadius: 12,
   },
   badge: {

@@ -19,12 +19,21 @@ import FilterPeriod from './FilterPeriod';
 import FilterPrice from './FilterPrice';
 import FilterScale from './FilterScale';
 import FilterOther from './FilterOther';
+import { Warehouse, WhrgSearch } from '@Services/apis';
 
 class SearchFilter extends Component {
   constructor (props) {
     super(props);
     this.state = {
       panelAnimation: new Animated.Value(0), // 필터 패널 애니메이션.
+      // 필터 데이터
+      listGdsTypeCode: null, // 보관유형
+      listCalUnitDvCode: null, // 정산단위
+      listCalStdDvCode: null, // 산정기준
+      listFlrDvCode: null, // 층수
+      listAprchMthdDvCode: null, // 접안방식
+      listInsrDvCode: null, // 보험 가입
+      listCmpltTypes: null, // 준공연차
     };
   }
 
@@ -43,9 +52,10 @@ class SearchFilter extends Component {
         <Animated.View style={[styles.animatedView, { top: this.state.panelAnimation, }]}>
 
           {this.props.filterList.map((item, index) => (item.toggle && (
-              (item.type === 'WAREHOUSE' && <FilterWarehouse key={index} onClosed={() => {
-                this._onClickClose();
-              }} />) ||
+              (item.type === 'WAREHOUSE' &&
+                <FilterWarehouse key={index} filter={this.state.listGdsTypeCode} onClosed={() => {
+                  this._onClickClose();
+                }} />) ||
               (item.type === 'STORAGE' && <FilterStorage key={index} onClosed={() => {
                 this._onClickClose();
               }} />) ||
@@ -78,7 +88,7 @@ class SearchFilter extends Component {
   }
 
   componentWillUnmount () {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   // 컴포넌트 업데이트 직후 호출.
@@ -93,7 +103,25 @@ class SearchFilter extends Component {
     ).start();
   }
 
-  componentDidMount () {
+  async componentDidMount () {
+    // 필터 데이터들 호출.
+    const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 보관유형
+    const listCalUnitDvCode = await Warehouse.listCalUnitDvCode(); // 정산단위
+    const listCalStdDvCode = await Warehouse.listCalStdDvCode(); // 산정기준
+    const listFlrDvCode = await Warehouse.listFlrDvCode(); // 층수
+    const listAprchMthdDvCode = await Warehouse.listAprchMthdDvCode(); // 접안방식
+    const listInsrDvCode = await Warehouse.listInsrDvCode(); // 보험 가입
+    const listCmpltTypes = await WhrgSearch.getCmpltTypes(); // 준공 연차
+    this.setState({
+      getCmpltTypes: listGdsTypeCode && listGdsTypeCode._embedded ? listGdsTypeCode._embedded.detailCodes : [], // 보관유형
+      listCalUnitDvCode: listCalUnitDvCode && listCalUnitDvCode._embedded ? listCalUnitDvCode._embedded.detailCodes : [], // 정산단위
+      listCalStdDvCode: listCalStdDvCode && listCalStdDvCode._embedded ? listCalStdDvCode._embedded.detailCodes : [], // 산정기준
+      listFlrDvCode: listFlrDvCode && listFlrDvCode._embedded ? listFlrDvCode._embedded.detailCodes : [], // 층수
+      listAprchMthdDvCode: listAprchMthdDvCode && listAprchMthdDvCode._embedded ? listAprchMthdDvCode._embedded.detailCodes : [], // 접안방식
+      listInsrDvCode: listInsrDvCode && listInsrDvCode._embedded ? listInsrDvCode._embedded.detailCodes : [], // 보험 가입
+      listCmpltTypes: listCmpltTypes && listCmpltTypes._embedded ? listCmpltTypes._embedded.hashMaps : [], // 준공연차
+    });
+    console.log('현재 스테이트', this.state);
   }
 }
 

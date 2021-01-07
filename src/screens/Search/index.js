@@ -5,13 +5,6 @@
  * @flow strict-local
  */
 
-/**
- * TODO List
- * - 관리 패턴 생각해보기.
- * - 인풋 링크(브라우저 주소창).
- * - 뒤로가기, 앞으로가기 기능.
- * - 새로고침.
- * */
 // Global Imports
 import React, { Component } from 'react';
 import { SafeAreaView, TouchableOpacity, View } from 'react-native';
@@ -32,22 +25,19 @@ import SearchFilterPanel from '@Components/organisms/SearchFilterPanel';
 import ActionCreator from '@Actions';
 
 class Search extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     // Webview initialize options.
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
-      defaultURL: 'http://www.uflow.voltpage.net/webview/search',
-      // defaultURL: 'http://localhost:13000/webview/search',
+      // defaultURL: 'http://www.uflow.voltpage.net/webview/search',
+      defaultURL: 'http://localhost:13000/webview/search',
     };
     this.state = {
       url: this.option.defaultURL,
       progress: 0,
       searchQuery: '',
-
-      swipeablePanelActive: false,
-      isPanelActive: false,
     };
     // Ref
     this.refSearchFilter = React.createRef();
@@ -58,48 +48,35 @@ class Search extends Component {
    * */
 
   // When the WebView has finished loading.
-  async _WVOnLoad(e) {
+  async _WVOnLoad (e) {
     console.log('::: Web View Loaded ::: ');
   }
 
   // When the webview calls window.postMessage.
-  async _WVOnMessage(e) {
+  async _WVOnMessage (e) {
     // console.log(':::: onReceiveWebViewMessage');
     let msgData = WVMsgService.parseMessageData(e);
     switch (msgData.type) {
-      case 'MESSAGE_TYPE':
+      case 'CONSOLE_LOG':
+        console.log(msgData)
+        break;
+      case 'MESSAGE_TYPE_TEST':
         break;
     }
   }
 
-  _WVSendMessage(msgObj) {
+  _WVSendMessage (msgObj) {
     // console.log(':::: Send Message');
     let resultMsg = JSON.stringify(msgObj);
     this.webView.postMessage(resultMsg);
   }
 
-  openPanel = () => {
-    this.setState({ swipeablePanelActive: true });
-  };
-
-  closePanel = () => {
-    this.setState({ swipeablePanelActive: false });
-  };
-
-  openPanel = () => {
-    this.setState({ isPanelActive: true });
-  };
-
-  closePanel = () => {
-    this.setState({ isPanelActive: true });
-  };
-
   /**
    * END : Webview Event.
    ***************************/
-
   // 컴포넌트 랜더링.
-  render() {
+  render () {
+    const strMsgType = JSON.stringify(WVMsgService.types);
     let injectJSCode = `
     window.consoleLog = function(...args){
       window.ReactNativeWebView.postMessage(JSON.stringify({
@@ -110,6 +87,7 @@ class Search extends Component {
     window.ReactNativeEnv = {
       isNativeApp: true
     };
+    window.ReactNativeTypes = ${strMsgType};
     `;
     return (
       <SafeAreaView style={[styles.container]}>
@@ -127,13 +105,14 @@ class Search extends Component {
           />
         </Appbars>
 
-        {/** Search Filter */}
+        {/** 검색 펄터 버튼 목록 */}
+        {/* TODO 필터 선택시 표현 하기. */}
         <SearchFilter ref={this.refSearchFilter} />
 
-        {/** Search Overlay */}
+        {/** 지역/주소 검색하기. */}
         {this.props.isSearchToggle && <SearchOverlay />}
 
-        {/** Search Filter Panel */}
+        {/** 필터 패널들. */}
         <SearchFilterPanel
           onClosed={() => {
             console.log('필터 취소됨.');
@@ -180,20 +159,20 @@ class Search extends Component {
 
   // 컴포넌트가 만들어지고 render가 호출된 이후에 호출.
   // 비동기 요청을 처리하는 부분.
-  componentDidMount() {
+  componentDidMount () {
     console.log('::componentDidMount::');
     /** Complete Initialize. */
     SplashScreen.hide();
   }
 
   // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate() {
+  componentDidUpdate () {
     console.log('::componentDidUpdate::');
   }
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   console.log('++++++mapStateToProps: ', state);
   return {
     isSearchToggle: state.search.isSearchToggle,
@@ -202,7 +181,7 @@ function mapStateToProps(state) {
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   console.log(':::::::::::::::::', ActionCreator);
   return {
     searchToggle: status => {
