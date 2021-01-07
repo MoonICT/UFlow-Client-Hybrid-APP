@@ -18,6 +18,13 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingBottom: 60,
   },
+  line: {
+    top: 26,
+    position: 'absolute',
+    borderBottomColor: '#f1f1f3',
+    borderBottomWidth: 1,
+    zIndex: 999999,
+  },
   contentBottom: {
     backgroundColor: '#fafafa',
     paddingBottom: 20,
@@ -25,7 +32,7 @@ export const styles = StyleSheet.create({
   },
   tabTopbar: {
     position: 'absolute',
-    top: 48,
+    top: 44,
     width: '100%',
     zIndex: 99999,
     backgroundColor: 'white',

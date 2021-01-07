@@ -10,6 +10,7 @@
 import React, { Component, useRef } from 'react';
 import {
   SafeAreaView,
+  Dimensions,
   View,
   ScrollView,
   Text,
@@ -241,6 +242,7 @@ export default class Notification extends Component {
     }
   };
   render() {
+    const windowWidth = Dimensions.get('window').width;
     let slidesText = [
       {
         contentText: (
@@ -374,6 +376,7 @@ export default class Notification extends Component {
 
     return (
       <SafeAreaView style={{ backgroundColor: 'white' }}>
+        {/* <View style={{ backgroundColor: 'white' }}> */}
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -387,6 +390,9 @@ export default class Notification extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
+        <View style={[S.line, { width: windowWidth }]}>
+          <Text />
+        </View>
         <View style={S.tabTopbar}>
           <View style={S.boxSelect}>{this.props.navitationTitle}</View>
           <AppGrid
@@ -396,6 +402,7 @@ export default class Notification extends Component {
             titleProps={e => this.handleChangeTitle(e)}
           />
         </View>
+        {/* </View> */}
         <ScrollView onScroll={this.handleScroll} ref={this.myRef}>
           {/* section 1 */}
           <View
