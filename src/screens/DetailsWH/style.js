@@ -292,4 +292,26 @@ export const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 24,
   },
+  rowBtn:{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    width: '100%'
+  },
+  btnQuote: {
+    backgroundColor: '#ff6d00',
+    height: 36,
+    lineHeight: 36,
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderRadius: 20,
+  },
+  textBtnQuote: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '500',
+  }
 });
