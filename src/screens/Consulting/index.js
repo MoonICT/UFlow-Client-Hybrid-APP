@@ -30,6 +30,7 @@ import RequestType from './RequestType';
 import ExtraService from './ExtraService';
 import AttachDocument from './AttachDocument';
 import ActionCreator from '@Actions';
+import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
 class Consulting extends Component {
   constructor(props) {
@@ -46,6 +47,16 @@ class Consulting extends Component {
       inputStep5: '',
     };
     this.navigation = props.navigation;
+  }
+  /** when after render DOM */
+  componentDidMount() {
+    this.getAllData();
+  }
+
+  async getAllData() {
+    await ConsultingApi.getListQuestion().then(res =>
+      console.log('res hihie', res),
+    );
   }
   // handle option step 2
   handleOptionStep2 = e => {
@@ -149,7 +160,7 @@ class Consulting extends Component {
       optionStep3,
       inputStep5,
     } = this.state;
-    console.log('stepProgress', stepProgress);
+    console.log('lele', stepProgress);
     return (
       <View style={S.container}>
         <View>
@@ -303,9 +314,9 @@ class Consulting extends Component {
     );
   }
   /** when after render DOM */
-  async componentDidMount() {
-    console.log('inputStep1', inputStep1);
-  }
+  // async componentDidMount() {
+  //   console.log('inputStep1', inputStep1);
+  // }
 }
 /** map state with store states redux store */
 function mapStateToProps(state) {
