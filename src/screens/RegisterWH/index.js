@@ -52,7 +52,7 @@ class RegisterWH extends Component {
       .then(res => {
         const status = res.status;
         if (status === 200) {
-          this.navigation.navigate('Home')
+          this.navigation.navigate('Home');
         }
       })
       .catch(err => {
@@ -61,7 +61,23 @@ class RegisterWH extends Component {
   };
   render() {
     const { imageStore, workComplete, route, dataWH } = this.props;
+    let completeMoreInfo = route.params && route.params.completeMoreInfo;
+    let completeInfo = route.params && route.params.completeInfo;
+    let completeFloor = route.params && route.params.completeFloor;
+    let completeIntro = route.params && route.params.completeIntro;
     console.log('dataWHAll', dataWH);
+    console.log('routeWH', route);
+    let isSubmitUpdate = false;
+
+    if (
+      imageStore.length > 2 &&
+      completeMoreInfo === true &&
+      completeInfo === true &&
+      completeFloor === true &&
+      completeIntro === true
+    ) {
+      isSubmitUpdate = true;
+    }
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -226,13 +242,20 @@ class RegisterWH extends Component {
         </ScrollView>
         <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
-            style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
+            disabled={isSubmitUpdate === true ? false : true}
+            style={[
+              DefaultStyle.btnSubmit,
+              isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
+            ]}
             onPress={() => {
               // this.showDialog();
               this.submit();
             }}>
             <Text
-              style={[DefaultStyle.textSubmit, DefaultStyle.textActiveSubmit]}>
+              style={[
+                DefaultStyle.textSubmit,
+                isSubmitUpdate === true ? DefaultStyle.textActiveSubmit : null,
+              ]}>
               창고 등록하기
             </Text>
           </TouchableOpacity>
