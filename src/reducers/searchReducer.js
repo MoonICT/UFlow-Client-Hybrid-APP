@@ -1,8 +1,10 @@
 import types from '../actions/types';
+import { WarehouseSearchFilterModel } from '@Services/apis/models/warehouse';
 
 const defaultState = {
   isSearchToggle: false,
   isFilterToggle: false,
+  whFilter: JSON.parse(JSON.stringify(WarehouseSearchFilterModel)),
   filterList: [
     {
       type: 'WAREHOUSE',
