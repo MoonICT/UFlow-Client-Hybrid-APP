@@ -313,5 +313,9 @@ export const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 14,
     fontWeight: '500',
-  }
+  },
+  imgWarehouse:{
+    width: 50,
+    height: 50,
+  },
 });
