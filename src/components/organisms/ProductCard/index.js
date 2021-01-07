@@ -77,6 +77,8 @@ class ProductCard extends Component {
           {/*});*/}
           {/*}}>*/}
           {/** Image */}
+          <TouchableOpacity
+          onPress={() =>this.navigation.navigate('DetailsWH', {id: data.id})}>
           <View style={styles.imageWrap}>
             <View>
               <Card.Cover
@@ -98,7 +100,7 @@ class ProductCard extends Component {
               </Text>
             </View>}
           </View>
-          {/*</TouchableOpacity>*/}
+          </TouchableOpacity>
 
           {/** Contents */}
           <View
