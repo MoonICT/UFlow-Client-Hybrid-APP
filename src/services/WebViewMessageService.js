@@ -65,6 +65,7 @@ const types = {
 // 메세지 데이터 파싱.
 function parseMessageData(e) {
   let msgData;
+  console.log('parse data : ', e.nativeEvent.data)
   try {
     msgData = JSON.parse(e.nativeEvent.data) || {};
   } catch (error) {

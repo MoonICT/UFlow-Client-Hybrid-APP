@@ -12,6 +12,8 @@ import * as InOutManagerService from './InOutManagerService';
 import * as LogisticsKnowledgeService from './LogisticsKnowledgeService';
 import * as Entrp from './Entrp';
 import * as WhrgSearch from './WhrgSearch';
+import * as ConsultingApi from './Consulting';
+import * as WarehouseOwner from './WarehouseOwner';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {
@@ -29,5 +31,7 @@ export {
   LogisticsKnowledgeService,
   SettlementManagementService,
   Entrp,
-  WhrgSearch
+  WhrgSearch,
+  ConsultingApi,
+  WarehouseOwner
 };

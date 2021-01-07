@@ -85,6 +85,7 @@ import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
 import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
+import RegisterBusinessInfo from '@Screeens/RegisterWH/RegisterBusinessInfo';
 
 import { color } from '@Themes/colors';
 
@@ -493,6 +494,12 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
+                  {/*<RootStack.Screen*/}
+                    {/*name="Login"*/}
+                    {/*component={LoginScreen}*/}
+                    {/*headerMode={false}*/}
+                    {/*options={{ headerShown: false }}*/}
+                  {/*/>*/}
                   <AuthStack.Screen
                     name="FindPassWord"
                     component={FindPassWordScreen}
@@ -501,6 +508,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="Login"
                     component={LoginScreen}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="RegisterBusinessInfo"
+                    component={RegisterBusinessInfo}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />

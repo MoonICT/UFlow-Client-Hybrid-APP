@@ -98,8 +98,9 @@ export default class Notification extends Component {
     this.state = {
       page: '창고 등록',
     };
+    this.navigation = props.navigation;
   }
-  _valueProps = (e) => {
+  _valueProps = e => {
     this.setState({ page: e });
     console.log('e', e);
   };
@@ -110,10 +111,11 @@ export default class Notification extends Component {
       <>
         {page === '창고 등록' && (
           <WarehouseRegistration
+            nav={this.navigation}
             navitationTitle={
               <Select
                 data={navitationTitle2}
-                valueProps={(e) => {
+                valueProps={e => {
                   this.setState({ page: e });
                 }}
               />
@@ -122,10 +124,11 @@ export default class Notification extends Component {
         )}
         {page === '창고 이용' && (
           <WarehouseUse
+            nav={this.navigation}
             navitationTitle={
               <Select
                 data={navitationTitle2}
-                valueProps={(e) => {
+                valueProps={e => {
                   this.setState({ page: e });
                 }}
               />
@@ -134,11 +137,12 @@ export default class Notification extends Component {
         )}
         {page === '계약 방식' && (
           <ContractMode
+            nav={this.navigation}
             navitationTitle={
               <Select
                 selec
                 data={navitationTitle3}
-                valueProps={(e) => {
+                valueProps={e => {
                   this.setState({ page: e });
                 }}
               />
