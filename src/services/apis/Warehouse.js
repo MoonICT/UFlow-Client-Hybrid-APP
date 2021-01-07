@@ -56,7 +56,7 @@ export const quotation = async type => {
 };
 export const responQuotation = async value => {
   const token = await AsyncStorage.getItem(TOKEN);
-  console.log('responQuotation', value)
+  console.log('responQuotation', value);
   return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -117,6 +117,19 @@ export const termsContract = async value => {
   //     },
   //   },
   // );
+};
+
+export const searchAddressKakao = async ({
+  query = '',
+  page = 0,
+  size = 20,
+}) => {
+  let url = parseQuery({
+    query: query,
+    page: page,
+    size: size,
+  });
+  return await mainAxios.get(`/api/v1/kakao-map/address${url}`);
 };
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인

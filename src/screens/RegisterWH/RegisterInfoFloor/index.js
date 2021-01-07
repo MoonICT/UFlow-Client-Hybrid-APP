@@ -52,12 +52,14 @@ class RegisterInfoFloor extends Component {
               {
                 flrDvCode: 'F1',
                 flrArea: '',
-                opcArea: '',
                 parkArea: '',
-                cmnArea: '',
-                efctvHi: '',
-                dockQty: '',
+                opcArea: '',
                 prvtArea: '',
+                cmnArea: '',
+                flrHi: '',
+                efctvHi: '',
+                aprchMthdDvCode: '',
+                dockQty: '',
               },
             ],
     };
@@ -72,22 +74,23 @@ class RegisterInfoFloor extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   _addForm = valueTab => {
-
     let list = this.state.floors;
 
     list.push({
       flrDvCode: 'F1',
       flrArea: '',
-      opcArea: '',
       parkArea: '',
-      cmnArea: '',
-      efctvHi: '',
-      dockQty: '',
+      opcArea: '',
       prvtArea: '',
+      cmnArea: '',
+      flrHi: '',
+      efctvHi: '',
+      aprchMthdDvCode: '',
+      dockQty: '',
     });
 
     this.setState({ floors: list });
@@ -114,7 +117,30 @@ class RegisterInfoFloor extends Component {
   render() {
     const { imageStore, dataInfoFloor } = this.props;
     const { floors } = this.state;
-    // console.log('this.state.value', this.state.value);
+    console.log('floors', floors);
+    let isSubmitUpdate = false;
+    let filterflrArea = floors && floors.filter(item => item.flrArea === '');
+    let filterparkArea = floors && floors.filter(item => item.parkArea === '');
+    let filteropcArea = floors && floors.filter(item => item.opcArea === '');
+    let filtercmnArea = floors && floors.filter(item => item.cmnArea === '');
+    let filterflrHi = floors && floors.filter(item => item.flrHi === '');
+    let filterefctvHi = floors && floors.filter(item => item.efctvHi === '');
+    let filteraprchMthdDvCode =
+      floors && floors.filter(item => item.aprchMthdDvCode === '');
+    let filterdockQty = floors && floors.filter(item => item.dockQty === '');
+    if (
+      filterflrArea.length === 0 &&
+      filterparkArea.length === 0 &&
+      filteropcArea.length === 0 &&
+      filtercmnArea.length === 0 &&
+      filterflrHi.length === 0 &&
+      filterefctvHi.length === 0 &&
+      filteraprchMthdDvCode.length === 0 &&
+      filterdockQty.length === 0
+    ) {
+      isSubmitUpdate = true;
+    }
+    console.log('this.isSubmitUpdate', isSubmitUpdate);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -174,22 +200,25 @@ class RegisterInfoFloor extends Component {
           </View>
           <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
             <TouchableOpacity
+              disabled={isSubmitUpdate === true ? false : true}
               onPress={() => {
-                this.navigation.navigate('RegisterWH');
+                this.navigation.navigate('RegisterWH', { completeFloor: true });
                 this.props.updateInfo({
                   floors: floors,
                 });
               }}
               style={[
                 DefaultStyle.btnSubmit,
-                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
+                isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
               ]}
-              // disabled={imageStore.length > 2 ? false : true}
+              // disabled={isSubmitUpdate === true ? false : true}
             >
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
+                  isSubmitUpdate === true
+                    ? DefaultStyle.textActiveSubmit
+                    : null,
                 ]}>
                 확인
               </Text>

@@ -20,7 +20,7 @@ import {
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Card, Checkbox, Text, Button, IconButton } from 'react-native-paper';
-// import {useNavigation} from '@react-navigation/native';
+import DatePicker from '@Components/organisms/DatePicker';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -44,6 +44,10 @@ class FormTrusts extends Component {
       title: 'Profile Photo',
       confirm: false,
       value: 1,
+      from: new Date(),
+      showFrom: false,
+      to: new Date(),
+      showTo: false,
       dataForm: [
         {
           // id: 0,
@@ -72,17 +76,34 @@ class FormTrusts extends Component {
     return true;
   }
 
-  /** when exits screen */
-  componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
-  }
+  onChangeFrom = (event, selectedDate) => {
+    const currentDate = selectedDate || this.state.from;
+    this.setState({ from: currentDate, showFrom: false });
+    let d = new Date(selectedDate).getTime();
+    let dataF = this.props.formData;
+    dataF.usblYmdFrom = d;
+    this.props.valueForm && this.props.valueForm(dataF);
+    // this.setState({ usblYmdFrom: d });
+  };
+  showDatepicker = () => {
+    this.setState({ showFrom: true });
+  };
 
-  onChangeText = () => console.log('_addImage');
-  _removeImage = () => console.log('_removeImage');
+  showDatepickerTo = () => {
+    this.setState({ showTo: true });
+  };
+  onChangeTo = (event, selectedDate) => {
+    const currentDate = selectedDate || this.state.to;
+    this.setState({ to: currentDate, showTo: false });
+    let d = new Date(selectedDate).getTime();
+    let dataF = this.props.formData;
+    dataF.usblYmdTo = d;
+    this.props.valueForm && this.props.valueForm(dataF);
+  };
 
   render() {
     const { data, valueTab, number, valueForm, formData } = this.props;
-    const { dataForm, commonAreaState, commonAreaState2 } = this.state;
+    const { from, showFrom, to, showTo, mode } = this.state;
     const dataSelect = [
       {
         label: '냉동',
@@ -156,36 +177,7 @@ class FormTrusts extends Component {
         value: 'CU011',
       },
     ];
-    const calculation = [
-      {
-        label: '회',
-        value: 'CS01',
-      },
-      {
-        label: '건',
-        value: 'CS02',
-      },
-      {
-        label: '일',
-        value: 'CS03',
-      },
-      {
-        label: '월',
-        value: 'CS04',
-      },
-      {
-        label: '분기',
-        value: 'CS05',
-      },
-      {
-        label: '반기',
-        value: 'CS06',
-      },
-      {
-        label: '연',
-        value: 'CS07',
-      },
-    ];
+
     const time = [
       {
         label: '회',
@@ -196,27 +188,7 @@ class FormTrusts extends Component {
         value: '회2',
       },
     ];
-    const storage = [
-      {
-        label: '2020.10.10 - 2021.10.10',
-        value: '2020.10.10 - 2021.10.10',
-      },
-      {
-        label: '2020.10.10 - 2021.10.10 2',
-        value: '2020.10.10 - 2021.10.10 2',
-      },
-    ];
 
-    const costs = [
-      {
-        label: '일반관리비',
-        value: '일반관리비',
-      },
-      {
-        label: '일반관리비 2',
-        value: '일반관리비 2',
-      },
-    ];
     // let commonA = parseInt(commonAreaState) * 2;
     // console.log('commonAreaState2 :>> ', commonAreaState2);
 
@@ -256,28 +228,56 @@ class FormTrusts extends Component {
             }}
           />
           <TextField
-            labelTextField="수탁 가능 기간"
-            placeholder="YYYY.MM.DD"
+            labelTextField="기타"
             valueProps={e => {
-              // this.setState({ usblYmdFrom: e });
-              let d = new Date(e).getTime();
+              this.setState({ usblValue: e });
               let dataF = formData;
-              dataF.usblYmdFrom = d;
+              dataF.usblValue = e;
               valueForm && valueForm(dataF);
-              this.setState({ usblYmdFrom: d });
             }}
           />
-          <TextField
-            labelTextField="수탁 가능 기간"
-            placeholder="YYYY.MM.DD"
-            valueProps={e => {
-              let d = new Date(e).getTime();
-              let dataF = formData;
-              dataF.usblYmdTo = d;
-              valueForm && valueForm(dataF);
-              this.setState({ usblYmdTo: d });
-            }}
-          />
+
+          <View style={{ flex: 1, marginBottom: 18 }}>
+            <TouchableOpacity
+              onPress={this.showDatepicker}
+              style={DefaultStyle._btnDate}>
+              <Text style={DefaultStyle._textDate}>
+                {from.toLocaleDateString()}
+              </Text>
+              <Text
+                style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
+                수탁 기간
+              </Text>
+              <DatePicker
+                mode={mode}
+                show={showFrom}
+                onChange={this.onChangeFrom}
+                value={from}
+                testID="dateTimePicker"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, marginBottom: 18 }}>
+            <TouchableOpacity
+              onPress={this.showDatepickerTo}
+              style={DefaultStyle._btnDate}>
+              <Text style={DefaultStyle._textDate}>
+                {to.toLocaleDateString()}
+              </Text>
+              <Text
+                style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
+                수탁 기간
+              </Text>
+              <DatePicker
+                mode={mode}
+                show={showTo}
+                onChange={this.onChangeTo}
+                value={to}
+                testID="dateTimePickerTo"
+              />
+            </TouchableOpacity>
+          </View>
+
           {/**    <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
@@ -374,7 +374,6 @@ class FormTrusts extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          <TextField labelTextField="기타" />
 
           <TextField
             labelTextField="비고"
