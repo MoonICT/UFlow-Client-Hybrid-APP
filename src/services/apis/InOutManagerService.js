@@ -5,19 +5,18 @@ export const getAll = async (params) => {
   const token = await AsyncStorage.getItem(TOKEN);
 
   let type = params.type;
-  let url = '/api/v1/rtwh/warehouse-rented/tenant'
-  if(type === 'OWNER') {
-    url = '/api/v1/rtwh/warehouse-rented/owner'
+  let url = '/api/v1/rtwh/warehouse-rented/tenant';
+  if (type === 'OWNER') {
+    url = '/api/v1/rtwh/warehouse-rented/owner';
   }
-  return await mainAxios.get(`${url}`, 
-  {
+  return await mainAxios.get(`${url}`, {
     params: {
-      ...params
+      ...params,
     },
     headers: {
       Authorization: `Bearer ${token}`,
-      contentType: 'application/json'
-    }
+      contentType: 'application/json',
+    },
   });
 };
 
@@ -25,40 +24,38 @@ export const getAll = async (params) => {
 export const getDetail = async (params) => {
   const token = await AsyncStorage.getItem(TOKEN);
   let type = params.type;
-  let url = `/api/v1/rtwh/transaction/tenant/${params.id}`
-  if(type === 'owner') {
-    url = `/api/v1/rtwh/transaction/owner/${params.id}`
+  let url = `/api/v1/rtwh/transaction/tenant/${params.id}`;
+  if (type === 'owner') {
+    url = `/api/v1/rtwh/transaction/owner/${params.id}`;
   }
-  return await mainAxios.get(`${url}`, 
-  {
+  return await mainAxios.get(`${url}`, {
     params: {
-      ...params
+      ...params,
     },
     headers: {
       Authorization: `Bearer ${token}`,
-      contentType: 'application/json'
-    }
+      contentType: 'application/json',
+    },
   });
 };
 
 export const createImport = async (body) => {
   const token = await AsyncStorage.getItem(TOKEN);
-  let {typeCreate, type} = body;
-  let strType = 'whin'
-  if(typeCreate === 'export') {
-    strType = 'whout'
+  let { typeCreate, type } = body;
+  let strType = 'whin';
+  if (typeCreate === 'export') {
+    strType = 'whout';
   }
   let url = `/api/v1/rtwh/${strType}/tenant`;
-  
-  if(type === 'owner') {
-    url = `/api/v1/rtwh/whin/owner`
+
+  if (type === 'owner') {
+    url = `/api/v1/rtwh/whin/owner`;
   }
-  return await mainAxios.post(`${url}`, body,
-  {
+  return await mainAxios.post(`${url}`, body, {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
-    }
+    },
   });
 };
 export const cancelImport = async (body) => {

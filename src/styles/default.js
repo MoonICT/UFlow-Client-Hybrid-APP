@@ -36,6 +36,63 @@ export default StyleSheet.create({
     paddingRight: 12,
     textAlign: 'center',
   },
+  line: {
+    width:'100%',
+    height:1,
+    backgroundColor: color.input.default_border,
+  },
+  mt_20: {
+    marginTop:20
+  },
+  mb_20: {
+    marginBottom:20
+  },
+  mr_20: {
+    marginRight:20
+  },
+  mb_0: {
+    marginBottom:0
+  },
+  pt_20: {
+    paddingTop:20
+  },
+  pb_0: {
+    paddingBottom:0
+  },
+  p_12: {
+    padding:12
+  },
+  _colorMuted:{
+    color: 'rgba(0, 0, 0, 0.87)'
+  },
+  w_50:{
+    width: '50%'
+  },
+  w_100:{
+    width: '100%'
+  },
+  h_150:{
+    height: 150 
+  },
+  d_flex:{
+    display: 'flex',
+  },
+  d_flex_center:{
+    display: 'flex',
+    alignItems: 'center'
+  },
+  d_flex_center_row:{
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  d_center:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems:'center'
+  },
+  flex_1:{
+    flex: 1
+  },
   header: {
     height: 48,
     display: 'flex',
@@ -296,8 +353,10 @@ export default StyleSheet.create({
     marginBottom: 18,
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 6,
+    padding: 13,
     paddingLeft: 14,
+    minHeight: 50,
+    alignItems: 'center',
   },
   _textSelected: {
     margin: 4,
@@ -729,7 +788,7 @@ export default StyleSheet.create({
     // fontFamily: theme.fonts.regular.fontFamily,
     fontSize: 14,
     padding: 16,
-    paddingBottom:70
+    paddingBottom: 70,
   },
   _menuFooter: {
     borderBottomWidth: 1,
@@ -828,7 +887,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 16,
-    marginBottom: 16
+    marginBottom: 16,
   },
   _textTitleCard: {
     color: color.text.primary,
@@ -1042,6 +1101,13 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  _btnOutlineMuted: {
+    borderColor: 'rgba(0, 0, 0, 0.5)',
+    borderWidth: 1,
+    height:42,
+    borderRadius: 21,
+    alignItems: 'center',
+  },
   _btnInline: {
     alignItems: 'center',
     backgroundColor: color.primary.main,
@@ -1146,5 +1212,9 @@ export default StyleSheet.create({
   },
   _labelDate: {
     position: 'absolute',
+  },
+
+  disHide: {
+    display: 'none',
   },
 });

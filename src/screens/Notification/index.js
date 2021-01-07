@@ -108,7 +108,7 @@ export default class Notification extends Component {
     console.log('page', page);
     return (
       <>
-        {page === '창고 등록1' && (
+        {page === '창고 등록' && (
           <WarehouseRegistration
             navitationTitle={
               <Select
@@ -132,7 +132,7 @@ export default class Notification extends Component {
             }
           />
         )}
-        {page === '창고 등록' && (
+        {page === '계약 방식' && (
           <ContractMode
             navitationTitle={
               <Select

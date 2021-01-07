@@ -27,7 +27,7 @@ import {
   Switch,
   IconButton,
 } from 'react-native-paper';
-// import {useNavigation} from '@react-navigation/native';
+import DatePicker from '@Components/organisms/DatePicker';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -51,9 +51,9 @@ class RegisterMoreInfo extends Component {
         props.dataMoreInfo && props.dataMoreInfo.insrDvCode
           ? props.dataMoreInfo.insrDvCode
           : ['', '', ''],
-      usblYmdFrom:
-        props.dataMoreInfo && props.dataMoreInfo.usblYmdFrom
-          ? props.dataMoreInfo.usblYmdFrom
+      cmpltYmd:
+        props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
+          ? props.dataMoreInfo.cmpltYmd
           : '',
       siteArea:
         props.dataMoreInfo && props.dataMoreInfo.siteArea
@@ -75,35 +75,53 @@ class RegisterMoreInfo extends Component {
         props.dataMoreInfo && props.dataMoreInfo.cmnArea
           ? props.dataMoreInfo.cmnArea
           : '',
+      from: new Date(),
+      showFrom: false,
+      mode: 'date',
     };
 
     this.navigation = props.navigation;
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
+  showDatepicker = () => {
+    this.setState({ showFrom: true });
+  };
 
-  /** when exits screen */
-  componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
-  }
+  onChangeFrom = (event, selectedDate) => {
+    const currentDate = selectedDate || this.state.from;
+    let d = new Date(selectedDate).getTime();
+
+    this.setState({ from: currentDate, showFrom: false, cmpltYmd: d });
+  };
 
   render() {
     const { imageStore, route, dataMoreInfo } = this.props;
     const {
       addOptDvCode,
       insrDvCode,
-      usblYmdFrom,
+      cmpltYmd,
       siteArea,
       bldgArea,
       totalArea,
       prvtArea,
       cmnArea,
+      from,
+      mode,
+      showFrom,
     } = this.state;
-    console.log('dataMoreInfo', dataMoreInfo);
 
+    let isSubmitUpdate = false;
+    if (
+      addOptDvCode.length > 0 &&
+      insrDvCode.length > 0 &&
+      siteArea !== '' &&
+      bldgArea !== '' &&
+      totalArea !== '' &&
+      prvtArea !== '' &&
+      cmnArea !== ''
+    ) {
+      isSubmitUpdate = true;
+    }
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -136,15 +154,37 @@ class RegisterMoreInfo extends Component {
                 colorLabel="#000000"
               />
              */}
+              <View style={{ flex: 1, marginBottom: 18 }}>
+                <TouchableOpacity
+                  onPress={this.showDatepicker}
+                  style={DefaultStyle._btnDate}>
+                  <Text style={DefaultStyle._textDate}>
+                    {from.toLocaleDateString()}
+                  </Text>
+                  <Text
+                    style={[
+                      DefaultStyle._labelTextField,
+                      { color: '#000000' },
+                    ]}>
+                    준공일
+                  </Text>
+                  <DatePicker
+                    mode={mode}
+                    show={showFrom}
+                    onChange={this.onChangeFrom}
+                    value={from}
+                    testID="dateTimePicker"
+                  />
+                </TouchableOpacity>
+              </View>
               <TextField
-                labelTextField="준공일"
+                labelTextField="건축면적"
+                textRight="평"
+                placeholder="0"
                 colorLabel="#000000"
-                placeholder="YYYY.MM.DD"
-                value={usblYmdFrom}
+                value={bldgArea}
                 valueProps={e => {
-                  // this.setState({ usblYmdFrom: e });
-                  let d = new Date(e).getTime();
-                  this.setState({ usblYmdFrom: d });
+                  this.setState({ bldgArea: e });
                 }}
               />
               <TextField
@@ -155,16 +195,6 @@ class RegisterMoreInfo extends Component {
                 value={siteArea}
                 valueProps={e => {
                   this.setState({ siteArea: e });
-                }}
-              />
-              <TextField
-                labelTextField="건축면적"
-                textRight="평"
-                placeholder="0"
-                colorLabel="#000000"
-                value={bldgArea}
-                valueProps={e => {
-                  this.setState({ bldgArea: e });
                 }}
               />
               <TextField
@@ -290,12 +320,15 @@ class RegisterMoreInfo extends Component {
               </View>
             </View>
             <TouchableOpacity
+              disabled={isSubmitUpdate === true ? false : true}
               onPress={() => {
-                this.navigation.navigate('RegisterWH');
+                this.navigation.navigate('RegisterWH', {
+                  completeMoreInfo: true,
+                });
                 this.props.updateInfo({
                   addOptDvCode,
                   insrDvCode,
-                  usblYmdFrom,
+                  cmpltYmd,
                   siteArea,
                   bldgArea,
                   totalArea,
@@ -305,14 +338,16 @@ class RegisterMoreInfo extends Component {
               }}
               style={[
                 DefaultStyle.btnSubmit,
-                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
+                isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
               ]}
               // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
+                  isSubmitUpdate === true
+                    ? DefaultStyle.textActiveSubmit
+                    : null,
                 ]}>
                 확인
               </Text>

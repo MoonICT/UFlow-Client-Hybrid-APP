@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 15:58:28
- * @modify date 2021-01-05 15:05:36
+ * @modify date 2021-01-06 11:24:10
  * @desc [description]
  */
 
@@ -21,10 +21,10 @@ export const styles = StyleSheet.create({
     lineHeight: 19,
   },
   regular: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
   },
   medium: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   bold: {
     fontFamily: 'NotoSansCJKkr-Bold',
@@ -117,6 +117,7 @@ export const styles = StyleSheet.create({
   },
   cardImageHorizon: {
     height: 124,
+    width: 124,
     borderRadius: 12,
   },
   badge: {
@@ -172,6 +173,7 @@ export const styles = StyleSheet.create({
   cardAction: {
     flexDirection: 'row',
     marginBottom: 4,
+    flexWrap: 'wrap',
   },
 
   /************ Line ************** */

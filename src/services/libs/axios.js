@@ -5,10 +5,13 @@ import configURL from '../http/ConfigURL';
 
 // const { REACT_APP_SERVER_RESERVE_URL } = process.env;
 
+//Contants
+import { TOKEN } from '@Constant';
+
 /** Get token from sessionStorage */
-let token = AsyncStorage.getItem('token');
+let token = AsyncStorage.getItem(TOKEN);
 // if (token !== '' && token !== null && token !== undefined) token = token;
-console.log('tokenGet :>> ', token);
+// console.log('tokenGet :>> ', token);
 /** Create Header Request*/
 const headerDict = {
   Accept: 'application/json',

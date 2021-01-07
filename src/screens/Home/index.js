@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-06 09:51:28
+ * @modify date 2021-01-06 19:38:36
  * @desc [description]
  */
 
@@ -38,7 +38,7 @@ import { color } from '@Themes/colors';
 import FCMService from '@Services/FCMService';
 
 import ActionCreator from '@Actions';
-import Carousel from '@Components/organisms/Carousel';
+// import Carousel from '@Components/organisms/Carousel';
 // import CarouselSnap from '@Components/organisms/CarouselSnap';
 // import CarouselSnapPagi from '@Components/organisms/CarouselSnapPagi';
 import AppBars from '@Components/organisms/AppBar';
@@ -77,68 +77,74 @@ import { Warehouse } from '@Services/apis'; //Account,
 
 // const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
-const slides = [
-  {
-    key: 0,
-    title: '좋은 창고 구하는 기술,\n유플로우',
-    text: `유플로우는 비즈니스와 창고를 연결하고,
-    더 나은 기업 물류 시스템을 만듭니다.
-    1Pallet, 1주일 단위 사용이 가능하며
-    보관하신 제품들은 안전 보험 서비스가 적용됩니다.
-    지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
-    image: mainBG,
-    imageStyle: styles.image,
-    backgroundColor: '#59b2ab',
-  },
-  {
-    key: 1,
-    title: '좋은 창고 구하는 기술,\n유플로우',
-    text: `유플로우는 비즈니스와 창고를 연결하고,
-    더 나은 기업 물류 시스템을 만듭니다.
-    1Pallet, 1주일 단위 사용이 가능하며
-    보관하신 제품들은 안전 보험 서비스가 적용됩니다.
-    지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
-    image: mainBG,
-    imageStyle: styles.image,
-    backgroundColor: '#59b2ab',
-  },
-  {
-    key: 2,
-    title: '좋은 창고 구하는 기술,\n유플로우',
-    text: `유플로우는 비즈니스와 창고를 연결하고,
-    더 나은 기업 물류 시스템을 만듭니다.
-    1Pallet, 1주일 단위 사용이 가능하며
-    보관하신 제품들은 안전 보험 서비스가 적용됩니다.
-    지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
-    image: mainBG,
-    imageStyle: styles.image,
-    backgroundColor: '#59b2ab',
-  },
-  {
-    key: 3,
-    title: '좋은 창고 구하는 기술,\n유플로우',
-    text: `유플로우는 비즈니스와 창고를 연결하고,
-    더 나은 기업 물류 시스템을 만듭니다.
-    1Pallet, 1주일 단위 사용이 가능하며
-    보관하신 제품들은 안전 보험 서비스가 적용됩니다.
-    지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
-    image: mainBG,
-    imageStyle: styles.image,
-    backgroundColor: '#59b2ab',
-  },
-  {
-    key: 4,
-    title: '좋은 창고 구하는 기술,\n유플로우',
-    text: `유플로우는 비즈니스와 창고를 연결하고,
-    더 나은 기업 물류 시스템을 만듭니다.
-    1Pallet, 1주일 단위 사용이 가능하며
-    보관하신 제품들은 안전 보험 서비스가 적용됩니다.
-    지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
-    image: mainBG,
-    imageStyle: styles.image,
-    backgroundColor: '#59b2ab',
-  },
-];
+import { AuthContext } from '@Store/context';
+
+import AsyncStorage from '@react-native-community/async-storage';
+//Contants
+import { TOKEN } from '@Constant';
+
+// const slides = [
+//   {
+//     key: 0,
+//     title: '좋은 창고 구하는 기술,\n유플로우',
+//     text: `유플로우는 비즈니스와 창고를 연결하고,
+//     더 나은 기업 물류 시스템을 만듭니다.
+//     1Pallet, 1주일 단위 사용이 가능하며
+//     보관하신 제품들은 안전 보험 서비스가 적용됩니다.
+//     지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
+//     image: mainBG,
+//     imageStyle: styles.image,
+//     backgroundColor: '#59b2ab',
+//   },
+//   {
+//     key: 1,
+//     title: '좋은 창고 구하는 기술,\n유플로우',
+//     text: `유플로우는 비즈니스와 창고를 연결하고,
+//     더 나은 기업 물류 시스템을 만듭니다.
+//     1Pallet, 1주일 단위 사용이 가능하며
+//     보관하신 제품들은 안전 보험 서비스가 적용됩니다.
+//     지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
+//     image: mainBG,
+//     imageStyle: styles.image,
+//     backgroundColor: '#59b2ab',
+//   },
+//   {
+//     key: 2,
+//     title: '좋은 창고 구하는 기술,\n유플로우',
+//     text: `유플로우는 비즈니스와 창고를 연결하고,
+//     더 나은 기업 물류 시스템을 만듭니다.
+//     1Pallet, 1주일 단위 사용이 가능하며
+//     보관하신 제품들은 안전 보험 서비스가 적용됩니다.
+//     지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
+//     image: mainBG,
+//     imageStyle: styles.image,
+//     backgroundColor: '#59b2ab',
+//   },
+//   {
+//     key: 3,
+//     title: '좋은 창고 구하는 기술,\n유플로우',
+//     text: `유플로우는 비즈니스와 창고를 연결하고,
+//     더 나은 기업 물류 시스템을 만듭니다.
+//     1Pallet, 1주일 단위 사용이 가능하며
+//     보관하신 제품들은 안전 보험 서비스가 적용됩니다.
+//     지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
+//     image: mainBG,
+//     imageStyle: styles.image,
+//     backgroundColor: '#59b2ab',
+//   },
+//   {
+//     key: 4,
+//     title: '좋은 창고 구하는 기술,\n유플로우',
+//     text: `유플로우는 비즈니스와 창고를 연결하고,
+//     더 나은 기업 물류 시스템을 만듭니다.
+//     1Pallet, 1주일 단위 사용이 가능하며
+//     보관하신 제품들은 안전 보험 서비스가 적용됩니다.
+//     지금 UFlow가 연결하는 새로운 물류 세상을 경험하세요.`,
+//     image: mainBG,
+//     imageStyle: styles.image,
+//     backgroundColor: '#59b2ab',
+//   },
+// ];
 
 // const slidesProduct = [
 //   {
@@ -305,6 +311,8 @@ const slides = [
 // ];
 
 class Home extends Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.webView = null;
@@ -313,6 +321,7 @@ class Home extends Component {
       isShow: false,
       expanded: true,
       whList: [],
+      isLogin: false,
     };
     this.navigation = props.navigation;
     this.fcm = new FCMService();
@@ -326,44 +335,44 @@ class Home extends Component {
     //console.log('//::componentWillUnmount::');
   }
 
-  _renderItem = ({ item }) => {
-    return (
-      <View style={styles.slide} key={item.key}>
-        <View style={styles.overlay} />
-        <View style={styles.content}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.text}>{item.text}</Text>
-        </View>
-        {/* <Image source={item.image} /> */}
-        {
-          //   <VideoPlayer
-          //   video={{
-          //     uri:
-          //       'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
-          //   }}
-          //   videoWidth={360}
-          //   videoHeight={640}
-          //   style={styles.backgroundVideo}
-          //   thumbnail={item.image}
-          //   autoplay={true}
-          // />
-        }
-      </View>
-    );
-  };
+  // _renderItem = ({ item }) => {
+  //   return (
+  //     <View style={styles.slide} key={item.key}>
+  //       <View style={styles.overlay} />
+  //       <View style={styles.content}>
+  //         <Text style={styles.title}>{item.title}</Text>
+  //         <Text style={styles.text}>{item.text}</Text>
+  //       </View>
+  //       {/* <Image source={item.image} /> */}
+  //       {
+  //         //   <VideoPlayer
+  //         //   video={{
+  //         //     uri:
+  //         //       'https://pawsome-public-s3.s3.ap-northeast-2.amazonaws.com/LogisALL홍보동영상(국문).mp4',
+  //         //   }}
+  //         //   videoWidth={360}
+  //         //   videoHeight={640}
+  //         //   style={styles.backgroundVideo}
+  //         //   thumbnail={item.image}
+  //         //   autoplay={true}
+  //         // />
+  //       }
+  //     </View>
+  //   );
+  // };
 
   _renderProductItem = item => {
     // console.log('item==>', item);
-    const { whList } = this.state;
+    let { whList } = this.state;
     const cardItem = [];
-
-    whList.map((v, i) => {
+    whList = whList.slice(0, 4);
+    whList?.map((v, i) => {
       cardItem.push(
         <View key={i} style={styles.mainProductItem}>
-          {item?.thumbnail !== null ? (
-            <ProductCard data={item} />
+          {v?.thumbnail !== null ? (
+            <ProductCard navigation={this.navigation} data={v} />
           ) : (
-            <ProductCard data={{ ...item, img: cardBG }} />
+            <ProductCard navigation={this.navigation} data={{ ...v, img: cardBG }} />
           )}
         </View>,
       );
@@ -378,9 +387,9 @@ class Home extends Component {
     return cardItem;
   };
 
-  _renderStepItem = ({ item }) => {
-    return <StepCard data={{ ...item }} />;
-  };
+  // _renderStepItem = ({ item }) => {
+  //   return <StepCard data={{ ...item }} />;
+  // };
 
   _onDone = () => {
     this.setState({ showRealApp: true });
@@ -389,46 +398,52 @@ class Home extends Component {
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
-    const { whList } = this.state;
+    const { getLoginStatus,signOut } = this.context;
+    const isLog = getLoginStatus();
+    const { isLogin = isLog } = this.state;
 
-    console.log('whList==>', whList);
+    // console.log('whList==>', whList);
+
+    console.log('isLogin Hello==>', isLogin);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
         {/**### APPBAR ###*/}
-        <AppBars style={[styles.appBar]}>
-          <View style={[styles.actionBar]}>
-            {/* <Appbar.Action icon="menu" color="white" onPress={() => {}} />
-             */}
-            <Appbar.Content
-              title={
-                <Text style={[styles.notifiAppbar, styles.font14]}>
-                  더 많은 혜택을 위해
-                  <Text style={{ color: '#ff6d00' }}> 회원가입 </Text>
-                  하러 가기
-                </Text>
-              }
-              titleStyle={DefaultStyle.headerTitle}
-            />
+        {isLogin === false && (
+          <AppBars style={[styles.appBar]}>
+            <View style={[styles.actionBar]}>
+              {/* <Appbar.Action icon="menu" color="white" onPress={() => {}} />
+               */}
+              <Appbar.Content
+                title={
+                  <Text style={[styles.notifiAppbar, styles.font14]}>
+                    더 많은 혜택을 위해
+                    <Text style={{ color: '#ff6d00' }}> 로그인 </Text>
+                    하러 가기
+                  </Text>
+                }
+                titleStyle={DefaultStyle.headerTitle}
+              />
 
-            <TouchableOpacity
-              mode="contained"
-              style={[DefaultStyle.containerBTN, styles.btnAction]}
-              color="red"
-              // onPress={() => showPopup()}
-              onPress={() => this.navigation.navigate('Register')}
-              // onPress={() => this.getItem()}
-            >
-              <Text style={styles.textBtnAction}>회원가입</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={[DefaultStyle.divider]} />
-        </AppBars>
+              <TouchableOpacity
+                mode="contained"
+                style={[DefaultStyle.containerBTN, styles.btnAction]}
+                color="red"
+                // onPress={() => showPopup()}
+                onPress={() => this.navigation.navigate("Login")}
+                // onPress={() => this.getItem()}
+              >
+                <Text style={styles.textBtnAction}>로그인</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={[DefaultStyle.divider]} />
+          </AppBars>
+        )}
 
         {/**### Content ###*/}
         <ScrollView>
           {/**### Carousel ###*/}
-          <Carousel
+          {/* <Carousel
             style={styles.carousel}
             custom={{
               data: slides,
@@ -443,7 +458,7 @@ class Home extends Component {
                 height: 10,
               },
             }}
-          />
+          /> */}
 
           {/**### INTRO ###*/}
           <View style={styles.intro}>
@@ -746,7 +761,11 @@ class Home extends Component {
             </View>
             <TouchableOpacity
               style={styles.mainCallBTN}
-              onPress={() => this.navigation.navigate('RegisterWH')}>
+              onPress={() =>
+                isLogin
+                  ? this.navigation.navigate('RegisterWH')
+                  : this.navigation.navigate('Login')
+              }>
               <Text
                 style={[
                   styles.btnMainCall,
@@ -814,6 +833,11 @@ class Home extends Component {
         ? page?._embedded?.warehouses
         : [];
     this.setState({ whList: list });
+    AsyncStorage.getItem(TOKEN).then(v => {
+      // console.log('v==>', v);
+      this.setState({ isLogin: v !== '' && v !== null });
+    });
+
     SplashScreen.hide();
   }
 }

@@ -25,7 +25,6 @@ class SearchFilter extends Component {
     };
   }
 
-
   /**
    * On click filter
    * 파라미터가 없는 경우는 전체 닫기.

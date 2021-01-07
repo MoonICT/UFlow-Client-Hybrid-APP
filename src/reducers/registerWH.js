@@ -4,6 +4,9 @@ import ImagePicker from 'react-native-image-picker';
 
 const defaultState = {
   pimages: [],
+  whImages: [],
+  thImages: [],
+  entrpNo: '987654321',
   // data: {
   //   test: 1,
   // },

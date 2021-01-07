@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-05 19:32:28
+ * @modify date 2021-01-06 19:15:17
  * @desc [description]
  */
 
@@ -38,6 +38,7 @@ class Login extends Component {
       email: '',
       password: '',
       isRemember: false,
+      isLogin: false,
     };
     this.navigation = props.navigation;
   }
@@ -52,33 +53,52 @@ class Login extends Component {
     //console.log('//::componentWillUnmount::');
   }
 
+
+  /** Save Login to Local  */
+  setLoginLocal = async (loginData) => {
+    console.log("loginData", loginData);
+    try {
+      await AsyncStorage.setItem(TOKEN, JSON.stringify(loginData));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   /** Login Handle */
-  async handleOnClickLogin(data) {
+  handleOnClickLogin(data) {
     const { showPopup } = this.props;
     const { login } = this.context;
 
+    /** Config test */
+    // data.email = 'tenant1@test.com';
+    // data.password = 'wotkd123';
+
     if (data.email === '' || data.password === '') {
       showPopup({ title: 'UFLOW', content: '충분한 정보를 입력하십시오 !' });
-    }
-    // Sign in
-    let loginData = await Account.signIn({
-      email: data.email,
-      password: data.password,
-    });
-
-    console.log('loginData==>', loginData);
-
-    if (loginData.status === 200) {
-      const access_token = loginData.data.access_token;
-      AsyncStorage.setItem(TOKEN, access_token);
-      login();
     } else {
-      showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
+      // Sign in
+      Account.signIn({
+        email: data.email,
+        password: data.password,
+      }).then((loginData) => {
+        console.log('loginData==>', loginData);
+        if (loginData.status === 200) {
+          const access_token = loginData.data.access_token;
+          // console.log('access_token==>', access_token);
+          // this.setLoginLocal(access_token);
+          login(access_token);
+          this.navigation.navigate("Home");
+        }
+      }).catch((error) => {
+        showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
+      });
     }
+    // console.log('loginData==>', loginData);
+
   }
 
   render() {
-    const { email, password, isRemember } = this.state;
+    const { email, password, isRemember, isLogin } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -86,7 +106,7 @@ class Login extends Component {
           <Appbar.Action
             icon="close"
             color="black"
-            onPress={() => console.log('hello')}
+            onPress={() => isLogin && this.navigation.navigate('Home')}
           />
         </Appbars>
         <ScrollView>
@@ -174,6 +194,10 @@ class Login extends Component {
   /** when after render DOM */
   async componentDidMount() {
     console.log('::componentDidMount::');
+    AsyncStorage.getItem(TOKEN).then(v => {
+      // console.log('v==>', v);
+      this.setState({ isLogin: v !== '' && v !== null });
+    });
     SplashScreen.hide();
   }
 

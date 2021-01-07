@@ -52,6 +52,7 @@ class RegisterWH extends Component {
       .then(res => {
         const status = res.status;
         if (status === 200) {
+          this.navigation.navigate('Home');
         }
       })
       .catch(err => {
@@ -60,7 +61,23 @@ class RegisterWH extends Component {
   };
   render() {
     const { imageStore, workComplete, route, dataWH } = this.props;
-    console.log('dataWH', dataWH);
+    let completeMoreInfo = route.params && route.params.completeMoreInfo;
+    let completeInfo = route.params && route.params.completeInfo;
+    let completeFloor = route.params && route.params.completeFloor;
+    let completeIntro = route.params && route.params.completeIntro;
+    console.log('dataWHAll', dataWH);
+    console.log('routeWH', route);
+    let isSubmitUpdate = false;
+
+    if (
+      imageStore.length > 2 &&
+      completeMoreInfo === true &&
+      completeInfo === true &&
+      completeFloor === true &&
+      completeIntro === true
+    ) {
+      isSubmitUpdate = true;
+    }
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -198,40 +215,47 @@ class RegisterWH extends Component {
                 />
               </View>
             </TouchableOpacity>
-
-            <TouchableOpacity
-              style={S.btnTypeRegister}
-              onPress={() =>
-                this.navigation.navigate('RegisterContractConditions', {
-                  type: route && route.params && route.params.type,
-                })
-              }>
-              <Text style={S.textLeftBtn}>계약 조건</Text>
-              <View style={S.rightBtn}>
-                {workComplete === undefined ? (
-                  <Text style={S.textRightBtn}>입력하세요</Text>
-                ) : (
-                  <Text style={S.completeText}>작업완료</Text>
-                )}
-
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
+            {
+              // <TouchableOpacity
+              //   style={S.btnTypeRegister}
+              //   onPress={() =>
+              //     this.navigation.navigate('RegisterContractConditions', {
+              //       type: route && route.params && route.params.type,
+              //     })
+              //   }>
+              //   <Text style={S.textLeftBtn}>계약 조건</Text>
+              //   <View style={S.rightBtn}>
+              //     {workComplete === undefined ? (
+              //       <Text style={S.textRightBtn}>입력하세요</Text>
+              //     ) : (
+              //       <Text style={S.completeText}>작업완료</Text>
+              //     )}
+              //     <Icon
+              //       name="arrow-forward-ios"
+              //       size={12}
+              //       color="rgba(0, 0, 0, 0.54)"
+              //     />
+              //   </View>
+              // </TouchableOpacity>
+            }
           </View>
         </ScrollView>
         <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
-            style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
+            disabled={isSubmitUpdate === true ? false : true}
+            style={[
+              DefaultStyle.btnSubmit,
+              isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
+            ]}
             onPress={() => {
-              this.showDialog();
+              // this.showDialog();
               this.submit();
             }}>
             <Text
-              style={[DefaultStyle.textSubmit, DefaultStyle.textActiveSubmit]}>
+              style={[
+                DefaultStyle.textSubmit,
+                isSubmitUpdate === true ? DefaultStyle.textActiveSubmit : null,
+              ]}>
               창고 등록하기
             </Text>
           </TouchableOpacity>

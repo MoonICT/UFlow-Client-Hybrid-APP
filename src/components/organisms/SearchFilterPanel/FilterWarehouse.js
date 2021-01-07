@@ -97,10 +97,12 @@ class FilterWarehouse extends Component {
   }
 
   componentWillUnmount () {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {
+    console.log('::componentDidMount:: 검색 필터 창고 유형');
+    console.log(this.props.filter);
   }
 }
 
@@ -108,10 +110,7 @@ class FilterWarehouse extends Component {
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
   console.log('++++++mapStateToProps: ', state);
-  return {
-    isFilterToggle: state.search.isFilterToggle,
-    filterList: state.search.filterList,
-  };
+  return {};
 }
 
 // store에 action을 dispatch 하는 역할.
@@ -122,6 +121,7 @@ function mapDispatchToProps (dispatch) {
 // Check Props Type.
 FilterWarehouse.protoType = {
   onClosed: PropTypes.func,
+  filter: PropTypes.array,
 };
 
 export default compose(connect(
