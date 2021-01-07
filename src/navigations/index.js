@@ -490,12 +490,6 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
-                    name="Login"
-                    component={LoginScreen}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
                   <AuthStack.Screen
                     name="FindPassWord"
                     component={FindPassWordScreen}
