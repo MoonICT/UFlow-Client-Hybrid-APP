@@ -25,7 +25,6 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { Warehouse } from '@Services/apis';
 import Highlighter from 'react-native-highlight-words';
-import Postcode from 'react-native-daum-postcode';
 class RegisterIntro extends Component {
   constructor(props) {
     super(props);
