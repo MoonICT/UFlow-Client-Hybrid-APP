@@ -78,9 +78,9 @@ class RegisterImage extends Component {
               let { url } = respon.data;
               // let pimages = [{ uri: url }];
               // pimages.push();
+              // this.setState({ pimages });
               console.log('url', url);
-
-              // this.props.registerAction({ uri: url });
+              this.props.registerAction({ uri: url });
             }
           });
         } else {
@@ -98,15 +98,16 @@ class RegisterImage extends Component {
   };
   render() {
     const { imageStore } = this.props;
-    // console.log('imageStore', imageStore);
+    const { pimages } = this.state;
+    console.log('pimages', pimages);
     const listImg =
       imageStore &&
       imageStore.map((item, index) => {
         // console.log('index', index);
         if (index !== 0) {
           return (
-            <View>
-              <Image style={S.itemImage} source={item} key={index} />
+            <View key={index}>
+              <Image style={S.itemImage} source={item} />
               <IconButton
                 style={S.btnRemove}
                 icon="close-circle"

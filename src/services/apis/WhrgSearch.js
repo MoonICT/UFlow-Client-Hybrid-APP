@@ -96,7 +96,7 @@ export const pageSearchWhrg = ({
       longitude: longitude, // 걍도
       distance: distance, // 검색거리
     })}`
-  })
+  });
 };
 
 /**
@@ -188,7 +188,7 @@ export const listSearchWhrg = ({
       longitude: longitude, // 걍도
       distance: distance, // 검색거리
     })}`
-  })
+  });
 };
 
 
@@ -222,7 +222,6 @@ export const getCmpltTypes = () => {
  * @param query
  * @returns {Promise<*>}
  */
-
 export const searchKeywords = async params => {
   const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.get(`/api/v1/warehouse/locations?query=${params.query}`, {
@@ -234,11 +233,10 @@ export const searchKeywords = async params => {
 };
 
 
-/**ttt
- *
+/* *
  * @param query
  * @returns {Promise<*>}
- */
+ *!/*/
 export const searchGoData = ({query = ""}) => {
   return Axios.getRequest({
     url: `/api/v1/warehouse/godatas?query=${query}`
