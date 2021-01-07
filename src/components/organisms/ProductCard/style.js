@@ -21,10 +21,10 @@ export const styles = StyleSheet.create({
     lineHeight: 19,
   },
   regular: {
-    fontFamily: 'NotoSansCJKkr-Regular',
+    // fontFamily: 'NotoSansCJKkr-Regular',
   },
   medium: {
-    fontFamily: 'NotoSansCJKkr-Medium',
+    // fontFamily: 'NotoSansCJKkr-Medium',
   },
   bold: {
     fontFamily: 'NotoSansCJKkr-Bold',

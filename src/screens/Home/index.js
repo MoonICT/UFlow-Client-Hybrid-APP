@@ -398,7 +398,7 @@ class Home extends Component {
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
-    const { getLoginStatus } = this.context;
+    const { getLoginStatus,signOut } = this.context;
     const isLog = getLoginStatus();
     const { isLogin = isLog } = this.state;
 
@@ -430,7 +430,7 @@ class Home extends Component {
                 style={[DefaultStyle.containerBTN, styles.btnAction]}
                 color="red"
                 // onPress={() => showPopup()}
-                onPress={() => this.navigation.navigate('Login')}
+                onPress={() => this.navigation.navigate("Login")}
                 // onPress={() => this.getItem()}
               >
                 <Text style={styles.textBtnAction}>로그인</Text>
@@ -441,7 +441,7 @@ class Home extends Component {
         )}
 
         {/**### Content ###*/}
-        {/* <ScrollView> */}
+        <ScrollView>
           {/**### Carousel ###*/}
           {/* <Carousel
             style={styles.carousel}
@@ -816,7 +816,7 @@ class Home extends Component {
               Copyright © 2020 Uflow Inc. 모든 권리 보유.{'\n'}v 1(20201112)
             </Text>
           </View>
-        {/* </ScrollView> */}
+        </ScrollView>
       </SafeAreaView>
     );
   }

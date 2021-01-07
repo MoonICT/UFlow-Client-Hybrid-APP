@@ -53,6 +53,17 @@ class Login extends Component {
     //console.log('//::componentWillUnmount::');
   }
 
+
+  /** Save Login to Local  */
+  setLoginLocal = async (loginData) => {
+    console.log("loginData", loginData);
+    try {
+      await AsyncStorage.setItem(TOKEN, JSON.stringify(loginData));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   /** Login Handle */
   handleOnClickLogin(data) {
     const { showPopup } = this.props;
@@ -64,38 +75,26 @@ class Login extends Component {
 
     if (data.email === '' || data.password === '') {
       showPopup({ title: 'UFLOW', content: '충분한 정보를 입력하십시오 !' });
+    } else {
+      // Sign in
+      Account.signIn({
+        email: data.email,
+        password: data.password,
+      }).then((loginData) => {
+        console.log('loginData==>', loginData);
+        if (loginData.status === 200) {
+          const access_token = loginData.data.access_token;
+          // console.log('access_token==>', access_token);
+          // this.setLoginLocal(access_token);
+          login(access_token);
+          this.navigation.navigate("Home");
+        }
+      }).catch((error) => {
+        showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
+      });
     }
-
-    // Sign in
-    // let loginData =
-    Account.signIn({
-      email: data.email,
-      password: data.password,
-    }).then(result => {
-      if (result.status === 200) {
-        const access_token = result.data.access_token;
-        console.log('access_token==>', access_token);
-        setTimeout(() => {
-          AsyncStorage.setItem(TOKEN, access_token);
-        }, 2000);
-        login();
-      }
-    });
-
     // console.log('loginData==>', loginData);
 
-    // if (loginData.status === 200) {
-    //   const access_token = loginData.data.access_token;
-    //   console.log('access_token==>', access_token);
-    //   setTimeout(() => {
-    //     AsyncStorage.setItem(TOKEN, access_token);
-    //   }, 2000);
-    //   login();
-    // }
-
-    // } else {
-    //   showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
-    // }
   }
 
   render() {
