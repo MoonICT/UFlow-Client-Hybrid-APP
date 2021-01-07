@@ -78,7 +78,6 @@ export const requestContract = async value => {
 
 export const listChat = async url => {
   const token = await AsyncStorage.getItem(TOKEN);
-  console.log('valueurl', url);
 
   return await mainAxios.get(`/api/v1/chat/contract/${url}`, {
     headers: {
@@ -90,7 +89,6 @@ export const listChat = async url => {
 
 export const chatting = async value => {
   const token = await AsyncStorage.getItem(TOKEN);
-  console.log('valueurl', value);
 
   return await mainAxios.post(
     `/api/v1/chat/contract/${value.url}`,
@@ -106,7 +104,6 @@ export const chatting = async value => {
 
 export const termsContract = async value => {
   const token = await AsyncStorage.getItem('token');
-  console.log('value', value);
   // return await mainAxios.post(
   //   `/api/v1/chat/contract/4100/${value.url}`,
   //   value && value.data,
