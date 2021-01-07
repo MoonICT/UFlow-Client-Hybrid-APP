@@ -97,7 +97,7 @@ import { TOKEN } from '@Constant';
 const store = initStore();
 
 // 메인 탭 옵션 설정.(Sample)
-const TabScreenOptions = ({ route }) => ({
+const TabScreenOptions = ({ route = {name:"Home" }}) => ({
   tabBarIcon: ({ focused, tColor, tSize }) => {
     const routeName = route.name;
     let icon = '';
@@ -119,8 +119,8 @@ const TabScreenOptions = ({ route }) => ({
     return focused ? (
       <IconButton size={24} color={color.primary.main} icon={icon} />
     ) : (
-      <IconButton size={24} icon={icon} color={'rgba(0, 0, 0, 0.54)'} />
-    );
+        <IconButton size={24} icon={icon} color={'rgba(0, 0, 0, 0.54)'} />
+      );
   },
 });
 const TabBarOptions = {
@@ -137,7 +137,8 @@ const TabScreen = () => {
   return (
     <Tab.Navigator
       screenOptions={TabScreenOptions}
-      tabBarOptions={TabBarOptions}>
+      tabBarOptions={TabBarOptions}
+      initialRouteName="Home">
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen
         name="Search"
@@ -175,12 +176,21 @@ const App = () => {
   const authContext = useMemo(() => {
     return {
       getLoginStatus: () => {
+        let a = AsyncStorage.getItem(TOKEN).then(v => {
+          // console.log('v==>', v);
+          setIsLogin(v !== '' && v !== null);
+        });
+        console.log('a==>', a);
         return isLogin;
       },
-      login: () => {
-        setIsLoading(true);
-        setIsLogin(true);
-      },
+      login:
+        (loginData) => {
+          console.log("loginData", loginData);
+          AsyncStorage.setItem(TOKEN, loginData).then(() => {
+            setIsLoading(false);
+            setIsLogin(true);
+          });
+        },
       signUp: () => {
         setIsLoading(false);
         setIsLogin(false);
@@ -195,24 +205,17 @@ const App = () => {
   }, []);
 
   // if (isLoading) return <Splash />;
-
-  return (
-    <AuthContext.Provider value={authContext}>
-      <Provider store={store}>
-        <PaperProvider theme={theme}>
-          <NavigationContainer>
-            <Global>
-              {isLogin === true ? (
-                <AuthStack.Navigator>
+  if (isLogin === true) {
+    return (
+      <AuthContext.Provider value={authContext}>
+        <Provider store={store}>
+          <PaperProvider theme={theme}>
+            <NavigationContainer>
+              <Global>
+                <AuthStack.Navigator initialRouteName="Home">
                   <AuthStack.Screen
                     name="Home"
                     component={TabScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <RootStack.Screen
-                    name="Login"
-                    component={LoginScreen}
-                    headerMode={false}
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
@@ -501,50 +504,409 @@ const App = () => {
                     component={FindPassWordScreen}
                     options={{ headerShown: false }}
                   />
-                </AuthStack.Navigator>
-              ) : (
-                <RootStack.Navigator initialRouteName="Home">
-                  <RootStack.Screen
-                    name="More"
-                    component={More}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
-                  <RootStack.Screen
-                    name="Home"
-                    component={TabScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <RootStack.Screen
-                    name="FindID"
-                    component={FindIDScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <RootStack.Screen
-                    name="FindPassWord"
-                    component={FindPassWordScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <RootStack.Screen
+                  <AuthStack.Screen
                     name="Login"
                     component={LoginScreen}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <RootStack.Screen
-                    name="Register"
-                    component={Register}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
-                </RootStack.Navigator>
-              )}
+                </AuthStack.Navigator>
+              </Global>
+            </NavigationContainer>
+          </PaperProvider>
+        </Provider>
+      </AuthContext.Provider>
+    );
+  } else {
+    return <AuthContext.Provider value={authContext}>
+      <Provider store={store}>
+        <PaperProvider theme={theme}>
+          <NavigationContainer>
+            <Global>
+              <RootStack.Navigator initialRouteName="Home">
+                <RootStack.Screen
+                  name="More"
+                  component={More}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Home"
+                  component={TabScreen}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="FindID"
+                  component={FindIDScreen}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="FindPassWord"
+                  component={FindPassWordScreen}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Register"
+                  component={Register}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
+              </RootStack.Navigator>
             </Global>
           </NavigationContainer>
         </PaperProvider>
       </Provider>
     </AuthContext.Provider>
-  );
+  }
+  // return (
+  //   <AuthContext.Provider value={authContext}>
+  //     <Provider store={store}>
+  //       <PaperProvider theme={theme}>
+  //         <NavigationContainer>
+  //           <Global>
+  //             {isLogin === true ? (
+  //               <AuthStack.Navigator initialRouteName="Home">
+  //                 <AuthStack.Screen
+  //                   name="Home"
+  //                   component={TabScreen}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Register"
+  //                   component={Register}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Terms"
+  //                   component={Terms}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Webview"
+  //                   component={WebviewScreen}
+  //                   headerMode={true}
+  //                   options={{ headerShown: true }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Camera"
+  //                   component={CameraScreen}
+  //                   headerMode={true}
+  //                   options={{ headerShown: true }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Notification"
+  //                   component={Notification}
+  //                   headerMode={true}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Geolocations"
+  //                   component={Geolocations}
+  //                   headerMode={true}
+  //                   options={{ headerShown: true }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="TextField"
+  //                   component={TextField}
+  //                   headerMode={true}
+  //                   options={{ headerShown: true }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="RegisterWH"
+  //                   component={RegisterWH}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="RegisterImage"
+  //                   component={RegisterImage}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="RegisterInfo"
+  //                   component={RegisterInfo}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="RegisterIntro"
+  //                   component={RegisterIntro}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="RegisterMoreIntro"
+  //                   component={RegisterMoreIntro}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="RegisterInfoFloor"
+  //                   component={RegisterInfoFloor}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="RegisterContractConditions"
+  //                   component={RegisterContractConditions}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="DetailsWH"
+  //                   component={DetailsWH}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="DetailsLocationWH"
+  //                   component={DetailsLocationWH}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="InquiryWH"
+  //                   component={InquiryWH}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="DetailsInquiryWH"
+  //                   component={DetailsInquiryWH}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="CreateInquiryWH"
+  //                   component={CreateInquiryWH}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Annoucement"
+  //                   component={Annoucement}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="DetailAnnoucement"
+  //                   component={DetailAnnoucement}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="FAQ"
+  //                   component={FAQ}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Quotation"
+  //                   component={Quotation}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="QuotationTrust"
+  //                   component={QuotationTrust}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="AvaliableChate"
+  //                   component={AvaliableChate}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="ContractDetails"
+  //                   component={ContractDetails}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="MypageInfo"
+  //                   component={MypageInfo}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="WithdrawalInformation"
+  //                   component={WithdrawalInformation}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="ConfirmPass"
+  //                   component={ConfirmPass}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Inquiry"
+  //                   component={Inquiry}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="DetailInquiry"
+  //                   component={DetailInquiry}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Chatting"
+  //                   component={Chatting}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="StorageAgreement"
+  //                   component={StorageAgreement}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="DetailsManager"
+  //                   component={DetailsManager}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="DetailsSettlement"
+  //                   component={DetailsSettlement}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="ProprietorMypage"
+  //                   component={ProprietorMypage}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="ResponseQuotation"
+  //                   component={ResponseQuotation}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="TenantMypage"
+  //                   component={TenantMypage}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="More"
+  //                   component={More}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+
+  //                 <AuthStack.Screen
+  //                   name="Consulting"
+  //                   component={Consulting}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="SampleScreen"
+  //                   component={SampleScreen}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Question"
+  //                   component={Question}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Mypage"
+  //                   component={Mypage}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="RequestContract"
+  //                   component={RequestContract}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Information"
+  //                   component={Information}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="LogisticsKnowledge"
+  //                   component={LogisticsKnowledge}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="FindPassWord"
+  //                   component={FindPassWordScreen}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <AuthStack.Screen
+  //                   name="Login"
+  //                   component={LoginScreen}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //               </AuthStack.Navigator>
+  //             ) : (
+  //               <RootStack.Navigator initialRouteName="Home">
+  //                 <RootStack.Screen
+  //                   name="More"
+  //                   component={More}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <RootStack.Screen
+  //                   name="Home"
+  //                   component={TabScreen}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <RootStack.Screen
+  //                   name="FindID"
+  //                   component={FindIDScreen}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <RootStack.Screen
+  //                   name="FindPassWord"
+  //                   component={FindPassWordScreen}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <RootStack.Screen
+  //                   name="Login"
+  //                   component={LoginScreen}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //                 <RootStack.Screen
+  //                   name="Register"
+  //                   component={Register}
+  //                   headerMode={false}
+  //                   options={{ headerShown: false }}
+  //                 />
+  //               </RootStack.Navigator>
+  //             )}
+  //           </Global>
+  //         </NavigationContainer>
+  //       </PaperProvider>
+  //     </Provider>
+  //   </AuthContext.Provider>
+  // );
 };
 
 export default App;

@@ -35,6 +35,8 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
+import DatePicker from '@Components/organisms/DatePicker';
+import { toSquareMeter } from '@Services/libs/unit';
 
 class FormInfo extends Component {
   constructor(props) {
@@ -44,15 +46,20 @@ class FormInfo extends Component {
       title: 'Profile Photo',
       confirm: false,
       value: 1,
+      from: new Date(),
+      showFrom: false,
+      to: new Date(),
+      showTo: false,
       dataForm: [
         {
           // id: 0,
           typeCode: '',
           calUnitDvCode: '',
-          calculationStandard: '',
-          exclusiveArea: '',
+          calStdDvCode: '',
+          mgmtChrgDvCode: '',
           exclusiveArea2: '',
-          commonArea: '',
+          cmnArea: '',
+          usblValue: '',
           commonArea2: '',
           rentalArea: '',
           rentalArea2: '',
@@ -72,23 +79,45 @@ class FormInfo extends Component {
     return true;
   }
 
-  /** when exits screen */
-  componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
-  }
+  onChangeFrom = (event, selectedDate) => {
+    const currentDate = selectedDate || this.state.from;
+    this.setState({ from: currentDate, showFrom: false });
+    let d = new Date(selectedDate).getTime();
+    let dataF = this.props.formData;
+    dataF.usblYmdFrom = d;
+    this.props.valueForm && this.props.valueForm(dataF);
+    // this.setState({ usblYmdFrom: d });
+  };
+  showDatepicker = () => {
+    this.setState({ showFrom: true });
+  };
 
-  onChangeText = () => console.log('_addImage');
-  _removeImage = () => console.log('_removeImage');
-
+  showDatepickerTo = () => {
+    this.setState({ showTo: true });
+  };
+  onChangeTo = (event, selectedDate) => {
+    const currentDate = selectedDate || this.state.to;
+    this.setState({ to: currentDate, showTo: false });
+    let d = new Date(selectedDate).getTime();
+    let dataF = this.props.formData;
+    dataF.usblYmdTo = d;
+    this.props.valueForm && this.props.valueForm(dataF);
+  };
   render() {
     const { data, valueTab, number, valueForm, formData } = this.props;
     const {
       splyAmount,
       mgmtChrg,
       commonAreaState2,
+      usblValueState2,
       remark,
       usblYmdFrom,
       usblYmdTo,
+      from,
+      showFrom,
+      to,
+      showTo,
+      mode,
     } = this.state;
     const dataSelect = [
       {
@@ -193,35 +222,19 @@ class FormInfo extends Component {
         value: 'CS07',
       },
     ];
-    const time = [
-      {
-        label: '회',
-        value: '회',
-      },
-      {
-        label: '회2',
-        value: '회2',
-      },
-    ];
-    const storage = [
-      {
-        label: '2020.10.10 - 2021.10.10',
-        value: '2020.10.10 - 2021.10.10',
-      },
-      {
-        label: '2020.10.10 - 2021.10.10 2',
-        value: '2020.10.10 - 2021.10.10 2',
-      },
-    ];
 
-    const costs = [
+    const managementFees = [
       {
         label: '일반관리비',
-        value: '일반관리비',
+        value: '0001',
       },
       {
-        label: '일반관리비 2',
-        value: '일반관리비 2',
+        label: '수도광열비',
+        value: '0002',
+      },
+      {
+        label: '기타',
+        value: '9100',
       },
     ];
     // let commonA = parseInt(commonAreaState) * 2;
@@ -272,24 +285,17 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          <View style={DefaultStyle._listElement}>
-            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-              <TextField
-                labelTextField="전용면적"
-                textRight="평"
-                // valueProps={e => this.setState({ exclusiveArea: e })}
-              />
-            </View>
-            <View style={DefaultStyle._element}>
-              <TextField
-                labelTextField="전용면적"
-                defaultValue="1200"
-                textRight="m2"
-                keyboardType="numeric"
-                // valueProps={e => this.setState({ exclusiveArea2: e })}
-              />
-            </View>
-          </View>
+          <Select
+            data={managementFees}
+            selectedValue={formData.mgmtChrgDvCode}
+            labelSelected="관리비구분"
+            valueProps={e => {
+              // this.setState({ calculationStandard: e });
+              let dataF = formData;
+              dataF.mgmtChrgDvCode = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
@@ -297,13 +303,15 @@ class FormInfo extends Component {
                 textRight="평"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value * 2).toString();
+                  let test = toSquareMeter(value);
+                  // console.log('testdddddddd', test);
+                  const valueCover = (value * 3.305785).toFixed(0).toString();
                   this.setState({ commonAreaState2: valueCover });
                   let dataF = formData;
-                  dataF.commonArea = e.replace(/[^0-9]/g, '');
+                  dataF.cmnArea = e.replace(/[^0-9]/g, '');
                   valueForm && valueForm(dataF);
                 }}
-                value={commonAreaState2 === '' ? '0' : formData.commonArea}
+                value={commonAreaState2 === '' ? '0' : formData.cmnArea}
                 keyboardType="numeric"
               />
             </View>
@@ -314,63 +322,114 @@ class FormInfo extends Component {
                 textRight="m2"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value / 2).toString();
+                  const valueCover = (value / 3.305785).toFixed(0).toString();
                   this.setState({
                     commonAreaState2: e.replace(/[^0-9]/g, ''),
                   });
-                  // formData.commonArea
+                  // formData.cmnArea
                   let dataF = formData;
-                  dataF.commonArea = valueCover;
+                  dataF.cmnArea = valueCover;
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.commonArea === '' ? '0' : commonAreaState2}
+                value={formData.cmnArea === '' ? '0' : commonAreaState2}
               />
             </View>
           </View>
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
-                labelTextField="임대면적"
+                labelTextField="가용수치"
                 textRight="평"
-                // valueProps={e => this.setState({ rentalArea: e })}
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  const valueCover = (value * 3.305785).toString();
+                  this.setState({ usblValueState2: valueCover });
+                  let dataF = formData;
+                  dataF.usblValue = e.replace(/[^0-9]/g, '');
+                  valueForm && valueForm(dataF);
+                }}
+                value={usblValueState2 === '' ? '0' : formData.usblValue}
+                keyboardType="numeric"
               />
             </View>
             <View style={DefaultStyle._element}>
               <TextField
-                labelTextField="임대면적"
-                defaultValue="1200"
+                labelTextField="가용수치"
                 textRight="m2"
-                // valueProps={e => this.setState({ rentalArea2: e })}
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  const valueCover = (value / 3.305785).toString();
+                  this.setState({
+                    usblValueState2: e.replace(/[^0-9]/g, ''),
+                  });
+                  // formData.cmnArea
+                  let dataF = formData;
+                  dataF.usblValue = valueCover;
+                  valueForm && valueForm(dataF);
+                }}
+                keyboardType="numeric"
+                value={formData.usblValue === '' ? '0' : usblValueState2}
               />
             </View>
           </View>
 
-          <TextField
-            labelTextField="보관 가능 기간"
-            placeholder="YYYY.MM.DD"
-            // defaultValue={formData.usblYmdFrom}
-            value={timeFormCover}
-            valueProps={e => {
-              // this.setState({ usblYmdFrom: e });
-              let d = new Date(e).getTime();
-              let dataF = formData;
-              dataF.usblYmdFrom = d;
-              valueForm && valueForm(dataF);
-              this.setState({ usblYmdFrom: d });
-            }}
-          />
-          <TextField
-            labelTextField="보관 가능 기간"
-            placeholder="YYYY.MM.DD"
-            value={timeToCover}
-            valueProps={e => {
-              let d = new Date(e).getTime();
-              let dataF = formData;
-              dataF.usblYmdTo = d;
-              valueForm && valueForm(dataF);
-              this.setState({ usblYmdTo: d });
-            }}
-          />
+          <View style={{ flex: 1, marginBottom: 18 }}>
+            <TouchableOpacity
+              onPress={this.showDatepicker}
+              style={DefaultStyle._btnDate}>
+              <Text style={DefaultStyle._textDate}>
+                {from.toLocaleDateString()}
+              </Text>
+              <Text
+                style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
+                수탁 기간
+              </Text>
+              <DatePicker
+                mode={mode}
+                show={showFrom}
+                onChange={this.onChangeFrom}
+                value={from}
+                testID="dateTimePicker"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, marginBottom: 18 }}>
+            <TouchableOpacity
+              onPress={this.showDatepickerTo}
+              style={DefaultStyle._btnDate}>
+              <Text style={DefaultStyle._textDate}>
+                {to.toLocaleDateString()}
+              </Text>
+              <Text
+                style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
+                수탁 기간
+              </Text>
+              <DatePicker
+                mode={mode}
+                show={showTo}
+                onChange={this.onChangeTo}
+                value={to}
+                testID="dateTimePickerTo"
+              />
+            </TouchableOpacity>
+          </View>
+
+          {
+            // <TextField
+            //   labelTextField="보관 가능 기간"
+            //   placeholder="YYYY.MM.DD"
+            //   // defaultValue={formData.usblYmdFrom}
+            //   value={timeFormCover}
+            //   valueProps={e => {
+            //     // this.setState({ usblYmdFrom: e });
+            //     let d = new Date(e).getTime();
+            //     let dataF = formData;
+            //     dataF.usblYmdFrom = d;
+            //     valueForm && valueForm(dataF);
+            //     this.setState({ usblYmdFrom: d });
+            //   }}
+            // />
+          }
           <TextField
             labelTextField="보관단가"
             value={formData.splyAmount}

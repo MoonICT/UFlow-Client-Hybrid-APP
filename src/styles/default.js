@@ -68,12 +68,27 @@ export default StyleSheet.create({
   w_50:{
     width: '50%'
   },
+  w_100:{
+    width: '100%'
+  },
+  h_150:{
+    height: 150 
+  },
   d_flex:{
     display: 'flex',
   },
   d_flex_center:{
     display: 'flex',
     alignItems: 'center'
+  },
+  d_flex_center_row:{
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  d_center:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems:'center'
   },
   flex_1:{
     flex: 1

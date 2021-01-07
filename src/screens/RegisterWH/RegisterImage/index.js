@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, IconButton } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
@@ -29,7 +29,7 @@ import ActionCreator from '@Actions';
 // import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
-import {MediaUpload} from '@Services/apis'
+import { MediaUpload } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
 class RegisterImage extends Component {
   constructor(props) {
@@ -38,12 +38,10 @@ class RegisterImage extends Component {
     this.state = {
       title: 'Profile Photo',
       confirm: false,
-      singleFile: null
-  
-  };
+      singleFile: null,
+    };
     this.navigation = props.navigation;
   }
-
 
   /** listener when change props */
   shouldComponentUpdate(nextProps, nextState) {
@@ -58,32 +56,37 @@ class RegisterImage extends Component {
   _addImage = () => console.log('_addImage');
   _removeImage = () => this.props.removeAction(0);
 
-  changeContent = (e) => {
-    console.log('e', e)
-  }
+  changeContent = e => {
+    console.log('e', e);
+  };
 
   handlePicker = async () => {
     try {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
       });
-      this.setState({ singleFile: res }, async ()=> {
+      this.setState({ singleFile: res }, async () => {
         if (res != null) {
           // If file selected then create FormData
-          let {singleFile} = this.state;
+          let { singleFile } = this.state;
           const data = new FormData();
           data.append('name', singleFile.name);
           data.append('file', singleFile);
           // Please change file upload URL
-          MediaUpload.uploadFile(data).then((res) => {
-            if(res.status === 200) {
-              let {url} = res.data
+          MediaUpload.uploadFile(data).then(respon => {
+            if (respon.status === 200) {
+              let { url } = respon.data;
+              // let pimages = [{ uri: url }];
+              // pimages.push();
+              // this.setState({ pimages });
+              console.log('url', url);
+              this.props.registerAction({ uri: url });
             }
-          })
+          });
         } else {
           // If no file selected the show alert
           alert('Please Select File first');
-        }  
+        }
       });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -95,15 +98,16 @@ class RegisterImage extends Component {
   };
   render() {
     const { imageStore } = this.props;
-    // console.log('imageStore', imageStore);
+    const { pimages } = this.state;
+    console.log('pimages', pimages);
     const listImg =
       imageStore &&
       imageStore.map((item, index) => {
         // console.log('index', index);
         if (index !== 0) {
           return (
-            <View>
-              <Image style={S.itemImage} source={item} key={index} />
+            <View key={index}>
+              <Image style={S.itemImage} source={item} />
               <IconButton
                 style={S.btnRemove}
                 icon="close-circle"
@@ -143,8 +147,6 @@ class RegisterImage extends Component {
           />
         </Appbars>
         <ScrollView>
-
-
           {imageStore.length === 0 ? (
             <View style={S.bgrRegister}>
               <Image source={ignore3} style={S.ImageStyle} />
@@ -189,7 +191,6 @@ class RegisterImage extends Component {
       </SafeAreaView>
     );
   }
-
 }
 
 /** map state with store states redux store */

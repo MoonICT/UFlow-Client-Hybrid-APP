@@ -106,7 +106,7 @@ class SearchFilter extends Component {
   async componentDidMount () {
     // 필터 데이터들 호출.
     const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 보관유형
-    const listCalUnitDvCode = await Warehouse.listCalUnitDvCode(); // 정산단위
+₩    const listCalUnitDvCode = await Warehouse.listCalUnitDvCode(); // 정산단위
     const listCalStdDvCode = await Warehouse.listCalStdDvCode(); // 산정기준
     const listFlrDvCode = await Warehouse.listFlrDvCode(); // 층수
     const listAprchMthdDvCode = await Warehouse.listAprchMthdDvCode(); // 접안방식

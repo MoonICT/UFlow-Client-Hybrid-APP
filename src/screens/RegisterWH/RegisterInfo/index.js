@@ -39,12 +39,14 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Form from './form';
 import FormTrusts from './formTrusts';
+import { MyPage } from '@Services/apis';
 
 class RegisterInfo extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
+      isSubmit: false,
       cnsltPossYn:
         props.dataInfo && props.dataInfo.cnsltPossYn
           ? props.dataInfo.cnsltPossYn
@@ -79,19 +81,19 @@ class RegisterInfo extends Component {
           ? props.dataInfo.trusts
           : [
               {
-                // key: 0,
                 typeCode: '0001',
                 calUnitDvCode: 'CU01',
                 calStdDvCode: 'CS01',
-                // exclusiveArea: '',
-                // exclusiveArea2: '',
-                commonArea: '',
-                // rentalArea: '',
-                // rentalArea2: '',
                 usblYmdFrom: '',
                 usblYmdTo: '',
                 splyAmount: '',
-                mgmtChrg: '',
+                usblValue: '',
+                whinChrg: '',
+                whoutChrg: '',
+                psnChrg: '',
+                mnfctChrg: '',
+                dlvyChrg: '',
+                shipChrg: '',
                 remark: '',
               },
             ],
@@ -123,16 +125,16 @@ class RegisterInfo extends Component {
           typeCode: '0001',
           calUnitDvCode: 'CU01',
           calStdDvCode: 'CS01',
-          // exclusiveArea: '',
-          // exclusiveArea2: '',
-          commonArea: '',
-          // commonArea2: '',
-          // rentalArea: '',
-          // rentalArea2: '',
           usblYmdFrom: '',
           usblYmdTo: '',
           splyAmount: '',
-          mgmtChrg: '',
+          usblValue: '',
+          whinChrg: '',
+          whoutChrg: '',
+          psnChrg: '',
+          mnfctChrg: '',
+          dlvyChrg: '',
+          shipChrg: '',
           remark: '',
         })
       : listKeeps.push({
@@ -140,10 +142,10 @@ class RegisterInfo extends Component {
           typeCode: '0001',
           calUnitDvCode: 'CU01',
           calStdDvCode: 'CS01',
-          // exclusiveArea: '',
+          mgmtChrgDvCode: '0001',
           // exclusiveArea2: '',
           commonArea: '',
-          // commonArea2: '',
+          usblValue: '',
           // rentalArea: '',
           // rentalArea2: '',
           usblYmdFrom: '',
@@ -157,8 +159,20 @@ class RegisterInfo extends Component {
   _removeForm = valueTab => {
     let listKeeps = this.state.keeps;
     let listTrusts = this.state.trusts;
-    console.log('valueTab :>> ', valueTab);
-    console.log('listKeeps', listKeeps)
+    let numberSlideKeep = this.state.numberSlide;
+    let numberSlideTrusts = this.state.numberSlideTrusts;
+    let filterKeep =
+      listKeeps &&
+      listKeeps.filter(item => item !== listKeeps[numberSlideKeep]);
+    let filterTrust =
+      listTrusts &&
+      listTrusts.filter(item => item !== listTrusts[numberSlideTrusts]);
+    console.log('filter', filterKeep);
+    valueTab === 'trusts'
+      ? this.setState({ trusts: filterTrust })
+      : this.setState({ keeps: filterKeep });
+    // console.log('valueTab :>> ', valueTab);
+    // console.log('listKeeps', listKeeps);
   };
   onToggleSwitch = () =>
     this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
@@ -166,6 +180,7 @@ class RegisterInfo extends Component {
   _renderItem = ({ item }) => {
     return (
       <Form
+        managementFees={this.state.managementFees}
         valueTab={this.state.valueTab}
         number={this.state.numberSlide}
         key={item.key}
@@ -175,6 +190,7 @@ class RegisterInfo extends Component {
           this.setState({
             ...(this.state.keeps[index] = e),
           });
+          console.log('dataForm===>', e);
         }}
       />
     );
@@ -197,10 +213,57 @@ class RegisterInfo extends Component {
   };
   render() {
     const { imageStore, route, dataInfo } = this.props;
-    const { valueTab, listForm, keeps, trusts } = this.state;
-    // console.log('this.state.value', this.state.value);
-    // console.log('keeps', keeps);
-    // console.log('trusts', trusts);
+    const {
+      valueTab,
+      numberSlide,
+      numberSlideTrusts,
+      keeps,
+      trusts,
+      isSubmit,
+    } = this.state;
+    let isSubmitUpdate = false;
+    console.log('keeps', keeps);
+    console.log('trusts', trusts);
+    let filterArea = keeps && keeps.filter(item => item.cmnArea === '');
+    let filterusblValue = keeps && keeps.filter(item => item.usblValue === '');
+    let filtersplyAmount =
+      keeps && keeps.filter(item => item.splyAmount === '');
+    let filtermgmtChrg = keeps && keeps.filter(item => item.mgmtChrg === '');
+
+    let filterusblValueTrust =
+      trusts && trusts.filter(item => item.usblValue === '');
+    let filtersplyAmountTrust =
+      trusts && trusts.filter(item => item.splyAmount === '');
+    let filterwhinChrgTrust =
+      trusts && trusts.filter(item => item.whinChrg === '');
+    let filterwhoutChrgTrust =
+      trusts && trusts.filter(item => item.whoutChrg === '');
+    let filterpsnChrgTrust =
+      trusts && trusts.filter(item => item.psnChrg === '');
+    let filtermnfctChrgTrust =
+      trusts && trusts.filter(item => item.mnfctChrg === '');
+    let filterdlvyChrgTrust =
+      trusts && trusts.filter(item => item.dlvyChrg === '');
+    let filtershipChrgTrust =
+      trusts && trusts.filter(item => item.shipChrg === '');
+
+    if (
+      (filterArea.length === 0 &&
+        filterusblValue.length === 0 &&
+        filtersplyAmount.length === 0 &&
+        filtermgmtChrg.length === 0) ||
+      (filterusblValueTrust.length === 0 &&
+        filtersplyAmountTrust.length === 0 &&
+        filterwhinChrgTrust.length === 0 &&
+        filterwhoutChrgTrust.length === 0 &&
+        filterpsnChrgTrust.length === 0 &&
+        filtermnfctChrgTrust.length === 0 &&
+        filterdlvyChrgTrust.length === 0 &&
+        filtershipChrgTrust.length === 0)
+    ) {
+      isSubmitUpdate = true;
+    }
+    console.log('isSubmitUpdate', isSubmitUpdate);
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -326,8 +389,11 @@ class RegisterInfo extends Component {
               <Text style={SS.textFooter}>할 때 가격 협의가 가능합니다.</Text>
             </View>
             <TouchableOpacity
+              disabled={isSubmitUpdate === true ? false : true}
               onPress={() => {
-                this.navigation.navigate('RegisterWH');
+                this.navigation.navigate('RegisterWH', {
+                  completeInfo: true,
+                });
                 this.props.updateInfo({
                   cnsltPossYn: this.state.cnsltPossYn,
                   keeps: this.state.keeps,
@@ -336,14 +402,16 @@ class RegisterInfo extends Component {
               }}
               style={[
                 DefaultStyle.btnSubmit,
-                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
+                isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
               ]}
               // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
+                  isSubmitUpdate === true
+                    ? DefaultStyle.textActiveSubmit
+                    : null,
                 ]}>
                 확인
               </Text>
@@ -356,8 +424,25 @@ class RegisterInfo extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
+    await MyPage.getDetailCode('WHRG0012')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+
+          let managementFees =
+            data &&
+            data.map((item, index) => {
+              return {
+                type: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ managementFees });
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
   }
 
   /** when update state or props */
