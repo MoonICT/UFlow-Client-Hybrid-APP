@@ -117,6 +117,7 @@ export const styles = StyleSheet.create({
   },
   cardImageHorizon: {
     height: 124,
+    width: 124,
     borderRadius: 12,
   },
   badge: {

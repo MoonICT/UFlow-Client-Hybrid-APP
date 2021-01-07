@@ -36,6 +36,7 @@ import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import DatePicker from '@Components/organisms/DatePicker';
+import { toSquareMeter } from '@Services/libs/unit';
 
 class FormInfo extends Component {
   constructor(props) {
@@ -54,10 +55,11 @@ class FormInfo extends Component {
           // id: 0,
           typeCode: '',
           calUnitDvCode: '',
-          calculationStandard: '',
-          exclusiveArea: '',
+          calStdDvCode: '',
+          mgmtChrgDvCode: '',
           exclusiveArea2: '',
-          commonArea: '',
+          cmnArea: '',
+          usblValue: '',
           commonArea2: '',
           rentalArea: '',
           rentalArea2: '',
@@ -76,14 +78,6 @@ class FormInfo extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
-  }
-
-  onChangeText = () => console.log('_addImage');
-  _removeImage = () => console.log('_removeImage');
 
   onChangeFrom = (event, selectedDate) => {
     const currentDate = selectedDate || this.state.from;
@@ -115,6 +109,7 @@ class FormInfo extends Component {
       splyAmount,
       mgmtChrg,
       commonAreaState2,
+      usblValueState2,
       remark,
       usblYmdFrom,
       usblYmdTo,
@@ -228,6 +223,20 @@ class FormInfo extends Component {
       },
     ];
 
+    const managementFees = [
+      {
+        label: '일반관리비',
+        value: '0001',
+      },
+      {
+        label: '수도광열비',
+        value: '0002',
+      },
+      {
+        label: '기타',
+        value: '9100',
+      },
+    ];
     // let commonA = parseInt(commonAreaState) * 2;
     // console.log('commonAreaState2 :>> ', commonAreaState2);
     let timeForm = new Date();
@@ -276,24 +285,17 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          <View style={DefaultStyle._listElement}>
-            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-              <TextField
-                labelTextField="전용면적"
-                textRight="평"
-                // valueProps={e => this.setState({ exclusiveArea: e })}
-              />
-            </View>
-            <View style={DefaultStyle._element}>
-              <TextField
-                labelTextField="전용면적"
-                defaultValue="1200"
-                textRight="m2"
-                keyboardType="numeric"
-                // valueProps={e => this.setState({ exclusiveArea2: e })}
-              />
-            </View>
-          </View>
+          <Select
+            data={managementFees}
+            selectedValue={formData.mgmtChrgDvCode}
+            labelSelected="관리비구분"
+            valueProps={e => {
+              // this.setState({ calculationStandard: e });
+              let dataF = formData;
+              dataF.mgmtChrgDvCode = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
@@ -301,13 +303,15 @@ class FormInfo extends Component {
                 textRight="평"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value * 2).toString();
+                  let test = toSquareMeter(value);
+                  // console.log('testdddddddd', test);
+                  const valueCover = (value * 3.305785).toFixed(0).toString();
                   this.setState({ commonAreaState2: valueCover });
                   let dataF = formData;
-                  dataF.commonArea = e.replace(/[^0-9]/g, '');
+                  dataF.cmnArea = e.replace(/[^0-9]/g, '');
                   valueForm && valueForm(dataF);
                 }}
-                value={commonAreaState2 === '' ? '0' : formData.commonArea}
+                value={commonAreaState2 === '' ? '0' : formData.cmnArea}
                 keyboardType="numeric"
               />
             </View>
@@ -318,33 +322,53 @@ class FormInfo extends Component {
                 textRight="m2"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value / 2).toString();
+                  const valueCover = (value / 3.305785).toFixed(0).toString();
                   this.setState({
                     commonAreaState2: e.replace(/[^0-9]/g, ''),
                   });
-                  // formData.commonArea
+                  // formData.cmnArea
                   let dataF = formData;
-                  dataF.commonArea = valueCover;
+                  dataF.cmnArea = valueCover;
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.commonArea === '' ? '0' : commonAreaState2}
+                value={formData.cmnArea === '' ? '0' : commonAreaState2}
               />
             </View>
           </View>
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
-                labelTextField="임대면적"
+                labelTextField="가용수치"
                 textRight="평"
-                // valueProps={e => this.setState({ rentalArea: e })}
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  const valueCover = (value * 3.305785).toString();
+                  this.setState({ usblValueState2: valueCover });
+                  let dataF = formData;
+                  dataF.usblValue = e.replace(/[^0-9]/g, '');
+                  valueForm && valueForm(dataF);
+                }}
+                value={usblValueState2 === '' ? '0' : formData.usblValue}
+                keyboardType="numeric"
               />
             </View>
             <View style={DefaultStyle._element}>
               <TextField
-                labelTextField="임대면적"
-                defaultValue="1200"
+                labelTextField="가용수치"
                 textRight="m2"
-                // valueProps={e => this.setState({ rentalArea2: e })}
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  const valueCover = (value / 3.305785).toString();
+                  this.setState({
+                    usblValueState2: e.replace(/[^0-9]/g, ''),
+                  });
+                  // formData.cmnArea
+                  let dataF = formData;
+                  dataF.usblValue = valueCover;
+                  valueForm && valueForm(dataF);
+                }}
+                keyboardType="numeric"
+                value={formData.usblValue === '' ? '0' : usblValueState2}
               />
             </View>
           </View>
