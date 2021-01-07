@@ -560,3 +560,29 @@ export const listAllBussinessInfo = () => {
     }
   })
 };
+
+export const pageWhrgQnA = ({
+  id = '',
+  query = '',
+  startDate = '',
+  endDate = '',
+  size = 5,
+  page = 0,
+  sort = 'createdDate,desc',
+  requiresToken = false
+}) => {
+
+  return Axios.getRequest({
+    methodType: 'GET',
+    requiresToken: requiresToken,
+    url: `/api/v1/warehouse/question${parseQuery({
+      idWarehouse: id,
+      query: query,
+      startDate: startDate,
+      endDate: endDate,
+      size: size,
+      page: page,
+      sort: sort
+    })}`
+  })
+};
