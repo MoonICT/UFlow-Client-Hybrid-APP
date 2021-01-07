@@ -109,6 +109,7 @@ export default class DetailsManager extends Component {
       isToggle: false,
       resBody: {},
       receiptCancel: false,
+      typeCreate: 'import',
       filter: {
         query: '',
         contractType: 2100,
@@ -123,7 +124,7 @@ export default class DetailsManager extends Component {
       valueCreateImport: 0,
       rangeDay: [
         {
-          value: '', label: '전체'
+          value: 'all', label: '전체'
         },
         {
           value: '7', label: '7일'
@@ -404,7 +405,6 @@ export default class DetailsManager extends Component {
   };
 
   onChangeValueImport = (e) => {
-    
     if (searchTimerQuery) {
       clearTimeout(searchTimerQuery);
     }
@@ -418,20 +418,20 @@ export default class DetailsManager extends Component {
   }
 
   async createImport() {
-    let {rentWarehNo, timeCreateImport, valueCreateImport} = this.state
+    let {rentWarehNo, timeCreateImport, valueCreateImport, typeCreate} = this.state
     let body = {
       rentWarehNo,
       whinExpct: timeCreateImport.getTime(),
-      whinExpctQty: valueCreateImport
+      whinExpctQty: valueCreateImport,
+      typeCreate
     }
-    await InOutManagerService.createImport(body).then(res => {
-      if(res.data.msg !== 'success') {
-        return
-      }
-      this.showConfirm();
-      this.hideDialog();
-    })
-
+      await InOutManagerService.createImport(body).then(res => {
+        if(res.data.msg !== 'success') {
+          return
+        }
+        this.showConfirm();
+        this.hideDialog();
+      })
   }
 
 
@@ -621,6 +621,11 @@ export default class DetailsManager extends Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => {
+                  this.setState({typeCreate: 'import'}, ()=>{
+                    this.showDialog()
+                  })
+                } }
                 style={[DefaultStyle._btnInline, { marginRight: 8 }]}>
                 <Text
                   style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
@@ -628,7 +633,11 @@ export default class DetailsManager extends Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.showDialog()}
+              onPress={() => {
+                this.setState({typeCreate: 'export'}, ()=>{
+                  this.showDialog()
+                })
+              }}
                 style={[
                   DefaultStyle._btnInline,
                   { backgroundColor: '#e64a19' },
