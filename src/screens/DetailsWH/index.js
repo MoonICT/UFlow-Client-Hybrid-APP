@@ -903,7 +903,7 @@ class DetailWH extends Component {
     console.log('::componentDidMount::');
     SplashScreen.hide();
     this.getDataWH()
-    this.handleRequestQnaList()
+    // this.handleRequestQnaList()
   }
 
   async getDataWH() {
@@ -922,24 +922,24 @@ class DetailWH extends Component {
 
 
 
-  async handleRequestQnaList() {
-    await Warehouse.pageWhrgQnA(qnaParams).then(res => {
-      if (res && res._embedded && res._embedded.questions) {
-        console.log('res._embedded.questions', res._embedded.questions)
-        let newFQAList = res._embedded.questions.map(item =>{
-          return {
-            status: item.complete,
-            title: item.content,
-            name: item.writer,
-            date: moment(item.date).format("YYYY.MM.DD"),
-            lock: item.secret,
-          }
-        })
-        this.setState({ qnaList: newFQAList })
-        this.setState({ pageInfo: res.page })
-      }
-    })
-  }
+  // async handleRequestQnaList() {
+  //   await Warehouse.pageWhrgQnA(qnaParams).then(res => {
+  //     if (res && res._embedded && res._embedded.questions) {
+  //       console.log('res._embedded.questions', res._embedded.questions)
+  //       let newFQAList = res._embedded.questions.map(item =>{
+  //         return {
+  //           status: item.complete,
+  //           title: item.content,
+  //           name: item.writer,
+  //           date: moment(item.date).format("YYYY.MM.DD"),
+  //           lock: item.secret,
+  //         }
+  //       })
+  //       this.setState({ qnaList: newFQAList })
+  //       this.setState({ pageInfo: res.page })
+  //     }
+  //   })
+  // }
 
 
   /** when update state or props */
