@@ -51,7 +51,7 @@ class FormInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   onChangeText = () => console.log('_addImage');
@@ -104,6 +104,18 @@ class FormInfo extends Component {
             }}
           />
           <TextField
+            labelTextField="주차장면적"
+            textRight="m2"
+            defaultValue="0"
+            value={formData.parkArea}
+            colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.parkArea = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
+          <TextField
             labelTextField="사무실면적"
             textRight="m2"
             defaultValue="0"
@@ -116,14 +128,14 @@ class FormInfo extends Component {
             }}
           />
           <TextField
-            labelTextField="주차장면적"
+            labelTextField="전용면적"
             textRight="m2"
             defaultValue="0"
-            value={formData.parkArea}
+            value={formData.prvtArea}
             colorLabel="#000000"
             valueProps={e => {
               let dataF = formData;
-              dataF.parkArea = e;
+              dataF.prvtArea = e;
               valueForm && valueForm(dataF);
             }}
           />
@@ -140,6 +152,16 @@ class FormInfo extends Component {
             }}
           />
           <TextField
+            labelTextField="층고"
+            value={formData.flrHi}
+            colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.flrHi = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
+          <TextField
             labelTextField="유효고"
             defaultValue="0"
             value={formData.efctvHi}
@@ -152,11 +174,11 @@ class FormInfo extends Component {
           />
           <TextField
             labelTextField="접안방식"
-            value={formData.prvtArea}
+            value={formData.aprchMthdDvCode}
             colorLabel="#000000"
             valueProps={e => {
               let dataF = formData;
-              dataF.prvtArea = e;
+              dataF.aprchMthdDvCode = e;
               valueForm && valueForm(dataF);
             }}
           />

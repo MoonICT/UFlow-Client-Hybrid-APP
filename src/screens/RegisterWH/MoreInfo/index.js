@@ -51,7 +51,7 @@ class RegisterMoreInfo extends Component {
         props.dataMoreInfo && props.dataMoreInfo.insrDvCode
           ? props.dataMoreInfo.insrDvCode
           : ['', '', ''],
-          cmpltYmd:
+      cmpltYmd:
         props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
           ? props.dataMoreInfo.cmpltYmd
           : '',
@@ -110,6 +110,18 @@ class RegisterMoreInfo extends Component {
       showFrom,
     } = this.state;
 
+    let isSubmitUpdate = false;
+    if (
+      addOptDvCode.length > 0 &&
+      insrDvCode.length > 0 &&
+      siteArea !== '' &&
+      bldgArea !== '' &&
+      totalArea !== '' &&
+      prvtArea !== '' &&
+      cmnArea !== ''
+    ) {
+      isSubmitUpdate = true;
+    }
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -166,16 +178,6 @@ class RegisterMoreInfo extends Component {
                 </TouchableOpacity>
               </View>
               <TextField
-                labelTextField="대지면적"
-                textRight="평"
-                placeholder="0"
-                colorLabel="#000000"
-                value={siteArea}
-                valueProps={e => {
-                  this.setState({ siteArea: e });
-                }}
-              />
-              <TextField
                 labelTextField="건축면적"
                 textRight="평"
                 placeholder="0"
@@ -183,6 +185,16 @@ class RegisterMoreInfo extends Component {
                 value={bldgArea}
                 valueProps={e => {
                   this.setState({ bldgArea: e });
+                }}
+              />
+              <TextField
+                labelTextField="대지면적"
+                textRight="평"
+                placeholder="0"
+                colorLabel="#000000"
+                value={siteArea}
+                valueProps={e => {
+                  this.setState({ siteArea: e });
                 }}
               />
               <TextField
@@ -308,8 +320,11 @@ class RegisterMoreInfo extends Component {
               </View>
             </View>
             <TouchableOpacity
+              disabled={isSubmitUpdate === true ? false : true}
               onPress={() => {
-                this.navigation.navigate('RegisterWH');
+                this.navigation.navigate('RegisterWH', {
+                  completeMoreInfo: true,
+                });
                 this.props.updateInfo({
                   addOptDvCode,
                   insrDvCode,
@@ -323,14 +338,16 @@ class RegisterMoreInfo extends Component {
               }}
               style={[
                 DefaultStyle.btnSubmit,
-                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
+                isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
               ]}
               // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
+                  isSubmitUpdate === true
+                    ? DefaultStyle.textActiveSubmit
+                    : null,
                 ]}>
                 확인
               </Text>
