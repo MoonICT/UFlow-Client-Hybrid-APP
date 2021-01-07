@@ -97,7 +97,7 @@ import { TOKEN } from '@Constant';
 const store = initStore();
 
 // 메인 탭 옵션 설정.(Sample)
-const TabScreenOptions = ({ route }) => ({
+const TabScreenOptions = ({ route = {name:"Home" }}) => ({
   tabBarIcon: ({ focused, tColor, tSize }) => {
     const routeName = route.name;
     let icon = '';
@@ -137,7 +137,8 @@ const TabScreen = () => {
   return (
     <Tab.Navigator
       screenOptions={TabScreenOptions}
-      tabBarOptions={TabBarOptions}>
+      tabBarOptions={TabBarOptions}
+      initialRouteName="Home">
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen
         name="Search"
@@ -170,7 +171,7 @@ const App = () => {
     });
   }, []);
 
-  console.log('isLogin==>', isLogin);
+  // console.log('isLogin==>', isLogin);
 
   const authContext = useMemo(() => {
     return {

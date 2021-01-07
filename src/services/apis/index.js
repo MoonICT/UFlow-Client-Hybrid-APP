@@ -11,6 +11,7 @@ import * as MyPage from './MyPage';
 import * as InOutManagerService from './InOutManagerService';
 import * as LogisticsKnowledgeService from './LogisticsKnowledgeService';
 import * as Entrp from './Entrp';
+import * as WhrgSearch from './WhrgSearch';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {
@@ -27,5 +28,6 @@ export {
   InOutManagerService,
   LogisticsKnowledgeService,
   SettlementManagementService,
-  Entrp
+  Entrp,
+  WhrgSearch
 };
