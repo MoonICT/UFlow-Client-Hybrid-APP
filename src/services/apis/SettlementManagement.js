@@ -5,7 +5,7 @@ export const getAll = async (params) => {
   const token = await AsyncStorage.getItem(TOKEN);
   let type = params.type;
   let url = '/api/v1/mypage/settlement/tenant'
-  if(type === 'owner') {
+  if(type === 'OWNER') {
     url = '/api/v1/mypage/settlement/owner'
   }
   return await mainAxios.get(`${url}`, 

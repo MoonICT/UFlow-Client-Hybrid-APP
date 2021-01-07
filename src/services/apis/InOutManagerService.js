@@ -61,6 +61,23 @@ export const createImport = async (body) => {
     }
   });
 };
+export const cancelImport = async (body) => {
+  
+  let typeCancel = 'whout'
+  if(body.isTypeCancel === 'IMPORT') {
+    typeCancel = 'whin'
+  }
+  const token = await AsyncStorage.getItem(TOKEN);
+  let url = `/api/v1/rtwh/RT2020121419/${typeCancel}/cancel/${body.whoutExpct}-${body.whoutExpctSeq}`;
+  
+  return await mainAxios.post(`${url}`, body,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    }
+  });
+};
 
 
 
