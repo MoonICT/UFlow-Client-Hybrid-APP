@@ -45,6 +45,9 @@ import mapLink from '@Assets/images/mapLink.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import { Warehouse } from '@Services/apis'
+
+
 const slidesProduct = [
   {
     key: 'somethun',
@@ -103,6 +106,7 @@ class DetailWH extends Component {
     this.webView = null;
     this.state = { active: 0, checked: true, checked2: false, activeIndex: 0 };
     this.navigation = props.navigation;
+    console.log('navigation', props.navigation);
   }
 
   /** listener when change props */
@@ -122,6 +126,7 @@ class DetailWH extends Component {
   _renderProductItem = ({ item }) => {
     return <ProductCard data={{ ...item, img: cardBG }} />;
   };
+  
   render() {
     const { imageStore, workComplete } = this.props;
     const dataTab = [
@@ -177,7 +182,7 @@ class DetailWH extends Component {
           <View style={DefaultStyle._cards}>
             <Text
               style={[DefaultStyle._titleWH, { backgroundColor: '#4caf50' }]}>
-              제휴창고
+              {/* {whrgData.name} */}
             </Text>
             <Text style={S.describeTitle}>보관창고, 수탁창고</Text>
             <Text style={S.header}>에이씨티앤코아물류</Text>
@@ -603,7 +608,22 @@ class DetailWH extends Component {
   async componentDidMount() {
     console.log('::componentDidMount::');
     SplashScreen.hide();
+    this.getDataWH()
+
   }
+
+  async getDataWH(){
+    let params = {
+      id: 'RG20210104262'
+    };
+    await Warehouse.getWhrg(params).then((res) => {
+      let whrgData = res;
+      // console.log('whrgData123',whrgData);
+      console.log('name',whrgData.name);
+    })
+  }
+
+  
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {

@@ -158,7 +158,7 @@ class RegisterInfo extends Component {
     let listKeeps = this.state.keeps;
     let listTrusts = this.state.trusts;
     console.log('valueTab :>> ', valueTab);
-    console.log('listKeeps', listKeeps)
+    console.log('listKeeps', listKeeps);
   };
   onToggleSwitch = () =>
     this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
@@ -175,6 +175,7 @@ class RegisterInfo extends Component {
           this.setState({
             ...(this.state.keeps[index] = e),
           });
+          console.log('dataForm===>', e);
         }}
       />
     );

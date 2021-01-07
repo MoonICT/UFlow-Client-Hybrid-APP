@@ -54,7 +54,7 @@ class FCMService {
   async _checkApplicationPermission () {
     // const enabled = await messaging().hasPermission();
     const enabled = await this._requestUserPermission();
-    console.log('사용자 권한 : ', enabled);
+    // console.log('사용자 권한 : ', enabled);
     // 권한 요청이 성공하면 디바이스 토큰을 가져온다.
     if (enabled) {
       await this._getToken();

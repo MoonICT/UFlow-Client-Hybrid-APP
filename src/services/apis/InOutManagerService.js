@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { mainAxios } from '../libs/axios';
-import { TOKEN } from '@Constant';
-export const getAll = async params => {
+import {TOKEN} from '@Constant'
+export const getAll = async (params) => {
   const token = await AsyncStorage.getItem(TOKEN);
 
   let type = params.type;
@@ -20,7 +20,8 @@ export const getAll = async params => {
   });
 };
 
-export const getDetail = async params => {
+
+export const getDetail = async (params) => {
   const token = await AsyncStorage.getItem(TOKEN);
   let type = params.type;
   let url = `/api/v1/rtwh/transaction/tenant/${params.id}`;
@@ -38,7 +39,7 @@ export const getDetail = async params => {
   });
 };
 
-export const createImport = async body => {
+export const createImport = async (body) => {
   const token = await AsyncStorage.getItem(TOKEN);
   let { typeCreate, type } = body;
   let strType = 'whin';
