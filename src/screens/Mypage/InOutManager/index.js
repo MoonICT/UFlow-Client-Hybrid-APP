@@ -7,15 +7,10 @@
 // Global Imports
 import React, { Component, Fragment } from 'react';
 import {
-  SafeAreaView,
   View,
-  ScrollView,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
-import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Card, Text, RadioButton } from 'react-native-paper';
+import { Text, Dialog, Button, Paragraph } from 'react-native-paper';
 import Select from '@Components/organisms/Select';
 
 // Local Imports
@@ -36,6 +31,7 @@ import DatePicker from '@react-native-community/datetimepicker';
 import {formatDateV1} from '@Utils/dateFormat';
 import {SIGNED_CONTRACT} from '@Constant/enumCode'
 var searchTimerQuery;
+var searchTimerQuery2;
 export default class InOutManager extends Component {
   constructor(props) {
     super(props);
@@ -43,6 +39,12 @@ export default class InOutManager extends Component {
     this.state = {
       dataCard : [],
       valueTab: 'OWNER',
+      typeCreate: 'import',
+      rentWarehNoCurrent: -1,
+      visible: false,
+      isOpenTimeCreateImport: false,
+      timeCreateImport: new Date().getTime(),
+      confirm: false,
       filter: {
         query: '',
         contractType: 2100,
@@ -210,15 +212,72 @@ export default class InOutManager extends Component {
       })
     }, 500);
   }
+
+  onChangeTimeCreateImport = (event, selectedDate) => {
+    let { isOpenTimeCreateImport } = this.state
+    if (event.type == 'dismissed') {
+      this.setState({
+        isOpenTimeCreateImport: !isOpenTimeCreateImport
+      })
+    } else {
+      this.setState({
+        timeCreateImport: event.nativeEvent.timestamp,
+        isOpenTimeCreateImport: !isOpenTimeCreateImport
+      })
+    }
+  };
+
+
+  showTimeCreateImport = () => {
+    let { isOpenTimeCreateImport } = this.state
+    this.setState({
+      isOpenTimeCreateImport: !isOpenTimeCreateImport
+    })
+  }
+
+  onChangeValueImport = (e) => {
+    if (searchTimerQuery2) {
+      clearTimeout(searchTimerQuery2);
+    }
+    searchTimerQuery2 = setTimeout(async () => {
+      this.setState({
+        valueCreateImport: this.inputValueCreateImport.state.value
+      })
+    }, 500);
+  }
+
+  async createImport() {
+    let {rentWarehNoCurrent, timeCreateImport, valueCreateImport, typeCreate} = this.state
+    console.log('this.state', this.state)
+    let body = {
+      rentWarehNo: rentWarehNoCurrent,
+      whinExpct: timeCreateImport.getTime(),
+      whinExpctQty: valueCreateImport,
+      typeCreate
+    }
+      await InOutManagerService.createImport(body).then(res => {
+        if(res.data.msg !== 'success') {
+          return
+        }
+        this.showConfirm();
+        this.hideDialog();
+      })
+  }
   
 
 
+  showDialog = () => this.setState({ visible: true });
+
+  hideDialog = () => this.setState({ visible: false });
+  showConfirm = () => this.setState({ confirm: true });
+
+  hideConfirm = () => this.setState({ confirm: false });
 
 
 
 
   render() {
-    const { valueTab, isOpenStart, isOpenEnd, rangeDay, dataCard } = this.state;
+    const { valueTab, isOpenStart, isOpenEnd, rangeDay, dataCard, timeCreateImport, isOpenTimeCreateImport } = this.state;
     let {startDate, endDate} = this.state.filter;
     return (
       <View style={DefaultStyle._cards}>
@@ -374,7 +433,12 @@ export default class InOutManager extends Component {
                       ]}>
                       <TouchableOpacity
                         style={[DefaultStyle._btnInline, DefaultStyle._btnLeft]}
-                        onPress={() => this.showConfirm()}>
+                        onPress={() => {
+                          this.setState({typeCreate: 'import', rentWarehNoCurrent: item.rentWarehNo}, ()=>{
+                            this.showDialog()
+                          })
+                        } }
+                        >
                         <Text
                           style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
                           입고요청
@@ -386,7 +450,12 @@ export default class InOutManager extends Component {
                           DefaultStyle._btnRight,
                           { backgroundColor: '#e64a19' },
                         ]}
-                        onPress={() => console.log('출고 요청')}>
+                        onPress={() => {
+                          this.setState({typeCreate: 'export', rentWarehNoCurrent: item.rentWarehNo}, ()=>{
+                            this.showDialog()
+                          })
+                        }}
+                        >
                         <Text
                           style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
                           출고 요청
@@ -399,17 +468,118 @@ export default class InOutManager extends Component {
           })
         }
 
-        
+      <Dialog
+          style={[DefaultStyle.popup, SS.popup]}
+          visible={this.state.visible}
+          onDismiss={this.hideDialog}>
+          <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
+            입고정보 등록
+          </Dialog.Title>
+          <Dialog.Content>
+            <View style={SS.bodyPopup}>
+              <Text style={DefaultStyle._textTitleCard}>입고 예정일</Text>
 
-        {/* <CardMypage
-          onPressHeader={() => this.navigation.navigate('DetailsManager')}
-          headerTitle={'에이씨티앤코아물류3'}
-          data={dataCompletion}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          bgrImage={card}
-        /> */}
+
+              <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
+                <View style={[S.optionSelect, S.optionSelectLeft, { height: 40, marginBottom: 45, marginTop: 15, width: '100%' }]}>
+                  <View style={{ flex: 1 }}>
+                    <TouchableOpacity
+                      onPress={() => this.showTimeCreateImport()}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {formatDateV1(timeCreateImport)}
+                      </Text>
+                      <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          { color: '#000000' },
+                        ]}>
+                        수탁 기간
+                      </Text>
+                      {
+                        isOpenTimeCreateImport &&
+                        <DatePicker
+                          mode={'date'}
+                          show={isOpenTimeCreateImport}
+                          onChange={(e) => this.onChangeTimeCreateImport(e)}
+                          value={timeCreateImport}
+                          testID="dateTimePicker"
+                        />
+                      }
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+              </View>
+
+
+              <Text style={DefaultStyle._textTitleCard}>
+              입고 예정 수량
+
+
+              </Text>
+              <TextField
+                ref={el => this.inputValueCreateImport = el}
+                textRight="P"
+                styleRight={{ top: 5 }}
+                styleProps={SS.inputStyle}
+                onChange={(e) => this.onChangeValueImport(e)}
+              />
+            </View>
+          </Dialog.Content>
+          <Dialog.Actions style={SS.footerPopup}>
+            <Button
+              style={[SS.btnPopup]}
+              color={'rgba(0, 0, 0, 0.54)'}
+              onPress={this.hideDialog}>
+              취소
+            </Button>
+
+            <Button
+              style={SS.btnPopup}
+              onPress={() => {
+                this.createImport()
+              }}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+
+
+
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={this.state.confirm}
+          onDismiss={this.hideConfirm}>
+          <Dialog.Content>
+            <View style={DefaultStyle.imagePopup} />
+          </Dialog.Content>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            입고 요청 완료
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              입고요청을 완료했습니다. 입출고내역에서 요청하신 내역을 확인해
+              주세요.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => {
+                this.hideConfirm();
+                this.setState({ isProgress: true }, ()=>{
+                  this.getAllData();
+                });
+              }}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+
+
+
       </View>
     );
   }

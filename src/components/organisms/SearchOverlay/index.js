@@ -22,7 +22,7 @@ class SearchOverlay extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      query: '경기',
+      query: '',
       isProgress: false,
       searchAddress:[],
       searchWarehouse:[]
@@ -33,15 +33,14 @@ class SearchOverlay extends Component {
    * On change search query.
    * TODO 검색어 변경 시, 조회 처리.
    * */
-  _onChangeSearchQuery (query) {
-    if (query.length > 0) {
+  _onChangeSearchQuery (keyword) {
+    if (keyword.length > 0) {
       this.setState({ 
         isProgress: true,
-        query: query 
+        query: keyword 
       });
 
-      WhrgSearch.searchKeywords({query: query}).then(res => {
-        console.log('resd', res)
+      WhrgSearch.searchKeywords({query: keyword}).then(res => {
         this.setState({ 
           searchAddress: res.data.addresses,
           searchWarehouse: res.data.warehouses
@@ -59,6 +58,8 @@ class SearchOverlay extends Component {
       }).catch(err => {
         alert('서버에러:', err.response.message);
       })
+    } else {
+      this.props.searchToggle(false)
     }
   }
 
@@ -107,35 +108,6 @@ class SearchOverlay extends Component {
   }
 
   render () {
-    // Temp array
-    let arr = [
-      {
-        title: '합정역',
-        description: '',
-        icon: 'bus',
-      },
-      {
-        title: '서울특별시 마포구 합정동',
-        description: '',
-        icon: 'map-marker',
-      },
-      {
-        title: '합정',
-        description: '서울특별시 마포구 합정동',
-        icon: 'map',
-      },
-      {
-        title: '합정물류',
-        description: '서울특별시 마포구 합정동',
-        icon: 'map',
-      },
-      {
-        title: '서울합정물류창고',
-        description: '서울특별시 마포구 합정동',
-        icon: 'map',
-      }
-    ];
-
     const { isProgress,query } = this.state;
 
     return (
