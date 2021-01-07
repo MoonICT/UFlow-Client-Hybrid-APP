@@ -5,7 +5,7 @@
 import React, {Component} from 'react';
 import {Text, View, SafeAreaView} from 'react-native';
 import DefaultStyle from '@Styles/default';
-import Lists from '@Components/organisms/List';
+import Lists from '@Components/organisms/ListCustom';
 class Footer extends Component {
   constructor(props) {
     super(props);
