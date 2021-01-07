@@ -77,5 +77,5 @@ export const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 0,
     marginRight: 16,
-  },
+  }
 });
