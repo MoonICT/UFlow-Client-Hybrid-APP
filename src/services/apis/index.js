@@ -12,6 +12,7 @@ import * as InOutManagerService from './InOutManagerService';
 import * as LogisticsKnowledgeService from './LogisticsKnowledgeService';
 import * as Entrp from './Entrp';
 import * as WhrgSearch from './WhrgSearch';
+import * as Consulting from './Consulting';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {
@@ -29,5 +30,6 @@ export {
   LogisticsKnowledgeService,
   SettlementManagementService,
   Entrp,
-  WhrgSearch
+  WhrgSearch,
+  Consulting
 };
