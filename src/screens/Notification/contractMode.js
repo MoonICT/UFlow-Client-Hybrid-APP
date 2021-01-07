@@ -47,33 +47,32 @@ const data = [
 ];
 
 //Data Footer
-const _data = [
-  {
-    titleList: '창고 등록',
-    listItem: [
-      { titleItem: '공급사 등록' },
-      { titleItem: '수요사 등록' },
-      { titleItem: '회원 조회' },
-      { titleItem: '기본 조회' },
-    ],
-  },
-  {
-    titleList: '창고 찾기',
-  },
-  {
-    titleList: '이용 방법',
-  },
-  {
-    titleList: '고객센터',
-  },
-  {
-    titleList: '패밀리사이트',
-  },
-];
+// const _data = [
+//   {
+//     titleList: '창고 등록',
+//     listItem: [
+//       { titleItem: '공급사 등록' },
+//       { titleItem: '수요사 등록' },
+//       { titleItem: '회원 조회' },
+//       { titleItem: '기본 조회' },
+//     ],
+//   },
+//   {
+//     titleList: '창고 찾기',
+//   },
+//   {
+//     titleList: '이용 방법',
+//   },
+//   {
+//     titleList: '고객센터',
+//   },
+//   {
+//     titleList: '패밀리사이트',
+//   },
+// ];
 export default class Notification extends Component {
   constructor(props) {
     super(props);
-    this.navigation = props.navigation;
     this.state = {
       title: '책임형',
     };
@@ -88,7 +87,7 @@ export default class Notification extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.goBack()}
+            onPress={() => this.props.nav.goBack()}
           />
           <Appbar.Content
             title="마이페이지"
@@ -170,7 +169,6 @@ export default class Notification extends Component {
               </Text>
             </View>
           )}
-          <Footer data={_data} />
         </ScrollView>
       </SafeAreaView>
     );

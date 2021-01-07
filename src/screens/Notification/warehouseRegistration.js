@@ -78,7 +78,6 @@ const _data = [
 export default class Notification extends Component {
   constructor(props) {
     super(props);
-    this.navigation = props.navigation;
     this.myRef = React.createRef();
     this.state = {
       title: '1.창고 등록',
@@ -122,7 +121,7 @@ export default class Notification extends Component {
         <Text style={S.title}>{item.title}</Text>
         <Text style={S.description}>{item.description}</Text>
         <View style={S.boxTarget}>
-          <Text style={S.textTarget}>{item.textTarget}</Text>
+          {/* <Text style={S.textTarget}>{item.textTarget}</Text> */}
           <Icon.Button
             size={20}
             color={'#ff6d00'}
@@ -381,7 +380,7 @@ export default class Notification extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.goBack()}
+            onPress={() => this.props.nav.goBack()}
           />
           <Appbar.Content
             title="마이페이지"
@@ -413,7 +412,7 @@ export default class Notification extends Component {
               유플로우에 창고 정보와 사업자 정보를 등록하여 {'\n'}임대할 창고를
               등록할 수 있습니다.
             </Text>
-            <View style={S.boxTarget}>
+            {/* <View style={S.boxTarget}>
               <Text style={S.textTarget}>창고 등록 하러가기</Text>
               <Icon.Button
                 size={20}
@@ -422,7 +421,7 @@ export default class Notification extends Component {
                 style={S.iconArrowRight}
                 name="arrow-right"
               />
-            </View>
+            </View> */}
             <View style={[S.image, { marginBottom: 30 }]}>
               <ImageBackground
                 source={ImgHTW2}
@@ -642,7 +641,7 @@ export default class Notification extends Component {
               필요한 창고를 편리하게 찾아보세요.
             </Text>
             <View style={S.boxTarget}>
-              <Text style={S.textTarget}>유플로우 회원가입하기</Text>
+              {/* <Text style={S.textTarget}>유플로우 회원가입하기</Text> */}
               <Icon.Button
                 size={20}
                 color={'#ff6d00'}
@@ -654,7 +653,7 @@ export default class Notification extends Component {
             </View>
           </View>
 
-          <Footer data={_data} />
+          {/* <Footer data={_data} /> */}
         </ScrollView>
       </SafeAreaView>
     );
