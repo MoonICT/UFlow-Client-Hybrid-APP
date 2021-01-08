@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-08 14:56:31
+ * @modify date 2021-01-08 15:06:25
  * @desc [description]
  */
 
@@ -575,16 +575,6 @@ class Home extends Component {
                 renderItem={this._renderProductItem}
                 onSnapToItem={index => this.setState({ activeIndex: index })}
               /> */}
-              {/* {whList.map((v, i) => {
-                <View key={i} style={styles.mainProductItem}>
-                  {this._renderProductItem(v)}
-                </View>;
-              })} */}
-              {/* <Masonry 
-              sorted
-              columns={2}
-              bricks={this._renderProductItem()}
-               /> */}
               {this._renderProductItem()}
             </View>
           </View>
