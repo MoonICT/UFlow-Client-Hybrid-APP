@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-08 15:06:25
+ * @modify date 2021-01-08 16:11:50
  * @desc [description]
  */
 
@@ -405,8 +405,8 @@ class Home extends Component {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
     const { getLoginStatus } = this.context;
-    const isLog = getLoginStatus();
-    const { isLogin = isLog, textSearch } = this.state;
+    // const isLog = getLoginStatus();
+    const { isLogin, textSearch } = this.state;
     // console.log('isLogin==>', isLogin);
 
     return (
