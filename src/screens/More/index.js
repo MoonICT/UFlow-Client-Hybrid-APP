@@ -46,16 +46,6 @@ class More extends Component {
     this.navigation = props.navigation;
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
-  }
-
   render() {
     let { email, fullName, isLogin } = this.state;
     // const { route, isLogin } = this.props;
@@ -211,7 +201,7 @@ class More extends Component {
               <View style={[DefaultStyle._cards, S.listPage]}>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('RegisterWH')}>
+                  onPress={() => this.navigation.navigate('RegisterBusinessInfo')}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={addwarehouse} />
                     <Text style={DefaultStyle.titleItem}>창고등록</Text>
