@@ -14,6 +14,7 @@ import * as Entrp from './Entrp';
 import * as WhrgSearch from './WhrgSearch';
 import * as ConsultingApi from './Consulting';
 import * as WarehouseOwner from './WarehouseOwner';
+import * as WarehouseMobileAuth from './WarehouseMobileAuth';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {
@@ -33,5 +34,6 @@ export {
   Entrp,
   WhrgSearch,
   ConsultingApi,
-  WarehouseOwner
+  WarehouseOwner,
+  WarehouseMobileAuth
 };

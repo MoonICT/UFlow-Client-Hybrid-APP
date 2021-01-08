@@ -37,33 +37,33 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   line: {
-    width:'100%',
-    height:1,
+    width: '100%',
+    height: 1,
     backgroundColor: color.input.default_border,
   },
   mt_0: {
     marginTop:0
   },
   mt_20: {
-    marginTop:20
+    marginTop: 20,
   },
   mb_20: {
-    marginBottom:20
+    marginBottom: 20,
   },
   mr_20: {
-    marginRight:20
+    marginRight: 20,
   },
   mb_0: {
-    marginBottom:0
+    marginBottom: 0,
   },
   pt_20: {
-    paddingTop:20
+    paddingTop: 20,
   },
   pb_0: {
-    paddingBottom:0
+    paddingBottom: 0,
   },
   p_12: {
-    padding:12
+    padding: 12,
   },
   p_16: {
     padding:16
@@ -71,33 +71,33 @@ export default StyleSheet.create({
   _colorMuted:{
     color: 'rgba(0, 0, 0, 0.87)'
   },
-  w_50:{
-    width: '50%'
+  w_50: {
+    width: '50%',
   },
-  w_100:{
-    width: '100%'
+  w_100: {
+    width: '100%',
   },
-  h_150:{
-    height: 150 
+  h_150: {
+    height: 150,
   },
-  d_flex:{
+  d_flex: {
     display: 'flex',
   },
-  d_flex_center:{
+  d_flex_center: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  d_flex_center_row:{
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  d_center:{
+  d_flex_center_row: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems:'center'
   },
-  flex_1:{
-    flex: 1
+  d_center: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flex_1: {
+    flex: 1,
   },
   header: {
     height: 48,
@@ -1122,7 +1122,7 @@ export default StyleSheet.create({
   _btnOutlineMuted: {
     borderColor: 'rgba(0, 0, 0, 0.5)',
     borderWidth: 1,
-    height:42,
+    height: 42,
     borderRadius: 21,
     alignItems: 'center',
   },
@@ -1179,7 +1179,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   _statusProcessingFalse: {
-    backgroundColor: "rgba(97, 97, 97, 0.9)",
+    backgroundColor: 'rgba(97, 97, 97, 0.9)',
     borderRadius: 10,
     color: '#ffffff',
     marginLeft: 8,
@@ -1234,5 +1234,14 @@ export default StyleSheet.create({
 
   disHide: {
     display: 'none',
+  },
+  _postCode: {
+    width: windowWidth,
+    height: 300,
+    marginLeft: 0,
+  },
+  _postCodeContent: {
+    width: windowWidth,
+    height: 300,
   },
 });

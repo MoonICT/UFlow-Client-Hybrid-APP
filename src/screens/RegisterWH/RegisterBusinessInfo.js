@@ -15,17 +15,20 @@ import {
   Button,
   Dialog,
   Paragraph,
+  Portal
 } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
+import CertMobile from '@Components/organisms/CertMobile';
 import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
 import { WarehouseOwner, Warehouse , MediaUpload} from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import {launchImageLibrary} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
+import Postcode from 'react-native-daum-postcode';
 
 const tabSelect = [
   {
@@ -67,7 +70,7 @@ class RegisterBusinessInfo extends Component {
         value: -1,
       }],
       isPossible: false,
-      singleFile: null,
+      singleFile: null
     };
     this.navigation = props.navigation;
   }
@@ -115,9 +118,36 @@ class RegisterBusinessInfo extends Component {
     this.setState({ tabInfo: tabSelect[index].title });
   }
 
-  showDialog = () => this.setState({ visible: true });
+  _showDialog = () => this.setState({ visible: true });
 
-  hideDialog = () => this.setState({ visible: false });
+  _hideDialog = () => this.setState({ visible: false });
+
+  /** 주소 검색 API*/
+  getKakaoAddress = (data) => {
+    const { businessInfo } = this.state;
+
+    console.log('dataAddress', data);
+    // set 주소
+    this.setState({
+      businessInfo: {
+        ...businessInfo,
+        jibunAddr: {
+          ...businessInfo.jibunAddr,
+          zipNo: data.zonecode,
+          address: data.jibunAddress,
+        },
+        roadAddr: {
+          ...businessInfo.roadAddr,
+          zipNo: data.zonecode,
+          address: data.roadAddress,
+        },
+        gps: {
+          latitude: 127.499683538281,
+          longitude: 36.6053894272938
+        }
+      }
+    });
+  }
 
   handleChoosePhoto = () => {
     const options={
@@ -224,9 +254,11 @@ class RegisterBusinessInfo extends Component {
   };
 
   handleOnSubmit = () => {
-    const { businessInfo } = this.state;
-
-    console.log('businessInfo123',businessInfo);
+    const { businessInfo,isCert } = this.state;
+    if (!isCert) {
+      alert('휴대폰 인증을 완료해주세요.')
+      return false
+    }
 
     // 창고주 정보 등록
     WarehouseOwner.regBusinessInfo(businessInfo).then(res => {
@@ -241,10 +273,6 @@ class RegisterBusinessInfo extends Component {
       }
     });
   };
-
-  getKakaoAddress = () => {
-    
-  }
 
   /**
    * 기등록 사업자 선택 완료.
@@ -378,7 +406,7 @@ class RegisterBusinessInfo extends Component {
                     </View>
                     <TouchableOpacity
                       style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                      onPress={this.getKakaoAddress}>
+                      onPress={this._showDialog}>
                       <Text
                         style={[
                           DefaultStyle._textButton,
@@ -440,22 +468,17 @@ class RegisterBusinessInfo extends Component {
                     }}
                     value={businessInfo.phone ? businessInfo.phone : ''}
                   />
-                  <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex]}>
-                    <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
-                      <TextField colorLabel="#000000" placeholder="인증번호를 입력하세요." />
-                    </View>
-                    <TouchableOpacity
-                      style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mb_20, DefaultStyle.w_50]}
-                      onPress={() => console.log('21312')}>
-                      <Text
-                        style={[
-                          DefaultStyle._textButton,
-                          DefaultStyle._colorMuted
-                        ]}>
-                        {'인증번호 발송'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+
+                  {/* cert phone */}
+                  <CertMobile
+                    mobile={businessInfo.phone}
+                    onComplete={() => {
+                      this.setState({
+                        isCert: true
+                      })
+                    }}
+                  />
+
                   <TextField
                     labelTextField="담당자명"
                     colorLabel="#000000"
@@ -522,19 +545,16 @@ class RegisterBusinessInfo extends Component {
 
         <Portal>
           <Dialog
-            style={SS.postCodeDialog}
+            style={DefaultStyle._postCode}
             visible={this.state.visible}
             onDismiss={this._hideDialog}>
-            <Dialog.Content style={SS.postCode}>
+            <Dialog.Content style={DefaultStyle._postCodeContent}>
               <Postcode
-                style={SS.postCode}
+                style={DefaultStyle._postCodeContent}
                 jsOptions={{ animated: true }}
                 onSelected={data => {
-                  // alert(JSON.stringify(data));
-                  console.log('data :>> ', data);
-                  let firstQuery = data.address;
-                  console.log('query :>> ', firstQuery);
-                  this.setState({ firstQuery: firstQuery });
+                  this.getKakaoAddress(data);
+                  this._hideDialog();
                 }}
               />
             </Dialog.Content>
