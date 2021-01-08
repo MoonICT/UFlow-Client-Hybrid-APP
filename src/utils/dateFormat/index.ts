@@ -53,12 +53,31 @@ export function formatDate(date: string) {
       return ''
     }
     const d = new Date(date);
-    return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+    let month: any = d.getMonth()+1
+    let day: any = d.getDate()
+    if(month < 10) {
+      month = '0'+ month
+    }
+    if(day < 10) {
+      day = '0'+ day
+    }
+    return `${d.getFullYear()}/${month}/${day}`;
   }
   
   export function formatDateV2(date: string) {
+    if(!date) {
+      return ''
+    }
     const d = new Date(date);
-    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    let month: any = d.getMonth()+1
+    let day: any = d.getDate()
+    if(month < 10) {
+      month = '0'+ month
+    }
+    if(day < 10) {
+      day = '0'+ month
+    }
+    return `${d.getFullYear()}-${month}-${day}`;
   }
   
   export function getDataTime(date: string) {

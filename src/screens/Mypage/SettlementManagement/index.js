@@ -238,8 +238,10 @@ export default class SettlementManagement extends Component {
       clearTimeout(searchTimerQuery);
     }
     searchTimerQuery = setTimeout(async () => {
+      let filter =  {...this.state.filter}
+      filter.query = this.inputKeyWord.state.value
       this.setState({
-        query: this.inputKeyWord.state.value
+        filter
       }, () => {
         this.getAllData()
       })
@@ -298,13 +300,13 @@ export default class SettlementManagement extends Component {
 
         <View style={S.filter}>
           <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
-            <View style={[S.optionSelect, S.optionSelectLeft]}>
+            <View style={[S.optionSelect, S.optionSelectLeft , { marginBottom: 25}]}>
               {/* <Select data={dataStart} style={S.select} /> */}
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1}}>
                 <TouchableOpacity
                   onPress={()=>this.showDateStart()}
                   style={DefaultStyle._btnDate}>
-                  <Text style={DefaultStyle._textDate}>
+                  <Text style={[DefaultStyle._textDate]}>
                     {formatDateV1(startDate) || 'YYYY/MM/DD'}
                   </Text>
                   <Text
@@ -330,7 +332,7 @@ export default class SettlementManagement extends Component {
           
 
             </View>
-            <Text style={S.hyphen}>-</Text>
+            <Text style={[S.hyphen, {height: 57, lineHeight: 57}]}>-</Text>
             <View style={[S.optionSelect, S.optionSelectLeft]}>
               {/* <Select data={dataEnd} style={S.select} /> */}
 
@@ -364,12 +366,12 @@ export default class SettlementManagement extends Component {
 
 
             </View>
-            <View style={[S.optionSelect, S.optionSelectLeft]}>
+            {/* <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={rangeDay} valueProps = {this.onChangeRangeDay} style={S.select}  />
-            </View>
+            </View> */}
           </View>
           <TextField
-            styleProps={DefaultStyle._inputSearch}
+            styleProps={[DefaultStyle._inputSearch, {paddingRight: 50}]}
             placeholder="창고명 검색"
             valueProps={text => console.log('text', text)}
             ref={el => this.inputKeyWord = el}
