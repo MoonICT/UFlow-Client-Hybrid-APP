@@ -26,7 +26,7 @@ import CardMypage from '@Components/organisms/CardMypage';
 import { SettlementManagementService } from '@Services/apis'
 import ActionCreator from '@Actions';
 import Icon from 'react-native-vector-icons/Fontisto';
-import {formatDateV1} from '@Utils/dateFormat';
+import {formatDateV1, formatDateV2 } from '@Utils/dateFormat';
 import { styles as S } from '../style';
 import DatePicker from '@react-native-community/datetimepicker';
 const dataStart = [
@@ -84,8 +84,8 @@ export default class SettlementManagement extends Component {
         query: '',
         contractType: 2100,
         rangeTime: '',
-        startDate: new Date(),
-        endDate: new Date()
+        startDate: '',
+        endDate: ''
       },
       rangeDay: [
         {
@@ -123,8 +123,8 @@ export default class SettlementManagement extends Component {
     let {startDate, endDate, query, contractType, rangeDate} = this.state.filter;
     let {valueTab} = this.state
     let params = {
-      startDate,
-      endDate,
+      startDate: formatDateV2(startDate),
+      endDate: formatDateV2(endDate),
       query,
       rangeDate: rangeDate,
       type: valueTab,
@@ -233,8 +233,7 @@ export default class SettlementManagement extends Component {
     })
   };
 
-  onChangeKeyWord = (e) => {
-    
+  onChangeKeyWord = () => {
     if (searchTimerQuery) {
       clearTimeout(searchTimerQuery);
     }
@@ -306,7 +305,7 @@ export default class SettlementManagement extends Component {
                   onPress={()=>this.showDateStart()}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                    {formatDateV1(startDate)}
+                    {formatDateV1(startDate) || 'YYYY/MM/DD'}
                   </Text>
                   <Text
                     style={[
@@ -321,7 +320,7 @@ export default class SettlementManagement extends Component {
                     mode={'date'}
                     show={isOpenStart}
                     onChange={(e) =>this.onChangeStart(e)}
-                    value={startDate}
+                    value={startDate || new Date()}
                     testID="dateTimePicker"
                   />
                   }
@@ -340,7 +339,7 @@ export default class SettlementManagement extends Component {
                   onPress={()=>this.showDateEnd()}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                    {formatDateV1(endDate)}
+                    {formatDateV1(endDate) || 'YYYY/MM/DD'}
                   </Text>
                   <Text
                     style={[
@@ -355,7 +354,7 @@ export default class SettlementManagement extends Component {
                         mode={'date'}
                         show={isOpenEnd}
                         onChange={(e)=>this.onChangeEnd(e)}
-                        value={endDate}
+                        value={endDate || new Date()}
                         testID="dateTimePicker"
                       />
                   }
@@ -374,13 +373,14 @@ export default class SettlementManagement extends Component {
             placeholder="창고명 검색"
             valueProps={text => console.log('text', text)}
             ref={el => this.inputKeyWord = el}
-            onChange={this.onChangeKeyWord}
+            // onChange={this.onChangeKeyWord}
             rightComponent={
               <Icon
                 name="search"
                 color="rgba(0, 0, 0, 0.54)"
                 size={17}
                 style={DefaultStyle._searchRightIcon}
+                onPress={() => this.onChangeKeyWord()}
               />
             }
           />

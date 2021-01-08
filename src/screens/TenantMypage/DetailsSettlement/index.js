@@ -25,196 +25,8 @@ import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 
-const dataStart = [
-  {
-    label: 'YYYY.MM.DD',
-    value: 'YYYY.MM.DD',
-  },
-];
-const dataEnd = [
-  {
-    label: 'YYYY.MM.DD',
-    value: 'YYYY.MM.DD',
-  },
-  {
-    label: 'YYYY.MM.DD2',
-    value: 'YYYY.MM.DD2',
-  },
-];
-const dataSum = [
-  {
-    type: '입고량 합계',
-    value: '200',
-  },
-  {
-    type: '출고량 합계',
-    value: '200',
-  },
-  {
-    type: '재고량 합계',
-    value: '400',
-  },
-  {
-    type: '입고비 합계',
-    value: '200,000',
-  },
-  {
-    type: '출고비 합계',
-    value: '200,000',
-  },
-  {
-    type: '제고비 합계',
-    value: '300,000',
-  },
-  {
-    type: '총 합계',
-    value: '700,000',
-  },
-];
-const dataDate1 = [
-  {
-    type: '구분',
-    value: '출고비',
-  },
-  {
-    type: '일시',
-    value: '2020.11.15 09:12:10',
-  },
-  {
-    type: '출고량',
-  },
-  {
-    type: '재고량',
-    value: '100',
-  },
-  {
-    type: '입고비',
-    value: '100,000',
-  },
-  {
-    type: '출고비',
-  },
-  {
-    type: '재고비',
-    value: '100,000',
-  },
-  {
-    type: '합계',
-    value: '200,000',
-  },
-  {
-    type: '비고',
-  },
-];
-
-const dataInfo = [
-  {
-    type: '창고명',
-    value: '동원창고',
-  },
-  {
-    type: '창고주',
-    value: '(주)동원창고',
-  },
-  {
-    type: '기간',
-    value: '2020.11.1 ~ 2020.11.30',
-  },
-  {
-    type: '담당자',
-    value: '홍길동',
-  },
-  {
-    type: '담당자 전화번호',
-    value: '010-1234-1234',
-  },
-  {
-    type: '담당자 이메일',
-    value: 'abc@naver.com',
-  },
-];
-const dataTotal = [
-  {
-    type: '공급가액',
-    value: '1,800,000',
-  },
-  {
-    type: '부가세',
-    value: '180,000',
-  },
-  {
-    type: '합계금액',
-    value: '1,900.000',
-  },
-];
-const viewProgress = [
-  {
-    type: '작성 일시',
-    value: '2020.11.10 09:05:00',
-  },
-  {
-    type: '작성자',
-    value: '임차인(ID)',
-  },
-  {
-    type: '구분',
-    value: '입고 요청',
-  },
-  {
-    type: '예정/ 확정 일시',
-    value: '입고예정 : 2020.11.10 09:05:00',
-  },
-  {
-    type: '입고량',
-    value: '100',
-  },
-  {
-    type: '출고량',
-  },
-  {
-    type: '재고',
-  },
-  {
-    type: '적용단가',
-    value: '950/PLT',
-  },
-  {
-    type: '입고비',
-    value: '95,000원',
-  },
-  {
-    type: '출고비',
-  },
-  {
-    type: '보관비',
-  }
-];
-
-// const viewCosts = [
-//   {
-//     type: '정산기간',
-//     value: '2020.11.11 ~ 2020.11.30',
-//   },
-//   {
-//     type: '작성자',
-//     value: '파렛트',
-//   },
-//   {
-//     type: '전용면적',
-//     value: '500',
-//   },
-//   {
-//     type: '보관비',
-//     value: '1,000,000원',
-//   },
-//   {
-//     type: '보관비',
-//     value: '1,000,000원',
-//   },
-// ];
 export default class DetailsSettlement extends Component {
   constructor(props) {
-    console.log('props', props)
     super(props);
     this.webView = null;
     let id = props.route.params.id
@@ -233,6 +45,7 @@ export default class DetailsSettlement extends Component {
       },
       dataInfo: [],
       viewProgress: [],
+      viewProgressCost: [],
       dataCost: [],
       headerDetailResBody: null,
       dataTotal: [],
@@ -255,7 +68,6 @@ export default class DetailsSettlement extends Component {
       id
     };
     SettlementManagementService.getDetail(params).then((res) => {
-      console.log('res', res)
       if(res.data.msg !== 'success') {
         return
       }
@@ -290,82 +102,61 @@ export default class DetailsSettlement extends Component {
       ]
       let viewProgress = [
         {
-          type: '작성 일시',
-          value: `${headerDetail1ResBody.cntrYmdFrom} - ${headerDetail1ResBody.cntrYmdTo}`,
+          type: '정산기간',
+          value: `${headerDetail1ResBody.cntrYmdFrom} - ${headerDetail1ResBody.cntrYmdTo}`
         },
         {
-          type: '작성자',
-          value: headerDetail1ResBody.calUnitDvCode.stdCodeName,
+          type: '정산단위',
+          value: headerDetail1ResBody.calUnitDvCode.stdDetailCodeName
         },
         {
-          type: '구분',
-          value: headerDetail1ResBody.calUnitDvCode.stdDetailCodeName,
+          type: '가용수치',
+          value: headerDetail1ResBody.usblValue
         },
         {
-          type: '예정/ 확정 일시',
-          value: `입고예정 : ${headerDetail1ResBody.cntrYmdFrom} - ${headerDetail1ResBody.cntrYmdTo}`,
+          type: '입고단가',
+          value: headerDetail1ResBody.whinChrg
         },
         {
-          type: '입고량',
-          value: headerDetail1ResBody.splyAmount,
+          type: '출고단가',
+          value: headerDetail1ResBody.whoutChrg
         },
         {
-          type: headerDetail1ResBody.splyAmount,
-        },
-        {
-          type: '재고',
-        },
-        {
-          type: '적용단가',
-          value: '950/PLT',
-        },
-        {
-          type: '입고비',
-          value: '95,000원',
-        },
-        {
-          type: '출고비',
-        },
-        {
-          type: '보관비',
+          type: '재고단가 (보관비)',
+          value: headerDetail1ResBody.splyAmount
         }
       ]
 
+      let viewProgressCost = [
+        {
+          type: '구분',
+          value: '보관단가'
+        },
+        {
+          type: '구분',
+          value: '500,000'
+        },
+        {
+          type: '구분',
+          value: '-'
+        },
+      ]
 
-      let dataCost = [
-        {
-          type: '정산기간',
-          value: '2020.11.11 ~ 2020.11.30',
-        },
-        {
-          type: '작성자',
-          value: '파렛트',
-        },
-        {
-          type: '전용면적',
-          value: '500',
-        },
-        {
-          type: '보관비',
-          value: '1,000,000원',
-        },
-        {
-          type: '보관비',
-          value: '1,000,000원',
-        },
-      ];
+
+
+      let vat = res.data.data.vat || 10
       let dataTotal = [
         {
           type: '공급가액',
-          value: res.data.amount,
+          value: res.data.data.amount,
         },
         {
           type: '부가세',
-          value: res.data.vat || 10,
+          value: vat,
         },
         {
           type: '합계금액',
-          value: res.data.amount + (res.data.vat || 10),
+          value: res.data.data.amount + vat,
         }
       ]
       let dataFee = res.data.data.calMgmtDetail1ResBodyList.map((item, index) => {
@@ -436,9 +227,37 @@ export default class DetailsSettlement extends Component {
           },
         ]
       })
+      let dataCost = res.data.data.calMgmtDetailResBodyList.map((item, index) => {
+        return {
+          title: '관리단가',
+          value: [
+            {
+              type: '정산기간',
+              value: '2020.11.11 ~ 2020.11.30',
+            },
+            {
+              type: '작성자',
+              value: '파렛트',
+            },
+            {
+              type: '전용면적',
+              value: '500',
+            },
+            {
+              type: '보관비',
+              value: '1,000,000원',
+            },
+            {
+              type: '보관비',
+              value: '1,000,000원',
+            },
+          ]
+        }
+      })
+
 
       this.setState({
-        dataInfo, viewProgress, headerDetailResBody, dataCost, dataTotal, dataFee
+        dataInfo, viewProgress, headerDetailResBody, dataCost, dataTotal, dataFee, viewProgressCost
       })
 
 
@@ -521,10 +340,8 @@ export default class DetailsSettlement extends Component {
 
 
   render() {
-    const { feeState, toggleFee, toggleCosts, isOpenStart, isOpenEnd, viewProgress, headerDetailResBody, dataTotal, dataFee , dataCost} = this.state;
+    const { feeState, toggleFee, toggleCosts, isOpenStart, isOpenEnd, viewProgress, dataInfo, dataTotal, dataFee , dataCost, viewProgressCost} = this.state;
     let {startDate, endDate} = this.state.filter;
-    console.log('dataFee', dataFee)
-
 
     const viewFee =
       dataFee &&
@@ -744,8 +561,8 @@ export default class DetailsSettlement extends Component {
               ) : null}
             </View>
 
-            {
-              headerDetailResBody &&
+            {/* {
+              headerDetailResBody && */}
               <View style={SS.fee}>
                 <FilterButton
                   label="보관 및 추가비용"
@@ -757,7 +574,7 @@ export default class DetailsSettlement extends Component {
                 {toggleCosts === true ? (
                   <Fragment>
                     <TableInfo
-                      data={dataCost}
+                      data={viewProgressCost}
                       style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
                     />
                     {viewCost}
@@ -779,7 +596,7 @@ export default class DetailsSettlement extends Component {
                   </Fragment>
                 ) : null}
               </View>
-            }
+            {/* } */}
 
             <View style={DefaultStyle._card}>
               <View
