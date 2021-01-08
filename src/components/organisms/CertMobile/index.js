@@ -53,8 +53,7 @@ export default class CertMobile extends Component {
    * 인증번호 요청.
    * */
   sendCert = () => {
-    const { mobile,onComplete } = this.props;
-    const { certCode } = this.state;
+    const { mobile } = this.props;
 
     this.setState({errorMsg:''})
     if (!mobile) {
@@ -72,7 +71,8 @@ export default class CertMobile extends Component {
       this.setState({
         isSendCode: true,
         isTimeOver: false,
-        isCompleteCert: false
+        isCompleteCert: false,
+        timer:180
       })
     }).catch(err => {
       this.setState({
@@ -163,7 +163,7 @@ export default class CertMobile extends Component {
               DefaultStyle._textButton,
               DefaultStyle._colorMuted
             ]}>
-            {isTimeOver || isSendCode ? '재발송' : '인증번호 발송'}
+            {isTimeOver || isSendCode ? '재발송' : '인증번호 확인'}
           </Text>
         </TouchableOpacity>
       </View>
