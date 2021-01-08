@@ -83,12 +83,16 @@ export const statusWhrgByOwner = async () => {
  * }
  * @returns EntrpResBody
  */
-export const regBusinessInfo = (businessInfo) => {
-  return Axios.postRequest({
-    url: `/api/v1/warehouse/owner/business-infos`,
-    requiresToken: true, // set access_token
-    payload: businessInfo
-  })
+
+export const regBusinessInfo = async businessInfo => {
+  console.log('businessInfo', businessInfo);
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.post(`/api/v1/warehouse/owner/business-infos`, businessInfo, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
 };
 
 /**
