@@ -21,8 +21,32 @@ export default class CertMobile extends Component {
       isSendCode: false,
       isCompleteCert: false,
       errorMsg:'',
-      isTimeOver:false
+      isTimeOver:false,
+      timer: 180
     };
+  }
+
+  componentDidMount(){
+    this.interval = setInterval(
+      () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
+      1000
+    );
+  }
+  
+  componentDidUpdate(){
+    if(this.state.timer === 1){ 
+      clearInterval(this.interval);
+      alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.')
+
+      this.setState({
+        isTimeOver:true,
+        isSendCode:false
+      })
+    }
+  }
+  
+  componentWillUnmount(){
+   clearInterval(this.interval);
   }
 
   /**
@@ -94,9 +118,10 @@ export default class CertMobile extends Component {
   }
 
   render() {
-    const { isTimeOver, isSendCode } = this.state;
+    const { isTimeOver, isSendCode,timer,isCompleteCert } = this.state;
 
     return (
+      !isCompleteCert ?
       <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex]}>
         <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
           <TextField
@@ -120,6 +145,11 @@ export default class CertMobile extends Component {
               DefaultStyle._colorMuted
             ]}>
             {'인증번호 발송'}
+            {isSendCode ?
+            <Text style={[DefaultStyle._textErrorInput]}>({timer})</Text>
+            :
+            <Text></Text>
+        }
           </Text>
         </TouchableOpacity>
         : <Text></Text>
@@ -137,6 +167,8 @@ export default class CertMobile extends Component {
           </Text>
         </TouchableOpacity>
       </View>
-    );
+      :
+      <View></View>
+      );
   }
 }
