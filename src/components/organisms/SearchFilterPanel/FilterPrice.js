@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { withTheme, Text, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -14,13 +14,22 @@ import { compose } from 'redux';
 import { styles } from './style';
 import ActionCreator from "@Actions";
 import RangeSlider from '@Components/atoms/RangeSlider';
+import moment from "./FilterPeriod";
+
+/*TODO 임시 값 (추후 변경 필요)*/
+const splyAmountMax = 100000; // 보관비 최대
+const mgmtChrgMax = 100000; // 관리비 최대
+const whinChrgMax = 100000; // 입고비 최대
+const whoutChrgMax = 100000; // 출고비 최대
 
 class FilterPrice extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      priceStorage: 0,
-      priceManagement: 0,
+      splyAmount: this.props.whFilter.splyAmount ? this.props.whFilter.splyAmount : 0, // 보관단가
+      mgmtChrg: this.props.whFilter.mgmtChrg ? this.props.whFilter.mgmtChrg : 0, // 관리단가
+      whinChrg: this.props.whFilter.whinChrg ? this.props.whFilter.whinChrg : 0, // 입고비
+      whoutChrg: this.props.whFilter.whoutChrg ? this.props.whFilter.whoutChrg : 0, // 출고비
     };
   }
 
@@ -41,62 +50,132 @@ class FilterPrice extends Component {
 
   render () {
     return (
-      <View style={styles.filterContainer}>
+      <View style={[styles.filterContainer]}>
 
-        {/***** 보관비 *****/}
+        <ScrollView style={{ height: 380, }}>
+          {/***** 보관비 *****/}
 
-        {/** Label */}
-        <View style={styles.filterLabelWrap}>
+          {/** Label */}
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'보관비 (평당)'}</Text>
-            {/*<Text style={[styles.filterLabel, styles.filterLabelSub]}>{'중복선택 가능합니다.'}</Text>*/}
+            <View style={styles.filterLabelWrap}>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'보관비'}</Text>
+            </View>
+            <Text
+              style={[styles.filterLabel, styles.filterLabelMain]}>
+              {(this.state.splyAmount === splyAmountMax || this.state.splyAmount === 0) ? '전체' : this.state.splyAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+            </Text>
           </View>
-          <Text
-            style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.priceStorage === 1000000 || this.state.priceStorage === 0) ? '전체' : this.state.priceStorage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
-          </Text>
-        </View>
 
-        {/** Slider */}
-        <RangeSlider value={this.state.priceStorage}
-                     step={10000}
-                     contentStyle={{ marginBottom: 24 }}
-                     minimumValue={0}
-                     maximumValue={1000000}
-                     LabelMiddle={'500,000원'}
-                     onValueChange={(value) => {
-                       this.setState({ priceStorage: value });
-                     }} />
+          {/** Slider */}
+          <RangeSlider value={this.state.splyAmount}
+                       step={1000}
+                       contentStyle={{ marginBottom: 24 }}
+                       minimumValue={0}
+                       maximumValue={splyAmountMax}
+                       LabelMiddle={`${(splyAmountMax / 2).toLocaleString()}원`}
+                       onValueChange={(value) => {
+                         this.setState({ splyAmount: value });
+                       }}
+                       onSlidingComplete={(value) => {
+                         this.props.setSearchFilter({
+                           splyAmount: value,
+                         });
+                       }} />
 
-        <View style={styles.filterDivider}></View>
+          <View style={styles.filterDivider}></View>
 
-        {/***** 관리비 *****/}
+          {/***** 관리비 *****/}
 
-        {/** Label */}
-        <View style={styles.filterLabelWrap}>
+          {/** Label */}
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'관리비 (평당)'}</Text>
-            {/*<Text style={[styles.filterLabel, styles.filterLabelSub]}>{'중복선택 가능합니다.'}</Text>*/}
+            <View style={styles.filterLabelWrap}>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'관리비'}</Text>
+            </View>
+            <Text
+              style={[styles.filterLabel, styles.filterLabelMain]}>
+              {(this.state.mgmtChrg === mgmtChrgMax || this.state.mgmtChrg === 0) ? '전체' : this.state.mgmtChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+            </Text>
           </View>
-          <Text
-            style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.priceManagement === 1000000 || this.state.priceManagement === 0) ? '전체' : this.state.priceManagement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
-          </Text>
-        </View>
-        {/** Slider */}
-        <RangeSlider value={this.state.priceManagement}
-                     step={10000}
-                     contentStyle={{ marginBottom: 24 }}
-                     minimumValue={0}
-                     maximumValue={1000000}
-                     LabelMiddle={'500,000원'}
-                     onValueChange={(value) => {
-                       this.setState({ priceManagement: value });
-                     }} />
+          {/** Slider */}
+          <RangeSlider value={this.state.mgmtChrg}
+                       step={1000}
+                       contentStyle={{ marginBottom: 24 }}
+                       minimumValue={0}
+                       maximumValue={mgmtChrgMax}
+                       LabelMiddle={`${(mgmtChrgMax / 2).toLocaleString()}원`}
+                       onValueChange={(value) => {
+                         this.setState({ mgmtChrg: value });
+                       }}
+                       onSlidingComplete={(value) => {
+                         this.props.setSearchFilter({
+                           mgmtChrg: value,
+                         });
+                       }} />
 
+          <View style={styles.filterDivider}></View>
+
+          {/***** 입고비 *****/}
+
+          {/** Label */}
+          <View style={styles.filterLabelWrap}>
+            <View style={styles.filterLabelWrap}>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'관리비'}</Text>
+            </View>
+            <Text
+              style={[styles.filterLabel, styles.filterLabelMain]}>
+              {(this.state.whinChrg === whinChrgMax || this.state.whinChrg === 0) ? '전체' : this.state.whinChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+            </Text>
+          </View>
+          {/** Slider */}
+          <RangeSlider value={this.state.whinChrg}
+                       step={1000}
+                       contentStyle={{ marginBottom: 24 }}
+                       minimumValue={0}
+                       maximumValue={whinChrgMax}
+                       LabelMiddle={`${(whinChrgMax / 2).toLocaleString()}원`}
+                       onValueChange={(value) => {
+                         this.setState({ whinChrg: value });
+                       }}
+                       onSlidingComplete={(value) => {
+                         this.props.setSearchFilter({
+                           whinChrg: value,
+                         });
+                       }} />
+
+
+          <View style={styles.filterDivider}></View>
+
+          {/***** 출고비 *****/}
+
+          {/** Label */}
+          <View style={styles.filterLabelWrap}>
+            <View style={styles.filterLabelWrap}>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'관리비'}</Text>
+            </View>
+            <Text
+              style={[styles.filterLabel, styles.filterLabelMain]}>
+              {(this.state.whoutChrg === whoutChrgMax || this.state.whoutChrg === 0) ? '전체' : this.state.whoutChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+            </Text>
+          </View>
+          {/** Slider */}
+          <RangeSlider value={this.state.whoutChrg}
+                       step={1000}
+                       contentStyle={{ marginBottom: 24 }}
+                       minimumValue={0}
+                       maximumValue={whoutChrgMax}
+                       LabelMiddle={`${(whoutChrgMax / 2).toLocaleString()}원`}
+                       onValueChange={(value) => {
+                         this.setState({ whoutChrg: value });
+                       }}
+                       onSlidingComplete={(value) => {
+                         this.props.setSearchFilter({
+                           whoutChrg: value,
+                         });
+                       }} />
+        </ScrollView>
 
         {/** Button Group */}
-        <View style={styles.gridRow}>
+        <View style={[styles.gridRow, {paddingTop: 10,}]}>
           <View style={styles.gridColumn}>
             <Button mode="outlined"
                     style={[styles.btn, styles.btnPrimaryOutline]}
@@ -110,12 +189,13 @@ class FilterPrice extends Component {
                     onPress={() => this._onClickApply()}>적용하기</Button>
           </View>
         </View>
+
       </View>
     );
   }
 
   componentWillUnmount () {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {
@@ -125,16 +205,19 @@ class FilterPrice extends Component {
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
-    isFilterToggle: state.search.isFilterToggle,
-    filterList: state.search.filterList,
+    whFilter: state.search.whFilter,
   };
 }
 
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps (dispatch) {
-  return {};
+  return {
+    setSearchFilter: status => {
+      dispatch(ActionCreator.setSearchFilter(status));
+    },
+  };
 }
 
 // Check Props Type.

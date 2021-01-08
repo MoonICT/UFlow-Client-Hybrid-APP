@@ -33,9 +33,7 @@ const Axios = {
       const headers = (config && config.headers) ? config.headers : {};
 
       // if accept language
-      if (language) {
-        headers["accept-language"] = language;
-      }
+      headers["accept-language"] = language ? language : 'ko-KR';
 
       if (headers.contentType) {
         headers["Content-Type"] = headers.contentType;

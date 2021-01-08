@@ -18,19 +18,7 @@ import Checkbox from '@Components/atoms/Checkbox';
 class FilterStorage extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      checkList: [
-        { label: '상온', checked: true, },
-        { label: '보세', checked: true, },
-        { label: '저온', checked: false, },
-        { label: '의약품', checked: false, },
-        { label: '냉동', checked: false, },
-        { label: '위험물', checked: false, },
-        { label: '냉장', checked: false, },
-        { label: '기타', checked: false, },
-
-      ]
-    };
+    this.state = {};
   }
 
   /**
@@ -44,9 +32,20 @@ class FilterStorage extends Component {
    *  필터 적용.
    *  */
   _onClickApply () {
-    // TODO 변경 필터는 스토어에 반영.
     this.props.onClosed(); // Event emit
   }
+
+  /**
+   * On change filter checkbox
+   * */
+  handleOnChangeFilterCheckbox = (value) => {
+    let defaultValue = this.props.whFilter.gdsKeepTypeCodes ? this.props.whFilter.gdsKeepTypeCodes.split(',') : []
+    let findIndex = defaultValue.indexOf(value)
+    findIndex > -1 ? defaultValue.splice(findIndex, 1) : defaultValue.push(value)
+    this.props.setSearchFilter({
+      gdsKeepTypeCodes: defaultValue.length > 0 ? defaultValue.join(',') : '',
+    });
+  };
 
   render () {
     return (
@@ -64,21 +63,13 @@ class FilterStorage extends Component {
 
         {/** Checkbox */}
         <View style={styles.gridRow}>
-          {this.state.checkList.map((item, index) =>
+          {this.props.filters.map((item, index) =>
             <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
-              <Checkbox checked={item.checked}
-                        label={item.label}
-                        onPress={() => {
-                          this.setState(defaultState => ({
-                            ...defaultState,
-                            checkList: defaultState.checkList.map((r, i) => {
-                              return {
-                                ...defaultState.checkList[i],
-                                checked: i === index ? !defaultState.checkList[i].checked : defaultState.checkList[i].checked
-                              };
-                            })
-                          }));
-                        }} /></View>)}
+              <Checkbox
+                checked={(this.props.whFilter.gdsKeepTypeCodes ? this.props.whFilter.gdsKeepTypeCodes.indexOf(item.stdDetailCode) > -1 : false)}
+                label={item.stdDetailCodeName}
+                value={item.stdDetailCode}
+                onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode)} /></View>)}
         </View>
 
         {/** Button Group */}
@@ -101,31 +92,34 @@ class FilterStorage extends Component {
   }
 
   componentWillUnmount () {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {
   }
 }
 
-
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state.search.whFilter);
   return {
-    isFilterToggle: state.search.isFilterToggle,
-    filterList: state.search.filterList,
+    whFilter: state.search.whFilter,
   };
 }
 
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps (dispatch) {
-  return {};
+  return {
+    setSearchFilter: status => {
+      dispatch(ActionCreator.setSearchFilter(status));
+    },
+  };
 }
 
 // Check Props Type.
 FilterStorage.protoType = {
   onClosed: PropTypes.func,
+  filters: PropTypes.array,
 };
 
 export default compose(connect(

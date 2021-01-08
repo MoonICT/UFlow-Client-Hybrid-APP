@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-08 09:38:44
+ * @modify date 2021-01-08 10:36:32
  * @desc [description]
  */
 
@@ -766,7 +766,7 @@ class Home extends Component {
               style={styles.mainCallBTN}
               onPress={() =>
                 isLogin
-                  ? this.navigation.navigate('RegisterWH')
+                  ? this.navigation.navigate('RegisterBusinessInfo')
                   : this.navigation.navigate('Login')
               }>
               <Text

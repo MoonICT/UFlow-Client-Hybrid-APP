@@ -1,5 +1,12 @@
 import types from './types';
 
+export function setSearchFilter (payload) {
+  return {
+    type: types.SEARCH_SET_FILTER,
+    payload: payload, // Boolean
+  };
+}
+
 export function searchToggle (payload) {
   return {
     type: types.SEARCH_OVERLAY_TOGGLE,
