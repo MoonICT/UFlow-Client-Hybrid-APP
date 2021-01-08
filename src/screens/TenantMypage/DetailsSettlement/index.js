@@ -198,33 +198,45 @@ export default class DetailsSettlement extends Component {
         title: '합계',
         value: [
           {
-            type: '입고량 합계',
+            type: '구분',
             value: '200',
           },
           {
-            type: '출고량 합계',
+            type: '일시',
             value: '200',
           },
           {
-            type: '재고량 합계',
+            type: '출고량',
             value: '400',
           },
           {
-            type: '입고비 합계',
+            type: '출고량',
             value: '200,000',
           },
           {
-            type: '출고비 합계',
+            type: '재고량',
             value: '200,000',
           },
           {
-            type: '제고비 합계',
+            type: '입고비',
             value: '300,000',
           },
           {
-            type: '총 합계',
+            type: '출고비',
             value: '700,000',
           },
+          {
+            type: '재고비',
+            value: '700,000',
+          },
+          {
+            type: '합계',
+            value: '700,000',
+          },
+          {
+            type: '비고',
+            value: '700,000',
+          }
         ]
       })
       let dataCost = res.data.data.calMgmtDetailResBodyList.map((item, index) => {
@@ -255,13 +267,9 @@ export default class DetailsSettlement extends Component {
         }
       })
 
-
       this.setState({
         dataInfo, viewProgress, headerDetailResBody, dataCost, dataTotal, dataFee, viewProgressCost
       })
-
-
-      
     })
 
 
