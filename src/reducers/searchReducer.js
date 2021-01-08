@@ -69,6 +69,14 @@ export default (state = defaultState, action) => {
         isFilterToggle: resultToggle,
         filterList: resultList,
       };
+    case types.SEARCH_SET_FILTER:
+      return {
+        ...state,
+        whFilter: {
+          ...state.whFilter,
+          ...action.payload,
+        }
+      }
     // TODO Action 추가 시 아래에 정의.
     default:
       return state;
