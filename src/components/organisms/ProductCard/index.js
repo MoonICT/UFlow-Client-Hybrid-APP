@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2021-01-06 11:23:12
+ * @modify date 2021-01-08 09:52:03
  * @desc [description]
  */
 
@@ -14,12 +14,15 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { styles } from './style';
 import { Card } from 'react-native-paper';
 import cardBG from '@Assets/images/card-img.png';
+import AsyncStorage from '@react-native-community/async-storage';
+import { TOKEN } from '@Constant';
 
 class ProductCard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       isHorizontal: this.props.type === 'HORIZONTAL',
+      isLogin: false,
     };
     this.navigation = props.navigation;
     // console.log('navigation', props.navigation);
@@ -42,8 +45,16 @@ class ProductCard extends Component {
     }
   };
 
-  render () {
+  componentDidMount() {
+    AsyncStorage.getItem(TOKEN).then(v => {
+      this.setState({ isLogin: v !== '' && v !== null });
+    });
+  }
+
+  render() {
     let { data } = this.props;
+    let { isLogin } = this.state;
+
     if (data === undefined) {
       data = {
         img: cardBG,
@@ -68,7 +79,6 @@ class ProductCard extends Component {
             styles.innerWrap,
             this.state.isHorizontal && styles.innerWrapHorizon,
           ]}>
-
           {/** TODO No insert navigation */}
           {/*<TouchableOpacity*/}
           {/*onPress={() => {*/}
@@ -78,28 +88,40 @@ class ProductCard extends Component {
           {/*}}>*/}
           {/** Image */}
           <TouchableOpacity
-          onPress={() =>this.navigation.navigate('DetailsWH', {id: data.id})}>
-          <View style={styles.imageWrap}>
-            <View>
-              <Card.Cover
-                // source={{ uri: 'https://picsum.photos/700' }}
-                source={data.thumbnail ? { uri: data.thumbnail } : cardBG}
-                style={[
-                  styles.cardImage,
-                  this.state.isHorizontal && styles.cardImageHorizon,
-                ]}
-              />
+            onPress={() =>
+              isLogin
+                ? this.navigation.navigate('DetailsWH', { id: data.id })
+                : this.navigation.navigate('Login')
+            }>
+            <View style={styles.imageWrap}>
+              <View>
+                <Card.Cover
+                  // source={{ uri: 'https://picsum.photos/700' }}
+                  source={data.thumbnail ? { uri: data.thumbnail } : cardBG}
+                  style={[
+                    styles.cardImage,
+                    this.state.isHorizontal && styles.cardImageHorizon,
+                  ]}
+                />
+              </View>
+              {data.typeCode && data.typeCode.id.stdDetailCode !== '0001' && (
+                <View
+                  style={[
+                    styles.badge,
+                    data.badgeType,
+                    {
+                      backgroundColor: data.typeCode.value1
+                        ? data.typeCode.value1
+                        : 'rgba(0, 0, 0, 0.54)',
+                    },
+                  ]}>
+                  <Text style={[styles.badgeLabel]}>
+                    {/** 창고 멤버십 타입 */}
+                    {data.typeCode.stdDetailCodeName}
+                  </Text>
+                </View>
+              )}
             </View>
-            {data.typeCode && data.typeCode.id.stdDetailCode !== '0001' &&
-            <View style={[styles.badge, data.badgeType, {
-              backgroundColor: data.typeCode.value1 ? data.typeCode.value1 : 'rgba(0, 0, 0, 0.54)'
-            }]}>
-              <Text style={[styles.badgeLabel]}>
-                {/** 창고 멤버십 타입 */}
-                {data.typeCode.stdDetailCodeName}
-              </Text>
-            </View>}
-          </View>
           </TouchableOpacity>
 
           {/** Contents */}
@@ -133,113 +155,139 @@ class ProductCard extends Component {
             </Text>
 
             {/******************** Keep ***************************/}
-            {data.keep &&
-            <>
-              <View>
-                <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-                  <Text style={[styles.bold, styles.blackColor]}>보관{' '}</Text>
-                  최대 {data.keep.subTitle ? data.keep.subTitle : ''}
-                </Text>
-              </View>
+            {data.keep && (
+              <>
+                <View>
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    <Text style={[styles.bold, styles.blackColor]}>보관 </Text>
+                    최대 {data.keep.subTitle ? data.keep.subTitle : ''}
+                  </Text>
+                </View>
 
-              {/* Badge */}
-              {data.keep.gdsTypeCodes && data.keep.gdsTypeCodes.length > 0 &&
-              <View style={[styles.cardAction, styles.mrt2]}>
-                {console.debug('data.keep.gdsTypeCodes 0 보다 큼 ')}
-                {data.keep.gdsTypeCodes.map((keepItem, index) => (
-                  <View key={index}
+                {/* Badge */}
+                {data.keep.gdsTypeCodes && data.keep.gdsTypeCodes.length > 0 && (
+                  <View style={[styles.cardAction, styles.mrt2]}>
+                    {console.debug('data.keep.gdsTypeCodes 0 보다 큼 ')}
+                    {data.keep.gdsTypeCodes.map((keepItem, index) => (
+                      <View
+                        key={index}
+                        style={[
+                          styles.label,
+                          styles[this.badgeColor(keepItem.stdDetailCode).label],
+                        ]}
+                        title={keepItem.stdDetailCodeName}>
+                        <Text
+                          style={[
+                            styles.font9,
+                            styles[
+                              this.badgeColor(keepItem.stdDetailCode).border
+                            ],
+                          ]}>
+                          {keepItem.stdDetailCodeName}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                )}
+
+                {/** Price */}
+                {data.keep.splyAmount && (
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    ･보관단가{' '}
+                    <Text style={[styles.bold, styles.blackColor]}>
+                      {data.keep.splyAmount.toLocaleString()}
+                    </Text>
+                    원 ~/{data.keep.unit}
+                  </Text>
+                )}
+
+                {data.keep.mgmtChrg && (
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    ･보관단가{' '}
+                    <Text style={[styles.bold, styles.blackColor]}>
+                      {data.keep.mgmtChrg.toLocaleString()}
+                    </Text>
+                    원 ~/{data.keep.unit}
+                  </Text>
+                )}
+              </>
+            )}
+
+            {data.keep && data.trust ? (
+              <View style={styles.line} />
+            ) : (
+              <Text>{''}</Text>
+            )}
+
+            {/***************** Trust ************************/}
+            {data.trust && (
+              <>
+                <View>
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    <Text
+                      style={[styles.bold, styles.blackColor, styles.font9]}>
+                      수탁{' '}
+                    </Text>
+                    최대 {data.trust.subTitle ? data.trust.subTitle : ''}
+                  </Text>
+                </View>
+
+                {/* Badge */}
+                {data.trust.gdsTypeCodes && data.trust.gdsTypeCodes.length > 0 && (
+                  <View style={[styles.cardAction, styles.mrt2]}>
+                    {console.debug('data.trust.gdsTypeCodes 0 보다 큼 ')}
+                    {data.trust.gdsTypeCodes.map((trustItem, index) => (
+                      <TouchableOpacity
+                        key={index}
                         style={[
                           styles.label,
                           styles[
-                            this.badgeColor(keepItem.stdDetailCode).label
-                            ],
-                        ]}
-                        title={keepItem.stdDetailCodeName}>
-                    <Text style={[
-                      styles.font9,
-                      styles[
-                        this.badgeColor(keepItem.stdDetailCode).border
-                        ],
-                    ]}>
-                      {keepItem.stdDetailCodeName}
-                    </Text>
-                  </View>
-                ))}
-              </View>}
-
-              {/** Price */}
-              {data.keep.splyAmount &&
-              <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-                ･보관단가{' '}
-                <Text style={[styles.bold, styles.blackColor]}>{data.keep.splyAmount.toLocaleString()}</Text>원
-                ~/{data.keep.unit}
-              </Text>}
-
-              {data.keep.mgmtChrg &&
-              <Text
-                style={[styles.fontColor1, styles.regular, styles.font9]}>
-                ･보관단가{' '}
-                <Text style={[styles.bold, styles.blackColor]}>{data.keep.mgmtChrg.toLocaleString()}</Text>원
-                ~/{data.keep.unit}
-              </Text>}
-
-            </>}
-
-            {data.keep && data.trust ? <View style={styles.line} /> : <Text>{''}</Text>}
-
-            {/***************** Trust ************************/}
-            {data.trust &&
-            <>
-              <View>
-                <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-                  <Text style={[styles.bold, styles.blackColor, styles.font9]}>수탁{' '}</Text>
-                  최대 {data.trust.subTitle ? data.trust.subTitle : ''}
-                </Text>
-              </View>
-
-              {/* Badge */}
-              {data.trust.gdsTypeCodes && data.trust.gdsTypeCodes.length > 0 &&
-              <View style={[styles.cardAction, styles.mrt2]}>
-                {console.debug('data.trust.gdsTypeCodes 0 보다 큼 ')}
-                {data.trust.gdsTypeCodes.map((trustItem, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[
-                      styles.label,
-                      styles[
-                        this.badgeColor(trustItem.stdDetailCode).label
-                        ],
-                    ]}
-                    title={trustItem.stdDetailCodeName}>
-                    <Text
-                      style={[
-                        styles.font9,
-                        styles[
-                          this.badgeColor(trustItem.stdDetailCode).border
+                            this.badgeColor(trustItem.stdDetailCode).label
                           ],
-                      ]}>
-                      {trustItem.stdDetailCodeName}
+                        ]}
+                        title={trustItem.stdDetailCodeName}>
+                        <Text
+                          style={[
+                            styles.font9,
+                            styles[
+                              this.badgeColor(trustItem.stdDetailCode).border
+                            ],
+                          ]}>
+                          {trustItem.stdDetailCodeName}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+
+                {/** Price */}
+                {data.whinChrg && (
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    ･입고단가{' '}
+                    <Text style={[styles.bold, styles.blackColor]}>
+                      {data.trust.whinChrg.toLocaleString()}
                     </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>}
+                    원 ~/{data.trust.unit}
+                  </Text>
+                )}
 
-              {/** Price */}
-              {data.whinChrg &&
-              <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-                ･입고단가{' '}
-                <Text style={[styles.bold, styles.blackColor]}>{data.trust.whinChrg.toLocaleString()}</Text>원
-                ~/{data.trust.unit}
-              </Text>}
-
-              {data.trust.whoutChrg &&
-              <Text style={[styles.fontColor1, styles.regular, styles.font9]}>
-                ･출고단가{' '}
-                <Text style={[styles.bold, styles.blackColor]}>{data.trust.whoutChrg.toLocaleString()}탁</Text>원
-                ~/{data.trust.unit}
-              </Text>}
-
-            </>}
+                {data.trust.whoutChrg && (
+                  <Text
+                    style={[styles.fontColor1, styles.regular, styles.font9]}>
+                    ･출고단가{' '}
+                    <Text style={[styles.bold, styles.blackColor]}>
+                      {data.trust.whoutChrg.toLocaleString()}탁
+                    </Text>
+                    원 ~/{data.trust.unit}
+                  </Text>
+                )}
+              </>
+            )}
           </View>
           {/* </ScrollView> */}
         </View>

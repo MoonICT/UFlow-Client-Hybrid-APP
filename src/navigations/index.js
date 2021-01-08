@@ -186,7 +186,7 @@ const App = () => {
       },
       login:
         (loginData) => {
-          console.log("loginData", loginData);
+          // console.log("loginData", loginData);
           AsyncStorage.setItem(TOKEN, loginData).then(() => {
             setIsLoading(false);
             setIsLogin(true);

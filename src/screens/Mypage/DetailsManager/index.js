@@ -131,8 +131,8 @@ export default class DetailsManager extends Component {
       isToggle: false,
       resBody: {},
       receiptCancel: false,
-      whoutExpctCurrent: -1,
-      whoutExpctSeqCurrent: -1,
+      ExpctCurrent: -1,
+      ExpctSeqCurrent: -1,
       typeCreate: 'import',
       filter: {
         query: '',
@@ -255,7 +255,6 @@ export default class DetailsManager extends Component {
 
 
       let responseFilter = res.data.data.content.map((item, index) => {
-        console.log('itemmmm', item)
         var division = ''
         switch (true) {
           case item.type === 'IMPORT' && item.status === '1100':
@@ -277,9 +276,12 @@ export default class DetailsManager extends Component {
             devision = '출고 요청 취소'
             break;
         }
+        let Expct = item.type === 'EXPORT' ? item.rtwhWhoutResBody.id.whoutExpct : item.rtwhWhinResBody.id.whinExpct || 0
+        let ExpctSeq = item.type === 'EXPORT' ? item.rtwhWhoutResBody.id.whoutExpctSeq : item.rtwhWhinResBody.id.whoutExpctSeq || 0
+
         return {
-          Expct: item.type === 'EXPORT' ? item.rtwhWhoutResBody.id.whoutExpct : item.rtwhWhinResBody.id.whinExpct,
-          ExpctSeq: item.type === 'EXPORT' ? item.rtwhWhoutResBody.id.whoutExpctSeq : item.rtwhWhinResBody.id.whoutExpctSeq,
+          Expct ,
+          ExpctSeq ,
           status: item.status,
           stockQty: item.stockQty || 0,
           type: item.type,
@@ -457,7 +459,7 @@ export default class DetailsManager extends Component {
   }
 
   async createImport() {
-    let {rentWarehNo, timeCreateImport, valueCreateImport, typeCreate, whoutExpctSeqCurrent, type} = this.state
+    let {rentWarehNo, timeCreateImport, valueCreateImport, typeCreate, ExpctSeqCurrent, type} = this.state
 
     let data
     if(typeCreate === 'export' && type === 'TENANT') {
@@ -474,7 +476,7 @@ export default class DetailsManager extends Component {
         decisQty: Number(valueCreateImport),
         decis: timeCreateImport,
         reason: '',
-        whoutExpctSeq: whoutExpctSeqCurrent,
+        whoutExpctSeq: ExpctSeqCurrent,
         typeCreate
       }
     }
@@ -493,7 +495,7 @@ export default class DetailsManager extends Component {
           whinDecisQty: Number(valueCreateImport),
           whinDecis: timeCreateImport,
           reason: '',
-          whoutExpctSeq: whoutExpctSeqCurrent,
+          whoutExpctSeq: ExpctSeqCurrent,
           typeCreate
         }
       }
@@ -504,20 +506,20 @@ export default class DetailsManager extends Component {
         }
         this.showConfirm();
         this.hideDialog();
-        this.getAllData();
       }).catch(err => {
         console.log('err', err)
       })
   }
 
   async onCancelRequest() {
-    let {rentWarehNo, whoutExpctCurrent, whoutExpctSeqCurrent, isTypeCancel} = this.state
+    let {rentWarehNo, ExpctCurrent, ExpctSeqCurrent, isTypeCancel} = this.state
     let body = {
       rentWarehNo,
-      whoutExpct: whoutExpctCurrent,
-      whoutExpctSeq: whoutExpctSeqCurrent,
+      Expct: ExpctCurrent.replace(/-/g, ''),
+      ExpctSeq: ExpctSeqCurrent,
       isTypeCancel
     }
+    console.log('body', body)
       await InOutManagerService.cancelImport(body).then(res => {
         if(res.data.msg !== 'success') {
           return
@@ -568,8 +570,8 @@ export default class DetailsManager extends Component {
                           onPress={() => {
                             this.setState({
                               typeCreate: 'import',
-                              whoutExpctSeqCurrent: item.whoutExpctSeq,
-                              whoutExpctCurrent: item.whoutExpct
+                              ExpctSeqCurrent: item.ExpctSeq,
+                              ExpctCurrent: item.Expct
                             }, ()=>{
                               this.showDialog()
                             })
@@ -581,13 +583,13 @@ export default class DetailsManager extends Component {
                           </Text>
                         </TouchableOpacity>
                         {
-                          item.stockQty &&
+                          item.stockQty && 
                           <TouchableOpacity
                           onPress={() => {
                             this.setState({
                               typeCreate: 'export',
-                              whoutExpctSeqCurrent: item.whoutExpctSeq,
-                              whoutExpctCurrent: item.whoutExpct
+                              ExpctSeqCurrent: item.ExpctSeq,
+                              ExpctCurrent: item.Expct
                             }, ()=>{
                               this.showDialog()
                             })
@@ -620,15 +622,14 @@ export default class DetailsManager extends Component {
                         송장정보 확인
                     </Text>
                     </TouchableOpacity>
-                    
                     {
-                      type == 'TENANT' && ( item.status == 1100 || item.status == 2100 ) &&
+                      type == 'TENANT' && ( item.status == 1100 || item.status == 2100 ) && item.ExpctSeq !== 0  &&
                       <TouchableOpacity
                         onPress={() => {
                           this.setState({
                             isCancel: true,
-                            whoutExpctCurrent: item.Expct,
-                            whoutExpctSeqCurrent: item.ExpctSeq,
+                            ExpctCurrent: item.Expct,
+                            ExpctSeqCurrent: item.ExpctSeq,
                             isTypeCancel: item.type
                           });
                         }}
@@ -939,9 +940,7 @@ export default class DetailsManager extends Component {
               style={DefaultStyle._buttonElement}
               onPress={() => {
                 this.hideConfirm();
-                this.setState({ isProgress: true }, ()=>{
-                  this.getAllData();
-                });
+                this.getAllData();
               }}>
               확인
             </Button>

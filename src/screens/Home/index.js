@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-06 19:38:36
+ * @modify date 2021-01-08 09:38:44
  * @desc [description]
  */
 
@@ -372,7 +372,10 @@ class Home extends Component {
           {v?.thumbnail !== null ? (
             <ProductCard navigation={this.navigation} data={v} />
           ) : (
-            <ProductCard navigation={this.navigation} data={{ ...v, img: cardBG }} />
+            <ProductCard
+              navigation={this.navigation}
+              data={{ ...v, img: cardBG }}
+            />
           )}
         </View>,
       );
@@ -398,7 +401,7 @@ class Home extends Component {
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
-    const { getLoginStatus,signOut } = this.context;
+    const { getLoginStatus, signOut } = this.context;
     const isLog = getLoginStatus();
     const { isLogin = isLog } = this.state;
 
@@ -430,7 +433,7 @@ class Home extends Component {
                 style={[DefaultStyle.containerBTN, styles.btnAction]}
                 color="red"
                 // onPress={() => showPopup()}
-                onPress={() => this.navigation.navigate("Login")}
+                onPress={() => this.navigation.navigate('Login')}
                 // onPress={() => this.getItem()}
               >
                 <Text style={styles.textBtnAction}>로그인</Text>
@@ -834,7 +837,6 @@ class Home extends Component {
         : [];
     this.setState({ whList: list });
     AsyncStorage.getItem(TOKEN).then(v => {
-      // console.log('v==>', v);
       this.setState({ isLogin: v !== '' && v !== null });
     });
 
