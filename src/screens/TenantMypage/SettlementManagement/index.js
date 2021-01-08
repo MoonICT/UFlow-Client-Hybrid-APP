@@ -384,7 +384,8 @@ export default class SettlementManagement extends Component {
               <CardMypage
                 key = {index}
                 onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
-                  id: item.id
+                  id: item.id,
+                  type: valueTab
                 })}
                 headerTitle={'레드우드'}
                 data={item.dataRedwood}

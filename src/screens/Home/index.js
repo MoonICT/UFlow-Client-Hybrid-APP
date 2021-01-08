@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-08 10:36:32
+ * @modify date 2021-01-08 13:46:50
  * @desc [description]
  */
 
@@ -43,7 +43,7 @@ import ActionCreator from '@Actions';
 // import CarouselSnapPagi from '@Components/organisms/CarouselSnapPagi';
 import AppBars from '@Components/organisms/AppBar';
 import ProductCard from '@Components/organisms/ProductCard';
-import StepCard from '@Components/organisms/StepCard';
+// import StepCard from '@Components/organisms/StepCard';
 // import SloganCard from '@Components/organisms/SloganCard';
 // import Footer from '@Components/organisms/Footer';
 
@@ -52,7 +52,7 @@ import StepCard from '@Components/organisms/StepCard';
 
 import { styles } from './styles';
 
-import mainBG from '@Assets/images/main-bg.png';
+// import mainBG from '@Assets/images/main-bg.png';
 // import symbolsBG from '@Assets/images/symbol.png';
 // import factoryBG from '@Assets/images/factory.png';
 import boxMain from '@Assets/images/box_main_1.png';
@@ -82,6 +82,8 @@ import { AuthContext } from '@Store/context';
 import AsyncStorage from '@react-native-community/async-storage';
 //Contants
 import { TOKEN } from '@Constant';
+
+// import Masonry from 'react-native-masonry';
 
 // const slides = [
 //   {
@@ -322,6 +324,7 @@ class Home extends Component {
       expanded: true,
       whList: [],
       isLogin: false,
+      textSearch: '',
     };
     this.navigation = props.navigation;
     this.fcm = new FCMService();
@@ -329,6 +332,12 @@ class Home extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return true;
+  }
+
+  UNSAFE_componentWillMount() {
+    AsyncStorage.getItem(TOKEN).then(v => {
+      this.setState({ isLogin: v !== '' && v !== null });
+    });
   }
 
   componentWillUnmount() {
@@ -364,6 +373,8 @@ class Home extends Component {
   _renderProductItem = item => {
     // console.log('item==>', item);
     let { whList } = this.state;
+    console.log('whList==>', whList);
+
     const cardItem = [];
     whList = whList.slice(0, 4);
     whList?.map((v, i) => {
@@ -381,12 +392,6 @@ class Home extends Component {
       );
     });
 
-    // if (item.thumbnail === null || item.thumbnail === '') {
-    //   cardItem.push(<ProductCard data={{ ...item, img: cardBG }} />);
-    // } else {
-    //   cardItem.push(<ProductCard data={item} />);
-    // }
-
     return cardItem;
   };
 
@@ -401,13 +406,10 @@ class Home extends Component {
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
-    const { getLoginStatus, signOut } = this.context;
+    const { getLoginStatus } = this.context;
     const isLog = getLoginStatus();
-    const { isLogin = isLog } = this.state;
-
-    // console.log('whList==>', whList);
-
-    console.log('isLogin Hello==>', isLogin);
+    const { isLogin = isLog, textSearch } = this.state;
+    // console.log('isLogin==>', isLogin);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -464,7 +466,7 @@ class Home extends Component {
           /> */}
 
           {/**### INTRO ###*/}
-          <View style={styles.intro}>
+          <View style={isLogin ? styles.introHide : styles.intro}>
             <View style={[styles.introImage]}>
               <Image source={boxMain} style={styles.introSymbolImage} />
               {/* <Image source={factoryBG} style={styles.introFactoryImage} /> */}
@@ -479,8 +481,20 @@ class Home extends Component {
                 textAlignVertical="center"
                 numberOfLines={1}
                 ellipsizeMode="start"
+                onChange={e => this.setState({ textSearch: e.target.value })}
               />
-              {<Icon name="search" size={24} color="white" />}
+              {
+                <Icon
+                  name="search"
+                  size={24}
+                  color="white"
+                  onPress={() =>
+                    this.navigation.navigate('Search', {
+                      searchValue: textSearch,
+                    })
+                  }
+                />
+              }
             </View>
 
             <View style={styles.introDivider} />
@@ -568,7 +582,11 @@ class Home extends Component {
                   {this._renderProductItem(v)}
                 </View>;
               })} */}
-
+              {/* <Masonry 
+              sorted
+              columns={2}
+              bricks={this._renderProductItem()}
+               /> */}
               {this._renderProductItem()}
             </View>
           </View>
@@ -836,10 +854,6 @@ class Home extends Component {
         ? page?._embedded?.warehouses
         : [];
     this.setState({ whList: list });
-    AsyncStorage.getItem(TOKEN).then(v => {
-      this.setState({ isLogin: v !== '' && v !== null });
-    });
-
     SplashScreen.hide();
   }
 }
