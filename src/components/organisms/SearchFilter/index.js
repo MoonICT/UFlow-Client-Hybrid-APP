@@ -96,7 +96,7 @@ class SearchFilter extends Component {
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
     isFilterToggle: state.search.isFilterToggle,
     filterList: state.search.filterList,

@@ -211,7 +211,7 @@ export const listAutoSearchBar = ({
  * @returns {null}
  */
 export const getCmpltTypes = () => {
-
+  console.log(':::::::DEOKIN getCmpltTypes')
   return Axios.getRequest({
     url: `/api/v1/warehouse/cmplt-types`
   });
