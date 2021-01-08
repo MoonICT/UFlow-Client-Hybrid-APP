@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-08 10:36:32
+ * @modify date 2021-01-08 12:08:09
  * @desc [description]
  */
 
@@ -322,6 +322,7 @@ class Home extends Component {
       expanded: true,
       whList: [],
       isLogin: false,
+      textSearch: '',
     };
     this.navigation = props.navigation;
     this.fcm = new FCMService();
@@ -329,6 +330,12 @@ class Home extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return true;
+  }
+
+  componentWillMount() {
+    AsyncStorage.getItem(TOKEN).then(v => {
+      this.setState({ isLogin: v !== '' && v !== null });
+    });
   }
 
   componentWillUnmount() {
@@ -401,13 +408,13 @@ class Home extends Component {
   render() {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
-    const { getLoginStatus, signOut } = this.context;
+    const { getLoginStatus } = this.context;
     const isLog = getLoginStatus();
-    const { isLogin = isLog } = this.state;
+    const { isLogin = isLog,textSearch } = this.state;
 
     // console.log('whList==>', whList);
 
-    console.log('isLogin Hello==>', isLogin);
+    // console.log('isLogin Hello==>', isLogin);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -479,8 +486,9 @@ class Home extends Component {
                 textAlignVertical="center"
                 numberOfLines={1}
                 ellipsizeMode="start"
+                onChange={(e)=>this.setState({textSearch:e.target.value})}
               />
-              {<Icon name="search" size={24} color="white" />}
+              {<Icon name="search" size={24} color="white" onPress={()=> this.navigation.navigate("Search",{searchValue : textSearch})} />}
             </View>
 
             <View style={styles.introDivider} />
@@ -836,10 +844,6 @@ class Home extends Component {
         ? page?._embedded?.warehouses
         : [];
     this.setState({ whList: list });
-    AsyncStorage.getItem(TOKEN).then(v => {
-      this.setState({ isLogin: v !== '' && v !== null });
-    });
-
     SplashScreen.hide();
   }
 }
