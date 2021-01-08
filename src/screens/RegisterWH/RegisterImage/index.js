@@ -80,7 +80,7 @@ class RegisterImage extends Component {
               // pimages.push();
               // this.setState({ pimages });
               console.log('url', url);
-              this.props.registerAction({ uri: url });
+              this.props.registerAction({ url: url });
             }
           });
         } else {
@@ -99,15 +99,16 @@ class RegisterImage extends Component {
   render() {
     const { imageStore } = this.props;
     const { pimages } = this.state;
-    console.log('pimages', pimages);
+    console.log('imageStore', imageStore);
     const listImg =
       imageStore &&
       imageStore.map((item, index) => {
+        console.log('item.url :>> ', item.url);
         // console.log('index', index);
         if (index !== 0) {
           return (
             <View key={index}>
-              <Image style={S.itemImage} source={item} />
+              <Image style={S.itemImage} source={{ uri: item.url }} />
               <IconButton
                 style={S.btnRemove}
                 icon="close-circle"
@@ -156,7 +157,7 @@ class RegisterImage extends Component {
             <View style={styles.imageContainer}>
               <Image
                 style={S.ImageUpload}
-                source={imageStore[0]}
+                source={{ uri: imageStore[0].url }}
                 PlaceholderContent={<ActivityIndicator />}
               />
 
@@ -175,13 +176,13 @@ class RegisterImage extends Component {
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
                 DefaultStyle.btnSubmit,
-                imageStore.length > 2 ? DefaultStyle.activeBtnSubmit : null,
+                imageStore.length > 0 ? DefaultStyle.activeBtnSubmit : null,
               ]}
-              disabled={imageStore.length > 2 ? false : true}>
+              disabled={imageStore.length > 0 ? false : true}>
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
+                  imageStore.length > 0 ? DefaultStyle.textActiveSubmit : null,
                 ]}>
                 확인
               </Text>
@@ -198,7 +199,8 @@ function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
-    imageStore: state.registerWH.pimages,
+    // imageStore: state.registerWH.pimages,
+    imageStore: state.registerWH.whImages,
   };
 }
 
