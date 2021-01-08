@@ -196,16 +196,14 @@ class DetailRegisterTenant extends Component {
           MediaUpload.uploadFile(data).then(respon => {
             if (respon.status === 200) {
               let { url } = respon.data;
-              // let pimages = [{ uri: url }];
-              // pimages.push();
-              // this.setState({ pimages });
-              console.log('url', url);
+              var pathArray = url.split( '/' );
+              var host = pathArray[pathArray.length-1];
               
               this.setState({
                 photo: url,
                 businessInfo: {
                   ...businessInfo,
-                  regFile: url
+                  regFile: host
                 }
               });
             }
