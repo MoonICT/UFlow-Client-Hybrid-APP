@@ -117,23 +117,25 @@ class DetailWH extends Component {
     let { id } = props.route.params
     this.state = {
       id: id,
+      // id: 'RG20201224184',
       active: 0,
       checked: true,
       checked2: false,
       activeIndex: 0,
       whrgData: {},
+      questionList: [],
       qnaParams: {
         // id: wid,
         id: "RG20210105276",
         size: 4,
-        page: 0,
-        requiresToken: true
+        page: 0,requiresToken: true
       },
       qnaList: [],
       pageInfo: {}
     };
     this.navigation = props.navigation;
-
+    console.log('data', this.state.whrgData)
+    console.log('question', this.state.questionList)
   }
 
   /** listener when change props */
@@ -210,6 +212,8 @@ class DetailWH extends Component {
 
     return (
       <SafeAreaView style={S.container}>
+        {console.log('question', this.state.questionList)}
+
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -584,7 +588,6 @@ class DetailWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <Text style={S.title}>위치</Text>
-              <Text style={S.titleDescribe}>인천광역시 서구 석남동 650-31</Text>
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <TouchableOpacity
@@ -903,7 +906,7 @@ class DetailWH extends Component {
     console.log('::componentDidMount::');
     SplashScreen.hide();
     this.getDataWH()
-    // this.handleRequestQnaList()
+    this.handleRequestQnaList()
   }
 
   async getDataWH() {
@@ -912,6 +915,8 @@ class DetailWH extends Component {
       id: id
     };
     await Warehouse.getWhrg(params).then((res) => {
+      // console.log('whrgData', res)
+
       if (res) {
         this.setState({ whrgData: res })
         // console.log('gps', whrgData.gps.latitude);
@@ -922,24 +927,36 @@ class DetailWH extends Component {
 
 
 
-  // async handleRequestQnaList() {
-  //   await Warehouse.pageWhrgQnA(qnaParams).then(res => {
-  //     if (res && res._embedded && res._embedded.questions) {
-  //       console.log('res._embedded.questions', res._embedded.questions)
-  //       let newFQAList = res._embedded.questions.map(item =>{
-  //         return {
-  //           status: item.complete,
-  //           title: item.content,
-  //           name: item.writer,
-  //           date: moment(item.date).format("YYYY.MM.DD"),
-  //           lock: item.secret,
-  //         }
-  //       })
-  //       this.setState({ qnaList: newFQAList })
-  //       this.setState({ pageInfo: res.page })
-  //     }
-  //   })
-  // }
+  async handleRequestQnaList() {
+    let {idWarehouse, query, startDate, endDate, size, page, sort} = this.state;
+    let qnaParams = {
+      idWarehouse: idWarehouse,
+      query: query,
+      startDate: startDate,
+      endDate: endDate,
+      size: size,
+      page: page,
+      sort: sort
+    }
+    await Warehouse.pageWhrgQnA(qnaParams).then(res => {
+      if (res && res._embedded && res._embedded.questions) {
+        console.log('res._embedded.questions', res._embedded.questions)
+        let newFQAList = res._embedded.questions.map(item =>{
+          return {
+            status: item.complete,
+            title: item.content,
+            name: item.writer,
+            date: moment(item.date).format("YYYY.MM.DD"),
+            lock: item.secret,
+          }
+        })
+        this.setState({ questionList: res._embedded.questions });
+        // console.log('question', questionList)
+        // this.setState({ qnaList: newFQAList })
+        // this.setState({ pageInfo: res.page })
+      }
+    })
+  }
 
 
   /** when update state or props */

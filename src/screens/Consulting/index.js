@@ -30,7 +30,78 @@ import RequestType from './RequestType';
 import ExtraService from './ExtraService';
 import AttachDocument from './AttachDocument';
 import ActionCreator from '@Actions';
+import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
+// create data default
+const res = {
+  _embedded: {
+    mgmtquests: [
+      {
+        answers: [
+          {
+            answer: '모르겠다',
+            id: {
+              answerSeq: 1,
+              questSeq: 96,
+              srvyMgmtNo: '2021010176',
+            },
+          },
+          {
+            answer: '모르겠다',
+            id: {
+              answerSeq: 1,
+              questSeq: 96,
+              srvyMgmtNo: '2021010176',
+            },
+          },
+        ],
+        id: {
+          questSeq: 96,
+          srvyMgmtNo: '2021010176',
+        },
+        order: null,
+        qty: '1',
+        quest:
+          '[WMS(창고 관리 시스템) 활용]  입.출하 재고정보를 수작업이 아닌 시스템으로 관리하고 있다.',
+        remark: false,
+        rqd: true,
+        type: '2100',
+      },
+
+      {
+        answers: [
+          {
+            answer: '모르겠다',
+            id: {
+              answerSeq: 1,
+              questSeq: 96,
+              srvyMgmtNo: '2021010176',
+            },
+          },
+          {
+            answer: '모르겠다',
+            id: {
+              answerSeq: 1,
+              questSeq: 96,
+              srvyMgmtNo: '2021010176',
+            },
+          },
+        ],
+        id: {
+          questSeq: 96,
+          srvyMgmtNo: '2021010176',
+        },
+        order: null,
+        qty: '1',
+        quest:
+          '[WMS(창고 관리 시스템) 활용]  입.출하 재고정보를 수작업이 아닌 시스템으로 관리하고 있다.',
+        remark: false,
+        rqd: true,
+        type: '2100',
+      },
+    ],
+  },
+};
 class Consulting extends Component {
   constructor(props) {
     super(props);
@@ -44,9 +115,48 @@ class Consulting extends Component {
       optionStep2: '',
       optionStep3: '',
       inputStep5: '',
+
+      listQuest: [],
+      listAnswer: [],
     };
     this.navigation = props.navigation;
   }
+  /** when after render DOM */
+  componentDidMount() {
+    this.getAllData();
+  }
+
+  async getAllData() {
+    await ConsultingApi.getListQuestion().then(res => {
+      console.log('res ===>', res);
+      const { listQuest, listAnswer } = this.state;
+      if (res) {
+        let data = res?._embedded?.mgmtquests;
+
+        let newListQuestion = [...data];
+        let newListAnswer = [...listAnswer];
+        newListQuestion.forEach(function(item) {
+          [
+            newListAnswer.push({
+              userAnswer: '',
+              srvyMgmtNo: item.id.srvyMgmtNo,
+              questSeq: item.id.questSeq,
+            }),
+          ];
+        });
+        this.setState({
+          listQuest: data,
+          listAnswer: newListAnswer,
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+    });
+  }
+
+  //  ================================
+
+  //  ================================
   // handle option step 2
   handleOptionStep2 = e => {
     this.setState({
@@ -138,6 +248,7 @@ class Consulting extends Component {
       });
     }
   };
+
   render() {
     const {
       step,
@@ -148,8 +259,12 @@ class Consulting extends Component {
       optionStep2,
       optionStep3,
       inputStep5,
+      listAnswer,
+      listQuest
     } = this.state;
-    console.log('stepProgress', stepProgress);
+
+    console.log('listAnswer', listAnswer);
+    console.log('listQuest', listQuest);
     return (
       <View style={S.container}>
         <View>
@@ -166,6 +281,10 @@ class Consulting extends Component {
             titleStyle={DefaultStyle.headerTitleWhite}
           />
         </Appbars>
+
+        {/* ================================ */}
+
+        {/* ================================ */}
         {/* step 0 */}
         {step === 0 && (
           <View style={S.contentCenter}>
@@ -303,9 +422,9 @@ class Consulting extends Component {
     );
   }
   /** when after render DOM */
-  async componentDidMount() {
-    console.log('inputStep1', inputStep1);
-  }
+  // async componentDidMount() {
+  //   console.log('inputStep1', inputStep1);
+  // }
 }
 /** map state with store states redux store */
 function mapStateToProps(state) {
