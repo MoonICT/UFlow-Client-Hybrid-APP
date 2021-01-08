@@ -36,7 +36,7 @@ import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import DatePicker from '@Components/organisms/DatePicker';
-import { toSquareMeter } from '@Services/libs/unit';
+import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 
 class FormInfo extends Component {
   constructor(props) {
@@ -303,35 +303,39 @@ class FormInfo extends Component {
                 textRight="평"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  let test = toSquareMeter(value);
-                  // console.log('testdddddddd', test);
-                  const valueCover = (value * 3.305785).toFixed(0).toString();
-                  this.setState({ commonAreaState2: valueCover });
+                  let valueCover = toSquareMeter(value);
+                  // const valueCover = (value * 3.305785).toFixed(0).toString();
+                  this.setState({ commonAreaState2:  e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.cmnArea = e.replace(/[^0-9]/g, '');
+                  dataF.cmnArea = valueCover;
                   valueForm && valueForm(dataF);
                 }}
-                value={commonAreaState2 === '' ? '0' : formData.cmnArea}
+                // value={commonAreaState2 === '' ? '0' : formData.cmnArea}
+                value={formData.cmnArea === '' ? '0' : commonAreaState2}
+
                 keyboardType="numeric"
               />
             </View>
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="공용면적"
-                defaultValue={''}
+                defaultValue={'0'}
                 textRight="m2"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value / 3.305785).toFixed(0).toString();
+                  let valueCover = toPyeong(value);
+                  // const valueCover = (value / 3.305785).toFixed(0).toString();
                   this.setState({
-                    commonAreaState2: e.replace(/[^0-9]/g, ''),
+                    commonAreaState2: valueCover,
                   });
                   // formData.cmnArea
                   let dataF = formData;
-                  dataF.cmnArea = valueCover;
+                  dataF.cmnArea = e.replace(/[^0-9]/g, '');
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.cmnArea === '' ? '0' : commonAreaState2}
+                // value={formData.cmnArea === '' ? '0' : commonAreaState2}
+                value={commonAreaState2 === '' ? '0' : formData.cmnArea}
+
               />
             </View>
           </View>
@@ -342,13 +346,14 @@ class FormInfo extends Component {
                 textRight="평"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value * 3.305785).toString();
-                  this.setState({ usblValueState2: valueCover });
+                  let valueCover = toSquareMeter(value);
+                  // const valueCover = (value * 3.305785).toFixed(0).toString();
+                  this.setState({ usblValueState2:  e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.usblValue = e.replace(/[^0-9]/g, '');
+                  dataF.usblValue = valueCover;
                   valueForm && valueForm(dataF);
                 }}
-                value={usblValueState2 === '' ? '0' : formData.usblValue}
+                value={formData.usblValue === '' ? '0' : usblValueState2}
                 keyboardType="numeric"
               />
             </View>
@@ -358,17 +363,16 @@ class FormInfo extends Component {
                 textRight="m2"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
-                  const valueCover = (value / 3.305785).toString();
+                  let valueCover = toPyeong(value);
                   this.setState({
-                    usblValueState2: e.replace(/[^0-9]/g, ''),
+                    usblValueState2: valueCover,
                   });
-                  // formData.cmnArea
                   let dataF = formData;
-                  dataF.usblValue = valueCover;
+                  dataF.usblValue = e.replace(/[^0-9]/g, '');
                   valueForm && valueForm(dataF);
                 }}
+                value={usblValueState2 === '' ? '0' : formData.usblValue}
                 keyboardType="numeric"
-                value={formData.usblValue === '' ? '0' : usblValueState2}
               />
             </View>
           </View>
