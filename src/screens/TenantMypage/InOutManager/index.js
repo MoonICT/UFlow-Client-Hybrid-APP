@@ -127,9 +127,7 @@ class InOutManager extends Component {
     this.navigation = props.navigation;
   }
   render() {
-    // const { imageStore } = this.props;
     const { route } = this.props;
-    console.log('navigation', this.navigation);
     return (
       <View style={DefaultStyle._cards}>
         <View style={DefaultStyle._titleCard}>
