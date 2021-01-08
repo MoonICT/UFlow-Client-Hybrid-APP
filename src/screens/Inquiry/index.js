@@ -98,6 +98,9 @@ class Inquiry extends Component {
 
     await getAllInquiry(defaultParams).then((res) => {
       console.log('res', res)
+      if (res.data._embedded.questions === null) {
+        return;
+      }
       if (res.status === 200) {
         this.setState({ listQuestion: res.data._embedded.questions })
       }
@@ -142,8 +145,9 @@ class Inquiry extends Component {
 
   render() {
 
-    const { from, showFrom, mode, to, showTo, firstQuery, inquiryCode, listQuestion } = this.state;
-
+    const { from, showFrom, mode, to, showTo, firstQuery, inquiryCode, userType, listQuestion } = this.state;
+    console.log('inquiryCode ::::: ', inquiryCode);
+    console.log('userType ::::: ', userType);
     const handleQueryChange = debounce((query) => {
       this.getAllData({ query: query })
     }, 200)
@@ -235,16 +239,17 @@ class Inquiry extends Component {
               )}
             </View>
           </View>
-          {inquiryCode === 'OWNER' ?
+          {inquiryCode === 'OWNER' && (
             <View>
               {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
                 let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
                 return (
                   <TouchableOpacity
+                    key={index}
                     style={DefaultStyle.btnItem}
                     onPress={() =>
-                      this.navigation.navigate('DetailInquiry', { inquiryDetails: item})
+                      this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'OWNER' })
                     }>
                     <View style={DefaultStyle.leftItem}>
                       {item.complete === false ?
@@ -258,11 +263,19 @@ class Inquiry extends Component {
                       </Text>
                       <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
                     </View>
+                    <View style={DefaultStyle.rightItem}>
+                      <Icon
+                        name="arrow-forward-ios"
+                        size={12}
+                        color="rgba(0, 0, 0, 0.54)"
+                      />
+                    </View>
                   </TouchableOpacity>
                 )
               })}
             </View>
-            :
+          )}
+          {inquiryCode === 'TENANT' ?
             <View>
               {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
@@ -292,6 +305,33 @@ class Inquiry extends Component {
                         size={12}
                         color="rgba(0, 0, 0, 0.54)"
                       />
+                    </View>
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
+            :
+            <View>
+              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
+                let dateTime = new Date(item.date);
+                let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
+                return (
+                  <TouchableOpacity
+                    style={DefaultStyle.btnItem}
+                    onPress={() =>
+                      this.navigation.navigate('DetailInquiry', { inquiryDetails: item })
+                    }>
+                    <View style={DefaultStyle.leftItem}>
+                      {item.complete === false ?
+                        <Text style={[S.status]}>답변 대기 중</Text>
+                        :
+                        <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
+                      }
+                      {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}
+                      <Text style={DefaultStyle.titleItem}>
+                        {item.content}
+                      </Text>
+                      <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
                     </View>
                   </TouchableOpacity>
                 )

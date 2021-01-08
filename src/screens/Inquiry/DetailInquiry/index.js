@@ -80,8 +80,10 @@ class DetailInquiry extends Component {
     const { params } = this.props.route;
     console.log('params', params);
 
-    let upperQnaSeq = params.inquiryDetails.id.qnaSeq;
-    let warehouseRegNo = params.inquiryDetails.id.warehouseRegNo;
+    let upperQnaSeq = params?.inquiryDetails?.id?.qnaSeq ?? null;
+    let warehouseRegNo = params?.inquiryDetails?.id?.warehouseRegNo ?? null;
+    console.log('upperQnaSeq', upperQnaSeq);
+
 
     let dateTime = new Date(params?.inquiryDetails?.date ?? '');
     let dateStr =

@@ -201,7 +201,8 @@ class ContractManager extends Component {
             },
             {
               type: '견적 상태',
-              value: value.type2 === 'OWNER' ? '계약 요청' : '계약중',
+              // value: this.state.valueTab === 'OWNER' ? '계약협의' : '계약중',
+              value: '계약협의',
               highlight: true,
             },
           ],
@@ -310,8 +311,14 @@ class ContractManager extends Component {
     }
   };
   render() {
-    const { dataSteps, type, typeWH, dataContractWH } = this.props;
-    const { valueTab, dataApi, contractType, contractStatus } = this.state;
+    const { type, typeWH, dataContractWH } = this.props;
+    const {
+      valueTab,
+      dataApi,
+      contractType,
+      contractStatus,
+      dataSteps,
+    } = this.state;
     // Data Filter type and status
     let dataFilter =
       dataContractWH &&
@@ -464,7 +471,17 @@ class ContractManager extends Component {
                   ) : titleButton ? (
                     <TouchableOpacity
                       style={DefaultStyle._btnOutline}
-                      onPress={() => console.log(titleButton)}>
+                      onPress={() => {
+                        this.navigation.navigate('ResponseQuotation', {
+                          type: valueTab,
+                          typeWH: item.type2,
+                          warehouseRegNo: item.warehouseRegNo,
+                          warehSeq: item.warehSeq,
+                          seq: item.seq,
+                          rentUserNo: item.rentUserNo,
+                          status: item.status,
+                        });
+                      }}>
                       <Text
                         style={[
                           DefaultStyle._textButton,
@@ -590,10 +607,46 @@ class ContractManager extends Component {
     const type = this.state.valueTab;
     await Warehouse.contractManager(type)
       .then(res => {
+        console.log('resContract', res);
         const status = res.status;
         if (status === 200) {
           // this.setState({ dataApi: res.data.data.content });
           this.props.contractData({ dataApi: res.data.data.content });
+          let data = res.data;
+          let dataSteps = [
+            {
+              title: '견적요청',
+              status: data.countRQ00 > 0 ? true : false,
+              number: data.countRQ00,
+            },
+            {
+              title: '견적응답',
+              status: data.countRS00 > 0 ? true : false,
+              number: data.countRS00,
+            },
+            {
+              title: '견적승인',
+              status: data.count1100 > 0 ? true : false,
+              number: data.count1100,
+            },
+            {
+              title: '계약진행중',
+              status: data.count2100 > 0 ? true : false,
+              number: data.count2100,
+            },
+            {
+              title: '계약완료',
+              status: data.count4100 > 0 ? true : false,
+              number: data.count4100,
+            },
+            {
+              title: '계약승인',
+              number: data.count5100,
+              status: data.count5100 > 0 ? true : false,
+            },
+          ];
+
+          this.setState({ dataSteps });
         }
       })
       .catch(err => {
@@ -608,6 +661,7 @@ class ContractManager extends Component {
     if (valueState !== valuePrev) {
       Warehouse.contractManager(valueState)
         .then(res => {
+          console.log('resContractUpdate', res);
           const status = res.status;
           if (status === 200) {
             // this.setState({ dataApi: res.data.data.content });
@@ -637,6 +691,41 @@ class ContractManager extends Component {
           console.log('res', res);
           if (res.status === 200) {
             console.log('resRequestContract', res);
+            let data = res.data;
+            let dataSteps = [
+              {
+                title: '견적요청',
+                status: data.countRQ00 > 0 ? true : false,
+                number: data.countRQ00,
+              },
+              {
+                title: '견적응답',
+                status: data.countRS00 > 0 ? true : false,
+                number: data.countRS00,
+              },
+              {
+                title: '견적승인',
+                status: data.count1100 > 0 ? true : false,
+                number: data.count1100,
+              },
+              {
+                title: '계약진행중',
+                status: data.count2100 > 0 ? true : false,
+                number: data.count2100,
+              },
+              {
+                title: '계약완료',
+                status: data.count4100 > 0 ? true : false,
+                number: data.count4100,
+              },
+              {
+                title: '계약승인',
+                number: data.count5100,
+                status: data.count5100 > 0 ? true : false,
+              },
+            ];
+
+            this.setState({ dataSteps });
             this.navigation.navigate('RequestContract', {
               type,
               warehouseRegNo,

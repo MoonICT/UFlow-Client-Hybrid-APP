@@ -35,6 +35,7 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
+import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 
 class FormInfo extends Component {
   constructor(props) {
@@ -59,6 +60,13 @@ class FormInfo extends Component {
 
   render() {
     const { data, formData, valueForm } = this.props;
+    const {
+      flrAreaValue2,
+      parkAreaValue2,
+      opcAreaValue2,
+      prvtAreaValue2,
+      cmnAreaValue2,
+    } = this.state;
     const dataSelect = [
       {
         label: '1층',
@@ -91,66 +99,211 @@ class FormInfo extends Component {
             }}
           />
 
-          <TextField
-            labelTextField="창고면적"
-            textRight="m2"
-            defaultValue="0"
-            value={formData.flrArea}
-            colorLabel="#000000"
-            valueProps={e => {
-              let dataF = formData;
-              dataF.flrArea = e;
-              valueForm && valueForm(dataF);
-            }}
-          />
-          <TextField
-            labelTextField="주차장면적"
-            textRight="m2"
-            defaultValue="0"
-            value={formData.parkArea}
-            colorLabel="#000000"
-            valueProps={e => {
-              let dataF = formData;
-              dataF.parkArea = e;
-              valueForm && valueForm(dataF);
-            }}
-          />
-          <TextField
-            labelTextField="사무실면적"
-            textRight="m2"
-            defaultValue="0"
-            value={formData.opcArea}
-            colorLabel="#000000"
-            valueProps={e => {
-              let dataF = formData;
-              dataF.opcArea = e;
-              valueForm && valueForm(dataF);
-            }}
-          />
-          <TextField
-            labelTextField="전용면적"
-            textRight="m2"
-            defaultValue="0"
-            value={formData.prvtArea}
-            colorLabel="#000000"
-            valueProps={e => {
-              let dataF = formData;
-              dataF.prvtArea = e;
-              valueForm && valueForm(dataF);
-            }}
-          />
-          <TextField
-            labelTextField="공용면적"
-            textRight="m2"
-            defaultValue="0"
-            value={formData.cmnArea}
-            colorLabel="#000000"
-            valueProps={e => {
-              let dataF = formData;
-              dataF.cmnArea = e;
-              valueForm && valueForm(dataF);
-            }}
-          />
+          <View style={DefaultStyle._listElement}>
+            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+              <TextField
+                labelTextField="층면적"
+                textRight="m2"
+                defaultValue="0"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toPyeong(value);
+                  this.setState({
+                    flrAreaValue2: valueCover,
+                  });
+                  let dataF = formData;
+                  dataF.flrArea = e.replace(/[^0-9]/g, '');
+                  valueForm && valueForm(dataF);
+                }}
+                value={flrAreaValue2 === '' ? '0' : formData.flrArea}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={DefaultStyle._element}>
+              <TextField
+                labelTextField="층면적"
+                textRight="평"
+                defaultValue="0"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toSquareMeter(value);
+                  this.setState({ flrAreaValue2: e.replace(/[^0-9]/g, '') });
+                  let dataF = formData;
+                  dataF.flrArea = valueCover;
+                  valueForm && valueForm(dataF);
+                }}
+                value={formData.flrArea === '' ? '0' : flrAreaValue2}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+
+          <View style={DefaultStyle._listElement}>
+            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+              <TextField
+                labelTextField="주차면적"
+                defaultValue="0"
+                textRight="m2"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toPyeong(value);
+                  this.setState({
+                    parkAreaValue2: valueCover,
+                  });
+                  let dataF = formData;
+                  dataF.parkArea = e.replace(/[^0-9]/g, '');
+                  valueForm && valueForm(dataF);
+                }}
+                value={flrAreaValue2 === '' ? '0' : formData.parkArea}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={DefaultStyle._element}>
+              <TextField
+                labelTextField="주차면적"
+                defaultValue="0"
+                textRight="평"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toSquareMeter(value);
+                  this.setState({ parkAreaValue2: e.replace(/[^0-9]/g, '') });
+                  let dataF = formData;
+                  dataF.parkArea = valueCover;
+                  valueForm && valueForm(dataF);
+                }}
+                value={formData.parkArea === '' ? '0' : parkAreaValue2}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+
+          <View style={DefaultStyle._listElement}>
+            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+              <TextField
+                labelTextField="사무실면적"
+                defaultValue="0"
+                textRight="m2"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toPyeong(value);
+                  this.setState({
+                    opcAreaValue2: valueCover,
+                  });
+                  let dataF = formData;
+                  dataF.opcArea = e.replace(/[^0-9]/g, '');
+                  valueForm && valueForm(dataF);
+                }}
+                value={opcAreaValue2 === '' ? '0' : formData.opcArea}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={DefaultStyle._element}>
+              <TextField
+                labelTextField="사무실면적"
+                defaultValue="0"
+                textRight="평"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toSquareMeter(value);
+                  this.setState({ opcAreaValue2: e.replace(/[^0-9]/g, '') });
+                  let dataF = formData;
+                  dataF.opcArea = valueCover;
+                  valueForm && valueForm(dataF);
+                }}
+                value={formData.opcArea === '' ? '0' : opcAreaValue2}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+
+          <View style={DefaultStyle._listElement}>
+            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+              <TextField
+                labelTextField="전용면적"
+                defaultValue="0"
+                textRight="m2"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toPyeong(value);
+                  this.setState({
+                    prvtAreaValue2: valueCover,
+                  });
+                  let dataF = formData;
+                  dataF.prvtArea = e.replace(/[^0-9]/g, '');
+                  valueForm && valueForm(dataF);
+                }}
+                value={prvtAreaValue2 === '' ? '0' : formData.prvtArea}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={DefaultStyle._element}>
+              <TextField
+                labelTextField="전용면적"
+                defaultValue="0"
+                textRight="평"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toSquareMeter(value);
+                  this.setState({ prvtAreaValue2: e.replace(/[^0-9]/g, '') });
+                  let dataF = formData;
+                  dataF.prvtArea = valueCover;
+                  valueForm && valueForm(dataF);
+                }}
+                value={formData.prvtArea === '' ? '0' : prvtAreaValue2}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+
+          <View style={DefaultStyle._listElement}>
+            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+              <TextField
+                labelTextField="공용면적"
+                defaultValue="0"
+                textRight="m2"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toPyeong(value);
+                  this.setState({
+                    cmnAreaValue2: valueCover,
+                  });
+                  let dataF = formData;
+                  dataF.cmnArea = e.replace(/[^0-9]/g, '');
+                  valueForm && valueForm(dataF);
+                }}
+                value={cmnAreaValue2 === '' ? '0' : formData.cmnArea}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={DefaultStyle._element}>
+              <TextField
+                labelTextField="공용면적"
+                defaultValue="0"
+                textRight="평"
+                colorLabel="#000000"
+                valueProps={e => {
+                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let valueCover = toSquareMeter(value);
+                  this.setState({ cmnAreaValue2: e.replace(/[^0-9]/g, '') });
+                  let dataF = formData;
+                  dataF.cmnArea = valueCover;
+                  valueForm && valueForm(dataF);
+                }}
+                value={formData.cmnArea === '' ? '0' : cmnAreaValue2}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+
           <TextField
             labelTextField="층고"
             value={formData.flrHi}

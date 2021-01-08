@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Button,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -19,13 +18,9 @@ import { Text, Appbar } from 'react-native-paper';
 
 // Local Imports
 import Appbars from '@Components/organisms/AppBar';
-
 import DefaultStyle from '@Styles/default';
-import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
-import CardMypage from '@Components/organisms/CardMypage';
-
-import card from '@Assets/images/card-img.png';
+import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -118,6 +113,20 @@ class ResponseQuotation extends Component {
       showTo,
       isSubmit,
     } = this.state;
+    console.log('routeReponse', route);
+    let isSubmitTrust = false;
+    if (
+      rntlValue !== '' &&
+      splyAmount !== '' &&
+      whinChrg !== '' &&
+      whoutChrg !== '' &&
+      psnChrg !== '' &&
+      mnfctChrg !== '' &&
+      dlvyChrg !== '' &&
+      shipChrg !== ''
+    ) {
+      isSubmitTrust = true;
+    }
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -335,49 +344,14 @@ class ResponseQuotation extends Component {
                   }}
                   style={[
                     DefaultStyle._btnInline,
-                    from !== '' &&
-                    to !== '' &&
-                    rntlValue !== '' &&
-                    splyAmount !== '' &&
-                    whinChrg !== '' &&
-                    whoutChrg !== '' &&
-                    psnChrg !== '' &&
-                    mnfctChrg !== '' &&
-                    dlvyChrg !== '' &&
-                    shipChrg !== ''
-                      ? null
-                      : SS.btnDisabled,
+                    isSubmitTrust === true ? null : SS.btnDisabled,
                   ]}
-                  disabled={
-                    from !== '' &&
-                    to !== '' &&
-                    rntlValue !== '' &&
-                    splyAmount !== '' &&
-                    whinChrg !== '' &&
-                    whoutChrg !== '' &&
-                    psnChrg !== '' &&
-                    mnfctChrg !== '' &&
-                    dlvyChrg !== '' &&
-                    shipChrg !== ''
-                      ? false
-                      : true
-                  }>
+                  disabled={isSubmitTrust === true ? false : true}>
                   <Text
                     style={[
                       DefaultStyle._textButton,
                       SS.textSubmit,
-                      from !== '' &&
-                      to !== '' &&
-                      rntlValue !== '' &&
-                      splyAmount !== '' &&
-                      whinChrg !== '' &&
-                      whoutChrg !== '' &&
-                      psnChrg !== '' &&
-                      mnfctChrg !== '' &&
-                      dlvyChrg !== '' &&
-                      shipChrg !== ''
-                        ? null
-                        : SS.textDisabled,
+                      isSubmitTrust === true ? null : SS.textDisabled,
                     ]}>
                     확인
                   </Text>
@@ -602,6 +576,7 @@ class ResponseQuotation extends Component {
       })
         .then(res => {
           // const status = res.status;
+          console.log('resRespon', res);
           if (res.status === 200) {
             console.log('res', res);
             this.navigation.navigate('Quotation', {
@@ -617,7 +592,11 @@ class ResponseQuotation extends Component {
           }
         })
         .catch(err => {
-          console.log('err', err);
+          let message = err.response && err.response.data.message;
+          this.props.showPopup({
+            type: 'confirm',
+            content: message,
+          });
         });
     }
   }
@@ -635,12 +614,9 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
+    },
   };
 }
 

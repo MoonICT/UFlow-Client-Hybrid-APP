@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-08 12:08:09
+ * @modify date 2021-01-08 16:42:21
  * @desc [description]
  */
 
@@ -43,7 +43,7 @@ import ActionCreator from '@Actions';
 // import CarouselSnapPagi from '@Components/organisms/CarouselSnapPagi';
 import AppBars from '@Components/organisms/AppBar';
 import ProductCard from '@Components/organisms/ProductCard';
-import StepCard from '@Components/organisms/StepCard';
+// import StepCard from '@Components/organisms/StepCard';
 // import SloganCard from '@Components/organisms/SloganCard';
 // import Footer from '@Components/organisms/Footer';
 
@@ -52,7 +52,7 @@ import StepCard from '@Components/organisms/StepCard';
 
 import { styles } from './styles';
 
-import mainBG from '@Assets/images/main-bg.png';
+// import mainBG from '@Assets/images/main-bg.png';
 // import symbolsBG from '@Assets/images/symbol.png';
 // import factoryBG from '@Assets/images/factory.png';
 import boxMain from '@Assets/images/box_main_1.png';
@@ -82,6 +82,8 @@ import { AuthContext } from '@Store/context';
 import AsyncStorage from '@react-native-community/async-storage';
 //Contants
 import { TOKEN } from '@Constant';
+
+// import Masonry from 'react-native-masonry';
 
 // const slides = [
 //   {
@@ -332,7 +334,7 @@ class Home extends Component {
     return true;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     AsyncStorage.getItem(TOKEN).then(v => {
       this.setState({ isLogin: v !== '' && v !== null });
     });
@@ -388,12 +390,6 @@ class Home extends Component {
       );
     });
 
-    // if (item.thumbnail === null || item.thumbnail === '') {
-    //   cardItem.push(<ProductCard data={{ ...item, img: cardBG }} />);
-    // } else {
-    //   cardItem.push(<ProductCard data={item} />);
-    // }
-
     return cardItem;
   };
 
@@ -410,11 +406,8 @@ class Home extends Component {
     // console.log('isLoginHome :>> ', isLogin);
     const { getLoginStatus } = this.context;
     const isLog = getLoginStatus();
-    const { isLogin = isLog,textSearch } = this.state;
-
-    // console.log('whList==>', whList);
-
-    // console.log('isLogin Hello==>', isLogin);
+    const { isLogin = isLog, textSearch } = this.state;
+    // console.log('isLogin==>', isLogin);
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -471,7 +464,7 @@ class Home extends Component {
           /> */}
 
           {/**### INTRO ###*/}
-          <View style={styles.intro}>
+          <View style={isLogin ? styles.introHide : styles.intro}>
             <View style={[styles.introImage]}>
               <Image source={boxMain} style={styles.introSymbolImage} />
               {/* <Image source={factoryBG} style={styles.introFactoryImage} /> */}
@@ -486,9 +479,20 @@ class Home extends Component {
                 textAlignVertical="center"
                 numberOfLines={1}
                 ellipsizeMode="start"
-                onChange={(e)=>this.setState({textSearch:e.target.value})}
+                onChange={e => this.setState({ textSearch: e.target.value })}
               />
-              {<Icon name="search" size={24} color="white" onPress={()=> this.navigation.navigate("Search",{searchValue : textSearch})} />}
+              {
+                <Icon
+                  name="search"
+                  size={24}
+                  color="white"
+                  onPress={() =>
+                    this.navigation.navigate('Search', {
+                      searchValue: textSearch,
+                    })
+                  }
+                />
+              }
             </View>
 
             <View style={styles.introDivider} />
@@ -541,7 +545,7 @@ class Home extends Component {
             {/**___MoreSee__*/}
             <View style={styles.mainProductMore}>
               <TouchableOpacity
-                onPress={() => alert('Hello')}
+                onPress={() => this.navigation.navigate('Search')}
                 style={[styles.mainProductSeeMoreBTN]}>
                 <Text
                   style={[
@@ -571,12 +575,6 @@ class Home extends Component {
                 renderItem={this._renderProductItem}
                 onSnapToItem={index => this.setState({ activeIndex: index })}
               /> */}
-              {/* {whList.map((v, i) => {
-                <View key={i} style={styles.mainProductItem}>
-                  {this._renderProductItem(v)}
-                </View>;
-              })} */}
-
               {this._renderProductItem()}
             </View>
           </View>
