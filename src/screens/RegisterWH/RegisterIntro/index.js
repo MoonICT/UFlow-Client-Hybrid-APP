@@ -44,24 +44,30 @@ class RegisterIntro extends Component {
         props.dataIntro && props.dataIntro.description
           ? props.dataIntro.description
           : '',
-      address: {
-        zipNo: '',
-        sidoName: '',
-        skkCd: '',
-        skkName: '',
-        bjdongCd: '',
-        bjdongName: '',
-        hjdongCd: '',
-        hjdongName: '',
-        roadNmCd: '',
-        address: '',
-        detail: '',
-      },
-      roadAddr: {
-        zipNo: '',
-        address: '',
-        detail: '',
-      },
+      address:
+        props.dataIntro && props.dataIntro.address
+          ? props.dataIntro.address
+          : {
+              zipNo: '',
+              sidoName: '',
+              skkCd: '',
+              skkName: '',
+              bjdongCd: '',
+              bjdongName: '',
+              hjdongCd: '',
+              hjdongName: '',
+              roadNmCd: '',
+              address: '',
+              detail: '',
+            },
+      roadAddr:
+        props.dataIntro && props.dataIntro.roadAddr
+          ? props.dataIntro.roadAddr
+          : {
+              zipNo: '',
+              address: '',
+              detail: '',
+            },
       gps:
         props.dataIntro && props.dataIntro.gps
           ? props.dataIntro.gps
@@ -88,25 +94,38 @@ class RegisterIntro extends Component {
   _showDialog = () => this.setState({ visible: true });
 
   _hideDialog = () => this.setState({ visible: false });
-  _addImage = () => console.log('_addImage');
-  _removeImage = () => console.log('_removeImage');
 
-  onChangeTitle = textTitle => {
-    this.setState({ textTitle });
-    console.log('textTitle', textTitle);
-  };
-  onChangeLocation = textLocation => {
-    this.setState({ textLocation });
-    console.log('textLoca', textLocation);
-  };
-  onChangeLogistic = e => {
+  onChangeLocation = e => {
     let addressUpdate = this.state.address;
     let roadUpdate = this.state.roadAddr;
     addressUpdate.detail = e;
     roadUpdate.detail = e;
     this.setState({ address: addressUpdate, roadAddr: roadUpdate });
   };
-
+  searchAddress = data => {
+    let firstQuery = data.address;
+    let address = {
+      zipNo: data.zonecode,
+      sidoName: data.sido,
+      skkCd: '',
+      skkName: data.sigungu,
+      bjdongCd: data.sigunguCode,
+      bjdongName: data.bname,
+      hjdongCd: '',
+      hjdongName: data.bname2,
+      roadNmCd: data.roadnameCode,
+      address: data.address,
+    };
+    let roadAddr = {
+      zipNo: data.zonecode,
+      address: data.address,
+    };
+    this.setState({
+      firstQuery: firstQuery,
+      address,
+      roadAddr,
+    });
+  };
   render() {
     const { route, dataIntro } = this.props;
     const {
@@ -119,10 +138,9 @@ class RegisterIntro extends Component {
     } = this.state;
 
     let isActive;
-    if (name !== '' && description !== '') {
+    if (name !== '' && description !== '' && address.zipNo) {
       isActive = true;
     }
-    // console.log('dataIntro', dataIntro);
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -150,9 +168,8 @@ class RegisterIntro extends Component {
               style={SS.inputIntro}
               multiline={true}
               numberOfLines={2}
-              // onChangeText={text => this.onChangeTitle(text)}
               onChangeText={e => this.setState({ name: e })}
-              value={this.state.name}
+              value={name}
               placeholder={'예)신논혁역 도보 5분 거리, 깨끗한 창고입니다.'}
             />
           </View>
@@ -195,18 +212,20 @@ class RegisterIntro extends Component {
                 onChangeText={query => {
                   this.setState({ firstQuery: query });
                 }}
-                value={this.state.firstQuery}
+                value={address && address.zipNo}
               />
             </TouchableOpacity>
+
             <TextInput
+              disabled={true}
               style={[SS.inputIntro, SS.inputLoction]}
-              onChangeText={text => this.onChangeLocation(text)}
-              value={this.state.textIntro}
+              // onChangeText={text => this.onChangeLocation(text)}
+              value={address && address.address}
               placeholder={'인천광역시 중구 서해대로94번길 100'}
             />
             <TextInput
               style={[SS.inputIntro, SS.inputLoction]}
-              onChangeText={text => this.onChangeLogistic(text)}
+              onChangeText={text => this.onChangeLocation(text)}
               value={this.state.textIntro}
               placeholder={'에이씨티앤코아물류'}
             />
@@ -228,8 +247,7 @@ class RegisterIntro extends Component {
               style={[
                 DefaultStyle.btnSubmit,
                 isActive === true ? DefaultStyle.activeBtnSubmit : '',
-              ]}
-            >
+              ]}>
               <Text
                 style={[
                   DefaultStyle.textSubmit,
@@ -250,29 +268,8 @@ class RegisterIntro extends Component {
                   style={DefaultStyle._postCodeContent}
                   jsOptions={{ animated: true }}
                   onSelected={data => {
-                    console.log('data :>> ', data);
-                    let firstQuery = data.address;
-                    let address = {
-                      zipNo: data.zonecode,
-                      sidoName: data.sido,
-                      skkCd: '',
-                      skkName: data.sigungu,
-                      bjdongCd: data.sigunguCode,
-                      bjdongName: data.bname,
-                      hjdongCd: '',
-                      hjdongName: data.bname2,
-                      roadNmCd: data.roadnameCode,
-                      address: data.address,
-                    };
-                    let roadAddr = {
-                      zipNo: data.zonecode,
-                      address: data.address,
-                    };
-                    this.setState({
-                      firstQuery: firstQuery,
-                      address,
-                      roadAddr,
-                    });
+                    this.searchAddress(data);
+
                     this._hideDialog();
                   }}
                 />
