@@ -115,27 +115,30 @@ class DetailWH extends Component {
     super(props);
     this.webView = null;
     let { id } = props.route.params
+    // let { } = props.route.qnaParams
     this.state = {
       id: id,
-      // id: 'RG20201224184',
       active: 0,
       checked: true,
       checked2: false,
       activeIndex: 0,
       whrgData: {},
-      questionList: [],
-      qnaParams: {
-        // id: wid,
-        id: "RG20210105276",
-        size: 4,
-        page: 0,requiresToken: true
-      },
+      qnaParams: {},
       qnaList: [],
-      pageInfo: {}
+      pageInfo: {},
     };
     this.navigation = props.navigation;
-    console.log('data', this.state.whrgData)
-    console.log('question', this.state.questionList)
+    console.log('qnaParams', this.state.qnaParams)
+  }
+
+  hiddenName = (name) => {
+    if (name && name.length > 0) {
+      let nameArr = name.split('');
+      nameArr = nameArr.map((item, index) => {
+        return index > 0 ? '*' : item
+      })
+      return nameArr.join('')
+    }
   }
 
   /** listener when change props */
@@ -789,7 +792,7 @@ class DetailWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <View style={S.titleView}>
-                <Text style={S.title}>문의 (123)</Text>
+                <Text style={S.title}>문의 ({this.state.pageInfo ? this.state.pageInfo.totalElements : 0})</Text>
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnInquiry}
@@ -800,22 +803,43 @@ class DetailWH extends Component {
               </View>
 
               <View style={DefaultStyle._card}>
+              {console.log('qnaList', this.state.qnaList)}
                 <View style={S.bodyCard}>
-                  <View style={S.inquirys}>
-                    <View style={S.leftInquiry}>
-                      <Text style={S.titleInquiry}>미답변</Text>
-                      <Text style={S.contentInquiry}>비밀글입니다.</Text>
-                      <Text style={S.footerInquiry}> hah*** | 2020.11.22</Text>
+                  {(this.state.qnaList && this.state.qnaList.length === 0) &&
+                    <Text key={'empty'} style={S.titleInquiry}>문의 내역이 없습니다.</Text>
+                  }
+                  {/* List */}
+                  {this.state.qnaList && this.state.qnaList.map((qnaItem, index) =>
+                    <View key={'qnaItem' + index} style={S.inquirys}>
+                      <View style={S.leftInquiry}>
+                      {console.log('answer', qnaItem?.answer)}
+                        {qnaItem.answer ?
+                          <Text style={S.titleCompleted}>답변완료</Text>
+                          :
+                          <Text style={S.titleInquiry}>미답변</Text>
+                        }
+                        <Text style={S.contentInquiry}>비밀글입니다.</Text>
+                        <Text style={S.footerInquiry}>
+                        {qnaItem.writer}
+                        {console.log('writer', qnaItem.writer)}
+                        {this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}
+                        </Text>
+                      </View>
+                      <View style={S.rightInquiry}>
+                        {qnaItem.me ? '' : (
+                          (qnaItem.secret || true) ?
+                            <IconButton
+                              style={S.btnIcon}
+                              icon="lock"
+                              onPress={() => console.log('remove')}
+                            />
+                            :
+                            <Text></Text>
+                        )}
+                      </View>
                     </View>
-                    <View style={S.rightInquiry}>
-                      <IconButton
-                        style={S.btnIcon}
-                        icon="lock"
-                        onPress={() => console.log('remove')}
-                      />
-                    </View>
-                  </View>
-                  <View style={S.inquirys}>
+                  )}
+                  {/* <View style={S.inquirys}>
                     <View style={S.leftInquiry}>
                       <Text style={S.titleInquiry}>미답변</Text>
                       <Text style={S.contentInquiry}>비밀글입니다.</Text>
@@ -858,7 +882,7 @@ class DetailWH extends Component {
                         onPress={() => console.log('remove')}
                       />
                     </View>
-                  </View>
+                  </View> */}
                   <TouchableOpacity
                     style={S.btnViewAll}
                     onPress={() => this.navigation.navigate('InquiryWH')}>
@@ -908,6 +932,8 @@ class DetailWH extends Component {
     console.log('::componentDidMount::');
     SplashScreen.hide();
     this.getDataWH()
+    this.handleRequestQnaList()
+    this.hiddenName()
   }
 
   async getDataWH() {
@@ -920,6 +946,32 @@ class DetailWH extends Component {
       if (res) {
         this.setState({ whrgData: res })
         // console.log('gps', whrgData.gps.latitude);
+      }
+    })
+  }
+
+  handleRequestQnaList = () => {
+    let qnaParams = {
+      id: 'RG20201227195',
+      size: 4,
+      page: 0,
+      requiresToken: false
+    }
+    Warehouse.pageWhrgQnA(qnaParams).then(res => {
+      if (res && res._embedded && res._embedded.questions) {
+        console.log('res._embedded.questions', res._embedded.questions)
+        let newFQAList = res._embedded.questions.map(item => {
+          return {
+            status: item.complete,
+            title: item.content,
+            name: item.writer,
+            date: formatDateV1(item.date),
+            lock: item.secret,
+          }
+        })
+
+        this.setState({ qnaList: newFQAList })
+        this.setState({ pageInfo: res.page })
       }
     })
   }
