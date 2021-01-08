@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2021-01-08 11:33:51
+ * @modify date 2021-01-08 13:57:28
  * @desc [description]
  */
 
@@ -139,6 +139,14 @@ export const styles = StyleSheet.create({
   },
   //=====================Content=========================
   //-->intro
+  introHide: {
+    marginTop: 0,
+    height: 349,
+    paddingTop: 80,
+    paddingRight: 37,
+    paddingLeft: 34,
+    backgroundColor: color.primary.main,
+  },
   intro: {
     marginTop: 50,
     height: 349,
@@ -273,8 +281,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    marginLeft:-4,
-    marginRight:-4,
+    marginLeft: -4,
+    marginRight: -4,
   },
 
   mainProductItem: {
