@@ -282,7 +282,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 4,
     paddingRight: 4,
     marginBottom: 8,
-    // height: 400,
+    height: 400,
     // height: 100,
     // paddingBottom: 60,
     // display: 'flex',
