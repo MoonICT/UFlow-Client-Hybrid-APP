@@ -1,4 +1,5 @@
 /**
+ * 정산 관리
  * @create
  * @modify
  * @desc [description]
@@ -26,7 +27,7 @@ import CardMypage from '@Components/organisms/CardMypage';
 import { SettlementManagementService } from '@Services/apis'
 import ActionCreator from '@Actions';
 import Icon from 'react-native-vector-icons/Fontisto';
-import {formatDateV1} from '@Utils/dateFormat';
+import {formatDateV1, formatDateV2 } from '@Utils/dateFormat';
 import { styles as S } from '../style';
 import DatePicker from '@react-native-community/datetimepicker';
 const dataStart = [
@@ -72,10 +73,14 @@ const dataDongwon = [
   },
 ];
 var searchTimerQuery;
+
 export default class SettlementManagement extends Component {
+
   constructor(props) {
     super(props);
+
     this.webView = null;
+
     this.state = {
       valueTab: 'OWNER',
       rangeDate: '',
@@ -84,8 +89,8 @@ export default class SettlementManagement extends Component {
         query: '',
         contractType: 2100,
         rangeTime: '',
-        startDate: new Date(),
-        endDate: new Date()
+        startDate: '',
+        endDate: ''
       },
       rangeDay: [
         {
@@ -116,6 +121,7 @@ export default class SettlementManagement extends Component {
   }
 
   componentDidMount () {
+    console.log("::: 정산 관리 페이지 :::");
     this.getAllData()
   }
 
@@ -123,23 +129,29 @@ export default class SettlementManagement extends Component {
     let {startDate, endDate, query, contractType, rangeDate} = this.state.filter;
     let {valueTab} = this.state
     let params = {
-      startDate,
-      endDate,
+      startDate: formatDateV2(startDate),
+      endDate: formatDateV2(endDate),
       query,
       rangeDate: rangeDate,
       type: valueTab,
       contractType
     };
 
+    // params {"contractType": 2100, "endDate": 2021-01-08T11:44:47.122Z, "query": "", "rangeDate": "", "startDate": 2021-01-08T11:44:47.122Z, "type": undefined}
+
     SettlementManagementService.getAll(params).then((res) => {
+      console.debug(params, '정산데이터 Params');
+      console.debug(res, '정산데이터');
       if (res.data.msg !== 'success') {
         return
       }
-      
+
       let newRows = res.data.data.content.map((item, index) => {
+        console.debug('item', item);
         return {
           id: item.id,
           warehouseName: item.warehouseName,
+          urlTransaction: item.urlTransaction,
           dataRedwood: [
             {
               type: '정산 기간',
@@ -147,7 +159,7 @@ export default class SettlementManagement extends Component {
             },
             {
               type: '계약 유형',
-              value: item.cntrDvCode.stdCodeName,
+              value: item.cntrTypeCode.stdDetailCodeName,
             },
             {
               type: '정산 합계 (VAT포함)',
@@ -155,8 +167,8 @@ export default class SettlementManagement extends Component {
             },
           ]
         }
-      })
-
+      },
+          (error) => { console.log(error); })
 
       this.setState({
         rows: newRows
@@ -233,14 +245,15 @@ export default class SettlementManagement extends Component {
     })
   };
 
-  onChangeKeyWord = (e) => {
-    
+  onChangeKeyWord = () => {
     if (searchTimerQuery) {
       clearTimeout(searchTimerQuery);
     }
     searchTimerQuery = setTimeout(async () => {
+      let filter =  {...this.state.filter}
+      filter.query = this.inputKeyWord.state.value
       this.setState({
-        query: this.inputKeyWord.state.value
+        filter
       }, () => {
         this.getAllData()
       })
@@ -299,39 +312,39 @@ export default class SettlementManagement extends Component {
 
         <View style={S.filter}>
           <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
-            <View style={[S.optionSelect, S.optionSelectLeft]}>
+            <View style={[S.optionSelect, S.optionSelectLeft , { marginBottom: 25}]}>
               {/* <Select data={dataStart} style={S.select} /> */}
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1}}>
                 <TouchableOpacity
                   onPress={()=>this.showDateStart()}
                   style={DefaultStyle._btnDate}>
-                  <Text style={DefaultStyle._textDate}>
-                    {formatDateV1(startDate)}
+                  <Text style={[DefaultStyle._textDate]}>
+                    {formatDateV1(startDate) || 'YYYY/MM/DD'}
                   </Text>
                   <Text
                     style={[
                       DefaultStyle._labelTextField,
                       { color: '#000000' },
                     ]}>
-                    수탁 기간
+                    수탁 기간1
                   </Text>
                   {
-                    isOpenStart && 
+                    isOpenStart &&
                     <DatePicker
                     mode={'date'}
                     show={isOpenStart}
                     onChange={(e) =>this.onChangeStart(e)}
-                    value={startDate}
+                    value={startDate || new Date()}
                     testID="dateTimePicker"
                   />
                   }
                 </TouchableOpacity>
               </View>
 
-          
+
 
             </View>
-            <Text style={S.hyphen}>-</Text>
+            <Text style={[S.hyphen, {height: 57, lineHeight: 57}]}>-</Text>
             <View style={[S.optionSelect, S.optionSelectLeft]}>
               {/* <Select data={dataEnd} style={S.select} /> */}
 
@@ -340,7 +353,7 @@ export default class SettlementManagement extends Component {
                   onPress={()=>this.showDateEnd()}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                    {formatDateV1(endDate)}
+                    {formatDateV1(endDate) || 'YYYY/MM/DD'}
                   </Text>
                   <Text
                     style={[
@@ -350,12 +363,12 @@ export default class SettlementManagement extends Component {
                     수탁 기간
                   </Text>
                   {
-                    isOpenEnd && 
+                    isOpenEnd &&
                       <DatePicker
                         mode={'date'}
                         show={isOpenEnd}
                         onChange={(e)=>this.onChangeEnd(e)}
-                        value={endDate}
+                        value={endDate || new Date()}
                         testID="dateTimePicker"
                       />
                   }
@@ -365,22 +378,23 @@ export default class SettlementManagement extends Component {
 
 
             </View>
-            <View style={[S.optionSelect, S.optionSelectLeft]}>
+            {/* <View style={[S.optionSelect, S.optionSelectLeft]}>
               <Select data={rangeDay} valueProps = {this.onChangeRangeDay} style={S.select}  />
-            </View>
+            </View> */}
           </View>
           <TextField
-            styleProps={DefaultStyle._inputSearch}
+            styleProps={[DefaultStyle._inputSearch, {paddingRight: 50}]}
             placeholder="창고명 검색"
             valueProps={text => console.log('text', text)}
             ref={el => this.inputKeyWord = el}
-            onChange={this.onChangeKeyWord}
+            // onChange={this.onChangeKeyWord}
             rightComponent={
               <Icon
                 name="search"
                 color="rgba(0, 0, 0, 0.54)"
                 size={17}
                 style={DefaultStyle._searchRightIcon}
+                onPress={() => this.onChangeKeyWord()}
               />
             }
           />
@@ -392,9 +406,10 @@ export default class SettlementManagement extends Component {
                 key = {index}
                 onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
                   id: item.id,
-                  type: valueTab
+                  type: valueTab,
+                  urlTransaction: item.urlTransaction
                 })}
-                headerTitle={'레드우드'}
+                headerTitle={item.warehouseName}
                 data={item.dataRedwood}
                 borderBottom={true}
                 borderRow={false}

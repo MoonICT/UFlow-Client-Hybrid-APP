@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     width: 30,
     height: 5,
   },
-  sheetContent:{
+  sheetContent: {
     // backgroundColor: 'red',
     marginTop: 30,
   },
@@ -39,5 +39,10 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0, 0, 0, 0.1);',
     marginVertical: 16,
+  },
+  emptyText: {
+    paddingTop: 16,
+    paddingBottom: 16,
+    textAlign: 'center',
   },
 });

@@ -80,6 +80,7 @@ import Information from '@Screeens/Mypage/Information';
 import RequestContract from '@Screeens/Mypage/RequestContract';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
+import ConsultingComplete from '@Screeens/Consulting/complete.js';
 import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
@@ -99,7 +100,7 @@ import { TOKEN } from '@Constant';
 const store = initStore();
 
 // 메인 탭 옵션 설정.(Sample)
-const TabScreenOptions = ({ route = {name:"Home" }}) => ({
+const TabScreenOptions = ({ route = { name: 'Home' } }) => ({
   tabBarIcon: ({ focused, tColor, tSize }) => {
     const routeName = route.name;
     let icon = '';
@@ -121,8 +122,8 @@ const TabScreenOptions = ({ route = {name:"Home" }}) => ({
     return focused ? (
       <IconButton size={24} color={color.primary.main} icon={icon} />
     ) : (
-        <IconButton size={24} icon={icon} color={'rgba(0, 0, 0, 0.54)'} />
-      );
+      <IconButton size={24} icon={icon} color={'rgba(0, 0, 0, 0.54)'} />
+    );
   },
 });
 const TabBarOptions = {
@@ -178,21 +179,18 @@ const App = () => {
   const authContext = useMemo(() => {
     return {
       getLoginStatus: () => {
-        let a = AsyncStorage.getItem(TOKEN).then(v => {
-          // console.log('v==>', v);
+        AsyncStorage.getItem(TOKEN).then(v => {
           setIsLogin(v !== '' && v !== null);
         });
-        console.log('a==>', a);
         return isLogin;
       },
-      login:
-        (loginData) => {
-          // console.log("loginData", loginData);
-          AsyncStorage.setItem(TOKEN, loginData).then(() => {
-            setIsLoading(false);
-            setIsLogin(true);
-          });
-        },
+      login: loginData => {
+        // console.log("loginData", loginData);
+        AsyncStorage.setItem(TOKEN, loginData).then(() => {
+          setIsLoading(false);
+          setIsLogin(true);
+        });
+      },
       signUp: () => {
         setIsLoading(false);
         setIsLogin(false);
@@ -460,6 +458,12 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
+                    name="ConsultingComplete"
+                    component={ConsultingComplete}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
                     name="SampleScreen"
                     component={SampleScreen}
                     headerMode={false}
@@ -496,10 +500,10 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   {/*<RootStack.Screen*/}
-                    {/*name="Login"*/}
-                    {/*component={LoginScreen}*/}
-                    {/*headerMode={false}*/}
-                    {/*options={{ headerShown: false }}*/}
+                  {/*name="Login"*/}
+                  {/*component={LoginScreen}*/}
+                  {/*headerMode={false}*/}
+                  {/*options={{ headerShown: false }}*/}
                   {/*/>*/}
                   <AuthStack.Screen
                     name="FindPassWord"
@@ -532,51 +536,53 @@ const App = () => {
       </AuthContext.Provider>
     );
   } else {
-    return <AuthContext.Provider value={authContext}>
-      <Provider store={store}>
-        <PaperProvider theme={theme}>
-          <NavigationContainer>
-            <Global>
-              <RootStack.Navigator initialRouteName="Home">
-                <RootStack.Screen
-                  name="More"
-                  component={More}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Home"
-                  component={TabScreen}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="FindID"
-                  component={FindIDScreen}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="FindPassWord"
-                  component={FindPassWordScreen}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Login"
-                  component={LoginScreen}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Register"
-                  component={Register}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
-              </RootStack.Navigator>
-            </Global>
-          </NavigationContainer>
-        </PaperProvider>
-      </Provider>
-    </AuthContext.Provider>
+    return (
+      <AuthContext.Provider value={authContext}>
+        <Provider store={store}>
+          <PaperProvider theme={theme}>
+            <NavigationContainer>
+              <Global>
+                <RootStack.Navigator initialRouteName="Home">
+                  <RootStack.Screen
+                    name="More"
+                    component={More}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="Home"
+                    component={TabScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="FindID"
+                    component={FindIDScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="FindPassWord"
+                    component={FindPassWordScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="Register"
+                    component={Register}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                </RootStack.Navigator>
+              </Global>
+            </NavigationContainer>
+          </PaperProvider>
+        </Provider>
+      </AuthContext.Provider>
+    );
   }
   // return (
   //   <AuthContext.Provider value={authContext}>

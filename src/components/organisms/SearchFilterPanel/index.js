@@ -75,9 +75,17 @@ class SearchFilter extends Component {
 
         {/** 추가 필터 (풀스크린) */}
         {this.props.filterList.map((item, index) => (item.toggle && (
-            (item.type === 'OTHER' && <FilterOther key={index} onClosed={() => {
-              this._onClickClose();
-            }} />))
+            (item.type === 'OTHER' &&
+              <FilterOther key={index}
+                           listCalUnitDvCode={this.state.listCalUnitDvCode}
+                           listCalStdDvCode={this.state.listCalStdDvCode}
+                           listFlrDvCode={this.state.listFlrDvCode}
+                           listAprchMthdDvCode={this.state.listAprchMthdDvCode}
+                           listInsrDvCode={this.state.listInsrDvCode}
+                           listCmpltTypes={this.state.listCmpltTypes}
+                           onClosed={() => {
+                             this._onClickClose();
+                           }} />))
         ))}
 
         {/** Filter panel backdrop */}

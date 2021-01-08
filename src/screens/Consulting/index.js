@@ -5,134 +5,48 @@
  */
 
 // Global Imports
-import React, { Component, Fragment } from 'react';
-import {
-  SafeAreaView,
-  View,
-  Image,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import React, { Component } from 'react';
+import { View, Image, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Text, Button } from 'react-native-paper';
+import {
+  Appbar,
+  Text,
+  Button,
+  RadioButton,
+  Checkbox,
+} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Bgr from '@Assets/images/bgr-consulting.png';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import AppGrid from '@Components/organisms/AppGrid';
-import TextField from '@Components/organisms/TextField';
-import RequestType from './RequestType';
-import ExtraService from './ExtraService';
-import AttachDocument from './AttachDocument';
-import ActionCreator from '@Actions';
 import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
-// create data default
-const res = {
-  _embedded: {
-    mgmtquests: [
-      {
-        answers: [
-          {
-            answer: '모르겠다',
-            id: {
-              answerSeq: 1,
-              questSeq: 96,
-              srvyMgmtNo: '2021010176',
-            },
-          },
-          {
-            answer: '모르겠다',
-            id: {
-              answerSeq: 1,
-              questSeq: 96,
-              srvyMgmtNo: '2021010176',
-            },
-          },
-        ],
-        id: {
-          questSeq: 96,
-          srvyMgmtNo: '2021010176',
-        },
-        order: null,
-        qty: '1',
-        quest:
-          '[WMS(창고 관리 시스템) 활용]  입.출하 재고정보를 수작업이 아닌 시스템으로 관리하고 있다.',
-        remark: false,
-        rqd: true,
-        type: '2100',
-      },
-
-      {
-        answers: [
-          {
-            answer: '모르겠다',
-            id: {
-              answerSeq: 1,
-              questSeq: 96,
-              srvyMgmtNo: '2021010176',
-            },
-          },
-          {
-            answer: '모르겠다',
-            id: {
-              answerSeq: 1,
-              questSeq: 96,
-              srvyMgmtNo: '2021010176',
-            },
-          },
-        ],
-        id: {
-          questSeq: 96,
-          srvyMgmtNo: '2021010176',
-        },
-        order: null,
-        qty: '1',
-        quest:
-          '[WMS(창고 관리 시스템) 활용]  입.출하 재고정보를 수작업이 아닌 시스템으로 관리하고 있다.',
-        remark: false,
-        rqd: true,
-        type: '2100',
-      },
-    ],
-  },
-};
 class Consulting extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
       step: 0,
-      inputStep1: '',
-      stepProgress: 0,
-      condionNext: false,
-      condionPrev: false,
-      optionStep2: '',
-      optionStep3: '',
-      inputStep5: '',
-
+      limitIndex: 0,
       listQuest: [],
       listAnswer: [],
     };
     this.navigation = props.navigation;
   }
   /** when after render DOM */
+
+  //  ================================
   componentDidMount() {
     this.getAllData();
   }
 
   async getAllData() {
     await ConsultingApi.getListQuestion().then(res => {
-      console.log('res ===>', res);
-      const { listQuest, listAnswer } = this.state;
+      const { listAnswer } = this.state;
       if (res) {
         let data = res?._embedded?.mgmtquests;
-
         let newListQuestion = [...data];
         let newListAnswer = [...listAnswer];
         newListQuestion.forEach(function(item) {
@@ -153,118 +67,181 @@ class Consulting extends Component {
       }
     });
   }
-
-  //  ================================
-
-  //  ================================
-  // handle option step 2
-  handleOptionStep2 = e => {
-    this.setState({
-      optionStep2: e,
-      stepProgress: e !== '' ? 4 : 2,
-      condionNext: e !== '' ? true : false,
-    });
+  handleChange = (e, index, checkbox) => {
+    const { listAnswer } = this.state;
+    let newArr = [...listAnswer];
+    if (checkbox) {
+      const isAnswer = newArr[index].userAnswer.indexOf(e);
+      if (isAnswer === -1) {
+        newArr[index].userAnswer = newArr[index].userAnswer
+          ? `${newArr[index].userAnswer}|${e}`
+          : `${e}`;
+      } else {
+        let ar = newArr[index].userAnswer.split('|');
+        let newA = ar.filter(item => item !== e.toString());
+        newArr[index].userAnswer = newA.join('|');
+      }
+    } else {
+      newArr[index].userAnswer = e.toString();
+    }
+    this.setState({ listAnswer: newArr });
   };
-  // handle option step 3
-  handleOptionStep3 = e => {
-    this.setState({
-      optionStep3: e,
-      stepProgress: e !== '' ? 6 : 4,
-      condionNext: e !== '' ? true : false,
-    });
+  handleStep = () => {
+    const { step, listQuest, listAnswer } = this.state;
+    this.setState({ limitIndex: step });
+    if (step <= listQuest.length) {
+      this.setState({ step: step + 1 });
+    } else {
+      console.log('listAnswer',listAnswer);
+      ConsultingApi.submitAdvisory(listAnswer)
+        .then(res => {
+          this.setState({ step: step + 1 });
+          console.log('res', res);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log('err.response', err.response);
+        });
+    }
   };
+  renderQuestion = (item, index) => {
+    const { step, listAnswer } = this.state;
+    let _index = index + 1;
+    return (
+      step === _index && (
+        <View>
+          {/* input text */}
+          {item.type === '1100' && (
+            <View>
+              <View style={S.contentAlignLeft}>
+                <Text style={S.styleTextTitleNomarl}>
+                  {index + 1}. {item.quest}
+                </Text>
+                <TextInput
+                  placeholderTextColor="#979797"
+                  style={S.inputNomarl}
+                  value={listAnswer[index] && listAnswer[index].userAnswer}
+                  placeholder="이름을 입력해 주세요"
+                  onChangeText={e => this.handleChange(e, index)}
+                />
+                <Button
+                  mode="contained"
+                  style={[S.styleButton, { marginTop: 30 }]}
+                  onPress={() => {
+                    if (listAnswer[index].userAnswer !== '') {
+                      this.handleStep();
+                    }
+                  }}>
+                  <Text style={[S.textButton, { width: 175 }]}>확인</Text>
+                </Button>
+              </View>
+            </View>
+          )}
+
+          {/* one selection */}
+          {item.type === '2100' && item.qty === '1' && (
+            <View style={S.contentAlignLeft}>
+              <Text style={[S.styleTextTitleNomarl, { marginBottom: 20 }]}>
+                {index + 1}. {item.quest}
+              </Text>
+              {item.answers &&
+                item.answers.map((a, i) => (
+                  <View
+                    key={i}
+                    style={[
+                      DefaultStyle.row,
+                      { alignItems: 'center', marginBottom: 10 },
+                    ]}>
+                    <RadioButton
+                      value={a.id.answerSeq}
+                      color="#ff6d00"
+                      uncheckedColor="white"
+                      onPress={() => {
+                        this.handleChange(a.id.answerSeq, index);
+                      }}
+                      status={
+                        listAnswer[index].userAnswer.toString() ===
+                        a.id.answerSeq.toString()
+                          ? 'checked'
+                          : 'unchecked'
+                      }
+                    />
+                    <Text style={{ color: 'white', fontSize: 15 }}>
+                      {a.answer}
+                    </Text>
+                  </View>
+                ))}
+              <Button
+                mode="contained"
+                style={[S.styleButton, { marginTop: 30 }]}
+                onPress={() => {
+                  if (listAnswer[index].userAnswer) {
+                    this.handleStep();
+                  }
+                }}>
+                <Text style={[S.textButton, { width: 175 }]}>확인</Text>
+              </Button>
+            </View>
+          )}
+
+          {/* multiple selection */}
+          {item.type === '2100' && item.qty !== '1' && (
+            <View style={S.contentAlignLeft}>
+              <Text style={[S.styleTextTitleNomarl, { marginBottom: 20 }]}>
+                {index + 1}. {item.quest}
+              </Text>
+              {item.answers &&
+                item.answers.map((a, i) => (
+                  <View style={S.optionRow} key={i}>
+                    <Checkbox
+                      status={
+                        listAnswer[index].userAnswer.indexOf(
+                          a.id.answerSeq.toString(),
+                        ) === -1
+                          ? 'unchecked'
+                          : 'checked'
+                      }
+                      color="#ff6d00"
+                      uncheckedColor="white"
+                      onPress={() =>
+                        this.handleChange(a.id.answerSeq, index, true)
+                      }
+                    />
+                    <Text style={{ color: 'white', fontSize: 15 }}>
+                      {a.answer}
+                    </Text>
+                  </View>
+                ))}
+              <Button
+                mode="contained"
+                style={[S.styleButton, { marginTop: 30 }]}
+                onPress={() => {
+                  if (listAnswer[index].userAnswer !== '') {
+                    this.handleStep();
+                  }
+                }}>
+                <Text style={[S.textButton, { width: 175 }]}>확인</Text>
+              </Button>
+            </View>
+          )}
+        </View>
+      )
+    );
+  };
+
   // navigation topbar
   handleNavigation = () => {
     const { step } = this.state;
-    console.log('step', step);
     if (step > 0) {
       this.setState({ step: step - 1 });
     } else {
       this.navigation.goBack();
     }
   };
-  // prev step
-  handleNavigationPrev = () => {
-    const { step, stepProgress, inputStep1 } = this.state;
-    if (step !== 0) {
-      this.setState({ step: step - 1 });
-      this.setState({ condionNext: true });
-    } else {
-      this.setState({ step: 0 });
-    }
-  };
-  // next step
-  handleNavigationNext = () => {
-    this.setState({ condionNext: false, condionPrev: true });
-    const {
-      step,
-      condionNext,
-      optionStep2,
-      stepProgress,
-      optionStep3,
-    } = this.state;
-    optionStep2 !== '' &&
-      stepProgress < 5 &&
-      this.setState({
-        condionNext: true,
-        stepProgress: stepProgress < 5 ? 4 : 2,
-      });
-    optionStep3 !== '' &&
-      stepProgress < 7 &&
-      this.setState({
-        condionNext: true,
-        stepProgress: 6,
-      });
-    if (!condionNext) return;
-    stepProgress === 6 && this.setState({ stepProgress: 8 });
-    this.setState({ step: step + 1 });
-  };
-  // onchange input step 1
-  onChangeInputStep1 = e => {
-    this.setState({ inputStep1: e });
-    if (e !== '') {
-      this.setState({
-        condionNext: true,
-        stepProgress: 2,
-      });
-    } else {
-      this.setState({
-        stepProgress: 0,
-        condionNext: false,
-      });
-    }
-  };
-  // onchange input step 5
-  onChangeInputStep5 = e => {
-    this.setState({ inputStep5: e });
-    if (e !== '') {
-      this.setState({
-        condionNext: true,
-        stepProgress: 10,
-      });
-    } else {
-      this.setState({
-        stepProgress: 8,
-      });
-    }
-  };
 
   render() {
-    const {
-      step,
-      stepProgress,
-      inputStep1,
-      condionPrev,
-      condionNext,
-      optionStep2,
-      optionStep3,
-      inputStep5,
-      listAnswer,
-      listQuest
-    } = this.state;
+    const { step, limitIndex, listQuest } = this.state;
 
-    console.log('listAnswer', listAnswer);
-    console.log('listQuest', listQuest);
     return (
       <View style={S.container}>
         <View>
@@ -281,10 +258,6 @@ class Consulting extends Component {
             titleStyle={DefaultStyle.headerTitleWhite}
           />
         </Appbars>
-
-        {/* ================================ */}
-
-        {/* ================================ */}
         {/* step 0 */}
         {step === 0 && (
           <View style={S.contentCenter}>
@@ -303,69 +276,8 @@ class Consulting extends Component {
             </Button>
           </View>
         )}
-        {/* step 1 */}
-        {step === 1 && (
-          <View style={S.contentAlignLeft}>
-            <Text style={S.styleTextTitleNomarl}>
-              1. 안녕하세요. 이름이 어떻게 되시나요?
-            </Text>
-            <TextInput
-              placeholderTextColor="#979797"
-              style={S.inputNomarl}
-              value={inputStep1}
-              placeholder="이름을 입력해 주세요"
-              onChangeText={e => this.onChangeInputStep1(e)}
-            />
-            <Button
-              mode="contained"
-              style={[S.styleButton, { marginTop: 30 }]}
-              onPress={this.handleNavigationNext}>
-              <Text style={[S.textButton, { width: 175 }]}>확인</Text>
-            </Button>
-          </View>
-        )}
-
-        {/* step 2 */}
-        {step === 2 && (
-          <RequestType
-            checked={optionStep2}
-            optionStep2={this.handleOptionStep2}
-          />
-        )}
-
-        {/* step 3 */}
-        {step === 3 && (
-          <ExtraService
-            checked={optionStep3}
-            optionStep3={this.handleOptionStep3}
-          />
-        )}
-        {/* step 4 */}
-        {step === 4 && <AttachDocument />}
-        {/* step 5 */}
-        {step === 5 && (
-          <View style={S.contentAlignLeft}>
-            <Text style={[S.styleTextTitleNomarl]}>
-              5. 전화번호를 알려주시면, 유플로우 담당자가 최대한 빨리
-              연락드리겠습니다.
-            </Text>
-            <TextInput
-              placeholderTextColor="#979797"
-              style={S.inputNomarl}
-              value={inputStep5}
-              placeholder="전화번호를 입력해 주세요"
-              onChangeText={e => this.onChangeInputStep5(e)}
-            />
-            <Button
-              mode="contained"
-              style={[S.styleButton, { marginTop: 30 }]}
-              onPress={this.handleNavigationNext}>
-              <Text style={[S.textButton, { width: 175 }]}>확인</Text>
-            </Button>
-          </View>
-        )}
-        {/* step 6 */}
-        {step === 6 && (
+        {listQuest.map((item, index) => this.renderQuestion(item, index))}
+        {step !== 1 && step === listQuest.length + 1 && (
           <View style={S.contentCenter}>
             <Text style={[S.styleTextTitleNomarl, { textAlign: 'center' }]}>
               문의가 등록되었습니다.{'\n'}감사합니다.
@@ -373,45 +285,73 @@ class Consulting extends Component {
             <Button
               mode="contained"
               style={[S.styleButton, { marginTop: 30 }]}
-              onPress={this.handleNavigationNext}>
+              onPress={() => this.handleStep()}>
               <Text style={[S.textButton, { width: 175 }]}>
                 처음으로 돌아가기
               </Text>
             </Button>
           </View>
         )}
-        {step !== 6 && step !== 0 && (
+        {step !== 0 && step !== listQuest.length + 1 && (
           <View style={S.contentProgress}>
             <View>
               <Text style={S.valueProgress}>
-                {`${stepProgress === 0 ? '' : stepProgress}0%`}
+                {Math.floor(((step - 1) * 100) / listQuest.length)}%
               </Text>
               <View style={S.lineDefault}>
-                <View style={[S.lineMove, { width: `${stepProgress}0%` }]} />
+                {step !== 0 ? (
+                  <View
+                    style={[
+                      S.lineMove,
+                      { width: `${((step - 1) * 100) / listQuest.length}%` },
+                    ]}
+                  />
+                ) : (
+                  <View style={[S.lineMove, { width: 0 }]} />
+                )}
               </View>
             </View>
             <View style={S.boxBottom}>
-              <View pointerEvents={condionPrev ? 'auto' : 'none'}>
+              <View pointerEvents={step > 1 ? 'auto' : 'none'}>
                 <Icon.Button
                   size={20}
-                  onPress={this.handleNavigationPrev}
+                  onPress={() =>
+                    step !== 0 && this.setState({ step: step - 1 })
+                  }
                   backgroundColor="transparent"
-                  color={condionPrev ? 'white' : 'rgba(215, 215, 215, 0.5)'}
+                  color={step > 1 ? 'white' : 'rgba(215, 215, 215, 0.5)'}
                   style={
-                    condionPrev
+                    step > 1
                       ? [S.itemNavigation, { marginRight: 4 }]
                       : [S.itemNavigationNone, { marginRight: 4 }]
                   }
                   name="chevron-down"
                 />
               </View>
-              <View pointerEvents={condionNext ? 'auto' : 'none'}>
+              <View
+                pointerEvents={
+                  step < listQuest.length && step <= limitIndex
+                    ? 'auto'
+                    : 'none'
+                }>
                 <Icon.Button
                   size={20}
-                  color={condionNext ? 'white' : 'rgba(215, 215, 215, 0.5)'}
+                  color={
+                    step < listQuest.length && step <= limitIndex
+                      ? 'white'
+                      : 'rgba(215, 215, 215, 0.5)'
+                  }
                   backgroundColor="transparent"
-                  style={condionNext ? S.itemNavigation : S.itemNavigationNone}
-                  onPress={this.handleNavigationNext}
+                  style={
+                    step < listQuest.length && step <= limitIndex
+                      ? S.itemNavigation
+                      : S.itemNavigationNone
+                  }
+                  onPress={() =>
+                    step <= limitIndex &&
+                    step !== listQuest.length &&
+                    this.setState({ step: step + 1 })
+                  }
                   name="chevron-up"
                 />
               </View>
@@ -421,10 +361,6 @@ class Consulting extends Component {
       </View>
     );
   }
-  /** when after render DOM */
-  // async componentDidMount() {
-  //   console.log('inputStep1', inputStep1);
-  // }
 }
 /** map state with store states redux store */
 function mapStateToProps(state) {
@@ -437,14 +373,7 @@ function mapStateToProps(state) {
 
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
-  return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
+  return {};
 }
 
 export default connect(

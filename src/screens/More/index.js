@@ -46,6 +46,29 @@ class More extends Component {
     this.navigation = props.navigation;
   }
 
+  async UNSAFE_componentWillMount() {
+    const value = await AsyncStorage.getItem(TOKEN);
+    // console.log('More Token ==>', value);
+    Account.getMe()
+      .then(res => {
+        // console.log('::::: Get Me :::::', res);
+        const status = res.status;
+        if (status === 200) {
+          this.setState({
+            isLogin: true,
+            email: res.data.email,
+            fullName: res.data.fullName,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('errHome', err);
+      });
+    if (value) {
+      this.setState({ token: value });
+    }
+  }
+
   render() {
     let { email, fullName, isLogin } = this.state;
     // const { route, isLogin } = this.props;
@@ -201,7 +224,9 @@ class More extends Component {
               <View style={[DefaultStyle._cards, S.listPage]}>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('RegisterBusinessInfo')}>
+                  onPress={() =>
+                    this.navigation.navigate('RegisterBusinessInfo')
+                  }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={addwarehouse} />
                     <Text style={DefaultStyle.titleItem}>창고등록</Text>
@@ -228,6 +253,21 @@ class More extends Component {
                 onPress={() => this.navigation.navigate('Consulting')}>
                 <View style={[DefaultStyle.leftItem, S.item]}>
                   <Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('ConsultingComplete')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>ConsultingComplete</Text>
                 </View>
                 <View style={DefaultStyle.rightItem}>
                   <Icon
@@ -349,7 +389,6 @@ class More extends Component {
                   />
                 </View>
               </TouchableOpacity>
-
             </View>
           )}
 
@@ -371,26 +410,26 @@ class More extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    const value = await AsyncStorage.getItem(TOKEN);
-    console.log('hello==>', value);
-    Account.getMe()
-      .then(res => {
-        console.log('::::: Get Me :::::', res);
-        const status = res.status;
-        if (status === 200) {
-          this.setState({
-            isLogin: true,
-            email: res.data.email,
-            fullName: res.data.fullName,
-          });
-        }
-      })
-      .catch(err => {
-        console.log('errHome', err);
-      });
-    if (value) {
-      this.setState({ token: value });
-    }
+    // const value = await AsyncStorage.getItem(TOKEN);
+    // console.log('hello==>', value);
+    // Account.getMe()
+    //   .then(res => {
+    //     console.log('::::: Get Me :::::', res);
+    //     const status = res.status;
+    //     if (status === 200) {
+    //       this.setState({
+    //         isLogin: true,
+    //         email: res.data.email,
+    //         fullName: res.data.fullName,
+    //       });
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log('errHome', err);
+    //   });
+    // if (value) {
+    //   this.setState({ token: value });
+    // }
 
     SplashScreen.hide();
   }
