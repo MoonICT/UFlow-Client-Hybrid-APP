@@ -1,4 +1,5 @@
 /**
+ * 정산 관리
  * @create
  * @modify
  * @desc [description]
@@ -72,10 +73,14 @@ const dataDongwon = [
   },
 ];
 var searchTimerQuery;
+
 export default class SettlementManagement extends Component {
+
   constructor(props) {
     super(props);
+
     this.webView = null;
+
     this.state = {
       valueTab: 'OWNER',
       rangeDate: '',
@@ -116,6 +121,7 @@ export default class SettlementManagement extends Component {
   }
 
   componentDidMount () {
+    console.log("::: 정산 관리 페이지 :::");
     this.getAllData()
   }
 
@@ -131,15 +137,21 @@ export default class SettlementManagement extends Component {
       contractType
     };
 
+    // params {"contractType": 2100, "endDate": 2021-01-08T11:44:47.122Z, "query": "", "rangeDate": "", "startDate": 2021-01-08T11:44:47.122Z, "type": undefined}
+
     SettlementManagementService.getAll(params).then((res) => {
+      console.debug(params, '정산데이터 Params');
+      console.debug(res, '정산데이터');
       if (res.data.msg !== 'success') {
         return
       }
-      
+
       let newRows = res.data.data.content.map((item, index) => {
+        console.debug('item', item);
         return {
           id: item.id,
           warehouseName: item.warehouseName,
+          urlTransaction: item.urlTransaction,
           dataRedwood: [
             {
               type: '정산 기간',
@@ -147,7 +159,7 @@ export default class SettlementManagement extends Component {
             },
             {
               type: '계약 유형',
-              value: item.cntrDvCode.stdCodeName,
+              value: item.cntrTypeCode.stdDetailCodeName,
             },
             {
               type: '정산 합계 (VAT포함)',
@@ -155,8 +167,8 @@ export default class SettlementManagement extends Component {
             },
           ]
         }
-      })
-
+      },
+          (error) => { console.log(error); })
 
       this.setState({
         rows: newRows
@@ -314,10 +326,10 @@ export default class SettlementManagement extends Component {
                       DefaultStyle._labelTextField,
                       { color: '#000000' },
                     ]}>
-                    수탁 기간
+                    수탁 기간1
                   </Text>
                   {
-                    isOpenStart && 
+                    isOpenStart &&
                     <DatePicker
                     mode={'date'}
                     show={isOpenStart}
@@ -329,7 +341,7 @@ export default class SettlementManagement extends Component {
                 </TouchableOpacity>
               </View>
 
-          
+
 
             </View>
             <Text style={[S.hyphen, {height: 57, lineHeight: 57}]}>-</Text>
@@ -351,7 +363,7 @@ export default class SettlementManagement extends Component {
                     수탁 기간
                   </Text>
                   {
-                    isOpenEnd && 
+                    isOpenEnd &&
                       <DatePicker
                         mode={'date'}
                         show={isOpenEnd}
@@ -394,9 +406,10 @@ export default class SettlementManagement extends Component {
                 key = {index}
                 onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
                   id: item.id,
-                  type: valueTab
+                  type: valueTab,
+                  urlTransaction: item.urlTransaction
                 })}
-                headerTitle={'레드우드'}
+                headerTitle={item.warehouseName}
                 data={item.dataRedwood}
                 borderBottom={true}
                 borderRow={false}

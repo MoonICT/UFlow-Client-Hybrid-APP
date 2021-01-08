@@ -19,6 +19,7 @@ import ContractInformation from './ContractInformation';
 
 import { styles as S } from '../style';
 import { Warehouse } from '@Services/apis';
+import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
   constructor(props) {
@@ -116,7 +117,7 @@ class RequestContract extends Component {
         },
         {
           type: '가용면적',
-          value: dataApi.keep.whrgMgmtKeep.usblValue,
+          value: StringUtils.moneyConvert(dataApi.keep.whrgMgmtKeep.usblValue,''),
         },
         {
           type: '임대 가능 기간',
@@ -124,11 +125,11 @@ class RequestContract extends Component {
         },
         {
           type: '보관단가',
-          value: dataApi.keep.whrgMgmtKeep.splyAmount,
+          value: StringUtils.moneyConvert(dataApi.keep.whrgMgmtKeep.splyAmount,''),
         },
         {
           type: '관리단가',
-          value: dataApi.keep.whrgMgmtKeep.mgmtChrg,
+          value: StringUtils.moneyConvert(dataApi.keep.whrgMgmtKeep.mgmtChrg,''),
         },
       ];
     let dataTrust = dataApi &&
@@ -169,35 +170,35 @@ class RequestContract extends Component {
         },
         {
           type: '수탁 가용 수량',
-          value: dataApi.trust.whrgMgmtTrust.usblValue,
+          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.usblValue,''),
         },
         {
           type: '보관단가',
-          value: dataApi.trust.whrgMgmtTrust.splyAmount,
+          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.splyAmount,''),
         },
         {
           type: '입고단가',
-          value: dataApi.trust.whrgMgmtTrust.whinChrg,
+          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.whinChrg,''),
         },
         {
           type: '출고단가',
-          value: dataApi.trust.whrgMgmtTrust.whoutChrg,
+          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.whoutChrg,''),
         },
         {
           type: '인건단가',
-          value: dataApi.trust.whrgMgmtTrust.psnChrg,
+          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.psnChrg,''),
         },
         {
           type: '가용면적',
-          value: dataApi.trust.whrgMgmtTrust.mnfctChrg,
+          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.mnfctChrg,''),
         },
         {
           type: '택배단가',
-          value: dataApi.trust.whrgMgmtTrust.dlvyChrg,
+          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.dlvyChrg,''),
         },
         {
           type: '운송단가',
-          value: dataApi.trust.whrgMgmtTrust.shipChrg,
+          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.shipChrg,''),
         },
       ];
 
@@ -250,7 +251,9 @@ class RequestContract extends Component {
                 <View style={DefaultStyle._footerCards}>
                   <Text style={S.amount}>예상 견적 금액</Text>
                   <Text style={S.total}>
-                    {dataApi && dataApi.keep && dataApi.keep.estimatedPrice}원
+                    {dataApi &&
+                      dataApi.keep &&
+                      StringUtils.moneyConvert(dataApi.keep.estimatedPrice)}
                   </Text>
                 </View>
               </View>

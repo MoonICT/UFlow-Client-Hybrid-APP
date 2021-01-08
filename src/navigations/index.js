@@ -80,12 +80,14 @@ import Information from '@Screeens/Mypage/Information';
 import RequestContract from '@Screeens/Mypage/RequestContract';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
+import ConsultingComplete from '@Screeens/Consulting/complete.js';
 import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
 import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
 import RegisterBusinessInfo from '@Screeens/RegisterWH/RegisterBusinessInfo';
+import DetailRegisterTenant from '@Screeens/DetailsWH/DetailRegisterTenant';
 
 import { color } from '@Themes/colors';
 
@@ -456,6 +458,12 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
+                    name="ConsultingComplete"
+                    component={ConsultingComplete}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
                     name="SampleScreen"
                     component={SampleScreen}
                     headerMode={false}
@@ -511,6 +519,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="RegisterBusinessInfo"
                     component={RegisterBusinessInfo}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="DetailRegisterTenant"
+                    component={DetailRegisterTenant}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />

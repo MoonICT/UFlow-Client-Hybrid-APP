@@ -100,6 +100,9 @@ export const styles = StyleSheet.create({
     minHeight: 104,
     overflow: 'hidden',
   },
+  imageWrapHorizon:{
+    width: 124,
+  },
   contentWrap: {
     // flex: 1,
     height: 'auto',
@@ -110,6 +113,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 0,
     paddingLeft: 8,
     paddingRight: 0,
+    width: '100%',
   },
 
   /************* Image **************/
