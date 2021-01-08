@@ -519,6 +519,27 @@ class RegisterBusinessInfo extends Component {
             </Button>
           }
         </View>
+
+        <Portal>
+          <Dialog
+            style={SS.postCodeDialog}
+            visible={this.state.visible}
+            onDismiss={this._hideDialog}>
+            <Dialog.Content style={SS.postCode}>
+              <Postcode
+                style={SS.postCode}
+                jsOptions={{ animated: true }}
+                onSelected={data => {
+                  // alert(JSON.stringify(data));
+                  console.log('data :>> ', data);
+                  let firstQuery = data.address;
+                  console.log('query :>> ', firstQuery);
+                  this.setState({ firstQuery: firstQuery });
+                }}
+              />
+            </Dialog.Content>
+          </Dialog>
+        </Portal>
       </ScrollView>
     );
   }
