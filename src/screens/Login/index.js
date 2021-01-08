@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-06 19:15:17
+ * @modify date 2021-01-08 10:00:28
  * @desc [description]
  */
 
@@ -84,7 +84,7 @@ class Login extends Component {
         console.log('loginData==>', loginData);
         if (loginData.status === 200) {
           const access_token = loginData.data.access_token;
-          // console.log('access_token==>', access_token);
+          console.log('access_token==>', access_token);
           // this.setLoginLocal(access_token);
           login(access_token);
           this.navigation.navigate("Home");

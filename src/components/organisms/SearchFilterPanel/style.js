@@ -66,6 +66,11 @@ export const styles = StyleSheet.create({
   btnPrimary: {
     backgroundColor: theme.colors.primary,
   },
+  btnDefaultOutline: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#d7d7d7',
+  },
   btnPrimaryOutline: {
     backgroundColor: '#fff',
     borderWidth: 1,
@@ -147,6 +152,5 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
-  filterOtherBtn: {
-  }
+  filterOtherBtn: {}
 });

@@ -15,7 +15,15 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Searchbar, Text, List } from 'react-native-paper';
+import {
+  Appbar,
+  Searchbar,
+  Text,
+  List,
+  Paragraph,
+  Dialog,
+  Portal,
+} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -25,6 +33,8 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { Warehouse } from '@Services/apis';
 import Highlighter from 'react-native-highlight-words';
+import Postcode from 'react-native-daum-postcode';
+
 class RegisterIntro extends Component {
   constructor(props) {
     super(props);
@@ -61,6 +71,7 @@ class RegisterIntro extends Component {
               longitude: 0,
             },
       isActive: false,
+      visible: false,
     };
 
     this.navigation = props.navigation;
@@ -75,7 +86,9 @@ class RegisterIntro extends Component {
   componentWillUnmount() {
     //console.log('//::componentWillUnmount::');
   }
+  _showDialog = () => this.setState({ visible: true });
 
+  _hideDialog = () => this.setState({ visible: false });
   _addImage = () => console.log('_addImage');
   _removeImage = () => console.log('_removeImage');
 
@@ -204,10 +217,10 @@ class RegisterIntro extends Component {
               onChangeText={e => this.setState({ description: e })}
               placeholder={`상세 설명 작성 주의사항
 
-  - 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)              
-  - 중개수수료를 언급한 내용은 입력할 수 없습니다. (중개수수료 무료, 공짜, 반값 등)  
+  - 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)
+  - 중개수수료를 언급한 내용은 입력할 수 없습니다. (중개수수료 무료, 공짜, 반값 등)
 
-  * 주의사항 위반시 허위정보로 간주되어 게시물 삭제 및 이용의 제한이 있을 수 있습니다.      
+  * 주의사항 위반시 허위정보로 간주되어 게시물 삭제 및 이용의 제한이 있을 수 있습니다.
   * 유플로우의 창고 등록 규정에 위반되는 금칙어는 등록이 블가합니다. `}
             />
           </View>
@@ -218,6 +231,9 @@ class RegisterIntro extends Component {
                 위치<Text style={S.textNote}>*</Text>
               </Text>
             </View>
+            <TouchableOpacity onPress={this._showDialog}>
+              <Text>test</Text>
+            </TouchableOpacity>
             <Searchbar
               inputStyle={S.searchRegister}
               placeholder="예)번동10-1, 강북구 번동"
@@ -271,6 +287,27 @@ class RegisterIntro extends Component {
               </Text>
             </TouchableOpacity>
           </View>
+
+          <Portal>
+            <Dialog
+              style={SS.postCodeDialog}
+              visible={this.state.visible}
+              onDismiss={this._hideDialog}>
+              <Dialog.Content style={SS.postCode}>
+                <Postcode
+                  style={SS.postCode}
+                  jsOptions={{ animated: true }}
+                  onSelected={data => {
+                    // alert(JSON.stringify(data));
+                    console.log('data :>> ', data);
+                    let firstQuery = data.address;
+                    console.log('query :>> ', firstQuery);
+                    this.setState({ firstQuery: firstQuery });
+                  }}
+                />
+              </Dialog.Content>
+            </Dialog>
+          </Portal>
         </ScrollView>
       </SafeAreaView>
     );
@@ -291,8 +328,30 @@ class RegisterIntro extends Component {
         .then(res => {
           console.log('resIntroWH', res);
           if (res.status === 200) {
-            let data = res.data.documents;
-            this.setState({ listSearch: data });
+            let data = res.data.documents[0];
+            let address = {
+              zipNo: '123456',
+              sidoName: '서울시',
+              skkCd: '',
+              skkName: '마포구',
+              bjdongCd: '',
+              bjdongName: '서교동',
+              hjdongCd: '',
+              hjdongName: '서교동',
+              roadNmCd: '도로명 코드',
+              address: '서울시 마포구 독막로 9길 13',
+              detail: '101',
+            };
+            let roadAddr = {
+              zipNo: '123456',
+              address: '서울시 마포구 독막로 9길 13',
+              detail: '101',
+            };
+            let gps = {
+              latitude: data.x,
+              longitude: data.y,
+            };
+            this.setState({ address, gps, roadAddr });
             // this.props.quotationData(res.data);
           }
         })

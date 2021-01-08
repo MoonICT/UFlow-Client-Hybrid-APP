@@ -65,9 +65,9 @@ export const cancelImport = async (body) => {
     typeCancel = 'whin'
   }
   const token = await AsyncStorage.getItem(TOKEN);
-  let url = `/api/v1/rtwh/RT2020121419/${typeCancel}/cancel/${body.whoutExpct}-${body.whoutExpctSeq}`;
+  let url = `/api/v1/rtwh/RT2020121419/${typeCancel}/cancel/${body.Expct}-${body.ExpctSeq}`;
   
-  return await mainAxios.post(`${url}`, body,
+  return await mainAxios.post(`${url}`, {},
   {
     headers: {
       Authorization: `Bearer ${token}`,
