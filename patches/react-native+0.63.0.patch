@@ -13,7 +13,15 @@ rename to node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.g
 diff --git a/node_modules/react-native/scripts/.packager.bat b/node_modules/react-native/scripts/.packager.bat
 new file mode 100644
 index 0000000..e89260e
---- /dev/null
+--- /dev/
+ - (void)displayLayer:(CALayer *)layer
+ {
++  if (!_currentFrame) {
++    _currentFrame = self.image;
++  }
+   if (_currentFrame) {
+     layer.contentsScale = self.animatedImageScale;
+     layer.contents = (__bridge id)_currentFrame.CGImage;
 +++ b/node_modules/react-native/scripts/.packager.bat
 @@ -0,0 +1 @@
 +set RCT_METRO_PORT=8081

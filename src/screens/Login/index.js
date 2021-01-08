@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-08 10:00:28
+ * @modify date 2021-01-08 16:40:07
  * @desc [description]
  */
 
@@ -37,7 +37,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      isRemember: false,
+      isRemember: true,
       isLogin: false,
     };
     this.navigation = props.navigation;
@@ -53,10 +53,9 @@ class Login extends Component {
     //console.log('//::componentWillUnmount::');
   }
 
-
   /** Save Login to Local  */
-  setLoginLocal = async (loginData) => {
-    console.log("loginData", loginData);
+  setLoginLocal = async loginData => {
+    // console.log('loginData', loginData);
     try {
       await AsyncStorage.setItem(TOKEN, JSON.stringify(loginData));
     } catch (err) {
@@ -80,21 +79,20 @@ class Login extends Component {
       Account.signIn({
         email: data.email,
         password: data.password,
-      }).then((loginData) => {
-        console.log('loginData==>', loginData);
-        if (loginData.status === 200) {
-          const access_token = loginData.data.access_token;
-          console.log('access_token==>', access_token);
-          // this.setLoginLocal(access_token);
-          login(access_token);
-          this.navigation.navigate("Home");
-        }
-      }).catch((error) => {
-        showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
-      });
+      })
+        .then(loginData => {
+          if (loginData.status === 200) {
+            const access_token = loginData.data.access_token;
+            // this.setLoginLocal(access_token);
+            login(access_token);
+            this.navigation.replace('Home');
+          }
+        })
+        .catch(error => {
+          showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
+        });
     }
     // console.log('loginData==>', loginData);
-
   }
 
   render() {

@@ -78,9 +78,9 @@ class RequestContract extends Component {
     const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
     const status = route && route.params && route.params.status;
-    console.log('routeRequescontract', route);
+    // console.log('routeRequescontract', route);
     const { dataApi } = this.state;
-    console.log('dataApiRequest', dataApi);
+    // console.log('dataApiRequest', dataApi);
 
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [

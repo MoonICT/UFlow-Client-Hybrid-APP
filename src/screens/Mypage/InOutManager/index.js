@@ -248,7 +248,6 @@ export default class InOutManager extends Component {
 
   async createImport() {
     let {rentWarehNoCurrent, timeCreateImport, valueCreateImport, typeCreate} = this.state
-    console.log('this.state', this.state)
     let body = {
       rentWarehNo: rentWarehNoCurrent,
       whinExpct: timeCreateImport.getTime(),

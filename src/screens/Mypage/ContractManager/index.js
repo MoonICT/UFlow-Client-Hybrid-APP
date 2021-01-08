@@ -201,7 +201,8 @@ class ContractManager extends Component {
             },
             {
               type: '견적 상태',
-              value: value.type2 === 'OWNER' ? '계약 요청' : '계약중',
+              // value: this.state.valueTab === 'OWNER' ? '계약협의' : '계약중',
+              value: '계약협의',
               highlight: true,
             },
           ],
