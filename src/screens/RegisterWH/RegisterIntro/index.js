@@ -32,7 +32,6 @@ import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { Warehouse } from '@Services/apis';
-import Highlighter from 'react-native-highlight-words';
 import Postcode from 'react-native-daum-postcode';
 
 class RegisterIntro extends Component {
@@ -131,35 +130,7 @@ class RegisterIntro extends Component {
       roadAddr,
       listSearch,
     } = this.state;
-    let viewSearch =
-      listSearch &&
-      listSearch.map((r, index) => {
-        return (
-          <List.Item
-            key={index}
-            title={
-              <Highlighter
-                highlightStyle={{ color: '#ff6d00' }}
-                searchWords={[this.state.firstQuery]}
-                textToHighlight={r.addressName}
-              />
-            }
-            description={r.addressName}
-            // style={styles.listItem}
-            // titleStyle={styles.listItemTitle}
-            // descriptionStyle={styles.listItemDescription}
-            left={props => (
-              <List.Icon
-                {...props}
-                icon={r.icon}
-                color={'rgba(0, 0, 0, 0.54)'}
-                // style={styles.listItemIcon}
-              />
-            )}
-          />
-        );
-      });
-    console.log('viewSearch', viewSearch);
+
     let isActive;
     if (name !== '' && description !== '') {
       isActive = true;
@@ -232,19 +203,17 @@ class RegisterIntro extends Component {
               </Text>
             </View>
             <TouchableOpacity onPress={this._showDialog}>
-              <Text>test</Text>
+              <Searchbar
+                inputStyle={S.searchRegister}
+                placeholder="예)번동10-1, 강북구 번동"
+                editable={false}
+                selectTextOnFocus={false}
+                onChangeText={query => {
+                  this.setState({ firstQuery: query });
+                }}
+                value={this.state.firstQuery}
+              />
             </TouchableOpacity>
-            <Searchbar
-              inputStyle={S.searchRegister}
-              placeholder="예)번동10-1, 강북구 번동"
-              onChangeText={query => {
-                this.setState({ firstQuery: query });
-              }}
-              value={this.state.firstQuery}
-            />
-            {
-              // <View>{viewSearch}</View>
-            }
             <TextInput
               style={[SS.inputIntro, SS.inputLoction]}
               onChangeText={text => this.onChangeLocation(text)}
@@ -255,7 +224,7 @@ class RegisterIntro extends Component {
               style={[SS.inputIntro, SS.inputLoction]}
               onChangeText={text => this.onChangeLogistic(text)}
               value={this.state.textIntro}
-              defaultValue={'에이씨티앤코아물류'}
+              placeholder={'에이씨티앤코아물류'}
             />
           </View>
 
@@ -290,12 +259,12 @@ class RegisterIntro extends Component {
 
           <Portal>
             <Dialog
-              style={SS.postCodeDialog}
+              style={DefaultStyle._postCode}
               visible={this.state.visible}
               onDismiss={this._hideDialog}>
-              <Dialog.Content style={SS.postCode}>
+              <Dialog.Content style={DefaultStyle._postCodeContent}>
                 <Postcode
-                  style={SS.postCode}
+                  style={DefaultStyle._postCodeContent}
                   jsOptions={{ animated: true }}
                   onSelected={data => {
                     // alert(JSON.stringify(data));
@@ -303,6 +272,7 @@ class RegisterIntro extends Component {
                     let firstQuery = data.address;
                     console.log('query :>> ', firstQuery);
                     this.setState({ firstQuery: firstQuery });
+                    this._hideDialog();
                   }}
                 />
               </Dialog.Content>

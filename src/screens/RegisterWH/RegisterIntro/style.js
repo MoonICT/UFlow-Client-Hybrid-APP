@@ -34,12 +34,4 @@ export const styles = StyleSheet.create({
     marginTop: 24,
     // fontFamily: 'NotoSansCJKkr',
   },
-  postCodeDialog: {
-    width: windowWidth,
-    height: 200,
-  },
-  postCode: {
-    width: windowWidth,
-    height: 200,
-  },
 });
