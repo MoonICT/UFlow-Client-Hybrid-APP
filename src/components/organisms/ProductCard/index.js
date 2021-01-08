@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2021-01-08 13:51:57
+ * @modify date 2021-01-08 14:53:06
  * @desc [description]
  */
 
@@ -71,7 +71,7 @@ class ProductCard extends Component {
       <View
         style={[
           styles.container,
-          // { height: this.state.isHorizontal ? 'auto' : '100%' },
+          { height: this.state.isHorizontal ? 'auto' : 'auto' },
           this.props.isShadow && styles.shadow,
         ]}>
         <View

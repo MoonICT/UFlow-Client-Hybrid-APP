@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-09 15:58:28
- * @modify date 2021-01-08 13:55:34
+ * @modify date 2021-01-08 14:56:27
  * @desc [description]
  */
 
@@ -70,11 +70,6 @@ export const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
     backgroundColor: '#ffff',
-    height: 'auto',
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
   },
   shadow: {
     // for iOS
@@ -89,9 +84,11 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   innerWrap: {
-    flex: 1,
+    // flex: 1,
+    // height: '100%',
     flexDirection: 'column',
     overflow: 'scroll',
+    // flexWrap: 'wrap',
   },
   innerWrapHorizon: {
     flex: 1,
@@ -99,10 +96,13 @@ export const styles = StyleSheet.create({
   },
   imageWrap: {
     // flex: 1,
+    width: '100%',
     minHeight: 104,
+    overflow: 'hidden',
   },
   contentWrap: {
-    flex: 1,
+    // flex: 1,
+    height: 'auto',
     paddingVertical: 15,
     paddingHorizontal: 16,
   },
@@ -114,7 +114,7 @@ export const styles = StyleSheet.create({
 
   /************* Image **************/
   cardImage: {
-    width: '100%',
+    // width: 300,
     height: 104,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,

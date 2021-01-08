@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-08 13:46:50
+ * @modify date 2021-01-08 14:56:31
  * @desc [description]
  */
 
@@ -373,8 +373,6 @@ class Home extends Component {
   _renderProductItem = item => {
     // console.log('item==>', item);
     let { whList } = this.state;
-    console.log('whList==>', whList);
-
     const cardItem = [];
     whList = whList.slice(0, 4);
     whList?.map((v, i) => {
@@ -547,7 +545,7 @@ class Home extends Component {
             {/**___MoreSee__*/}
             <View style={styles.mainProductMore}>
               <TouchableOpacity
-                onPress={() => alert('Hello')}
+                onPress={() => this.navigation.navigate('Search')}
                 style={[styles.mainProductSeeMoreBTN]}>
                 <Text
                   style={[

@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-12 10:38:24
- * @modify date 2021-01-08 13:57:28
+ * @modify date 2021-01-08 14:54:36
  * @desc [description]
  */
 
@@ -290,12 +290,6 @@ export const styles = StyleSheet.create({
     paddingLeft: 4,
     paddingRight: 4,
     marginBottom: 8,
-    height: 400,
-    // height: 100,
-    // paddingBottom: 60,
-    // display: 'flex',
-    // backgroundColor: 'red',
-    // flex: 1,
   },
 
   //--->main binding
