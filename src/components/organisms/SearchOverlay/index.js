@@ -35,20 +35,20 @@ class SearchOverlay extends Component {
    * */
   _onChangeSearchQuery (keyword) {
     if (keyword.length > 0) {
-      this.setState({ 
+      this.setState({
         isProgress: true,
-        query: keyword 
+        query: keyword
       });
 
       WhrgSearch.searchKeywords({query: keyword}).then(res => {
-        this.setState({ 
+        this.setState({
           searchAddress: res.data.addresses,
           searchWarehouse: res.data.warehouses
         });
 
         setTimeout(
           function() {
-              this.setState({ 
+              this.setState({
                 isProgress: false
               });
           }
@@ -148,7 +148,7 @@ class SearchOverlay extends Component {
               <Progress.Circle
                 borderWidth={3.5}
                 borderColor={'#ff6d00'}
-                size={40} 
+                size={40}
                 indeterminate={true}
               />
             </View>
@@ -165,7 +165,7 @@ class SearchOverlay extends Component {
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
     isSearchToggle: state.search.isSearchToggle,
   };

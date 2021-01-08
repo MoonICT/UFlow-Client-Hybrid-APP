@@ -114,7 +114,6 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     setSearchFilter: status => {
-      console.log(':::::::::::::::::', status)
       dispatch(ActionCreator.setSearchFilter(status));
     },
   };
