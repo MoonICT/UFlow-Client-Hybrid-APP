@@ -45,22 +45,22 @@ class RegisterIntro extends Component {
           ? props.dataIntro.description
           : '',
       address: {
-        zipNo: '123456',
-        sidoName: '서울시',
+        zipNo: '',
+        sidoName: '',
         skkCd: '',
-        skkName: '마포구',
+        skkName: '',
         bjdongCd: '',
-        bjdongName: '서교동',
+        bjdongName: '',
         hjdongCd: '',
-        hjdongName: '서교동',
-        roadNmCd: '도로명 코드',
-        address: '서울시 마포구 독막로 9길 13',
-        detail: '101',
+        hjdongName: '',
+        roadNmCd: '',
+        address: '',
+        detail: '',
       },
       roadAddr: {
-        zipNo: '123456',
-        address: '서울시 마포구 독막로 9길 13',
-        detail: '101',
+        zipNo: '',
+        address: '',
+        detail: '',
       },
       gps:
         props.dataIntro && props.dataIntro.gps
@@ -99,27 +99,14 @@ class RegisterIntro extends Component {
     this.setState({ textLocation });
     console.log('textLoca', textLocation);
   };
-  onChangeLogistic = textLogistic => {
-    this.setState({ textLogistic });
-    console.log('textLogistic', textLogistic);
+  onChangeLogistic = e => {
+    let addressUpdate = this.state.address;
+    let roadUpdate = this.state.roadAddr;
+    addressUpdate.detail = e;
+    roadUpdate.detail = e;
+    this.setState({ address: addressUpdate, roadAddr: roadUpdate });
   };
-  handleComplete = data => {
-    let fullAddress = data.address;
-    let extraAddress = '';
 
-    if (data.addressType === 'R') {
-      if (data.bname !== '') {
-        extraAddress += data.bname;
-      }
-      if (data.buildingName !== '') {
-        extraAddress +=
-          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
-    }
-
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-  };
   render() {
     const { route, dataIntro } = this.props;
     const {
@@ -135,7 +122,7 @@ class RegisterIntro extends Component {
     if (name !== '' && description !== '') {
       isActive = true;
     }
-    console.log(listSearch, 'listSearch');
+    console.log('listSearch', this.state);
     console.log('dataIntro', dataIntro);
     // console.log('this.state', this.state);
     // console.log('this.state.value', this.state.value);
@@ -271,7 +258,27 @@ class RegisterIntro extends Component {
                     console.log('data :>> ', data);
                     let firstQuery = data.address;
                     console.log('query :>> ', firstQuery);
-                    this.setState({ firstQuery: firstQuery });
+                    let address = {
+                      zipNo: data.zonecode,
+                      sidoName: data.sido,
+                      skkCd: '',
+                      skkName: data.sigungu,
+                      bjdongCd: data.sigunguCode,
+                      bjdongName: data.bname,
+                      hjdongCd: '',
+                      hjdongName: data.bname2,
+                      roadNmCd: data.roadnameCode,
+                      address: data.address,
+                    };
+                    let roadAddr = {
+                      zipNo: data.zonecode,
+                      address: data.address,
+                    };
+                    this.setState({
+                      firstQuery: firstQuery,
+                      address,
+                      roadAddr,
+                    });
                     this._hideDialog();
                   }}
                 />
@@ -299,29 +306,11 @@ class RegisterIntro extends Component {
           console.log('resIntroWH', res);
           if (res.status === 200) {
             let data = res.data.documents[0];
-            let address = {
-              zipNo: '123456',
-              sidoName: '서울시',
-              skkCd: '',
-              skkName: '마포구',
-              bjdongCd: '',
-              bjdongName: '서교동',
-              hjdongCd: '',
-              hjdongName: '서교동',
-              roadNmCd: '도로명 코드',
-              address: '서울시 마포구 독막로 9길 13',
-              detail: '101',
-            };
-            let roadAddr = {
-              zipNo: '123456',
-              address: '서울시 마포구 독막로 9길 13',
-              detail: '101',
-            };
             let gps = {
               latitude: data.x,
               longitude: data.y,
             };
-            this.setState({ address, gps, roadAddr });
+            this.setState({ gps });
             // this.props.quotationData(res.data);
           }
         })
