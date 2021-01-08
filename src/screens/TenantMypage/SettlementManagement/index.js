@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Text } from 'react-native-paper';
 import Select from '@Components/organisms/Select';
 
@@ -29,6 +30,7 @@ import Icon from 'react-native-vector-icons/Fontisto';
 import {formatDateV1} from '@Utils/dateFormat';
 import { styles as S } from '../style';
 import DatePicker from '@react-native-community/datetimepicker';
+import moment from "moment";
 const dataStart = [
   {
     label: '시작일',
@@ -77,7 +79,7 @@ export default class SettlementManagement extends Component {
     super(props);
     this.webView = null;
     this.state = {
-      valueTab: 'OWNER',
+      userType: 'OWNER',
       rows: [],
       filter: {
         query: '',
@@ -119,13 +121,14 @@ export default class SettlementManagement extends Component {
   }
 
   async getAllData () {
-    let {startDate, endDate, query, contractType, valueTab} = this.state.filter;
+    let {startDate, endDate, query, contractType } = this.state.filter;
+
     let params = {
       startDate,
       endDate,
       query,
       rangeDate: '',
-      type: valueTab,
+      type: this.state.userType,
       contractType
     };
 
@@ -133,7 +136,7 @@ export default class SettlementManagement extends Component {
       if (res.data.msg !== 'success') {
         return
       }
-      
+
       let newRows = res.data.data.content.map((item, index) => {
         return {
           id: item.id,
@@ -164,8 +167,9 @@ export default class SettlementManagement extends Component {
 
 
   onChangeTab (value) {
+    console.log('onChangeTab', value);
     this.setState({
-      valueTab: value
+      userType: value
     }, () => {
       this.getAllData()
     })
@@ -227,7 +231,7 @@ export default class SettlementManagement extends Component {
   };
 
   onChangeKeyWord = (e) => {
-    
+
     if (searchTimerQuery) {
       clearTimeout(searchTimerQuery);
     }
@@ -244,19 +248,19 @@ export default class SettlementManagement extends Component {
 
 
   render() {
-    const {valueTab, rows,  isOpenStart, isOpenEnd, rangeDay, dataCard} = this.state
+    const {userType, rows,  isOpenStart, isOpenEnd, rangeDay, dataCard} = this.state
     let {startDate, endDate} = this.state.filter;
     return (
       <View style={DefaultStyle._cards}>
 
         <View style={DefaultStyle._tabBar}>
           <TouchableOpacity
-            style={valueTab === 'OWNER' ? DefaultStyle._btnTabBar : null}
+            style={userType === 'OWNER' ? DefaultStyle._btnTabBar : null}
             onPress={() => this.onChangeTab('OWNER')}
           >
             <Text
               style={
-                valueTab === 'OWNER'
+                userType === 'OWNER'
                   ? DefaultStyle._textActiveTab
                   : DefaultStyle._textTabBar
               }
@@ -265,12 +269,12 @@ export default class SettlementManagement extends Component {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={valueTab === 'TENANT' ? DefaultStyle._btnTabBar : null}
+            style={userType === 'TENANT' ? DefaultStyle._btnTabBar : null}
             onPress={() => this.onChangeTab('TENANT')}
           >
             <Text
               style={
-                valueTab === 'TENANT'
+                userType === 'TENANT'
                   ? DefaultStyle._textActiveTab
                   : DefaultStyle._textTabBar
               }>
@@ -293,7 +297,7 @@ export default class SettlementManagement extends Component {
         <View style={S.filter}>
           <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
             <View style={[S.optionSelect, S.optionSelectLeft]}>
-              {/* <Select data={dataStart} style={S.select} /> */}
+
               <View style={{ flex: 1 }}>
                 <TouchableOpacity
                   onPress={()=>this.showDateStart()}
@@ -306,22 +310,30 @@ export default class SettlementManagement extends Component {
                       DefaultStyle._labelTextField,
                       { color: '#000000' },
                     ]}>
-                    수탁 기간
+                    시작일
                   </Text>
                   {
-                    isOpenStart && 
-                    <DatePicker
-                    mode={'date'}
-                    show={isOpenStart}
-                    onChange={(e) =>this.onChangeStart(e)}
-                    value={startDate}
-                    testID="dateTimePicker"
-                  />
+                    isOpenStart &&
+                    <DateTimePickerModal
+                        mode="date"
+                        isVisible={isOpenStart}
+                        date={startDate ? startDate : new Date()}
+                        onConfirm={(date) => {
+                          this.setState({
+                            isOpenStart: false
+                          });
+                        }}
+                        onCancel={() => {
+                          this.setState({
+                            isOpenStart: false
+                          });
+                        }}
+                    />
                   }
                 </TouchableOpacity>
               </View>
 
-          
+
 
             </View>
             <Text style={S.hyphen}>-</Text>
@@ -340,17 +352,32 @@ export default class SettlementManagement extends Component {
                       DefaultStyle._labelTextField,
                       { color: '#000000' },
                     ]}>
-                    수탁 기간
+                    종료일
                   </Text>
                   {
-                    isOpenEnd && 
-                      <DatePicker
-                        mode={'date'}
-                        show={isOpenEnd}
-                        onChange={(e)=>this.onChangeEnd(e)}
-                        value={endDate}
-                        testID="dateTimePicker"
-                      />
+                    isOpenEnd &&
+                      // <DatePicker
+                      //   mode={'date'}
+                      //   show={isOpenEnd}
+                      //   onChange={(e)=>this.onChangeEnd(e)}
+                      //   value={endDate}
+                      //   testID="dateTimePicker"
+                      // />
+                    <DateTimePickerModal
+                        mode="date"
+                        isVisible={isOpenEnd}
+                        date={startDate ? startDate : new Date()}
+                        onConfirm={(date) => {
+                          this.setState({
+                            isOpenEnd: false
+                          });
+                        }}
+                        onCancel={() => {
+                          this.setState({
+                            isOpenEnd: false
+                          });
+                        }}
+                    />
                   }
 
                 </TouchableOpacity>
@@ -385,7 +412,7 @@ export default class SettlementManagement extends Component {
                 key = {index}
                 onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
                   id: item.id,
-                  type: valueTab
+                  type: userType
                 })}
                 headerTitle={'레드우드'}
                 data={item.dataRedwood}
