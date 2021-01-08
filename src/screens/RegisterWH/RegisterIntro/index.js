@@ -122,10 +122,7 @@ class RegisterIntro extends Component {
     if (name !== '' && description !== '') {
       isActive = true;
     }
-    console.log('listSearch', this.state);
-    console.log('dataIntro', dataIntro);
-    // console.log('this.state', this.state);
-    // console.log('this.state.value', this.state.value);
+    // console.log('dataIntro', dataIntro);
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -232,7 +229,6 @@ class RegisterIntro extends Component {
                 DefaultStyle.btnSubmit,
                 isActive === true ? DefaultStyle.activeBtnSubmit : '',
               ]}
-              // disabled={imageStore.length > 2 ? false : true}
             >
               <Text
                 style={[
@@ -254,10 +250,8 @@ class RegisterIntro extends Component {
                   style={DefaultStyle._postCodeContent}
                   jsOptions={{ animated: true }}
                   onSelected={data => {
-                    // alert(JSON.stringify(data));
                     console.log('data :>> ', data);
                     let firstQuery = data.address;
-                    console.log('query :>> ', firstQuery);
                     let address = {
                       zipNo: data.zonecode,
                       sidoName: data.sido,
