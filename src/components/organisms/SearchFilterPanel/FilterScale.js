@@ -23,10 +23,10 @@ class FilterScale extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      prvtArea: this.props.whFilter.prvtArea ? this.props.whFilter.prvtArea : 0, // 전용면적
-      cmnArea: this.props.whFilter.cmnArea ? this.props.whFilter.cmnArea : 0, // 공용면적
+      prvtArea: this.props.whFilter.prvtArea ? Number(this.props.whFilter.prvtArea) : 0, // 전용면적
+      cmnArea: this.props.whFilter.cmnArea ? Number(this.props.whFilter.cmnArea) : 0, // 공용면적
     };
- }
+  }
 
   /**
    *  필터 닫기.
@@ -56,21 +56,19 @@ class FilterScale extends Component {
           </View>
           <Text
             style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.prvtArea === prvtAreaMax || this.state.prvtArea === 0) ? '전체' : this.state.prvtArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+            {(Number(this.props.whFilter.prvtArea) === prvtAreaMax || Number(this.props.whFilter.prvtArea) === 0) ?
+              '전체' : this.props.whFilter.prvtArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
 
         {/** Slider */}
-        <RangeSlider value={this.state.prvtArea}
+        <RangeSlider value={this.props.whFilter.prvtArea ? Number(this.props.whFilter.prvtArea) : 0}
                      step={1000}
                      contentStyle={{ marginBottom: 24 }}
                      minimumValue={0}
                      maximumValue={prvtAreaMax}
-                     LabelMiddle={`${(prvtAreaMax / 2).toLocaleString()}원`}
+                     LabelMiddle={`${(prvtAreaMax / 2).toLocaleString()}㎡`}
                      onValueChange={(value) => {
-                       this.setState({ prvtArea: value });
-                     }}
-                     onSlidingComplete={(value) => {
                        this.props.setSearchFilter({
                          prvtArea: value,
                        });
@@ -87,21 +85,19 @@ class FilterScale extends Component {
           </View>
           <Text
             style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.cmnArea === cmnAreaMax || this.state.cmnArea === 0) ? '전체' : this.state.cmnArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+            {(Number(this.props.whFilter.cmnArea) === cmnAreaMax || Number(this.props.whFilter.cmnArea) === 0) ?
+              '전체' : this.props.whFilter.cmnArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
 
         {/** Slider */}
-        <RangeSlider value={this.state.cmnArea}
+        <RangeSlider value={this.props.whFilter.cmnArea ? Number(this.props.whFilter.cmnArea) : 0}
                      step={1000}
                      contentStyle={{ marginBottom: 24 }}
                      minimumValue={0}
                      maximumValue={cmnAreaMax}
-                     LabelMiddle={`${(cmnAreaMax / 2).toLocaleString()}원`}
+                     LabelMiddle={`${(cmnAreaMax / 2).toLocaleString()}㎡`}
                      onValueChange={(value) => {
-                       this.setState({ cmnArea: value });
-                     }}
-                     onSlidingComplete={(value) => {
                        this.props.setSearchFilter({
                          cmnArea: value,
                        });
@@ -128,7 +124,7 @@ class FilterScale extends Component {
   }
 
   componentWillUnmount () {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {

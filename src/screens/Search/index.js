@@ -31,8 +31,8 @@ class Search extends Component {
     // Webview initialize options.
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
-      // defaultURL: 'http://www.uflow.voltpage.net/webview/search',
-      defaultURL: 'http://localhost:13000/webview/search',
+      defaultURL: 'http://www.uflow.voltpage.net/webview/search',
+      // defaultURL: 'http://localhost:13000/webview/search',
     };
     this.state = {
       url: this.option.defaultURL,
@@ -109,10 +109,10 @@ class Search extends Component {
         {/* TODO 필터 선택시 표현 하기. */}
         <SearchFilter ref={this.refSearchFilter} />
 
-        {/** 지역/주소 검색하기. */}
+        {/** 지역/주소 검색하기 패널. */}
         {this.props.isSearchToggle && <SearchOverlay />}
 
-        {/** 필터 패널들. */}
+        {/** 필터 패널. */}
         <SearchFilterPanel
           onClosed={() => {
             console.log('필터 취소됨.');
@@ -150,8 +150,8 @@ class Search extends Component {
             injectedJavaScriptBeforeContentLoaded={injectJSCode.toString()} // for iOS
           />
 
-          {/** Swipe Panel*/}
-          <SearchSwipePanel />
+          {/** Swipe Panel : 창고 리스트 */}
+          <SearchSwipePanel navigation={this.props.navigation} />
         </View>
       </SafeAreaView>
     );
@@ -173,7 +173,9 @@ class Search extends Component {
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps :', state);
+  // TODO 스토어의 필터 데이터가 변경 될때마다 호출.
+
   return {
     isSearchToggle: state.search.isSearchToggle,
     isFilterToggle: state.search.isFilterToggle,
@@ -182,7 +184,6 @@ function mapStateToProps (state) {
 
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps (dispatch) {
-  console.log(':::::::::::::::::', ActionCreator);
   return {
     searchToggle: status => {
       dispatch(ActionCreator.searchToggle(status));
