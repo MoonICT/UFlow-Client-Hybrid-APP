@@ -394,7 +394,7 @@ class MypageBusinessInfo extends Component {
               </TouchableOpacity>
             </View>
             <TextField
-              labelTextField="담당자 명"
+              labelTextField="담당자명"
               colorLabel="#000000"
               valueProps={(e) => {
                 this.setState({
