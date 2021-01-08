@@ -86,7 +86,7 @@ class ProductCard extends Component {
               this.state.isHorizontal && styles.innerWrapHorizon,
             ]}>
             {/** Image */}
-            <View style={styles.imageWrap}>
+            <View style={[styles.imageWrap, this.state.isHorizontal && styles.imageWrapHorizon,]}>
               <View>
                 <Card.Cover
                   // source={{ uri: 'https://picsum.photos/700' }}
