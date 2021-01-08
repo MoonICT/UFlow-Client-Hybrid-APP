@@ -48,10 +48,10 @@ class More extends Component {
 
   async UNSAFE_componentWillMount() {
     const value = await AsyncStorage.getItem(TOKEN);
-    console.log('More Token ==>', value);
+    // console.log('More Token ==>', value);
     Account.getMe()
       .then(res => {
-        console.log('::::: Get Me :::::', res);
+        // console.log('::::: Get Me :::::', res);
         const status = res.status;
         if (status === 200) {
           this.setState({

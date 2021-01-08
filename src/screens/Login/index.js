@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-08 16:19:51
+ * @modify date 2021-01-08 16:40:07
  * @desc [description]
  */
 
@@ -37,7 +37,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      isRemember: false,
+      isRemember: true,
       isLogin: false,
     };
     this.navigation = props.navigation;
@@ -55,7 +55,7 @@ class Login extends Component {
 
   /** Save Login to Local  */
   setLoginLocal = async loginData => {
-    console.log('loginData', loginData);
+    // console.log('loginData', loginData);
     try {
       await AsyncStorage.setItem(TOKEN, JSON.stringify(loginData));
     } catch (err) {
