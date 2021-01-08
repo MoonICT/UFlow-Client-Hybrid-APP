@@ -156,7 +156,9 @@ class DetailWH extends Component {
     return <ProductCard data={{ ...item, img: cardBG }} />;
   };
 
-
+  _renderDialogBox = ({ item }) => {
+    return <ProductCard data={{ ...item, img: cardBG }} />;
+  };
 
   render() {
     const { imageStore, workComplete } = this.props;
@@ -906,7 +908,6 @@ class DetailWH extends Component {
     console.log('::componentDidMount::');
     SplashScreen.hide();
     this.getDataWH()
-    this.handleRequestQnaList()
   }
 
   async getDataWH() {
@@ -916,44 +917,9 @@ class DetailWH extends Component {
     };
     await Warehouse.getWhrg(params).then((res) => {
       // console.log('whrgData', res)
-
       if (res) {
         this.setState({ whrgData: res })
         // console.log('gps', whrgData.gps.latitude);
-
-      }
-    })
-  }
-
-
-
-  async handleRequestQnaList() {
-    let {idWarehouse, query, startDate, endDate, size, page, sort} = this.state;
-    let qnaParams = {
-      idWarehouse: idWarehouse,
-      query: query,
-      startDate: startDate,
-      endDate: endDate,
-      size: size,
-      page: page,
-      sort: sort
-    }
-    await Warehouse.pageWhrgQnA(qnaParams).then(res => {
-      if (res && res._embedded && res._embedded.questions) {
-        console.log('res._embedded.questions', res._embedded.questions)
-        let newFQAList = res._embedded.questions.map(item =>{
-          return {
-            status: item.complete,
-            title: item.content,
-            name: item.writer,
-            date: moment(item.date).format("YYYY.MM.DD"),
-            lock: item.secret,
-          }
-        })
-        this.setState({ questionList: res._embedded.questions });
-        // console.log('question', questionList)
-        // this.setState({ qnaList: newFQAList })
-        // this.setState({ pageInfo: res.page })
       }
     })
   }
