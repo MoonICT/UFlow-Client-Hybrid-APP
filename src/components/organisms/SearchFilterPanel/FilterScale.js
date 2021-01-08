@@ -15,13 +15,16 @@ import { styles } from './style';
 import ActionCreator from "@Actions";
 import RangeSlider from '@Components/atoms/RangeSlider';
 
+/*TODO 임시 값 (추후 변경 필요)*/
+let prvtAreaMax = 13200; // 전용면적 최대
+let cmnAreaMax = 13200; // 공용면적 최대
+
 class FilterScale extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      areaUsable: 0,
-      areaDedicated: 0,
-      areaCommon: 0,
+      prvtArea: this.props.whFilter.prvtArea ? Number(this.props.whFilter.prvtArea) : 0, // 전용면적
+      cmnArea: this.props.whFilter.cmnArea ? Number(this.props.whFilter.cmnArea) : 0, // 공용면적
     };
   }
 
@@ -49,22 +52,26 @@ class FilterScale extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'가용면적 (계약면적)'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'전용면적'}</Text>
           </View>
-          <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.areaUsable === 30000 || this.state.areaUsable === 0) ? '전체' : this.state.areaUsable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
+          <Text
+            style={[styles.filterLabel, styles.filterLabelMain]}>
+            {(Number(this.props.whFilter.prvtArea) === prvtAreaMax || Number(this.props.whFilter.prvtArea) === 0) ?
+              '전체' : this.props.whFilter.prvtArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
 
         {/** Slider */}
-        <RangeSlider value={this.state.areaUsable}
-                     step={100}
-                     minimumValue={0}
-                     maximumValue={30000}
-                     LabelMiddle={'15,000㎡ (4,500평)'}
+        <RangeSlider value={this.props.whFilter.prvtArea ? Number(this.props.whFilter.prvtArea) : 0}
+                     step={1000}
                      contentStyle={{ marginBottom: 24 }}
+                     minimumValue={0}
+                     maximumValue={prvtAreaMax}
+                     LabelMiddle={`${(prvtAreaMax / 2).toLocaleString()}㎡`}
                      onValueChange={(value) => {
-                       this.setState({ areaUsable: value });
+                       this.props.setSearchFilter({
+                         prvtArea: value,
+                       });
                      }} />
 
         <View style={styles.filterDivider}></View>
@@ -74,45 +81,26 @@ class FilterScale extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'전용면적'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'공용면적'}</Text>
           </View>
-          <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.areaDedicated === 30000 || this.state.areaDedicated === 0) ? '전체' : this.state.areaDedicated.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
+          <Text
+            style={[styles.filterLabel, styles.filterLabelMain]}>
+            {(Number(this.props.whFilter.cmnArea) === cmnAreaMax || Number(this.props.whFilter.cmnArea) === 0) ?
+              '전체' : this.props.whFilter.cmnArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
+
         {/** Slider */}
-        <RangeSlider value={this.state.areaDedicated}
-                     step={100}
-                     minimumValue={0}
-                     maximumValue={30000}
-                     LabelMiddle={'15,000㎡ (4,500평)'}
+        <RangeSlider value={this.props.whFilter.cmnArea ? Number(this.props.whFilter.cmnArea) : 0}
+                     step={1000}
                      contentStyle={{ marginBottom: 24 }}
-                     onValueChange={(value) => {
-                       this.setState({ areaDedicated: value });
-                     }} />
-
-        <View style={styles.filterDivider}></View>
-
-        {/***** 공용면적 *****/}
-
-        {/** Label */}
-        <View style={styles.filterLabelWrap}>
-          <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'공용면적 (계약면적)'}</Text>
-          </View>
-          <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(this.state.areaCommon === 30000 || this.state.areaCommon === 0) ? '전체' : this.state.areaCommon.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
-          </Text>
-        </View>
-        {/** Slider */}
-        <RangeSlider value={this.state.areaCommon}
-                     step={100}
                      minimumValue={0}
-                     maximumValue={30000}
-                     LabelMiddle={'15,000㎡ (4,500평)'}
-                     contentStyle={{ marginBottom: 24 }}
+                     maximumValue={cmnAreaMax}
+                     LabelMiddle={`${(cmnAreaMax / 2).toLocaleString()}㎡`}
                      onValueChange={(value) => {
-                       this.setState({ areaCommon: value });
+                       this.props.setSearchFilter({
+                         cmnArea: value,
+                       });
                      }} />
 
 
@@ -136,7 +124,7 @@ class FilterScale extends Component {
   }
 
   componentWillUnmount () {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {
@@ -146,16 +134,19 @@ class FilterScale extends Component {
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
-    isFilterToggle: state.search.isFilterToggle,
-    filterList: state.search.filterList,
+    whFilter: state.search.whFilter,
   };
 }
 
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps (dispatch) {
-  return {};
+  return {
+    setSearchFilter: status => {
+      dispatch(ActionCreator.setSearchFilter(status));
+    },
+  };
 }
 
 // Check Props Type.

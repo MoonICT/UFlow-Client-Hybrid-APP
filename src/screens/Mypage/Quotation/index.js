@@ -234,9 +234,9 @@ class Quotation extends Component {
                 <Text
                   style={[
                     DefaultStyle._statusProcessing,
-                    status === 'RS00'
-                      ? { backgroundColor: 'rgba(0, 0, 0, 0.54)' }
-                      : '',
+                    // status === 'RS00'
+                    //   ? { backgroundColor: 'rgba(0, 0, 0, 0.54)' }
+                    //   : '',
                   ]}>
                   {this.coverStatus(status).processing}
                 </Text>
@@ -565,6 +565,9 @@ class Quotation extends Component {
           console.log('err', err);
         });
     }
+  }
+  componentWillUnmount() {
+    console.log('Component WILL UNMOUNT!');
   }
 }
 

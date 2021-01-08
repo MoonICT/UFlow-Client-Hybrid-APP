@@ -49,6 +49,7 @@ RangeSlider.protoType = {
   LabelMiddle: PropTypes.string,
   contentStyle: PropTypes.object,
   onValueChange: PropTypes.func,
+  onSlidingComplete: PropTypes.func,
 };
 
 export default RangeSlider;

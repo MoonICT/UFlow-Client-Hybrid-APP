@@ -46,14 +46,27 @@ class More extends Component {
     this.navigation = props.navigation;
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
+  async UNSAFE_componentWillMount() {
+    const value = await AsyncStorage.getItem(TOKEN);
+    // console.log('More Token ==>', value);
+    Account.getMe()
+      .then(res => {
+        // console.log('::::: Get Me :::::', res);
+        const status = res.status;
+        if (status === 200) {
+          this.setState({
+            isLogin: true,
+            email: res.data.email,
+            fullName: res.data.fullName,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('errHome', err);
+      });
+    if (value) {
+      this.setState({ token: value });
+    }
   }
 
   render() {
@@ -211,7 +224,9 @@ class More extends Component {
               <View style={[DefaultStyle._cards, S.listPage]}>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('RegisterWH')}>
+                  onPress={() =>
+                    this.navigation.navigate('RegisterBusinessInfo')
+                  }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={addwarehouse} />
                     <Text style={DefaultStyle.titleItem}>창고등록</Text>
@@ -374,7 +389,6 @@ class More extends Component {
                   />
                 </View>
               </TouchableOpacity>
-
             </View>
           )}
 
@@ -396,26 +410,26 @@ class More extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    const value = await AsyncStorage.getItem(TOKEN);
-    console.log('hello==>', value);
-    Account.getMe()
-      .then(res => {
-        console.log('::::: Get Me :::::', res);
-        const status = res.status;
-        if (status === 200) {
-          this.setState({
-            isLogin: true,
-            email: res.data.email,
-            fullName: res.data.fullName,
-          });
-        }
-      })
-      .catch(err => {
-        console.log('errHome', err);
-      });
-    if (value) {
-      this.setState({ token: value });
-    }
+    // const value = await AsyncStorage.getItem(TOKEN);
+    // console.log('hello==>', value);
+    // Account.getMe()
+    //   .then(res => {
+    //     console.log('::::: Get Me :::::', res);
+    //     const status = res.status;
+    //     if (status === 200) {
+    //       this.setState({
+    //         isLogin: true,
+    //         email: res.data.email,
+    //         fullName: res.data.fullName,
+    //       });
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log('errHome', err);
+    //   });
+    // if (value) {
+    //   this.setState({ token: value });
+    // }
 
     SplashScreen.hide();
   }

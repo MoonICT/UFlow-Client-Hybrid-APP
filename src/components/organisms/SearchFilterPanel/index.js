@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Animated, TouchableOpacity } from 'react-native';
 import { withTheme, Text } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -53,12 +53,13 @@ class SearchFilter extends Component {
 
           {this.props.filterList.map((item, index) => (item.toggle && (
               (item.type === 'WAREHOUSE' &&
-                <FilterWarehouse key={index} filter={this.state.listGdsTypeCode} onClosed={() => {
+                <FilterWarehouse key={index} onClosed={() => {
                   this._onClickClose();
                 }} />) ||
-              (item.type === 'STORAGE' && <FilterStorage key={index} onClosed={() => {
-                this._onClickClose();
-              }} />) ||
+              (item.type === 'STORAGE' &&
+                <FilterStorage filters={this.state.listGdsTypeCode} key={index} onClosed={() => {
+                  this._onClickClose();
+                }} />) ||
               (item.type === 'PERIOD' && <FilterPeriod key={index} onClosed={() => {
                 this._onClickClose();
               }} />) ||
@@ -74,9 +75,17 @@ class SearchFilter extends Component {
 
         {/** 추가 필터 (풀스크린) */}
         {this.props.filterList.map((item, index) => (item.toggle && (
-            (item.type === 'OTHER' && <FilterOther key={index} onClosed={() => {
-              this._onClickClose();
-            }} />))
+            (item.type === 'OTHER' &&
+              <FilterOther key={index}
+                           listCalUnitDvCode={this.state.listCalUnitDvCode}
+                           listCalStdDvCode={this.state.listCalStdDvCode}
+                           listFlrDvCode={this.state.listFlrDvCode}
+                           listAprchMthdDvCode={this.state.listAprchMthdDvCode}
+                           listInsrDvCode={this.state.listInsrDvCode}
+                           listCmpltTypes={this.state.listCmpltTypes}
+                           onClosed={() => {
+                             this._onClickClose();
+                           }} />))
         ))}
 
         {/** Filter panel backdrop */}
@@ -113,7 +122,7 @@ class SearchFilter extends Component {
     const listInsrDvCode = await Warehouse.listInsrDvCode(); // 보험 가입
     const listCmpltTypes = await WhrgSearch.getCmpltTypes(); // 준공 연차
     this.setState({
-      getCmpltTypes: listGdsTypeCode && listGdsTypeCode._embedded ? listGdsTypeCode._embedded.detailCodes : [], // 보관유형
+      listGdsTypeCode: listGdsTypeCode && listGdsTypeCode._embedded ? listGdsTypeCode._embedded.detailCodes : [], // 보관유형
       listCalUnitDvCode: listCalUnitDvCode && listCalUnitDvCode._embedded ? listCalUnitDvCode._embedded.detailCodes : [], // 정산단위
       listCalStdDvCode: listCalStdDvCode && listCalStdDvCode._embedded ? listCalStdDvCode._embedded.detailCodes : [], // 산정기준
       listFlrDvCode: listFlrDvCode && listFlrDvCode._embedded ? listFlrDvCode._embedded.detailCodes : [], // 층수
@@ -121,14 +130,13 @@ class SearchFilter extends Component {
       listInsrDvCode: listInsrDvCode && listInsrDvCode._embedded ? listInsrDvCode._embedded.detailCodes : [], // 보험 가입
       listCmpltTypes: listCmpltTypes && listCmpltTypes._embedded ? listCmpltTypes._embedded.hashMaps : [], // 준공연차
     });
-    console.log('현재 스테이트', this.state);
   }
 }
 
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
     isFilterToggle: state.search.isFilterToggle,
     filterList: state.search.filterList,

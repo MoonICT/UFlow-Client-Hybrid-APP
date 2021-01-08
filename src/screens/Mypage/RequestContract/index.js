@@ -19,6 +19,7 @@ import ContractInformation from './ContractInformation';
 
 import { styles as S } from '../style';
 import { Warehouse } from '@Services/apis';
+import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
   constructor(props) {
@@ -78,9 +79,9 @@ class RequestContract extends Component {
     const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
     const status = route && route.params && route.params.status;
-    console.log('routeRequescontract', route);
+    // console.log('routeRequescontract', route);
     const { dataApi } = this.state;
-    console.log('dataApiRequest', dataApi);
+    // console.log('dataApiRequest', dataApi);
 
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
@@ -250,7 +251,9 @@ class RequestContract extends Component {
                 <View style={DefaultStyle._footerCards}>
                   <Text style={S.amount}>예상 견적 금액</Text>
                   <Text style={S.total}>
-                    {dataApi && dataApi.keep && dataApi.keep.estimatedPrice}원
+                    {dataApi &&
+                      dataApi.keep &&
+                      StringUtils.moneyConvert(dataApi.keep.estimatedPrice)}
                   </Text>
                 </View>
               </View>

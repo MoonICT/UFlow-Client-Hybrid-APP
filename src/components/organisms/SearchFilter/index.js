@@ -16,6 +16,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { styles } from './style';
 import ActionCreator from "@Actions";
 import FilterButton from "@Components/atoms/FilterButton";
+import { WarehouseSearchFilterModel } from '@Services/apis/models/warehouse';
 
 class SearchFilter extends Component {
   constructor (props) {
@@ -48,6 +49,14 @@ class SearchFilter extends Component {
     }
   }
 
+  /**
+   * 전체 필터 초기화.
+   * */
+  handleResetAddFilter = () => {
+    // Init store
+    this.props.setSearchFilter(JSON.parse(JSON.stringify(WarehouseSearchFilterModel)));
+  };
+
   render () {
     return (
       <View style={styles.container}>
@@ -77,9 +86,7 @@ class SearchFilter extends Component {
 
           {/** Reset Button */}
           <TouchableOpacity style={styles.reset}
-                            onPress={() => {
-                              alert('펄터 초기화.');
-                            }}>
+                            onPress={this.handleResetAddFilter}>
             <Icon name={'autorenew'} style={styles.resetIcon} />
           </TouchableOpacity>
           <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
@@ -96,7 +103,7 @@ class SearchFilter extends Component {
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
     isFilterToggle: state.search.isFilterToggle,
     filterList: state.search.filterList,
@@ -109,12 +116,14 @@ function mapDispatchToProps (dispatch) {
     updateFilter: status => {
       dispatch(ActionCreator.updateFilter(status));
     },
+    setSearchFilter: status => {
+      dispatch(ActionCreator.setSearchFilter(status));
+    },
   };
 }
 
 // Check Props Type.
-SearchFilter.protoType = {
-};
+SearchFilter.protoType = {};
 
 export default compose(connect(
   mapStateToProps,

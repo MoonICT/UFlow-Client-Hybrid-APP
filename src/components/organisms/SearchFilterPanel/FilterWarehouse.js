@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { withTheme, Text, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -19,16 +19,10 @@ class FilterWarehouse extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      checkList: [
-        {
-          label: '보관',
-          checked: true,
-        },
-        {
-          label: '수탁',
-          checked: false,
-        }
-      ]
+      listTypeCodes: [
+        { name: '보관', value: 'KEEP' },
+        { name: '수탁', value: 'TRUST' },
+      ],
     };
   }
 
@@ -43,9 +37,20 @@ class FilterWarehouse extends Component {
    *  필터 적용.
    *  */
   _onClickApply () {
-    // TODO 변경 필터는 스토어에 반영.
     this.props.onClosed(); // Event emit
   }
+
+  /**
+   * On change filter checkbox
+   * */
+  handleOnChangeFilterCheckbox = (value) => {
+    let defaultValue = this.props.whFilter.typeCodes ? this.props.whFilter.typeCodes.split(',') : []
+    let findIndex = defaultValue.indexOf(value)
+    findIndex > -1 ? defaultValue.splice(findIndex, 1) : defaultValue.push(value)
+    this.props.setSearchFilter({
+      typeCodes: defaultValue.length > 0 ? defaultValue.join(',') : '',
+    });
+  };
 
   render () {
     return (
@@ -57,25 +62,16 @@ class FilterWarehouse extends Component {
             <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'창고 유형'}</Text>
             <Text style={[styles.filterLabel, styles.filterLabelSub]}>{'중복선택 가능합니다.'}</Text>
           </View>
-          {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'5개월'}</Text>*/}
         </View>
 
         {/** Checkbox */}
-        {this.state.checkList.map((item, index) =>
+        {this.state.listTypeCodes.map((item, index) =>
           <View style={styles.filterCheckWrap} key={index}>
-            <Checkbox checked={item.checked}
-                      label={item.label}
-                      onPress={() => {
-                        this.setState(defaultState => ({
-                          ...defaultState,
-                          checkList: defaultState.checkList.map((r, i) => {
-                            return {
-                              ...defaultState.checkList[i],
-                              checked: i === index ? !defaultState.checkList[i].checked : defaultState.checkList[i].checked
-                            };
-                          })
-                        }));
-                      }} /></View>)}
+            <Checkbox
+              checked={(this.props.whFilter.typeCodes ? this.props.whFilter.typeCodes.indexOf(item.value) > -1 : false)}
+              label={item.name}
+              value={item.value}
+              onPress={() => this.handleOnChangeFilterCheckbox(item.value)} /></View>)}
 
         {/** Button Group */}
         <View style={styles.gridRow}>
@@ -101,27 +97,31 @@ class FilterWarehouse extends Component {
   }
 
   componentDidMount () {
-    console.log('::componentDidMount:: 검색 필터 창고 유형');
-    console.log(this.props.filter);
+    // console.log('::componentDidMount:: 검색 필터 창고 유형');
   }
 }
 
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
-  return {};
+  // console.log('++++++mapStateToProps: ', state.search.whFilter);
+  return {
+    whFilter: state.search.whFilter,
+  };
 }
 
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps (dispatch) {
-  return {};
+  return {
+    setSearchFilter: status => {
+      dispatch(ActionCreator.setSearchFilter(status));
+    },
+  };
 }
 
 // Check Props Type.
 FilterWarehouse.protoType = {
   onClosed: PropTypes.func,
-  filter: PropTypes.array,
 };
 
 export default compose(connect(
