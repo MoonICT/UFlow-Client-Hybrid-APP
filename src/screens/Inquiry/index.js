@@ -248,9 +248,15 @@ class Inquiry extends Component {
                   <TouchableOpacity
                     key={index}
                     style={DefaultStyle.btnItem}
-                    onPress={() =>
-                      this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'OWNER' })
-                    }>
+                    // onPress={() =>
+                    //   this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'OWNER' })
+                    // }
+                    onPress={() => {
+                      if (item.complete === true && userType === 'OWNER') {
+                        this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'OWNER' })
+                      }
+                    }}
+                  >
                     <View style={DefaultStyle.leftItem}>
                       {item.complete === false ?
                         <Text style={[S.status]}>답변 대기 중</Text>
@@ -263,13 +269,15 @@ class Inquiry extends Component {
                       </Text>
                       <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
                     </View>
-                    <View style={DefaultStyle.rightItem}>
-                      <Icon
-                        name="arrow-forward-ios"
-                        size={12}
-                        color="rgba(0, 0, 0, 0.54)"
-                      />
-                    </View>
+                    { item.complete === true &&
+                      <View style={DefaultStyle.rightItem}>
+                        <Icon
+                          name="arrow-forward-ios"
+                          size={12}
+                          color="rgba(0, 0, 0, 0.54)"
+                        />
+                      </View>
+                    }
                   </TouchableOpacity>
                 )
               })}
@@ -284,9 +292,12 @@ class Inquiry extends Component {
                   <TouchableOpacity
                     key={index}
                     style={DefaultStyle.btnItem}
-                    onPress={() =>
-                      this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'TENANT' })
-                    }>
+                    onPress={() => {
+                      if (item.complete === true) {
+                        this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'OWNER' })
+                      }
+                    }}
+                  >
                     <View style={DefaultStyle.leftItem}>
                       {item.complete === false ?
                         <Text style={[S.status]}>답변 대기 중</Text>
@@ -299,13 +310,15 @@ class Inquiry extends Component {
                       </Text>
                       <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
                     </View>
-                    <View style={DefaultStyle.rightItem}>
-                      <Icon
-                        name="arrow-forward-ios"
-                        size={12}
-                        color="rgba(0, 0, 0, 0.54)"
-                      />
-                    </View>
+                    { item.complete === true &&
+                      <View style={DefaultStyle.rightItem}>
+                        <Icon
+                          name="arrow-forward-ios"
+                          size={12}
+                          color="rgba(0, 0, 0, 0.54)"
+                        />
+                      </View>
+                    }
                   </TouchableOpacity>
                 )
               })}

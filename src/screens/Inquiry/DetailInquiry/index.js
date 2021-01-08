@@ -102,7 +102,7 @@ class DetailInquiry extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="창고 위치"
+            title="문의내역"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
