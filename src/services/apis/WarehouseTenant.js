@@ -2,6 +2,9 @@ import { Axios, parseQuery } from '@Services/http';
 import { mainAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
+
+//Contants
+import { TOKEN } from '@Constant';
 /**
  * [warehouse-tenant-0] 사업자 중복체크
  * @returns {Promise<unknown>}
@@ -60,6 +63,7 @@ export const listBusinessInfoByTenant = () => {
 
 export const regBusinessInfoByTenant = async businessInfo => {
   const token = await AsyncStorage.getItem(TOKEN);
+  console.log('tenantData', businessInfo)
   return await mainAxios.post(`/api/v1/warehouse/tenant/business-infos`, businessInfo, {
     headers: {
       Authorization: `Bearer ${token}`,

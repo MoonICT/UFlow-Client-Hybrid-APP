@@ -233,7 +233,7 @@ class DetailRegisterTenant extends Component {
     // 창고주 정보 등록
     WarehouseTenant.regBusinessInfoByTenant(businessInfo).then(res => {
       alert('창고 사업자 등록이 완료되었습니다.')
-      this.navigation.navigate('RegisterWH', res.data);
+      this.navigation.goBack();
     }).catch(err => {
       if (err.response && err.response.status >= 500) {
         alert('서버에러:' + err.response.message)
@@ -460,17 +460,17 @@ class DetailRegisterTenant extends Component {
             </View>
             </View>
         </View>
-        <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0]}>
+        <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0, DefaultStyle.d_flex]}>
           <Button
             mode="contained"
-            style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
+            style={[{ width: '45%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
             color="red"
             onPress={()=> this.navigation.goBack()}>
             취소
           </Button>
           <Button
             mode="contained"
-            style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
+            style={[{ width: '45%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
             color="red"
             onPress={this.handleOnSubmit}>
             등록
