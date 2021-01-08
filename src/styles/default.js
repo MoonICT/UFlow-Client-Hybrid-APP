@@ -56,6 +56,9 @@ export default StyleSheet.create({
   mb_0: {
     marginBottom: 0,
   },
+  pr_5: {
+    paddingRight: 5,
+  },
   pt_20: {
     paddingTop: 20,
   },

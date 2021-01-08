@@ -127,26 +127,33 @@ class RegisterBusinessInfo extends Component {
     const { businessInfo } = this.state;
 
     console.log('dataAddress', data);
-    // set 주소
-    this.setState({
-      businessInfo: {
-        ...businessInfo,
-        jibunAddr: {
-          ...businessInfo.jibunAddr,
-          zipNo: data.zonecode,
-          address: data.jibunAddress,
-        },
-        roadAddr: {
-          ...businessInfo.roadAddr,
-          zipNo: data.zonecode,
-          address: data.roadAddress,
-        },
-        gps: {
-          latitude: 127.499683538281,
-          longitude: 36.6053894272938
-        }
-      }
-    });
+
+    Warehouse.searchAddressKakao({ query: data.address })
+      .then(res => {
+        // set 주소
+        this.setState({
+          businessInfo: {
+            ...businessInfo,
+            jibunAddr: {
+              ...businessInfo.jibunAddr,
+              zipNo: data.zonecode,
+              address: data.jibunAddress,
+            },
+            roadAddr: {
+              ...businessInfo.roadAddr,
+              zipNo: data.zonecode,
+              address: data.roadAddress,
+            },
+            gps: {
+              latitude: res.data.documents[0].x,
+              longitude: res.data.documents[0].y
+            }
+          }
+        });
+      })
+      .catch(err => {
+        console.log('errIntroWH', err);
+      });
   }
 
   handleChoosePhoto = () => {
@@ -199,8 +206,6 @@ class RegisterBusinessInfo extends Component {
    * 사업자 selectbox 변경
    * */
   handleChangeSelectBox = (e, i) => {
-    const { listBusinessInfo } = this.state;
-
     if(e !== -1){
       this.setState({
         businessMode: i
@@ -216,6 +221,8 @@ class RegisterBusinessInfo extends Component {
 
   // upload image
   handlePicker = async () => {
+    const { businessInfo } = this.state;
+
     try {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
@@ -235,8 +242,14 @@ class RegisterBusinessInfo extends Component {
               // pimages.push();
               // this.setState({ pimages });
               console.log('url', url);
-              this.setState({ photo: url });
-
+              
+              this.setState({
+                photo: url,
+                businessInfo: {
+                  ...businessInfo,
+                  regFile: url
+                }
+              });
             }
           });
         } else {
@@ -260,13 +273,11 @@ class RegisterBusinessInfo extends Component {
       return false
     }
 
+    console.log('dataWE', businessInfo)
     // 창고주 정보 등록
     WarehouseOwner.regBusinessInfo(businessInfo).then(res => {
-      console.log('::::: API Add Business Info  :::::', res)
-      // TODO Change to dialog ui.
-      // alert('창고 사업자 등록이 완료되었습니다.')
-      // setBusinessDialog(false)
-      // onComplete(res)
+      alert('창고 사업자 등록이 완료되었습니다.')
+      this.navigation.navigate('RegisterWH', res.data);
     }).catch(err => {
       if (err.response && err.response.status >= 500) {
         alert('서버에러:' + err.response.message)
@@ -290,9 +301,8 @@ class RegisterBusinessInfo extends Component {
 
 
   render() {
-    const { listBusinessInfo, businessMode,businessInfo, photo,businessList } = this.state;
+    const { businessMode,businessInfo, photo,businessList } = this.state;
 
-    console.log('teet', businessList)
     return (
       <ScrollView style={[DefaultStyle._container]}>
         <View style={[DefaultStyle.p_16]}>
@@ -380,7 +390,7 @@ class RegisterBusinessInfo extends Component {
                   <Image
                       source={{ uri: photo,
                         type: "image/jpeg",
-                        name: 'phôt'  }}
+                        name: 'photo'  }}
                       style={{ width: 125, height: 125,marginBottom:20}}
 
                     />

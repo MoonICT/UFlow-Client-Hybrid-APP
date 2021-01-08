@@ -86,6 +86,7 @@ import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
 import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
 import RegisterBusinessInfo from '@Screeens/RegisterWH/RegisterBusinessInfo';
+import DetailRegisterTenant from '@Screeens/DetailsWH/DetailRegisterTenant';
 
 import { color } from '@Themes/colors';
 
@@ -514,6 +515,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="RegisterBusinessInfo"
                     component={RegisterBusinessInfo}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="DetailRegisterTenant"
+                    component={DetailRegisterTenant}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
