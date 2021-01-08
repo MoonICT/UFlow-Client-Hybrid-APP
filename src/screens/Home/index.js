@@ -83,6 +83,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 //Contants
 import { TOKEN } from '@Constant';
 
+import Masonry from 'react-native-masonry';
+
 // const slides = [
 //   {
 //     key: 0,
@@ -568,8 +570,12 @@ class Home extends Component {
                   {this._renderProductItem(v)}
                 </View>;
               })} */}
-
-              {this._renderProductItem()}
+              <Masonry 
+              sorted
+              columns={2}
+              bricks={this._renderProductItem()}
+               />
+              {/* {this._renderProductItem()} */}
             </View>
           </View>
 
