@@ -80,6 +80,7 @@ import Information from '@Screeens/Mypage/Information';
 import RequestContract from '@Screeens/Mypage/RequestContract';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
+import ConsultingComplete from '@Screeens/Consulting/complete.js';
 import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
@@ -453,6 +454,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="Consulting"
                     component={Consulting}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="ConsultingComplete"
+                    component={ConsultingComplete}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
