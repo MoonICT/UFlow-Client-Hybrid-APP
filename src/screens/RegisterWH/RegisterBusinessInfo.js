@@ -22,10 +22,10 @@ import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
-import { Entrp, WarehouseOwner, Warehouse } from '@Services/apis';
+import { WarehouseOwner, Warehouse , MediaUpload} from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {daumAddress} from "@Services/utils/daumAddress";
+import {launchImageLibrary} from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
 
 const tabSelect = [
   {
@@ -66,7 +66,8 @@ class RegisterBusinessInfo extends Component {
         label: '사업자정보 신규 등록',
         value: -1,
       }],
-      isPossible: false
+      isPossible: false,
+      singleFile: null,
     };
     this.navigation = props.navigation;
   }
@@ -183,6 +184,45 @@ class RegisterBusinessInfo extends Component {
     }
   }
 
+  // upload image
+  handlePicker = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      });
+      this.setState({ singleFile: res }, async () => {
+        if (res != null) {
+          // If file selected then create FormData
+          let { singleFile } = this.state;
+          const data = new FormData();
+          data.append('name', singleFile.name);
+          data.append('file', singleFile);
+          // Please change file upload URL
+          MediaUpload.uploadFile(data).then(respon => {
+            if (respon.status === 200) {
+              let { url } = respon.data;
+              // let pimages = [{ uri: url }];
+              // pimages.push();
+              // this.setState({ pimages });
+              console.log('url', url);
+              this.setState({ photo: url });
+
+            }
+          });
+        } else {
+          // If no file selected the show alert
+          alert('Please Select File first');
+        }
+      });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  };
+
   handleOnSubmit = () => {
     const { businessInfo } = this.state;
 
@@ -203,38 +243,7 @@ class RegisterBusinessInfo extends Component {
   };
 
   getKakaoAddress = () => {
-    daumAddress((data) => {
-
-      // 주소-좌표 변환 객체를 생성합니다
-      const geocoder = new kakao.maps.services.Geocoder();
-      // 주소로 좌표를 검색합니다
-      geocoder.addressSearch(data.roadAddress, function (result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === kakao.maps.services.Status.OK) {
-
-          // set 주소
-          this.setState({
-            businessInfo: {
-              ...businessInfo,
-              jibunAddr: {
-                ...businessInfo.jibunAddr,
-                zipNo: data.zonecode,
-                address: data.jibunAddress,
-              },
-              roadAddr: {
-                ...businessInfo.roadAddr,
-                zipNo: data.zonecode,
-                address: data.roadAddress,
-              },
-              gps: {
-                latitude: result[0].y,
-                longitude: result[0].x
-              },
-            }
-          })
-        }
-      });
-    })
+    
   }
 
   /**
@@ -258,11 +267,12 @@ class RegisterBusinessInfo extends Component {
     console.log('teet', businessList)
     return (
       <ScrollView style={[DefaultStyle._container]}>
-        <View style={[DefaultStyle._cards]}>
-          <View style={[DefaultStyle._titleCard, { marginBottom: -4 }]}>
-            <Text style={DefaultStyle._textTitleBody}>창고주 정보 등록</Text>
+        <View style={[DefaultStyle.p_16]}>
+          <View style={[DefaultStyle._titleCardCol]}>
+            <Text style={[DefaultStyle._textTitleCard]}>창고주 정보 등록</Text>
+            <Text style={[DefaultStyle._textDesCard]}>창고 등록을 위해서 회사 정보를 입력해 주세요.</Text>
           </View>
-          <View style>
+          <View>
             <Select
               data={businessList}
               labelSelected="기등록 사업자 등록정보"
@@ -340,16 +350,16 @@ class RegisterBusinessInfo extends Component {
 
                   {photo && (
                   <Image
-                      source={{ uri: photo.uri,
+                      source={{ uri: photo,
                         type: "image/jpeg",
-                        name: photo.filename  }}
+                        name: 'phôt'  }}
                       style={{ width: 125, height: 125,marginBottom:20}}
 
                     />
                   )}
                   <TouchableOpacity
                     style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                    onPress={this.handleChoosePhoto}>
+                    onPress={this.handlePicker}>
                     <Text
                       style={[
                         DefaultStyle._textButton,
@@ -436,7 +446,7 @@ class RegisterBusinessInfo extends Component {
                     </View>
                     <TouchableOpacity
                       style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mb_20, DefaultStyle.w_50]}
-                      onPress={() => console.log(titleButton)}>
+                      onPress={() => console.log('21312')}>
                       <Text
                         style={[
                           DefaultStyle._textButton,
@@ -447,7 +457,7 @@ class RegisterBusinessInfo extends Component {
                     </TouchableOpacity>
                   </View>
                   <TextField
-                    labelTextField="담당자 명"
+                    labelTextField="담당자명"
                     colorLabel="#000000"
                     valueProps={(e) => {
                       this.setState({
@@ -489,12 +499,12 @@ class RegisterBusinessInfo extends Component {
               }
             </View>
         </View>
-        <View style={DefaultStyle._listBtn}>
+        <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0]}>
           {
             businessMode > -1 ?
             <Button
               mode="contained"
-              style={[{ width: '95%', margin: 12, borderRadius: 24, height: 40, marginBottom: 24 }, DefaultStyle._primary,]}
+              style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
               color="red"
               onPress={this.onClickSelectBusinessComplete}>
               선택완료
@@ -502,7 +512,7 @@ class RegisterBusinessInfo extends Component {
             :
             <Button
               mode="contained"
-              style={[{ width: '95%', margin: 12, borderRadius: 24, height: 40, marginBottom: 24 }, DefaultStyle._primary,]}
+              style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
               color="red"
               onPress={this.handleOnSubmit}>
               등록

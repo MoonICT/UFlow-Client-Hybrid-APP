@@ -41,6 +41,9 @@ export default StyleSheet.create({
     height:1,
     backgroundColor: color.input.default_border,
   },
+  mt_0: {
+    marginTop:0
+  },
   mt_20: {
     marginTop:20
   },
@@ -61,6 +64,9 @@ export default StyleSheet.create({
   },
   p_12: {
     padding:12
+  },
+  p_16: {
+    padding:16
   },
   _colorMuted:{
     color: 'rgba(0, 0, 0, 0.87)'
@@ -889,6 +895,10 @@ export default StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
   },
+  _titleCardCol: {
+    marginTop: 16,
+    marginBottom: 16,
+  },
   _textTitleCard: {
     color: color.text.primary,
     // fontFamily: 'NotoSansCJKkr-Medium',
@@ -896,6 +906,14 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     fontStyle: 'normal',
     lineHeight: 21,
+  },
+  _textDesCard: {
+    color: color.text.primary,
+    // fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 14,
+    fontWeight: '400',
+    fontStyle: 'normal',
+    lineHeight: 18,
   },
   _textRightTitleCard: {
     color: color.text.primary,
