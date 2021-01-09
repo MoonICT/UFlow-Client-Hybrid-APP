@@ -191,7 +191,9 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+                  onPress={() => this.navigation.navigate('Mypage',{
+                    title: '관심 창고',
+                  })}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={save} />
                     <Text style={DefaultStyle.titleItem}>관심창고</Text>

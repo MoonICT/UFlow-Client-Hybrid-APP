@@ -18,6 +18,7 @@ import * as WarehouseTenant from './WarehouseTenant';
 import * as WarehouseMobileAuth from './WarehouseMobileAuth';
 import * as FindPassword from './FindPassword';
 import * as MediaFileContract from './MediaFileContract';
+import * as Fav from './Fav';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {
@@ -42,4 +43,5 @@ export {
   WarehouseMobileAuth,
   FindPassword,
   MediaFileContract,
+  Fav,
 };

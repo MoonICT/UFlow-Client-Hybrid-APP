@@ -1116,7 +1116,7 @@ export default StyleSheet.create({
     color: color.primary.main,
   },
   _completeInfoTable: {
-    color: 'rgba(0, 0, 0, 0.54)',
+    color: 'rgba(0, 0, 0, 0.54)'
   },
   _leftTableCard: {
     backgroundColor: '#fff',
