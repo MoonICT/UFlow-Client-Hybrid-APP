@@ -105,8 +105,8 @@ class RegisterWH extends Component {
           });
         }
       })
-      .catch(err => {
-        console.log('err', err.message);
+      .catch(error => {
+        alert(error.response.data.message);
       });
     SplashScreen.hide();
   }
