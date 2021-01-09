@@ -576,6 +576,12 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
+                  <AuthStack.Screen
+                    name="DetailsWH"
+                    component={DetailsWH}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
                 </RootStack.Navigator>
               </Global>
             </NavigationContainer>
