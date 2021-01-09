@@ -318,10 +318,10 @@ class ContractManager extends Component {
     }
   };
   render() {
-    const { type, typeWH, dataContractWH } = this.props;
+    const { dataContractWH } = this.props; /** type, typeWH,  */
     let {
       valueTab,
-      dataApi,
+      // dataApi,
       contractType,
       contractStatus,
       dataSteps,
@@ -351,7 +351,7 @@ class ContractManager extends Component {
         return types && status;
       });
 
-    console.log('dataFilter', dataFilter);
+    // console.log('dataFilter', dataFilter);
     // console.log('dataSteps', dataSteps);
 
     let checkStep = dataFilter.length === 0;
@@ -392,7 +392,7 @@ class ContractManager extends Component {
         let dataTable = this.cover(item) && this.cover(item).data;
         let listBtnTenant = this.cover(item) && this.cover(item).listBtnTenant;
         let titleButton = this.cover(item) && this.cover(item).footerTitle;
-        console.log('item', item.cntrYmdFrom);
+        // console.log('item', item.cntrYmdFrom);
         return (
           <Fragment key={index}>
             <CardMypage
@@ -410,7 +410,7 @@ class ContractManager extends Component {
                     seq: item.seq,
                     rentUserNo: item.rentUserNo,
                     status: item.status,
-                    rentUserID: item.rentUser?.id,
+                    rentUserID: item.rentUser?.id || item.rentUserNo,
                     regUserDate: item.cntrYmdFrom,
                   },
                 )
@@ -624,7 +624,7 @@ class ContractManager extends Component {
     const type = this.state.valueTab;
     await Warehouse.contractManager(type)
       .then(res => {
-        console.log('resContract', res);
+        // console.log('resContract', res);
         const status = res.status;
         if (status === 200) {
           // this.setState({ dataApi: res.data.data.content });
@@ -678,7 +678,7 @@ class ContractManager extends Component {
     if (valueState !== valuePrev) {
       Warehouse.contractManager(valueState)
         .then(res => {
-          console.log('resContractUpdate', res);
+          // console.log('resContractUpdate', res);
           const status = res.status;
           if (status === 200) {
             // this.setState({ dataApi: res.data.data.content });

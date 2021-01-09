@@ -72,6 +72,7 @@ class ContractInformation extends Component {
         value: `${configURL.FILE_SERVER_ADDRESS}/${mediaFile?.file2}`,
       },
     ];
+
     let viewComponent;
     switch (status) {
       case '1100':

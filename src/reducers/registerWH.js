@@ -6,7 +6,7 @@ const defaultState = {
   pnImages: [],
   whImages: [],
   thImages: [],
-  entrpNo: '987654321',
+  entrpNo: '',
   // data: {
   //   test: 1,
   // },

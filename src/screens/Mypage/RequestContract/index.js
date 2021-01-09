@@ -88,7 +88,7 @@ class RequestContract extends Component {
     const { dataApi, dataMedia } = this.state;
     // console.log('dataApi', dataApi);
     // console.log('status', status);
-    console.log('dataMedia', dataMedia);
+    // console.log('dataMedia', dataMedia);
 
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
@@ -340,8 +340,8 @@ class RequestContract extends Component {
       '-' +
       rentUserDate;
 
-    console.log('url', url);
-    console.log('urlTenantImage', urlTenantImage);
+    // console.log('url', url);
+    // console.log('urlTenantImage', urlTenantImage);
     await Warehouse.quotation(
       this.props.route.params.type === 'OWNER' ? url : urlTenant,
     )

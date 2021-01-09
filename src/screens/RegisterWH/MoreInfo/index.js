@@ -37,6 +37,8 @@ import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
+import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
+
 // import Form from './form';
 class RegisterMoreInfo extends Component {
   constructor(props) {
@@ -75,7 +77,9 @@ class RegisterMoreInfo extends Component {
         props.dataMoreInfo && props.dataMoreInfo.cmnArea
           ? props.dataMoreInfo.cmnArea
           : '',
-      from: new Date(),
+      from: props.dataMoreInfo
+        ? new Date(props.dataMoreInfo.cmpltYmd)
+        : new Date(),
       showFrom: false,
       mode: 'date',
     };
@@ -109,7 +113,7 @@ class RegisterMoreInfo extends Component {
       mode,
       showFrom,
     } = this.state;
-
+    console.log('dataMoreInfo :>> ', dataMoreInfo);
     let isSubmitUpdate = false;
     if (
       addOptDvCode.length > 0 &&
@@ -181,50 +185,55 @@ class RegisterMoreInfo extends Component {
                 labelTextField="건축면적"
                 textRight="평"
                 placeholder="0"
+                defaultValue={bldgArea ? numberToStd(bldgArea) : ''}
                 colorLabel="#000000"
                 value={bldgArea}
                 valueProps={e => {
-                  this.setState({ bldgArea: e });
+                  this.setState({ bldgArea: stdToNumber(e) });
                 }}
               />
               <TextField
                 labelTextField="대지면적"
                 textRight="평"
                 placeholder="0"
+                defaultValue={siteArea ? numberToStd(siteArea) : ''}
                 colorLabel="#000000"
                 value={siteArea}
                 valueProps={e => {
-                  this.setState({ siteArea: e });
+                  this.setState({ siteArea: stdToNumber(e) });
                 }}
               />
               <TextField
                 labelTextField="연면적"
                 textRight="평"
                 placeholder="0"
+                defaultValue={totalArea ? numberToStd(totalArea) : ''}
                 colorLabel="#000000"
                 value={totalArea}
                 valueProps={e => {
-                  this.setState({ totalArea: e });
+                  this.setState({ totalArea: stdToNumber(e) });
                 }}
               />
               <TextField
                 labelTextField="전용면적"
                 textRight="평"
                 placeholder="0"
+                defaultValue={prvtArea ? numberToStd(prvtArea) : ''}
                 colorLabel="#000000"
                 value={prvtArea}
                 valueProps={e => {
-                  this.setState({ prvtArea: e });
+                  this.setState({ prvtArea: stdToNumber(e) });
                 }}
               />
               <TextField
                 labelTextField="공용면적"
                 textRight="평"
                 placeholder="0"
+                defaultValue={cmnArea ? numberToStd(cmnArea) : ''}
                 colorLabel="#000000"
                 value={cmnArea}
                 valueProps={e => {
-                  this.setState({ cmnArea: e });
+                  this.setState({ cmnArea: stdToNumber(e) });
                 }}
               />
             </View>
