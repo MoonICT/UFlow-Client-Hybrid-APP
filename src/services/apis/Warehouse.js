@@ -29,7 +29,16 @@ export const registerWH = async data => {
 };
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
-  return await mainAxios.get('/api/v1/warehouse/list/owner', {
+  return await mainAxios.get('/api/v1/warehouse/owner', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
+export const detailWH = async url => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.get(`/api/v1/warehouse/${url}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
@@ -337,7 +346,7 @@ export const listCalUnitDvCode = () => {
 export const listCalStdDvCode = () => {
   return Axios.request({
     methodType: 'GET',
-    url: `/api/v1/warehouse/cal-unit-dv-code`,
+    url: `/api/v1/warehouse/cal-std-dv-code`,
     requiresToken: true, // set access_token
     config: {
       headers: {
@@ -481,22 +490,22 @@ export const registWhrg = whrgBody => {
 export const getWhrg = ({ id = '', config = '' }) => {
   let configDefault = {
     headers: {
-      contentType: 'application/json'
-    }
-  }
+      contentType: 'application/json',
+    },
+  };
   if (config) {
     configDefault = {
       ...configDefault,
-      ...config
-    }
+      ...config,
+    };
   }
-  console.log('API :::::', config)
+  console.log('API :::::', config);
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/${id}`,
     requiresToken: true,
-    config: configDefault
-  })
+    config: configDefault,
+  });
 };
 
 /**
@@ -555,10 +564,10 @@ export const listAllBussinessInfo = () => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 export const pageWhrgQnA = ({
@@ -569,9 +578,8 @@ export const pageWhrgQnA = ({
   size = 5,
   page = 0,
   sort = 'createdDate,desc',
-  requiresToken = false
+  requiresToken = false,
 }) => {
-
   return Axios.getRequest({
     methodType: 'GET',
     requiresToken: requiresToken,
@@ -582,7 +590,22 @@ export const pageWhrgQnA = ({
       endDate: endDate,
       size: size,
       page: page,
-      sort: sort
-    })}`
-  })
+      sort: sort,
+    })}`,
+  });
+};
+
+export const getLinkContract = body => {
+  let url = `/api/v1/contract/${body.type}/oz/html`
+  return Axios.request({
+    methodType: 'POST',
+    url: url,
+    requiresToken: true, // set access_token
+    payload: body,
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
 };

@@ -23,6 +23,7 @@ import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
 import ActionCreator from '@Actions';
+import { StringUtils } from '@Services/utils';
 
 const dataSelect = [
   {
@@ -114,11 +115,12 @@ class ContractManager extends Component {
               ? {}
               : {
                   type: '견적 금액',
-                  value:
-                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  value: StringUtils.moneyConvert(
+                    (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
                       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
                       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                  ),
                 },
             {
               type: '창고 주소',
@@ -151,11 +153,12 @@ class ContractManager extends Component {
               ? {}
               : {
                   type: '견적 금액',
-                  value:
-                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  value: StringUtils.moneyConvert(
+                    (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
                       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
                       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                  ),
                 },
             {
               type: '창고 주소',
@@ -185,11 +188,12 @@ class ContractManager extends Component {
               ? {}
               : {
                   type: '견적 금액',
-                  value:
-                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  value: StringUtils.moneyConvert(
+                    (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
                       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
                       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                  ),
                 },
             {
               type: '창고 주소',
@@ -201,7 +205,8 @@ class ContractManager extends Component {
             },
             {
               type: '견적 상태',
-              value: value.type2 === 'OWNER' ? '계약 요청' : '계약중',
+              // value: this.state.valueTab === 'OWNER' ? '계약협의' : '계약중',
+              value: '계약협의',
               highlight: true,
             },
           ],
@@ -219,11 +224,12 @@ class ContractManager extends Component {
               ? {}
               : {
                   type: '견적 금액',
-                  value:
-                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  value: StringUtils.moneyConvert(
+                    (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
                       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
                       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                  ),
                 },
             {
               type: '창고 주소',
@@ -253,11 +259,12 @@ class ContractManager extends Component {
               ? {}
               : {
                   type: '견적 금액',
-                  value:
-                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  value: StringUtils.moneyConvert(
+                    (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
                       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
                       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                  ),
                 },
             {
               type: '창고 주소',
@@ -286,11 +293,12 @@ class ContractManager extends Component {
               ? {}
               : {
                   type: '견적 금액',
-                  value:
-                    ((value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+                  value: StringUtils.moneyConvert(
+                    (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
                       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
                       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                      (value.cntrKeep && value.cntrKeep.estimatedPrice)) + '원',
+                      (value.cntrKeep && value.cntrKeep.estimatedPrice),
+                  ),
                 },
             {
               type: '창고 주소',
@@ -311,7 +319,7 @@ class ContractManager extends Component {
   };
   render() {
     const { type, typeWH, dataContractWH } = this.props;
-    const {
+    let {
       valueTab,
       dataApi,
       contractType,
@@ -342,7 +350,12 @@ class ContractManager extends Component {
         }
         return types && status;
       });
-    console.log('dataFilter', dataFilter);
+      
+    // console.log('dataFilter', dataFilter);
+    // console.log('dataSteps', dataSteps);
+
+    let checkStep = dataFilter.length === 0;
+
     const viewStep =
       dataSteps &&
       dataSteps.map((item, index) => {
@@ -350,13 +363,14 @@ class ContractManager extends Component {
           <View style={S.step} key={index}>
             <View style={S.stepLeft}>
               <Text style={S.textStep}>{item.title}</Text>
-
               <Text
                 style={[
                   S.textNumber,
-                  item.status === true ? S.textNumberActive : null,
+                  item.status === true && !checkStep
+                    ? S.textNumberActive
+                    : null,
                 ]}>
-                {item.number}
+                {checkStep ? 0 : item.number}
               </Text>
             </View>
             {(index + 1) % 3 === 0 ? null : (
@@ -534,6 +548,7 @@ class ContractManager extends Component {
           </Fragment>
         );
       });
+
     return (
       <View style={DefaultStyle._body}>
         <View style={DefaultStyle._titleBody}>

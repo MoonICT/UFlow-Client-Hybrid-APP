@@ -6,11 +6,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 export const getFAQList = async ({ dutyDvCode = "", query = "" }) => {
   let params;
   if (dutyDvCode) {
-    params = 'dutyDvCode=' + dutyDvCode + '&query=' + query
+    params = { dutyDvCode, query };
   } else {
-    params = '' + 'query=' + query
+    params = { query }
   }
-  return await mainAxios.get(`/api/v1/faqs?${params}`, {
+
+  console.log('params', params)
+
+  return await mainAxios.get(`/api/v1/faqs`, {
+    params: {
+      ...params,
+    },
     headers: {
       // Authorization: `Bearer ${token}`,
       Accept: 'application/json',

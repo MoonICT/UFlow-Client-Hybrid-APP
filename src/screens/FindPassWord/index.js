@@ -16,6 +16,7 @@ import TextField from '@Components/organisms/TextField';
 import DialogScreen from '@Components/organisms/Dialog';
 import illust3 from '@Assets/images/illust3.png';
 import illust13 from '@Assets/images/illust13.png';
+import { FindPassword } from '@Services/apis';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
@@ -51,6 +52,17 @@ class ForgotPass extends Component {
   hideDialog = () => this.setState({ visible: false });
   showConfirmPass = () => this.setState({ visiblePass: true });
   hideConfirmPass = () => this.setState({ visiblePass: false });
+
+  sendEmail = () => {
+    const {email} = this.state;
+    FindPassword.sendEmail({ email: email })
+      .then(res => {
+        this.showDialog()
+      })
+      .catch(error => {
+        alert(error.response.data.message);
+      });
+  }
   render() {
     const {
       email,
@@ -95,7 +107,7 @@ class ForgotPass extends Component {
                 <TouchableOpacity
                   style={[DefaultStyle._btnInline]}
                   onPress={() => {
-                    email !== '' ? this.showDialog() : null;
+                    email !== '' ? this.sendEmail() : null;
                   }}>
                   <Text style={[DefaultStyle._textButton, S.textConfirm]}>
                     확인
@@ -164,7 +176,7 @@ class ForgotPass extends Component {
               style={DefaultStyle._buttonElement}
               onPress={() => {
                 this.hideDialog();
-                this.setState({ isConfirmEmail: true });
+                // this.setState({ isConfirmEmail: true });
               }}>
               확인
             </Button>

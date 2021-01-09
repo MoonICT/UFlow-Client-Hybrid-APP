@@ -1,14 +1,21 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { mainAxios } from '../libs/axios';
-import {TOKEN} from '@Constant'
+import { TOKEN } from '@Constant';
+
 export const getAll = async (params) => {
   const token = await AsyncStorage.getItem(TOKEN);
-  let type = params.type;
+  const type = params.type;
+
+  console.log('token', token);
+  console.log('params', params);
+
   let url = '/api/v1/mypage/settlement/tenant'
   if(type === 'OWNER') {
     url = '/api/v1/mypage/settlement/owner'
   }
-  return await mainAxios.get(`${url}`, 
+  console.log('url', url);
+
+  return await mainAxios.get(`${url}`,
   {
     params: {
       ...params
@@ -28,7 +35,7 @@ export const getDetail = async (params) => {
   if(type === 'OWNER') {
     url = `/api/v1/mypage/settlement/owner/${params.id}`
   }
-  return await mainAxios.get(`${url}`, 
+  return await mainAxios.get(`${url}`,
   {
     params: {
       ...params

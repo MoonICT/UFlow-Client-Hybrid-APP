@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const defaultState = {
-  pimages: [],
+  pnImages: [],
   whImages: [],
   thImages: [],
   entrpNo: '987654321',
@@ -38,7 +38,8 @@ let dataImage = (state, listImage) => {
     // imageUpload.push(image);
     let result = {
       ...state,
-      pimages: listImage,
+      pnImages: listImage,
+      whImages: listImage,
     };
     return result;
   } catch (e) {
@@ -49,11 +50,12 @@ let dataImage = (state, listImage) => {
 
 let upImage = (state, image) => {
   try {
-    let imageUpload = [...state.pimages];
+    let imageUpload = [...state.whImages];
     imageUpload.push(image);
     let result = {
       ...state,
-      pimages: imageUpload,
+      pnImages: imageUpload,
+      whImages: imageUpload,
     };
     return result;
   } catch (e) {
@@ -64,14 +66,15 @@ let upImage = (state, image) => {
 
 let removeImg = (state, id) => {
   try {
-    let imageList = [...state.pimages];
+    let imageList = [...state.whImages];
     imageList.slice(id);
     let imageL = imageList.filter((item, index) => {
       return index !== id;
     });
     let result = {
       ...state,
-      pimages: imageL,
+      whImages: imageL,
+      pnImages: imageL,
     };
     return result;
   } catch (e) {

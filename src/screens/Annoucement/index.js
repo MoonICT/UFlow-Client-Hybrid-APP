@@ -19,11 +19,17 @@ import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Annoucement } from '@Services/apis';
 
-class RegisterWH extends Component {
+class AnnoucementScreen extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { active: 0, checked: true, checked2: false, activeIndex: 0, annoucementList: [] };
+    this.state = {
+      active: 0,
+      checked: true,
+      checked2: false,
+      activeIndex: 0,
+      annoucementList: [],
+    };
     this.navigation = props.navigation;
   }
 
@@ -32,7 +38,6 @@ class RegisterWH extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   render() {
-
     const { annoucementList } = this.state;
 
     return (
@@ -51,28 +56,34 @@ class RegisterWH extends Component {
           />
         </Appbars>
         <ScrollView>
-          {annoucementList && annoucementList.length > 0 && annoucementList.map((item, index) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('DetailAnnoucement', { annoucementDetails: item })}>
-                <View style={DefaultStyle.leftItem}>
-                  <Text style={DefaultStyle.titleItem}>
-                    {item.title}
-                  </Text>
-                  <Text style={DefaultStyle.contentItem}>{item.createdDate}</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
-            )
-          })}
+          {annoucementList &&
+            annoucementList.length > 0 &&
+            annoucementList.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={DefaultStyle.btnItem}
+                  onPress={() =>
+                    this.navigation.navigate('DetailAnnoucement', {
+                      annoucementDetails: item,
+                    })
+                  }>
+                  <View style={DefaultStyle.leftItem}>
+                    <Text style={DefaultStyle.titleItem}>{item.title}</Text>
+                    <Text style={DefaultStyle.contentItem}>
+                      {item.createdDate}
+                    </Text>
+                  </View>
+                  <View style={DefaultStyle.rightItem}>
+                    <Icon
+                      name="arrow-forward-ios"
+                      size={12}
+                      color="rgba(0, 0, 0, 0.54)"
+                    />
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
         </ScrollView>
       </SafeAreaView>
     );
@@ -85,7 +96,7 @@ class RegisterWH extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   /** when after render DOM */
@@ -94,8 +105,10 @@ class RegisterWH extends Component {
       .then(res => {
         console.log('::::: Annoucement :::::', res);
         if (res.status === 200) {
+          let annoucementList = res.data._embedded.Notice;
+
           this.setState({
-            annoucementList: res.data._embedded.Notice,
+            annoucementList,
           });
         }
       })
@@ -132,4 +145,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegisterWH);
+)(AnnoucementScreen);
