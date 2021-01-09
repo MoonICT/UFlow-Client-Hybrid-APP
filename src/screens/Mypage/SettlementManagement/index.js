@@ -7,6 +7,8 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
+import { styles as S } from '../style';
+
 import Moment from 'moment';
 import { moneyUnit , dateStr, toStdCd } from '@Utils/StringUtils';
 import Select from '@Components/organisms/SelectFilter';
@@ -24,16 +26,11 @@ import TextField from '@Components/organisms/TextField';
 import CardMypage from '@Components/organisms/CardMypage';
 import { SettlementManagementService, Calculate } from '@Services/apis'
 import Icon from 'react-native-vector-icons/Fontisto';
-import {formatDateV1, formatDateV2 } from '@Utils/dateFormat';
-import { styles as S } from '../style';
 import DatePicker from '@react-native-community/datetimepicker';
 
 var searchTimerQuery;
 
 export default class SettlementManagement extends Component {
-
-
-
 
   constructor(props) {
     super(props);
@@ -98,19 +95,12 @@ export default class SettlementManagement extends Component {
       contractType
     };
 
-    // params {"contractType": 2100, "endDate": 2021-01-08T11:44:47.122Z, "query": "", "rangeDate": "", "startDate": 2021-01-08T11:44:47.122Z, "type": undefined}
-
     SettlementManagementService.getAll(params).then((res) => {
       console.debug(params, '정산데이터 Params');
       console.debug(res, '정산데이터');
       if (res.data.msg !== 'success') {
         return
       }
-
-      // const money = (value, unitStr = '원') => {
-      //   // return value ? (value.toLocaleString() + ' ' + unitStr) : 0 + ' ' + unitStr;
-      //   return value ? (value.toLocaleString() + ' ' + unitStr) : 0 + ' ' + unitStr;
-      // }
 
       let newRows = res.data.data.content.map((item, index) => {
         return {
@@ -226,6 +216,7 @@ export default class SettlementManagement extends Component {
   };
 
   onChangeKeyWord = () => {
+
     if (searchTimerQuery) {
       clearTimeout(searchTimerQuery);
     }
@@ -240,14 +231,11 @@ export default class SettlementManagement extends Component {
     }, 500);
   }
 
-
-
-
   render() {
     const {valueTab, rows,  isOpenStart, isOpenEnd, rangeDay, dataCard} = this.state
     let {startDate, endDate} = this.state.filter;
     return (
-      <View style={DefaultStyle._cards}>
+      <View style={[DefaultStyle._cards,{marginBottom: 180}]}>
 
         <View style={DefaultStyle._tabBar}>
           <TouchableOpacity
@@ -299,7 +287,7 @@ export default class SettlementManagement extends Component {
                   onPress={()=>this.showDateStart()}
                   style={DefaultStyle._btnDate}>
                   <Text style={[DefaultStyle._textDate, {fontSize:12,paddingTop:7,textAlign:'center'}]}>
-                    {formatDateV1(startDate) || 'YYYY-MM-DD'}
+                    {dateStr(startDate) || 'YYYY-MM-DD'}
                   </Text>
                   <Text
                     style={[
@@ -332,7 +320,7 @@ export default class SettlementManagement extends Component {
                   onPress={()=>this.showDateEnd()}
                   style={DefaultStyle._btnDate}>
                   <Text style={[DefaultStyle._textDate, {fontSize:12,paddingTop:7,textAlign:'center'}]}>
-                    {formatDateV1(endDate) || 'YYYY-MM-DD'}
+                    {dateStr(endDate) || 'YYYY-MM-DD'}
                   </Text>
                   <Text
                     style={[
@@ -366,10 +354,9 @@ export default class SettlementManagement extends Component {
           </View>
           <TextField
             styleProps={[DefaultStyle._inputSearch, {paddingRight: 50}]}
-            placeholder="창고명 검색"
-            valueProps={text => console.log('text', text)}
+            placeholder="검색어를 입력해 주세요."
             ref={el => this.inputKeyWord = el}
-            // onChange={this.onChangeKeyWord}
+            onChange={this.onChangeKeyWord}
             rightComponent={
               <Icon
                 name="search"

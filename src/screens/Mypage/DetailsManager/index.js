@@ -211,7 +211,10 @@ export default class DetailsManager extends Component {
     };
     await InOutManagerService.getDetail(params).then((res) => {
       let header = res.data.header;
-      let resBody = res.data.header.cntrTrustResBody;
+      console.log(res, 'res')
+      console.log(header, 'header')
+      let cntrTrustResBody = res.data.header.cntrTrustResBody;
+      console.log(cntrTrustResBody, 'cntrTrustResBody')
       let totalMoney = res.total;
       let isExpired = !header.expired ? true : false
       const dataInfo = [
@@ -229,15 +232,15 @@ export default class DetailsManager extends Component {
         },
         {
           type: '보관유형',
-          value: header.gdsTypeCode,
+          value: header.cntrTrustResBody.typeCode && header.cntrTrustResBody.typeCode.stdDetailCodeName,
         },
         {
           type: '정산단위',
-          value: header.cntrTrustResBody.calUnitDvCode.stdDetailCode,
+          value: header.cntrTrustResBody && header.cntrTrustResBody.calUnitDvCode && header.cntrTrustResBody.calUnitDvCode.stdDetailCode,
         },
         {
           type: '산정기준',
-          value: header.cntrTrustResBody.calStdDvCode.stdDetailCode,
+          value: header.cntrTrustResBody && header.cntrTrustResBody.calStdDvCode && header.cntrTrustResBody.calStdDvCode.stdDetailCode,
         },
         {
           type: '물동량',
@@ -316,15 +319,15 @@ export default class DetailsManager extends Component {
             },
             {
               type: '적용단가',
-              value: resBody.whinChrg ? resBody.whinChrg : "-" + '/PLT',
+              value: cntrTrustResBody.whinChrg ? cntrTrustResBody.whinChrg : "-" + '/PLT',
             },
             {
               type: '입고비',
-              value: resBody.whinChrg ? resBody.whinChrg + '원' : "-",
+              value: cntrTrustResBody.whinChrg ? cntrTrustResBody.whinChrg + '원' : "-",
             },
             {
               type: '출고비',
-              value: resBody.whoutChrg ? resBody.whoutChrg + '원' : "-"
+              value: cntrTrustResBody.whoutChrg ? cntrTrustResBody.whoutChrg + '원' : "-"
             },
             {
               type: '보관비',
@@ -334,7 +337,7 @@ export default class DetailsManager extends Component {
         }
       })
       this.setState({
-        dataInfo, responseFilter, resBody, totalMoney, isExpired
+        dataInfo, responseFilter, cntrTrustResBody, totalMoney, isExpired
       })
     })
   }
@@ -528,7 +531,7 @@ export default class DetailsManager extends Component {
           this.getAllData()
         })
       })
-    
+
   }
 
   render() {
@@ -555,7 +558,7 @@ export default class DetailsManager extends Component {
                       />
                     </View>
 
-                    
+
                       <View style={[DefaultStyle._listBtn]}>
                         <TouchableOpacity
                           style={[
@@ -583,7 +586,7 @@ export default class DetailsManager extends Component {
                           </Text>
                         </TouchableOpacity>
                         {
-                          item.stockQty && 
+                          item.stockQty &&
                           <TouchableOpacity
                           onPress={() => {
                             this.setState({
@@ -609,7 +612,7 @@ export default class DetailsManager extends Component {
 
 
                     <View style={[DefaultStyle._listBtn, SS.listBtnProcess]}>
-              
+
                     <TouchableOpacity
                       onPress={() => {
                       }}
@@ -644,7 +647,7 @@ export default class DetailsManager extends Component {
                       </TouchableOpacity>
                     }
                   </View>
-                  
+
                   </Fragment>
 
                 )
@@ -662,7 +665,7 @@ export default class DetailsManager extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="마이페이지"
+            title="입･출고 관리"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -779,7 +782,7 @@ export default class DetailsManager extends Component {
                   style={[DefaultStyle._titleCard, DefaultStyle._titleStatus]}>
                   <Text style={DefaultStyle._textTitleCard}>진행 상황</Text>
                   {
-                    isExpired ? 
+                    isExpired ?
                     <Text style={DefaultStyle._statusProcessingFalse}>
                     수탁 기간 만료
                   </Text>
@@ -996,7 +999,7 @@ export default class DetailsManager extends Component {
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
-              onPress={() => 
+              onPress={() =>
                 this.setState({ cancelRequest: false, receiptCancel: true })
               }>
               확인
