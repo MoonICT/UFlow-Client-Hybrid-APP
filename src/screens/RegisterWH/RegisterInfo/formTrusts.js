@@ -35,6 +35,7 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
+import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 
 class FormTrusts extends Component {
   constructor(props) {
@@ -44,9 +45,13 @@ class FormTrusts extends Component {
       title: 'Profile Photo',
       confirm: false,
       value: 1,
-      from: new Date(),
+      from: props.formData.usblYmdFrom
+        ? new Date(props.formData.usblYmdFrom)
+        : new Date(),
       showFrom: false,
-      to: new Date(),
+      to: props.formData.usblYmdTo
+        ? new Date(props.formData.usblYmdTo)
+        : new Date(),
       showTo: false,
       dataForm: [
         {
@@ -229,10 +234,13 @@ class FormTrusts extends Component {
           />
           <TextField
             labelTextField="기타"
+            defaultValue={
+              formData.usblValue ? numberToStd(formData.usblValue) : ''
+            }
             valueProps={e => {
               this.setState({ usblValue: e });
               let dataF = formData;
-              dataF.usblValue = e;
+              dataF.usblValue = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
@@ -298,35 +306,41 @@ class FormTrusts extends Component {
             labelTextField="보관단가"
             textRight="개"
             value={formData.splyAmount}
-            defaultValue="1000"
+            defaultValue={
+              formData.splyAmount ? numberToStd(formData.splyAmount) : ''
+            }
             valueProps={e => {
               this.setState({ splyAmount: e });
               let dataF = formData;
-              dataF.splyAmount = e;
+              dataF.splyAmount = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="입고단가"
             textRight="원"
-            defaultValue="1000"
+            defaultValue={
+              formData.whinChrg ? numberToStd(formData.whinChrg) : ''
+            }
             value={formData.whinChrg}
             valueProps={e => {
               this.setState({ whinChrg: e });
               let dataF = formData;
-              dataF.whinChrg = e;
+              dataF.whinChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="출고단가"
             textRight="원"
-            defaultValue="1000"
+            defaultValue={
+              formData.whinChrg ? numberToStd(formData.whinChrg) : ''
+            }
             value={formData.whinChrg}
             valueProps={e => {
               this.setState({ whoutChrg: e });
               let dataF = formData;
-              dataF.whinChrg = e;
+              dataF.whinChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
@@ -334,10 +348,11 @@ class FormTrusts extends Component {
             labelTextField="인건단가 (선택)"
             textRight="원"
             value={formData.psnChrg}
+            defaultValue={formData.psnChrg ? numberToStd(formData.psnChrg) : ''}
             valueProps={e => {
               this.setState({ psnChrg: e });
               let dataF = formData;
-              dataF.psnChrg = e;
+              dataF.psnChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
@@ -345,21 +360,27 @@ class FormTrusts extends Component {
             labelTextField="가공단가 (선택)"
             value={formData.mnfctChrg}
             textRight="원"
+            defaultValue={
+              formData.mnfctChrg ? numberToStd(formData.mnfctChrg) : ''
+            }
             valueProps={e => {
               this.setState({ mnfctChrg: e });
               let dataF = formData;
-              dataF.mnfctChrg = e;
+              dataF.mnfctChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="택배단가 (선택)"
             textRight="원"
+            defaultValue={
+              formData.dlvyChrg ? numberToStd(formData.dlvyChrg) : ''
+            }
             value={formData.dlvyChrg}
             valueProps={e => {
               this.setState({ dlvyChrg: e });
               let dataF = formData;
-              dataF.dlvyChrg = e;
+              dataF.dlvyChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
@@ -367,10 +388,13 @@ class FormTrusts extends Component {
             labelTextField="운송단가 (선택)"
             textRight="원"
             value={formData.shipChrg}
+            defaultValue={
+              formData.shipChrg ? numberToStd(formData.shipChrg) : ''
+            }
             valueProps={e => {
               this.setState({ shipChrg: e });
               let dataF = formData;
-              dataF.shipChrg = e;
+              dataF.shipChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
@@ -378,6 +402,7 @@ class FormTrusts extends Component {
           <TextField
             labelTextField="비고"
             value={formData.remark}
+            defaultValue={formData.remark ? numberToStd(formData.remark) : ''}
             valueProps={e => {
               this.setState({ remark: e });
               let dataF = formData;

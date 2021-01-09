@@ -100,6 +100,8 @@ export const styles = StyleSheet.create({
   lineMove: {
     backgroundColor: '#ff6d00',
     height: 4,
+    marginLeft:-1,
+    borderRadius:4,
     marginTop: -1,
   },
   valueProgress: {
