@@ -131,4 +131,7 @@ export const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 14,
   },
+  s1: {
+    marginTop: 100
+  }
 });
