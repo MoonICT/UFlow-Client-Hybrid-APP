@@ -18,7 +18,6 @@ import { Appbar, Text } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-// import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
 
 import Appbars from '@Components/organisms/AppBar';
@@ -32,7 +31,7 @@ import { StringUtils } from '@Services/utils';
 
 class Quotation extends Component {
   constructor(props) {
-    console.log('propssssssssssssssssssssssss', props)
+
     super(props);
     this.webView = null;
     this.state = {
@@ -43,14 +42,19 @@ class Quotation extends Component {
   }
   coverStatus = value => {
     switch (value) {
+
       case 'RQ00':
         // code block
-        return { processing: '견적 요청', data: [] };
-      case 'RS00':
+        return {
+          processing: '견적요청',
+          data: []
+        };
+
+        case 'RS00':
         // code block
         return {
           data: [],
-          processing: '견적 응답',
+          processing: '견적응답',
         };
 
       case '1100':
@@ -59,12 +63,14 @@ class Quotation extends Component {
           data: [],
           processing: '계약 요청',
         };
+
       case '4100':
         // code block
         return {
           data: [],
           processing: '계약 진행',
         };
+
       case '5100':
         // code block
         return {

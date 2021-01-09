@@ -1,7 +1,7 @@
 /**
  * 정산 관리
  * @create
- * @modify
+ * @modify chonglye chang
  * @desc [description]
  */
 
@@ -26,7 +26,6 @@ import TextField from '@Components/organisms/TextField';
 import CardMypage from '@Components/organisms/CardMypage';
 import {SettlementManagementService, Calculate} from '@Services/apis'
 import Icon from 'react-native-vector-icons/Fontisto';
-import DatePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 var searchTimerQuery;

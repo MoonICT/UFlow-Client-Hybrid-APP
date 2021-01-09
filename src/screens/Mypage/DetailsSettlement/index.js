@@ -1,6 +1,6 @@
 /**
  * @create
- * @modify
+ * @modify chonglye chang
  * @desc [description]
  */
 
@@ -61,8 +61,6 @@ export default class DetailsSettlement extends Component {
       id
     };
 
-    console.log(type, 'type')
-    console.log(type, 'id')
     let cntrTypeCode = {}
     SettlementManagementService.getDetail(params).then((res) => {
       console.log('data', res.data.data);
