@@ -65,7 +65,7 @@ import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
 import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
 import Chatting from '@Screeens/Mypage/Chat';
 import DetailsManager from '@Screeens/Mypage/DetailsManager';
-import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
+import DetailsSettlement from '@Screeens/Mypage/DetailsSettlement';
 
 import ProprietorMypage from '@Screeens/ProprietorMypage';
 
