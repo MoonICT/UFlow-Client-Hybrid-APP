@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import {
   SafeAreaView,
   View,
@@ -13,71 +13,27 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
-import { Text } from 'react-native-paper';
+
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {Text} from 'react-native-paper';
 import Select from '@Components/organisms/Select';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-// import TableInfo from '../TableInfo';
 import TextField from '@Components/organisms/TextField';
 import CardMypage from '@Components/organisms/CardMypage';
-import { SettlementManagementService } from '@Services/apis'
-import ActionCreator from '@Actions';
+import {SettlementManagementService} from '@Services/apis'
 import Icon from 'react-native-vector-icons/Fontisto';
 import {formatDateV1} from '@Utils/dateFormat';
-import { styles as S } from '../style';
-import DatePicker from '@react-native-community/datetimepicker';
-const dataStart = [
-  {
-    label: '시작일',
-    value: '시작일',
-  },
-];
-const dataEnd = [
-  {
-    label: '종료일',
-    value: '종료일',
-  },
-  {
-    label: '종료일2',
-    value: '종료일2',
-  },
-];
-const dataAll = [
-  {
-    label: '계약 유형',
-    value: '계약 유형',
-  },
-  {
-    label: '2계약 유형',
-    value: '2계약 유형',
-  },
-];
+import {styles as S} from '../style';
 
-
-const dataDongwon = [
-  {
-    type: '정산 기간',
-    value: '2020.11.10 - 2021.11.10',
-  },
-  {
-    type: '계약 유형',
-    value: '수탁,보관',
-  },
-  {
-    type: '정산 합계 (VAT포함)',
-    value: '1,592,000원',
-  },
-];
 var searchTimerQuery;
 export default class SettlementManagement extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      valueTab: 'OWNER',
+      userType: 'OWNER',
       rows: [],
       filter: {
         query: '',
@@ -114,18 +70,19 @@ export default class SettlementManagement extends Component {
     this.navigation = props.navigation;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getAllData()
   }
 
-  async getAllData () {
-    let {startDate, endDate, query, contractType, valueTab} = this.state.filter;
+  async getAllData() {
+    let {startDate, endDate, query, contractType} = this.state.filter;
+
     let params = {
       startDate,
       endDate,
       query,
       rangeDate: '',
-      type: valueTab,
+      type: this.state.userType,
       contractType
     };
 
@@ -133,7 +90,7 @@ export default class SettlementManagement extends Component {
       if (res.data.msg !== 'success') {
         return
       }
-      
+
       let newRows = res.data.data.content.map((item, index) => {
         return {
           id: item.id,
@@ -163,9 +120,10 @@ export default class SettlementManagement extends Component {
   }
 
 
-  onChangeTab (value) {
+  onChangeTab(value) {
+    console.log('onChangeTab', value);
     this.setState({
-      valueTab: value
+      userType: value
     }, () => {
       this.getAllData()
     })
@@ -185,49 +143,35 @@ export default class SettlementManagement extends Component {
     })
   }
 
-
-  onChangeStart = (event, selectedDate) => {
+  onChangeStart = (date) => {
     let {isOpenStart} = this.state
-    if(event.type == 'dismissed') {
-      this.setState({
-        isOpenStart: !isOpenStart
-      })
-    } else {
-      let filter =  {...this.state.filter}
-      filter.startDate = event.nativeEvent.timestamp
-      this.setState({
-        filter: filter,
-        isOpenStart: !isOpenStart
-      }, () => {
-        this.getAllData()
-      })
-    }
-  }
+    let filter = {...this.state.filter}
+    filter.startDate = date
+    this.setState({
+      filter: filter,
+      isOpenStart: !isOpenStart
+    }, () => {
+      this.getAllData()
+    })
+  };
 
-  onChangeEnd = (event, selectedDate) => {
+  onChangeEnd = (date) => {
     let {isOpenEnd} = this.state
-    if(event.type == 'dismissed') {
-      this.setState({
-        isOpenEnd: !isOpenEnd
-      })
-    } else {
-      let filter =  {...this.state.filter}
-      filter.endDate = event.nativeEvent.timestamp
-      this.setState({
-        filter: filter,
-        isOpenEnd: !isOpenEnd
-      },() => {
-        this.getAllData()
-      })
-    }
-
+    let filter = {...this.state.filter}
+    filter.endDate = date
+    this.setState({
+      filter: filter,
+      isOpenEnd: !isOpenEnd
+    }, () => {
+      this.getAllData()
+    })
   };
 
   onChangeRangeDay = (event, selectedDate) => {
   };
 
   onChangeKeyWord = (e) => {
-    
+
     if (searchTimerQuery) {
       clearTimeout(searchTimerQuery);
     }
@@ -241,177 +185,189 @@ export default class SettlementManagement extends Component {
   }
 
 
-
-
   render() {
-    const {valueTab, rows,  isOpenStart, isOpenEnd, rangeDay, dataCard} = this.state
+    const {userType, rows, isOpenStart, isOpenEnd, rangeDay, dataCard} = this.state
     let {startDate, endDate} = this.state.filter;
     return (
-      <View style={DefaultStyle._cards}>
+        <View style={DefaultStyle._cards}>
 
-        <View style={DefaultStyle._tabBar}>
-          <TouchableOpacity
-            style={valueTab === 'OWNER' ? DefaultStyle._btnTabBar : null}
-            onPress={() => this.onChangeTab('OWNER')}
-          >
-            <Text
-              style={
-                valueTab === 'OWNER'
-                  ? DefaultStyle._textActiveTab
-                  : DefaultStyle._textTabBar
-              }
+          <View style={DefaultStyle._tabBar}>
+            <TouchableOpacity
+                style={userType === 'OWNER' ? DefaultStyle._btnTabBar : null}
+                onPress={() => this.onChangeTab('OWNER')}
             >
-              요청 받은 견적･계약
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={valueTab === 'TENANT' ? DefaultStyle._btnTabBar : null}
-            onPress={() => this.onChangeTab('TENANT')}
-          >
-            <Text
-              style={
-                valueTab === 'TENANT'
-                  ? DefaultStyle._textActiveTab
-                  : DefaultStyle._textTabBar
-              }>
-              요청한 견적･계약
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={DefaultStyle._titleCard}>
-          <Text
-            style={[
-              DefaultStyle._textTitleCard,
-              S.textTitleTenant,
-              { paddingBottom: 0 },
-            ]}>
-            정산 관리
-          </Text>
-        </View>
-
-        <View style={S.filter}>
-          <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
-            <View style={[S.optionSelect, S.optionSelectLeft]}>
-              {/* <Select data={dataStart} style={S.select} /> */}
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  onPress={()=>this.showDateStart()}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={DefaultStyle._textDate}>
-                    {formatDateV1(startDate)}
-                  </Text>
-                  <Text
-                    style={[
-                      DefaultStyle._labelTextField,
-                      { color: '#000000' },
-                    ]}>
-                    수탁 기간
-                  </Text>
-                  {
-                    isOpenStart && 
-                    <DatePicker
-                    mode={'date'}
-                    show={isOpenStart}
-                    onChange={(e) =>this.onChangeStart(e)}
-                    value={startDate}
-                    testID="dateTimePicker"
-                  />
+              <Text
+                  style={
+                    userType === 'OWNER'
+                        ? DefaultStyle._textActiveTab
+                        : DefaultStyle._textTabBar
                   }
-                </TouchableOpacity>
-              </View>
-
-          
-
-            </View>
-            <Text style={S.hyphen}>-</Text>
-            <View style={[S.optionSelect, S.optionSelectLeft]}>
-              {/* <Select data={dataEnd} style={S.select} /> */}
-
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  onPress={()=>this.showDateEnd()}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={DefaultStyle._textDate}>
-                    {formatDateV1(endDate)}
-                  </Text>
-                  <Text
-                    style={[
-                      DefaultStyle._labelTextField,
-                      { color: '#000000' },
-                    ]}>
-                    수탁 기간
-                  </Text>
-                  {
-                    isOpenEnd && 
-                      <DatePicker
-                        mode={'date'}
-                        show={isOpenEnd}
-                        onChange={(e)=>this.onChangeEnd(e)}
-                        value={endDate}
-                        testID="dateTimePicker"
-                      />
-                  }
-
-                </TouchableOpacity>
-              </View>
-
-
-            </View>
-            <View style={[S.optionSelect, S.optionSelectLeft]}>
-              <Select data={rangeDay} style={S.select} />
-            </View>
+              >
+                요청 받은 견적･계약
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={userType === 'TENANT' ? DefaultStyle._btnTabBar : null}
+                onPress={() => this.onChangeTab('TENANT')}
+            >
+              <Text
+                  style={
+                    userType === 'TENANT'
+                        ? DefaultStyle._textActiveTab
+                        : DefaultStyle._textTabBar
+                  }>
+                요청한 견적･계약
+              </Text>
+            </TouchableOpacity>
           </View>
-          <TextField
-            styleProps={DefaultStyle._inputSearch}
-            placeholder="창고명 검색"
-            valueProps={text => console.log('text', text)}
-            ref={el => this.inputKeyWord = el}
-            onChange={this.onChangeKeyWord}
-            rightComponent={
-              <Icon
-                name="search"
-                color="rgba(0, 0, 0, 0.54)"
-                size={17}
-                style={DefaultStyle._searchRightIcon}
-              />
-            }
-          />
-        </View>
-        {
-          rows.map((item, index) => {
-            return (
-              <CardMypage
-                key = {index}
-                onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
-                  id: item.id,
-                  type: valueTab
-                })}
-                headerTitle={'레드우드'}
-                data={item.dataRedwood}
-                borderBottom={true}
-                borderRow={false}
-                style={{ padding: 0 }}
-                bgrImage={false}
-                footer={
-                <View
-                  style={[
-                    DefaultStyle._listBtn,
-                    { marginTop: 0, marginBottom: 0, padding: 16, paddingTop: 0 },
-                  ]}>
+
+          <View style={DefaultStyle._titleCard}>
+            <Text
+                style={[
+                  DefaultStyle._textTitleCard,
+                  S.textTitleTenant,
+                  {paddingBottom: 0},
+                ]}>
+              정산 관리
+            </Text>
+          </View>
+
+          <View style={S.filter}>
+            <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
+              <View style={[S.optionSelect, S.optionSelectLeft]}>
+
+                <View style={{flex: 1}}>
                   <TouchableOpacity
-                    style={[DefaultStyle._btnOutline]}
-                    onPress={() => {}}>
-                    <Text style={[DefaultStyle._textButton]}>거래명세서</Text>
+                      onPress={() => this.showDateStart()}
+                      style={DefaultStyle._btnDate}>
+                    <Text style={[DefaultStyle._textDate, DefaultStyle.uiFilter]}>
+                      {formatDateV1(startDate)}
+                    </Text>
+                    <Text
+                        style={[
+                          DefaultStyle._labelTextField
+                        ]}>
+                      시작일
+                    </Text>
+                    {
+                      isOpenStart &&
+                      <DateTimePickerModal
+                          mode="date"
+                          isVisible={isOpenStart}
+                          date={startDate ? startDate : new Date()}
+                          onConfirm={(date) => this.onChangeStart(date)}
+                          onCancel={() => {
+                            this.setState({
+                              isOpenStart: false
+                            });
+                          }}
+                      />
+                    }
                   </TouchableOpacity>
                 </View>
-              }
-            />
-            )
-          })
-        }
 
-      </View>
+
+              </View>
+              <Text style={S.hyphen}>-</Text>
+              <View style={[S.optionSelect, S.optionSelectLeft]}>
+                {/* <Select data={dataEnd} style={S.select} /> */}
+
+                <View style={{flex: 1}}>
+                  <TouchableOpacity
+                      onPress={() => this.showDateEnd()}
+                      style={DefaultStyle._btnDate}>
+                    <Text style={DefaultStyle._textDate}>
+                      {formatDateV1(endDate)}
+                    </Text>
+                    <Text
+                        style={[
+                          DefaultStyle._labelTextField,
+                          {color: '#000000'},
+                        ]}>
+                      종료일
+                    </Text>
+                    {
+                      isOpenEnd &&
+                      // <DatePicker
+                      //   mode={'date'}
+                      //   show={isOpenEnd}
+                      //   onChange={(e)=>this.onChangeEnd(e)}
+                      //   value={endDate}
+                      //   testID="dateTimePicker"
+                      // />
+                      <DateTimePickerModal
+                          mode="date"
+                          isVisible={isOpenEnd}
+                          date={startDate ? startDate : new Date()}
+                          onConfirm={(date) => this.onChangeEnd(date)}
+                          onCancel={() => {
+                            this.setState({
+                              isOpenEnd: false
+                            });
+                          }}
+                      />
+                    }
+
+                  </TouchableOpacity>
+                </View>
+
+
+              </View>
+              <View style={[S.optionSelect, S.optionSelectLeft]}>
+                <Select data={rangeDay} style={S.select}/>
+              </View>
+            </View>
+            <TextField
+                styleProps={DefaultStyle._inputSearch}
+                placeholder="창고명 검색"
+                valueProps={text => console.log('text', text)}
+                ref={el => this.inputKeyWord = el}
+                onChange={this.onChangeKeyWord}
+                rightComponent={
+                  <Icon
+                      name="search"
+                      color="rgba(0, 0, 0, 0.54)"
+                      size={17}
+                      style={DefaultStyle._searchRightIcon}
+                  />
+                }
+            />
+          </View>
+          {
+            rows.map((item, index) => {
+              return (
+                  <CardMypage
+                      key={index}
+                      onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
+                        id: item.id,
+                        type: userType
+                      })}
+                      headerTitle={'레드우드'}
+                      data={item.dataRedwood}
+                      borderBottom={true}
+                      borderRow={false}
+                      style={{padding: 0}}
+                      bgrImage={false}
+                      footer={
+                        <View
+                            style={[
+                              DefaultStyle._listBtn,
+                              {marginTop: 0, marginBottom: 0, padding: 16, paddingTop: 0},
+                            ]}>
+                          <TouchableOpacity
+                              style={[DefaultStyle._btnOutline]}
+                              onPress={() => {
+                              }}>
+                            <Text style={[DefaultStyle._textButton]}>거래명세서</Text>
+                          </TouchableOpacity>
+                        </View>
+                      }
+                  />
+              )
+            })
+          }
+
+        </View>
     );
   }
 }

@@ -48,16 +48,32 @@ class RegisterWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
   submit = () => {
-    Warehouse.registerWH(this.props.dataWH)
-      .then(res => {
-        const status = res.status;
-        if (status === 200) {
-          this.navigation.navigate('Home');
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
+    let type = this.props.route.params && this.props.route.params.type;
+    let warehouseRegNo =
+      this.props.route.params && this.props.route.params.warehouseRegNo;
+    if (type === 'ModifyWH') {
+      Warehouse.updateWH({ data: this.props.dataWH, url: warehouseRegNo })
+        .then(res => {
+          const status = res.status;
+          if (status === 200) {
+            this.navigation.navigate('Home');
+          }
+        })
+        .catch(err => {
+          console.log('err', err.response);
+        });
+    } else {
+      Warehouse.registerWH(this.props.dataWH)
+        .then(res => {
+          const status = res.status;
+          if (status === 200) {
+            this.navigation.navigate('Home');
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
   };
   render() {
     const { imageStore, workComplete, route, dataWH } = this.props;
@@ -69,11 +85,17 @@ class RegisterWH extends Component {
     console.log('routeWH', route);
     let isSubmitUpdate = false;
 
+    if (dataWH.name !== '' && dataWH.description !== '') {
+      completeIntro = true;
+    }
+    if (dataWH.name !== '' && dataWH.description !== '') {
+      completeMoreInfo = true;
+    }
     if (
-      imageStore.length > 2 &&
-      completeMoreInfo === true &&
-      completeInfo === true &&
-      completeFloor === true &&
+      // imageStore.length > 0 &&
+      // completeMoreInfo === true &&
+      // completeInfo === true &&
+      // completeFloor === true &&
       completeIntro === true
     ) {
       isSubmitUpdate = true;
@@ -110,7 +132,10 @@ class RegisterWH extends Component {
                   <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
                     대표이미지
                   </Text>
-                  <Image style={S.ImageUpload} source={imageStore[0]} />
+                  <Image
+                    style={S.ImageUpload}
+                    source={{ uri: imageStore[0].url }}
+                  />
                 </Fragment>
               ) : (
                 <Fragment>
@@ -129,8 +154,9 @@ class RegisterWH extends Component {
               }>
               <Text style={S.textLeftBtn}>창고 소개</Text>
               <View style={S.rightBtn}>
-                {(route && route.params && route.params.type === 'ModifyWH') ||
-                (dataWH && dataWH.name) ? (
+                {//   (route && route.params && route.params.type === 'ModifyWH') ||
+                // (dataWH && dataWH.name)
+                completeIntro === true ? (
                   <Text style={S.completeText}>작업완료</Text>
                 ) : (
                   <Text style={S.textRightBtn}>입력하세요</Text>
@@ -292,7 +318,117 @@ class RegisterWH extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    let warehouseRegNo =
+      this.props.route.params && this.props.route.params.warehouseRegNo;
+    this.props.updateInfo();
+    console.log('warehouseRegNo :>> ', warehouseRegNo);
+    if (warehouseRegNo) {
+      await Warehouse.detailWH(warehouseRegNo)
+        .then(res => {
+          console.log('resDetailWH', res);
+          if (res.status === 200) {
+            let dataWH = res.data;
+            let entrpNo = dataWH.relativeEntrp && dataWH.relativeEntrp.entrpNo;
+            let floors =
+              dataWH.floors.length > 0 &&
+              dataWH.floors.map((item, index) => {
+                item.seq = dataWH.floors[index].id.seq;
+                item.flrDvCode =
+                  dataWH.floors[index].flrDvCode &&
+                  dataWH.floors[index].flrDvCode.stdDetailCode;
+                item.aprchMthdDvCode =
+                  dataWH.floors[index].aprchMthdDvCode &&
+                  dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
+                return item;
+              });
+            let keeps =
+              dataWH.keeps.length > 0 &&
+              dataWH.keeps.map((item, index) => {
+                item.seq = dataWH.keeps[index].id.seq;
+                item.typeCode =
+                  dataWH.keeps[index].typeCode &&
+                  dataWH.keeps[index].typeCode.stdDetailCode;
+                item.calUnitDvCode =
+                  dataWH.keeps[index].calUnitDvCode &&
+                  dataWH.keeps[index].calUnitDvCode.stdDetailCode;
+                item.calStdDvCode =
+                  dataWH.keeps[index].calStdDvCode &&
+                  dataWH.keeps[index].calStdDvCode.stdDetailCode;
+                item.mgmtChrgDvCode =
+                  dataWH.keeps[index].mgmtChrgDvCode &&
+                  dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
+                return item;
+              });
+            let trusts =
+              dataWH.trusts.length > 0 &&
+              dataWH.trusts.map((item, index) => {
+                item.seq = dataWH.trusts[index].id.seq;
+                item.typeCode =
+                  dataWH.trusts[index].typeCode &&
+                  dataWH.trusts[index].typeCode.stdDetailCode;
+                item.calUnitDvCode =
+                  dataWH.trusts[index].calUnitDvCode &&
+                  dataWH.trusts[index].calUnitDvCode.stdDetailCode;
+                item.calStdDvCode =
+                  dataWH.trusts[index].calStdDvCode &&
+                  dataWH.trusts[index].calStdDvCode.stdDetailCode;
+                return item;
+              });
+            let insrDvCodes =
+              dataWH.insrDvCodes.length > 0
+                ? dataWH.insrDvCodes.map((item, index) => {
+                    item = dataWH.insrDvCodes[index].stdDetailCode
+                      ? dataWH.insrDvCodes[index].stdDetailCode
+                      : '';
+                    return item;
+                  })
+                : [];
+            let addOptDvCodes =
+              dataWH.addOptDvCodes.length > 0
+                ? dataWH.addOptDvCodes.map((item, index) => {
+                    item = dataWH.addOptDvCodes[index].stdDetailCode
+                      ? dataWH.addOptDvCodes[index].stdDetailCode
+                      : '';
+                    return item;
+                  })
+                : [];
+            // this.setState({ dataWH });
+
+            this.props.updateInfo({
+              // ...dataWH,
+              id: dataWH.id,
+              name: dataWH.name,
+              description: dataWH.description,
+              telNo: dataWH.telNo,
+              address: dataWH.address,
+              roadAddr: dataWH.roadAddr,
+              gps: dataWH.gps,
+              cmpltYmd: dataWH.cmpltYmd,
+              bldgArea: dataWH.bldgArea,
+              siteArea: dataWH.siteArea,
+              totalArea: dataWH.totalArea,
+              prvtArea: dataWH.prvtArea,
+              cmnArea: dataWH.cmnArea,
+              addOptDvCodes,
+              insrDvCodes,
+              cnsltPossYn: dataWH.cnsltPossYn,
+              sttsDbCode: dataWH.sttsDbCode,
+              vrfctFailReason: dataWH.vrfctFailReason,
+              pnImages: dataWH.pnImages,
+              whImages: dataWH.whImages,
+              thImages: dataWH.thImages,
+              floors,
+              keeps,
+              trusts,
+              entrpNo,
+            });
+          }
+        })
+        .catch(err => {
+          console.log('errRegisterWH', err);
+        });
+    }
+
     SplashScreen.hide();
   }
 
@@ -306,7 +442,7 @@ class RegisterWH extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.pimages,
+    imageStore: state.registerWH.whImages,
     workComplete: state.registerWH.workComplete,
     dataWH: state.registerWH,
   };
@@ -315,12 +451,9 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+    updateInfo: action => {
+      dispatch(ActionCreator.updateInfo(action));
+    },
   };
 }
 

@@ -6,21 +6,14 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
+import {SafeAreaView, View, ScrollView, TouchableOpacity, Linking} from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
-import Select from '@Components/organisms/Select';
 import FilterButton from '@Components/atoms/FilterButton';
-import DatePicker from '@react-native-community/datetimepicker';
-import {formatDateV1} from '@Utils/dateFormat';
-// Local Imports
 import DefaultStyle from '@Styles/default';
-// import TableInfo from '../TableInfo';
+import { moneyUnit , dateStr, toStdCd } from '@Utils/StringUtils';
 import TableInfo from '@Components/atoms/TableInfo';
-import { SettlementManagementService } from '@Services/apis'
+import { SettlementManagementService, Calculate } from '@Services/apis'
 import Appbars from '@Components/organisms/AppBar';
-import ActionCreator from '@Actions';
 
 import { styles as S } from '../style';
 import { styles as SS } from './style';
@@ -31,25 +24,25 @@ export default class DetailsSettlement extends Component {
     this.webView = null;
     let id = props.route.params.id
     let type = props.route.params.type
+    let urlTransaction = props.route.params.urlTransaction
     this.state = {
       id,
       type,
+      urlTransaction,
       toggleFee: true,
-      toggleCosts: true,
+      toggleCosts: false,
       feeState: [],
-      isOpenStart: false,
-      isOpenEnd: false,
       filter: {
         startDate: new Date(),
         endDate: new Date()
       },
       dataInfo: [],
       viewProgress: [],
-      viewProgressCost: [],
       dataCost: [],
       headerDetailResBody: null,
       dataTotal: [],
-      dataFee: []
+      dataFee: [],
+      cntrTypeCode: null,
     };
 
     this.navigation = props.navigation;
@@ -67,10 +60,17 @@ export default class DetailsSettlement extends Component {
       type,
       id
     };
+
+    console.log(type, 'type')
+    console.log(type, 'id')
+    let cntrTypeCode = {}
     SettlementManagementService.getDetail(params).then((res) => {
+      console.log('data', res.data.data);
       if(res.data.msg !== 'success') {
         return
       }
+      let calMgmtMResBody = res.data.data.calMgmtMResBody
+      cntrTypeCode = calMgmtMResBody.cntrTypeCode
       let settlementHeaderResBody = res.data.data.settlementHeaderResBody
       let headerDetailResBody = res.data.data.headerDetailResBody
       let headerDetail1ResBody = res.data.data.headerDetail1ResBody
@@ -84,12 +84,12 @@ export default class DetailsSettlement extends Component {
           value: settlementHeaderResBody.owner,
         },
         {
-          type: '기간',
-          value: `${headerDetail1ResBody.cntrYmdFrom} - ${headerDetail1ResBody.cntrYmdTo}`,
+          type: '계약유형',
+          value: calMgmtMResBody.cntrTypeCode ? calMgmtMResBody.cntrTypeCode.stdDetailCodeName : '',
         },
         {
-          type: '담당자',
-          value: '홍길동',
+          type: '기간',
+          value: `${headerDetail1ResBody ? headerDetail1ResBody.cntrYmdFrom : ''} ~ ${headerDetail1ResBody ? headerDetail1ResBody.cntrYmdTo : ''}`,
         },
         {
           type: '담당자 전화번호',
@@ -100,181 +100,133 @@ export default class DetailsSettlement extends Component {
           value: settlementHeaderResBody.email,
         }
       ]
-      let viewProgress = [
-        {
-          type: '정산기간',
-          value: `${headerDetail1ResBody.cntrYmdFrom} - ${headerDetail1ResBody.cntrYmdTo}`
-        },
-        {
-          type: '정산단위',
-          value: headerDetail1ResBody.calUnitDvCode.stdDetailCodeName
-        },
-        {
-          type: '가용수치',
-          value: headerDetail1ResBody.usblValue
-        },
-        {
-          type: '입고단가',
-          value: headerDetail1ResBody.whinChrg
-        },
-        {
-          type: '출고단가',
-          value: headerDetail1ResBody.whoutChrg
-        },
-        {
-          type: '재고단가 (보관비)',
-          value: headerDetail1ResBody.splyAmount
-        }
-      ]
 
-      let viewProgressCost = [
-        {
-          type: '입고량 합계',
-          value: '200',
-        },
-        {
-          type: '출고량 합계',
-          value: '200',
-        },
-        {
-          type: '재고량 합계',
-          value: '400',
-        },
-        {
-          type: '입고비 합계',
-          value: '200,000',
-        },
-        {
-          type: '출고비 합계',
-          value: '200,000',
-        },
-        {
-          type: '제고비 합계',
-          value: '300,000',
-        },
-        {
-          type: '총 합계',
-          value: '700,000',
-        }
-      ]
-
-
-
-      let vat = res.data.data.vat || 10
+      let total = 0;
+      if(res.data.data.amount && res.data.data.vat) {
+        total = res.data.data.amount + res.data.data.vat
+      }
       let dataTotal = [
         {
           type: '공급가액',
-          value: res.data.data.amount,
+          value: res.data.data.amount ? moneyUnit(res.data.data.amount) : '0 원',
         },
         {
           type: '부가세',
-          value: vat,
+          value: res.data.data.vat ? moneyUnit(res.data.data.vat) : '0 원',
         },
         {
           type: '합계금액',
-          value: res.data.data.amount + vat,
+          value: total ? moneyUnit(total) : '0 원',
         }
       ]
+
+      let detail1Subtotal = 0;
       let dataFee = res.data.data.calMgmtDetail1ResBodyList.map((item, index) => {
+        detail1Subtotal = detail1Subtotal + item.amount;
+
         return {
           title: item.occr,
           value: [
             {
-              type: '구분',
-              value: '보관단가'
+              type: '일시',
+              value: item.occr
+            },
+             // 량
+            {
+              type: '입고량',
+              value: item.whinQty || '0'
             },
             {
-              type: '구분',
-              value: '500,000'
+              type: '출고량',
+              value: item.whoutQty || '0'
             },
             {
-              type: '구분',
-              value: '-'
+              type: '재고량',
+              value: item.stckQty || '0'
+            },
+              // 단가
+            {
+              type: '입고단가',
+              value: item.whinChrg ? moneyUnit(item.whinChrg) : '0 원'
+            },
+            {
+              type: '출고단가',
+              value: item.whoutChrg ? moneyUnit(item.whoutChrg) : '0 원'
+            },
+            {
+              type: '재고단가',
+              value: item.stckChrg ? moneyUnit(item.stckChrg) : '0 원'
+            },
+              // 비
+            {
+              type: '입고단가',
+              value: item.whinUprice ? moneyUnit(item.whinUprice) : '0 원'
+            },
+            {
+              type: '출고단가',
+              value: item.whoutUprice ? moneyUnit(item.whoutUprice) : '0 원'
+            },
+            {
+              type: '재고단가',
+              value: item.stckUprice ? moneyUnit(item.stckUprice) : '0 원'
+            },
+            {
+              type: '합계',
+              value: item.amount ? moneyUnit(item.amount) : '0 원'
+            },
+            {
+              type: '비고',
+              value: item.remark || '-'
             }
           ]
         }
       })
-      dataFee.unshift({
-        title: '합계',
-        value: [
-          {
-            type: '구분',
-            value: '200',
-          },
-          {
-            type: '일시',
-            value: '200',
-          },
-          {
-            type: '출고량',
-            value: '400',
-          },
-          {
-            type: '출고량',
-            value: '200,000',
-          },
-          {
-            type: '재고량',
-            value: '200,000',
-          },
-          {
-            type: '입고비',
-            value: '300,000',
-          },
-          {
-            type: '출고비',
-            value: '700,000',
-          },
-          {
-            type: '재고비',
-            value: '700,000',
-          },
-          {
-            type: '합계',
-            value: '700,000',
-          },
-          {
-            type: '비고',
-            value: '700,000',
-          }
-        ]
+
+      let inOutSubtotal = [
+        {
+          type: '소계',
+          value: moneyUnit(detail1Subtotal)
+        }
+      ]
+
+      let countTotal = 0
+      res.data.data.calMgmtDetailResBodyList.forEach((item, index) => {
+        countTotal += item.amount
       })
+
       let dataCost = res.data.data.calMgmtDetailResBodyList.map((item, index) => {
         return {
-          title: '관리단가',
+          title: item.typeDvCode.stdDetailCodeName,
           value: [
             {
-              type: '정산기간',
-              value: '2020.11.11 ~ 2020.11.30',
+              type: '구분',
+              value: item.typeDvCode ? item.typeDvCode.stdDetailCodeName : '-'
             },
             {
-              type: '작성자',
-              value: '파렛트',
+              type: '비용',
+              value: item.amount ? moneyUnit(item.amount) : '0 원'
             },
             {
-              type: '전용면적',
-              value: '500',
-            },
-            {
-              type: '보관비',
-              value: '1,000,000원',
-            },
-            {
-              type: '보관비',
-              value: '1,000,000원',
-            },
+              type: '비고',
+              value: item.remark || '-'
+            }
           ]
         }
       })
 
+      let keepSubtotal = [
+        {
+          type: '소계',
+          value: countTotal ? moneyUnit(countTotal) : '0 원'
+        }
+      ]
+
       this.setState({
-        dataInfo, viewProgress, headerDetailResBody, dataCost, dataTotal, dataFee, viewProgressCost
+        dataInfo, inOutSubtotal, headerDetailResBody, dataCost, dataTotal, dataFee, keepSubtotal, cntrTypeCode
       })
     })
 
-
   }
-
 
   _toggle = index => {
     let FeeState = this.state.feeState;
@@ -289,67 +241,8 @@ export default class DetailsSettlement extends Component {
   };
 
 
-
-
-  showDateStart = () => {
-    let {isOpenStart} = this.state
-    this.setState({
-      isOpenStart: !isOpenStart
-    })
-  }
-
-  showDateEnd = () => {
-    let {isOpenEnd} = this.state
-    this.setState({
-      isOpenEnd: !isOpenEnd
-    })
-  }
-
-
-  onChangeStart = (event, selectedDate) => {
-    let {isOpenStart} = this.state
-    if(event.type == 'dismissed') {
-      this.setState({
-        isOpenStart: !isOpenStart
-      })
-    } else {
-      let filter =  {...this.state.filter}
-      filter.startDate = event.nativeEvent.timestamp
-      this.setState({
-        filter: filter,
-        isOpenStart: !isOpenStart
-      }, () => {
-        // this.getAllData()
-      })
-    }
-  }
-
-  onChangeEnd = (event, selectedDate) => {
-    let {isOpenEnd} = this.state
-    if(event.type == 'dismissed') {
-      this.setState({
-        isOpenEnd: !isOpenEnd
-      })
-    } else {
-      let filter =  {...this.state.filter}
-      filter.endDate = event.nativeEvent.timestamp
-      this.setState({
-        filter: filter,
-        isOpenEnd: !isOpenEnd
-      },() => {
-        // this.getAllData()
-      })
-    }
-
-  };
-
-
-
-
-
   render() {
-    const { feeState, toggleFee, toggleCosts, isOpenStart, isOpenEnd, viewProgress, dataInfo, dataTotal, dataFee , dataCost, viewProgressCost} = this.state;
-    let {startDate, endDate} = this.state.filter;
+    const { feeState, toggleFee, toggleCosts, inOutSubtotal, dataInfo, dataTotal, dataFee , dataCost , keepSubtotal} = this.state;
 
     const viewFee =
       dataFee &&
@@ -364,6 +257,7 @@ export default class DetailsSettlement extends Component {
               style={SS.toggle}
               styleLabel={SS.textToggle}
             />
+
             {feeState[findIndex] &&
             item.value &&
             feeState[findIndex].toggle === true ? (
@@ -408,6 +302,7 @@ export default class DetailsSettlement extends Component {
           </View>
         );
       });
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -417,14 +312,14 @@ export default class DetailsSettlement extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="마이페이지"
+            title="정산관리"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
         <ScrollView>
-          <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+          <View style={[DefaultStyle._cards, {marginTop: 10 , marginBottom: 120}]}>
             <View style={DefaultStyle._titleCard}>
               <Text
                 style={[
@@ -436,7 +331,7 @@ export default class DetailsSettlement extends Component {
               </Text>
             </View>
 
-            <View style={DefaultStyle._card}>
+            <View style={[DefaultStyle._card, {marginTop:0}]}>
               <View
                 style={[
                   DefaultStyle._headerCardTitle,
@@ -446,7 +341,7 @@ export default class DetailsSettlement extends Component {
                   style={[
                     DefaultStyle._textTitleCard,
                     S.textTitleTenant,
-                    { paddingBottom: 0 },
+                    { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
                   ]}>
                   계약정보
                 </Text>
@@ -458,116 +353,48 @@ export default class DetailsSettlement extends Component {
                   borderBottom={true}
                 />
               </View>
+
               <View style={[DefaultStyle._footerCards, { padding: 16 }]}>
                 <TouchableOpacity
                   style={[DefaultStyle._btnOutline]}
-                  onPress={() => {}}>
+                  onPress={() => {
+                  Calculate.getOzUrl({calKey: this.state.id}).then(res => {
+                    Linking.canOpenURL(res).then(supported => {
+                      if (supported) {
+                        Linking.openURL(res);
+                      } else {
+                        console.log("Don't know how to open URI: " + res);
+                      }})
+                  })
+
+                }}>
                   <Text style={[DefaultStyle._textButton]}>거래명세서</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
-            {/* <View style={S.filter}>
-              <View style={[S.options, { justifyContent: 'flex-start' }]}>
-                <View style={[S.optionSelect, S.optionSelectLeft]}>
-
-                  <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  onPress={()=>this.showDateStart()}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={DefaultStyle._textDate}>
-                    {formatDateV1(startDate)}
-                  </Text>
-                  <Text
-                    style={[
-                      DefaultStyle._labelTextField,
-                      { color: '#000000' },
-                    ]}>
-                    수탁 기간
-                  </Text>
-                  {
-                    isOpenStart && 
-                    <DatePicker
-                    mode={'date'}
-                    show={isOpenStart}
-                    onChange={(e) =>this.onChangeStart(e)}
-                    value={startDate}
-                    testID="dateTimePicker"
-                  />
-                  }
-                </TouchableOpacity>
-              </View>
-
-                </View>
-                <Text style={S.hyphen}>-</Text>
-                <View style={[S.optionSelect, S.optionSelectLeft]}>
-
-                  <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  onPress={()=>this.showDateEnd()}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={DefaultStyle._textDate}>
-                    {formatDateV1(endDate)}
-                  </Text>
-                  <Text
-                    style={[
-                      DefaultStyle._labelTextField,
-                      { color: '#000000' },
-                    ]}>
-                    수탁 기간
-                  </Text>
-                  {
-                    isOpenEnd && 
-                      <DatePicker
-                        mode={'date'}
-                        show={isOpenEnd}
-                        onChange={(e)=>this.onChangeEnd(e)}
-                        value={endDate}
-                        testID="dateTimePicker"
-                      />
-                  }
-
-                </TouchableOpacity>
-              </View>
-
-
-                </View>
-              </View>
-            </View> */}
-
+            {this.state.cntrTypeCode && this.state.cntrTypeCode.stdDetailCode === '2100' &&
             <View style={SS.fee}>
               <FilterButton
-                label="입･출고비"
-                onPress={() => this.setState({ toggleFee: !toggleFee })}
-                isToggle={toggleFee}
-                style={SS.toggle}
-                styleLabel={SS.textToggle}
+                  label="입･출고비"
+                  onPress={() => this.setState({toggleFee: !toggleFee})}
+                  isToggle={toggleFee}
+                  style={SS.toggle}
+                  styleLabel={SS.textToggle}
+              />
+              <TableInfo
+                  data={inOutSubtotal}
+                  style={{borderBottomWidth: 1, borderTopWidth: 0}}
               />
               {toggleFee === false ? (
-                <Fragment>
-                  <TableInfo
-                    data={viewProgress}
-                    style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
-                  />
-                  {viewFee}
-                  <View style={SS.footerCheckInfo}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        console.log('엑셀다운');
-                      }}
-                      style={[DefaultStyle._btnOutline, SS.btnProcess]}>
-                      <Text
-                        style={[
-                          DefaultStyle._textButton,
-                          { color: '#000000' },
-                        ]}>
-                        엑셀다운
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </Fragment>
+                  <Fragment>
+                    {viewFee}
+                  </Fragment>
               ) : null}
             </View>
+            }
+
+
 
             {/* {
               headerDetailResBody && */}
@@ -575,34 +402,21 @@ export default class DetailsSettlement extends Component {
                 <FilterButton
                   label="보관 및 추가비용"
                   onPress={() => this.setState({ toggleCosts: !toggleCosts })}
-                  isToggle={toggleCosts}
+                  isToggle={!toggleCosts}
                   style={SS.toggle}
                   styleLabel={SS.textToggle}
                 />
-                {toggleCosts === true ? (
+
+                <TableInfo
+                  data={keepSubtotal}
+                  style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
+                />
+
+                {toggleCosts === true &&
                   <Fragment>
-                    <TableInfo
-                      data={viewProgressCost}
-                      style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
-                    />
                     {viewCost}
-                    <View style={SS.footerCheckInfo}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          console.log('엑셀다운');
-                        }}
-                        style={[DefaultStyle._btnOutline, SS.btnProcess]}>
-                        <Text
-                          style={[
-                            DefaultStyle._textButton,
-                            { color: '#000000' },
-                          ]}>
-                          엑셀다운
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
                   </Fragment>
-                ) : null}
+                }
               </View>
             {/* } */}
 
@@ -616,7 +430,7 @@ export default class DetailsSettlement extends Component {
                   style={[
                     DefaultStyle._textTitleCard,
                     S.textTitleTenant,
-                    { paddingBottom: 0 },
+                    { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
                   ]}>
                   정산 합계
                 </Text>

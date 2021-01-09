@@ -318,10 +318,10 @@ class ContractManager extends Component {
     }
   };
   render() {
-    const { type, typeWH, dataContractWH } = this.props;
-    const {
+    const { dataContractWH } = this.props; /** type, typeWH,  */
+    let {
       valueTab,
-      dataApi,
+      // dataApi,
       contractType,
       contractStatus,
       dataSteps,
@@ -350,7 +350,12 @@ class ContractManager extends Component {
         }
         return types && status;
       });
-    console.log('dataFilter', dataFilter);
+
+    // console.log('dataFilter', dataFilter);
+    // console.log('dataSteps', dataSteps);
+
+    let checkStep = dataFilter.length === 0;
+
     const viewStep =
       dataSteps &&
       dataSteps.map((item, index) => {
@@ -358,13 +363,14 @@ class ContractManager extends Component {
           <View style={S.step} key={index}>
             <View style={S.stepLeft}>
               <Text style={S.textStep}>{item.title}</Text>
-
               <Text
                 style={[
                   S.textNumber,
-                  item.status === true ? S.textNumberActive : null,
+                  item.status === true && !checkStep
+                    ? S.textNumberActive
+                    : null,
                 ]}>
-                {item.number}
+                {checkStep ? 0 : item.number}
               </Text>
             </View>
             {(index + 1) % 3 === 0 ? null : (
@@ -386,6 +392,7 @@ class ContractManager extends Component {
         let dataTable = this.cover(item) && this.cover(item).data;
         let listBtnTenant = this.cover(item) && this.cover(item).listBtnTenant;
         let titleButton = this.cover(item) && this.cover(item).footerTitle;
+        // console.log('item', item.cntrYmdFrom);
         return (
           <Fragment key={index}>
             <CardMypage
@@ -403,6 +410,8 @@ class ContractManager extends Component {
                     seq: item.seq,
                     rentUserNo: item.rentUserNo,
                     status: item.status,
+                    rentUserID: item.rentUser?.id || item.rentUserNo,
+                    regUserDate: item.cntrYmdFrom,
                   },
                 )
               }
@@ -542,6 +551,7 @@ class ContractManager extends Component {
           </Fragment>
         );
       });
+
     return (
       <View style={DefaultStyle._body}>
         <View style={DefaultStyle._titleBody}>
@@ -614,7 +624,7 @@ class ContractManager extends Component {
     const type = this.state.valueTab;
     await Warehouse.contractManager(type)
       .then(res => {
-        console.log('resContract', res);
+        // console.log('resContract', res);
         const status = res.status;
         if (status === 200) {
           // this.setState({ dataApi: res.data.data.content });
@@ -668,37 +678,13 @@ class ContractManager extends Component {
     if (valueState !== valuePrev) {
       Warehouse.contractManager(valueState)
         .then(res => {
-          console.log('resContractUpdate', res);
+          // console.log('resContractUpdate', res);
           const status = res.status;
           if (status === 200) {
             // this.setState({ dataApi: res.data.data.content });
             this.props.contractData({ dataApi: res.data.data.content });
-          }
-        })
-        .catch(err => {
-          console.log('err', err);
-        });
-    }
-
-    if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
-      let warehSeq = this.state.dataProps.warehSeq;
-      let warehouseRegNo = this.state.dataProps.warehouseRegNo;
-      let rentUserNo = this.state.dataProps.rentUserNo;
-      // let status = this.state.dataProps.status;
-      let type = this.state.valueTab;
-      let typeWH = this.state.dataProps.typeWH === 'TRUST' ? 'trust' : 'tenant';
-      let data =
-        this.state.dataProps.typeWH === 'TRUST'
-          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
-          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
-      console.log('typeWH', typeWH);
-      console.log('data', data);
-      Warehouse.requestContract({ typeWH, data })
-        .then(res => {
-          console.log('res', res);
-          if (res.status === 200) {
-            console.log('resRequestContract', res);
             let data = res.data;
+
             let dataSteps = [
               {
                 title: '견적요청',
@@ -733,6 +719,32 @@ class ContractManager extends Component {
             ];
 
             this.setState({ dataSteps });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
+
+    if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
+      let warehSeq = this.state.dataProps.warehSeq;
+      let warehouseRegNo = this.state.dataProps.warehouseRegNo;
+      let rentUserNo = this.state.dataProps.rentUserNo;
+      // let status = this.state.dataProps.status;
+      let type = this.state.valueTab;
+      let typeWH = this.state.dataProps.typeWH === 'TRUST' ? 'trust' : 'tenant';
+      let data =
+        this.state.dataProps.typeWH === 'TRUST'
+          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
+          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
+      // console.log('typeWH', typeWH);
+      // console.log('data', data);
+      Warehouse.requestContract({ typeWH, data })
+        .then(res => {
+          // console.log('resdddddddddd', res);
+          if (res.status === 200) {
+            // console.log('resRequestContract', res);
+         
             this.navigation.navigate('RequestContract', {
               type,
               warehouseRegNo,

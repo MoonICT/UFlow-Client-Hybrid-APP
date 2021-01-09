@@ -17,6 +17,8 @@ import TableInfo from '@Components/atoms/TableInfo';
 import { styles as SS } from './style';
 import { styles as S } from '../style';
 
+import moment from 'moment';
+
 class RequestView extends Component {
   constructor(props) {
     super(props);
@@ -60,15 +62,21 @@ class RequestView extends Component {
   //   console.log('changeTime', changeTime);
   // };
   render() {
-    const { route, data, typeWH } = this.props;
+    const { data, typeWH } = this.props;
+    let orders = data?.orders[0] || [
+      {
+        label: moment(new Date()).format('YYYY.MM.DD') + '(1차)',
+        value: moment(new Date()).format('YYYY.MM.DD') + '(1차)',
+      },
+    ];
+
+    console.log('orders==>', orders);
+    console.log('data==>', data);
+
     const dataSelect = [
       {
-        label: '2020.10.26 (1차)',
-        value: '2020.10.26 (1차)',
-      },
-      {
-        label: '2020.10.26 (1차)2',
-        value: '2020.10.26 (1차)2',
+        label: moment(orders).format('YYYY.MM.DD') + '(1차)',
+        value: moment(orders).format('YYYY.MM.DD') + '(1차)',
       },
     ];
 

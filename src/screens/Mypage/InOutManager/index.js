@@ -1,4 +1,5 @@
 /**
+ * 입출고 관리
  * @create
  * @modify
  * @desc [description]
@@ -200,7 +201,7 @@ export default class InOutManager extends Component {
   };
 
   onChangeKeyWord = (e) => {
-    
+
     if (searchTimerQuery) {
       clearTimeout(searchTimerQuery);
     }
@@ -262,7 +263,7 @@ export default class InOutManager extends Component {
         this.hideDialog();
       })
   }
-  
+
 
 
   showDialog = () => this.setState({ visible: true });
@@ -311,7 +312,7 @@ export default class InOutManager extends Component {
           </TouchableOpacity>
         </View>
 
-        
+
         <View style={DefaultStyle._titleCard}>
           <Text
             style={[
@@ -344,7 +345,7 @@ export default class InOutManager extends Component {
                     수탁 기간
                   </Text>
                   {
-                    isOpenStart && 
+                    isOpenStart &&
                     <DatePicker
                     mode={'date'}
                     show={isOpenStart}
@@ -356,7 +357,7 @@ export default class InOutManager extends Component {
                 </TouchableOpacity>
               </View>
 
-              
+
             <Text style={S.hyphen}>-</Text>
             <View style={[S.optionSelect, S.optionSelectLeft]}>
 
@@ -375,7 +376,7 @@ export default class InOutManager extends Component {
                     수탁 기간
                   </Text>
                   {
-                    isOpenEnd && 
+                    isOpenEnd &&
                       <DatePicker
                         mode={'date'}
                         show={isOpenEnd}

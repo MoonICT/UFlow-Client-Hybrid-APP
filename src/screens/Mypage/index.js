@@ -35,11 +35,13 @@ import ContractManager from './ContractManager';
 import InOutManager from './InOutManager';
 import ActionCreator from '@Actions';
 import SettlementManagement from './SettlementManagement';
+import InterestWH from './InterestWH';
 
 import card from '@Assets/images/card-img.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
+import { money } from '@Services/utils/StringUtils';
 
 const data = [
   {
@@ -93,270 +95,18 @@ const dataSteps = [
     status: false,
   },
 ];
-const dataInfo = [
-  {
-    type: '창고 유형',
-    value: '보관창고, 수탁창고',
-  },
-  {
-    type: '창고 주소',
-    value: '인천광역시 서구 석남동 650-31',
-  },
-  {
-    type: '요약',
-    value: '상온/냉동/냉장/보세 12,345평',
-  },
-  {
-    type: '보관 가능 기간',
-    value: '2020.10.21 - 2023.10.27',
-  },
-  {
-    type: '보관비',
-    value: '20,000원',
-  },
-  {
-    type: '관리비',
-    value: '5,000원',
-  },
-];
+
 const listImage = [card, card, card];
-const dataEstimate = [
-  {
-    type: '창고명',
-    value: '에이씨티앤코아물류',
-  },
-  {
-    type: '창고주',
-    value: '(주)에이씨티앤코아물류',
-  },
-  {
-    type: '위치',
-    value: '인천광역시 서구 석남동 650-31',
-  },
-  {
-    type: '선택 창고 유형',
-    value: '보관 요청',
-    highlight: true,
-  },
-  {
-    type: '보관유형',
-    value: '저온',
-  },
-  {
-    type: '정산단위',
-    value: ' 제곱미터(m²)',
-  },
-  {
-    type: '산정기준',
-    value: '일(Day)',
-  },
-  {
-    type: '가용면적',
-    value: '2,000m²',
-  },
-  {
-    type: '보관 가능기간',
-    value: '2020.10.10 - 2021.10.10)',
-  },
-  {
-    type: '보관비',
-    value: '입고비(5,000원)',
-  },
-  {
-    type: '관리비',
-    value: '입고비(5,000원)',
-  },
-];
-
-const dataRequest = [
-  {
-    type: '요청 일시',
-    value: '2020.10.26 13:12:01',
-  },
-  {
-    type: '요청 보관기간',
-    value: '2020.11.10 - 2021.01.10',
-  },
-  {
-    type: '요청 가용 면적',
-    value: '8,000평',
-  },
-  {
-    type: '정산단위',
-    value: '제곱미터(m²)',
-  },
-  {
-    type: '산정기준',
-    value: '일(Day)',
-  },
-  {
-    type: '요청 보관비',
-    value: '19,000원',
-  },
-  {
-    type: '요청 관리비',
-    value: '일반관리비(7,000원)',
-  },
-  {
-    type: '추가 요청사항',
-  },
-];
-
-const dataReply = [
-  {
-    type: '요청 일시',
-    value: '2020.10.26',
-  },
-  {
-    type: '요청 보관기간',
-    value: '2020.11.10 - 2021.01.10',
-  },
-  {
-    type: '요청 가용 면적',
-    value: '1,000평',
-  },
-  {
-    type: '정산단위',
-    value: '정산단위',
-  },
-  {
-    type: '산정기준',
-    value: '일(Day)',
-  },
-  {
-    type: '보관비',
-    value: ' 20,000원',
-  },
-  {
-    type: '관리비',
-    value: '일반관리비(5,000원)',
-  },
-  {
-    type: '추가 요청사항',
-  },
-];
-
-const dataEstimateTrust = [
-  {
-    type: '창고명',
-    value: '에이씨티앤코아물류',
-  },
-  {
-    type: '창고주',
-    value: '(주)에이씨티앤코아물류',
-  },
-  {
-    type: '위치',
-    value: '인천광역시 서구 석남동 650-31',
-  },
-  {
-    type: '선택 창고 유형',
-    value: '수탁 요청',
-    highlight: true,
-  },
-  {
-    type: '보관유형',
-    value: '상온',
-  },
-  {
-    type: '정산단위',
-    value: '제곱미터(m²)',
-  },
-  {
-    type: '산정기준',
-    value: '일(Day)',
-  },
-  {
-    type: '가용면적',
-    value: '2,000m²',
-  },
-
-  {
-    type: '수탁 가능기간',
-    value: '2020.10.10 - 2021.10.10)',
-  },
-  {
-    type: '보관료',
-    value: '5,000원',
-  },
-  {
-    type: '관리비',
-    value: '5,000원',
-  },
-];
-
-const dataRequestTrust = [
-  {
-    type: '요청 일시',
-    value: '2020.10.26',
-  },
-  {
-    type: '요청 보관기간',
-    value: '2020.11.10 - 2021.01.10',
-  },
-  {
-    type: '정산단위',
-    value: '제곱미터(m²)',
-  },
-  {
-    type: '산정기준',
-    value: '일(Day)',
-  },
-  {
-    type: '요청 입고비',
-    value: '19,000평',
-  },
-  {
-    type: '요청 관리비',
-    value: '일반관리비(7,000원)',
-  },
-  {
-    type: '추가 요청 사항',
-  },
-];
-
-const dataReplyTrust = [
-  {
-    type: '요청 일시',
-    value: '2020.10.26',
-  },
-  {
-    type: '요청 보관기간',
-    value: '2020.11.10 - 2021.01.10',
-  },
-  {
-    type: '응답 가용 면적',
-    value: '1,000평',
-  },
-  {
-    type: '정산단위',
-    value: '제곱미터(m²)',
-  },
-  {
-    type: '산정기준',
-    value: '일(Day)',
-  },
-
-  {
-    type: '응답 보관비',
-    value: ' 20,000원',
-  },
-
-  {
-    type: '응답 관리비',
-    value: '일반관리비(5,000원)',
-  },
-  {
-    type: '추가 요청 사항',
-  },
-];
 class Mypage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isSwitchOn: true,
       visibleConfirm: false,
-      title: props.route.params && props.route.params.title,
+      title:
+        props.route.params && props.route.params.title
+          ? props.route.params.title
+          : '내 창고',
     };
 
     this.navigation = props.navigation;
@@ -379,57 +129,171 @@ class Mypage extends Component {
   showConfirm = () => this.setState({ visibleConfirm: true });
 
   hideConfirm = () => this.setState({ visibleConfirm: false });
+  coverColor = value => {
+    switch (value) {
+      case '0001':
+        return 'rgba(0, 0, 0, 0.54)';
+      case '1100':
+        return '#2196f3';
+      case '4100':
+        return '#fbc02d';
+      case '5100':
+        return '#4caf50';
+      case '9100':
+        return '#f44336';
+    }
+  };
+  coverType = value => {
+    if (value.keep !== null && value.trust !== null) {
+      return '보관창고, 수탁창고';
+    }
+    if (value.keep !== null && value.trust === null) {
+      return '보관창고';
+    }
+    if (value.keep === null && value.trust !== null) {
+      return ' 수탁창고';
+    }
+    if (value.keep === null && value.trust === null) {
+      return '';
+    }
+  };
   render() {
     const { imageStore, workComplete } = this.props;
-    const { title, isSwitchOn } = this.state;
+    const { title, isSwitchOn, dataWH } = this.state;
+    console.log('title :>> ', title);
+    console.log('dataWH :>> ', dataWH);
+    let viewWH =
+      dataWH &&
+      dataWH.map((item, index) => {
+        let subTitle = item.keep && item.keep.subTitle;
+        let splyAmount = item.keep && money(item.keep.splyAmount);
+        let mgmtChrg = item.keep && money(item.keep.mgmtChrg);
+        let unit = item.keep && item.keep.unit;
+
+        let subTitleTrust = item.trust && item.trust.subTitle;
+        let whoutChrgTrustTrust = item.trust && money(item.trust.whoutChrg);
+        let whinChrgTrust = item.trust && money(item.trust.whinChrg);
+        let unitTrust = item.trust && item.trust.unit;
+        let typeCover = this.coverType(item);
+
+        let dataKeep =
+          '최대' +
+          (subTitle ? subTitle : '') +
+          ',\n보관단가 ' +
+          (splyAmount ? splyAmount : '') +
+          '~/' +
+          (unit ? unit : '') +
+          ',\n관리단가 ' +
+          (mgmtChrg ? mgmtChrg : '') +
+          '~/' +
+          (unit ? unit : '');
+
+        let dataTrust =
+          '최대' +
+          (subTitleTrust ? subTitleTrust : '') +
+          ',\n보관단가 ' +
+          (whinChrgTrust ? whinChrgTrust : '') +
+          '~/' +
+          (unitTrust ? unitTrust : '') +
+          ',\n관리단가 ' +
+          (whoutChrgTrustTrust ? whoutChrgTrustTrust : '') +
+          '~/' +
+          (unitTrust ? unitTrust : '');
+
+        let dataTable = [
+          {
+            type: '등록 상태',
+            value:
+              item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001'
+                ? '미검증 공실'
+                : item.sttsDbCode.stdDetailCodeName,
+            colorValue: this.coverColor(
+              item.sttsDbCode && item.sttsDbCode.stdDetailCode,
+            ),
+          },
+          {
+            type: '창고 유형',
+            value: typeCover,
+          },
+          {
+            type: '창고 주소',
+            value: item.address && item.address,
+          },
+          {
+            type: '보관 요약',
+            value: dataKeep,
+          },
+          {
+            type: '수탁 요약',
+            value: dataTrust,
+          },
+        ];
+
+        return (
+          <CardMypage
+            key={index}
+            headerComponent={
+              <View style>
+                <Text
+                  style={[
+                    DefaultStyle._titleWH,
+                    // { padding: 15, marginLeft: 16, marginTop: 16 },
+                  ]}>
+                  {item.useTypeCode.stdDetailCodeName}
+                </Text>
+                <Text
+                  style={[DefaultStyle._headerCardTitle, { paddingTop: 4 }]}>
+                  {item.name}
+                </Text>
+              </View>
+            }
+            rightHeader={
+              <Text />
+              // <Switch
+              //   value={isSwitchOn}
+              //   onValueChange={() => {
+              //     this.setState({ isSwitchOn: !isSwitchOn });
+              //   }}
+              // />
+            }
+            data={dataTable}
+            borderRow={false}
+            styleLeft={S.styleLeftTable}
+            styleRight={S.styleRightTable}
+            bgrImage={item.thumbnail ? { uri: item.thumbnail } : null}
+            footer={
+              item.modify === true ? (
+                <TouchableOpacity
+                  style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
+                  onPress={() => {
+                    item.sttsDbCode.stdDetailCode === '0001'
+                      ? this.props.showPopup({
+                          type: 'confirm',
+                          image: '',
+                          content: '공실이 검증되지 않은 창고입니다.',
+                        })
+                      : this.navigation.navigate('RegisterWH', {
+                          type: 'ModifyWH',
+                          warehouseRegNo: item.id,
+                        });
+                    // this.props.imageAction(listImage);
+                  }}>
+                  <Text
+                    style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                    상세정보 수정하기
+                  </Text>
+                </TouchableOpacity>
+              ) : null
+            }
+          />
+        );
+      });
     let viewComponent = (
       <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
         <View style={DefaultStyle._titleCard}>
           <Text style={[DefaultStyle._textTitleCard]}>내 창고</Text>
         </View>
-        <CardMypage
-          headerComponent={
-            <View style>
-              <Text
-                style={[
-                  DefaultStyle._titleWH,
-                  // { padding: 15, marginLeft: 16, marginTop: 16 },
-                ]}>
-                상온창고
-              </Text>
-              <Text style={[DefaultStyle._headerCardTitle, { paddingTop: 4 }]}>
-                에이씨티앤코아물류
-              </Text>
-            </View>
-          }
-          rightHeader={
-            <Switch
-              value={isSwitchOn}
-              onValueChange={() => {
-                this.setState({ isSwitchOn: !isSwitchOn });
-              }}
-            />
-          }
-          data={dataInfo}
-          borderRow={false}
-          styleLeft={S.styleLeftTable}
-          styleRight={S.styleRightTable}
-          bgrImage={card}
-          footer={
-            <TouchableOpacity
-              style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
-              onPress={() => {
-                this.navigation.navigate('RegisterWH', {
-                  type: 'ModifyWH',
-                });
-                this.props.imageAction(listImage);
-              }}>
-              <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                상세정보 수정하기
-              </Text>
-            </TouchableOpacity>
-          }
-        />
+        {viewWH}
         <TouchableOpacity
           style={DefaultStyle._btnInline}
           onPress={() => {
@@ -462,10 +326,11 @@ class Mypage extends Component {
       case '정산관리':
         viewComponent = <SettlementManagement navigation={this.navigation} />;
         break;
-      // case '관심 창고':
-      //   viewComponent = <InterestWH navigation={this.navigation} />;
-      //   break;
+      case '관심 창고':
+        viewComponent = <InterestWH navigation={this.navigation} />;
+        break;
       default:
+        viewComponent;
       // code block
     }
 
@@ -553,13 +418,23 @@ class Mypage extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    // console.log('::componentDidMount::');
-    const getWH = await Warehouse.myWH();
-    // console.log('getWH :>> ', getWH);
-    if (getWH.status === 200) {
-      const dataWH = getWH.data.data.content;
-      console.log('dataWH :>> ', dataWH);
-    }
+    // const getWH = await Warehouse.myWH();
+    // if (getWH.status === 200) {
+    //   const dataWH = getWH.data._embedded.warehouses;
+    //   console.log('dataWH :>> ', dataWH);
+    // }
+    await Warehouse.myWH()
+      .then(res => {
+        console.log('res', res);
+        if (res.status === 200) {
+          let dataWH = res.data._embedded.warehouses;
+          this.setState({ dataWH });
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+
     // SplashScreen.hide();
   }
 
@@ -584,9 +459,9 @@ function mapDispatchToProps(dispatch) {
     imageAction: action => {
       dispatch(ActionCreator.dataImage(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
+    },
   };
 }
 

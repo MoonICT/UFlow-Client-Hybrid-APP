@@ -5,38 +5,20 @@
  */
 
 // Global Imports
-import React, { Component, Fragment } from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  TouchableHighlight,
-  Image,
-  TextInput,
-  Platform,
-} from 'react-native';
+import React, { Component } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Card, Checkbox, Text, Button, IconButton } from 'react-native-paper';
-// import {useNavigation} from '@react-navigation/native';
-
+import { Card, Text } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
-
 import ActionCreator from '@Actions';
-import ignore2 from '@Assets/images/ignore2x.png';
-import ignore1 from '@Assets/images/ignore.png';
-import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
-import { styles as SS } from './style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import ImagePicker from 'react-native-image-picker';
 import DatePicker from '@Components/organisms/DatePicker';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
+import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 
 class FormInfo extends Component {
   constructor(props) {
@@ -46,9 +28,13 @@ class FormInfo extends Component {
       title: 'Profile Photo',
       confirm: false,
       value: 1,
-      from: new Date(),
+      from: props.formData.usblYmdFrom
+        ? new Date(props.formData.usblYmdFrom)
+        : new Date(),
       showFrom: false,
-      to: new Date(),
+      to: props.formData.usblYmdTo
+        ? new Date(props.formData.usblYmdTo)
+        : new Date(),
       showTo: false,
       dataForm: [
         {
@@ -119,6 +105,8 @@ class FormInfo extends Component {
       showTo,
       mode,
     } = this.state;
+    console.log('formDataKeep :>> ', formData);
+
     const dataSelect = [
       {
         label: '냉동',
@@ -237,14 +225,6 @@ class FormInfo extends Component {
         value: '9100',
       },
     ];
-    // let commonA = parseInt(commonAreaState) * 2;
-    // console.log('commonAreaState2 :>> ', commonAreaState2);
-    let timeForm = new Date();
-    timeForm.setTime(formData.usblYmdFrom);
-    let timeTo = new Date();
-    timeTo.setTime(formData.usblYmdTo);
-    let timeFormCover = timeForm.toLocaleDateString();
-    let timeToCover = timeTo.toLocaleDateString();
 
     return (
       <Card style={S.cards}>
@@ -268,7 +248,6 @@ class FormInfo extends Component {
             selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
             valueProps={e => {
-              // this.setState({ calUnitDvCode: e })
               let dataF = formData;
               dataF.calUnitDvCode = e;
               valueForm && valueForm(dataF);
@@ -279,7 +258,6 @@ class FormInfo extends Component {
             selectedValue={formData.calStdDvCode}
             labelSelected="산정기준"
             valueProps={e => {
-              // this.setState({ calculationStandard: e });
               let dataF = formData;
               dataF.calStdDvCode = e;
               valueForm && valueForm(dataF);
@@ -290,7 +268,6 @@ class FormInfo extends Component {
             selectedValue={formData.mgmtChrgDvCode}
             labelSelected="관리비구분"
             valueProps={e => {
-              // this.setState({ calculationStandard: e });
               let dataF = formData;
               dataF.mgmtChrgDvCode = e;
               valueForm && valueForm(dataF);
@@ -300,42 +277,43 @@ class FormInfo extends Component {
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField="공용면적"
+                defaultValue={
+                  formData.cmnArea
+                    ? numberToStd(toPyeong(formData.cmnArea))
+                    : ''
+                }
                 textRight="평"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
                   let valueCover = toSquareMeter(value);
-                  // const valueCover = (value * 3.305785).toFixed(0).toString();
-                  this.setState({ commonAreaState2:  e.replace(/[^0-9]/g, '') });
+                  this.setState({ commonAreaState2: e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.cmnArea = valueCover;
+                  dataF.cmnArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
-                // value={commonAreaState2 === '' ? '0' : formData.cmnArea}
                 value={formData.cmnArea === '' ? '0' : commonAreaState2}
-
                 keyboardType="numeric"
               />
             </View>
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="공용면적"
-                defaultValue={'0'}
+                defaultValue={
+                  formData.cmnArea ? numberToStd(formData.cmnArea) : '0'
+                }
                 textRight="m2"
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let text = e.replace(/[^0-9]/g, '');
+                  let value = parseInt(text);
                   let valueCover = toPyeong(value);
-                  // const valueCover = (value / 3.305785).toFixed(0).toString();
                   this.setState({
                     commonAreaState2: valueCover,
                   });
-                  // formData.cmnArea
                   let dataF = formData;
-                  dataF.cmnArea = e.replace(/[^0-9]/g, '');
+                  dataF.cmnArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
-                // value={formData.cmnArea === '' ? '0' : commonAreaState2}
                 value={commonAreaState2 === '' ? '0' : formData.cmnArea}
-
               />
             </View>
           </View>
@@ -344,13 +322,17 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="가용수치"
                 textRight="평"
+                defaultValue={
+                  formData.usblValue
+                    ? numberToStd(toPyeong(formData.usblValue))
+                    : '0'
+                }
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
                   let valueCover = toSquareMeter(value);
-                  // const valueCover = (value * 3.305785).toFixed(0).toString();
-                  this.setState({ usblValueState2:  e.replace(/[^0-9]/g, '') });
+                  this.setState({ usblValueState2: e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.usblValue = valueCover;
+                  dataF.usblValue = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
                 value={formData.usblValue === '' ? '0' : usblValueState2}
@@ -361,14 +343,18 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="가용수치"
                 textRight="m2"
+                defaultValue={
+                  formData.usblValue ? numberToStd(formData.usblValue) : '0'
+                }
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let text = e.replace(/[^0-9]/g, '');
+                  let value = parseInt(text);
                   let valueCover = toPyeong(value);
                   this.setState({
                     usblValueState2: valueCover,
                   });
                   let dataF = formData;
-                  dataF.usblValue = e.replace(/[^0-9]/g, '');
+                  dataF.usblValue = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
                 value={usblValueState2 === '' ? '0' : formData.usblValue}
@@ -418,69 +404,41 @@ class FormInfo extends Component {
             </TouchableOpacity>
           </View>
 
-          {
-            // <TextField
-            //   labelTextField="보관 가능 기간"
-            //   placeholder="YYYY.MM.DD"
-            //   // defaultValue={formData.usblYmdFrom}
-            //   value={timeFormCover}
-            //   valueProps={e => {
-            //     // this.setState({ usblYmdFrom: e });
-            //     let d = new Date(e).getTime();
-            //     let dataF = formData;
-            //     dataF.usblYmdFrom = d;
-            //     valueForm && valueForm(dataF);
-            //     this.setState({ usblYmdFrom: d });
-            //   }}
-            // />
-          }
           <TextField
             labelTextField="보관단가"
             value={formData.splyAmount}
+            defaultValue={
+              formData.splyAmount ? numberToStd(formData.splyAmount) : ''
+            }
             textRight="원"
             valueProps={e => {
               this.setState({ splyAmount: e });
               let dataF = formData;
-              dataF.splyAmount = e;
+              dataF.splyAmount = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="관리단가"
             value={formData.mgmtChrg}
+            defaultValue={
+              formData.mgmtChrg ? numberToStd(formData.mgmtChrg) : ''
+            }
             textRight="원"
             valueProps={e => {
               this.setState({ mgmtChrg: e });
               let dataF = formData;
-              dataF.mgmtChrg = e;
+              dataF.mgmtChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
-          {/** 
-               <View style={DefaultStyle._listElement}>
-                <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-                  <Select
-                    data={costs}
-                    labelSelected="관리단가"
-                    valueProps={e => this.setState({ managementUnitCost: e })}
-                  />
-                </View>
-                <View style={DefaultStyle._element}>
-                  <TextField
-                    defaultValue="1000"
-                    textRight="원"
-                    valueProps={e => this.setState({ managementUnitCost2: e })}
-                  />
-                </View>
-              </View>
-              */}
 
           <TextField
             labelTextField="비고"
+            defaultValue={formData.remark ? formData.remark : ''}
             value={formData.remark}
             valueProps={e => {
               this.setState({ remark: e });
-              this.setState({ mgmtChrg: e });
               let dataF = formData;
               dataF.remark = e;
               valueForm && valueForm(dataF);

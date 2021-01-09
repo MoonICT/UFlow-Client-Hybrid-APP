@@ -90,7 +90,7 @@ class Information extends Component {
     const { checkAll, checkSMS, checkMail, tabInfo, userInfo } = this.state;
 
     return (
-      <SafeAreaView style={S.container}>
+      <ScrollView style={S.container}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -135,7 +135,7 @@ class Information extends Component {
             </Button>
           </Dialog.Actions>
         </Dialog>
-      </SafeAreaView>
+      </ScrollView>
     );
   }
 }

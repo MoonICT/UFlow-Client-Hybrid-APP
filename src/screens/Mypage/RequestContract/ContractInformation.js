@@ -33,6 +33,7 @@ import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Warehouse } from '@Services/apis';
+import configURL from '@Services/http/ConfigURL';
 
 class ContractInformation extends Component {
   constructor(props) {
@@ -51,21 +52,27 @@ class ContractInformation extends Component {
       type,
       warehouse,
       rentUser,
+      cntrYmdFrom,
+      cntrYmdTo,
+      mediaFile,
     } = this.props;
     let dataTable = [
       {
-        type: '계약 요청일',
-        value: '',
+        type: '계약 요청일자',
+        value: cntrYmdFrom,
       },
       {
-        type: '계약 승인일',
-        value: '',
+        type: '계약 승인일자',
+        value: cntrYmdTo,
       },
       {
         type: '첨부 서류',
-        value: '',
+        isImageLink: true,
+        fileName: mediaFile?.file2,
+        value: `${configURL.FILE_SERVER_ADDRESS}/${mediaFile?.file2}`,
       },
     ];
+
     let viewComponent;
     switch (status) {
       case '1100':

@@ -1,7 +1,8 @@
 import moment from 'moment';
 // import {Axios, parseQuery} from '@Service/http'
 
-export const moneyConvert = (value, unitStr = '원') => {
+export const moneyConvert = (value = 0, unitStr = '원') => {
+  if (value === '' || value === undefined) return 0;
   return (
     value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' ' + unitStr
   );
@@ -43,4 +44,12 @@ export const toStdName = (array, stdCd) => {
     return maps[0].stdDetailCodeName;
   }
   return stdCd;
+};
+
+export const stdToNumber = value => {
+  return parseInt(value, 0);
+};
+
+export const numberToStd = value => {
+  return value.toString();
 };

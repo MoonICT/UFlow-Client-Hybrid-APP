@@ -24,7 +24,7 @@ import { debounce } from 'lodash'
 const tabDutyDvCode = [
   {
     id: '',
-    title: 'Top 10'
+    title: '전체'
   },
   {
     id: 'WHRG',
@@ -94,34 +94,21 @@ class RegisterWH extends Component {
   }
 
   fetchData(params) {
-    FAQ.getFAQList({ ...params, dutyDvCode: this.state.dutyDvCode })
+    const { dutyDvCode } = this.state;
+
+    FAQ.getFAQList({ ...params, dutyDvCode: dutyDvCode })
       .then(res => {
         console.log('::::: FAQ List :::::', res);
         if (res.status === 200) {
           this.setState({
-            faqList: res.data._embedded.faqs,
+            faqList: res.data._embedded && res.data._embedded.faqs,
           });
         }
       })
-      .catch(err => {
-        console.log('err', err);
+      .catch(error => {
+        alert(error.response.data.message);
       });
     SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    // console.log('::componentDidUpdate::');
-  }
-
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    // console.log('//::componentWillUnmount::');
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -129,7 +116,6 @@ class RegisterWH extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   render() {
-
     const { faqList } = this.state;
     console.log('faqList -> ', faqList);
 
@@ -139,9 +125,9 @@ class RegisterWH extends Component {
       )
     }
 
-    const handleQueryChange = debounce((query) => {
+    const handleQueryChange = (query) => {
       this.fetchData({ query: query })
-    }, 500)
+    }
 
     const handleClickTab = (tabName, index) => {
       // console.log('tabName -> ', tabName);
@@ -163,6 +149,7 @@ class RegisterWH extends Component {
               titleStyle={[DefaultStyle._contentAccordion, S.title]}
               id={`${index}`}>
               <List.Item
+                style={[DefaultStyle.bgMuted]}
                 numberOfLines={5}
                 description={item.rplyContent}
                 titleStyle={S.descript}
@@ -174,7 +161,7 @@ class RegisterWH extends Component {
       });
 
     return (
-      <SafeAreaView style={S.container}>
+      <ScrollView style={S.container}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -182,7 +169,7 @@ class RegisterWH extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="공지사항"
+            title="자주 묻는 질문"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -203,7 +190,7 @@ class RegisterWH extends Component {
           <AppGrid data={tabDutyDvCode} titleProps={handleClickTab} />
           <Accordion type="group">{items}</Accordion>
         </ScrollView>
-      </SafeAreaView>
+      </ScrollView>
     );
   }
 

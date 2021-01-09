@@ -79,7 +79,6 @@ class RegisterInfoFloor extends Component {
 
   _addForm = valueTab => {
     let list = this.state.floors;
-
     list.push({
       flrDvCode: 'F1',
       flrArea: '',
@@ -117,6 +116,7 @@ class RegisterInfoFloor extends Component {
   render() {
     const { imageStore, dataInfoFloor } = this.props;
     const { floors } = this.state;
+    console.log('dataInfoFloor', dataInfoFloor);
     console.log('floors', floors);
     let isSubmitUpdate = false;
     let filterflrArea = floors && floors.filter(item => item.flrArea === '');

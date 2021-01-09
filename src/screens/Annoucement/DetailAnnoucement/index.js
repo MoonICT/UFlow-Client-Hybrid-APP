@@ -6,21 +6,29 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  ScrollView,
+  useWindowDimensions,
+} from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text } from 'react-native-paper';
+import { WebView } from 'react-native-webview';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from '../style';
+import { Annoucement } from '@Services/apis';
+import HTML from 'react-native-render-html';
 
 class RegisterInfo extends Component {
   constructor(props) {
     super(props);
-    this.webView = null;
+    // this.webView = null;
     this.state = { isSwitchOn: false };
 
     this.navigation = props.navigation;
@@ -33,15 +41,16 @@ class RegisterInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   render() {
     const { route } = this.props;
-    console.log('route -> ', route);
+    const { data } = this.state;
+    console.log('data -> ', data);
 
     let contentDetail = route?.params?.annoucementDetails;
-    
+
     let title = contentDetail?.title;
     let date = contentDetail?.createdDate;
     let field1 = contentDetail?.fileName1;
@@ -49,7 +58,6 @@ class RegisterInfo extends Component {
     let field3 = contentDetail?.fileName3;
     let field4 = contentDetail?.fileName4;
     let field5 = contentDetail?.fileName5;
-
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -59,7 +67,7 @@ class RegisterInfo extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="창고 위치"
+            title="공지사항"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -67,14 +75,18 @@ class RegisterInfo extends Component {
         </Appbars>
         <ScrollView>
           <View style={S.bodyView}>
-            <Text style={DefaultStyle.titleItem}>{title}</Text>
-            <Text style={DefaultStyle.contentItem}>{date}</Text>
+            <Text style={DefaultStyle.titleItem}>{data && data.title}</Text>
+            <Text style={DefaultStyle.contentItem}>
+              {data && data.createdDate}
+            </Text>
             <View style={S.content}>
-              <Text style={S.textContent}>{field1}</Text>
-              <Text style={S.textContent}>{field2}</Text>
-              <Text style={S.textContent}>{field3}</Text>
-              <Text style={S.textContent}>{field4}</Text>
-              <Text style={S.textContent}>{field5}</Text>
+              <View style={{ flex: 1 }}>
+                <HTML
+                  tagsStyles={{p: { marginBottom: 0, marginTop: 0 }}}
+                  source={{ html: data && data.content }}
+                  contentWidth={'100%'}
+                />
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -84,7 +96,20 @@ class RegisterInfo extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    let idProps =
+      this.props.route && this.props.route.params.annoucementDetails.id;
+    Annoucement.getListAnnoucement(idProps)
+      .then(res => {
+        console.log('::::: Annoucement Detail :::::', res);
+        if (res.status === 200) {
+          this.setState({
+            data: res.data,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
     SplashScreen.hide();
   }
 

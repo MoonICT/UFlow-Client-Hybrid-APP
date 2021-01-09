@@ -26,7 +26,7 @@ import CardMypage from '@Components/organisms/CardMypage';
 import ContractManager from '@Screeens/Mypage/ContractManager';
 
 import InOutManager from './InOutManager';
-import SettlementManagement from './SettlementManagement';
+// import SettlementManagement from './SettlementManagement';
 import InterestWH from './InterestWH';
 import ActionCreator from '@Actions';
 

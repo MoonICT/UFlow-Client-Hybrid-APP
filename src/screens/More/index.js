@@ -158,7 +158,7 @@ class More extends Component {
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
                   onPress={() =>
-                    this.navigation.navigate('TenantMypage', {
+                    this.navigation.navigate('Mypage', {
                       title: '정산관리',
                     })
                   }>
@@ -191,7 +191,9 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+                  onPress={() => this.navigation.navigate('Mypage',{
+                    title: '관심 창고',
+                  })}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={save} />
                     <Text style={DefaultStyle.titleItem}>관심창고</Text>
@@ -206,7 +208,11 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('ProprietorMypage')}>
+                  onPress={() =>
+                    this.navigation.navigate('Mypage', {
+                      title: '내 창고',
+                    })
+                  }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={warehouse} />
                     <Text style={DefaultStyle.titleItem}>내 창고</Text>
@@ -264,7 +270,7 @@ class More extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('Annoucement')}>
+                onPress={() => this.navigation.navigate('LogisticsKnowledge')}>
                 <View style={[DefaultStyle.leftItem, S.item]}>
                   <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>
                 </View>
