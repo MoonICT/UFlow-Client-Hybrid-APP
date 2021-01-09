@@ -17,6 +17,7 @@ import * as WarehouseOwner from './WarehouseOwner';
 import * as WarehouseTenant from './WarehouseTenant';
 import * as WarehouseMobileAuth from './WarehouseMobileAuth';
 import * as FindPassword from './FindPassword';
+import * as Fav from './Fav';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {
@@ -39,5 +40,6 @@ export {
   WarehouseOwner,
   WarehouseTenant,
   WarehouseMobileAuth,
-  FindPassword
+  FindPassword,
+  Fav
 };
