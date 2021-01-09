@@ -151,6 +151,7 @@ export default class SettlementManagement extends Component {
         return {
           id: item.id,
           warehouseName: item.warehouseName,
+          urlTransaction: item.urlTransaction,
           dataRedwood: [
             {
               type: '정산 기간',
@@ -158,7 +159,7 @@ export default class SettlementManagement extends Component {
             },
             {
               type: '계약 유형',
-              value: item.cntrDvCode.stdCodeName,
+              value: item.cntrTypeCode.stdDetailCodeName,
             },
             {
               type: '정산 합계 (VAT포함)',
@@ -405,9 +406,10 @@ export default class SettlementManagement extends Component {
                 key = {index}
                 onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
                   id: item.id,
-                  type: valueTab
+                  type: valueTab,
+                  urlTransaction: item.urlTransaction
                 })}
-                headerTitle={'레드우드'}
+                headerTitle={item.warehouseName}
                 data={item.dataRedwood}
                 borderBottom={true}
                 borderRow={false}

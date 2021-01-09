@@ -31,14 +31,17 @@ export default class DetailsSettlement extends Component {
     this.webView = null;
     let id = props.route.params.id
     let type = props.route.params.type
+    let urlTransaction = props.route.params.urlTransaction
     this.state = {
       id,
       type,
+      urlTransaction,
       toggleFee: true,
       toggleCosts: true,
       feeState: [],
       isOpenStart: false,
       isOpenEnd: false,
+      toggleTotal: true,
       filter: {
         startDate: new Date(),
         endDate: new Date()
@@ -100,6 +103,7 @@ export default class DetailsSettlement extends Component {
           value: settlementHeaderResBody.email,
         }
       ]
+      console.log('res', res)
       let viewProgress = [
         {
           type: '정산기간',
@@ -128,35 +132,42 @@ export default class DetailsSettlement extends Component {
       ]
 
       let viewProgressCost = [
+        // {
+        //   type: '정산기간',
+        //   value: '200',
+        // },
+        // {
+        //   type: '정산단위',
+        //   value: '200',
+        // },
+        // {
+        //   type: '전용면적',
+        //   value: '400',
+        // },
+        // {
+        //   type: '보관단가',
+        //   value: '200,000',
+        // },
+        // {
+        //   type: '관리단가',
+        //   value: '200,000',
+        // }
+
+
         {
-          type: '입고량 합계',
-          value: '200',
-        },
-        {
-          type: '출고량 합계',
-          value: '200',
-        },
-        {
-          type: '재고량 합계',
-          value: '400',
-        },
-        {
-          type: '입고비 합계',
+          type: '구분',
           value: '200,000',
         },
         {
-          type: '출고비 합계',
+          type: '보관비',
           value: '200,000',
         },
         {
-          type: '제고비 합계',
-          value: '300,000',
+          type: '관리비',
+          value: '200,000',
         },
-        {
-          type: '총 합계',
-          value: '700,000',
-        }
       ]
+
 
 
 
@@ -179,93 +190,88 @@ export default class DetailsSettlement extends Component {
         return {
           title: item.occr,
           value: [
+            // {
+            //   type: '구분',
+            //   value: '보관단가'
+            // },
             {
-              type: '구분',
-              value: '보관단가'
+              type: '일시',
+              value: item.occr
             },
             {
-              type: '구분',
-              value: '500,000'
+              type: '입고량',
+              value: item.whinQty || ''
             },
             {
-              type: '구분',
-              value: '-'
+              type: '출고량',
+              value: item.whoutQty || '0'
+            },
+            {
+              type: '재고량',
+              value: item.stckQty || '0'
+            },
+            {
+              type: '입고비',
+              value: item.whinUprice || '0'
+            },
+            {
+              type: '출고비',
+              value: item.whoutUprice || '0'
+            },
+            {
+              type: '재고비',
+              value: item.stckUprice || '0'
+            },
+            {
+              type: '합계',
+              value: item.amount || ''
+            },
+            {
+              type: '비고',
+              value: item.remark || ''
             }
           ]
         }
       })
-      dataFee.unshift({
-        title: '합계',
-        value: [
-          {
-            type: '구분',
-            value: '200',
-          },
-          {
-            type: '일시',
-            value: '200',
-          },
-          {
-            type: '출고량',
-            value: '400',
-          },
-          {
-            type: '출고량',
-            value: '200,000',
-          },
-          {
-            type: '재고량',
-            value: '200,000',
-          },
-          {
-            type: '입고비',
-            value: '300,000',
-          },
-          {
-            type: '출고비',
-            value: '700,000',
-          },
-          {
-            type: '재고비',
-            value: '700,000',
-          },
-          {
-            type: '합계',
-            value: '700,000',
-          },
-          {
-            type: '비고',
-            value: '700,000',
-          }
-        ]
+      let countTotal = 0
+      res.data.data.calMgmtDetailResBodyList.forEach((item, index) => {
+        countTotal += item.vat
       })
       let dataCost = res.data.data.calMgmtDetailResBodyList.map((item, index) => {
         return {
-          title: '관리단가',
+          title: item.typeDvCode.stdDetailCodeName,
           value: [
             {
-              type: '정산기간',
-              value: '2020.11.11 ~ 2020.11.30',
+              type: '구분',
+              value: item.typeDvCode.stdDetailCodeName
             },
             {
-              type: '작성자',
-              value: '파렛트',
+              type: '비용',
+              value: item.vat || 0
             },
             {
-              type: '전용면적',
-              value: '500',
-            },
-            {
-              type: '보관비',
-              value: '1,000,000원',
-            },
-            {
-              type: '보관비',
-              value: '1,000,000원',
-            },
+              type: '비고',
+              value: item.remark || ''
+            }
           ]
         }
       })
+
+      
+
+      dataCost.unshift({
+          title: '합계',
+          value: [
+            {
+              type: '총 합계',
+              value: countTotal
+            }
+          ]
+      })
+
+
+
+
 
       this.setState({
         dataInfo, viewProgress, headerDetailResBody, dataCost, dataTotal, dataFee, viewProgressCost
@@ -343,12 +349,13 @@ export default class DetailsSettlement extends Component {
 
   };
 
+  renderbang2(data) {
 
-
+  }
 
 
   render() {
-    const { feeState, toggleFee, toggleCosts, isOpenStart, isOpenEnd, viewProgress, dataInfo, dataTotal, dataFee , dataCost, viewProgressCost} = this.state;
+    const { feeState, toggleFee, toggleCosts, isOpenStart, isOpenEnd, toggleTotal, viewProgress, dataInfo, dataTotal, dataFee , dataCost, viewProgressCost} = this.state;
     let {startDate, endDate} = this.state.filter;
 
     const viewFee =
@@ -364,6 +371,7 @@ export default class DetailsSettlement extends Component {
               style={SS.toggle}
               styleLabel={SS.textToggle}
             />
+            
             {feeState[findIndex] &&
             item.value &&
             feeState[findIndex].toggle === true ? (
@@ -408,6 +416,7 @@ export default class DetailsSettlement extends Component {
           </View>
         );
       });
+    
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -550,24 +559,12 @@ export default class DetailsSettlement extends Component {
                     style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
                   />
                   {viewFee}
-                  <View style={SS.footerCheckInfo}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        console.log('엑셀다운');
-                      }}
-                      style={[DefaultStyle._btnOutline, SS.btnProcess]}>
-                      <Text
-                        style={[
-                          DefaultStyle._textButton,
-                          { color: '#000000' },
-                        ]}>
-                        엑셀다운
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
                 </Fragment>
               ) : null}
             </View>
+
+           
+
 
             {/* {
               headerDetailResBody && */}
@@ -582,25 +579,10 @@ export default class DetailsSettlement extends Component {
                 {toggleCosts === true ? (
                   <Fragment>
                     <TableInfo
-                      data={viewProgressCost}
+                      data={[]}
                       style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
                     />
                     {viewCost}
-                    <View style={SS.footerCheckInfo}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          console.log('엑셀다운');
-                        }}
-                        style={[DefaultStyle._btnOutline, SS.btnProcess]}>
-                        <Text
-                          style={[
-                            DefaultStyle._textButton,
-                            { color: '#000000' },
-                          ]}>
-                          엑셀다운
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
                   </Fragment>
                 ) : null}
               </View>
