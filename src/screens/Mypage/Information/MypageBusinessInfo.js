@@ -119,7 +119,7 @@ class MypageBusinessInfo extends Component {
         });
       })
       .catch(err => {
-        console.log('errIntroWH', err.response);
+        console.log('errIntroWH', err.message);
       });
   }
 
@@ -230,7 +230,7 @@ class MypageBusinessInfo extends Component {
       console.log('::::: API Add Business Info  :::::', res)
       // setIsComplete(true)
     }).catch(err => {
-      alert('서버에러:' + err.response)
+      alert('서버에러:' + err.message)
     });
   };
 

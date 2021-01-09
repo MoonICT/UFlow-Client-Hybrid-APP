@@ -106,6 +106,9 @@ export default StyleSheet.create({
   flex_1: {
     flex: 1,
   },
+  bgMuted:{
+    backgroundColor:'rgba(0, 0, 0, 0.04)'
+  },
   header: {
     height: 48,
     display: 'flex',

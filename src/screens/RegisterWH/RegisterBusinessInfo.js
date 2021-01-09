@@ -154,7 +154,7 @@ class RegisterBusinessInfo extends Component {
         });
       })
       .catch(err => {
-        console.log('errIntroWH', err.response);
+        console.log('errIntroWH', err.message);
       });
   }
 
@@ -280,7 +280,7 @@ class RegisterBusinessInfo extends Component {
       alert('창고 사업자 등록이 완료되었습니다.')
       this.navigation.navigate('RegisterWH', res.data);
     }).catch(err => {
-      alert('서버에러:' + err.response);
+      alert('서버에러:' + err.message);
     });
   };
 
