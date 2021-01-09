@@ -6,15 +6,12 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import {
-  Checkbox,
-  Appbar,
-  Searchbar,
   Text,
   Button,
   Dialog,
-  Paragraph,
+  Portal
 } from 'react-native-paper';
 
 // Local Imports
@@ -23,10 +20,11 @@ import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import { styles as S } from '../style';
 import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
-import { Entrp } from '@Services/apis';
+import { Entrp, MediaUpload, Warehouse } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {daumAddress} from "@Services/utils/daumAddress";
+import CertMobile from '@Components/organisms/CertMobile';
+import DocumentPicker from 'react-native-document-picker';
+import Postcode from 'react-native-daum-postcode';
 
 const tabSelect = [
   {
@@ -38,29 +36,6 @@ const tabSelect = [
     title: '사업자 등록 정보'
   },
 ]
-
-const dataSelect = [
-  {
-    label: '냉동 1',
-    value: '0001',
-  },
-  {
-    label: '냉장 2',
-    value: '0002',
-  },
-  {
-    label: '상온 3',
-    value: '0003',
-  },
-  {
-    label: '위험물 4',
-    value: '0004',
-  },
-  {
-    label: '기타 5',
-    value: '9100',
-  },
-];
 
 class MypageBusinessInfo extends Component {
   constructor(props) {
@@ -110,22 +85,88 @@ class MypageBusinessInfo extends Component {
     this.setState({ tabInfo: tabSelect[index].title });
   }
 
-  showDialog = () => this.setState({ visible: true });
+   _showDialog = () => this.setState({ visible: true });
 
-  hideDialog = () => this.setState({ visible: false });
+  _hideDialog = () => this.setState({ visible: false });
 
-  handleChoosePhoto = () => {
-    const options={
-      title:'select a photo',
-      takePhotoButtonTitle:'Take a Photo',
-      chooseFrmoLibraryButtonTitle:'Choose from Gallery',
-      quality:1
-  };
-    launchImageLibrary(options, response => {
-      if (response.uri) {
-        this.setState({ photo: response });
+  /** 주소 검색 API*/
+  getKakaoAddress = (data) => {
+    const { businessInfo } = this.state;
+
+    console.log('dataAddress', data);
+
+    Warehouse.searchAddressKakao({ query: data.address })
+      .then(res => {
+        // set 주소
+        this.setState({
+          businessInfo: {
+            ...businessInfo,
+            jibunAddr: {
+              ...businessInfo.jibunAddr,
+              zipNo: data.zonecode,
+              address: data.jibunAddress,
+            },
+            roadAddr: {
+              ...businessInfo.roadAddr,
+              zipNo: data.zonecode,
+              address: data.roadAddress,
+            },
+            gps: {
+              latitude: res.data.documents[0].x,
+              longitude: res.data.documents[0].y
+            }
+          }
+        });
+      })
+      .catch(err => {
+        console.log('errIntroWH', err);
+      });
+  }
+
+  // upload image
+  handlePicker = async () => {
+    const { businessInfo } = this.state;
+
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      });
+      this.setState({ singleFile: res }, async () => {
+        if (res != null) {
+          // If file selected then create FormData
+          let { singleFile } = this.state;
+          const data = new FormData();
+          data.append('name', singleFile.name);
+          data.append('file', singleFile);
+          // Please change file upload URL
+          MediaUpload.uploadFile(data).then(respon => {
+            if (respon.status === 200) {
+              let { url } = respon.data;
+            
+              var pathArray = url.split( '/' );
+              var host = pathArray[pathArray.length-1];
+
+              this.setState({
+                photo: url,
+                businessInfo: {
+                  ...businessInfo,
+                  regFile: host
+                }
+              });
+            }
+          });
+        } else {
+          // If no file selected the show alert
+          alert('Please Select File first');
+        }
+      });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
       }
-    });
+    }
   };
 
   /**
@@ -154,7 +195,8 @@ class MypageBusinessInfo extends Component {
       imageList: [{
         data_url: `${configURL.API_SERVER_ADDRESS}/${data.regFile}`,
       }],
-      businessInfo: setData
+      businessInfo: setData,
+      photo: `${configURL.FILE_SERVER_ADDRESS}/${data.regFile}`
     });
     // reset(setData)
   };
@@ -165,7 +207,6 @@ class MypageBusinessInfo extends Component {
   handleChangeSelectBox = (e, i) => {
     const { listBusinessInfo } = this.state;
 
-    console.log(i)
     this.setState({
       selectedInfoIndex:i,
       isCert: false,
@@ -176,11 +217,16 @@ class MypageBusinessInfo extends Component {
   }
 
   handleOnSubmit = () => {
-    const { businessInfo } = this.state;
+    const { businessInfo, isCert } = this.state;
 
+    if (!isCert) {
+      alert('휴대폰 인증을 완료해주세요.')
+      return false
+    }
     console.log('businessInfo123',businessInfo);
 
     Entrp.update(businessInfo).then(res => {
+      alert('Edit Bussiness Success')
       console.log('::::: API Add Business Info  :::::', res)
       // setIsComplete(true)
     }).catch(err => {
@@ -190,47 +236,13 @@ class MypageBusinessInfo extends Component {
     });
   };
 
-  getKakaoAddress = () => {
-    daumAddress((data) => {
-
-      // 주소-좌표 변환 객체를 생성합니다
-      const geocoder = new kakao.maps.services.Geocoder();
-      // 주소로 좌표를 검색합니다
-      geocoder.addressSearch(data.roadAddress, function (result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === kakao.maps.services.Status.OK) {
-
-          // set 주소
-          this.setState({
-            businessInfo: {
-              ...businessInfo,
-              jibunAddr: {
-                ...businessInfo.jibunAddr,
-                zipNo: data.zonecode,
-                address: data.jibunAddress,
-              },
-              roadAddr: {
-                ...businessInfo.roadAddr,
-                zipNo: data.zonecode,
-                address: data.roadAddress,
-              },
-              gps: {
-                latitude: result[0].y,
-                longitude: result[0].x
-              },
-            }
-          })
-        }
-      });
-    })
-  }
-
 
   render() {
-    const { listBusinessInfo, selectedInfoIndex,businessInfo, photo } = this.state;
+    const { listBusinessInfo,businessInfo, photo } = this.state;
 
+    console.log(`${configURL.FILE_SERVER_ADDRESS}/${businessInfo.regFile}`)
     return (
-      <>
+      <ScrollView>
         <View style={[DefaultStyle._cards]}>
           <View style={[DefaultStyle._titleCard, { marginBottom: -4 }]}>
             <Text style={DefaultStyle._textTitleBody}>사업자 등록 정보</Text>
@@ -239,6 +251,7 @@ class MypageBusinessInfo extends Component {
             <Select
               data={listBusinessInfo}
               labelSelected="기등록 사업자 등록정보"
+              valueSelected={listBusinessInfo[0] ? listBusinessInfo[0].label : ''}
               indexProps={(e, index) => {
                 this.handleChangeSelectBox(e, index)
               }}
@@ -291,16 +304,16 @@ class MypageBusinessInfo extends Component {
 
             {photo && (
             <Image
-                source={{ uri: photo.uri,
+                source={{ uri: photo,
                   type: "image/jpeg",
-                  name: photo.filename  }}
+                  name: 'photo'  }}
                 style={{ width: 125, height: 125,marginBottom:20}}
 
               />
             )}
             <TouchableOpacity
               style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-              onPress={this.handleChoosePhoto}>
+              onPress={this.handlePicker}>
               <Text
                 style={[
                   DefaultStyle._textButton,
@@ -315,7 +328,7 @@ class MypageBusinessInfo extends Component {
               </View>
               <TouchableOpacity
                 style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                onPress={this.getKakaoAddress}>
+                onPress={this._showDialog}>
                 <Text
                   style={[
                     DefaultStyle._textButton,
@@ -377,22 +390,15 @@ class MypageBusinessInfo extends Component {
               }}
               value={businessInfo.phone ? businessInfo.phone : ''}
             />
-            <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex]}>
-              <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
-                <TextField colorLabel="#000000" placeholder="인증번호를 입력하세요." />
-              </View>
-              <TouchableOpacity
-                style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mb_20, DefaultStyle.w_50]}
-                onPress={() => console.log(titleButton)}>
-                <Text
-                  style={[
-                    DefaultStyle._textButton,
-                    DefaultStyle._colorMuted
-                  ]}>
-                  {'인증번호 발송'}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {/* cert phone */}
+            <CertMobile
+              mobile={businessInfo.phone}
+              onComplete={() => {
+                this.setState({
+                  isCert: true
+                })
+              }}
+            />
             <TextField
               labelTextField="담당자명"
               colorLabel="#000000"
@@ -443,7 +449,24 @@ class MypageBusinessInfo extends Component {
             확인
           </Button>
         </View>
-      </>
+        <Portal>
+          <Dialog
+            style={DefaultStyle._postCode}
+            visible={this.state.visible}
+            onDismiss={this._hideDialog}>
+            <Dialog.Content style={DefaultStyle._postCodeContent}>
+              <Postcode
+                style={DefaultStyle._postCodeContent}
+                jsOptions={{ animated: true }}
+                onSelected={data => {
+                  this.getKakaoAddress(data);
+                  this._hideDialog();
+                }}
+              />
+            </Dialog.Content>
+          </Dialog>
+        </Portal>
+      </ScrollView>
     );
   }
 }
