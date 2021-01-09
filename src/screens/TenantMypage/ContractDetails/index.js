@@ -109,8 +109,6 @@ class ContractDetails extends Component {
   render() {
     // const { imageStore } = this.props;
     const { route } = this.props;
-    console.log('route', route);
-
     const footerBtn =
       route.params && route.params.type === 'TrustRequest' ? (
         <Fragment>

@@ -32,6 +32,7 @@ import { StringUtils } from '@Services/utils';
 
 class Quotation extends Component {
   constructor(props) {
+    console.log('propssssssssssssssssssssssss', props)
     super(props);
     this.webView = null;
     this.state = {
