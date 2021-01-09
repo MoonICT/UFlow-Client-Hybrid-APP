@@ -56,6 +56,7 @@ class Search extends Component {
     };
     // Ref
     this.refSearchFilter = React.createRef();
+    this.navigation = props.navigation;
   }
 
   /**
@@ -90,6 +91,10 @@ class Search extends Component {
           longitude: msgData.data.longitude ? Number(msgData.data.longitude) : '',
           distance: msgData.data.distance ? Number(msgData.data.distance) : 10,
         })
+        break;
+      case WVMsgService.types.GO_WH_DETAIL:
+        // console.log('[RN] GO_WH_DETAIL 수신', msgData.data)
+        this.navigation.navigate('DetailsWH', { id: msgData.data })
         break;
     }
   }
@@ -149,7 +154,7 @@ class Search extends Component {
         <SearchFilter ref={this.refSearchFilter} />
 
         {/** 지역/주소 검색하기 패널. */}
-        {/** TODO 검색 결과 클릭 시 좌표 이동하기. */}
+        {/** 검색 결과 클릭 시 좌표 이동하기. */}
         {this.props.isSearchToggle && <SearchOverlay onSelect={(result) => this.handleSelectResult(result)} />}
 
         {/** 필터 패널. */}
@@ -159,8 +164,8 @@ class Search extends Component {
           }}
         />
 
-        {/* TODO 테스트 용도 */}
-        {/*<TouchableOpacity onPress={()=>this.webView.reload()}><Text>Reload</Text></TouchableOpacity>*/}
+        {/* 테스트 용도 */}
+        {/*<TouchableOpacity onPress={()=>this.navigation.navigate('DetailsWH', { id: 'RG20210103255' })}><Text>Reload</Text></TouchableOpacity>*/}
 
         {/** 웹뷰 지도. */}
         <View
