@@ -19,45 +19,20 @@ import Appbars from '@Components/organisms/AppBar';
 import RangeSlider from '@Components/atoms/RangeSlider';
 import Checkbox from '@Components/atoms/Checkbox';
 
+/*TODO 임시 값 (추후 변경 필요)*/
+let siteAreaMax = 13200; // 대지면적 최대
+let bldgAreaMax = 13200; // 건축면적 최대
+let totalAreaMax = 13200; // 연면적 최대
+let flrHiMax = 10; // 층고 최대
+
 class FilterOther extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      areaLand: 0,
-      areaBuilding: 0,
-      areaTotal: 0,
-      floorHeight: 0,
-      listFloor: [
-        { label: '전체', checked: true, },
-        { label: '1층', checked: false, },
-        { label: '2층', checked: false, },
-        { label: '3층', checked: false, },
-        { label: '4층', checked: false, },
-        { label: '5층', checked: false, },
-        { label: '6층', checked: false, },
-        { label: '7층 이상', checked: false, },
-      ],
-      listYear: [
-        { label: '전체', checked: true, },
-        { label: '1년 이내', checked: false, },
-        { label: '5년 이내', checked: false, },
-        { label: '10년 이내', checked: false, },
-        { label: '15년 이내', checked: false, },
-        { label: '15년 이상', checked: false, },
-      ],
-      listMethods: [
-        { label: '40FT 컨테이너', checked: true, },
-        { label: '20FT 컨테이너', checked: false, },
-        { label: '5톤 화물차', checked: false, },
-        { label: '화물EV', checked: false, },
-        { label: '수직반송기', checked: false, },
-      ],
-      listInsurance: [
-        { label: '건물보험', checked: true, },
-        { label: '재고보험', checked: false, },
-        { label: '영업배상보험', checked: false, },
-      ],
-
+      siteArea: this.props.whFilter.siteArea ? Number(this.props.whFilter.siteArea) : 0, // 대지면적
+      bldgArea: this.props.whFilter.bldgArea ? Number(this.props.whFilter.bldgArea) : 0, // 건축면적
+      totalArea: this.props.whFilter.prvtArea ? Number(this.props.whFilter.totalArea) : 0, // 연면적
+      flrHi: this.props.whFilter.flrHi ? Number(this.props.whFilter.flrHi) : 0, // 층고
     };
   }
 
@@ -76,8 +51,38 @@ class FilterOther extends Component {
     this.props.onClosed(); // Event emit
   }
 
+  /**
+   * On change filter checkbox
+   * */
+  handleOnChangeFilterCheckbox = (value, fieldName) => {
+    let defaultValue = this.props.whFilter[fieldName] ? this.props.whFilter[fieldName].split(',') : []
+    let findIndex = defaultValue.indexOf(value)
+    findIndex > -1 ? defaultValue.splice(findIndex, 1) : defaultValue.push(value)
+    this.props.setSearchFilter({
+      [fieldName]: defaultValue.length > 0 ? defaultValue.join(',') : '',
+    });
+  };
+
+  /**
+   * 추가 필터 초기화.
+   * */
+  handleResetAddFilter = () => {
+    // Init store
+    this.props.setSearchFilter({
+      siteArea: '', // 대지면적
+      bldgArea: '', // 건축면적
+      totalArea: '', // 연면적
+      flrDvCodes: '', // 층수
+      flrHi: '',// 층고
+      cmpltYmds: '', // 준공연차
+      aprchMthdDvCodes: '', // 접안방식
+      insrDvCodes: '', // 보험가입
+      calUnitDvCodes: '', // 정산단위
+      calStdDvCodes: '', // 산정기준
+    });
+  };
+
   render () {
-    let filterPanel = null;
     return (
       <View style={[styles.filterOtherContainer]}>
 
@@ -95,7 +100,7 @@ class FilterOther extends Component {
             titleStyle={styles.filterOtherHeaderTitle}
             style={[DefaultStyle.headerTitle, styles.filterOtherHeaderContainer]}
           />
-          <TouchableOpacity onPress={() => alert('초기화')}>
+          <TouchableOpacity onPress={this.handleResetAddFilter}>
             <Text style={styles.filterOtherHeaderSubTitle}>초기화</Text>
           </TouchableOpacity>
         </Appbars>
@@ -109,20 +114,24 @@ class FilterOther extends Component {
             <View style={styles.filterLabelWrap}>
               <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'대지면적'}</Text>
             </View>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.areaLand === 30000 || this.state.areaLand === 0) ? '전체' : this.state.areaLand.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
+            <Text
+              style={[styles.filterLabel, styles.filterLabelMain]}>
+              {(Number(this.props.whFilter.siteArea) === siteAreaMax || Number(this.props.whFilter.siteArea) === 0) ?
+                '전체' : this.props.whFilter.siteArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
             </Text>
           </View>
 
           {/** Slider */}
-          <RangeSlider value={this.state.areaLand}
-                       step={100}
-                       minimumValue={0}
-                       maximumValue={30000}
-                       LabelMiddle={'15,000㎡ (4,500평)'}
+          <RangeSlider value={this.props.whFilter.siteArea ? Number(this.props.whFilter.siteArea) : 0}
+                       step={1000}
                        contentStyle={{ marginBottom: 24 }}
+                       minimumValue={0}
+                       maximumValue={siteAreaMax}
+                       LabelMiddle={`${(siteAreaMax / 2).toLocaleString()}㎡`}
                        onValueChange={(value) => {
-                         this.setState({ areaLand: value });
+                         this.props.setSearchFilter({
+                           siteArea: value,
+                         });
                        }} />
 
           <View style={styles.filterDivider}></View>
@@ -134,19 +143,24 @@ class FilterOther extends Component {
             <View style={styles.filterLabelWrap}>
               <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'건축면적'}</Text>
             </View>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.areaBuilding === 30000 || this.state.areaBuilding === 0) ? '전체' : this.state.areaBuilding.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
+            <Text
+              style={[styles.filterLabel, styles.filterLabelMain]}>
+              {(Number(this.props.whFilter.bldgArea) === bldgAreaMax || Number(this.props.whFilter.bldgArea) === 0) ?
+                '전체' : this.props.whFilter.bldgArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
             </Text>
           </View>
+
           {/** Slider */}
-          <RangeSlider value={this.state.areaBuilding}
-                       step={100}
-                       minimumValue={0}
-                       maximumValue={30000}
-                       LabelMiddle={'15,000㎡ (4,500평)'}
+          <RangeSlider value={this.props.whFilter.bldgArea ? Number(this.props.whFilter.bldgArea) : 0}
+                       step={1000}
                        contentStyle={{ marginBottom: 24 }}
+                       minimumValue={0}
+                       maximumValue={bldgAreaMax}
+                       LabelMiddle={`${(bldgAreaMax / 2).toLocaleString()}㎡`}
                        onValueChange={(value) => {
-                         this.setState({ areaBuilding: value });
+                         this.props.setSearchFilter({
+                           bldgArea: value,
+                         });
                        }} />
 
           <View style={styles.filterDivider}></View>
@@ -158,19 +172,24 @@ class FilterOther extends Component {
             <View style={styles.filterLabelWrap}>
               <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'연면적'}</Text>
             </View>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.areaTotal === 30000 || this.state.areaTotal === 0) ? '전체' : this.state.areaTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
+            <Text
+              style={[styles.filterLabel, styles.filterLabelMain]}>
+              {(Number(this.props.whFilter.totalArea) === totalAreaMax || Number(this.props.whFilter.totalArea) === 0) ?
+                '전체' : this.props.whFilter.totalArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
             </Text>
           </View>
+
           {/** Slider */}
-          <RangeSlider value={this.state.areaTotal}
-                       step={100}
-                       minimumValue={0}
-                       maximumValue={30000}
-                       LabelMiddle={'15,000㎡ (4,500평)'}
+          <RangeSlider value={this.props.whFilter.totalArea ? Number(this.props.whFilter.totalArea) : 0}
+                       step={1000}
                        contentStyle={{ marginBottom: 24 }}
+                       minimumValue={0}
+                       maximumValue={totalAreaMax}
+                       LabelMiddle={`${(totalAreaMax / 2).toLocaleString()}㎡`}
                        onValueChange={(value) => {
-                         this.setState({ areaTotal: value });
+                         this.props.setSearchFilter({
+                           totalArea: value,
+                         });
                        }} />
 
           <View style={styles.filterDivider}></View>
@@ -186,21 +205,13 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.state.listFloor.map((item, index) =>
+            {this.props.listFlrDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
-                <Checkbox checked={item.checked}
-                          label={item.label}
-                          onPress={() => {
-                            this.setState(defaultState => ({
-                              ...defaultState,
-                              checkList: defaultState.checkList.map((r, i) => {
-                                return {
-                                  ...defaultState.checkList[i],
-                                  checked: i === index ? !defaultState.checkList[i].checked : defaultState.checkList[i].checked
-                                };
-                              })
-                            }));
-                          }} /></View>)}
+                <Checkbox
+                  checked={(this.props.whFilter.flrDvCodes ? this.props.whFilter.flrDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
+                  label={item.stdDetailCodeName}
+                  value={item.stdDetailCode}
+                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'flrDvCodes')} /></View>)}
           </View>
 
           <View style={styles.filterDivider}></View>
@@ -213,19 +224,24 @@ class FilterOther extends Component {
             <View style={styles.filterLabelWrap}>
               <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'층고'}</Text>
             </View>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.floorHeight === 10 || this.state.floorHeight === 0) ? '전체' : this.state.floorHeight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + 'm'}
+            <Text
+              style={[styles.filterLabel, styles.filterLabelMain]}>
+              {(Number(this.props.whFilter.flrHi) === flrHiMax || Number(this.props.whFilter.flrHi) === 0) ?
+                '전체' : this.props.whFilter.flrHi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + 'm'}
             </Text>
           </View>
+
           {/** Slider */}
-          <RangeSlider value={this.state.floorHeight}
+          <RangeSlider value={this.props.whFilter.flrHi ? Number(this.props.whFilter.flrHi) : 0}
                        step={1}
-                       minimumValue={0}
-                       maximumValue={10}
-                       LabelMiddle={'5m'}
                        contentStyle={{ marginBottom: 24 }}
+                       minimumValue={0}
+                       maximumValue={flrHiMax}
+                       LabelMiddle={`${(flrHiMax / 2).toLocaleString()}m`}
                        onValueChange={(value) => {
-                         this.setState({ floorHeight: value });
+                         this.props.setSearchFilter({
+                           flrHi: value,
+                         });
                        }} />
 
           <View style={styles.filterDivider}></View>
@@ -241,21 +257,13 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.state.listYear.map((item, index) =>
+            {this.props.listCmpltTypes.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
-                <Checkbox checked={item.checked}
-                          label={item.label}
-                          onPress={() => {
-                            this.setState(defaultState => ({
-                              ...defaultState,
-                              checkList: defaultState.checkList.map((r, i) => {
-                                return {
-                                  ...defaultState.checkList[i],
-                                  checked: i === index ? !defaultState.checkList[i].checked : defaultState.checkList[i].checked
-                                };
-                              })
-                            }));
-                          }} /></View>)}
+                <Checkbox
+                  checked={(this.props.whFilter.cmpltYmds ? this.props.whFilter.cmpltYmds.indexOf(Object.keys(item)[1]) > -1 : false)}
+                  label={item[Object.keys(item)[1]]}
+                  value={Object.keys(item)[1]}
+                  onPress={() => this.handleOnChangeFilterCheckbox(Object.keys(item)[1], 'cmpltYmds')} /></View>)}
           </View>
 
           <View style={styles.filterDivider}></View>
@@ -271,21 +279,13 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.state.listMethods.map((item, index) =>
+            {this.props.listAprchMthdDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
-                <Checkbox checked={item.checked}
-                          label={item.label}
-                          onPress={() => {
-                            this.setState(defaultState => ({
-                              ...defaultState,
-                              checkList: defaultState.checkList.map((r, i) => {
-                                return {
-                                  ...defaultState.checkList[i],
-                                  checked: i === index ? !defaultState.checkList[i].checked : defaultState.checkList[i].checked
-                                };
-                              })
-                            }));
-                          }} /></View>)}
+                <Checkbox
+                  checked={(this.props.whFilter.aprchMthdDvCodes ? this.props.whFilter.aprchMthdDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
+                  label={item.stdDetailCodeName}
+                  value={item.stdDetailCode}
+                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'aprchMthdDvCodes')} /></View>)}
           </View>
 
           <View style={styles.filterDivider}></View>
@@ -301,22 +301,60 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.state.listInsurance.map((item, index) =>
+            {this.props.listInsrDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
-                <Checkbox checked={item.checked}
-                          label={item.label}
-                          onPress={() => {
-                            this.setState(defaultState => ({
-                              ...defaultState,
-                              checkList: defaultState.checkList.map((r, i) => {
-                                return {
-                                  ...defaultState.checkList[i],
-                                  checked: i === index ? !defaultState.checkList[i].checked : defaultState.checkList[i].checked
-                                };
-                              })
-                            }));
-                          }} /></View>)}
+                <Checkbox
+                  checked={(this.props.whFilter.insrDvCodes ? this.props.whFilter.insrDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
+                  label={item.stdDetailCodeName}
+                  value={item.stdDetailCode}
+                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'insrDvCodes')} /></View>)}
           </View>
+
+          <View style={styles.filterDivider}></View>
+
+          {/***** 정산단위 *****/}
+
+          {/** Label */}
+          <View style={styles.filterLabelWrap}>
+            <View style={styles.filterLabelWrap}>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'정산단위'}</Text>
+            </View>
+          </View>
+
+          {/** Checkbox */}
+          <View style={styles.gridRow}>
+            {this.props.listCalUnitDvCode.map((item, index) =>
+              <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
+                <Checkbox
+                  checked={(this.props.whFilter.calUnitDvCodes ? this.props.whFilter.calUnitDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
+                  label={item.stdDetailCodeName}
+                  value={item.stdDetailCode}
+                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'calUnitDvCodes')} /></View>)}
+          </View>
+
+          <View style={styles.filterDivider}></View>
+
+          {/***** 산정기준 *****/}
+
+          {/** Label */}
+          <View style={styles.filterLabelWrap}>
+            <View style={styles.filterLabelWrap}>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'산정기준'}</Text>
+            </View>
+          </View>
+
+          {/** Checkbox */}
+          <View style={styles.gridRow}>
+            {this.props.listCalStdDvCode.map((item, index) =>
+              <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
+                <Checkbox
+                  checked={(this.props.whFilter.calStdDvCodes ? this.props.whFilter.calStdDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
+                  label={item.stdDetailCodeName}
+                  value={item.stdDetailCode}
+                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'calStdDvCodes')} /></View>)}
+          </View>
+
+          <View style={styles.filterDivider}></View>
 
           <View style={{ marginBottom: 40, }}>
             <Button mode="contained"
@@ -331,12 +369,7 @@ class FilterOther extends Component {
   }
 
   componentWillUnmount () {
-  //console.log('//::componentWillUnmount::');
-  }
-
-  // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate (prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+    //console.log('//::componentWillUnmount::');
   }
 
   componentDidMount () {
@@ -346,21 +379,30 @@ class FilterOther extends Component {
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
-  console.log('++++++mapStateToProps: ', state);
+  // console.log('++++++mapStateToProps: ', state);
   return {
-    isFilterToggle: state.search.isFilterToggle,
-    filterList: state.search.filterList,
+    whFilter: state.search.whFilter,
   };
 }
 
 // store에 action을 dispatch 하는 역할.
 function mapDispatchToProps (dispatch) {
-  return {};
+  return {
+    setSearchFilter: status => {
+      dispatch(ActionCreator.setSearchFilter(status));
+    },
+  };
 }
 
 // Check Props Type.
 RangeSlider.protoType = {
   onClosed: PropTypes.func,
+  listCalUnitDvCode: PropTypes.array, // 정산단위
+  listCalStdDvCode: PropTypes.array, // 산정기준
+  listFlrDvCode: PropTypes.array, // 층수
+  listAprchMthdDvCode: PropTypes.array, // 접안방식
+  listInsrDvCode: PropTypes.array, // 보험 가입
+  listCmpltTypes: PropTypes.array, // 준공연차
 };
 
 export default compose(connect(

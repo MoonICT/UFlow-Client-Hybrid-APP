@@ -21,6 +21,7 @@ import { debounce } from 'lodash'
 
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { log } from 'react-native-reanimated';
 
 
 const selectOptions = [
@@ -98,6 +99,9 @@ class Inquiry extends Component {
 
     await getAllInquiry(defaultParams).then((res) => {
       console.log('res', res)
+      if (res.data._embedded.questions === null) {
+        return;
+      }
       if (res.status === 200) {
         this.setState({ listQuestion: res.data._embedded.questions })
       }
@@ -142,8 +146,9 @@ class Inquiry extends Component {
 
   render() {
 
-    const { from, showFrom, mode, to, showTo, firstQuery, inquiryCode, listQuestion } = this.state;
-
+    const { from, showFrom, mode, to, showTo, firstQuery, inquiryCode, userType, listQuestion } = this.state;
+    console.log('inquiryCode ::::: ', inquiryCode);
+    console.log('userType ::::: ', userType);
     const handleQueryChange = debounce((query) => {
       this.getAllData({ query: query })
     }, 200)
@@ -235,45 +240,87 @@ class Inquiry extends Component {
               )}
             </View>
           </View>
-          {inquiryCode === 'OWNER' ?
+
+
+          {/* GENERAL TAB */}
+          {inquiryCode === 'TENANT' && (
             <View>
               {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
                 let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
-                return (
-                  <TouchableOpacity
-                    style={DefaultStyle.btnItem}
-                    onPress={() =>
-                      this.navigation.navigate('DetailInquiry', { inquiryDetails: item})
-                    }>
-                    <View style={DefaultStyle.leftItem}>
-                      {item.complete === false ?
-                        <Text style={[S.status]}>답변 대기 중</Text>
-                        :
-                        <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
-                      }
-                      {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}
-                      <Text style={DefaultStyle.titleItem}>
-                        {item.content}
-                      </Text>
-                      <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
-                    </View>
-                  </TouchableOpacity>
-                )
-              })}
-            </View>
-            :
-            <View>
-              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
-                let dateTime = new Date(item.date);
-                let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
+                let _item = { ...item, userType: userType }
+                console.log('_item  ', _item);
                 return (
                   <TouchableOpacity
                     key={index}
                     style={DefaultStyle.btnItem}
-                    onPress={() =>
-                      this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'TENANT' })
-                    }>
+                    // onPress={() => {
+                    //   if ((item.complete === true) && (userType === 'TENANT')) {
+                    //     this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'OWNER' })
+                    //   }
+                    // }}
+                    onPress={() => {
+                      if (item.complete === true) {
+                        (this.navigation.navigate('DetailInquiry', { inquiryDetails: _item }))
+                      }
+                    }
+                    }
+                  // onPress={() => {
+                  //   if ((item.complete === true && userType === 'OWNER') || (item.complete === true && userType === 'TENANT')) {
+                  //    (this.navigation.navigate('DetailInquiry', { inquiryDetails: _item }))
+                  //   }
+                  // }}
+                  >
+                    <View style={DefaultStyle.leftItem}>
+                      {item.complete === false ?
+                        <Text style={[S.status]}>답변 대기 중123</Text>
+                        :
+                        <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
+                      }
+                      {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}
+                      <Text style={DefaultStyle.titleItem}>
+                        {item.content}
+                      </Text>
+                      <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
+                    </View>
+                    { (item.complete === true) &&
+                      <View style={DefaultStyle.rightItem}>
+                        <Icon
+                          name="arrow-forward-ios"
+                          size={12}
+                          color="rgba(0, 0, 0, 0.54)"
+                        />
+                      </View>
+                    }
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
+          )
+          }
+
+          {/* WAREHOUSE TAB */}
+          {inquiryCode === 'OWNER' && (
+            <View>
+              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
+                let dateTime = new Date(item.date);
+                let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
+                let _item = { ...item, userType: userType }
+                console.log('_item  ', _item);
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={DefaultStyle.btnItem}
+                    // onPress={() =>
+                    //   this.navigation.navigate('DetailInquiry', { inquiryDetails: item, type: 'OWNER' })
+                    // }
+                    // onPress={() => this.navigation.navigate('DetailInquiry', { inquiryDetails: _item })}
+                    onPress={() => {
+                      if ((item.complete === true && userType === 'OWNER') || (item.complete === true && userType === 'TENANT') || (item.complete === false && userType === 'OWNER')) {
+                        (this.navigation.navigate('DetailInquiry', { inquiryDetails: _item }))
+                      }
+                    }}
+                  >
                     <View style={DefaultStyle.leftItem}>
                       {item.complete === false ?
                         <Text style={[S.status]}>답변 대기 중</Text>
@@ -286,18 +333,22 @@ class Inquiry extends Component {
                       </Text>
                       <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
                     </View>
-                    <View style={DefaultStyle.rightItem}>
-                      <Icon
-                        name="arrow-forward-ios"
-                        size={12}
-                        color="rgba(0, 0, 0, 0.54)"
-                      />
-                    </View>
+                    { (userType === 'OWNER') &&
+                      <View style={DefaultStyle.rightItem}>
+                        <Icon
+                          name="arrow-forward-ios"
+                          size={12}
+                          color="rgba(0, 0, 0, 0.54)"
+                        />
+                      </View>
+                    }
                   </TouchableOpacity>
                 )
               })}
             </View>
-          }
+          )}
+
+
         </ScrollView>
       </SafeAreaView>
     );

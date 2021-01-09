@@ -346,7 +346,7 @@ export const listCalUnitDvCode = () => {
 export const listCalStdDvCode = () => {
   return Axios.request({
     methodType: 'GET',
-    url: `/api/v1/warehouse/cal-unit-dv-code`,
+    url: `/api/v1/warehouse/cal-std-dv-code`,
     requiresToken: true, // set access_token
     config: {
       headers: {

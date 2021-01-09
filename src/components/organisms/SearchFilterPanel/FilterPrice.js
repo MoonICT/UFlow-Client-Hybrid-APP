@@ -26,10 +26,10 @@ class FilterPrice extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      splyAmount: this.props.whFilter.splyAmount ? this.props.whFilter.splyAmount : 0, // 보관단가
-      mgmtChrg: this.props.whFilter.mgmtChrg ? this.props.whFilter.mgmtChrg : 0, // 관리단가
-      whinChrg: this.props.whFilter.whinChrg ? this.props.whFilter.whinChrg : 0, // 입고비
-      whoutChrg: this.props.whFilter.whoutChrg ? this.props.whFilter.whoutChrg : 0, // 출고비
+      splyAmount: this.props.whFilter.splyAmount ? Number(this.props.whFilter.splyAmount) : 0, // 보관단가
+      mgmtChrg: this.props.whFilter.mgmtChrg ? Number(this.props.whFilter.mgmtChrg) : 0, // 관리단가
+      whinChrg: this.props.whFilter.whinChrg ? Number(this.props.whFilter.whinChrg) : 0, // 입고비
+      whoutChrg: this.props.whFilter.whoutChrg ? Number(this.props.whFilter.whinChrg) : 0, // 출고비
     };
   }
 
@@ -62,21 +62,19 @@ class FilterPrice extends Component {
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.splyAmount === splyAmountMax || this.state.splyAmount === 0) ? '전체' : this.state.splyAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+              {(Number(this.props.whFilter.splyAmount) === splyAmountMax || Number(this.props.whFilter.splyAmount) === 0) ?
+                '전체' : this.props.whFilter.splyAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
             </Text>
           </View>
 
           {/** Slider */}
-          <RangeSlider value={this.state.splyAmount}
+          <RangeSlider value={this.props.whFilter.splyAmount ? Number(this.props.whFilter.splyAmount) : 0}
                        step={1000}
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={splyAmountMax}
                        LabelMiddle={`${(splyAmountMax / 2).toLocaleString()}원`}
                        onValueChange={(value) => {
-                         this.setState({ splyAmount: value });
-                       }}
-                       onSlidingComplete={(value) => {
                          this.props.setSearchFilter({
                            splyAmount: value,
                          });
@@ -93,20 +91,18 @@ class FilterPrice extends Component {
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.mgmtChrg === mgmtChrgMax || this.state.mgmtChrg === 0) ? '전체' : this.state.mgmtChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+              {(Number(this.props.whFilter.mgmtChrg) === mgmtChrgMax || Number(this.props.whFilter.mgmtChrg) === 0) ?
+                '전체' : this.props.whFilter.mgmtChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
             </Text>
           </View>
           {/** Slider */}
-          <RangeSlider value={this.state.mgmtChrg}
+          <RangeSlider value={this.props.whFilter.mgmtChrg ? Number(this.props.whFilter.mgmtChrg) : 0}
                        step={1000}
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={mgmtChrgMax}
                        LabelMiddle={`${(mgmtChrgMax / 2).toLocaleString()}원`}
                        onValueChange={(value) => {
-                         this.setState({ mgmtChrg: value });
-                       }}
-                       onSlidingComplete={(value) => {
                          this.props.setSearchFilter({
                            mgmtChrg: value,
                          });
@@ -123,20 +119,18 @@ class FilterPrice extends Component {
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.whinChrg === whinChrgMax || this.state.whinChrg === 0) ? '전체' : this.state.whinChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+              {(Number(this.props.whFilter.whinChrg) === whinChrgMax || Number(this.props.whFilter.whinChrg) === 0) ?
+                '전체' : this.props.whFilter.whinChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
             </Text>
           </View>
           {/** Slider */}
-          <RangeSlider value={this.state.whinChrg}
+          <RangeSlider value={this.props.whFilter.whinChrg ? Number(this.props.whFilter.whinChrg) : 0}
                        step={1000}
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={whinChrgMax}
                        LabelMiddle={`${(whinChrgMax / 2).toLocaleString()}원`}
                        onValueChange={(value) => {
-                         this.setState({ whinChrg: value });
-                       }}
-                       onSlidingComplete={(value) => {
                          this.props.setSearchFilter({
                            whinChrg: value,
                          });
@@ -154,20 +148,18 @@ class FilterPrice extends Component {
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(this.state.whoutChrg === whoutChrgMax || this.state.whoutChrg === 0) ? '전체' : this.state.whoutChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+              {(Number(this.props.whFilter.whoutChrg) === whoutChrgMax || Number(this.props.whFilter.whoutChrg) === 0) ?
+                '전체' : this.props.whFilter.whoutChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
             </Text>
           </View>
           {/** Slider */}
-          <RangeSlider value={this.state.whoutChrg}
+          <RangeSlider value={this.props.whFilter.whoutChrg ? Number(this.props.whFilter.whoutChrg) : 0}
                        step={1000}
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={whoutChrgMax}
                        LabelMiddle={`${(whoutChrgMax / 2).toLocaleString()}원`}
                        onValueChange={(value) => {
-                         this.setState({ whoutChrg: value });
-                       }}
-                       onSlidingComplete={(value) => {
                          this.props.setSearchFilter({
                            whoutChrg: value,
                          });
@@ -175,7 +167,7 @@ class FilterPrice extends Component {
         </ScrollView>
 
         {/** Button Group */}
-        <View style={[styles.gridRow, {paddingTop: 10,}]}>
+        <View style={[styles.gridRow, { paddingTop: 10, }]}>
           <View style={styles.gridColumn}>
             <Button mode="outlined"
                     style={[styles.btn, styles.btnPrimaryOutline]}

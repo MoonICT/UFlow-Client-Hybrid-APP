@@ -218,8 +218,9 @@ export const WarehouseSearchFilterModel = {
   siteArea: '', // Master : 대지면적 max
   bldgArea: '', // Master : 건축면적 max
   totalArea: '', // Master : 연면적 max
-  flrDvCodes: '', // WHRG0010 층 구분 (복수) (,구분)
   flrHi: '',//  Floor : 층고 max
+
+  flrDvCodes: '', // WHRG0010 층 구분 (복수) (,구분)
   cmpltYmds: '', // Master: 준공일자 (,구분) A,B,C
   aprchMthdDvCodes: '', // Floor : WHRG0011 접안 방식 (복수) (,구분)
   insrDvCodes: '', // Master : WHRG0009 보험 (복수) (,구분)

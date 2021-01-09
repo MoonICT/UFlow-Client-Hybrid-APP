@@ -88,7 +88,7 @@ class WithdrawalInformation extends Component {
         </Appbars>
         <ScrollView>
           <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-            <View style={DefaultStyle._titleCard, { marginBottom: 24 }}>
+            <View style={[DefaultStyle._titleCard, { marginBottom: 24 }]}>
               <Text style={DefaultStyle._textTitleCard}>비밀번호 확인</Text>
             </View>
             <View style>

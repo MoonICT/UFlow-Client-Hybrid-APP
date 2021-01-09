@@ -410,7 +410,7 @@ class DetailWH extends Component {
                                   :
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
-                                    onPress={() => this.checkContract("KEEP", keep)}>
+                                    onPress={() => this.navigation.navigate('DetailRegisterTenant')}>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
                                   </Text>
@@ -548,7 +548,7 @@ class DetailWH extends Component {
                                   :
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
-                                    onPress={() => this.checkContract("TRUST", keep)}>
+                                    onPress={() => this.navigation.navigate('DetailRegisterTenant')}>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
                                   </Text>
@@ -913,6 +913,7 @@ class DetailWH extends Component {
                 // this.showDialog();
               }}>
               <Text
+                onPress={() => this.navigation.navigate('DetailRegisterTenant')}
                 style={[
                   DefaultStyle.textSubmit,
                   DefaultStyle.textActiveSubmit,

@@ -41,6 +41,9 @@ export default StyleSheet.create({
     height: 1,
     backgroundColor: color.input.default_border,
   },
+  mt_0: {
+    marginTop:0
+  },
   mt_20: {
     marginTop: 20,
   },
@@ -53,6 +56,9 @@ export default StyleSheet.create({
   mb_0: {
     marginBottom: 0,
   },
+  pr_5: {
+    paddingRight: 5,
+  },
   pt_20: {
     paddingTop: 20,
   },
@@ -62,8 +68,11 @@ export default StyleSheet.create({
   p_12: {
     padding: 12,
   },
-  _colorMuted: {
-    color: 'rgba(0, 0, 0, 0.87)',
+  p_16: {
+    padding:16
+  },
+  _colorMuted:{
+    color: 'rgba(0, 0, 0, 0.87)'
   },
   w_50: {
     width: '50%',
@@ -193,7 +202,13 @@ export default StyleSheet.create({
     opacity: 0.23,
     backgroundColor: '#ffffff',
   },
-
+  /** Text, Button, TextField */
+  fontColor: {
+    color: color.text.primary
+  },
+  fontSecondaryColor: {
+    color: color.text.secondary
+  },
   /** Container button */
   containerBTN: {
     width: 120,
@@ -889,6 +904,10 @@ export default StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
   },
+  _titleCardCol: {
+    marginTop: 16,
+    marginBottom: 16,
+  },
   _textTitleCard: {
     color: color.text.primary,
     // fontFamily: 'NotoSansCJKkr-Medium',
@@ -896,6 +915,14 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     fontStyle: 'normal',
     lineHeight: 21,
+  },
+  _textDesCard: {
+    color: color.text.primary,
+    // fontFamily: 'NotoSansCJKkr-Medium',
+    fontSize: 14,
+    fontWeight: '400',
+    fontStyle: 'normal',
+    lineHeight: 18,
   },
   _textRightTitleCard: {
     color: color.text.primary,
@@ -1225,5 +1252,14 @@ export default StyleSheet.create({
   _postCodeContent: {
     width: windowWidth,
     height: 300,
+  },
+
+  /** MyPage **/
+  uiFilter: {
+    height: 36,
+    fontSize: 14,
+    fontWeight: 'normal',
+    lineHeight: 1.43,
+    color: this.fontColor,
   },
 });
