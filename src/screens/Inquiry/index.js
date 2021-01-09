@@ -58,7 +58,7 @@ class Inquiry extends Component {
       from: new Date(),
       to: new Date(),
       showTo: false,
-      inquiryCode: 'TENANT',
+      inquiryCode: '',
       userType: 'TENANT',
       typeQuestion: 'GENERAL',
       listQuestion: [],
@@ -89,7 +89,6 @@ class Inquiry extends Component {
   }
 
   async getAllData(params) {
-    console.log('aaa', params);
     let { userType, typeQuestion } = this.state;
 
     let defaultParams = {
@@ -98,7 +97,7 @@ class Inquiry extends Component {
       ...params
     }
 
-    console.log("userTypeParams", userType)
+    console.log("userTypeParams",userType)
 
     await getAllInquiry(defaultParams).then((res) => {
       // console.log('res', res)
@@ -106,7 +105,6 @@ class Inquiry extends Component {
         return;
       }
       if (res.status === 200) {
-        console.log('vanlong=>>>', res.data._embedded.questions);
         this.setState({ listQuestion: res.data._embedded.questions })
       }
     })
@@ -118,52 +116,31 @@ class Inquiry extends Component {
     });
   }
 
+  showDatepicker = () => {
+    this.setState({ showFrom: true });
+  };
+
+  onChangeFrom = (event, selectedDate) => {
+    const startDate = selectedDate || this.state.from;
+    console.log('this.state.from', this.state.from)
+    let dateObj = new Date(startDate);
+    let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
+    this.setState({ from: startDate, showFrom: false }, () => {
+      this.getAllData({ startDate: dateStr })
+    });
+  };
+
   showDatepickerTo = () => {
     this.setState({ showTo: true });
   };
 
-  showDatepickerFrom = () => {
-    this.setState({ showFrom: true });
-  };
-  formatDate(date,string=true) {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2)
-      month = '0' + month;
-    if (day.length < 2)
-      day = '0' + day;
-      if(string){
-
-        return [year, month, day].join('-') + ' ' + '10:00:00';
-      }else {
-        return [year, month, day].join('.');
-      }
-  }
-  onChangeFrom = (event, selectedDate) => {
-    const startDate = selectedDate || this.state.from;
-    // console.log('this.state.from', this.state.from)
-    let dateObj = new Date(startDate);
-
-    let timeConvert = this.formatDate(dateObj)
-    // console.log('12312312', this.formatDate(dateObj));
-    // let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
-    // console.log('123123', dateStr);
-    this.setState({ from: startDate, showFrom: false }, () => {
-      this.getAllData({ startDate: timeConvert })
-    });
-  };
-
   onChangeTo = (event, selectedDate) => {
     const endDate = selectedDate || this.state.to;
-    // console.log('this.state.to', this.state.to)
+    console.log('this.state.to', this.state.to)
     let dateObj = new Date(endDate);
-    let timeConvert = this.formatDate(dateObj)
-    // let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
+    let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
     this.setState({ to: endDate, showTo: false }, () => {
-      this.getAllData({ endDate: timeConvert })
+      this.getAllData({ endDate: dateStr })
     });
   };
 
@@ -190,7 +167,7 @@ class Inquiry extends Component {
       this.getAllData({ query: query })
     }, 200)
 
-    // console.log('startDate', this.state.from)
+      // console.log('startDate', this.state.from)
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -223,7 +200,7 @@ class Inquiry extends Component {
             ]}>
               <View style={{ flex: 1 }}>
                 <TouchableOpacity
-                  onPress={this.showDatepickerFrom}
+                  onPress={this.showDatepicker}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
                     {from.toLocaleDateString()}
@@ -238,9 +215,7 @@ class Inquiry extends Component {
                   <DatePicker
                     mode={mode}
                     show={showFrom}
-                    onChange={e => this.onChangeFrom(e)}
-                    // onChange={e => console.log(e)}
-
+                    onChange={this.onChangeFrom}
                     value={from}
                     testID="dateTimePicker"
                   />
@@ -286,17 +261,16 @@ class Inquiry extends Component {
               )}
             </View>
           </View>
-          {console.log('listQuestion123', listQuestion)}
-          {console.log('inquiryCode', inquiryCode)}
+
 
           {/* GENERAL TAB */}
-          {listQuestion[0] !== undefined && inquiryCode === 'TENANT' && (
+          {inquiryCode === 'TENANT' && (
             <View>
-              {listQuestion.map((item, index) => {
+              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
-                let dateStr = this.formatDate(dateTime,false);
+                let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
                 let _item = { ...item, userType: userType }
-                {/* console.log('_item  ', _item); */ }
+                {/* console.log('_item  ', _item); */}
                 return (
                   <TouchableOpacity
                     key={index}
@@ -319,7 +293,6 @@ class Inquiry extends Component {
                   // }}
                   >
                     <View style={DefaultStyle.leftItem}>
-                      <Text>123123</Text>
                       {item.complete === false ?
                         <Text style={[S.status]}>답변 대기 중123</Text>
                         :
@@ -348,12 +321,11 @@ class Inquiry extends Component {
           }
 
           {/* WAREHOUSE TAB */}
-          {listQuestion[0] !== undefined && inquiryCode === 'OWNER' && (
+          {inquiryCode === 'OWNER' && (
             <View>
-              {listQuestion.map((item, index) => {
+              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
-                {/* let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate(); */}
-                let dateStr = this.formatDate(dateTime,false);
+                let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
                 let _item = { ...item, userType: userType }
                 console.log('_item  ', _item);
                 return (

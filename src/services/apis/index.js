@@ -1,5 +1,6 @@
 import * as Sample from './Sample';
 import * as Account from './Account';
+import * as Calculate from './Calculate';
 import * as Warehouse from './Warehouse';
 import * as WarehouseOut from './WarehouseOut';
 import * as Annoucement from './Annoucement';
@@ -17,12 +18,14 @@ import * as WarehouseOwner from './WarehouseOwner';
 import * as WarehouseTenant from './WarehouseTenant';
 import * as WarehouseMobileAuth from './WarehouseMobileAuth';
 import * as FindPassword from './FindPassword';
+import * as MediaFileContract from './MediaFileContract';
 import * as Fav from './Fav';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {
   Sample,
   Account,
+  Calculate,
   Warehouse,
   WarehouseOut,
   Annoucement,
@@ -41,5 +44,6 @@ export {
   WarehouseTenant,
   WarehouseMobileAuth,
   FindPassword,
-  Fav
+  MediaFileContract,
+  Fav,
 };

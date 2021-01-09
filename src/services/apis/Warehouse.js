@@ -607,7 +607,7 @@ export const toggleFav = async idWarehouse => {
 };
 
 export const getLinkContract = body => {
-  let url = `/api/v1/contract/${body.type}/oz/html`
+  let url = `/api/v1/contract/${body.type}/oz/html`;
   return Axios.request({
     methodType: 'POST',
     url: url,

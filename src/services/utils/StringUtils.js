@@ -2,6 +2,7 @@ import moment from 'moment';
 // import {Axios, parseQuery} from '@Service/http'
 
 export const moneyConvert = (value, unitStr = '원') => {
+  if (value === '' || value === undefined) return 0;
   return (
     value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' ' + unitStr
   );
