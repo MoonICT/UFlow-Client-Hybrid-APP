@@ -48,16 +48,32 @@ class RegisterWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
   submit = () => {
-    Warehouse.registerWH(this.props.dataWH)
-      .then(res => {
-        const status = res.status;
-        if (status === 200) {
-          this.navigation.navigate('Home');
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
+    let type = this.props.route.params && this.props.route.params.type;
+    let warehouseRegNo =
+      this.props.route.params && this.props.route.params.warehouseRegNo;
+    if (type === 'ModifyWH') {
+      Warehouse.updateWH({ data: this.props.dataWH, url: warehouseRegNo })
+        .then(res => {
+          const status = res.status;
+          if (status === 200) {
+            this.navigation.navigate('Home');
+          }
+        })
+        .catch(err => {
+          console.log('err', err.response);
+        });
+    } else {
+      Warehouse.registerWH(this.props.dataWH)
+        .then(res => {
+          const status = res.status;
+          if (status === 200) {
+            this.navigation.navigate('Home');
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
   };
   render() {
     const { imageStore, workComplete, route, dataWH } = this.props;
@@ -69,12 +85,11 @@ class RegisterWH extends Component {
     console.log('routeWH', route);
     let isSubmitUpdate = false;
 
-    if (
-      dataWH.name !== '' &&
-      dataWH.description !== ''
-      // dataWH.address.zipNo !== ''
-    ) {
+    if (dataWH.name !== '' && dataWH.description !== '') {
       completeIntro = true;
+    }
+    if (dataWH.name !== '' && dataWH.description !== '') {
+      completeMoreInfo = true;
     }
     if (
       // imageStore.length > 0 &&
@@ -139,8 +154,9 @@ class RegisterWH extends Component {
               }>
               <Text style={S.textLeftBtn}>창고 소개</Text>
               <View style={S.rightBtn}>
-                {(route && route.params && route.params.type === 'ModifyWH') ||
-                (dataWH && dataWH.name) ? (
+                {//   (route && route.params && route.params.type === 'ModifyWH') ||
+                // (dataWH && dataWH.name)
+                completeIntro === true ? (
                   <Text style={S.completeText}>작업완료</Text>
                 ) : (
                   <Text style={S.textRightBtn}>입력하세요</Text>
@@ -304,6 +320,7 @@ class RegisterWH extends Component {
   async componentDidMount() {
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
+    this.props.updateInfo();
     console.log('warehouseRegNo :>> ', warehouseRegNo);
     if (warehouseRegNo) {
       await Warehouse.detailWH(warehouseRegNo)
@@ -311,12 +328,63 @@ class RegisterWH extends Component {
           console.log('resDetailWH', res);
           if (res.status === 200) {
             let dataWH = res.data;
+            let entrpNo = dataWH.relativeEntrp && dataWH.relativeEntrp.entrpNo;
+            let floors =
+              dataWH.floors.length > 0 &&
+              dataWH.floors.map((item, index) => {
+                item.seq = dataWH.floors[index].id.seq;
+                item.flrDvCode =
+                  dataWH.floors[index].flrDvCode &&
+                  dataWH.floors[index].flrDvCode.stdDetailCode;
+                return item;
+              });
+            let keeps =
+              dataWH.keeps.length > 0 &&
+              dataWH.keeps.map((item, index) => {
+                item.seq = dataWH.keeps[index].id.seq;
+                item.typeCode =
+                  dataWH.keeps[index].typeCode &&
+                  dataWH.keeps[index].typeCode.stdDetailCode;
+                item.calUnitDvCode =
+                  dataWH.keeps[index].calUnitDvCode &&
+                  dataWH.keeps[index].calUnitDvCode.stdDetailCode;
+                item.calStdDvCode =
+                  dataWH.keeps[index].calStdDvCode &&
+                  dataWH.keeps[index].calStdDvCode.stdDetailCode;
+                item.mgmtChrgDvCode =
+                  dataWH.keeps[index].mgmtChrgDvCode &&
+                  dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
+                return item;
+              });
+            let trusts =
+              dataWH.trusts.length > 0 &&
+              dataWH.trusts.map((item, index) => {
+                item.seq = dataWH.trusts[index].id.seq;
+                item.typeCode =
+                  dataWH.trusts[index].typeCode &&
+                  dataWH.trusts[index].typeCode.stdDetailCode;
+                item.calUnitDvCode =
+                  dataWH.trusts[index].calUnitDvCode &&
+                  dataWH.trusts[index].calUnitDvCode.stdDetailCode;
+                item.calStdDvCode =
+                  dataWH.trusts[index].calStdDvCode &&
+                  dataWH.trusts[index].calStdDvCode.stdDetailCode;
+                return item;
+              });
+
             // this.setState({ dataWH });
-            this.props.updateInfo(dataWH);
+
+            this.props.updateInfo({
+              ...dataWH,
+              floors,
+              keeps,
+              trusts,
+              entrpNo,
+            });
           }
         })
         .catch(err => {
-          console.log('errRegisterWH', err.response);
+          console.log('errRegisterWH', err);
         });
     }
 

@@ -27,6 +27,18 @@ export const registerWH = async data => {
     },
   });
 };
+export const updateWH = async value => {
+  console.log('dataregisterWH :>> ', value);
+  let url = value.url;
+  let data = value.data;
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.put(`/api/v1/warehouse/${url}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.get('/api/v1/warehouse/owner', {

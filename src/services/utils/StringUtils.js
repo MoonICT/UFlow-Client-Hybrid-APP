@@ -45,3 +45,11 @@ export const toStdName = (array, stdCd) => {
   }
   return stdCd;
 };
+
+export const stdToNumber = value => {
+  return parseInt(value, 0);
+};
+
+export const numberToStd = value => {
+  return value.toString();
+};

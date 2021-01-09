@@ -41,6 +41,7 @@ import card from '@Assets/images/card-img.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
+import { money } from '@Services/utils/StringUtils';
 
 const data = [
   {
@@ -131,15 +132,29 @@ class Mypage extends Component {
   coverColor = value => {
     switch (value) {
       case '0001':
-        return '#fbc02d';
+        return 'rgba(0, 0, 0, 0.54)';
       case '1100':
-        return 'rgb(33, 150, 243)';
+        return '#2196f3';
       case '4100':
         return '#fbc02d';
       case '5100':
         return '#4caf50';
       case '9100':
-        return 'rgba(0, 0, 0, 0.54)';
+        return '#f44336';
+    }
+  };
+  coverType = value => {
+    if (value.keep !== null && value.trust !== null) {
+      return '보관창고, 수탁창고';
+    }
+    if (value.keep !== null && value.trust === null) {
+      return '보관창고';
+    }
+    if (value.keep === null && value.trust !== null) {
+      return ' 수탁창고';
+    }
+    if (value.keep === null && value.trust === null) {
+      return '';
     }
   };
   render() {
@@ -151,14 +166,15 @@ class Mypage extends Component {
       dataWH &&
       dataWH.map((item, index) => {
         let subTitle = item.keep && item.keep.subTitle;
-        let splyAmount = item.keep && item.keep.splyAmount;
-        let mgmtChrg = item.keep && item.keep.mgmtChrg;
+        let splyAmount = item.keep && money(item.keep.splyAmount);
+        let mgmtChrg = item.keep && money(item.keep.mgmtChrg);
         let unit = item.keep && item.keep.unit;
 
         let subTitleTrust = item.trust && item.trust.subTitle;
-        let whoutChrgTrustTrust = item.trust && item.trust.whoutChrg;
-        let whinChrgTrust = item.trust && item.trust.whinChrg;
+        let whoutChrgTrustTrust = item.trust && money(item.trust.whoutChrg);
+        let whinChrgTrust = item.trust && money(item.trust.whinChrg);
         let unitTrust = item.trust && item.trust.unit;
+        let typeCover = this.coverType(item);
 
         let dataKeep =
           '최대' +
@@ -187,14 +203,17 @@ class Mypage extends Component {
         let dataTable = [
           {
             type: '등록 상태',
-            value: item.sttsDbCode && item.sttsDbCode.stdDetailCodeName,
+            value:
+              item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001'
+                ? '미검증 공실'
+                : item.sttsDbCode.stdDetailCodeName,
             colorValue: this.coverColor(
               item.sttsDbCode && item.sttsDbCode.stdDetailCode,
             ),
           },
           {
             type: '창고 유형',
-            value: item.sttsDbCode && item.sttsDbCode.stdCodeName,
+            value: typeCover,
           },
           {
             type: '창고 주소',
@@ -228,14 +247,15 @@ class Mypage extends Component {
                 </Text>
               </View>
             }
-            // rightHeader={
-            //   <Switch
-            //     value={isSwitchOn}
-            //     onValueChange={() => {
-            //       this.setState({ isSwitchOn: !isSwitchOn });
-            //     }}
-            //   />
-            // }
+            rightHeader={
+              <Text />
+              // <Switch
+              //   value={isSwitchOn}
+              //   onValueChange={() => {
+              //     this.setState({ isSwitchOn: !isSwitchOn });
+              //   }}
+              // />
+            }
             data={dataTable}
             borderRow={false}
             styleLeft={S.styleLeftTable}

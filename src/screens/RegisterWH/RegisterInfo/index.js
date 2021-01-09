@@ -221,6 +221,7 @@ class RegisterInfo extends Component {
       trusts,
       isSubmit,
     } = this.state;
+    console.log('dataInfo :>> ', dataInfo);
     let isSubmitUpdate = false;
     console.log('keeps', keeps);
     console.log('trusts', trusts);
