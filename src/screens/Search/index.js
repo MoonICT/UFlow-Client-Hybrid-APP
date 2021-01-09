@@ -91,6 +91,9 @@ class Search extends Component {
           distance: msgData.data.distance ? Number(msgData.data.distance) : 10,
         })
         break;
+      case WVMsgService.types.GO_WH_DETAIL:
+        console.log('[RN] GO_WH_DETAIL 수신', msgData.data)
+        break;
     }
   }
 

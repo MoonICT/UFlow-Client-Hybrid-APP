@@ -51,6 +51,15 @@ const types = {
    * */
   CHANGE_MAP_CENTER_POSITION: 'CHANGE_MAP_CENTER_POSITION',
 
+  /**
+   * 창고 상세로 스크린 이동.
+   * Request Data
+   * {
+   *   id: 창고 id
+   * }
+   * */
+  GO_WH_DETAIL: 'GO_WH_DETAIL',
+
 
   /*******************************
    * Native App -> Webview
