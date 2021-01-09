@@ -350,7 +350,6 @@ class ContractManager extends Component {
         }
         return types && status;
       });
-    console.log('dataFilter', dataFilter);
     const viewStep =
       dataSteps &&
       dataSteps.map((item, index) => {

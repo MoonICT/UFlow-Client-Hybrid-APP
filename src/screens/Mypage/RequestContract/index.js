@@ -16,7 +16,7 @@ import Appbars from '@Components/organisms/AppBar';
 import TableInfo from '@Components/atoms/TableInfo';
 import warehouse1 from '@Assets/images/warehouse-1.png';
 import ContractInformation from './ContractInformation';
-
+import {formatDateV2} from '@Utils/dateFormat'
 import { styles as S } from '../style';
 import { Warehouse } from '@Services/apis';
 import { StringUtils } from '@Services/utils';
@@ -24,7 +24,9 @@ import { StringUtils } from '@Services/utils';
 class RequestContract extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      contractLink : ''
+    };
     this.navigation = props.navigation;
   }
 
@@ -81,7 +83,7 @@ class RequestContract extends Component {
     const status = route && route.params && route.params.status;
     // console.log('routeRequescontract', route);
     const { dataApi } = this.state;
-    // console.log('dataApiRequest', dataApi);
+    console.log('dataApi', dataApi)
 
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
@@ -109,15 +111,15 @@ class RequestContract extends Component {
         },
         {
           type: '정산단위',
-          value: dataApi.keep.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
+          value: dataApi.trust.calUnitDvCode.stdDetailCodeName,
         },
         {
           type: '산정기준',
-          value: dataApi.keep.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
+          value: dataApi.trust.typeCode.stdDetailCodeName,
         },
         {
           type: '가용면적',
-          value: StringUtils.moneyConvert(dataApi.keep.whrgMgmtKeep.usblValue,''),
+          value: dataApi.trust.cntrValue,
         },
         {
           type: '임대 가능 기간',
@@ -166,39 +168,39 @@ class RequestContract extends Component {
         },
         {
           type: '수탁 가능 기간',
-          value: this.coverTime(dataApi.trust.whrgMgmtTrust.usblYmdFrom),
+          value: `${dataApi.trust.id.cntrYmdFrom} ~ ${dataApi.trust?.cntrYmdTo}`,
         },
-        {
-          type: '수탁 가용 수량',
-          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.usblValue,''),
-        },
+        // {
+        //   type: '수탁 가용 수량',
+        //   value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.usblValue,''),
+        // },
         {
           type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.splyAmount,''),
+          value: StringUtils.moneyConvert(dataApi.trust.splyAmount,''),
         },
         {
           type: '입고단가',
-          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.whinChrg,''),
+          value: StringUtils.moneyConvert(dataApi.trust.whinChrg,''),
         },
         {
           type: '출고단가',
-          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.whoutChrg,''),
+          value: StringUtils.moneyConvert(dataApi.trust.whoutChrg,''),
         },
         {
           type: '인건단가',
-          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.psnChrg,''),
+          value: StringUtils.moneyConvert(dataApi.trust.psnChrg,''),
         },
         {
           type: '가용면적',
-          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.mnfctChrg,''),
+          value: StringUtils.moneyConvert(dataApi.trust.mnfctChrg,''),
         },
         {
           type: '택배단가',
-          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.dlvyChrg,''),
+          value: StringUtils.moneyConvert(dataApi.trust.dlvyChrg,''),
         },
         {
           type: '운송단가',
-          value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.shipChrg,''),
+          value: StringUtils.moneyConvert(dataApi.trust.shipChrg,''),
         },
       ];
 
@@ -259,6 +261,8 @@ class RequestContract extends Component {
               </View>
             ) : null}
             <ContractInformation
+              cntrYmdFrom = {dataApi?.trust?.id?.cntrYmdFrom || ''}
+              cntrYmdTo = {dataApi?.trust?.cntrYmdTo || ''}
               warehouseRegNo={warehouseRegNo}
               rentUserNo={rentUserNo}
               warehSeq={warehSeq}
@@ -300,10 +304,12 @@ class RequestContract extends Component {
       this.props.route.params.type === 'OWNER' ? url : urlTenant,
     )
       .then(res => {
-        console.log('resRequest', res);
         if (res.status === 200) {
+          console.log('res', res)
           this.setState({
             dataApi: res.data,
+          }, () => {
+            
           });
           // this.props.quotationData(res.data);
         }
@@ -311,6 +317,15 @@ class RequestContract extends Component {
       .catch(err => {
         console.log('errRequest', err);
       });
+
+      // let bodyContractLink = {
+      //   warehouseId: "RG20210108293",
+      //   cntrYmdFr: "20210108",
+      //   cntrDvCd: "1100"
+      // }
+
+
+
   }
 
   /** when update state or props */
