@@ -70,10 +70,17 @@ class RegisterWH extends Component {
     let isSubmitUpdate = false;
 
     if (
-      imageStore.length > 2 &&
-      completeMoreInfo === true &&
-      completeInfo === true &&
-      completeFloor === true &&
+      dataWH.name !== '' &&
+      dataWH.description !== ''
+      // dataWH.address.zipNo !== ''
+    ) {
+      completeIntro = true;
+    }
+    if (
+      // imageStore.length > 0 &&
+      // completeMoreInfo === true &&
+      // completeInfo === true &&
+      // completeFloor === true &&
       completeIntro === true
     ) {
       isSubmitUpdate = true;
@@ -110,7 +117,10 @@ class RegisterWH extends Component {
                   <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
                     대표이미지
                   </Text>
-                  <Image style={S.ImageUpload} source={imageStore[0]} />
+                  <Image
+                    style={S.ImageUpload}
+                    source={{ uri: imageStore[0].url }}
+                  />
                 </Fragment>
               ) : (
                 <Fragment>
@@ -292,7 +302,24 @@ class RegisterWH extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    let warehouseRegNo =
+      this.props.route.params && this.props.route.params.warehouseRegNo;
+    console.log('warehouseRegNo :>> ', warehouseRegNo);
+    if (warehouseRegNo) {
+      await Warehouse.detailWH(warehouseRegNo)
+        .then(res => {
+          console.log('resDetailWH', res);
+          if (res.status === 200) {
+            let dataWH = res.data;
+            // this.setState({ dataWH });
+            this.props.updateInfo(dataWH);
+          }
+        })
+        .catch(err => {
+          console.log('errRegisterWH', err.response);
+        });
+    }
+
     SplashScreen.hide();
   }
 
@@ -306,7 +333,7 @@ class RegisterWH extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.pimages,
+    imageStore: state.registerWH.whImages,
     workComplete: state.registerWH.workComplete,
     dataWH: state.registerWH,
   };
@@ -315,12 +342,9 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+    updateInfo: action => {
+      dispatch(ActionCreator.updateInfo(action));
+    },
   };
 }
 
