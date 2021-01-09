@@ -15,9 +15,9 @@ class RadarChartScreen extends React.Component {
       data: {},
       legend: {
         enabled: true,
-        textSize: 14,
-        form: 'CIRCLE',
-        wordWrapEnabled: true,
+        // textSize: 200,
+        // form: 'CIRCLE',
+        // wordWrapEnabled: true,
       },
     };
   }
@@ -30,64 +30,64 @@ class RadarChartScreen extends React.Component {
             dataSets: [
               {
                 values: [
-                  { value: 100 },
-                  { value: 110 },
-                  { value: 105 },
-                  { value: 115 },
-                  { value: 110 },
+                  { value: 8 },
+                  { value: 6 },
+                  { value: 9 },
+                  { value: 6 },
+                  // { value: 110 },
                 ],
-                label: 'DS 1',
+                label: '',
                 config: {
-                  color: processColor('#FF8C9D'),
+                  color: processColor('000000'),
 
                   drawFilled: true,
-                  fillColor: processColor('#FF8C9D'),
+                  fillColor: processColor('red'),
                   fillAlpha: 100,
-                  lineWidth: 2,
+                  lineWidth: 5,
                 },
               },
               {
                 values: [
-                  { value: 115 },
-                  { value: 100 },
-                  { value: 105 },
-                  { value: 110 },
-                  { value: 120 },
+                  { value: 15 },
+                  { value: 15 },
+                  { value: 13 },
+                  { value: 12 },
+                  // { value: 120 },
                 ],
-                label: 'DS 2',
+                label: '',
                 config: {
-                  color: processColor('#C0FF8C'),
+                  color: processColor('#fd6d00'),
 
                   drawFilled: true,
-                  fillColor: processColor('#C0FF8C'),
+                  fillColor: processColor('rgba(255, 109, 0, 0.2)'),
                   fillAlpha: 150,
-                  lineWidth: 1.5,
+                  lineWidth: 5,
                 },
               },
-              {
-                values: [
-                  { value: 105 },
-                  { value: 115 },
-                  { value: 121 },
-                  { value: 110 },
-                  { value: 105 },
-                ],
-                label: 'DS 3',
-                config: {
-                  color: processColor('#8CEAFF'),
+              // {
+              //   values: [
+              //     { value: 105 },
+              //     { value: 115 },
+              //     { value: 121 },
+              //     { value: 110 },
+              //     { value: 105 },
+              //   ],
+              //   label: '',
+              //   config: {
+              //     color: processColor('#8CEAFF'),
 
-                  drawFilled: true,
-                  fillColor: processColor('#8CEAFF'),
-                },
-              },
+              //     drawFilled: true,
+              //     fillColor: processColor('#8CEAFF'),
+              //   },
+              // },
             ],
           },
         },
-        xAxis: {
-          $set: {
-            valueFormatter: ['A', 'B', 'C', 'D', 'E'],
-          },
-        },
+        // xAxis: {
+        //   $set: {
+        //     valueFormatter: ['A', 'B', 'C'],
+        //   },
+        // },
       }),
     );
   }
@@ -104,6 +104,16 @@ class RadarChartScreen extends React.Component {
   }
 
   render() {
+    // const data = {
+    //   labels: ['전략', '운영', '관리', '시스템'],
+    //   datasets: [
+    //     {
+    //       backgroundColor: 'rgba(117,117,117,0.2)',
+    //       borderColor: 'rgba(117,117,117,1)',
+    //       data: [8, 6, 6, 9],
+    //     },
+    //   ],
+    // };
     return (
       <View style={{ flex: 1 }}>
         <Appbars
@@ -126,19 +136,19 @@ class RadarChartScreen extends React.Component {
           <RadarChart
             style={styles.chart}
             data={this.state.data}
-            xAxis={this.state.xAxis}
-            yAxis={{ drawLabels: true }}
-            chartDescription={{ text: '' }}
+            // xAxis={this.state.xAxis}
+            // yAxis={{ drawLabels: true }}
+            // chartDescription={{ text: '' }}
             legend={this.state.legend}
-            drawWeb={true}
-            webLineWidth={5}
-            webLineWidthInner={5}
-            webAlpha={255}
-            webColor={processColor('red')}
-            webColorInner={processColor('green')}
-            skipWebLineCount={1}
-            onSelect={this.handleSelect.bind(this)}
-            onChange={event => console.log(event.nativeEvent)}
+            // drawWeb={true}
+            // webLineWidth={5}
+            // webLineWidthInner={5}
+            // webAlpha={255}
+            // webColor={processColor('red')}
+            // webColorInner={processColor('green')}
+            // skipWebLineCount={1}
+            // onSelect={this.handleSelect.bind(this)}
+            // onChange={event => console.log(event.nativeEvent)}
           />
         </View>
       </View>
@@ -149,7 +159,7 @@ class RadarChartScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   chart: {
     flex: 1,

@@ -202,7 +202,13 @@ export default StyleSheet.create({
     opacity: 0.23,
     backgroundColor: '#ffffff',
   },
-
+  /** Text, Button, TextField */
+  fontColor: {
+    color: color.text.primary
+  },
+  fontSecondaryColor: {
+    color: color.text.secondary
+  },
   /** Container button */
   containerBTN: {
     width: 120,
@@ -1246,5 +1252,14 @@ export default StyleSheet.create({
   _postCodeContent: {
     width: windowWidth,
     height: 300,
+  },
+
+  /** MyPage **/
+  uiFilter: {
+    height: 36,
+    fontSize: 14,
+    fontWeight: 'normal',
+    lineHeight: 1.43,
+    color: this.fontColor,
   },
 });

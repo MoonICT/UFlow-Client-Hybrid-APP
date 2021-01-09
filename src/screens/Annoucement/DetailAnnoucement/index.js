@@ -16,6 +16,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from '../style';
+import { Annoucement } from '@Services/apis';
 
 class RegisterInfo extends Component {
   constructor(props) {
@@ -33,15 +34,16 @@ class RegisterInfo extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   render() {
     const { route } = this.props;
-    console.log('route -> ', route);
+    const { data } = this.state;
+    console.log('data -> ', data);
 
     let contentDetail = route?.params?.annoucementDetails;
-    
+
     let title = contentDetail?.title;
     let date = contentDetail?.createdDate;
     let field1 = contentDetail?.fileName1;
@@ -67,8 +69,8 @@ class RegisterInfo extends Component {
         </Appbars>
         <ScrollView>
           <View style={S.bodyView}>
-            <Text style={DefaultStyle.titleItem}>{title}</Text>
-            <Text style={DefaultStyle.contentItem}>{date}</Text>
+            <Text style={DefaultStyle.titleItem}>{data && data.title}</Text>
+            <Text style={DefaultStyle.contentItem}>{data && data.createdDate}</Text>
             <View style={S.content}>
               <Text style={S.textContent}>{field1}</Text>
               <Text style={S.textContent}>{field2}</Text>
@@ -84,7 +86,20 @@ class RegisterInfo extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    let idProps =
+      this.props.route && this.props.route.params.annoucementDetails.id;
+    Annoucement.getListAnnoucement(idProps)
+      .then(res => {
+        console.log('::::: Annoucement Detail :::::', res);
+        if (res.status === 200) {
+          this.setState({
+            data: res.data,
+          });
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
     SplashScreen.hide();
   }
 

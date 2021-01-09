@@ -79,7 +79,6 @@ class RegisterInfoFloor extends Component {
 
   _addForm = valueTab => {
     let list = this.state.floors;
-
     list.push({
       flrDvCode: 'F1',
       flrArea: '',
