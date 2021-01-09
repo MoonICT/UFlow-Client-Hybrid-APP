@@ -105,6 +105,8 @@ class RegisterBusinessInfo extends Component {
         })
       })
 
+      console.log('dataConvert',dataConvert )
+
       this.setState({
         businessList: [
           ...businessList,
@@ -152,7 +154,7 @@ class RegisterBusinessInfo extends Component {
         });
       })
       .catch(err => {
-        console.log('errIntroWH', err);
+        console.log('errIntroWH', err.response);
       });
   }
 
@@ -278,9 +280,7 @@ class RegisterBusinessInfo extends Component {
       alert('창고 사업자 등록이 완료되었습니다.')
       this.navigation.navigate('RegisterWH', res.data);
     }).catch(err => {
-      if (err.response && err.response.status >= 500) {
-        alert('서버에러:' + err.response.message)
-      }
+      alert('서버에러:' + err.response);
     });
   };
 
