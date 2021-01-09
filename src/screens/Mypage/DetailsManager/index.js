@@ -27,7 +27,7 @@ import {
   Button,
   Paragraph,
 } from 'react-native-paper';
-import Select from '@Components/organisms/Select';
+import Select from '@Components/organisms/SelectFilter';
 import FilterButton from '@Components/atoms/FilterButton';
 
 // Local Imports
@@ -41,6 +41,7 @@ import {formatDateV1} from '@Utils/dateFormat';
 import {styles as S} from '../style';
 import {styles as SS} from './style';
 import {InOutManagerService} from '@Services/apis';
+import DatePicker from "@react-native-community/datetimepicker";
 
 const selectRequest = [
   {
@@ -200,8 +201,6 @@ export default class DetailsManager extends Component {
     await InOutManagerService.getDetail(params).then((res) => {
 
       console.log(res, 'res')
-
-
 
 
       let header = res.data.header;
@@ -418,57 +417,32 @@ export default class DetailsManager extends Component {
   }
 
 
-  onChangeStart = (event, selectedDate) => {
+  onChangeStart = (selectedDate) => {
     let {isOpenStart} = this.state;
-    if (event.type == 'dismissed') {
-      this.setState({
-        isOpenStart: !isOpenStart
-      })
-    } else {
-      let filter = {...this.state.filter}
-      filter.startDate = event.nativeEvent.timestamp
-      this.setState({
-        filter: filter,
-        isOpenStart: !isOpenStart
-      }, () => {
-        this.getAllData()
-      })
-    }
+
+    let filter = {...this.state.filter}
+    filter.startDate = selectedDate
+    this.setState({
+      filter: filter,
+      isOpenStart: !isOpenStart
+    }, () => {
+      this.getAllData()
+    })
   }
 
-  onChangeEnd = (event, selectedDate) => {
+  onChangeEnd = (selectedDate) => {
     let {isOpenEnd} = this.state
-    if (event.type == 'dismissed') {
-      this.setState({
-        isOpenEnd: !isOpenEnd
-      })
-    } else {
-      let filter = {...this.state.filter}
-      filter.endDate = event.nativeEvent.timestamp
-      this.setState({
-        filter,
-        isOpenEnd: !isOpenEnd
-      }, () => {
-        this.getAllData()
-      })
-    }
+
+    let filter = {...this.state.filter}
+    filter.endDate = selectedDate
+    this.setState({
+      filter,
+      isOpenEnd: !isOpenEnd
+    }, () => {
+      this.getAllData()
+    })
   };
 
-  onChangeEnd = (event, selectedDate) => {
-    let {isOpenEnd} = this.state
-    if (event.type == 'dismissed') {
-      this.setState({
-        isOpenEnd: !isOpenEnd
-      })
-    } else {
-      this.setState({
-        endDate: event.nativeEvent.timestamp,
-        isOpenEnd: !isOpenEnd
-      }, () => {
-        this.getAllData()
-      })
-    }
-  };
   onChangeTimeCreateImport = (selectedDate) => {
     console.log(selectedDate, 'selectedDate');
     this.setState({
@@ -501,9 +475,29 @@ export default class DetailsManager extends Component {
 
 
   onChangeRangeDay = (value) => {
+    let filter = {...this.state.filter}
+    if (value) {
+
+      const start = Moment().subtract(value, 'days').format('YYYY-MM-DD');
+      const end = Moment().format('YYYY-MM-DD');
+
+      filter.startDate = start
+      filter.endDate = end
+    } else {
+      filter.startDate = null
+      filter.endDate = null
+    }
+    this.setState({
+      filter: filter
+    },() => {
+      this.getAllData()
+    })
   };
+
+  // TODO
   onChangeLimitRow = (value) => {
   };
+
   onChangeContractType = (value) => {
     let filter = {...this.state.filter}
     filter.contractType = value
@@ -517,7 +511,17 @@ export default class DetailsManager extends Component {
 
   async createImport() {
 
-    let {rentWarehNo, createValue, createDate, createDateStr, typeCreate, ExpctSeq, ExpctYmd, type, ImageFilename} = this.state
+    let {
+      rentWarehNo,
+      createValue,
+      createDate,
+      createDateStr,
+      typeCreate,
+      ExpctSeq,
+      ExpctYmd,
+      type,
+      ImageFilename
+    } = this.state
 
     console.log('-------');
     console.log('rentWarehNo', rentWarehNo);
@@ -683,7 +687,7 @@ export default class DetailsManager extends Component {
     console.log('ExpctSeq', ExpctSeq);
     console.log('typeCreate', typeCreate);
 
-    if(typeCreate === 'import') {
+    if (typeCreate === 'import') {
       await InOutManagerService.postCancelImport({
         rentWarehNo: rentWarehNo,
         whinExpct: Moment(ExpctYmd).format('YYYYMMDD'),
@@ -697,7 +701,7 @@ export default class DetailsManager extends Component {
           this.getAllData()
         })
       })
-    } else if(typeCreate === 'export') {
+    } else if (typeCreate === 'export') {
       await InOutManagerService.postCancelExport({
         rentWarehNo: rentWarehNo,
         whoutExpct: Moment(ExpctYmd).format('YYYYMMDD'),
@@ -958,31 +962,24 @@ export default class DetailsManager extends Component {
 
             <View style={S.filter}>
               <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
-                <View style={[S.optionSelect, S.optionSelectLeft, {height: 40, marginBottom: 45}]}>
+                <View style={[S.optionSelect, S.optionSelectLeft, {marginBottom: 25, height: 36}]}>
+
                   <View style={{flex: 1}}>
                     <TouchableOpacity
                       onPress={() => this.showDateStart()}
                       style={DefaultStyle._btnDate}>
-                      <Text style={DefaultStyle._textDate}>
-                        {formatDateV1(startDate)}
+                      <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
+                        {dateStr(startDate) || 'YYYY-MM-DD'}
                       </Text>
-
                       <Text
                         style={[
                           DefaultStyle._labelTextField,
-                          {color: '#000000'},
+                          {color: '#000000', fontSize: 12},
                         ]}>
-                        수탁 기간
+                        시작일
                       </Text>
                       {
                         isOpenStart &&
-                        // <DatePicker
-                        //   mode={'date'}
-                        //   show={isOpenStart}
-                        //   onChange={(e) => this.onChangeStart(e)}
-                        //   value={startDate}
-                        //   testID="dateTimePicker"
-                        // />
                         <DateTimePickerModal
                           mode="date"
                           isVisible={isOpenStart}
@@ -994,38 +991,32 @@ export default class DetailsManager extends Component {
                             });
                           }}
                         />
+
                       }
                     </TouchableOpacity>
                   </View>
+
+
                 </View>
-
-                <Text style={S.hyphen}>-</Text>
-
-                <View style={[S.optionSelect, S.optionSelectLeft]}>
+                <Text style={[S.hyphen, {height: 36, lineHeight: 36}]}>-</Text>
+                <View style={[S.optionSelect, S.optionSelectLeft, {height: 36}]}>
 
                   <View style={{flex: 1}}>
                     <TouchableOpacity
                       onPress={() => this.showDateEnd()}
                       style={DefaultStyle._btnDate}>
-                      <Text style={DefaultStyle._textDate}>
-                        {formatDateV1(endDate)}
+                      <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
+                        {dateStr(endDate) || 'YYYY-MM-DD'}
                       </Text>
                       <Text
                         style={[
                           DefaultStyle._labelTextField,
-                          {color: '#000000'},
+                          {color: '#000000', fontSize: 12},
                         ]}>
-                        수탁 기간
+                        종료일
                       </Text>
                       {
                         isOpenEnd &&
-                        // <DatePicker
-                        //   mode={'date'}
-                        //   show={isOpenEnd}
-                        //   onChange={(e) => this.onChangeEnd(e)}
-                        //   value={endDate}
-                        //   testID="dateTimePicker"
-                        // />
                         <DateTimePickerModal
                           mode="date"
                           isVisible={isOpenEnd}
@@ -1041,21 +1032,27 @@ export default class DetailsManager extends Component {
 
                     </TouchableOpacity>
                   </View>
-                </View>
 
-              </View>
-              <View style={[DefaultStyle._listElement, {marginBottom: -10}]}>
-                <View style={[S.optionSelect, S.optionSelectLeft]}>
-                  <Select data={rangeDay} style={S.select} valueProps={this.onChangeRangeDay}/>
+
                 </View>
-                <View style={[S.optionSelect, S.optionSelectLeft]}>
-                  {/* <Select data={selectNumber} style={S.select} /> */}
-                  <Select data={limitRow} style={S.select} valueProps={this.onChangeLimitRow}/>
-                </View>
-                <View style={[S.optionSelect, S.optionSelectLeft]}>
-                  <Select data={selectRequest} style={S.select} valueProps={this.onChangeContractType}/>
+                <View style={[S.optionSelect, S.optionSelectLeft, {height: 36}]}>
+                  <Select data={rangeDay}
+                          valueProps={this.onChangeRangeDay}
+                          style={[S.select, {height: 36}]}
+                  />
                 </View>
               </View>
+              {/** TODO 처리 아직 안됨 **/}
+              {/*<View style={[DefaultStyle._listElement, {marginBottom: -10}]}>*/}
+              {/*  */}
+              {/*  <View style={[S.optionSelect, S.optionSelectLeft]}>*/}
+              {/*    /!* <Select data={selectNumber} style={S.select} /> *!/*/}
+              {/*    <Select data={limitRow} style={S.select} valueProps={this.onChangeLimitRow}/>*/}
+              {/*  </View>*/}
+              {/*  <View style={[S.optionSelect, S.optionSelectLeft]}>*/}
+              {/*    <Select data={selectRequest} style={S.select} valueProps={this.onChangeContractType}/>*/}
+              {/*  </View>*/}
+              {/*</View>*/}
             </View>
 
             <View style={DefaultStyle._card}>
@@ -1419,12 +1416,12 @@ export default class DetailsManager extends Component {
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               color="rgba(0, 0, 0, 0.54)"
-              style={[DefaultStyle._buttonElement,{paddingTop:10,paddingBottom:10}]}
+              style={[DefaultStyle._buttonElement, {paddingTop: 10, paddingBottom: 10}]}
               onPress={() => this.setState({isCancel: false})}>
               아니오
             </Button>
             <Button
-              style={[DefaultStyle._buttonElement,{paddingTop:10,paddingBottom:10}]}
+              style={[DefaultStyle._buttonElement, {paddingTop: 10, paddingBottom: 10}]}
               onPress={() => {
                 this.onCancelRequest()
               }
@@ -1453,7 +1450,7 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop:10,marginBottom:10}]}
+              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
               onPress={() =>
                 this.setState({completeRequestImport: false})
               }>
@@ -1481,7 +1478,7 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop:10,marginBottom:10}]}
+              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
               onPress={() =>
                 this.setState({completeRequestExport: false})
               }>
@@ -1509,7 +1506,7 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop:10,marginBottom:10}]}
+              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
               onPress={() =>
                 this.setState({confirmRequestImport: false})
               }>
@@ -1537,7 +1534,7 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop:10,marginBottom:10}]}
+              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
               onPress={() =>
                 this.setState({confirmRequestExport: false})
               }>
@@ -1565,7 +1562,7 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop:10,marginBottom:10}]}
+              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
               onPress={() =>
                 this.setState({cancelRequestImport: false})
               }>
