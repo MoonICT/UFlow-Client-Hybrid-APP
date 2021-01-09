@@ -51,15 +51,17 @@ class ContractInformation extends Component {
       type,
       warehouse,
       rentUser,
+      cntrYmdFrom,
+      cntrYmdTo
     } = this.props;
     let dataTable = [
       {
-        type: '계약 요청일',
-        value: '',
+        type: '계약 요청일자',
+        value: cntrYmdFrom,
       },
       {
-        type: '계약 승인일',
-        value: '',
+        type: '계약 승인일자',
+        value: cntrYmdTo,
       },
       {
         type: '첨부 서류',
