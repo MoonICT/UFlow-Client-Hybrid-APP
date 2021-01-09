@@ -1,5 +1,6 @@
 import * as Sample from './Sample';
 import * as Account from './Account';
+import * as Calculate from './Calculate';
 import * as Warehouse from './Warehouse';
 import * as WarehouseOut from './WarehouseOut';
 import * as Annoucement from './Annoucement';
@@ -22,6 +23,7 @@ import * as SettlementManagementService from './SettlementManagement';
 export {
   Sample,
   Account,
+  Calculate,
   Warehouse,
   WarehouseOut,
   Annoucement,
