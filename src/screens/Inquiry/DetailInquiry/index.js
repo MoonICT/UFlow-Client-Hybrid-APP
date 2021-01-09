@@ -125,7 +125,22 @@ class DetailInquiry extends Component {
               </View>
             </View>
           }
-          {(params && params.inquiryDetails && params.type === 'OWNER' && params.inquiryDetails.complete === false) &&
+          {/* {(params && params.inquiryDetails && params.type === 'TENANT' && params.inquiryDetails.complete === true)
+            &&
+            <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
+              <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
+              <Text style={S.titleItem}>
+                {params?.inquiryDetails?.content ?? ''}
+              </Text>
+              <Text style={DefaultStyle.contentItem}>{dateStr ?? ''}</Text>
+              <View style={[S.answers, S.answerContents]}>
+                <Text style={[S.textAnswers, { marginBottom: 15 }]}>
+                  {params?.inquiryDetails?.answer?.content ?? ''}
+                </Text>
+              </View>
+            </View>
+          } */}
+          {(params && params.inquiryDetails && params.inquiryDetails.complete === false) &&
             <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
               <Text style={[S.status]}>답변 대기 중</Text>
               <Text style={S.titleItem}>
@@ -158,7 +173,7 @@ class DetailInquiry extends Component {
               </View>
             </View>
           }
-          {(params && params.inquiryDetails && params.type === 'TENANT' && params.inquiryDetails.complete === false) && ""}
+          {/* {(params && params.inquiryDetails && params.type === 'TENANT' && params.inquiryDetails.complete === false) && ""} */}
           {/* {(params && params.inquiryDetails && params.type === 'TENANT') &&
             <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
               {params.inquiryDetails.complete === true &&

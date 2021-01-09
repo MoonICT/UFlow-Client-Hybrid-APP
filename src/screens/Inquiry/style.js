@@ -13,6 +13,8 @@ export const styles = StyleSheet.create({
     width: windowWidth,
     height: windowHeight,
     backgroundColor: 'white',
+    marginBottom: 50,
+    paddingBottom: 50,
   },
   filter: {
     padding: 16,
@@ -113,4 +115,7 @@ export const styles = StyleSheet.create({
   selectLong: {
     minWidth: 100,
   },
+  datePicker:{
+    fontSize: 5,
+  }
 });
