@@ -178,6 +178,8 @@ export default class SettlementManagement extends Component {
 
 
   onChangeTab (value) {
+    console.log("onChangeTab", value);
+
     this.setState({
       valueTab: value
     }, () => {
@@ -281,7 +283,7 @@ export default class SettlementManagement extends Component {
                   : DefaultStyle._textTabBar
               }
             >
-              요청 받은 견적･계약
+              요청 받은 견적･계약 (창고주)
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -294,7 +296,7 @@ export default class SettlementManagement extends Component {
                   ? DefaultStyle._textActiveTab
                   : DefaultStyle._textTabBar
               }>
-              요청한 견적･계약
+              요청한 견적･계약 (임차인)
             </Text>
           </TouchableOpacity>
         </View>
