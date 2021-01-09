@@ -8,11 +8,9 @@
 // Global Imports
 import React, { Component, Fragment } from 'react';
 import {
-  SafeAreaView,
+  Linking,
   View,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -147,7 +145,6 @@ export default class SettlementManagement extends Component {
       }
 
       let newRows = res.data.data.content.map((item, index) => {
-        console.debug('item', item);
         return {
           id: item.id,
           warehouseName: item.warehouseName,
@@ -403,6 +400,7 @@ export default class SettlementManagement extends Component {
         </View>
         {
           rows.map((item, index) => {
+            console.log('item', item)
             return (
               <CardMypage
                 key = {index}
@@ -425,11 +423,18 @@ export default class SettlementManagement extends Component {
                   ]}>
                   <TouchableOpacity
                     style={[DefaultStyle._btnOutline]}
-                    onPress={() => {}}>
+                    onPress={() => {
+                      Linking.canOpenURL(item.urlTransaction).then(supported => {
+                        if (supported) {
+                          Linking.openURL(item.urlTransaction);
+                        } else {
+                          console.log("Don't know how to open URI: " + item.urlTransaction);
+                        }})
+                    }}>
                     <Text
-                    onPress={() => this.navigation.navigate('DetailsSettlement', {
-                      id: item.id
-                    })}
+                    // onPress={() => this.navigation.navigate('DetailsSettlement', {
+                    //   id: item.id
+                    // })}
                     style={[DefaultStyle._textButton]}>
                        거래명세서
                     </Text>

@@ -247,7 +247,7 @@ export default class DetailsSettlement extends Component {
             },
             {
               type: '비용',
-              value: item.vat || 0
+              value: item.amount || 0
             },
             {
               type: '비고',
@@ -467,13 +467,13 @@ export default class DetailsSettlement extends Component {
                   borderBottom={true}
                 />
               </View>
-              <View style={[DefaultStyle._footerCards, { padding: 16 }]}>
+              {/* <View style={[DefaultStyle._footerCards, { padding: 16 }]}>
                 <TouchableOpacity
                   style={[DefaultStyle._btnOutline]}
                   onPress={() => {}}>
                   <Text style={[DefaultStyle._textButton]}>거래명세서</Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
 
             {/* <View style={S.filter}>

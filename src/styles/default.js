@@ -86,6 +86,10 @@ export default StyleSheet.create({
   d_flex: {
     display: 'flex',
   },
+  d_flex_between: {
+    display: 'flex',
+    justifyContent:'space-between'
+  },
   d_flex_center: {
     display: 'flex',
     alignItems: 'center',
@@ -101,6 +105,9 @@ export default StyleSheet.create({
   },
   flex_1: {
     flex: 1,
+  },
+  bgMuted:{
+    backgroundColor:'rgba(0, 0, 0, 0.04)'
   },
   header: {
     height: 48,
