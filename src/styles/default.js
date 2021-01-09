@@ -42,7 +42,7 @@ export default StyleSheet.create({
     backgroundColor: color.input.default_border,
   },
   mt_0: {
-    marginTop:0
+    marginTop: 0,
   },
   mt_20: {
     marginTop: 20,
@@ -69,10 +69,10 @@ export default StyleSheet.create({
     padding: 12,
   },
   p_16: {
-    padding:16
+    padding: 16,
   },
-  _colorMuted:{
-    color: 'rgba(0, 0, 0, 0.87)'
+  _colorMuted: {
+    color: 'rgba(0, 0, 0, 0.87)',
   },
   w_50: {
     width: '50%',
@@ -88,7 +88,7 @@ export default StyleSheet.create({
   },
   d_flex_between: {
     display: 'flex',
-    justifyContent:'space-between'
+    justifyContent: 'space-between',
   },
   d_flex_center: {
     display: 'flex',
@@ -105,6 +105,9 @@ export default StyleSheet.create({
   },
   flex_1: {
     flex: 1,
+  },
+  bgMuted: {
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
   },
   header: {
     height: 48,
@@ -208,10 +211,10 @@ export default StyleSheet.create({
   },
   /** Text, Button, TextField */
   fontColor: {
-    color: color.text.primary
+    color: color.text.primary,
   },
   fontSecondaryColor: {
-    color: color.text.secondary
+    color: color.text.secondary,
   },
   /** Container button */
   containerBTN: {
@@ -1264,6 +1267,11 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal',
     lineHeight: 1.43,
-    color: this.fontColor,
+    // color: this.fontColor,
+  },
+
+  linkColor: {
+    color: '#0398fc',
+    textDecorationLine: 'underline',
   },
 });

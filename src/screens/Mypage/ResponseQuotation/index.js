@@ -6,12 +6,7 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
+import { View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Text, Appbar } from 'react-native-paper';
@@ -113,7 +108,7 @@ class ResponseQuotation extends Component {
       showTo,
       isSubmit,
     } = this.state;
-    console.log('routeReponse', route);
+    // console.log('routeReponse', route);
     let isSubmitTrust = false;
     if (
       rntlValue !== '' &&

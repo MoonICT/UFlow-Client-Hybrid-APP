@@ -35,6 +35,7 @@ import ContractManager from './ContractManager';
 import InOutManager from './InOutManager';
 import ActionCreator from '@Actions';
 import SettlementManagement from './SettlementManagement';
+import InterestWH from './InterestWH';
 
 import card from '@Assets/images/card-img.png';
 import { styles as S } from './style';
@@ -325,9 +326,9 @@ class Mypage extends Component {
       case '정산관리':
         viewComponent = <SettlementManagement navigation={this.navigation} />;
         break;
-      // case '관심 창고':
-      //   viewComponent = <InterestWH navigation={this.navigation} />;
-      //   break;
+      case '관심 창고':
+        viewComponent = <InterestWH navigation={this.navigation} />;
+        break;
       default:
         viewComponent;
       // code block

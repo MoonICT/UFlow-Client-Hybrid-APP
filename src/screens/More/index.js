@@ -191,7 +191,9 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+                  onPress={() => this.navigation.navigate('Mypage',{
+                    title: '관심 창고',
+                  })}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={save} />
                     <Text style={DefaultStyle.titleItem}>관심창고</Text>
@@ -266,24 +268,9 @@ class More extends Component {
                   />
                 </View>
               </TouchableOpacity>
-              
               <TouchableOpacity
                 style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('ConsultingComplete')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>ConsultingComplete</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('Annoucement')}>
+                onPress={() => this.navigation.navigate('LogisticsKnowledge')}>
                 <View style={[DefaultStyle.leftItem, S.item]}>
                   <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>
                 </View>

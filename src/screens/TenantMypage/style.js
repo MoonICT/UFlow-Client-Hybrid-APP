@@ -12,9 +12,9 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     width: windowWidth,
-    height: windowHeight,
-    backgroundColor: 'white',
-    paddingBottom: 24,
+    // height: windowHeight,
+    paddingBottom: 120,
+    backgroundColor: 'white'
   },
   row: {
     flexDirection: 'row',

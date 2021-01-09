@@ -25,4 +25,15 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
     marginTop: 24,
   },
+  contentQuestion:{
+    fontSize: 12,
+  },
+  titleQuestion:{
+    margin: 0,
+    textAlign: 'center'
+  },
+  headerButon:{
+    // color: 'rgba(0, 0, 0, 0.47)',
+    color: '#ff6d00',
+  },
 });
