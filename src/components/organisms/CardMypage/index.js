@@ -20,7 +20,6 @@ import { styles as S } from './style';
 class CardMypage extends Component {
   constructor(props) {
     super(props);
-    this.webView = null;
     this.state = { visible: false };
     this.navigation = props.navigation;
   }

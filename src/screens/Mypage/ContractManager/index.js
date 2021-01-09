@@ -13,12 +13,9 @@ import { Text } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '@Components/organisms/AppBar';
-import AppGrid from '@Components/organisms/AppGrid';
-import Select from '@Components/organisms/Select';
+import Select from '@Components/organisms/SelectFilter';
 import CardMypage from '@Components/organisms/CardMypage';
 
-import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
@@ -363,21 +360,17 @@ class ContractManager extends Component {
           <View style={S.step} key={index}>
             <View style={S.stepLeft}>
               <Text style={S.textStep}>{item.title}</Text>
-              <Text
-                style={[
-                  S.textNumber,
-                  item.status === true && !checkStep
-                    ? S.textNumberActive
-                    : null,
-                ]}>
-                {checkStep ? 0 : item.number}
-              </Text>
+              <TouchableOpacity
+                style={[S.textNumber, item.status === true && !checkStep ? S.textNumberActive : null]}>
+                <Text style={[S.textNumber2, item.status === true && !checkStep ? S.textNumber2Active : null]}>{checkStep ? 0 : item.number}</Text>
+              </TouchableOpacity>
             </View>
             {(index + 1) % 3 === 0 ? null : (
               <View style={S.rightStep}>
                 <Icon
                   name="arrow-forward-ios"
                   size={12}
+                  style={[]}
                   color="rgba(0, 0, 0, 0.54)"
                 />
               </View>
@@ -431,7 +424,8 @@ class ContractManager extends Component {
                 <Fragment>
                   {// (listBtnOwner === true && valueTab === 'OWNER') ||
                   listBtnTenant === true && valueTab === 'TENANT' ? (
-                    <View style={DefaultStyle.row}>
+                    <View style={[DefaultStyle.row, {marginTop:20}]}>
+
                       <TouchableOpacity
                         style={[
                           DefaultStyle._btnOutline,
@@ -553,13 +547,12 @@ class ContractManager extends Component {
       });
 
     return (
-      <View style={DefaultStyle._body}>
+      <View style={[DefaultStyle._body, {paddingBottom:180}]}>
         <View style={DefaultStyle._titleBody}>
           <Text style={[DefaultStyle._textTitleCard]}>견적･계약 관리</Text>
         </View>
-        <View style={DefaultStyle._card}>
-          <View style={S.steps}>{viewStep}</View>
-        </View>
+
+        {/** 탭 (OWNER/TENANT) **/}
         <View style={DefaultStyle._tabBar}>
           <TouchableOpacity
             style={valueTab === 'OWNER' ? DefaultStyle._btnTabBar : null}
@@ -570,7 +563,7 @@ class ContractManager extends Component {
                   ? DefaultStyle._textActiveTab
                   : DefaultStyle._textTabBar
               }>
-              요청 받은 견적･계약
+              요청 받은 견적･계약 (창고주)
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -582,9 +575,14 @@ class ContractManager extends Component {
                   ? DefaultStyle._textActiveTab
                   : DefaultStyle._textTabBar
               }>
-              요청한 견적･계약
+              요청한 견적･계약 (임차인)
             </Text>
           </TouchableOpacity>
+        </View>
+
+        {/** Contract Process **/}
+        <View style={[DefaultStyle._card, {marginBottom:0}]}>
+          <View style={S.steps}>{viewStep}</View>
         </View>
         <View
           style={[
@@ -624,39 +622,45 @@ class ContractManager extends Component {
     const type = this.state.valueTab;
     await Warehouse.contractManager(type)
       .then(res => {
-        // console.log('resContract', res);
+
         const status = res.status;
         if (status === 200) {
-          // this.setState({ dataApi: res.data.data.content });
+
           this.props.contractData({ dataApi: res.data.data.content });
           let data = res.data;
           let dataSteps = [
             {
+              statusCode: 'RS00',
               title: '견적요청',
               status: data.countRQ00 > 0 ? true : false,
               number: data.countRQ00,
             },
             {
+              statusCode: 'RQ00',
               title: '견적응답',
               status: data.countRS00 > 0 ? true : false,
               number: data.countRS00,
             },
             {
-              title: '견적승인',
+              statusCode: '1100',
+              title: '계약협의',
               status: data.count1100 > 0 ? true : false,
               number: data.count1100,
             },
             {
-              title: '계약진행중',
+              statusCode: '2100',
+              title: '계약요청대기',
               status: data.count2100 > 0 ? true : false,
               number: data.count2100,
             },
             {
+              statusCode: '4100',
               title: '계약완료',
               status: data.count4100 > 0 ? true : false,
               number: data.count4100,
             },
             {
+              statusCode: '5100',
               title: '계약승인',
               number: data.count5100,
               status: data.count5100 > 0 ? true : false,
@@ -687,31 +691,37 @@ class ContractManager extends Component {
 
             let dataSteps = [
               {
+                statusCode: 'RS00',
                 title: '견적요청',
                 status: data.countRQ00 > 0 ? true : false,
                 number: data.countRQ00,
               },
               {
+                statusCode: 'RQ00',
                 title: '견적응답',
                 status: data.countRS00 > 0 ? true : false,
                 number: data.countRS00,
               },
               {
-                title: '견적승인',
+                statusCode: '1100',
+                title: '계약협의',
                 status: data.count1100 > 0 ? true : false,
                 number: data.count1100,
               },
               {
-                title: '계약진행중',
+                statusCode: '2100',
+                title: '계약요청대기',
                 status: data.count2100 > 0 ? true : false,
                 number: data.count2100,
               },
               {
+                statusCode: '4100',
                 title: '계약완료',
                 status: data.count4100 > 0 ? true : false,
                 number: data.count4100,
               },
               {
+                statusCode: '5100',
                 title: '계약승인',
                 number: data.count5100,
                 status: data.count5100 > 0 ? true : false,
@@ -744,7 +754,7 @@ class ContractManager extends Component {
           // console.log('resdddddddddd', res);
           if (res.status === 200) {
             // console.log('resRequestContract', res);
-         
+
             this.navigation.navigate('RequestContract', {
               type,
               warehouseRegNo,
