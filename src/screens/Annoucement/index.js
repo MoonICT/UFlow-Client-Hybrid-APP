@@ -19,7 +19,7 @@ import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Annoucement } from '@Services/apis';
 
-class RegisterWH extends Component {
+class AnnoucementScreen extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -145,4 +145,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegisterWH);
+)(AnnoucementScreen);
