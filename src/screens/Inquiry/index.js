@@ -27,11 +27,11 @@ import { log } from 'react-native-reanimated';
 const selectOptions = [
   {
     label: '창고주 ',
-    value: '창고주 ',
+    value: 'OWNER',
   },
   {
     label: '임차인 ',
-    value: '임차인 ',
+    value: 'TENANT',
   },
 ];
 
@@ -58,7 +58,7 @@ class Inquiry extends Component {
       from: new Date(),
       to: new Date(),
       showTo: false,
-      inquiryCode: '',
+      inquiryCode: 'TENANT',
       userType: 'TENANT',
       typeQuestion: 'GENERAL',
       listQuestion: [],
@@ -89,6 +89,7 @@ class Inquiry extends Component {
   }
 
   async getAllData(params) {
+    console.log('aaa', params);
     let { userType, typeQuestion } = this.state;
 
     let defaultParams = {
@@ -97,12 +98,15 @@ class Inquiry extends Component {
       ...params
     }
 
+    console.log("userTypeParams", userType)
+
     await getAllInquiry(defaultParams).then((res) => {
-      console.log('res', res)
+      // console.log('res', res)
       if (res.data._embedded.questions === null) {
         return;
       }
       if (res.status === 200) {
+        console.log('vanlong=>>>', res.data._embedded.questions);
         this.setState({ listQuestion: res.data._embedded.questions })
       }
     })
@@ -114,31 +118,64 @@ class Inquiry extends Component {
     });
   }
 
-  showDatepicker = () => {
-    this.setState({ showFrom: true });
-  };
-
-  onChangeFrom = (event, selectedDate) => {
-    const startDate = selectedDate || this.state.from;
-    let dateObj = new Date(startDate);
-    let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
-    this.setState({ from: startDate, showFrom: false }, () => {
-      this.getAllData({ startDate: dateStr })
-    });
-  };
-
   showDatepickerTo = () => {
     this.setState({ showTo: true });
   };
 
-  onChangeTo = (event, selectedDate) => {
-    const endDate = selectedDate || this.state.to;
-    let dateObj = new Date(endDate);
-    let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
-    this.setState({ to: endDate, showTo: false }, () => {
-      this.getAllData({ endDate: dateStr })
+  showDatepickerFrom = () => {
+    this.setState({ showFrom: true });
+  };
+  formatDate(date,string=true) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+      if(string){
+
+        return [year, month, day].join('-') + ' ' + '10:00:00';
+      }else {
+        return [year, month, day].join('.');
+      }
+  }
+  onChangeFrom = (event, selectedDate) => {
+    const startDate = selectedDate || this.state.from;
+    // console.log('this.state.from', this.state.from)
+    let dateObj = new Date(startDate);
+
+    let timeConvert = this.formatDate(dateObj)
+    // console.log('12312312', this.formatDate(dateObj));
+    // let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
+    // console.log('123123', dateStr);
+    this.setState({ from: startDate, showFrom: false }, () => {
+      this.getAllData({ startDate: timeConvert })
     });
   };
+
+  onChangeTo = (event, selectedDate) => {
+    const endDate = selectedDate || this.state.to;
+    // console.log('this.state.to', this.state.to)
+    let dateObj = new Date(endDate);
+    let timeConvert = this.formatDate(dateObj)
+    // let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
+    this.setState({ to: endDate, showTo: false }, () => {
+      this.getAllData({ endDate: timeConvert })
+    });
+  };
+
+  // onChangeFrom = (value) =>{
+  // this.setState({ from: value })
+  // console.log('from',this.state.from);
+  // }
+  // onChangeTo = (value) => {
+  //   this.setState({ to: value })
+  // console.log('to',this.state.to);
+  // }
+
 
   showDialog = () => this.setState({ visible: true });
 
@@ -153,6 +190,7 @@ class Inquiry extends Component {
       this.getAllData({ query: query })
     }, 200)
 
+    // console.log('startDate', this.state.from)
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -185,7 +223,7 @@ class Inquiry extends Component {
             ]}>
               <View style={{ flex: 1 }}>
                 <TouchableOpacity
-                  onPress={this.showDatepicker}
+                  onPress={this.showDatepickerFrom}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
                     {from.toLocaleDateString()}
@@ -200,7 +238,9 @@ class Inquiry extends Component {
                   <DatePicker
                     mode={mode}
                     show={showFrom}
-                    onChange={this.onChangeFrom}
+                    onChange={e => this.onChangeFrom(e)}
+                    // onChange={e => console.log(e)}
+
                     value={from}
                     testID="dateTimePicker"
                   />
@@ -235,21 +275,28 @@ class Inquiry extends Component {
                   <Select
                     data={selectOptions}
                     style={S.select}
+                    valueProps={e => {
+                      this.setState({ userType: e }, () => {
+                        this.getAllData()
+                      });
+                      // console.log("userType", userType)
+                    }}
                   />
                 </View>
               )}
             </View>
           </View>
-
+          {console.log('listQuestion123', listQuestion)}
+          {console.log('inquiryCode', inquiryCode)}
 
           {/* GENERAL TAB */}
-          {inquiryCode === 'TENANT' && (
+          {listQuestion[0] !== undefined && inquiryCode === 'TENANT' && (
             <View>
-              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
+              {listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
-                let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
+                let dateStr = this.formatDate(dateTime,false);
                 let _item = { ...item, userType: userType }
-                console.log('_item  ', _item);
+                {/* console.log('_item  ', _item); */ }
                 return (
                   <TouchableOpacity
                     key={index}
@@ -272,6 +319,7 @@ class Inquiry extends Component {
                   // }}
                   >
                     <View style={DefaultStyle.leftItem}>
+                      <Text>123123</Text>
                       {item.complete === false ?
                         <Text style={[S.status]}>답변 대기 중123</Text>
                         :
@@ -300,11 +348,12 @@ class Inquiry extends Component {
           }
 
           {/* WAREHOUSE TAB */}
-          {inquiryCode === 'OWNER' && (
+          {listQuestion[0] !== undefined && inquiryCode === 'OWNER' && (
             <View>
-              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
+              {listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
-                let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
+                {/* let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate(); */}
+                let dateStr = this.formatDate(dateTime,false);
                 let _item = { ...item, userType: userType }
                 console.log('_item  ', _item);
                 return (

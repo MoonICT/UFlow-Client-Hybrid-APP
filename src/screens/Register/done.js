@@ -29,18 +29,27 @@ class DoneRegister extends Component {
     this.webView = null;
     this.state = {
       name: '',
+      timer:3
     };
     this.navigation = props.navigation;
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
+  componentDidMount(){
+    this.interval = setInterval(
+      () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
+      1000
+    );
   }
-
-  /** when exits screen */
-  componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+  
+  componentDidUpdate(){
+    if(this.state.timer === 1){ 
+      clearInterval(this.interval);
+      this.navigation.push('Home');
+    }
+  }
+  
+  componentWillUnmount(){
+   clearInterval(this.interval);
   }
 
   render() {
@@ -84,17 +93,6 @@ class DoneRegister extends Component {
         </ScrollView>
       </SafeAreaView>
     );
-  }
-
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
   }
 }
 

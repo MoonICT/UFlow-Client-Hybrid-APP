@@ -86,13 +86,13 @@ class Consulting extends Component {
     }
     this.setState({ listAnswer: newArr });
   };
+
   handleStep = () => {
     const { step, listQuest, listAnswer } = this.state;
     this.setState({ limitIndex: step });
-    if (step <= listQuest.length) {
+    if (step < listQuest.length) {
       this.setState({ step: step + 1 });
-    } else {
-      console.log('listAnswer',listAnswer);
+    } else if (step === listQuest.length) {
       ConsultingApi.submitAdvisory(listAnswer)
         .then(res => {
           this.setState({ step: step + 1 });
@@ -100,7 +100,6 @@ class Consulting extends Component {
         })
         .catch(err => {
           console.log(err);
-          console.log('err.response', err.response);
         });
     }
   };
@@ -280,14 +279,14 @@ class Consulting extends Component {
         {step !== 1 && step === listQuest.length + 1 && (
           <View style={S.contentCenter}>
             <Text style={[S.styleTextTitleNomarl, { textAlign: 'center' }]}>
-              문의가 등록되었습니다.{'\n'}감사합니다.
+              물류 컨설팅 등록되었습니다.{'\n'}감사합니다.
             </Text>
             <Button
               mode="contained"
               style={[S.styleButton, { marginTop: 30 }]}
-              onPress={() => this.handleStep()}>
+              onPress={() => this.navigation.navigate('ConsultingComplete')}>
               <Text style={[S.textButton, { width: 175 }]}>
-                처음으로 돌아가기
+                컨설팅 결과 확인하기
               </Text>
             </Button>
           </View>
