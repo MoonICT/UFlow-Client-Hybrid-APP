@@ -5,6 +5,18 @@
  * @flow strict-local
  */
 
+/**
+ * [Event Flow]
+ *
+ * [1] RN => Web
+ * 1. (필터:필터변경)필터가 변경 되었을 때, 지도 마커 갱신 (DONE)
+ * 2. (필터:필터변경)중심 좌표를 변경 해야할 때, 지도 갱신(검색 결과 클릭 시)
+ *
+ * [2] Web => RN
+ * 1. (지도:별도함수)마커를 클릭했을 때, 상세로 이동.
+ * 2. (지도:필터변경)중심좌표가 변경 되었을 때(사용자 액션), 리스트 변경.
+ * */
+
 // Global Imports
 import React, { Component } from 'react';
 import { SafeAreaView, TouchableOpacity, View } from 'react-native';
@@ -12,6 +24,7 @@ import { connect } from 'react-redux';
 import { WebView } from 'react-native-webview';
 import { Appbar, Text } from 'react-native-paper';
 import SplashScreen from 'react-native-splash-screen';
+import { debounce } from "lodash";
 
 // Local Imports
 import WVMsgService from '@Services/WebViewMessageService';
@@ -23,6 +36,8 @@ import SearchSwipePanel from '@Components/organisms/SearchSwipePanel';
 import SearchFilter from '@Components/organisms/SearchFilter';
 import SearchFilterPanel from '@Components/organisms/SearchFilterPanel';
 import ActionCreator from '@Actions';
+import { Warehouse, WhrgSearch } from '@Services/apis';
+import moment from "../../components/organisms/SearchFilterPanel/FilterPeriod";
 
 class Search extends Component {
   constructor (props) {
@@ -31,8 +46,8 @@ class Search extends Component {
     // Webview initialize options.
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
-      defaultURL: 'http://www.uflow.voltpage.net/webview/search',
-      // defaultURL: 'http://localhost:13000/webview/search',
+      // defaultURL: 'http://www.uflow.voltpage.net/webview/search',
+      defaultURL: 'http://localhost:13000/webview/search',
     };
     this.state = {
       url: this.option.defaultURL,
@@ -43,13 +58,21 @@ class Search extends Component {
     this.refSearchFilter = React.createRef();
   }
 
+  /**
+   * Debounce Utils
+   * */
+  setDebounce = debounce((callback) => {
+    callback();
+  }, 500);
+
+
   /**************************
    * START : Webview Event.
    * */
 
   // When the WebView has finished loading.
   async _WVOnLoad (e) {
-    console.log('::: Web View Loaded ::: ');
+    // console.log('::: Web View Loaded ::: ');
   }
 
   // When the webview calls window.postMessage.
@@ -57,18 +80,35 @@ class Search extends Component {
     // console.log(':::: onReceiveWebViewMessage');
     let msgData = WVMsgService.parseMessageData(e);
     switch (msgData.type) {
-      case 'CONSOLE_LOG':
-        console.log(msgData)
+      case WVMsgService.types.CONSOLE_LOG:
+        console.log('[WEBVIEW]' + msgData.data)
         break;
-      case 'MESSAGE_TYPE_TEST':
+      case WVMsgService.types.CHANGE_MAP_CENTER_POSITION:
+        // console.log('[RN] CHANGE_MAP_CENTER_POSITION 수신', msgData.data)
+        this.props.setSearchFilter({
+          latitude: msgData.data.latitude ? Number(msgData.data.latitude) : '',
+          longitude: msgData.data.longitude ? Number(msgData.data.longitude) : '',
+          distance: msgData.data.distance ? Number(msgData.data.distance) : 10,
+        })
         break;
     }
   }
 
   _WVSendMessage (msgObj) {
-    // console.log(':::: Send Message');
-    let resultMsg = JSON.stringify(msgObj);
+    const resultMsg = JSON.stringify(msgObj);
     this.webView.postMessage(resultMsg);
+    // console.log(':::: Send Message ::::', resultMsg);
+  }
+
+  /**
+   * 주소/창고 검색 결과 클릭 핸들러.
+   * 웹뷰로 좌표 전달.
+   * */
+  handleSelectResult = (result) => {
+    this._WVSendMessage({
+      type: WVMsgService.types.CHANGE_SEARCH_CENTER_POSITION,
+      data: result,
+    });
   }
 
   /**
@@ -79,15 +119,15 @@ class Search extends Component {
     const strMsgType = JSON.stringify(WVMsgService.types);
     let injectJSCode = `
     window.consoleLog = function(...args){
-      window.ReactNativeWebView.postMessage(JSON.stringify({
+    window.ReactNativeWebView.postMessage(JSON.stringify({
         type: "CONSOLE_LOG",
-        data: arguments
+        data: JSON.stringify(arguments)
       }))
     }
     window.ReactNativeEnv = {
-      isNativeApp: true
+      isNativeApp: true,
+      types: ${strMsgType},
     };
-    window.ReactNativeTypes = ${strMsgType};
     `;
     return (
       <SafeAreaView style={[styles.container]}>
@@ -106,21 +146,23 @@ class Search extends Component {
         </Appbars>
 
         {/** 검색 펄터 버튼 목록 */}
-        {/* TODO 필터 선택시 표현 하기. */}
         <SearchFilter ref={this.refSearchFilter} />
 
         {/** 지역/주소 검색하기 패널. */}
-        {this.props.isSearchToggle && <SearchOverlay />}
+        {/** TODO 검색 결과 클릭 시 좌표 이동하기. */}
+        {this.props.isSearchToggle && <SearchOverlay onSelect={(result) => this.handleSelectResult(result)} />}
 
         {/** 필터 패널. */}
         <SearchFilterPanel
           onClosed={() => {
-            console.log('필터 취소됨.');
             this.refSearchFilter.current._onClickFilter();
           }}
         />
 
-        {/** TODO Test */}
+        {/* TODO 테스트 용도 */}
+        {/*<TouchableOpacity onPress={()=>this.webView.reload()}><Text>Reload</Text></TouchableOpacity>*/}
+
+        {/** 웹뷰 지도. */}
         <View
           style={{
             flex: 1,
@@ -159,26 +201,54 @@ class Search extends Component {
 
   // 컴포넌트가 만들어지고 render가 호출된 이후에 호출.
   // 비동기 요청을 처리하는 부분.
-  componentDidMount () {
-    console.log('::componentDidMount::');
+  async componentDidMount () {
+    // console.log('::componentDidMount::search main');
     /** Complete Initialize. */
     SplashScreen.hide();
+
+    // 필터 코드값.
+    const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 보관유형
+    const listCalUnitDvCode = await Warehouse.listCalUnitDvCode(); // 정산단위
+    const listCalStdDvCode = await Warehouse.listCalStdDvCode(); // 산정기준
+    const listFlrDvCode = await Warehouse.listFlrDvCode(); // 층수
+    const listAprchMthdDvCode = await Warehouse.listAprchMthdDvCode(); // 접안방식
+    const listInsrDvCode = await Warehouse.listInsrDvCode(); // 보험 가입
+    const listCmpltTypes = await WhrgSearch.getCmpltTypes(); // 준공 연차
+
+    this.props.setSearchFilterCode({
+      listGdsTypeCode: listGdsTypeCode && listGdsTypeCode._embedded ? listGdsTypeCode._embedded.detailCodes : [], // 보관유형
+      listCalUnitDvCode: listCalUnitDvCode && listCalUnitDvCode._embedded ? listCalUnitDvCode._embedded.detailCodes : [], // 정산단위
+      listCalStdDvCode: listCalStdDvCode && listCalStdDvCode._embedded ? listCalStdDvCode._embedded.detailCodes : [], // 산정기준
+      listFlrDvCode: listFlrDvCode && listFlrDvCode._embedded ? listFlrDvCode._embedded.detailCodes : [], // 층수
+      listAprchMthdDvCode: listAprchMthdDvCode && listAprchMthdDvCode._embedded ? listAprchMthdDvCode._embedded.detailCodes : [], // 접안방식
+      listInsrDvCode: listInsrDvCode && listInsrDvCode._embedded ? listInsrDvCode._embedded.detailCodes : [], // 보험 가입
+      listCmpltTypes: listCmpltTypes && listCmpltTypes._embedded ? listCmpltTypes._embedded.hashMaps : [], // 준공연차
+    });
   }
 
   // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate () {
-    console.log('::componentDidUpdate::');
+  componentDidUpdate (prevProps, prevState) {
+    // console.log('::componentDidUpdate::');
+    if (prevProps.whFilter !== this.props.whFilter) {
+      this.setDebounce(() => {
+        // 필터 갱신 될때마다 지도 동기화.
+        this._WVSendMessage({
+          type: WVMsgService.types.CHANGE_SEARCH_FILTER,
+          data: this.props.whFilter,
+        });
+        // console.log('::::: 필터 변경에 의 지도 갱신 시점 :::::', this.props.whFilter);
+      });
+    }
   }
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
   // console.log('++++++mapStateToProps :', state);
-  // TODO 스토어의 필터 데이터가 변경 될때마다 호출.
-
   return {
     isSearchToggle: state.search.isSearchToggle,
     isFilterToggle: state.search.isFilterToggle,
+    whFilter: state.search.whFilter,
   };
 }
 
@@ -187,6 +257,12 @@ function mapDispatchToProps (dispatch) {
   return {
     searchToggle: status => {
       dispatch(ActionCreator.searchToggle(status));
+    },
+    setSearchFilterCode: status => {
+      dispatch(ActionCreator.setSearchFilterCode(status));
+    },
+    setSearchFilter: status => {
+      dispatch(ActionCreator.setSearchFilter(status));
     },
   };
 }
