@@ -158,7 +158,7 @@ class More extends Component {
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
                   onPress={() =>
-                    this.navigation.navigate('TenantMypage', {
+                    this.navigation.navigate('Mypage', {
                       title: '정산관리',
                     })
                   }>
@@ -268,7 +268,7 @@ class More extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('Annoucement')}>
+                onPress={() => this.navigation.navigate('LogisticsKnowledge')}>
                 <View style={[DefaultStyle.leftItem, S.item]}>
                   <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>
                 </View>

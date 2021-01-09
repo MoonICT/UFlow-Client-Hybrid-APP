@@ -61,7 +61,7 @@ class RegisterInfo extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="창고 위치"
+            title="공지사항"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -72,6 +72,7 @@ class RegisterInfo extends Component {
             <Text style={DefaultStyle.titleItem}>{data && data.title}</Text>
             <Text style={DefaultStyle.contentItem}>{data && data.createdDate}</Text>
             <View style={S.content}>
+              <Text style={S.textContent}>{data && data.content}</Text>
               <Text style={S.textContent}>{field1}</Text>
               <Text style={S.textContent}>{field2}</Text>
               <Text style={S.textContent}>{field3}</Text>

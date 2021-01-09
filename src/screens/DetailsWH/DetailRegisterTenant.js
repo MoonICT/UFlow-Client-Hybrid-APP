@@ -110,8 +110,8 @@ class DetailRegisterTenant extends Component {
           }
         });
       })
-      .catch(err => {
-        console.log('errIntroWH', err);
+      .catch(error => {
+        alert(error.response.data.message);
       });
   }
 
@@ -234,10 +234,8 @@ class DetailRegisterTenant extends Component {
     WarehouseTenant.regBusinessInfoByTenant(businessInfo).then(res => {
       alert('창고 사업자 등록이 완료되었습니다.')
       this.navigation.goBack();
-    }).catch(err => {
-      if (err.response && err.response.status >= 500) {
-        alert('서버에러:' + err.response.message)
-      }
+    }).catch(error => {
+      alert('서버에러:' + error.response.data.message)
     });
   };
 
@@ -460,17 +458,17 @@ class DetailRegisterTenant extends Component {
             </View>
             </View>
         </View>
-        <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0, DefaultStyle.d_flex]}>
+        <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0, DefaultStyle.d_flex_between]}>
           <Button
             mode="contained"
-            style={[{ width: '45%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
+            style={[{ width: '48%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
             color="red"
             onPress={()=> this.navigation.goBack()}>
             취소
           </Button>
           <Button
             mode="contained"
-            style={[{ width: '45%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
+            style={[{ width: '48%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
             color="red"
             onPress={this.handleOnSubmit}>
             등록
