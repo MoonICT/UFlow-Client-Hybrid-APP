@@ -86,6 +86,10 @@ export default StyleSheet.create({
   d_flex: {
     display: 'flex',
   },
+  d_flex_between: {
+    display: 'flex',
+    justifyContent:'space-between'
+  },
   d_flex_center: {
     display: 'flex',
     alignItems: 'center',

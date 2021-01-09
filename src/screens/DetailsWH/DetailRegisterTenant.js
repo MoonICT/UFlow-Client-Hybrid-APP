@@ -458,17 +458,17 @@ class DetailRegisterTenant extends Component {
             </View>
             </View>
         </View>
-        <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0, DefaultStyle.d_flex]}>
+        <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0, DefaultStyle.d_flex_between]}>
           <Button
             mode="contained"
-            style={[{ width: '45%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
+            style={[{ width: '48%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
             color="red"
             onPress={()=> this.navigation.goBack()}>
             취소
           </Button>
           <Button
             mode="contained"
-            style={[{ width: '45%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
+            style={[{ width: '48%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
             color="red"
             onPress={this.handleOnSubmit}>
             등록
