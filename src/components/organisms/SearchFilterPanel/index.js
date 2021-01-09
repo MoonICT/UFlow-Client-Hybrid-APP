@@ -26,14 +26,6 @@ class SearchFilter extends Component {
     super(props);
     this.state = {
       panelAnimation: new Animated.Value(0), // 필터 패널 애니메이션.
-      // 필터 데이터
-      listGdsTypeCode: null, // 보관유형
-      listCalUnitDvCode: null, // 정산단위
-      listCalStdDvCode: null, // 산정기준
-      listFlrDvCode: null, // 층수
-      listAprchMthdDvCode: null, // 접안방식
-      listInsrDvCode: null, // 보험 가입
-      listCmpltTypes: null, // 준공연차
     };
   }
 
@@ -57,18 +49,21 @@ class SearchFilter extends Component {
                   this._onClickClose();
                 }} />) ||
               (item.type === 'STORAGE' &&
-                <FilterStorage filters={this.state.listGdsTypeCode} key={index} onClosed={() => {
+                <FilterStorage key={index} onClosed={() => {
                   this._onClickClose();
                 }} />) ||
-              (item.type === 'PERIOD' && <FilterPeriod key={index} onClosed={() => {
-                this._onClickClose();
-              }} />) ||
-              (item.type === 'PRICE' && <FilterPrice key={index} onClosed={() => {
-                this._onClickClose();
-              }} />) ||
-              (item.type === 'SCALE' && <FilterScale key={index} onClosed={() => {
-                this._onClickClose();
-              }} />))
+              (item.type === 'PERIOD' &&
+                <FilterPeriod key={index} onClosed={() => {
+                  this._onClickClose();
+                }} />) ||
+              (item.type === 'PRICE' &&
+                <FilterPrice key={index} onClosed={() => {
+                  this._onClickClose();
+                }} />) ||
+              (item.type === 'SCALE' &&
+                <FilterScale key={index} onClosed={() => {
+                  this._onClickClose();
+                }} />))
           ))}
 
         </Animated.View>
@@ -77,12 +72,6 @@ class SearchFilter extends Component {
         {this.props.filterList.map((item, index) => (item.toggle && (
             (item.type === 'OTHER' &&
               <FilterOther key={index}
-                           listCalUnitDvCode={this.state.listCalUnitDvCode}
-                           listCalStdDvCode={this.state.listCalStdDvCode}
-                           listFlrDvCode={this.state.listFlrDvCode}
-                           listAprchMthdDvCode={this.state.listAprchMthdDvCode}
-                           listInsrDvCode={this.state.listInsrDvCode}
-                           listCmpltTypes={this.state.listCmpltTypes}
                            onClosed={() => {
                              this._onClickClose();
                            }} />))
@@ -113,23 +102,6 @@ class SearchFilter extends Component {
   }
 
   async componentDidMount () {
-    // 필터 데이터들 호출.
-    const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 보관유형
-    const listCalUnitDvCode = await Warehouse.listCalUnitDvCode(); // 정산단위
-    const listCalStdDvCode = await Warehouse.listCalStdDvCode(); // 산정기준
-    const listFlrDvCode = await Warehouse.listFlrDvCode(); // 층수
-    const listAprchMthdDvCode = await Warehouse.listAprchMthdDvCode(); // 접안방식
-    const listInsrDvCode = await Warehouse.listInsrDvCode(); // 보험 가입
-    const listCmpltTypes = await WhrgSearch.getCmpltTypes(); // 준공 연차
-    this.setState({
-      listGdsTypeCode: listGdsTypeCode && listGdsTypeCode._embedded ? listGdsTypeCode._embedded.detailCodes : [], // 보관유형
-      listCalUnitDvCode: listCalUnitDvCode && listCalUnitDvCode._embedded ? listCalUnitDvCode._embedded.detailCodes : [], // 정산단위
-      listCalStdDvCode: listCalStdDvCode && listCalStdDvCode._embedded ? listCalStdDvCode._embedded.detailCodes : [], // 산정기준
-      listFlrDvCode: listFlrDvCode && listFlrDvCode._embedded ? listFlrDvCode._embedded.detailCodes : [], // 층수
-      listAprchMthdDvCode: listAprchMthdDvCode && listAprchMthdDvCode._embedded ? listAprchMthdDvCode._embedded.detailCodes : [], // 접안방식
-      listInsrDvCode: listInsrDvCode && listInsrDvCode._embedded ? listInsrDvCode._embedded.detailCodes : [], // 보험 가입
-      listCmpltTypes: listCmpltTypes && listCmpltTypes._embedded ? listCmpltTypes._embedded.hashMaps : [], // 준공연차
-    });
   }
 }
 
@@ -140,6 +112,7 @@ function mapStateToProps (state) {
   return {
     isFilterToggle: state.search.isFilterToggle,
     filterList: state.search.filterList,
+    filterCodes: state.search.filterCodes,
   };
 }
 

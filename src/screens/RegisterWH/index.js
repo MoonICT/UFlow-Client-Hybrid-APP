@@ -336,6 +336,9 @@ class RegisterWH extends Component {
                 item.flrDvCode =
                   dataWH.floors[index].flrDvCode &&
                   dataWH.floors[index].flrDvCode.stdDetailCode;
+                item.aprchMthdDvCode =
+                  dataWH.floors[index].aprchMthdDvCode &&
+                  dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
                 return item;
               });
             let keeps =
@@ -371,11 +374,49 @@ class RegisterWH extends Component {
                   dataWH.trusts[index].calStdDvCode.stdDetailCode;
                 return item;
               });
-
+            let insrDvCodes =
+              dataWH.insrDvCodes.length > 0
+                ? dataWH.insrDvCodes.map((item, index) => {
+                    item = dataWH.insrDvCodes[index].stdDetailCode
+                      ? dataWH.insrDvCodes[index].stdDetailCode
+                      : '';
+                    return item;
+                  })
+                : [];
+            let addOptDvCodes =
+              dataWH.addOptDvCodes.length > 0
+                ? dataWH.addOptDvCodes.map((item, index) => {
+                    item = dataWH.addOptDvCodes[index].stdDetailCode
+                      ? dataWH.addOptDvCodes[index].stdDetailCode
+                      : '';
+                    return item;
+                  })
+                : [];
             // this.setState({ dataWH });
 
             this.props.updateInfo({
-              ...dataWH,
+              // ...dataWH,
+              id: dataWH.id,
+              name: dataWH.name,
+              description: dataWH.description,
+              telNo: dataWH.telNo,
+              address: dataWH.address,
+              roadAddr: dataWH.roadAddr,
+              gps: dataWH.gps,
+              cmpltYmd: dataWH.cmpltYmd,
+              bldgArea: dataWH.bldgArea,
+              siteArea: dataWH.siteArea,
+              totalArea: dataWH.totalArea,
+              prvtArea: dataWH.prvtArea,
+              cmnArea: dataWH.cmnArea,
+              addOptDvCodes,
+              insrDvCodes,
+              cnsltPossYn: dataWH.cnsltPossYn,
+              sttsDbCode: dataWH.sttsDbCode,
+              vrfctFailReason: dataWH.vrfctFailReason,
+              pnImages: dataWH.pnImages,
+              whImages: dataWH.whImages,
+              thImages: dataWH.thImages,
               floors,
               keeps,
               trusts,

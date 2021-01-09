@@ -37,6 +37,13 @@ class FilterPrice extends Component {
    *  필터 닫기.
    *  */
   _onClickCancel () {
+    // 취소 시, 값 초기화.
+    this.props.setSearchFilter({
+      splyAmount: '',
+      mgmtChrg: '',
+      whinChrg: '',
+      whoutChrg: '',
+    });
     this.props.onClosed(); // Event emit
   }
 

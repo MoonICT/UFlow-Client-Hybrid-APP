@@ -222,13 +222,9 @@ export const getCmpltTypes = () => {
  * @param query
  * @returns {Promise<*>}
  */
-export const searchKeywords = async params => {
-  const token = await AsyncStorage.getItem(TOKEN);
-  return await mainAxios.get(`/api/v1/warehouse/locations?query=${params.query}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
+export const searchKeywords = ({query = ""}) => {
+  return Axios.getRequest({
+    url: `/api/v1/warehouse/locations?query=${query}`
   });
 };
 

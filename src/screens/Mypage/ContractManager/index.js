@@ -683,32 +683,8 @@ class ContractManager extends Component {
           if (status === 200) {
             // this.setState({ dataApi: res.data.data.content });
             this.props.contractData({ dataApi: res.data.data.content });
-          }
-        })
-        .catch(err => {
-          console.log('err', err);
-        });
-    }
-
-    if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
-      let warehSeq = this.state.dataProps.warehSeq;
-      let warehouseRegNo = this.state.dataProps.warehouseRegNo;
-      let rentUserNo = this.state.dataProps.rentUserNo;
-      // let status = this.state.dataProps.status;
-      let type = this.state.valueTab;
-      let typeWH = this.state.dataProps.typeWH === 'TRUST' ? 'trust' : 'tenant';
-      let data =
-        this.state.dataProps.typeWH === 'TRUST'
-          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
-          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
-      console.log('typeWH', typeWH);
-      console.log('data', data);
-      Warehouse.requestContract({ typeWH, data })
-        .then(res => {
-          console.log('res', res);
-          if (res.status === 200) {
-            console.log('resRequestContract', res);
             let data = res.data;
+
             let dataSteps = [
               {
                 title: '견적요청',
@@ -743,6 +719,32 @@ class ContractManager extends Component {
             ];
 
             this.setState({ dataSteps });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
+
+    if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
+      let warehSeq = this.state.dataProps.warehSeq;
+      let warehouseRegNo = this.state.dataProps.warehouseRegNo;
+      let rentUserNo = this.state.dataProps.rentUserNo;
+      // let status = this.state.dataProps.status;
+      let type = this.state.valueTab;
+      let typeWH = this.state.dataProps.typeWH === 'TRUST' ? 'trust' : 'tenant';
+      let data =
+        this.state.dataProps.typeWH === 'TRUST'
+          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
+          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
+      // console.log('typeWH', typeWH);
+      // console.log('data', data);
+      Warehouse.requestContract({ typeWH, data })
+        .then(res => {
+          // console.log('resdddddddddd', res);
+          if (res.status === 200) {
+            // console.log('resRequestContract', res);
+         
             this.navigation.navigate('RequestContract', {
               type,
               warehouseRegNo,
