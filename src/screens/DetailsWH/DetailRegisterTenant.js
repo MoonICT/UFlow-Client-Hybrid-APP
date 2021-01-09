@@ -111,7 +111,7 @@ class DetailRegisterTenant extends Component {
         });
       })
       .catch(err => {
-        console.log('errIntroWH', err.response);
+        console.log('errIntroWH', err.message);
       });
   }
 
@@ -235,7 +235,7 @@ class DetailRegisterTenant extends Component {
       alert('창고 사업자 등록이 완료되었습니다.')
       this.navigation.goBack();
     }).catch(err => {
-      alert('서버에러:' + err.response)
+      alert('서버에러:' + err.message)
     });
   };
 
