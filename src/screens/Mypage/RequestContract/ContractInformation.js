@@ -67,6 +67,8 @@ class ContractInformation extends Component {
       },
       {
         type: '첨부 서류',
+        isImageLink: true,
+        fileName: mediaFile?.file2,
         value: `${configURL.FILE_SERVER_ADDRESS}/${mediaFile?.file2}`,
       },
     ];
