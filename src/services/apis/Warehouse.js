@@ -605,3 +605,18 @@ export const toggleFav = async idWarehouse => {
     }
   });
 };
+
+export const getLinkContract = body => {
+  let url = `/api/v1/contract/${body.type}/oz/html`
+  return Axios.request({
+    methodType: 'POST',
+    url: url,
+    requiresToken: true, // set access_token
+    payload: body,
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
+};
