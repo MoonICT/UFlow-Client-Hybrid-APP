@@ -6,7 +6,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { View, Image, TextInput } from 'react-native';
+import { View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Appbar,
@@ -123,7 +123,7 @@ class Consulting extends Component {
                   placeholder="이름을 입력해 주세요"
                   onChangeText={e => this.handleChange(e, index)}
                 />
-                <Button
+                <TouchableOpacity
                   mode="contained"
                   style={[S.styleButton, { marginTop: 30 }]}
                   onPress={() => {
@@ -131,8 +131,8 @@ class Consulting extends Component {
                       this.handleStep();
                     }
                   }}>
-                  <Text style={[S.textButton, { width: 175 }]}>확인</Text>
-                </Button>
+                  <Text style={[S.textButton, { marginTop: 8 }]}>확인</Text>
+                </TouchableOpacity>
               </View>
             </View>
           )}
@@ -151,26 +151,36 @@ class Consulting extends Component {
                       DefaultStyle.row,
                       { alignItems: 'center', marginBottom: 10 },
                     ]}>
-                    <RadioButton
-                      value={a.id.answerSeq}
-                      color="#ff6d00"
-                      uncheckedColor="white"
+                    <TouchableOpacity
+                      style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
                       onPress={() => {
                         this.handleChange(a.id.answerSeq, index);
-                      }}
-                      status={
-                        listAnswer[index].userAnswer.toString() ===
-                        a.id.answerSeq.toString()
-                          ? 'checked'
-                          : 'unchecked'
-                      }
-                    />
-                    <Text style={{ color: 'white', fontSize: 15 }}>
-                      {a.answer}
-                    </Text>
+                      }}>
+                      <RadioButton
+                        value={a.id.answerSeq}
+                        color="#ff6d00"
+                        uncheckedColor="white"
+                        onPress={() => {
+                          this.handleChange(a.id.answerSeq, index);
+                        }}
+                        status={
+                          listAnswer[index].userAnswer.toString() ===
+                          a.id.answerSeq.toString()
+                            ? 'checked'
+                            : 'unchecked'
+                        }
+                      />
+                      <Text style={{ color: 'white', fontSize: 15 }}>
+                        {a.answer}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
-              <Button
+              <TouchableOpacity
                 mode="contained"
                 style={[S.styleButton, { marginTop: 30 }]}
                 onPress={() => {
@@ -178,8 +188,8 @@ class Consulting extends Component {
                     this.handleStep();
                   }
                 }}>
-                <Text style={[S.textButton, { width: 175 }]}>확인</Text>
-              </Button>
+                <Text style={[S.textButton, { marginTop: 8 }]}>확인</Text>
+              </TouchableOpacity>
             </View>
           )}
 
@@ -192,23 +202,33 @@ class Consulting extends Component {
               {item.answers &&
                 item.answers.map((a, i) => (
                   <View style={S.optionRow} key={i}>
-                    <Checkbox
-                      status={
-                        listAnswer[index].userAnswer.indexOf(
-                          a.id.answerSeq.toString(),
-                        ) === -1
-                          ? 'unchecked'
-                          : 'checked'
-                      }
-                      color="#ff6d00"
-                      uncheckedColor="white"
+                    <TouchableOpacity
+                      style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
                       onPress={() =>
                         this.handleChange(a.id.answerSeq, index, true)
-                      }
-                    />
-                    <Text style={{ color: 'white', fontSize: 15 }}>
-                      {a.answer}
-                    </Text>
+                      }>
+                      <Checkbox
+                        status={
+                          listAnswer[index].userAnswer.indexOf(
+                            a.id.answerSeq.toString(),
+                          ) === -1
+                            ? 'unchecked'
+                            : 'checked'
+                        }
+                        color="#ff6d00"
+                        uncheckedColor="white"
+                        onPress={() =>
+                          this.handleChange(a.id.answerSeq, index, true)
+                        }
+                      />
+                      <Text style={{ color: 'white', fontSize: 15 }}>
+                        {a.answer}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
               <Button
@@ -219,7 +239,7 @@ class Consulting extends Component {
                     this.handleStep();
                   }
                 }}>
-                <Text style={[S.textButton, { width: 175 }]}>확인</Text>
+                <Text style={[S.textButton, { marginTop: 8 }]}>확인</Text>
               </Button>
             </View>
           )}
@@ -267,11 +287,9 @@ class Consulting extends Component {
             </Text>
             <Button
               mode="contained"
-              style={[S.styleButton, { width: 175, margin: 'auto' }]}
+              style={[S.styleButton, { margin: 'auto' }]}
               onPress={() => this.setState({ step: 1 })}>
-              <Text style={[S.textButton, { width: 175 }]}>
-                물류 컨설팅 시작하기
-              </Text>
+              <Text style={[S.textButton]}>물류 컨설팅 시작하기</Text>
             </Button>
           </View>
         )}
@@ -284,7 +302,7 @@ class Consulting extends Component {
             <Button
               mode="contained"
               style={[S.styleButton, { marginTop: 30 }]}
-              onPress={() => this.navigation.navigate('ConsultingComplete')}>
+              onPress={() => {this.navigation.navigate('ConsultingComplete')}}>
               <Text style={[S.textButton, { width: 175 }]}>
                 컨설팅 결과 확인하기
               </Text>
