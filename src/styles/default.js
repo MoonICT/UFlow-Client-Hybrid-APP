@@ -1260,6 +1260,6 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal',
     lineHeight: 1.43,
-    color: this.fontColor,
+    // color: this.fontColor,
   },
 });

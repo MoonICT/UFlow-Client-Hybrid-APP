@@ -266,21 +266,6 @@ class More extends Component {
                   />
                 </View>
               </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('ConsultingComplete')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>ConsultingComplete</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
               <TouchableOpacity
                 style={DefaultStyle.btnItem}
                 onPress={() => this.navigation.navigate('Annoucement')}>
