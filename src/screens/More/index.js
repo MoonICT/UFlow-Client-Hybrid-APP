@@ -135,7 +135,7 @@ class More extends Component {
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
                   onPress={() =>
-                    this.navigation.navigate('TenantMypage', {
+                    this.navigation.navigate('Mypage', {
                       title: '정산관리',
                     })
                   }>
