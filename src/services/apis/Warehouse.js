@@ -595,8 +595,19 @@ export const pageWhrgQnA = ({
   });
 };
 
+export const toggleFav = async idWarehouse => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  console.log(token)
+  console.log('url',`/api/v1/warehouse/${idWarehouse}/favorite` )
+  return await mainAxios.post(`/api/v1/warehouse/${idWarehouse}/favorite`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
+
 export const getLinkContract = body => {
-  let url = `/api/v1/contract/${body.type}/oz/html`
+  let url = `/api/v1/contract/${body.type}/oz/html`;
   return Axios.request({
     methodType: 'POST',
     url: url,

@@ -350,8 +350,8 @@ class ContractManager extends Component {
         }
         return types && status;
       });
-      
-    // console.log('dataFilter', dataFilter);
+
+    console.log('dataFilter', dataFilter);
     // console.log('dataSteps', dataSteps);
 
     let checkStep = dataFilter.length === 0;
@@ -392,6 +392,7 @@ class ContractManager extends Component {
         let dataTable = this.cover(item) && this.cover(item).data;
         let listBtnTenant = this.cover(item) && this.cover(item).listBtnTenant;
         let titleButton = this.cover(item) && this.cover(item).footerTitle;
+        console.log('item', item.cntrYmdFrom);
         return (
           <Fragment key={index}>
             <CardMypage
@@ -409,6 +410,8 @@ class ContractManager extends Component {
                     seq: item.seq,
                     rentUserNo: item.rentUserNo,
                     status: item.status,
+                    rentUserID: item.rentUser?.id,
+                    regUserDate: item.cntrYmdFrom,
                   },
                 )
               }

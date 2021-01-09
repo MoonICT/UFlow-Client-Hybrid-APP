@@ -90,8 +90,8 @@ class Inquiry extends Component {
 
   async getAllData() {
     let { userType, typeQuestion, from, to, query } = this.state;
-    const startDate = this.formatDate(from);
-    const endDate = this.formatDate(to)
+    const startDate = from ? this.formatDate(from) : '';
+    const endDate = to ? this.formatDate(to) : '';
     let defaultParams = {
       userType,
       typeQuestion,
@@ -103,6 +103,7 @@ class Inquiry extends Component {
     console.log('defaultParams', defaultParams);
 
     await getAllInquiry(defaultParams).then(res => {
+      console.log('data', res.data._embedded);
       this.setState({ listQuestion: res.data._embedded && res.data._embedded.questions });
     });
   }
@@ -120,11 +121,7 @@ class Inquiry extends Component {
     );
   };
 
-  showDatepickerTo = () => {
-    this.setState({ showTo: true });
-  };
-
-  showDatepickerFrom = () => {
+  showDatepicker = () => {
     this.setState({ showFrom: true });
   };
   formatDate(date, string = true) {
@@ -150,6 +147,10 @@ class Inquiry extends Component {
     this.setState({ from: startDate, showFrom: false }, () => {
       this.getAllData();
     });
+  };
+
+  showDatepickerTo = () => {
+    this.setState({ showTo: true });
   };
 
   onChangeTo = (event, selectedDate) => {
@@ -195,7 +196,7 @@ class Inquiry extends Component {
       listQuestion,
     } = this.state;
 
-    // console.log('startDate', this.state.from)
+      // console.log('startDate', this.state.from)
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -229,7 +230,7 @@ class Inquiry extends Component {
               ]}>
               <View style={{ flex: 1 }}>
                 <TouchableOpacity
-                  onPress={this.showDatepickerFrom}
+                  onPress={this.showDatepicker}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
                     {from ? from.toLocaleDateString() : (new Date()).toLocaleDateString()}
@@ -296,7 +297,7 @@ class Inquiry extends Component {
           {/* GENERAL TAB */}
           {listQuestion && inquiryCode === 'TENANT' && (
             <View>
-              {listQuestion.map((item, index) => {
+              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
                 let dateStr = this.formatDate(dateTime, false);
                 let _item = { ...item, userType: userType };
@@ -356,7 +357,7 @@ class Inquiry extends Component {
           {/* WAREHOUSE TAB */}
           {listQuestion && inquiryCode === 'OWNER' && (
             <View>
-              {listQuestion.map((item, index) => {
+              {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
                 {
                   /* let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate(); */

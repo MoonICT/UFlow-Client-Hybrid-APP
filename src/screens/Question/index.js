@@ -23,7 +23,10 @@ class QuestionScreen extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { visible: false, email: '', content: '' };
+    this.state = { 
+      visible: false, 
+      email: '', content: '',
+    };
     this.navigation = props.navigation;
   }
 
@@ -60,7 +63,11 @@ class QuestionScreen extends Component {
   handleChangeContent = (value) => this.setState({ content: value })
 
   onSubmit = () => {
+    if ((this.state.email.length >0) && (this.state.content.length >0)){
       this.fetchData();
+    }else{
+      return;
+    }
   };
 
   render() {
@@ -69,6 +76,8 @@ class QuestionScreen extends Component {
 
     return (
       <ScrollView>
+      {console.log('email',(this.state.email.length >0 ? true : false ))}
+      {console.log('content',this.state.content)}
         <SafeAreaView style={S.container}>
           <Appbars>
             <Appbar.Action
@@ -83,13 +92,15 @@ class QuestionScreen extends Component {
               style={DefaultStyle.headerTitle}
             />
             <Appbar.Content
-              color="rgba(0, 0, 0, 0.47)"
+              // color={((this.state.email.length >0) && (this.state.content.length >0)) ? '#ff6d00' : 'rgba(0, 0, 0, 0.47)'}
+              color="#ff6d00"
               title="등록"
+              style={S.headerButon}
               onPress={ this.onSubmit }
               // onPress={ 
-              //   if ((this.state.email.length() > 0) && (this.state.content.length() > 0)){
+              //  ( if ((this.state.email !== 0) && (this.state.content !== 0)){
               //   this.onSubmit
-              //   }}
+              //   })}
               titleStyle={DefaultStyle._textHeaderRight}
             />
           </Appbars>
@@ -130,11 +141,11 @@ class QuestionScreen extends Component {
               />
             </Dialog.Content>
             <Dialog.Title
-              style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+              style={[DefaultStyle._titleDialog, S.titleQuestion]}>
               문의 완료
           </Dialog.Title>
             <Dialog.Content>
-              <Paragraph style={DefaultStyle.contentDialog}>
+              <Paragraph style={[DefaultStyle.contentDialog, S.contentQuestion]}>
                 UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴
               예정입니다. 자세한 내용은 [마이페이지 `{'>'}` 내 창고]에서 확인해
               주세요.
