@@ -319,121 +319,138 @@ class Quotation extends Component {
             {/* ====== END:STATUS DEBUG ====== */}
 
             {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST') &&
-            <TenantRq00Trust warehouseRegNo={warehouseRegNo}
-                             warehSeq={warehSeq}
-                             rentUserNo={rentUserNo}
-                             type={type}
-                             typeWH={typeWH}
-                             status={status}
-                             data={dataApi}
-                             calUnitDvCodes={this.state.calUnitDvCodes}
-                             calStdDvCodes={this.state.calStdDvCodes}
-                             estmtTrustGroups={this.state.estmtTrustGroups}
-                             groupOrders={this.state.groupOrders}
+            <TenantRq00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+
             />
             }
             {(type === 'TENANT' && status === 'RQ00' && typeWH === 'KEEP') &&
-            <TenantRq00Keep warehouseRegNo={warehouseRegNo}
-                            warehSeq={warehSeq}
-                            rentUserNo={rentUserNo}
-                            type={type}
-                            typeWH={typeWH}
-                            status={status}
-                            data={dataApi}
-                            calUnitDvCodes={this.state.calUnitDvCodes}
-                            calStdDvCodes={this.state.calStdDvCodes}
-                            estmtKeepGroups={this.state.estmtKeepGroups}
-                            groupOrders={this.state.groupOrders}
+            <TenantRq00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
             />
             }
 
 
             {(type === 'TENANT' && status === 'RS00' && typeWH === 'TRUST') &&
-            <TenantRs00Trust warehouseRegNo={warehouseRegNo}
-                             warehSeq={warehSeq}
-                             rentUserNo={rentUserNo}
-                             type={type}
-                             typeWH={typeWH}
-                             status={status}
-                             data={dataApi}
-                             calUnitDvCodes={this.state.calUnitDvCodes}
-                             calStdDvCodes={this.state.calStdDvCodes}
-                             estmtTrustGroups={this.state.estmtTrustGroups}
-                             groupOrders={this.state.groupOrders}
+            <TenantRs00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
             />
             }
             {(type === 'TENANT' && status === 'RS00' && typeWH === 'KEEP') &&
-            <TenantRs00Keep warehouseRegNo={warehouseRegNo}
-                            warehSeq={warehSeq}
-                            rentUserNo={rentUserNo}
-                            type={type}
-                            typeWH={typeWH}
-                            status={status}
-                            data={dataApi}
-                            calUnitDvCodes={this.state.calUnitDvCodes}
-                            calStdDvCodes={this.state.calStdDvCodes}
-                            estmtKeepGroups={this.state.estmtKeepGroups}
-                            groupOrders={this.state.groupOrders}
+            <TenantRs00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
             />
             }
 
 
             {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST') &&
-            <OwnerRq00Trust warehouseRegNo={warehouseRegNo}
-                            warehSeq={warehSeq}
-                            rentUserNo={rentUserNo}
-                            type={type}
-                            typeWH={typeWH}
-                            status={status}
-                            data={dataApi}
-                            calUnitDvCodes={this.state.calUnitDvCodes}
-                            calStdDvCodes={this.state.calStdDvCodes}
-                            estmtTrustGroups={this.state.estmtTrustGroups}
-                            groupOrders={this.state.groupOrders}
+            <OwnerRq00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
             />
             }
             {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP') &&
-            <OwnerRq00Keep warehouseRegNo={warehouseRegNo}
-                           warehSeq={warehSeq}
-                           rentUserNo={rentUserNo}
-                           type={type}
-                           typeWH={typeWH}
-                           status={status}
-                           data={dataApi}
-                           calUnitDvCodes={this.state.calUnitDvCodes}
-                           calStdDvCodes={this.state.calStdDvCodes}
-                           estmtKeepGroups={this.state.estmtKeepGroups}
-                           groupOrders={this.state.groupOrders}
+            <OwnerRq00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
             />
             }
 
 
             {(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&
-            <OwnerRs00Trust warehouseRegNo={warehouseRegNo}
-                            warehSeq={warehSeq}
-                            rentUserNo={rentUserNo}
-                            type={type}
-                            typeWH={typeWH}
-                            status={status}
-                            data={dataApi}
-                            calUnitDvCodes={this.state.calUnitDvCodes}
-                            calStdDvCodes={this.state.calStdDvCodes}
-                            estmtTrustGroups={this.state.estmtTrustGroups}
-                            groupOrders={this.state.groupOrders}
+            <OwnerRs00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
             />
             }
             {(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&
-            <OwnerRs00Keep warehouseRegNo={warehouseRegNo}
-                           warehSeq={warehSeq}
-                           rentUserNo={rentUserNo}
-                           type={type}
-                           typeWH={typeWH}
-                           status={status}
-                           data={dataApi}
-                           calUnitDvCodes={this.state.calUnitDvCodes}
-                           calStdDvCodes={this.state.calStdDvCodes}
-                           estmtKeepGroups={this.state.estmtKeepGroups}
-                           groupOrders={this.state.groupOrders}
+            <OwnerRs00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
             />
             }
 

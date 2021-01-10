@@ -1,5 +1,5 @@
 /**
- * 창고주 견적 응답하기
+ * 임차인 견적 요청하기
  * @create
  * @modify
  * @desc [description]
@@ -10,8 +10,10 @@ import React, { Component, Fragment } from 'react';
 import { View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Text, Appbar } from 'react-native-paper';
+import {Text, Appbar, Dialog, Paragraph, Button} from 'react-native-paper';
 import { StringUtils, DeepLogs } from '@Services/utils';
+import ReqeustQTrust from './reqeustQTrust';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 // Local Imports
 import Appbars from '@Components/organisms/AppBar';
@@ -23,8 +25,9 @@ import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/AntDesign';
 import DatePicker from '@Components/organisms/DatePicker';
 import { Warehouse } from '@Services/apis';
+import moment from "moment";
 
-class ResponseQuotation extends Component {
+class RequestQuotation extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -67,22 +70,8 @@ class ResponseQuotation extends Component {
   showConfirm = () => this.setState({ visibleConfirm: true });
 
   hideConfirm = () => this.setState({ visibleConfirm: false });
-  showDatepicker = () => {
-    this.setState({ showFrom: true });
-  };
 
-  onChangeFrom = (event, selectedDate) => {
-    const currentDate = selectedDate || this.state.from;
-    this.setState({ from: currentDate, showFrom: false });
-  };
-  showDatepickerTo = () => {
-    this.setState({ showTo: true });
-  };
 
-  onChangeTo = (event, selectedDate) => {
-    const currentDate = selectedDate || this.state.to;
-    this.setState({ to: currentDate, showTo: false });
-  };
   render() {
     const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
@@ -133,7 +122,7 @@ class ResponseQuotation extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="견적 응답하기"
+            title="견적 요청하기"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -141,15 +130,19 @@ class ResponseQuotation extends Component {
         </Appbars>
         <ScrollView>
 
-          <View style={[DefaultStyle._cards, SS.body]}>
+          <View style={[DefaultStyle._cards, SS.body, {paddingBottom: 180}]}>
+
+            {/** HEADER **/}
             <View style={[DefaultStyle._titleCard, SS.title]}>
+
               <Text
                 style={[
                   DefaultStyle._textTitleCard,
                   { paddingBottom: 0, marginRight: 4 },
                 ]}>
-                견적 응답 정보
+                견적 요청 정보
               </Text>
+
               <TouchableOpacity
                 style={{ justifyContent: 'flex-start' }}
                 onPress={() => {
@@ -157,205 +150,24 @@ class ResponseQuotation extends Component {
                 }}>
                 <Icon name={'exclamationcircleo'} color={'#2196f3'} size={14} />
               </TouchableOpacity>
-
-              {visible === true ? (
-                <View style={SS.popupInfo}>
-                  <TouchableOpacity
-                    style={SS.btnClose}
-                    onPress={() => {
-                      this.hidePopupInfo();
-                    }}>
-                    <Icon
-                      name={'close'}
-                      color={'rgba(0, 0, 0, 0.23)'}
-                      size={14}
-                    />
-                  </TouchableOpacity>
-                  <Text style={DefaultStyle._textDF2}>보관기간</Text>
-                  <Text style={[DefaultStyle._textDF, { marginBottom: 13 }]}>
-                    -보관 가능 기간 내에서 보관 기간을 선택해 주세요.
-                  </Text>
-                  <Text style={DefaultStyle._textDF2}>응답면적</Text>
-                  <Text style={[DefaultStyle._textDF, { marginBottom: 20 }]}>
-                    -응답 가능한 면적 내에서 답변을해 주세요.
-                  </Text>
-                </View>
-              ) : null}
             </View>
+            {/** END:HEADER **/}
+
+            <Text>{typeWH}</Text>
 
             {typeWH === 'TRUST' ? (
-              <Fragment>
-                <View
-                  style={[
-                    S.row,
-                    { justifyContent: 'center', marginBottom: 18 },
-                  ]}>
-                  <View style={{ flex: 1 }}>
-                    <TouchableOpacity
-                      onPress={this.showDatepicker}
-                      style={DefaultStyle._btnDate}>
-                      <Text style={DefaultStyle._textDate}>
-                        {from.toLocaleDateString()}
-                      </Text>
-                      <Text
-                        style={[
-                          DefaultStyle._labelTextField,
-                          { color: '#000000' },
-                        ]}>
-                        수탁 기간
-                      </Text>
-                      <DatePicker
-                        mode={mode}
-                        show={showFrom}
-                        onChange={this.onChangeFrom}
-                        value={from}
-                        testID="dateTimePicker"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <Text style={SS.hyphen}>-</Text>
-                  <View style={{ flex: 1 }}>
-                    <TouchableOpacity
-                      onPress={this.showDatepickerTo}
-                      style={DefaultStyle._btnDate}>
-                      <Text style={DefaultStyle._textDate}>
-                        {to.toLocaleDateString()}
-                      </Text>
-                      <Text
-                        style={[
-                          DefaultStyle._labelTextField,
-                          { color: '#000000' },
-                        ]}>
-                        수탁 기간
-                      </Text>
-                      <DatePicker
-                        mode={mode}
-                        show={showTo}
-                        onChange={this.onChangeTo}
-                        value={to}
-                        testID="dateTimePickerTo"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="수탁 요청 사항"
-                  keyboardType="numeric"
-                  value={rntlValue}
-                  onChangeText={e =>
-                    this.setState({ rntlValue: e.replace(/[^0-9]/g, '') })
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="보관비"
-                  textRight="원"
-                  keyboardType="numeric"
-                  value={splyAmount}
-                  placeholder="0"
-                  onChangeText={e =>
-                    this.setState({ splyAmount: e.replace(/[^0-9]/g, '') })
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="입고단가"
-                  textRight="원"
-                  keyboardType="numeric"
-                  value={whinChrg}
-                  placeholder="0"
-                  onChangeText={e =>
-                    this.setState({ whinChrg: e.replace(/[^0-9]/g, '') })
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="출고단가"
-                  textRight="원"
-                  keyboardType="numeric"
-                  value={whoutChrg}
-                  placeholder="0"
-                  onChangeText={e =>
-                    this.setState({ whoutChrg: e.replace(/[^0-9]/g, '') })
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="인건단가"
-                  keyboardType="numeric"
-                  value={psnChrg}
-                  textRight="원"
-                  placeholder="0"
-                  onChangeText={e =>
-                    this.setState({ psnChrg: e.replace(/[^0-9]/g, '') })
-                  }
-                />
-
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="가공단가"
-                  textRight="원"
-                  keyboardType="numeric"
-                  value={mnfctChrg}
-                  placeholder="0"
-                  onChangeText={e =>
-                    this.setState({ mnfctChrg: e.replace(/[^0-9]/g, '') })
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="택배단가 "
-                  textRight="원"
-                  keyboardType="numeric"
-                  value={dlvyChrg}
-                  placeholder="0"
-                  onChangeText={e =>
-                    this.setState({ dlvyChrg: e.replace(/[^0-9]/g, '') })
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="운송단가"
-                  textRight="원"
-                  keyboardType="numeric"
-                  value={shipChrg}
-                  placeholder="0"
-                  onChangeText={e =>
-                    this.setState({ shipChrg: e.replace(/[^0-9]/g, '') })
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="추가 요청 사항"
-                  placeholder="내용입력"
-                  numberOfLines={5}
-                  textAlignVertical="top"
-                  multiline={true}
-                  valueProps={e => this.setState({ remark: e })}
-                />
-                <TouchableOpacity
-                  onPress={() => {
-                    // this.props.dataAction(this.state);
-                    // this.navigation.navigate('ResponseQuotation');
-                    console.log('submit :>> ');
-                    this.setState({ isSubmit: !isSubmit });
-                  }}
-                  style={[
-                    DefaultStyle._btnInline,
-                    isSubmitTrust === true ? null : SS.btnDisabled,
-                  ]}
-                  disabled={isSubmitTrust === true ? false : true}>
-                  <Text
-                    style={[
-                      DefaultStyle._textButton,
-                      SS.textSubmit,
-                      isSubmitTrust === true ? null : SS.textDisabled,
-                    ]}>
-                    확인
-                  </Text>
-                </TouchableOpacity>
-              </Fragment>
+             <ReqeustQTrust
+               from={from}
+               to={to}
+               rntlValue={rntlValue}
+               splyAmount={splyAmount}
+               whinChrg={whinChrg}
+               whoutChrg={whoutChrg}
+               psnChrg={psnChrg}
+               mnfctChrg={mnfctChrg}
+               dlvyChrg={dlvyChrg}
+               shipChrg={shipChrg}
+             />
             ) : (
               <Fragment>
                 <View
@@ -498,6 +310,32 @@ class ResponseQuotation extends Component {
             )}
           </View>
         </ScrollView>
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={this.state.visible}
+          onDismiss={this.togglePopupInfo}>
+          <Dialog.Content>
+
+          </Dialog.Content>
+
+          <Dialog.Content>
+            <Text style={DefaultStyle._textDF2}>보관기간</Text>
+            <Text style={[DefaultStyle._textDF, { marginBottom: 13 }]}>
+              -보관 가능 기간 내에서 보관 기간을 선택해 주세요.
+            </Text>
+            <Text style={DefaultStyle._textDF2}>응답면적</Text>
+            <Text style={[DefaultStyle._textDF, { marginBottom: 20 }]}>
+              -응답 가능한 면적 내에서 답변을해 주세요.
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={this.togglePopupInfo}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
       </SafeAreaView>
     );
   }
@@ -630,4 +468,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ResponseQuotation);
+)(RequestQuotation);

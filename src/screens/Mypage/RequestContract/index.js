@@ -271,6 +271,7 @@ class RequestContract extends Component {
                 </View>
               </View>
             ) : null}
+
             <ContractInformation
               cntrYmdFrom={dataApi?.trust?.id?.cntrYmdFrom || ''}
               cntrYmdTo={dataApi?.trust?.cntrYmdTo || ''}

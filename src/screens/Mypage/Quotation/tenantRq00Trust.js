@@ -12,6 +12,7 @@ class TenantRq00Trust extends Component {
 
   constructor(props) {
     super(props);
+    this.navigation = props.navigation;
     this.state = {
       groupOrderIndex: 0
     }
@@ -165,16 +166,15 @@ class TenantRq00Trust extends Component {
               <TouchableOpacity
                 style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
                 onPress={() => {
-                  // this.navigation.navigate('ResponseQuotation', {
-                  //   typeWH,
-                  //   warehouseRegNo,
-                  //   warehSeq,
-                  //   rentUserNo,
-                  //   status,
-                  //   type,
-                  // });
-                  // TODO 견적 재요청하는 로직
-                  alert('견적 재요청');
+                  /** 견적 재요청 **/
+                  this.navigation.navigate('RequestQuotation', {
+                    typeWH,
+                    warehouseRegNo,
+                    warehSeq,
+                    rentUserNo,
+                    status,
+                    type,
+                  });
                 }}>
                 <Text style={DefaultStyle._textButton}>견적 재요청</Text>
               </TouchableOpacity>

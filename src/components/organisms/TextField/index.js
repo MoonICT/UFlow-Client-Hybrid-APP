@@ -4,8 +4,8 @@
  * @flow strict-local
  * */
 // Global Imports
-import React, { Component } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, TextInput} from 'react-native';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -16,26 +16,29 @@ export default class TextField extends Component {
     super(props);
     this.state = {
       isFocused: true,
-      isNotifi: false,
+      isNotifi: false
     };
   }
+
   onChangeText(e) {
     this.setState({
       value: e,
     });
   }
+
   onFocusChange(e) {
-    this.setState({ isFocused: true });
+    this.setState({isFocused: true});
   }
 
   onBlurChange(e) {
-    this.setState({ isFocused: false });
+    this.setState({isFocused: false});
     if (this.state.value === '') {
-      this.setState({ isNotifi: true });
+      this.setState({isNotifi: true});
     } else {
-      this.setState({ isNotifi: false });
+      this.setState({isNotifi: false});
     }
   }
+
   render() {
     const {
       labelTextField,
@@ -45,18 +48,27 @@ export default class TextField extends Component {
       styleProps,
       styleRight,
       valueProps,
+      isRequired,
     } = this.props;
 
     return (
       <View style={Styles.textField}>
         {labelTextField ? (
-          <Text
-            style={[
-              DefaultStyle._labelTextField,
-              colorLabel ? { color: colorLabel } : null,
-            ]}>
-            {labelTextField}
-          </Text>
+          <>
+            <Text
+              style={[
+                DefaultStyle._labelTextField,
+                colorLabel ? {color: colorLabel} : null,
+              ]}>
+              {labelTextField}
+
+              {isRequired &&
+              <Text style={[
+                {color: 'red'}
+              ]}> *</Text>}
+            </Text>
+
+          </>
         ) : null}
 
         <TextInput
