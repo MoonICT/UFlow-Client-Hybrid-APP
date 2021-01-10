@@ -17,8 +17,9 @@ import { styles } from './style';
 export default class Selected extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      selectedValue: props.data[0] ? props.data[0].label : '',
+      selectedValue: props.valueSelected ? props.valueSelected : props.data[0].label,
       isToggle: false,
       indexActive: 0
     };
@@ -27,7 +28,7 @@ export default class Selected extends Component {
 
   _hideSelect = () => this.setState({ isToggle: false });
   render() {
-    const { data, labelSelected,valueSelected, colorLabel, valueProps, indexProps } = this.props;
+    const { data, labelSelected, valueSelected, colorLabel, valueProps, indexProps } = this.props;
     const { isToggle, selectedValue,indexActive } = this.state;
     const items =
       data &&
@@ -97,7 +98,7 @@ export default class Selected extends Component {
             <Dialog.Content>{items}</Dialog.Content>
           </Dialog>
         </Portal>
-        {/** 
+        {/**
         <Picker
           style={DefaultStyle._textSelected}
           mode="dropdown"

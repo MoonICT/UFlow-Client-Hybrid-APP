@@ -77,7 +77,7 @@ export const quotation = async type => {
 };
 export const responQuotation = async value => {
   const token = await AsyncStorage.getItem(TOKEN);
-  console.log('responQuotation', value);
+  console.log('value.data', value.data);
   return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
     headers: {
       Authorization: `Bearer ${token}`,

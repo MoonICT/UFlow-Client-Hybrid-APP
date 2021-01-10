@@ -36,8 +36,14 @@ class OwnerRq00Trust extends Component {
     const estmtTrustGroups = this.props.estmtTrustGroups;
     const groupOrders = this.props.groupOrders;
 
+    let lastRequestData = {};
+
     // console.log(gIndex, 'gIndex');
     console.log(groupOrders, 'groupOrders');
+
+    if (estmtTrustGroups && estmtTrustGroups.length > 0) {
+      lastRequestData = estmtTrustGroups[0][estmtTrustGroups[0].length-1];
+    }
 
     let viewRequestTrust =
       calUnitDvCodes && calUnitDvCodes.length > 0 &&
@@ -151,13 +157,13 @@ class OwnerRq00Trust extends Component {
 
             {viewRequestTrust}
 
-
             <View style={DefaultStyle._listBtn}>
               <TouchableOpacity
                 style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
                 onPress={() => {
                   /** GO TO 견적응답하기 **/
-                  this.navigation.navigate('RequestQuotation', {
+                  this.navigation.navigate('ResponseQuotation', {
+                    lastRequestData,
                     typeWH,
                     warehouseRegNo,
                     warehSeq,
