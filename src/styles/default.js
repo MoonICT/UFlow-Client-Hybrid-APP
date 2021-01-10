@@ -1236,6 +1236,8 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
+    height:36,
+    marginBottom:5
   },
   _textDate: {
     color: color.text.secondary,
