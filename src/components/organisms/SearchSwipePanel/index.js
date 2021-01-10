@@ -31,12 +31,9 @@ class SearchSwipePanel extends Component {
       isOpen: false,
       isOpenRecommend: false,
       WHRecommendList: [],
-      isProgress: false,
+      isProgress: false, // 목록 로딩.
       WHList: [],
       pageInfo: null,
-      // TODO Temp
-      isScroll: false,
-      scrollView: null,
     };
     this.navigation = props.navigation;
     // Ref

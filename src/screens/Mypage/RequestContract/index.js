@@ -23,17 +23,18 @@ import { Warehouse, MediaFileContract } from '@Services/apis';
 import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       contractLink: '',
       dataMedia: [],
+      dataApi: null,
     };
     this.navigation = props.navigation;
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
@@ -75,7 +76,22 @@ class RequestContract extends Component {
       // code block
     }
   };
-  render() {
+
+  /**
+   * 계약정보 가져오기 수탁 또는 임대
+   * */
+  getContract = () => {
+    if (this.state.dataApi) {
+      if (this.state.dataApi.keep) {
+        return this.state.dataApi.keep;
+      }
+      if (this.state.dataApi.trust) {
+        return this.state.dataApi.trust;
+      }
+    }
+  };
+
+  render () {
     const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
     const warehSeq = route && route.params && route.params.warehSeq;
@@ -265,25 +281,27 @@ class RequestContract extends Component {
                   <Text style={S.amount}>예상 견적 금액</Text>
                   <Text style={S.total}>
                     {dataApi &&
-                      dataApi.keep &&
-                      StringUtils.moneyConvert(dataApi.keep.estimatedPrice)}
+                    dataApi.keep &&
+                    StringUtils.moneyConvert(dataApi.keep.estimatedPrice)}
                   </Text>
                 </View>
               </View>
             ) : null}
 
             <ContractInformation
-              cntrYmdFrom={dataApi?.trust?.id?.cntrYmdFrom || ''}
-              cntrYmdTo={dataApi?.trust?.cntrYmdTo || ''}
+              contractType={typeWH}
+              dataContract={this.getContract()}
+              cntrYmdFrom={this.getContract()?.id?.cntrYmdFrom || ''}
+              cntrYmdTo={this.getContract()?.cntrYmdTo || ''}
               warehouseRegNo={warehouseRegNo}
               rentUserNo={rentUserNo}
               warehSeq={warehSeq}
               type={type}
               status={status}
               rentUser={
-                dataApi && dataApi.warehouse && dataApi.warehouse.rentUser
+                this.getContract() && this.getContract().warehouse && this.getContract().warehouse.rentUser
               }
-              warehouse={dataApi && dataApi.warehouse}
+              warehouse={this.getContract() && this.getContract().warehouse}
               mediaFile={dataMedia && dataMedia.entrpByOwner}
               navigation={this.navigation}
             />
@@ -294,7 +312,7 @@ class RequestContract extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let rentUserNo = this.props.route.params.rentUserNo;
@@ -342,7 +360,8 @@ class RequestContract extends Component {
             {
               dataApi: res.data,
             },
-            () => {},
+            () => {
+            },
           );
           // this.props.quotationData(res.data);
         }
@@ -359,7 +378,8 @@ class RequestContract extends Component {
             {
               dataMedia: res.data,
             },
-            () => {},
+            () => {
+            },
           );
           // this.props.quotationData(res.data);
         }
@@ -376,13 +396,13 @@ class RequestContract extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -391,7 +411,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     // countUp: diff => {
     //   dispatch(ActionCreator.countUp(diff));
