@@ -70,6 +70,8 @@ class RequestView extends Component {
   // };
 
   render() {
+
+    /** 요청 응답에 대한 차수 선택 (요청-요청-요청-응답 , 요청-응답 >>> 응답으로 끝나는 부분이 한 차수 (API 로 정리되서 옴.) ) **/
     const {data, typeWH} = this.props;
     let orders = data?.orders[0] || [
       {
@@ -78,8 +80,8 @@ class RequestView extends Component {
       },
     ];
 
-    console.log('orders==>', orders);
-    console.log('data==>', data);
+    // console.log('orders==>', orders);
+    // console.log('data==>', data);
 
     const dataSelect = [
       {
@@ -87,7 +89,6 @@ class RequestView extends Component {
         value: StringUtils.dateStr(orders) + '(1차)',
       },
     ];
-
 
 
     let viewRequest =
@@ -193,100 +194,119 @@ class RequestView extends Component {
       data.estmtTrusts &&
       data.estmtTrusts.map((item, index) => {
 
+          let reqDateLabel = '';
+          if (item.estmtDvCd === 'RQ00') {
+            reqDateLabel = '요청 일자';
+          } else if (item.estmtDvCd === 'RS00') {
+            reqDateLabel = '응답 일자';
+          } else {
+            reqDateLabel = item.estmtDvCd;
+          }
 
-        let dataRequest = [
-          {
-            type: item.estmtDvCd === 'RQ00' ? '요청 일시' : '응답 일시',
-            value: item.occrYmd,
-          },
-          {
-            type: '요청 보관기간',
-            value: data.warehouse.owner,
-          },
-          {
-            type: '수탁 요청 수량',
-            value: data.warehouse.owner,
-          },
-          {
-            type: '요청 보관비',
-            value: data.warehouse.address,
-          },
-          {
-            type: '요청 입고단가',
-            // value: this.coverStatus(status).processing,
-            value: '수탁',
-            highlight: true,
-          },
-          {
-            type: '요청 출고단가',
-            value: item.estmtDvCd,
-          },
-          {
-            type: '요청 인건단가',
-            value: item.calUnitDvCode,
-          },
-          {
-            type: '요청 가공단가',
-            value: item.calStdDvCode,
-          },
-          {
-            type: '요청 택배단가',
-            value: item.from + ' - ' + item.to,
-          },
-          {
-            type: '요청 운송단가',
-            value: item.from + ' - ' + item.to,
-          },
-          {
-            type: '추가 요청 사항',
-            value: item.from + ' - ' + item.to,
-          },
-        ];
+          console.log(item, 'item');
 
-        return (
-          <Fragment key={index}>
-            {item.estmtDvCd === 'RQ00' ? (
-              <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0]}
-                key={index}>
-                {(data.estmtTrusts[index - 1] &&
-                  data.estmtTrusts[index - 1].estmtDvCd !== 'RQ00') ||
-                !data.estmtTrusts[index - 1] ? (
-                  <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
-                    <Text style={DefaultStyle._textTitleCard}>
-                      견적 요청 정보
-                    </Text>
-                    <View style={DefaultStyle._optionList}>
-                      <Select data={dataSelect} style={SS.optionSelect}/>
+          let dataRequest = [
+            {
+              type: reqDateLabel,
+              value: StringUtils.dateStr(item.occrYmd),
+            },
+            {
+              type: '요청 보관기간',
+              value: StringUtils.dateStr(item.from) + ' - ' + StringUtils.dateStr(item.to),
+            },
+            {
+              type: '요청 가용수량',
+              value: item.rntlValue ? item.rntlValue.toLocaleString() : '-',
+            },
+            {
+              type: '정산단위',
+              value: item.calUnitDvCode ? StringUtils.toStdName(this.state.calUnitDvCodes, item.calUnitDvCode) : '-'
+            },
+            {
+              type: '산정기준',
+              value: item.calStdDvCode ? StringUtils.toStdName(this.state.calStdDvCodes, item.calStdDvCode) : '-'
+            },
+            {
+              type: '요청 보관단가',
+              value: item.splyAmount ? StringUtils.money(item.splyAmount) : '-'
+            },
+            {
+              type: '가공단가',
+              value: item.mnfctChrg ? StringUtils.money(item.mnfctChrg) : '-'
+            },
+            {
+              type: '인건단가',
+              value: item.psnChrg ? StringUtils.money(item.psnChrg) : '-'
+            },
+            {
+              type: '입고단가',
+              value: item.whinChrg ? StringUtils.money(item.whinChrg) : '-'
+            },
+            {
+              type: '출고단가',
+              value: item.whoutChrg ? StringUtils.money(item.whoutChrg) : '-'
+            },
+            {
+              type: '택배단가',
+              value: item.dlvyChrg ? StringUtils.money(item.dlvyChrg) : '-'
+            },
+            {
+              type: '운송단가',
+              value: item.shipChrg ? StringUtils.money(item.shipChrg) : '-'
+            },
+            {
+              type: '추가 요청 사항',
+              value: item.remark ? item.remark : '-',
+            },
+          ];
+
+          return (
+            <Fragment key={index}>
+              {/** 견적요청 상태 : 견적 재용청을 할수 있음 (최초) 창고주는 견적을 응답할 수 있다.**/}
+              {item.estmtDvCd === 'RQ00' ? (
+                <View
+                  style={[DefaultStyle._cards, DefaultStyle._margin0]}
+                  key={index}>
+                  {(data.estmtTrusts[index - 1] &&
+                    data.estmtTrusts[index - 1].estmtDvCd !== 'RQ00') ||
+                  !data.estmtTrusts[index - 1] ? (
+                    <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
+                      <Text style={DefaultStyle._textTitleCard}>
+                        견적 요청 정보
+                      </Text>
+                      <View style={DefaultStyle._optionList}>
+                        <Select data={dataSelect} style={SS.optionSelect}/>
+                      </View>
+                    </View>
+                  ) : null}
+                  <View style={DefaultStyle._card}>
+                    <View style={DefaultStyle._infoTable}>
+                      <TableInfo data={dataRequest}/>
                     </View>
                   </View>
-                ) : null}
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest}/>
+                </View>
+              ) : null}
+              {/** 견적응답 상태 : 임차인은 견적 재용청을 할수 있음, 창고주는 견적을 동의할 수 있음. **/}
+              {item.estmtDvCd === 'RS00' ? (
+                <View
+                  style={[DefaultStyle._cards, DefaultStyle._margin0]}
+                  key={index}>
+                  <View style={DefaultStyle._card}>
+                    <View style={DefaultStyle._headerCard}>
+                      <Text style={DefaultStyle._headerCardTitle}>
+                        견적 요청 정보
+                      </Text>
+                    </View>
+                    <View style={DefaultStyle._infoTable}>
+                      <TableInfo data={dataRequest}/>
+                    </View>
                   </View>
                 </View>
-              </View>
-            ) : null}
-            {item.estmtDvCd === 'RS00' ? (
-              <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0]}
-                key={index}>
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._headerCard}>
-                    <Text style={DefaultStyle._headerCardTitle}>
-                      견적 요청 정보
-                    </Text>
-                  </View>
-                  <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest}/>
-                  </View>
-                </View>
-              </View>
-            ) : null}
-          </Fragment>
-        );
-      });
+              ) : null}
+            </Fragment>
+          );
+        }
+      );
 
     return (
       <Fragment>{typeWH === 'TRUST' ? viewRequestTrust : viewRequest}</Fragment>
@@ -309,20 +329,20 @@ class RequestView extends Component {
 
     MyPage.getDetailCodes('WHRG0014').then((res) => {
 
-      if ( res.data && res.data._embedded && res.data._embedded.detailCodes ) {
-        console.log('detailCodes', res.data._embedded.detailCodes)
+      if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
+        // console.log('detailCodes', res.data._embedded.detailCodes)
         this.setState({
-          calStdDvCodes : res.data._embedded.detailCodes
+          calStdDvCodes: res.data._embedded.detailCodes
         });
       }
     });
 
     MyPage.getDetailCodes('WHRG0013').then((res) => {
 
-      if ( res.data && res.data._embedded && res.data._embedded.detailCodes ) {
-        console.log('detailCodes', res.data._embedded.detailCodes)
+      if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
+        // console.log('detailCodes', res.data._embedded.detailCodes)
         this.setState({
-          calUnitDvCodes : res.data._embedded.detailCodes
+          calUnitDvCodes: res.data._embedded.detailCodes
         });
       }
     });
