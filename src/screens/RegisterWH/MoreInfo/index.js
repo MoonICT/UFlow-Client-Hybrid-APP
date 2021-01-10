@@ -77,9 +77,10 @@ class RegisterMoreInfo extends Component {
         props.dataMoreInfo && props.dataMoreInfo.cmnArea
           ? props.dataMoreInfo.cmnArea
           : '',
-      from: props.dataMoreInfo
-        ? new Date(props.dataMoreInfo.cmpltYmd)
-        : new Date(),
+      from:
+        props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
+          ? new Date(props.dataMoreInfo.cmpltYmd)
+          : new Date(),
       showFrom: false,
       mode: 'date',
     };

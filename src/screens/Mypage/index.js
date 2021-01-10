@@ -158,10 +158,11 @@ class Mypage extends Component {
     }
   };
   render() {
-    const { imageStore, workComplete } = this.props;
+    const { route, workComplete } = this.props;
     const { title, isSwitchOn, dataWH } = this.state;
     console.log('title :>> ', title);
     console.log('dataWH :>> ', dataWH);
+    console.log('route :>> ', route.params);
     let viewWH =
       dataWH &&
       dataWH.map((item, index) => {
@@ -329,8 +330,8 @@ class Mypage extends Component {
       case '관심 창고':
         viewComponent = <InterestWH navigation={this.navigation} />;
         break;
-      default:
-        viewComponent;
+      // default:
+      //   viewComponent;
       // code block
     }
 
@@ -423,6 +424,7 @@ class Mypage extends Component {
     //   const dataWH = getWH.data._embedded.warehouses;
     //   console.log('dataWH :>> ', dataWH);
     // }
+
     await Warehouse.myWH()
       .then(res => {
         console.log('res', res);
@@ -437,10 +439,15 @@ class Mypage extends Component {
 
     // SplashScreen.hide();
   }
-
+  componentWillReceiveProps(newProps) {
+    let titleProp =
+      newProps.route && newProps.route.params && newProps.route.params.title;
+    console.log('titleProp :>> ', titleProp);
+    this.setState({ title: titleProp });
+  }
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+
   }
 }
 

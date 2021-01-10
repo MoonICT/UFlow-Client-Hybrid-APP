@@ -225,12 +225,24 @@ class FormInfo extends Component {
         value: '9100',
       },
     ];
-
+    let defaultTypeCode =
+      dataSelect && dataSelect.find(item => item.value === formData.typeCode);
+    let defaultcalUnit =
+      settlement &&
+      settlement.find(item => item.value === formData.calUnitDvCode);
+    let defaultcalStd =
+      calculation &&
+      calculation.find(item => item.value === formData.calUnitDvCode);
+    let defaulcmgmtChrg =
+      managementFees &&
+      managementFees.find(item => item.value === formData.mgmtChrgDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
             data={dataSelect}
+            dataDefault={defaultTypeCode}
+            defaultValue={formData.typeCode}
             valueProps={e => {
               // let index = dataForm.findIndex(el => el.id === number);
               // this.setState({
@@ -245,6 +257,7 @@ class FormInfo extends Component {
           />
           <Select
             data={settlement}
+            dataDefault={defaultcalUnit}
             selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
             valueProps={e => {
@@ -256,6 +269,7 @@ class FormInfo extends Component {
           <Select
             data={calculation}
             selectedValue={formData.calStdDvCode}
+            defaultValue={defaultcalStd}
             labelSelected="산정기준"
             valueProps={e => {
               let dataF = formData;
@@ -266,6 +280,7 @@ class FormInfo extends Component {
           <Select
             data={managementFees}
             selectedValue={formData.mgmtChrgDvCode}
+            defaultValue={defaulcmgmtChrg}
             labelSelected="관리비구분"
             valueProps={e => {
               let dataF = formData;

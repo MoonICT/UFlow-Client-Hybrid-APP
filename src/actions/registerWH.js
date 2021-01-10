@@ -35,3 +35,10 @@ export function updateInfo(data) {
     data: data,
   };
 }
+
+export function removeData(data) {
+  return {
+    type: types.REMOVE_INFO_WH,
+    data: data,
+  };
+}

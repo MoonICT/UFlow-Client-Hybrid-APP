@@ -50,7 +50,7 @@ class RegisterInfoFloor extends Component {
           ? props.dataInfoFloor.floors
           : [
               {
-                flrDvCode: 'F1',
+                flrDvCode: 'F2',
                 flrArea: '',
                 parkArea: '',
                 opcArea: '',
