@@ -71,6 +71,7 @@ import ProprietorMypage from '@Screeens/ProprietorMypage';
 
 import Quotation from '@Screeens/Mypage/Quotation';
 import ResponseQuotation from '@Screeens/Mypage/ResponseQuotation';
+import RequestQuotation from '@Screeens/Mypage/RequestQuotation';
 import StorageAgreement from '@Screeens/Mypage/StorageAgreement';
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
@@ -435,6 +436,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="ResponseQuotation"
                     component={ResponseQuotation}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="RequestQuotation"
+                    component={RequestQuotation}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
