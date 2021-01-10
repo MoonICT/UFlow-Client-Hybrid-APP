@@ -41,7 +41,7 @@ export const updateWH = async value => {
 };
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
-  return await mainAxios.get('/api/v1/warehouse/owner', {
+  return mainAxios.get('/api/v1/warehouse/owner', {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',

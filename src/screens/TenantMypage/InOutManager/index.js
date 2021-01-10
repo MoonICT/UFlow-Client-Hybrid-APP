@@ -35,7 +35,7 @@ import { styles as SS } from './style';
 
 const data = [
   {
-    title: '견적･계약 관리',
+    title: '적',
   },
   {
     title: '입･출고 관리',
