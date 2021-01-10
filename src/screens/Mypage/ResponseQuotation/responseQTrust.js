@@ -157,7 +157,7 @@ class ResponseQTrust extends Component {
             <Text style={DefaultStyle._textDate}>
               {to ? moment(to).format('YYYY.MM.DD') : ''}
             </Text>
-            <Text>{to.toString()}</Text>
+
             <Text
               style={[
                 DefaultStyle._labelTextField,

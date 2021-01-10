@@ -389,7 +389,7 @@ class Quotation extends Component {
             }
 
 
-            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST') &&
+            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST') && this.state.groupOrders &&
             <OwnerRq00Trust
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
@@ -403,6 +403,7 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtTrustGroups={this.state.estmtTrustGroups}
               groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
             />
             }
             {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP') &&

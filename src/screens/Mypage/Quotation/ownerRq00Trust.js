@@ -15,7 +15,7 @@ class OwnerRq00Trust extends Component {
     super(props);
     this.navigation = props.navigation;
     this.state = {
-      groupOrderIndex: 0
+      groupOrderIndex: props.groupOrderIndex
     }
   }
 
@@ -146,6 +146,7 @@ class OwnerRq00Trust extends Component {
               </Text>
               <View style={DefaultStyle._optionList}>
                 <Select data={dataSelect}
+                        valueSelected={dataSelect[this.state.groupOrderIndex].label}
                         valueProps={(value) => {
                           this.setState({
                             groupOrderIndex: value

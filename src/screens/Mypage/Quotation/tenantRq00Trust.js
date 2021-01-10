@@ -13,8 +13,6 @@ class TenantRq00Trust extends Component {
   constructor(props) {
     super(props);
     this.navigation = props.navigation;
-      console.log(props, '>> props')
-    console.log(props.groupOrders, '> props.groupOrders')
     this.state = {
       groupOrderIndex: props.groupOrderIndex
     }
@@ -108,9 +106,9 @@ class TenantRq00Trust extends Component {
           return (
             <Fragment key={index}>
 
-              <Text>{this.state.groupOrderIndex}</Text>
-              <Text>{this.props.groupOrderIndex}</Text>
-              <Text>{item.occrYmd}</Text>
+              {/*<Text>{this.state.groupOrderIndex}</Text>*/}
+              {/*<Text>{this.props.groupOrderIndex}</Text>*/}
+              {/*<Text>{item.occrYmd}</Text>*/}
 
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>

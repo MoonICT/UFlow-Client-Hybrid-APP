@@ -140,7 +140,7 @@ class ResponseQuotation extends Component {
         </Appbars>
         <ScrollView>
 
-          <View style={[DefaultStyle._cards, SS.body, {paddingBottom: 180}]}>
+          <View style={[DefaultStyle._cards, SS.body, {paddingBottom: 450}]}>
 
             {/** HEADER **/}
             <View style={[DefaultStyle._titleCard, SS.title]}>
