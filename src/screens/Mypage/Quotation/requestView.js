@@ -5,29 +5,36 @@
  */
 
 // Global Imports
-import React, { Component, Fragment } from 'react';
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import React, {Component, Fragment} from 'react';
+import {View} from 'react-native';
+import {Text} from 'react-native-paper';
+import Moment from 'moment';
 import Select from '@Components/organisms/Select';
+import {MyPage} from '@Services/apis';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 // import TableInfo from '../TableInfo';
+import {StringUtils} from '@Services/utils';
 import TableInfo from '@Components/atoms/TableInfo';
-import { styles as SS } from './style';
-import { styles as S } from '../style';
+import {styles as SS} from './style';
+import {styles as S} from '../style';
 
 import moment from 'moment';
 
 class RequestView extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      calUnitDvCodes: [],
+      calStdDvCodes: [],
+    };
   }
+
   coverStatus = value => {
     switch (value) {
       case 'RQ00':
-        return { processing: '견적 요청', data: [] };
+        return {processing: '견적 요청', data: []};
       case 'RS00':
         return {
           data: [],
@@ -61,12 +68,13 @@ class RequestView extends Component {
   //   let changeTime = time.toLocaleDateString();
   //   console.log('changeTime', changeTime);
   // };
+
   render() {
-    const { data, typeWH } = this.props;
+    const {data, typeWH} = this.props;
     let orders = data?.orders[0] || [
       {
-        label: moment(new Date()).format('YYYY.MM.DD') + '(1차)',
-        value: moment(new Date()).format('YYYY.MM.DD') + '(1차)',
+        label: StringUtils.dateStr(new Date()) + '(1차)',
+        value: StringUtils.dateStr(new Date()) + '(1차)',
       },
     ];
 
@@ -75,45 +83,48 @@ class RequestView extends Component {
 
     const dataSelect = [
       {
-        label: moment(orders).format('YYYY.MM.DD') + '(1차)',
-        value: moment(orders).format('YYYY.MM.DD') + '(1차)',
+        label: StringUtils.dateStr(orders) + '(1차)',
+        value: StringUtils.dateStr(orders) + '(1차)',
       },
     ];
 
+
+
     let viewRequest =
+      this.state.calStdDvCodes && this.state.calStdDvCodes.length > 0 &&
+      this.state.calUnitDvCodes && this.state.calUnitDvCodes.length > 0 &&
       data &&
       data.estmtKeeps &&
       data.estmtKeeps.map((item, index) => {
+
         let dataRequest = [
           {
             type: item.estmtDvCd === 'RQ00' ? '요청 일시' : '응답 일시',
-            value: item.occrYmd,
+            value: StringUtils.dateStr(item.occrYmd),
           },
           {
             type: '요청 보관 기간',
-            value: item.from + ' - ' + item.to,
+            value: StringUtils.dateStr(item.from) + ' - ' + StringUtils.dateStr(item.to),
           },
           {
             type: '요청 가용 면적',
-            value: item.rntlValue,
+            value: item.rntlValue ? item.rntlValue.toLocaleString() : '-',
           },
           {
             type: '정산단위',
-            // value: this.coverStatus(status).processing,
-            value: '임대 요청',
-            highlight: true,
+            value: item.calUnitDvCode ? StringUtils.toStdName(this.state.calUnitDvCodes, item.calUnitDvCode) : '-'
           },
           {
-            type: '보관유형',
-            value: data.warehouse.warehouse,
+            type: '산정기준',
+            value: item.calStdDvCode ? StringUtils.toStdName(this.state.calStdDvCodes, item.calStdDvCode) : '-'
           },
           {
-            type: '보관비',
-            value: item.splyAmount,
+            type: '요청 보관단가',
+            value: item.splyAmount ? StringUtils.money(item.splyAmount) : '-'
           },
           {
-            type: '관리비',
-            value: item.mgmtChrg,
+            type: '요청 관리단가',
+            value: item.mgmtChrg ? StringUtils.money(item.mgmtChrg) : '-',
           },
           {
             type: '추가 요청사항',
@@ -121,11 +132,12 @@ class RequestView extends Component {
           },
         ];
 
+
         return (
           <Fragment key={index}>
             {item.estmtDvCd === 'RQ00' ? (
               <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0]}
+                style={[DefaultStyle._cards, DefaultStyle._margin0, {marginTop: 0}]}
                 key={index}>
                 {(data.estmtKeeps[index - 1] &&
                   data.estmtKeeps[index - 1].estmtDvCd !== 'RQ00') ||
@@ -135,13 +147,13 @@ class RequestView extends Component {
                       견적 요청 정보
                     </Text>
                     <View style={DefaultStyle._optionList}>
-                      <Select data={dataSelect} style={SS.optionSelect} />
+                      <Select data={dataSelect} style={SS.optionSelect}/>
                     </View>
                   </View>
                 ) : null}
                 <View style={DefaultStyle._card}>
                   <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest} />
+                    <TableInfo data={dataRequest}/>
                   </View>
                 </View>
                 <View style={DefaultStyle._footerCards}>
@@ -152,7 +164,7 @@ class RequestView extends Component {
             ) : null}
             {item.estmtDvCd === 'RS00' ? (
               <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0]}
+                style={[DefaultStyle._cards, DefaultStyle._margin0, {marginTop: 0}]}
                 key={index}>
                 <View style={DefaultStyle._card}>
                   <View style={DefaultStyle._headerCard}>
@@ -161,7 +173,7 @@ class RequestView extends Component {
                     </Text>
                   </View>
                   <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest} />
+                    <TableInfo data={dataRequest}/>
                   </View>
                 </View>
                 <View style={DefaultStyle._footerCards}>
@@ -175,16 +187,20 @@ class RequestView extends Component {
       });
 
     let viewRequestTrust =
+      this.state.calStdDvCodes && this.state.calStdDvCodes.length > 0 &&
+      this.state.calUnitDvCodes && this.state.calUnitDvCodes.length > 0 &&
       data &&
       data.estmtTrusts &&
       data.estmtTrusts.map((item, index) => {
+
+
         let dataRequest = [
           {
             type: item.estmtDvCd === 'RQ00' ? '요청 일시' : '응답 일시',
             value: item.occrYmd,
           },
           {
-            type: '수탁기간',
+            type: '요청 보관기간',
             value: data.warehouse.owner,
           },
           {
@@ -241,13 +257,13 @@ class RequestView extends Component {
                       견적 요청 정보
                     </Text>
                     <View style={DefaultStyle._optionList}>
-                      <Select data={dataSelect} style={SS.optionSelect} />
+                      <Select data={dataSelect} style={SS.optionSelect}/>
                     </View>
                   </View>
                 ) : null}
                 <View style={DefaultStyle._card}>
                   <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest} />
+                    <TableInfo data={dataRequest}/>
                   </View>
                 </View>
               </View>
@@ -263,7 +279,7 @@ class RequestView extends Component {
                     </Text>
                   </View>
                   <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest} />
+                    <TableInfo data={dataRequest}/>
                   </View>
                 </View>
               </View>
@@ -282,6 +298,34 @@ class RequestView extends Component {
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
+
+
+  }
+
+  componentDidMount() {
+    console.log('::componentDidMount::');
+
+    const {data, typeWH} = this.props;
+
+    MyPage.getDetailCodes('WHRG0014').then((res) => {
+
+      if ( res.data && res.data._embedded && res.data._embedded.detailCodes ) {
+        console.log('detailCodes', res.data._embedded.detailCodes)
+        this.setState({
+          calStdDvCodes : res.data._embedded.detailCodes
+        });
+      }
+    });
+
+    MyPage.getDetailCodes('WHRG0013').then((res) => {
+
+      if ( res.data && res.data._embedded && res.data._embedded.detailCodes ) {
+        console.log('detailCodes', res.data._embedded.detailCodes)
+        this.setState({
+          calUnitDvCodes : res.data._embedded.detailCodes
+        });
+      }
+    });
   }
 }
 

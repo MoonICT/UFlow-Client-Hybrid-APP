@@ -86,7 +86,7 @@ class RequestContract extends Component {
     const status = route && route.params && route.params.status;
     // console.log('routeRequescontract', route);
     const { dataApi, dataMedia } = this.state;
-    // console.log('dataApi', dataApi);
+    console.log('dataApi', dataApi);
     // console.log('status', status);
     // console.log('dataMedia', dataMedia);
 
@@ -94,135 +94,124 @@ class RequestContract extends Component {
       typeWH === 'KEEP' && [
         {
           type: '창고명',
-          value: dataApi?.warehouse?.warehouse,
+          value: dataApi.warehouse.warehouse,
         },
         {
           type: '창고주',
-          value: dataApi?.warehouse?.owner,
+          value: dataApi.warehouse.owner,
         },
         {
           type: '위치',
-          value: dataApi?.warehouse?.address,
+          value: dataApi.warehouse.address,
         },
         {
-          type: '선택 창고 유형',
-          value: this.coverStatus(status)?.processing,
-          // value: '임대 요청',
+          type: '계약유형',
+          value: '임대(보관)',
           highlight: true,
         },
         {
           type: '보관유형',
-          value: dataApi?.keep?.whrgMgmtKeep?.typeCode?.stdDetailCodeName,
+          value: dataApi.warehouse.keep.typeCode.stdDetailCodeName,
         },
         {
-          type: '정산단위',
-          value: dataApi?.keep?.calUnitDvCode?.stdDetailCodeName,
+          type: '전용면적',
+          value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
         },
-        {
-          type: '산정기준',
-          value: dataApi?.keep?.typeCode?.stdDetailCodeName,
-        },
-        {
-          type: '가용면적',
-          value: dataApi?.keep?.cntrValue,
-        },
+        // {
+        //   type: '정산단위',
+        //   value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '산정기준',
+        //   value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '가용면적',
+        //   value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue),
+        // },
         {
           type: '임대 가능 기간',
-          value: this.coverTime(dataApi?.keep?.whrgMgmtKeep?.usblYmdFrom),
-        },
-        {
-          type: '가용수량',
-          value: StringUtils.moneyConvert(dataApi?.keep?.cntrValue, ''),
+          value: StringUtils.dateStr(dataApi.warehouse.keep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.warehouse.keep.usblYmdTo),
         },
         {
           type: '보관단가',
-          value: StringUtils.moneyConvert(
-            dataApi?.keep?.whrgMgmtKeep?.splyAmount,
-            '',
-          ),
+          value: StringUtils.moneyConvert(dataApi.keep.splyAmount),
         },
         {
           type: '관리단가',
-          value: StringUtils.moneyConvert(
-            dataApi?.keep?.whrgMgmtKeep?.mgmtChrg,
-            '',
-          ),
+          value: StringUtils.moneyConvert(dataApi.keep.mgmtChrg),
         },
       ];
     let dataTrust = dataApi &&
       typeWH === 'TRUST' && [
         {
           type: '창고명',
-          value: dataApi?.warehouse?.warehouse,
+          value: dataApi.warehouse.warehouse,
         },
         {
           type: '창고주',
-          value: dataApi?.warehouse?.owner,
+          value: dataApi.warehouse.owner,
         },
         {
           type: '위치',
-          value: dataApi?.warehouse?.address,
+          value: dataApi.warehouse.address,
         },
         {
-          type: '선택 창고 유형',
-          value: this.coverStatus(status)?.processing,
-          // value: '수탁',
+          type: '계약유형',
+          value: '수탁',
           highlight: true,
         },
         {
-          type: '보관유형',
-          value: dataApi?.trust?.whrgMgmtTrust?.typeCode?.stdDetailCodeName,
-        },
-        {
-          type: '정산단위',
-          value:
-            dataApi?.trust?.whrgMgmtTrust?.calUnitDvCode?.stdDetailCodeName,
-        },
-        {
-          type: '산정기준',
-          value: dataApi?.trust?.whrgMgmtTrust?.calStdDvCode?.stdDetailCodeName,
+          type: '가용수량',
+          value: dataApi.trust.cntrValue ? dataApi.trust.cntrValue.toLocaleString() : '0',
         },
         {
           type: '수탁 가능 기간',
-          value: `${dataApi?.trust?.id?.cntrYmdFrom} ~ ${
-            dataApi?.trust?.cntrYmdTo
-          }`,
+          value: StringUtils.dateStr(dataApi.warehouse.trust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.warehouse.trust.usblYmdTo),
         },
         // {
+        //   type: '보관유형',
+        //   value: dataApi.trust.typeCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '정산단위',
+        //   value: dataApi.trust.calUnitDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '산정기준',
+        //   value: dataApi.trust.calStdDvCode.stdDetailCodeName,
+        // },
+        // {
         //   type: '수탁 가용 수량',
-        //   value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.usblValue,''),
+        //   value: StringUtils.moneyConvert(dataApi.trust.usblValue),
         // },
         {
-          type: '가용수량',
-          value: StringUtils.moneyConvert(dataApi?.trust?.cntrValue, ''),
-        },
-        {
           type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.splyAmount, ''),
+          value: StringUtils.moneyConvert(dataApi.trust.splyAmount),
         },
         {
-          type: '입고단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.whinChrg, ''),
-        },
-        {
-          type: '출고단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.whoutChrg, ''),
+          type: '가공단가',
+          value: StringUtils.moneyConvert(dataApi.trust.mnfctChrg),
         },
         {
           type: '인건단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.psnChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.trust.psnChrg),
         },
         {
-          type: '가용면적',
-          value: StringUtils.moneyConvert(dataApi?.trust?.mnfctChrg, ''),
+          type: '입고단가',
+          value: StringUtils.moneyConvert(dataApi.trust.whinChrg),
+        },
+        {
+          type: '출고단가',
+          value: StringUtils.moneyConvert(dataApi.trust.whoutChrg),
         },
         {
           type: '택배단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.dlvyChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.trust.dlvyChrg),
         },
         {
           type: '운송단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.shipChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.trust.shipChrg),
         },
       ];
 
