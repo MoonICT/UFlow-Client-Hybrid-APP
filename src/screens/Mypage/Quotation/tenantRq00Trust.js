@@ -12,13 +12,16 @@ class TenantRq00Trust extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      groupOrderIndex: 0
+    }
   }
 
   render() {
     /**
      * TENANT - RQ00 - TRUST
      */
-
+      // const gIndex = this.state.gIndex;
     const warehouseRegNo = this.props.warehouseRegNo;
     const warehSeq = this.props.warehSeq;
     const rentUserNo = this.props.rentUserNo;
@@ -28,30 +31,21 @@ class TenantRq00Trust extends Component {
     const data = this.props.data;
     const calUnitDvCodes = this.props.calUnitDvCodes;
     const calStdDvCodes = this.props.calStdDvCodes;
+    const estmtTrustGroups = this.props.estmtTrustGroups;
+    const groupOrders = this.props.groupOrders;
 
-    console.log(data, 'data');
+    // console.log(gIndex, 'gIndex');
+    console.log(groupOrders, 'groupOrders');
 
     let viewRequestTrust =
       calUnitDvCodes && calUnitDvCodes.length > 0 &&
       calStdDvCodes && calStdDvCodes.length > 0 &&
-      data &&
-      data.estmtTrusts &&
-      data.estmtTrusts.map((item, index) => {
-
-          let reqDateLabel = '';
-          if (item.estmtDvCd === 'RQ00') {
-            reqDateLabel = '요청 일자';
-          } else if (item.estmtDvCd === 'RS00') {
-            reqDateLabel = '응답 일자';
-          } else {
-            reqDateLabel = item.estmtDvCd;
-          }
-
-          // DeepLogs.log(item, 'item');
+      estmtTrustGroups && estmtTrustGroups.length > 0 &&
+      estmtTrustGroups[this.state.groupOrderIndex].map((item, index) => {
 
           let dataRequest = [
             {
-              type: reqDateLabel,
+              type: '요청일자',
               value: StringUtils.dateStr(item.occrYmd),
             },
             {
@@ -104,70 +98,95 @@ class TenantRq00Trust extends Component {
             },
           ];
 
-          let orders = data?.orders[0] || [
-            {
-              label: StringUtils.dateStr(new Date()) + '(1차)',
-              value: StringUtils.dateStr(new Date()) + '(1차)',
-            },
-          ];
-
-          const dataSelect = [
-            {
-              label: StringUtils.dateStr(orders) + '(1차)',
-              value: StringUtils.dateStr(orders) + '(1차)',
-            },
-          ];
-
           return (
             <Fragment key={index}>
-              {/** 견적요청 상태 : 견적 재용청을 할수 있음 (최초) 창고주는 견적을 응답할 수 있다.**/}
-              {item.estmtDvCd === 'RQ00' ? (
-                <View
-                  style={[DefaultStyle._cards, DefaultStyle._margin0]}
-                  key={index}>
-                  {(data.estmtTrusts[index - 1] &&
-                    data.estmtTrusts[index - 1].estmtDvCd !== 'RQ00') ||
-                  !data.estmtTrusts[index - 1] ? (
-                    <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
-                      <Text style={DefaultStyle._textTitleCard}>
-                        견적 요청 정보
-                      </Text>
-                      <View style={DefaultStyle._optionList}>
-                        <Select data={dataSelect} style={SS.optionSelect}/>
-                      </View>
-                    </View>
-                  ) : null}
-                  <View style={DefaultStyle._card}>
-                    <View style={DefaultStyle._infoTable}>
-                      <TableInfo data={dataRequest}/>
-                    </View>
-                  </View>
+
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
+                  <Text style={DefaultStyle._headerCardTitle}>
+                    {item.estmtDvCd === 'RQ00' ? '견적 요청 정보' : '견적 응답 정보'}
+                  </Text>
                 </View>
-              ) : null}
-              {/** 견적응답 상태 : 임차인은 견적 재용청을 할수 있음, 창고주는 견적을 동의할 수 있음. **/}
-              {item.estmtDvCd === 'RS00' ? (
-                <View
-                  style={[DefaultStyle._cards, DefaultStyle._margin0]}
-                  key={index}>
-                  <View style={DefaultStyle._card}>
-                    <View style={DefaultStyle._headerCard}>
-                      <Text style={DefaultStyle._headerCardTitle}>
-                        견적 요청 정보
-                      </Text>
-                    </View>
-                    <View style={DefaultStyle._infoTable}>
-                      <TableInfo data={dataRequest}/>
-                    </View>
-                  </View>
+                <View style={DefaultStyle._infoTable}>
+                  <TableInfo data={dataRequest}/>
                 </View>
-              ) : null}
+              </View>
+
             </Fragment>
           );
         }
       );
-    return (
-      <Fragment>{viewRequestTrust}</Fragment>
-    );
+
+    // console.log(data.orders, 'data.orders');
+
+    if (groupOrders) {
+      const dataSelect = groupOrders ? groupOrders.map((item, index) => {
+        return {
+          label: StringUtils.dateStr(item) + `(${(index + 1)}차)`,
+          value: index
+        };
+      }) : [];
+
+      return (
+        <Fragment>
+          <View
+            style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+
+            <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
+              <Text style={DefaultStyle._textTitleCard}>
+                견적 요청 정보
+              </Text>
+              <View style={DefaultStyle._optionList}>
+                <Select data={dataSelect}
+                        valueProps={(value) => {
+                          this.setState({
+                            groupOrderIndex: value
+                          });
+                        }}
+                        style={SS.optionSelect}/>
+              </View>
+            </View>
+
+            {viewRequestTrust}
+
+            <View style={DefaultStyle._card}>
+              <View style={DefaultStyle._headerCard}>
+                <Text style={DefaultStyle._headerCardTitle}>
+                  견적 응답 정보
+                </Text>
+              </View>
+              <Text style={S.noticeWaitting}>
+                창고주가 보내주신 견적 요청서를 확인하고 있습니다.
+                견적 응답이 올 때까지 잠시만 기다려 주세요.
+              </Text>
+            </View>
+
+            <View style={DefaultStyle._listBtn}>
+              <TouchableOpacity
+                style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
+                onPress={() => {
+                  // this.navigation.navigate('ResponseQuotation', {
+                  //   typeWH,
+                  //   warehouseRegNo,
+                  //   warehSeq,
+                  //   rentUserNo,
+                  //   status,
+                  //   type,
+                  // });
+                  // TODO 견적 재요청하는 로직
+                  alert('견적 재요청');
+                }}>
+                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+
+        </Fragment>
+      );
+    } else {
+      return <></>;
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -176,6 +195,7 @@ class TenantRq00Trust extends Component {
 
   componentDidMount() {
     console.log('::componentDidMount::');
+
   }
 }
 

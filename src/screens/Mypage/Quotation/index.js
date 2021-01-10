@@ -328,6 +328,8 @@ class Quotation extends Component {
                              data={dataApi}
                              calUnitDvCodes={this.state.calUnitDvCodes}
                              calStdDvCodes={this.state.calStdDvCodes}
+                             estmtTrustGroups={this.state.estmtTrustGroups}
+                             groupOrders={this.state.groupOrders}
             />
             }
             {(type === 'TENANT' && status === 'RQ00' && typeWH === 'KEEP') &&
@@ -340,6 +342,8 @@ class Quotation extends Component {
                             data={dataApi}
                             calUnitDvCodes={this.state.calUnitDvCodes}
                             calStdDvCodes={this.state.calStdDvCodes}
+                            estmtKeepGroups={this.state.estmtKeepGroups}
+                            groupOrders={this.state.groupOrders}
             />
             }
 
@@ -354,6 +358,8 @@ class Quotation extends Component {
                              data={dataApi}
                              calUnitDvCodes={this.state.calUnitDvCodes}
                              calStdDvCodes={this.state.calStdDvCodes}
+                             estmtTrustGroups={this.state.estmtTrustGroups}
+                             groupOrders={this.state.groupOrders}
             />
             }
             {(type === 'TENANT' && status === 'RS00' && typeWH === 'KEEP') &&
@@ -366,6 +372,8 @@ class Quotation extends Component {
                             data={dataApi}
                             calUnitDvCodes={this.state.calUnitDvCodes}
                             calStdDvCodes={this.state.calStdDvCodes}
+                            estmtKeepGroups={this.state.estmtKeepGroups}
+                            groupOrders={this.state.groupOrders}
             />
             }
 
@@ -380,6 +388,8 @@ class Quotation extends Component {
                             data={dataApi}
                             calUnitDvCodes={this.state.calUnitDvCodes}
                             calStdDvCodes={this.state.calStdDvCodes}
+                            estmtTrustGroups={this.state.estmtTrustGroups}
+                            groupOrders={this.state.groupOrders}
             />
             }
             {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP') &&
@@ -392,6 +402,8 @@ class Quotation extends Component {
                            data={dataApi}
                            calUnitDvCodes={this.state.calUnitDvCodes}
                            calStdDvCodes={this.state.calStdDvCodes}
+                           estmtKeepGroups={this.state.estmtKeepGroups}
+                           groupOrders={this.state.groupOrders}
             />
             }
 
@@ -406,6 +418,8 @@ class Quotation extends Component {
                             data={dataApi}
                             calUnitDvCodes={this.state.calUnitDvCodes}
                             calStdDvCodes={this.state.calStdDvCodes}
+                            estmtTrustGroups={this.state.estmtTrustGroups}
+                            groupOrders={this.state.groupOrders}
             />
             }
             {(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&
@@ -418,6 +432,8 @@ class Quotation extends Component {
                            data={dataApi}
                            calUnitDvCodes={this.state.calUnitDvCodes}
                            calStdDvCodes={this.state.calStdDvCodes}
+                           estmtKeepGroups={this.state.estmtKeepGroups}
+                           groupOrders={this.state.groupOrders}
             />
             }
 
@@ -567,10 +583,13 @@ class Quotation extends Component {
     )
       .then(res => {
         const status = res.status;
-        console.log('res', res);
+
         if (status === 200) {
           this.setState({
             dataApi: res.data,
+            estmtTrustGroups: res.data.estmtTrustGroups ? res.data.estmtTrustGroups : [],
+            estmtKeepGroups: res.data.estmtKeepGroups ? res.data.estmtKeepGroups : [],
+            groupOrders: res.data.orders ? res.data.orders : [],
             urlProps:
               this.props.route.params.type === 'OWNER'
                 ? urlPropsOwner
