@@ -99,14 +99,21 @@ class ContractManager extends Component {
 
   hideConfirm = () => this.setState({ visibleConfirm: false });
   cover = value => {
+
+    const debugStatus = (' ' + value.status);
+
     switch (value.status) {
       case 'RQ00':
         // code block
         return {
           data: [
             {
+              type: '창고 ID',
+              value: value.warehouseRegNo,
+            },
+            {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -125,11 +132,11 @@ class ContractManager extends Component {
             },
             {
               type: '견적 요청일',
-              value: value.createdDate,
+              value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
               type: '견적 상태',
-              value: '견적 요청',
+              value: '견적요청' + debugStatus,
               highlight: true,
             },
           ],
@@ -143,8 +150,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
+              type: '창고 ID',
+              value: value.warehouseRegNo,
+            },
+            {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -163,11 +174,11 @@ class ContractManager extends Component {
             },
             {
               type: '견적 요청일',
-              value: value.createdDate,
+              value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
               type: '견적 상태',
-              value: '견적 응답',
+              value: '견적응답' + debugStatus,
               highlight: true,
             },
           ],
@@ -178,8 +189,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
+              type: '창고 ID',
+              value: value.warehouseRegNo,
+            },
+            {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -198,12 +213,12 @@ class ContractManager extends Component {
             },
             {
               type: '견적 요청일',
-              value: value.createdDate,
+              value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
               type: '견적 상태',
               // value: this.state.valueTab === 'OWNER' ? '계약협의' : '계약중',
-              value: '계약협의',
+              value: '계약협의' + debugStatus,
               highlight: true,
             },
           ],
@@ -214,8 +229,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
+              type: '창고 ID',
+              value: value.warehouseRegNo,
+            },
+            {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -234,11 +253,11 @@ class ContractManager extends Component {
             },
             {
               type: '견적 요청일',
-              value: value.createdDate,
+              value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
               type: '견적 상태',
-              value: '계약요청대기',
+              value: '계약요청대기' + debugStatus,
               highlight: true,
             },
           ],
@@ -249,8 +268,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
+              type: '창고 ID',
+              value: value.warehouseRegNo,
+            },
+            {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -269,11 +292,11 @@ class ContractManager extends Component {
             },
             {
               type: '견적 요청일',
-              value: value.createdDate,
+              value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
               type: '견적 상태',
-              value: '계약중',
+              value: '계약중' + debugStatus,
               highlight: true,
             },
           ],
@@ -283,8 +306,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
+              type: '창고 ID',
+              value: value.warehouseRegNo,
+            },
+            {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대 요청',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -303,11 +330,11 @@ class ContractManager extends Component {
             },
             {
               type: '견적 요청일',
-              value: value.createdDate,
+              value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
               type: '견적 상태',
-              value: '계약 완료',
+              value: '계약완료' + debugStatus,
               highlight: false,
             },
           ],
@@ -382,6 +409,7 @@ class ContractManager extends Component {
     const viewProprietor =
       dataFilter &&
       dataFilter.map((item, index) => {
+        console.log('this.cover(item)', this.cover(item));
         let dataTable = this.cover(item) && this.cover(item).data;
         let listBtnTenant = this.cover(item) && this.cover(item).listBtnTenant;
         let titleButton = this.cover(item) && this.cover(item).footerTitle;
@@ -479,27 +507,29 @@ class ContractManager extends Component {
                       </TouchableOpacity>
                     </View>
                   ) : titleButton ? (
-                    <TouchableOpacity
-                      style={DefaultStyle._btnOutline}
-                      onPress={() => {
-                        this.navigation.navigate('ResponseQuotation', {
-                          type: valueTab,
-                          typeWH: item.type2,
-                          warehouseRegNo: item.warehouseRegNo,
-                          warehSeq: item.warehSeq,
-                          seq: item.seq,
-                          rentUserNo: item.rentUserNo,
-                          status: item.status,
-                        });
-                      }}>
-                      <Text
-                        style={[
-                          DefaultStyle._textButton,
-                          // DefaultStyle._textInline,
-                        ]}>
-                        {titleButton}
-                      </Text>
-                    </TouchableOpacity>
+                    <View  style={[DefaultStyle.row, {marginTop:20}]}>
+                      <TouchableOpacity
+                        style={DefaultStyle._btnOutline}
+                        onPress={() => {
+                          this.navigation.navigate('ResponseQuotation', {
+                            type: valueTab,
+                            typeWH: item.type2,
+                            warehouseRegNo: item.warehouseRegNo,
+                            warehSeq: item.warehSeq,
+                            seq: item.seq,
+                            rentUserNo: item.rentUserNo,
+                            status: item.status,
+                          });
+                        }}>
+                        <Text
+                          style={[
+                            DefaultStyle._textButton,
+                            // DefaultStyle._textInline,
+                          ]}>
+                          {titleButton}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   ) : null}
                 </Fragment>
               }

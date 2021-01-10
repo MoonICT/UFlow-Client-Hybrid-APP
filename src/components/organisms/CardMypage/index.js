@@ -1,4 +1,5 @@
 /**
+ * 견적 계약 썸네일 카드
  * @create
  * @modify
  * @desc [description]
@@ -42,6 +43,7 @@ class CardMypage extends Component {
     // item && item.highlight === true ? DefaultStyle._highlightInfoTable : null;
     return (
       <View style={DefaultStyle._card}>
+
         <TouchableOpacity
           style={DefaultStyle._headerCard}
           onPress={onPressHeader}>
@@ -76,6 +78,7 @@ class CardMypage extends Component {
               borderBottom={borderBottom}
             />
           </View>
+
           {footer}
         </View>
       </View>

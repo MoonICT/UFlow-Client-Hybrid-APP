@@ -99,6 +99,8 @@ class Quotation extends Component {
     console.log('routeQutation', route);
 
     const { dataApi } = this.state;
+    console.log(typeWH, 'typeWH');
+    console.log(dataApi, 'dataApi');
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
         {
@@ -114,9 +116,8 @@ class Quotation extends Component {
           value: dataApi.warehouse.address,
         },
         {
-          type: '선택 창고 유형',
-          // value: this.coverStatus(status).processing,
-          value: '임대 요청',
+          type: '계약유형',
+          value: '임대(보관)',
           highlight: true,
         },
         {
@@ -124,28 +125,32 @@ class Quotation extends Component {
           value: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         },
         {
-          type: '정산단위',
-          value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
+          type: '전용면적',
+          value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
         },
-        {
-          type: '산정기준',
-          value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
-        },
-        {
-          type: '가용면적',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue,''),
-        },
+        // {
+        //   type: '정산단위',
+        //   value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '산정기준',
+        //   value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '가용면적',
+        //   value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue),
+        // },
         {
           type: '임대 가능 기간',
-          value: this.coverTime(dataApi.whrgMgmtKeep.usblYmdFrom,''),
+          value: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
         },
         {
           type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.splyAmount,''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.splyAmount),
         },
         {
           type: '관리단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.mgmtChrg,''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.mgmtChrg),
         },
       ];
     let dataTrust = dataApi &&
@@ -163,58 +168,61 @@ class Quotation extends Component {
           value: dataApi.warehouse.address,
         },
         {
-          type: '선택 창고 유형',
-          // value: this.coverStatus(status).processing,
+          type: '계약유형',
           value: '수탁',
           highlight: true,
         },
         {
-          type: '보관유형',
-          value: dataApi.whrgMgmtTrust.typeCode.stdDetailCodeName,
-        },
-        {
-          type: '정산단위',
-          value: dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
-        },
-        {
-          type: '산정기준',
-          value: dataApi.whrgMgmtTrust.calStdDvCode.stdDetailCodeName,
+          type: '가용수량',
+          value: dataApi.warehouse.cntrValue ? dataApi.warehouse.cntrValue.toLocaleString() : '0',
         },
         {
           type: '수탁 가능 기간',
-          value: this.coverTime(dataApi.whrgMgmtTrust.usblYmdFrom),
+          value: StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdTo),
         },
+        // {
+        //   type: '보관유형',
+        //   value: dataApi.whrgMgmtTrust.typeCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '정산단위',
+        //   value: dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '산정기준',
+        //   value: dataApi.whrgMgmtTrust.calStdDvCode.stdDetailCodeName,
+        // },
         {
           type: '수탁 가용 수량',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.usblValue, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.usblValue),
         },
         {
           type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount),
         },
         {
-          type: '입고단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whinChrg, ''),
-        },
-        {
-          type: '출고단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whoutChrg, ''),
+          type: '가공단가',
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg),
         },
         {
           type: '인건단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg),
         },
         {
-          type: '가용면적',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg, ''),
+          type: '입고단가',
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whinChrg),
+        },
+        {
+          type: '출고단가',
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whoutChrg),
         },
         {
           type: '택배단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg),
         },
         {
           type: '운송단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg),
         },
       ];
 
@@ -233,53 +241,52 @@ class Quotation extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={DefaultStyle._cards}>
-            <View style={[DefaultStyle._titleCard, DefaultStyle._titleStatus]}>
-              <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
+        <ScrollView style={[DefaultStyle.backgroundGray]}>
 
-              {type === 'OWNER' ? (
-                <Text
-                  style={[
-                    DefaultStyle._statusProcessing,
-                    // status === 'RS00'
-                    //   ? { backgroundColor: 'rgba(0, 0, 0, 0.54)' }
-                    //   : '',
-                  ]}>
-                  {this.coverStatus(status).processing}
-                </Text>
-              ) : null}
-              {/**
-                <Text
-                  style={[
-                    DefaultStyle._statusProcessing,
-                    DefaultStyle._statusSuccess,
-                  ]}>
-                  계약 완료
-                </Text>
-                 */}
-            </View>
+          <View style={[DefaultStyle.backgroundWhiteDF2,{paddingBottom:180}]}>
+            <View style={[DefaultStyle._cards,DefaultStyle.backgroundWhiteDF2]}>
+              <View style={[DefaultStyle._titleCard, DefaultStyle._titleStatus]}>
+                <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
 
-            <View style={DefaultStyle._card}>
-              <View style={DefaultStyle._headerCard}>
-                <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
+                  <Text
+                    style={[
+                      DefaultStyle._statusProcessing,
+                      // status === 'RS00'
+                      //   ? { backgroundColor: 'rgba(0, 0, 0, 0.54)' }
+                      //   : '',
+                    ]}>
+                    {this.coverStatus(status).processing}
+                  </Text>
+                {/**
+                  <Text
+                    style={[
+                      DefaultStyle._statusProcessing,
+                      DefaultStyle._statusSuccess,
+                    ]}>
+                    계약 완료
+                  </Text>
+                   */}
               </View>
-              <View
-              // style={DefaultStyle._bodyCard}
-              >
-                <View style={DefaultStyle._infoTable}>
-                  <TableInfo data={typeWH === 'KEEP' ? dataKeep : dataTrust} />
+
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
+                  <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
+                </View>
+                <View
+                // style={DefaultStyle._bodyCard}
+                >
+                  <View style={DefaultStyle._infoTable}>
+                    <TableInfo data={typeWH === 'KEEP' ? dataKeep : dataTrust} />
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
+            <View style={[DefaultStyle.backgroundGray,{height:10}]}><>{/**Gray Space**/}</></View>
 
-          {
-            // typeWH === 'KEEP' ? viewRequest : viewRequestTrust
-          }
           <RequestView data={dataApi} typeWH={typeWH && typeWH} />
-          {// type === 'OWNER' &&
-          status === 'RQ00' ? (
+
+          {/** 견적 요청 **/}
+          {status === 'RQ00' ? (
             <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
@@ -478,6 +485,7 @@ class Quotation extends Component {
             )}
           </View>
          */}
+          </View>
         </ScrollView>
       </SafeAreaView>
     );
