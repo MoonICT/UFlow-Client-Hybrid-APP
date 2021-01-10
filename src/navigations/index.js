@@ -216,12 +216,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="Home"
                     component={TabScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,gestureEnabled: false, }}
                   />
                   <AuthStack.Screen
                     name="Register"
                     component={Register}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, }}
                   />
                   <AuthStack.Screen
                     name="Terms"
@@ -508,13 +508,13 @@ const App = () => {
                   <AuthStack.Screen
                     name="FindPassWord"
                     component={FindPassWordScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false, }}
                   />
                   <AuthStack.Screen
                     name="Login"
                     component={LoginScreen}
                     headerMode={false}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false, }}
                   />
                   <AuthStack.Screen
                     name="RegisterBusinessInfo"
@@ -547,34 +547,34 @@ const App = () => {
                     name="More"
                     component={More}
                     headerMode={false}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,gestureEnabled: false }}
                   />
                   <RootStack.Screen
                     name="Home"
                     component={TabScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,gestureEnabled: false }}
                   />
                   <RootStack.Screen
                     name="FindID"
                     component={FindIDScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,gestureEnabled: false }}
                   />
                   <RootStack.Screen
                     name="FindPassWord"
                     component={FindPassWordScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,gestureEnabled: false}}
                   />
                   <RootStack.Screen
                     name="Login"
                     component={LoginScreen}
                     headerMode={false}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false ,gestureEnabled: false,}}
                   />
                   <RootStack.Screen
                     name="Register"
                     component={Register}
                     headerMode={false}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,gestureEnabled: false }}
                   />
                   <AuthStack.Screen
                     name="DetailsWH"

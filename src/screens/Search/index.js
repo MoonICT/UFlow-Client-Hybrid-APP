@@ -37,7 +37,7 @@ import SearchFilter from '@Components/organisms/SearchFilter';
 import SearchFilterPanel from '@Components/organisms/SearchFilterPanel';
 import ActionCreator from '@Actions';
 import { Warehouse, WhrgSearch } from '@Services/apis';
-import moment from "../../components/organisms/SearchFilterPanel/FilterPeriod";
+import Progress from '@Components/organisms/Progress';
 
 class Search extends Component {
   constructor (props) {
@@ -46,8 +46,8 @@ class Search extends Component {
     // Webview initialize options.
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
-      // defaultURL: 'http://www.uflow.voltpage.net/webview/search',
-      defaultURL: 'http://localhost:13000/webview/search',
+      defaultURL: 'http://www.uflow.voltpage.net/webview/search',
+      // defaultURL: 'http://localhost:13000/webview/search',
     };
     this.state = {
       url: this.option.defaultURL,
@@ -73,7 +73,7 @@ class Search extends Component {
 
   // When the WebView has finished loading.
   async _WVOnLoad (e) {
-    // console.log('::: Web View Loaded ::: ');
+    console.log('::: Web View Loaded ::: ');
   }
 
   // When the webview calls window.postMessage.
@@ -172,6 +172,14 @@ class Search extends Component {
           style={{
             flex: 1,
           }}>
+
+          {this.state.progress < 1 &&
+          <View style={styles.loadingWrap}>
+            <View style={styles.loadingInner}>
+              <Progress />
+            </View>
+          </View>}
+
           {/** Webview */}
           <WebView
             // Loading URL
