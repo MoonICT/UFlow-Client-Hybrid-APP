@@ -59,9 +59,9 @@ const data = [
   {
     title: '문의내역',
   },
-  {
-    title: '관심 창고',
-  },
+  // {
+  //   title: '관심 창고',
+  // },
 ];
 const dataSteps = [
   {
@@ -326,9 +326,9 @@ class Mypage extends Component {
       case '정산관리':
         viewComponent = <SettlementManagement navigation={this.navigation} />;
         break;
-      case '관심 창고':
-        viewComponent = <InterestWH navigation={this.navigation} />;
-        break;
+      // case '관심 창고':
+      //   viewComponent = <InterestWH navigation={this.navigation} />;
+      //   break;
       default:
         viewComponent;
       // code block
