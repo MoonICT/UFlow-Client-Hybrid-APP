@@ -368,13 +368,13 @@ class FormTrusts extends Component {
             labelTextField="출고단가"
             textRight="원"
             defaultValue={
-              formData.whinChrg ? numberToStd(formData.whinChrg) : ''
+              formData.whoutChrg ? numberToStd(formData.whoutChrg) : ''
             }
-            value={formData.whinChrg}
+            value={formData.whoutChrg}
             valueProps={e => {
               this.setState({ whoutChrg: e });
               let dataF = formData;
-              dataF.whinChrg = stdToNumber(e);
+              dataF.whoutChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
