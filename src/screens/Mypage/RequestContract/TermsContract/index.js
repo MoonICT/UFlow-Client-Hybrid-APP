@@ -14,7 +14,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Text, Dialog } from 'react-native-paper';
+import { Text, Dialog, Paragraph, Button } from 'react-native-paper';
+import moment from 'moment'
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -23,7 +24,7 @@ import Checkbox from '@Components/atoms/Checkbox';
 import ActionCreator from '@Actions';
 import illust11 from '@Assets/images/illust11.png';
 import { styles as SS } from './style';
-import { Warehouse } from '@Services/apis';
+import { Warehouse, Contract } from '@Services/apis';
 import CardMypage from '@Components/organisms/CardMypage';
 
 class TermsContract extends Component {
@@ -32,10 +33,45 @@ class TermsContract extends Component {
     this.webView = null;
     this.state = {
       isSubmit: false,
-      checked: false,
+      isAgree: false,
+      isComplete: false,
+      file: null,
     };
 
     this.navigation = props.navigation;
+  }
+
+  /**
+   * 약관 동의 및 계약협의 요청.
+   * */
+  useImperativeHandle = () => {
+    if (!this.state.isAgree) {
+      alert('계약 약관에 동의해주세요.')
+      return false;
+    }
+    if (this.props.type === 'owner') {
+      // TODO 통장 사본 체크.
+
+      let formData = new FormData();
+      // formData.append('file', file ? file : ''); // TODO 파일추가
+      formData.append('warehouseRegNo', this.props.warehouseRegNo);
+      formData.append('rentUserNo', this.props.rentUserNo);
+      formData.append('cntrYmdFrom', moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD'));
+      Contract.owner4100(this.props.contractType.toLowerCase(), formData).then(res => {
+        console.debug('약관 동의 결과 : ', res)
+        this.setState({ isComplete: false });
+      });
+    } else if (this.props.type === 'tenant') {
+      Contract.tenant4100({
+        contractType: this.props.contractType.toLowerCase(),
+        warehouseRegNo: this.props.warehouseRegNo,
+        rentUserNo: this.props.rentUserNo,
+        cntrYmdFrom: moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD')
+      }).then(res => {
+        console.debug('약관 동의 결과 : ', res)
+        this.setState({ isComplete: false });
+      });
+    }
   }
 
   render () {
@@ -45,18 +81,14 @@ class TermsContract extends Component {
       warehouseRegNo,
       rentUserNo,
       warehSeq,
-      type, // OWNER || TENANT
+      contractType, // KEEP || TRUST
+      type, // owner || tenant
       warehouse,
       rentUser,
       dataTable, // 계약 정보 테이블 데이
       dataContract, // 계약 정보.
     } = this.props;
-    const { checked2, checked, isSubmit } = this.state;
-    let checkAllUpdate = false;
-    if (checked2 === checked) {
-      checkAllUpdate = checked;
-    }
-    console.log('checkAllUpdate', checked2, checked);
+    const { isAgree, file } = this.state;
     return (
       <View style={{ paddingBottom: 90 }}>
 
@@ -127,10 +159,10 @@ class TermsContract extends Component {
 
           <View style={[SS.checkAccept, { borderBottomWidth: 1 }]}>
             <Checkbox
-              checked={checked}
-              onPress={() => this.setState({ checked: !checked })}
+              checked={isAgree}
+              onPress={() => this.setState({ isAgree: !isAgree })}
             />
-            <Text style={DefaultStyle._textDF} onPress={() => this.setState({ checked: !checked })}>
+            <Text style={DefaultStyle._textDF} onPress={() => this.setState({ isAgree: !isAgree })}>
               위 내용을 확인했으며, 동의합니다.
             </Text>
           </View>
@@ -167,16 +199,12 @@ class TermsContract extends Component {
           <TouchableOpacity
             style={[
               DefaultStyle._btnInline,
-              checkAllUpdate === false ? '' : DefaultStyle._oulineDisabled,
+              (file && isAgree) ? '' : DefaultStyle._oulineDisabled,
             ]}
-            disabled={false}
+            disabled={!file || !isAgree}
             onPress={() => {
-              this.setState({ isSubmit: !isSubmit });
-              this.props.showPopup({
-                image: illust11,
-                title: '계약 약관 동의',
-                type: 'confirm',
-                content: `계약 약관 동의가 처리되었습니다.`,
+              this.setState({
+                isComplete: true
               });
             }}>
             <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
@@ -184,6 +212,26 @@ class TermsContract extends Component {
             </Text>
           </TouchableOpacity>
         </View>
+
+        {/** 약관 동 확인 모달 */}
+        <Dialog style={DefaultStyle.popup}
+                visible={this.state.isComplete}
+                onDismiss={() => this.setState({ isComplete: !this.state.isComplete })}>
+          <Dialog.Title style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>계약 약관 동의</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              계약 약관 동의가 처리되었습니다.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
+              onPress={() => {
+                this.setState({ isComplete: false });
+                this.navigation.navigate('Mypage', { title: '견적･계약 관리' });
+              }}>확인</Button>
+          </Dialog.Actions>
+        </Dialog>
       </View>
     );
   }
@@ -197,34 +245,34 @@ class TermsContract extends Component {
   /** when update state or props */
   componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
-    if (prevState.isSubmit !== this.state.isSubmit) {
-      // let warehSeq = this.props.route.params.warehSeq;
-      // let warehouseRegNo = this.props.route.params.warehouseRegNo;
-      // let rentUserNo = this.props.route.params.rentUserNo;
-      // let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-      // let typeWH =
-      //   this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
-      // let url = type + '/' + typeWH;
+    // if (prevState.isSubmit !== this.state.isSubmit) {
+    // let warehSeq = this.props.route.params.warehSeq;
+    // let warehouseRegNo = this.props.route.params.warehouseRegNo;
+    // let rentUserNo = this.props.route.params.rentUserNo;
+    // let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
+    // let typeWH =
+    //   this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+    // let url = type + '/' + typeWH;
 
-      // Warehouse.termsContract({ url, data })
-      //   .then(res => {
-      //     console.log('res', res);
-      //     if (res.status === 200) {
-      //       console.log('resRequestContract', res);
-      //       this.navigation.navigate('RequestContract', {
-      //         type,
-      //         warehouseRegNo,
-      //         warehSeq,
-      //         typeWH: this.state.dataProps.typeWH,
-      //         rentUserNo,
-      //         status: '1100',
-      //       });
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log('err', err);
-      //   });
-    }
+    // Warehouse.termsContract({ url, data })
+    //   .then(res => {
+    //     console.log('res', res);
+    //     if (res.status === 200) {
+    //       console.log('resRequestContract', res);
+    //       this.navigation.navigate('RequestContract', {
+    //         type,
+    //         warehouseRegNo,
+    //         warehSeq,
+    //         typeWH: this.state.dataProps.typeWH,
+    //         rentUserNo,
+    //         status: '1100',
+    //       });
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log('err', err);
+    //   });
+    // }
   }
 }
 
