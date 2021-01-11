@@ -100,7 +100,7 @@ class ContractManager extends Component {
   hideConfirm = () => this.setState({visibleConfirm: false});
   cover = value => {
 
-    const debugStatus = (' ' + value.status);
+    const debugStatus = ''; //(' ' + value.status);
 
     switch (value.status) {
       case 'RQ00':
@@ -479,11 +479,11 @@ class ContractManager extends Component {
                           // 계약 재요청
                           onPress={() => {
                             console.log(item, 'footer item');
-                            goDetail(this.props.item, 'RE');
+                            goDetail(item, 'RE');
                           }}>
 
                           <Text style={DefaultStyle._textButton}>
-                            견적 재요청11
+                            견적 재요청
                           </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -520,44 +520,6 @@ class ContractManager extends Component {
                 </Fragment>
               }
             />
-
-            {/**  <CardMypage
-             onPressHeader={() =>
-              this.navigation.navigate('Quotation', {
-                status: 'Answerd',
-                type,
-                dataEstimate,
-                dataRequest,
-                dataReply,
-              })
-            }
-             headerTitle={'태영종합물류센터'}
-             data={dataInfo2}
-             borderRow={false}
-             styleLeft={DefaultStyle._leftTableCard}
-             styleRight={DefaultStyle._rightTableCard}
-             bgrImage={card}
-             footer={
-              <View style={DefaultStyle._listBtn}>
-                <TouchableOpacity
-                  style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
-                  onPress={() => console.log('견적 재요청')}>
-                  <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
-                  onPress={() => this.showConfirm()}>
-                  <Text
-                    style={[
-                      DefaultStyle._textButton,
-                      DefaultStyle._textInline,
-                    ]}>
-                    견적 승인
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            }
-             />  */}
           </Fragment>
         );
       });
@@ -760,6 +722,8 @@ class ContractManager extends Component {
         });
     }
 
+
+    // TODO 여기서 호출할 필요가 있는지???
     if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
 
       let warehSeq = this.state.dataProps.warehSeq;
