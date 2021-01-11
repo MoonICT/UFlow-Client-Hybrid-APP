@@ -77,9 +77,10 @@ class RegisterMoreInfo extends Component {
         props.dataMoreInfo && props.dataMoreInfo.cmnArea
           ? props.dataMoreInfo.cmnArea
           : '',
-      from: props.dataMoreInfo
-        ? new Date(props.dataMoreInfo.cmpltYmd)
-        : new Date(),
+      from:
+        props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
+          ? new Date(props.dataMoreInfo.cmpltYmd)
+          : new Date(),
       showFrom: false,
       mode: 'date',
     };
@@ -137,8 +138,8 @@ class RegisterMoreInfo extends Component {
           <Appbar.Content
             title={
               route && route.params && route.params.type === 'ModifyWH'
-                ? '부가 정보 수정'
-                : '부가 정보'
+                ? '추가 정보 수정'
+                : '추가 정보'
             }
             color="black"
             fontSize="12"
@@ -148,7 +149,7 @@ class RegisterMoreInfo extends Component {
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleBody}>
-              <Text style={DefaultStyle._textTitleBody}>부가 정보</Text>
+              <Text style={DefaultStyle._textTitleBody}>추가 정보</Text>
             </View>
             <View style>
               {/**
@@ -242,7 +243,7 @@ class RegisterMoreInfo extends Component {
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleBody}>
               <Text style={[DefaultStyle._textTitleBody]}>
-                추가옵션<Text style={DefaultStyle._textNote}>*</Text>
+                추가옵션
               </Text>
             </View>
             <View style={S.options}>
@@ -286,9 +287,7 @@ class RegisterMoreInfo extends Component {
 
           <View style={DefaultStyle._body}>
             <View style={DefaultStyle._titleBody}>
-              <Text style={DefaultStyle._textTitleBody}>
-                가격 협의 가능<Text style={DefaultStyle._textNote}>*</Text>
-              </Text>
+              <Text style={DefaultStyle._textTitleBody}>보험 가입 여부</Text>
             </View>
             <View style={[S.options, S.optionsFooter]}>
               <View style={S.optionCheck}>
