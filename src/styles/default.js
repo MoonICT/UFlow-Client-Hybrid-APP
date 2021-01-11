@@ -136,7 +136,7 @@ export default StyleSheet.create({
     fontWeight: '500',
     lineHeight: 21,
     letterSpacing: 0,
-    textAlign: 'right'
+    textAlign: 'right',
   },
   titleDf: {
     marginTop: 20,
@@ -1286,5 +1286,8 @@ export default StyleSheet.create({
   linkColor: {
     color: '#0398fc',
     textDecorationLine: 'underline',
+  },
+  _errorText: {
+    borderColor: 'red',
   },
 });

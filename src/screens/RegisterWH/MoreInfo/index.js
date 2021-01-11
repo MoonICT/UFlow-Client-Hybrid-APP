@@ -253,9 +253,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={bldgArea ? numberToStd(bldgArea) : ''}
                 colorLabel="#000000"
-                value={bldgArea}
+                keyboardType="numeric"
+                value={numberToStd(bldgArea)}
                 valueProps={e => {
-                  this.setState({ bldgArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ bldgArea: stdToNumber(text) });
                 }}
               />
               <TextField
@@ -264,9 +266,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={siteArea ? numberToStd(siteArea) : ''}
                 colorLabel="#000000"
-                value={siteArea}
+                keyboardType="numeric"
+                value={numberToStd(siteArea)}
                 valueProps={e => {
-                  this.setState({ siteArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ siteArea: stdToNumber(text) });
                 }}
               />
               <TextField
@@ -275,9 +279,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={totalArea ? numberToStd(totalArea) : ''}
                 colorLabel="#000000"
-                value={totalArea}
+                keyboardType="numeric"
+                value={numberToStd(totalArea)}
                 valueProps={e => {
-                  this.setState({ totalArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ totalArea: stdToNumber(text) });
                 }}
               />
               <TextField
@@ -286,9 +292,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={prvtArea ? numberToStd(prvtArea) : ''}
                 colorLabel="#000000"
-                value={prvtArea}
+                keyboardType="numeric"
+                value={numberToStd(prvtArea)}
                 valueProps={e => {
-                  this.setState({ prvtArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ prvtArea: stdToNumber(text) });
                 }}
               />
               <TextField
@@ -297,9 +305,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={cmnArea ? numberToStd(cmnArea) : ''}
                 colorLabel="#000000"
-                value={cmnArea}
+                keyboardType="numeric"
+                value={numberToStd(cmnArea)}
                 valueProps={e => {
-                  this.setState({ cmnArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ cmnArea: stdToNumber(text) });
                 }}
               />
             </View>

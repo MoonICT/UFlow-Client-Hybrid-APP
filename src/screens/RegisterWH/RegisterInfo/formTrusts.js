@@ -110,10 +110,18 @@ class FormTrusts extends Component {
   componentWillReceiveProps(newProps) {
     let newUsblYmdFrom = newProps.formData.usblYmdFrom;
     let newUsblYmdTo = newProps.formData.usblYmdTo;
-    if (newProps.formData && newUsblYmdFrom !== undefined) {
+    if (
+      newProps.formData &&
+      newUsblYmdFrom !== undefined &&
+      newUsblYmdFrom !== ''
+    ) {
       this.setState({ from: new Date(newProps.formData.usblYmdFrom) });
     }
-    if (newProps.formData && newUsblYmdTo !== undefined) {
+    if (
+      newProps.formData &&
+      newUsblYmdTo !== undefined &&
+      newUsblYmdTo !== ''
+    ) {
       this.setState({ to: new Date(newProps.formData.usblYmdTo) });
     }
   }
@@ -128,8 +136,28 @@ class FormTrusts extends Component {
       calUnitDvCodes,
       calStdDvCodes,
     } = this.props;
-    const { from, showFrom, to, showTo, mode } = this.state;
-console.log('formDataTrust :>> ', formData);
+    const {
+      from,
+      showFrom,
+      to,
+      showTo,
+      mode,
+      usblValue,
+      splyAmount,
+      whinChrg,
+      whoutChrg,
+      psnChrg,
+      mnfctChrg,
+      dlvyChrg,
+      shipChrg,
+    } = this.state;
+
+    let timeCheck = false;
+
+    if (to >= from && from >= new Date()) {
+      timeCheck = true;
+    }
+    console.log('formDataTrust :>> ', formData);
     let defaultTypeCodeT =
       formData &&
       typeCodes &&
@@ -181,13 +209,16 @@ console.log('formDataTrust :>> ', formData);
           />
           <TextField
             labelTextField="가용수량"
+            keyboardType="numeric"
             defaultValue={
               formData.usblValue ? numberToStd(formData.usblValue) : ''
             }
+            value={usblValue}
             valueProps={e => {
-              this.setState({ usblValue: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ usblValue: text });
               let dataF = formData;
-              dataF.usblValue = stdToNumber(e);
+              dataF.usblValue = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
@@ -195,7 +226,10 @@ console.log('formDataTrust :>> ', formData);
           <View style={{ flex: 1, marginBottom: 18 }}>
             <TouchableOpacity
               onPress={this.showDatepicker}
-              style={DefaultStyle._btnDate}>
+              style={[
+                DefaultStyle._btnDate,
+                timeCheck === false ? DefaultStyle._errorText : '',
+              ]}>
               <Text style={DefaultStyle._textDate}>
                 {from.toLocaleDateString()}
               </Text>
@@ -215,7 +249,10 @@ console.log('formDataTrust :>> ', formData);
           <View style={{ flex: 1, marginBottom: 18 }}>
             <TouchableOpacity
               onPress={this.showDatepickerTo}
-              style={DefaultStyle._btnDate}>
+              style={[
+                DefaultStyle._btnDate,
+                timeCheck === false ? DefaultStyle._errorText : '',
+              ]}>
               <Text style={DefaultStyle._textDate}>
                 {to.toLocaleDateString()}
               </Text>
@@ -236,96 +273,110 @@ console.log('formDataTrust :>> ', formData);
           <TextField
             labelTextField="보관단가"
             textRight="개"
-            value={formData.splyAmount}
+            keyboardType="numeric"
+            value={splyAmount}
             defaultValue={
               formData.splyAmount ? numberToStd(formData.splyAmount) : ''
             }
             valueProps={e => {
-              this.setState({ splyAmount: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ splyAmount: text });
               let dataF = formData;
-              dataF.splyAmount = stdToNumber(e);
+              dataF.splyAmount = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="입고단가"
+            keyboardType="numeric"
             textRight="원"
             defaultValue={
               formData.whinChrg ? numberToStd(formData.whinChrg) : ''
             }
-            value={formData.whinChrg}
+            value={whinChrg}
             valueProps={e => {
-              this.setState({ whinChrg: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ whinChrg: text });
               let dataF = formData;
-              dataF.whinChrg = stdToNumber(e);
+              dataF.whinChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="출고단가"
+            keyboardType="numeric"
             textRight="원"
             defaultValue={
               formData.whoutChrg ? numberToStd(formData.whoutChrg) : ''
             }
-            value={formData.whoutChrg}
+            value={whoutChrg}
             valueProps={e => {
-              this.setState({ whoutChrg: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ whoutChrg: text });
               let dataF = formData;
-              dataF.whoutChrg = stdToNumber(e);
+              dataF.whoutChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="인건단가 (선택)"
+            keyboardType="numeric"
             textRight="원"
-            value={formData.psnChrg}
+            value={psnChrg}
             defaultValue={formData.psnChrg ? numberToStd(formData.psnChrg) : ''}
             valueProps={e => {
-              this.setState({ psnChrg: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ psnChrg: text });
               let dataF = formData;
-              dataF.psnChrg = stdToNumber(e);
+              dataF.psnChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="가공단가 (선택)"
-            value={formData.mnfctChrg}
+            value={mnfctChrg}
+            keyboardType="numeric"
             textRight="원"
             defaultValue={
               formData.mnfctChrg ? numberToStd(formData.mnfctChrg) : ''
             }
             valueProps={e => {
-              this.setState({ mnfctChrg: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ mnfctChrg: text });
               let dataF = formData;
-              dataF.mnfctChrg = stdToNumber(e);
+              dataF.mnfctChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="택배단가 (선택)"
+            keyboardType="numeric"
             textRight="원"
             defaultValue={
               formData.dlvyChrg ? numberToStd(formData.dlvyChrg) : ''
             }
-            value={formData.dlvyChrg}
+            value={dlvyChrg}
             valueProps={e => {
-              this.setState({ dlvyChrg: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ dlvyChrg: text });
               let dataF = formData;
-              dataF.dlvyChrg = stdToNumber(e);
+              dataF.dlvyChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="운송단가 (선택)"
+            keyboardType="numeric"
             textRight="원"
-            value={formData.shipChrg}
+            value={shipChrg}
             defaultValue={
               formData.shipChrg ? numberToStd(formData.shipChrg) : ''
             }
             valueProps={e => {
-              this.setState({ shipChrg: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ shipChrg: text });
               let dataF = formData;
-              dataF.shipChrg = stdToNumber(e);
+              dataF.shipChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
@@ -353,7 +404,6 @@ console.log('formDataTrust :>> ', formData);
     }
     SplashScreen.hide();
   }
-
 }
 
 /** map state with store states redux store */

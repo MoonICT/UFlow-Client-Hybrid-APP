@@ -93,10 +93,19 @@ class FormInfo extends Component {
     // let selectedValue = newProps.selectedValue;
     let newUsblYmdFrom = newProps.formData.usblYmdFrom;
     let newUsblYmdTo = newProps.formData.usblYmdTo;
-    if (newProps.formData && newUsblYmdFrom !== undefined) {
+    if (
+      newProps.formData &&
+      newUsblYmdFrom !== undefined &&
+      newUsblYmdFrom !== ''
+    ) {
+      console.log('newProps :>> ', newProps);
       this.setState({ from: new Date(newProps.formData.usblYmdFrom) });
     }
-    if (newProps.formData && newUsblYmdTo !== undefined) {
+    if (
+      newProps.formData &&
+      newUsblYmdTo !== undefined &&
+      newUsblYmdTo !== ''
+    ) {
       this.setState({ to: new Date(newProps.formData.usblYmdTo) });
     }
     // this.setState({ selectedValue: selectedValue });
@@ -130,7 +139,11 @@ class FormInfo extends Component {
     } = this.state;
     // console.log('formDataKeep :>> ', formData);
     // console.log('dataKeep :>> ', dataKeep);
+    let timeCheck = false;
 
+    if (to >= from && from >= new Date()) {
+      timeCheck = true;
+    }
     let defaultTypeCode =
       formData &&
       typeCodes &&
@@ -200,7 +213,6 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-
 
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
@@ -295,7 +307,10 @@ class FormInfo extends Component {
           <View style={{ flex: 1, marginBottom: 18 }}>
             <TouchableOpacity
               onPress={this.showDatepicker}
-              style={DefaultStyle._btnDate}>
+              style={[
+                DefaultStyle._btnDate,
+                timeCheck === false ? DefaultStyle._errorText : '',
+              ]}>
               <Text style={DefaultStyle._textDate}>
                 {from.toLocaleDateString()}
               </Text>
@@ -315,7 +330,10 @@ class FormInfo extends Component {
           <View style={{ flex: 1, marginBottom: 18 }}>
             <TouchableOpacity
               onPress={this.showDatepickerTo}
-              style={DefaultStyle._btnDate}>
+              style={[
+                DefaultStyle._btnDate,
+                timeCheck === false ? DefaultStyle._errorText : '',
+              ]}>
               <Text style={DefaultStyle._textDate}>
                 {to.toLocaleDateString()}
               </Text>
@@ -335,31 +353,36 @@ class FormInfo extends Component {
 
           <TextField
             labelTextField="보관단가"
-            value={formData.splyAmount}
+            value={splyAmount}
             defaultValue={
               formData.splyAmount ? numberToStd(formData.splyAmount) : ''
             }
             textRight="원"
             valueProps={e => {
-              this.setState({ splyAmount: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ splyAmount: text });
               let dataF = formData;
-              dataF.splyAmount = stdToNumber(e);
+              dataF.splyAmount = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
+            keyboardType="numeric"
           />
           <TextField
             labelTextField="관리단가"
-            value={formData.mgmtChrg}
+            value={mgmtChrg}
             defaultValue={
               formData.mgmtChrg ? numberToStd(formData.mgmtChrg) : ''
             }
             textRight="원"
             valueProps={e => {
-              this.setState({ mgmtChrg: e });
+              let text = e.replace(/[^0-9]/g, '');
+              console.log('text :>> ', text);
+              this.setState({ mgmtChrg: text });
               let dataF = formData;
-              dataF.mgmtChrg = stdToNumber(e);
+              dataF.mgmtChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
+            keyboardType="numeric"
           />
 
           <TextField

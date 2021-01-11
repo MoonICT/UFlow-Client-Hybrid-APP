@@ -74,6 +74,9 @@ class FormInfo extends Component {
       opcAreaValue2,
       prvtAreaValue2,
       cmnAreaValue2,
+      flrHi,
+      efctvHi,
+      dockQty,
     } = this.state;
     const dataSelect = [
       {
@@ -95,8 +98,9 @@ class FormInfo extends Component {
     ];
     let defaultFlrDvCode =
       flrDvCodes && flrDvCodes.find(item => item.value === formData.flrDvCode);
-      let defaultAprchMthdDvCodes =
-      aprchMthdDvCodes && aprchMthdDvCodes.find(item => item.value === formData.aprchMthdDvCode);
+    let defaultAprchMthdDvCodes =
+      aprchMthdDvCodes &&
+      aprchMthdDvCodes.find(item => item.value === formData.aprchMthdDvCode);
     return (
       <Card style={S.cards}>
         <View style>
@@ -356,22 +360,28 @@ class FormInfo extends Component {
           <TextField
             labelTextField="층고"
             defaultValue={formData.flrHi ? numberToStd(formData.flrHi) : ''}
-            value={formData.flrHi}
+            value={flrHi}
+            keyboardType="numeric"
             colorLabel="#000000"
             valueProps={e => {
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ flrHi: text });
               let dataF = formData;
-              dataF.flrHi = stdToNumber(e);
+              dataF.flrHi = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="유효고"
             defaultValue={formData.efctvHi ? numberToStd(formData.efctvHi) : ''}
-            value={formData.efctvHi}
+            value={efctvHi}
+            keyboardType="numeric"
             colorLabel="#000000"
             valueProps={e => {
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ efctvHi: text });
               let dataF = formData;
-              dataF.efctvHi = stdToNumber(e);
+              dataF.efctvHi = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
@@ -388,7 +398,11 @@ class FormInfo extends Component {
           /> */}
           <Select
             data={aprchMthdDvCodes}
-            dataDefault={defaultAprchMthdDvCodes !== undefined ? defaultAprchMthdDvCodes : ''}
+            dataDefault={
+              defaultAprchMthdDvCodes !== undefined
+                ? defaultAprchMthdDvCodes
+                : ''
+            }
             selectedValue={formData.aprchMthdDvCode}
             labelSelected="접안방식"
             valueProps={e => {
@@ -401,10 +415,13 @@ class FormInfo extends Component {
             labelTextField="도크 수"
             defaultValue={formData.dockQty ? numberToStd(formData.dockQty) : ''}
             colorLabel="#000000"
-            value={formData.dockQty}
+            keyboardType="numeric"
+            value={dockQty}
             valueProps={e => {
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ dockQty: text });
               let dataF = formData;
-              dataF.dockQty = stdToNumber(e);
+              dataF.dockQty = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
