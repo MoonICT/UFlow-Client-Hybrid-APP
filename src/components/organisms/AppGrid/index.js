@@ -3,7 +3,7 @@
  * @desc [description]
  * */
 import React, { Component, Fragment } from 'react';
-import { ScrollView, Text, View,Dimensions } from 'react-native';
+import { ScrollView, Text, View, Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 
@@ -23,8 +23,14 @@ class AppGrid extends Component {
     const dataTitle = newProps.dataTitle;
     const data = newProps.data;
     const value = newProps.value;
-    if (value < data.length) {
-      this.setState({ active: dataTitle.title });
+    const title = newProps.title;
+    console.log('newProps :>> ', newProps);
+    console.log('dataTitle :>> ', dataTitle);
+    // if (value < data.length) {
+    //   this.setState({ active: dataTitle.title });
+    // }
+    if (title !== this.state.active) {
+      this.setState({ active: title });
     }
   }
   render() {
@@ -71,9 +77,9 @@ const windowHeight = Dimensions.get('window').height;
                   flex: 1,
                   alignSelf: 'center',
                   flexDirection: 'row',
-                  alignContent:'center',
-                  justifyContent:'center',
-                  width:windowWidth
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                  width: windowWidth,
                 }}>
                 {tabItem}
               </View>

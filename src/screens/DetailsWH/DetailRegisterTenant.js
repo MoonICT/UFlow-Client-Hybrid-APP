@@ -8,13 +8,9 @@
 import React, { Component } from 'react';
 import { SafeAreaView, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import {
-  Checkbox,
-  Appbar,
-  Searchbar,
   Text,
   Button,
   Dialog,
-  Paragraph,
   Portal
 } from 'react-native-paper';
 
@@ -224,6 +220,8 @@ class DetailRegisterTenant extends Component {
 
   handleOnSubmit = () => {
     const { businessInfo,isCert } = this.state;
+    const { route } = this.props;
+    const {typeWH,warehouseRegNo, warehSeq, rentUserNo, status, type } = route.params;
     if (!isCert) {
       alert('휴대폰 인증을 완료해주세요.')
       return false
@@ -233,7 +231,14 @@ class DetailRegisterTenant extends Component {
     // 창고주 정보 등록
     WarehouseTenant.regBusinessInfoByTenant(businessInfo).then(res => {
       alert('창고 사업자 등록이 완료되었습니다.')
-      this.navigation.goBack();
+      this.navigation.navigate('ResponseQuotation', {
+        typeWH,
+        warehouseRegNo,
+        warehSeq,
+        rentUserNo,
+        status,
+        type,
+      });
     }).catch(error => {
       alert('서버에러:' + error.response.data.message)
     });
@@ -256,8 +261,7 @@ class DetailRegisterTenant extends Component {
 
   render() {
     const { businessMode,businessInfo, photo,businessList } = this.state;
-
-    console.log('teet', businessList)
+    
     return (
       <ScrollView style={[DefaultStyle._container]}>
         <View style={[DefaultStyle.p_16]}>

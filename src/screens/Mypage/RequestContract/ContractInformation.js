@@ -119,6 +119,7 @@ class ContractInformation extends Component {
         viewComponent = (
           <TermsContract
             dataContract={dataContract}
+            contractType={contractType}
             dataTable={dataTable}
             status={status}
             warehouseRegNo={warehouseRegNo}
@@ -127,6 +128,7 @@ class ContractInformation extends Component {
             type={type}
             warehouse={warehouse}
             rentUser={rentUser}
+            navigation={this.navigation}
           />
         );
         break;
