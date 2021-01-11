@@ -279,13 +279,13 @@ export default class SettlementManagement extends Component {
                     <Text style={DefaultStyle._textDate}>
                       {formatDateV1(endDate)}
                     </Text>
-                    <Text
+                    <TextTextField
                         style={[
                           DefaultStyle._labelTextField,
                           {color: '#000000'},
                         ]}>
                       종료일
-                    </Text>
+                    </TextTextField>
                     {
                       isOpenEnd &&
                       // <DatePicker

@@ -89,8 +89,16 @@ class FormInfo extends Component {
     dataF.usblYmdTo = d;
     this.props.valueForm && this.props.valueForm(dataF);
   };
+  componentWillReceiveProps(newProps) {
+    // let selectedValue = newProps.selectedValue;
+    console.log('newPropsIntro :>> ', newProps);
+    // if(newProps.formData===undefined){
+    //   this.setState()
+    // }
+    // this.setState({ selectedValue: selectedValue });
+  }
   render() {
-    const { data, valueTab, number, valueForm, formData } = this.props;
+    const { data, valueTab, number, valueForm, formData,dataKeep } = this.props;
     const {
       splyAmount,
       mgmtChrg,
@@ -105,7 +113,8 @@ class FormInfo extends Component {
       showTo,
       mode,
     } = this.state;
-    console.log('formDataKeep :>> ', formData);
+    // console.log('formDataKeep :>> ', formData);
+    // console.log('dataKeep :>> ', dataKeep);
 
     const dataSelect = [
       {
@@ -226,23 +235,22 @@ class FormInfo extends Component {
       },
     ];
     let defaultTypeCode =
-      dataSelect && dataSelect.find(item => item.value === formData.typeCode);
+      formData && dataSelect.find(item => item.value === formData.typeCode);
     let defaultcalUnit =
-      settlement &&
+      formData &&
       settlement.find(item => item.value === formData.calUnitDvCode);
     let defaultcalStd =
-      calculation &&
+      formData &&
       calculation.find(item => item.value === formData.calUnitDvCode);
     let defaulcmgmtChrg =
-      managementFees &&
+      formData &&
       managementFees.find(item => item.value === formData.mgmtChrgDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
             data={dataSelect}
-            dataDefault={defaultTypeCode}
-            defaultValue={formData.typeCode}
+            dataDefault={defaultTypeCode !== undefined ? defaultTypeCode : ''}
             valueProps={e => {
               // let index = dataForm.findIndex(el => el.id === number);
               // this.setState({
@@ -252,13 +260,13 @@ class FormInfo extends Component {
               dataF.typeCode = e;
               valueForm && valueForm(dataF);
             }}
-            selectedValue={formData.typeCode}
+            // selectedValue={formData.typeCode}
             labelSelected="보관유형"
           />
           <Select
             data={settlement}
-            dataDefault={defaultcalUnit}
-            selectedValue={formData.calUnitDvCode}
+            dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
+            // selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
             valueProps={e => {
               let dataF = formData;
@@ -268,8 +276,8 @@ class FormInfo extends Component {
           />
           <Select
             data={calculation}
-            selectedValue={formData.calStdDvCode}
-            defaultValue={defaultcalStd}
+            // selectedValue={formData.calStdDvCode}
+            defaultValue={defaultcalStd !== undefined ? defaultcalStd : ''}
             labelSelected="산정기준"
             valueProps={e => {
               let dataF = formData;
@@ -279,8 +287,8 @@ class FormInfo extends Component {
           />
           <Select
             data={managementFees}
-            selectedValue={formData.mgmtChrgDvCode}
-            defaultValue={defaulcmgmtChrg}
+            // selectedValue={formData.mgmtChrgDvCode}
+            defaultValue={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
             labelSelected="관리비구분"
             valueProps={e => {
               let dataF = formData;
@@ -472,7 +480,8 @@ class FormInfo extends Component {
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+    // console.log('::prevPropsFormKeep::',prevProps);
+    // console.log('::propsFormKeep::',this.props);
   }
 }
 

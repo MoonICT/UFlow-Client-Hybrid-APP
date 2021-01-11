@@ -10,6 +10,7 @@ import { View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Text, Appbar } from 'react-native-paper';
+import { StringUtils, DeepLogs } from '@Services/utils';
 
 // Local Imports
 import Appbars from '@Components/organisms/AppBar';
@@ -501,6 +502,14 @@ class ResponseQuotation extends Component {
   /** when after render DOM */
   async componentDidMount() {
     console.log('::componentDidMount::');
+
+    DeepLogs.log(this.props.route.params , 'this.props ResponseQuotation : this.props.params')
+
+    const warehouseRegNo = this.props.route.params.warehouseRegNo;
+    if(!warehouseRegNo) {
+      alert('창고 ID가 존재하지 않습니다. 잘못된 접근입니다.');
+    }
+
 
     SplashScreen.hide();
   }

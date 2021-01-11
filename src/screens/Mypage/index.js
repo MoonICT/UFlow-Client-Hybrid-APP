@@ -57,11 +57,11 @@ const data = [
     title: '정산관리',
   },
   {
-    title: '문의내역',
-  },
-  {
     title: '관심 창고',
   },
+  // {
+  //   title: '관심 창고',
+  // },
 ];
 const dataSteps = [
   {
@@ -96,7 +96,6 @@ const dataSteps = [
   },
 ];
 
-const listImage = [card, card, card];
 class Mypage extends Component {
   constructor(props) {
     super(props);

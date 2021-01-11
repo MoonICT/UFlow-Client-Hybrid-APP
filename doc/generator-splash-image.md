@@ -40,5 +40,6 @@ The background color defaults to white
 + ``react-native set-splash --platform ios --path <path-to-image>``
 
 ### Generate Android splashscreen
-+ ``react-native set-splash --platform android --path <path-to-image> --resize <[contain]|cover|center> --background ">background-color>"``<br/>
++ ``react-native set-splash --platform android --path <path-to-image> --resize <[contain]|cover|center> --background "<background-color>"``<br/>
++ ``react-native set-splash --platform android --path src/assets/images/splashLogo.png --resize center --background "#ff6d00"``<br/>
 ⚠️ The path option is mandatory.

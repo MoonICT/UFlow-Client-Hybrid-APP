@@ -776,6 +776,7 @@ export default StyleSheet.create({
   /** App Components**/
   _inputSearch: {
     height: 36,
+    lineHeight: 20,
     borderRadius: 4,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
@@ -886,8 +887,8 @@ export default StyleSheet.create({
   _cards: {
     padding: 16,
     backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    // borderBottomWidth: 1,
+    // borderColor: 'rgba(0, 0, 0, 0.1)',
     marginBottom: 10,
   },
   _titleWH: {

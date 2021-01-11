@@ -25,6 +25,10 @@ class FilterStorage extends Component {
    *  필터 닫기.
    *  */
   _onClickCancel () {
+    // 취소 시, 값 초기화.
+    this.props.setSearchFilter({
+      gdsKeepTypeCodes: '',
+    });
     this.props.onClosed(); // Event emit
   }
 
@@ -63,7 +67,7 @@ class FilterStorage extends Component {
 
         {/** Checkbox */}
         <View style={styles.gridRow}>
-          {this.props.filters.map((item, index) =>
+          {this.props.filterCodes.listGdsTypeCode.map((item, index) =>
             <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
               <Checkbox
                 checked={(this.props.whFilter.gdsKeepTypeCodes ? this.props.whFilter.gdsKeepTypeCodes.indexOf(item.stdDetailCode) > -1 : false)}
@@ -104,6 +108,7 @@ function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state.search.whFilter);
   return {
     whFilter: state.search.whFilter,
+    filterCodes: state.search.filterCodes,
   };
 }
 
@@ -119,7 +124,6 @@ function mapDispatchToProps (dispatch) {
 // Check Props Type.
 FilterStorage.protoType = {
   onClosed: PropTypes.func,
-  filters: PropTypes.array,
 };
 
 export default compose(connect(

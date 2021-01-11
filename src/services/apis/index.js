@@ -15,6 +15,7 @@ import * as Entrp from './Entrp';
 import * as WhrgSearch from './WhrgSearch';
 import * as ConsultingApi from './Consulting';
 import * as WarehouseOwner from './WarehouseOwner';
+import * as WarehouseRecommend from './WarehouseRecommand';
 import * as WarehouseTenant from './WarehouseTenant';
 import * as WarehouseMobileAuth from './WarehouseMobileAuth';
 import * as FindPassword from './FindPassword';
@@ -41,6 +42,7 @@ export {
   WhrgSearch,
   ConsultingApi,
   WarehouseOwner,
+  WarehouseRecommend,
   WarehouseTenant,
   WarehouseMobileAuth,
   FindPassword,

@@ -13,7 +13,7 @@ const numberComma = (value: string) => {
     return value ? value.toLocaleString() : 0;
 };
 
-const dateStr = (date:Date, format = 'YYYY.MM.DD') => {
+const dateStr = (date:Date, format = 'YYYY-MM-DD') => {
     return date ? Moment(date).format(format) : '';
 }
 

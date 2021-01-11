@@ -60,13 +60,13 @@ class RegisterInfo extends Component {
           ? props.dataInfo.keeps
           : [
               {
-                // key: 0,
-                typeCode: '0001',
-                calUnitDvCode: 'CU01',
-                calStdDvCode: 'CS01',
-                // exclusiveArea: '',
+                typeCode: '',
+                calUnitDvCode: '',
+                calStdDvCode: '',
+                mgmtChrgDvCode: '',
                 // exclusiveArea2: '',
                 commonArea: '',
+                usblValue: '',
                 // rentalArea: '',
                 // rentalArea2: '',
                 usblYmdFrom: '',
@@ -81,9 +81,9 @@ class RegisterInfo extends Component {
           ? props.dataInfo.trusts
           : [
               {
-                typeCode: '0001',
-                calUnitDvCode: 'CU01',
-                calStdDvCode: 'CS01',
+                typeCode: '',
+                calUnitDvCode: '',
+                calStdDvCode: '',
                 usblYmdFrom: '',
                 usblYmdTo: '',
                 splyAmount: '',
@@ -122,9 +122,9 @@ class RegisterInfo extends Component {
     valueTab === 'trusts'
       ? listTrusts.push({
           // key: lengths,
-          typeCode: '0001',
-          calUnitDvCode: 'CU01',
-          calStdDvCode: 'CS01',
+          typeCode: '',
+          calUnitDvCode: '',
+          calStdDvCode: '',
           usblYmdFrom: '',
           usblYmdTo: '',
           splyAmount: '',
@@ -138,16 +138,12 @@ class RegisterInfo extends Component {
           remark: '',
         })
       : listKeeps.push({
-          // key: lengths,
-          typeCode: '0001',
-          calUnitDvCode: 'CU01',
-          calStdDvCode: 'CS01',
-          mgmtChrgDvCode: '0001',
-          // exclusiveArea2: '',
+          typeCode: '',
+          calUnitDvCode: '',
+          calStdDvCode: '',
+          mgmtChrgDvCode: '',
           commonArea: '',
           usblValue: '',
-          // rentalArea: '',
-          // rentalArea2: '',
           usblYmdFrom: '',
           usblYmdTo: '',
           splyAmount: '',
@@ -160,6 +156,11 @@ class RegisterInfo extends Component {
     let listKeeps = this.state.keeps;
     let listTrusts = this.state.trusts;
     let numberSlideKeep = this.state.numberSlide;
+    let slideKeepStart =
+      this.state.numberSlide > 0 ? this.state.numberSlide - 1 : 0;
+    let slideTrustStart =
+      this.state.numberSlideTrusts > 0 ? this.state.numberSlideTrusts - 1 : 0;
+    console.log('slideKeepStart :>> ', slideKeepStart);
     let numberSlideTrusts = this.state.numberSlideTrusts;
     let filterKeep =
       listKeeps &&
@@ -167,10 +168,13 @@ class RegisterInfo extends Component {
     let filterTrust =
       listTrusts &&
       listTrusts.filter(item => item !== listTrusts[numberSlideTrusts]);
-    console.log('filter', filterKeep);
+    // console.log('filterkEepppppppppppppp', filterKeep);
     valueTab === 'trusts'
-      ? this.setState({ trusts: filterTrust })
-      : this.setState({ keeps: filterKeep });
+      ? this.setState({
+          trusts: filterTrust,
+          numberSlideTrusts: slideTrustStart,
+        })
+      : this.setState({ keeps: filterKeep, numberSlide: slideKeepStart });
     // console.log('valueTab :>> ', valueTab);
     // console.log('listKeeps', listKeeps);
   };
@@ -178,13 +182,28 @@ class RegisterInfo extends Component {
     this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
 
   _renderItem = ({ item }) => {
+    let dataKeep = this.state.keeps;
+    // let prevKeep =
+    //   this.state.numberSlide === this.state.keeps.length
+    //     ? this.state.keeps[this.state.numberSlide - 1]
+    //     : [];
+
+    // console.log('prevKeep :>> ', prevKeep);
     return (
       <Form
         managementFees={this.state.managementFees}
         valueTab={this.state.valueTab}
         number={this.state.numberSlide}
         key={item.key}
-        formData={this.state.keeps[this.state.numberSlide]}
+        formData={
+          //   this.state.keeps[this.state.numberSlide]
+          //     ? this.state.keeps[this.state.numberSlide]
+          //     : prevKeep
+          dataKeep[this.state.numberSlide]
+          // ? this.state.keeps[this.state.numberSlide]
+          // : prevKeep
+        }
+        dataKeep={dataKeep}
         valueForm={e => {
           let index = this.state.numberSlide;
           this.setState({
@@ -221,10 +240,10 @@ class RegisterInfo extends Component {
       trusts,
       isSubmit,
     } = this.state;
-    console.log('dataInfo :>> ', dataInfo);
+    // console.log('dataInfo :>> ', dataInfo);
     let isSubmitUpdate = false;
-    console.log('keeps', keeps);
-    console.log('trusts', trusts);
+    // console.log('keeps', keeps);
+    // console.log('numberSlide', numberSlide);
     let filterArea = keeps && keeps.filter(item => item.cmnArea === '');
     let filterusblValue = keeps && keeps.filter(item => item.usblValue === '');
     let filtersplyAmount =
@@ -264,7 +283,7 @@ class RegisterInfo extends Component {
     ) {
       isSubmitUpdate = true;
     }
-    console.log('isSubmitUpdate', isSubmitUpdate);
+    // console.log('isSubmitUpdate', isSubmitUpdate);
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -448,7 +467,8 @@ class RegisterInfo extends Component {
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+    // console.log('::prevPropsFormKeep::', prevState);
+    // console.log('::propsFormKeep::', this.state);
   }
 }
 
