@@ -1,7 +1,7 @@
 import { Axios, parseQuery } from '@Services/http';
 import { mainAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import axios from "axios";
 //Contants
 import { TOKEN } from '@Constant';
 
@@ -123,20 +123,42 @@ export const chatting = async value => {
   );
 };
 
-export const termsContract = async value => {
-  const token = await AsyncStorage.getItem('token');
-  // return await mainAxios.post(
-  //   `/api/v1/chat/contract/4100/${value.url}`,
-  //   value && value.data,
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       Accept: 'application/json',
-  //     },
-  //   },
-  // );
+/**
+ * [whrg-qna-1] 창고 Q&A 질문하기
+ * @param id 창고 ID
+ * @returns {Promise<unknown>}
+ */
+export const postWhrgQuestion = async (payload) => {
+
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.post(
+    `/api/v1/warehouse/question`,payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
 };
 
+export const  termsContract = async (body, typeWH) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  let typeWHStr = typeWH === 'TRUST' ? 'trust' : 'keep';
+  console.log('body', body)
+  return axios({
+      method: 'Post',
+      url: `/api/v1/contract/4100/owner/${typeWHStr}`,
+      data: body,
+      headers: {
+          // 'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+      }
+  }).catch(err => {
+      console.log(err)
+  })
+}
 export const searchAddressKakao = async ({
   query = '',
   page = 0,
@@ -607,7 +629,6 @@ export const pageWhrgQnA = ({
   sort = 'createdDate,desc',
   requiresToken = false,
 }) => {
-  console.log('idcc', id)
   return Axios.getRequest({
     methodType: 'GET',
     requiresToken: requiresToken,

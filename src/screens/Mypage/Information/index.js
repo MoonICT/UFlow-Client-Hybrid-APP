@@ -74,7 +74,9 @@ class Information extends Component {
       if (res.status === 200) {
         this.setState({ userInfo: res.data})
       }
-    })
+    }).catch(error => {
+      alert('getInfoUser error:' + error);
+    });
   }
 
   handleClickTab = (tabName, index) => {

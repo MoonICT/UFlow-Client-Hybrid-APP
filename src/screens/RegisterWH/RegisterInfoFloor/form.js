@@ -87,9 +87,30 @@ class FormInfo extends Component {
         value: 'B1',
       },
     ];
+    const settlement = [
+      {
+        label: '도크',
+        value: '0001',
+      },
+      {
+        label: '컨테이너',
+        value: '0002',
+      },
+      {
+        label: '화물EV,',
+        value: '0003',
+      },
+      {
+        label: '수직반송기',
+        value: '0004',
+      }
+    ];
     let dataDefault =
       dataSelect &&
       dataSelect.find(item => item.value === formData.flrDvCode);
+    let dataDefaultAprchMthdDvCode =
+      formData &&
+      settlement.find(item => item.value === formData.aprchMthdDvCode);
     return (
       <Card style={S.cards}>
         <View style>
@@ -368,11 +389,22 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          <TextField
+          {/* <TextField
             labelTextField="접안방식"
             // defaultValue={formData.aprchMthdDvCode ? numberToStd(formData.aprchMthdDvCode) : ''}
             value={formData.aprchMthdDvCode}
             colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.aprchMthdDvCode = e;
+              valueForm && valueForm(dataF);
+            }}
+          /> */}
+          <Select
+            data={settlement}
+            dataDefault={dataDefaultAprchMthdDvCode !== undefined ? dataDefaultAprchMthdDvCode : ''}
+            selectedValue={formData.aprchMthdDvCode}
+            labelSelected="접안방식"
             valueProps={e => {
               let dataF = formData;
               dataF.aprchMthdDvCode = e;

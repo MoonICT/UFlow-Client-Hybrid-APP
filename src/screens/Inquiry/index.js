@@ -105,6 +105,8 @@ class Inquiry extends Component {
     await getAllInquiry(defaultParams).then(res => {
       console.log('data', res.data._embedded);
       this.setState({ listQuestion: res.data._embedded && res.data._embedded.questions });
+    }).catch(error => {
+      alert('Inquiry getAllInquiry error:' + error);
     });
   }
 

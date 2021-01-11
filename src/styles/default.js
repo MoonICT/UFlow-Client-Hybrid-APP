@@ -136,8 +136,7 @@ export default StyleSheet.create({
     fontWeight: '500',
     lineHeight: 21,
     letterSpacing: 0,
-    textAlign: 'right',
-    color: 'rgba(0, 0, 0, 0.47)',
+    textAlign: 'right'
   },
   titleDf: {
     marginTop: 20,
@@ -1242,6 +1241,13 @@ export default StyleSheet.create({
     borderRadius: 4,
     height: 56,
     marginBottom: 5,
+  },
+  _btnDateFilter: {
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 4,
+    height: 36,
+    marginBottom: 5
   },
   _btnDateCustom: {
     borderWidth: 1,

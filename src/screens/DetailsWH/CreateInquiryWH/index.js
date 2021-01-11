@@ -16,6 +16,7 @@ import { Appbar, Text, Switch } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
+import { Warehouse } from '@Services/apis';
 
 import ActionCreator from '@Actions';
 import { styles as S } from '../style';
@@ -24,13 +25,35 @@ class CreateInquiryWH extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { isSwitchOn: false };
+    this.state = {
+       isSwitchOn: false,
+       questionContent:''
+      };
     this.navigation = props.navigation;
   }
   onToggleSwitch = () => this.setState({ isSwitchOn: !this.state.isSwitchOn });
 
+ /**
+   * Request question
+   * */
+  handleSubmitQna = () => {
+    const {questionContent} = this.state;
+    const {route} = this.props;
+
+    Warehouse.postWhrgQuestion({
+      warehouseRegNo: route.params.idWH,
+      content: questionContent
+    }).then(res => {
+      this.navigation.push('DetailsWH', {
+        id:route.params.idWH
+      } )
+    })
+  }
+
   render() {
     const { imageStore } = this.props;
+    const { questionContent } = this.state;
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -46,9 +69,9 @@ class CreateInquiryWH extends Component {
             style={DefaultStyle.headerTitle}
           />
           <Appbar.Content
-            color="rgba(0, 0, 0, 0.47)"
+            color={questionContent ? '#ff6d00' : 'rgba(0, 0, 0, 0.47)'}
             title="등록"
-            onPress={() => console.log('up :>> ')}
+            onPress={() => this.handleSubmitQna()}
             titleStyle={DefaultStyle._textHeaderRight}
           />
         </Appbars>
@@ -57,19 +80,22 @@ class CreateInquiryWH extends Component {
             <View style={SS.titleBody}>
               <Text style={SS.textTitleBody}>에이씨티앤코아물류</Text>
             </View>
-            <TextField
+            {/* <TextField
               labelTextField="제목"
-              defaultValue="제목을 입력해 주세요."
+              placeholder="제목을 입력해 주세요."sdffy
               colorLabel="#000000"
-            />
+            /> */}
             <TextField
               labelTextField="내용"
-              defaultValue="문의하실 내용을 입랙해 주세요."
+              placeholder="문의하실 내용을 입랙해 주세요."
               colorLabel="#000000"
+              valueProps={text => this.setState({
+                questionContent: text
+              })}
               numberOfLines={4}
             />
           </View>
-          <View style={SS.bodyCard}>
+          {/* <View style={SS.bodyCard}>
             <View style={SS.titleBody}>
               <Text style={SS.textTitleBody}>비밀글 설정</Text>
               <View style={S.rightTitle}>
@@ -80,7 +106,7 @@ class CreateInquiryWH extends Component {
                 />
               </View>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </SafeAreaView>
     );
