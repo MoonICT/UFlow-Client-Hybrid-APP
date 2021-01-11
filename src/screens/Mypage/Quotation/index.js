@@ -602,7 +602,7 @@ class Quotation extends Component {
       this.props.route.params.type === 'OWNER' ? urlOwner : urlTenant,
     )
 
-    console.log("### 1")
+    console.log("res 1", res)
     const status = res.status;
 
     if (status === 200) {

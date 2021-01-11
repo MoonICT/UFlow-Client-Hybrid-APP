@@ -139,7 +139,6 @@ class ResponseQuotation extends Component {
           />
         </Appbars>
         <ScrollView>
-
           <View style={[DefaultStyle._cards, SS.body, {paddingBottom: 450}]}>
 
             {/** HEADER **/}
@@ -149,7 +148,6 @@ class ResponseQuotation extends Component {
                   DefaultStyle._textTitleCard,
                   { paddingBottom: 0, marginRight: 4 },
                 ]}>
-                견적 응답 정보
               </Text>
 
               <TouchableOpacity
@@ -193,7 +191,7 @@ class ResponseQuotation extends Component {
                       onPress={this.showDatepicker}
                       style={DefaultStyle._btnDate}>
                       <Text style={DefaultStyle._textDate}>
-                        {from.toLocaleDateString()}
+                      {from ? from.toLocaleDateString() : (new Date()).toLocaleDateString()}
                       </Text>
                       <Text
                         style={[
@@ -206,7 +204,7 @@ class ResponseQuotation extends Component {
                         mode={mode}
                         show={showFrom}
                         onChange={this.onChangeFrom}
-                        value={from}
+                        value={from ? from : new Date()}
                         testID="dateTimePicker"
                       />
                     </TouchableOpacity>
@@ -217,7 +215,7 @@ class ResponseQuotation extends Component {
                       onPress={this.showDatepickerTo}
                       style={DefaultStyle._btnDate}>
                       <Text style={DefaultStyle._textDate}>
-                        {to.toLocaleDateString()}
+                        {to ? to.toLocaleDateString() : (new Date()).toLocaleDateString()}
                       </Text>
                       <Text
                         style={[
@@ -230,7 +228,7 @@ class ResponseQuotation extends Component {
                         mode={mode}
                         show={showTo}
                         onChange={this.onChangeTo}
-                        value={to}
+                        value={to ? to : new Date()}
                         testID="dateTimePickerTo"
                       />
                     </TouchableOpacity>
