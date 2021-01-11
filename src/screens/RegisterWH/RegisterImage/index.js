@@ -148,7 +148,7 @@ class RegisterImage extends Component {
           />
         </Appbars>
         <ScrollView>
-          {imageStore.length === 0 ? (
+          {imageStore && imageStore.length === 0 ? (
             <View style={S.bgrRegister}>
               <Image source={ignore3} style={S.ImageStyle} />
               <Text style={S.textBgr}>최소 3장 이상 등록하세요.</Text>
@@ -157,14 +157,14 @@ class RegisterImage extends Component {
             <View style={styles.imageContainer}>
               <Image
                 style={S.ImageUpload}
-                source={{ uri: imageStore[0].url }}
+                source={{ uri: imageStore && imageStore[0].url }}
                 PlaceholderContent={<ActivityIndicator />}
               />
 
               <View
                 style={[
                   S.listImage,
-                  (imageStore.length - 1) % 3 === 0 ? S.threeImage : null,
+                  (imageStore && imageStore.length - 1) % 3 === 0 ? S.threeImage : null,
                 ]}>
                 {listImg}
               </View>
@@ -176,13 +176,13 @@ class RegisterImage extends Component {
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
                 DefaultStyle.btnSubmit,
-                imageStore.length > 0 ? DefaultStyle.activeBtnSubmit : null,
+                imageStore && imageStore.length > 0 ? DefaultStyle.activeBtnSubmit : null,
               ]}
-              disabled={imageStore.length > 0 ? false : true}>
+              disabled={imageStore && imageStore.length > 0 ? false : true}>
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  imageStore.length > 0 ? DefaultStyle.textActiveSubmit : null,
+                  imageStore && imageStore.length > 0 ? DefaultStyle.textActiveSubmit : null,
                 ]}>
                 확인
               </Text>

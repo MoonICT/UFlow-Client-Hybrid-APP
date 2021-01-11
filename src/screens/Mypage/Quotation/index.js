@@ -14,7 +14,7 @@ import {
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {Appbar, Button, Dialog, Text} from 'react-native-paper';
+import {Appbar, Text} from 'react-native-paper';
 
 // Local Imports
 import TableInfo from '@Components/atoms/TableInfo';
@@ -47,7 +47,6 @@ class Quotation extends Component {
     this.webView = null;
     this.state = {
       isConfirmRequest: false,
-      visibleContractTrust: false
     };
 
     this.navigation = props.navigation;
@@ -110,11 +109,6 @@ class Quotation extends Component {
     return changeTime;
   };
 
-  onClickContract = visible => {
-    this.setState({
-      visibleContractTrust: visible
-    });
-  }
 
   render() {
     // const { imageStore } = this.props;
@@ -323,7 +317,6 @@ class Quotation extends Component {
             <Text>{status}</Text>
             <Text>{this.state.groupOrders}</Text>
             {/* ====== END:STATUS DEBUG ====== */}
-
             {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST')
             && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
             <TenantRq00Trust
@@ -362,7 +355,6 @@ class Quotation extends Component {
             />
             }
 
-
             {(type === 'TENANT' && status === 'RS00' && typeWH === 'TRUST')
             && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
             <TenantRs00Trust
@@ -399,7 +391,6 @@ class Quotation extends Component {
               onClickContract={this.onClickContract}
             />
             }
-
 
             {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST')
             && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
@@ -473,7 +464,6 @@ class Quotation extends Component {
             {/*  groupOrders={this.state.groupOrders}*/}
             {/*/>*/}
             {/*}*/}
-
 
             {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
              {route.params.status === 'notAnswerd' ? (
@@ -572,8 +562,8 @@ class Quotation extends Component {
              */}
             {/** END:REQ/RES ACTION **/}
           </View>
-        </ScrollView>
 
+        </ScrollView>
         {/** 수탁 계약협의 요청 **/}
         <Dialog
           style={DefaultStyle.popup}
@@ -665,6 +655,7 @@ class Quotation extends Component {
             </Button>
           </Dialog.Actions>
         </Dialog>
+
       </SafeAreaView>
     );
   }
@@ -815,36 +806,36 @@ class Quotation extends Component {
     // }
 
     if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
-      // let warehSeq = this.props.route.params.warehSeq;
-      // let warehouseRegNo = this.props.route.params.warehouseRegNo;
-      // let rentUserNo = this.props.route.params.rentUserNo;
-      // let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-      // let typeWH =
-      //   this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
-      // let data =
-      //   this.props.route.params.typeWH === 'TRUST'
-      //     ? {warehouseRegNo, mgmtTrustSeq: warehSeq}
-      //     : {warehouseRegNo, mgmtKeepSeq: warehSeq};
-      // Warehouse.requestContract({typeWH, data})
-      //   .then(res => {
-      //     const status = res.status;
-      //     console.log('res', res);
-      //     if (status === 200) {
-      //       // this.setState({
-      //       //   dataApi: res.data,
-      //       // });
-      //       this.navigation.navigate('RequestContract', {
-      //         type,
-      //         warehouseRegNo,
-      //         warehSeq,
-      //         typeWH,
-      //         rentUserNo,
-      //       });
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log('err', err);
-      //   });
+      let warehSeq = this.props.route.params.warehSeq;
+      let warehouseRegNo = this.props.route.params.warehouseRegNo;
+      let rentUserNo = this.props.route.params.rentUserNo;
+      let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
+      let typeWH =
+        this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+      let data =
+        this.props.route.params.typeWH === 'TRUST'
+          ? {warehouseRegNo, mgmtTrustSeq: warehSeq}
+          : {warehouseRegNo, mgmtKeepSeq: warehSeq};
+      Warehouse.requestContract({typeWH, data})
+        .then(res => {
+          const status = res.status;
+          console.log('res', res);
+          if (status === 200) {
+            // this.setState({
+            //   dataApi: res.data,
+            // });
+            this.navigation.navigate('RequestContract', {
+              type,
+              warehouseRegNo,
+              warehSeq,
+              typeWH,
+              rentUserNo,
+            });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
     }
   }
 

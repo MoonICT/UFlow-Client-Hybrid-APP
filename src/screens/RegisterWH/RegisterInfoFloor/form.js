@@ -87,11 +87,15 @@ class FormInfo extends Component {
         value: 'B1',
       },
     ];
+    let dataDefault =
+      dataSelect &&
+      dataSelect.find(item => item.value === formData.flrDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
             data={dataSelect}
+            dataDefault={dataDefault}
             selectedValue={formData.flrDvCode}
             labelSelected="층 수"
             valueProps={e => {
@@ -371,7 +375,7 @@ class FormInfo extends Component {
             colorLabel="#000000"
             valueProps={e => {
               let dataF = formData;
-              dataF.aprchMthdDvCode = (e);
+              dataF.aprchMthdDvCode = e;
               valueForm && valueForm(dataF);
             }}
           />

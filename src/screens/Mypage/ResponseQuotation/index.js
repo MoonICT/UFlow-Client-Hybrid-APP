@@ -162,7 +162,6 @@ class ResponseQuotation extends Component {
           />
         </Appbars>
         <ScrollView>
-
           <View style={[DefaultStyle._cards, SS.body, {paddingBottom: 450}]}>
 
             {/** HEADER **/}
@@ -172,7 +171,7 @@ class ResponseQuotation extends Component {
                   DefaultStyle._textTitleCard,
                   { paddingBottom: 0, marginRight: 4 },
                 ]}>
-                견적 응답 정보
+                {'견적 응답 정보'}
               </Text>
 
               <TouchableOpacity
