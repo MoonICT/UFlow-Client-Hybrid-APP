@@ -479,7 +479,7 @@ class Home extends Component {
                 textAlignVertical="center"
                 numberOfLines={1}
                 ellipsizeMode="start"
-                onChange={e => this.setState({ textSearch: e.target.value })}
+                onChangeText={(text) => this.setState({ textSearch: text })}
               />
               {
                 <Icon
@@ -488,7 +488,7 @@ class Home extends Component {
                   color="white"
                   onPress={() =>
                     this.navigation.navigate('Search', {
-                      searchValue: textSearch,
+                      searchQuery: textSearch,
                     })
                   }
                 />
