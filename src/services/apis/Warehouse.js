@@ -123,6 +123,26 @@ export const chatting = async value => {
   );
 };
 
+/**
+ * [whrg-qna-1] 창고 Q&A 질문하기
+ * @param id 창고 ID
+ * @returns {Promise<unknown>}
+ */
+export const postWhrgQuestion = async (payload) => {
+
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.post(
+    `/api/v1/warehouse/question`,payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
+};
+
 export const termsContract = async value => {
   const token = await AsyncStorage.getItem('token');
   // return await mainAxios.post(

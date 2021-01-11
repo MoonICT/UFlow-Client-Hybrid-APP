@@ -30,6 +30,7 @@ import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import ProductCard from '@Components/organisms/ProductCard';
+import CreateInquiryWH from './CreateInquiryWH';
 import { TOKEN } from '@Constant';
 
 import ActionCreator from '@Actions';
@@ -198,7 +199,7 @@ class DetailWH extends Component {
   };
 
   render() {
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, isLogin} = this.state;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, isLogin, id} = this.state;
 
     const dataTab = [
       {
@@ -840,7 +841,10 @@ class DetailWH extends Component {
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnInquiry}
-                    onPress={() => console.log('add')}>
+                    onPress={() => this.navigation.navigate('CreateInquiryWH', {
+                      idWH: id
+                    }
+                    )}>
                     <Text style={S.textInquiry}>문의하기</Text>
                   </TouchableOpacity>
                 </View>
@@ -855,20 +859,19 @@ class DetailWH extends Component {
                   {qnaList && qnaList.map((qnaItem, index) =>
                     <View key={'qnaItem' + index} style={S.inquirys}>
                       <View style={S.leftInquiry}>
-                        {qnaItem.answer ?
+                        {qnaItem.status ?
                           <Text style={S.titleCompleted}>답변완료</Text>
                           :
                           <Text style={S.titleInquiry}>미답변</Text>
                         }
-                        <Text style={S.contentInquiry}>비밀글입니다.</Text>
+                        <Text style={S.contentInquiry}>{qnaItem.title}</Text>
                         <Text style={S.footerInquiry}>
-                        {qnaItem.writer}
-                        {this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}
+                        {qnaItem.name} | {qnaItem.date}
                         </Text>
                       </View>
                       <View style={S.rightInquiry}>
-                        {qnaItem.me ? '' : (
-                          (qnaItem.secret || true) ?
+                        {
+                          (qnaItem.lock) ?
                             <IconButton
                               style={S.btnIcon}
                               icon="lock"
@@ -876,7 +879,7 @@ class DetailWH extends Component {
                             />
                             :
                             <Text></Text>
-                        )}
+                        }
                       </View>
                     </View>
                   )}
@@ -968,42 +971,22 @@ class DetailWH extends Component {
             </TouchableOpacity> */}
           </View>
         </ScrollView>
+        
       </SafeAreaView >
     );
   }
 
   /** when after render DOM */
-  async componentDidMount() {
-    SplashScreen.hide();
+  componentDidMount() {
+    const { route } = this.props;
     this.getDataWH()
+
     this.handleRequestQnaList(4)
     this.hiddenName();
     AsyncStorage.getItem(TOKEN).then(v => {
       this.setState({ isLogin: v !== '' && v !== null });
     });
   }
-
-  // async UNSAFE_componentWillMount () {
-  //   const value = await AsyncStorage.getItem(TOKEN);
-  //   // console.log('More Token ==>', value);
-  //   Account.getMe()
-  //     .then(res => {
-  //       console.log('::::: Get Me :::::', res);
-  //       const status = res.status;
-  //       if (status === 200) {
-  //         console.log('rest', res)
-  //         this.setState({
-  //           isLogin: true
-  //         });
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log('errHome', err);
-  //     });
-  //   if (value) {
-  //     this.setState({ token: value });
-  //   }
-  // }
 
   async getDataWH() {
     const { id } = this.state;
@@ -1017,7 +1000,6 @@ class DetailWH extends Component {
       whrgData: warehouse.data,
       favorite: warehouse.data.fav
     });
-      
         // 유사창고 파라미터 조건
         let typeCodeNames = []
         let gdsKeepTypeCodeNames = []
@@ -1065,6 +1047,7 @@ class DetailWH extends Component {
     Warehouse.pageWhrgQnA(qnaParams).then(res => {
       if (res && res._embedded && res._embedded) {
         let newFQAList = res._embedded.questions.map(item => {
+          console.log(item)
           return {
             status: item.complete,
             title: item.content,
@@ -1074,6 +1057,7 @@ class DetailWH extends Component {
           }
         })
 
+        console.log('newFQAList', newFQAList)
         this.setState({ qnaList: newFQAList })
         this.setState({ pageInfo: res.page })
       }
@@ -1092,12 +1076,6 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 
