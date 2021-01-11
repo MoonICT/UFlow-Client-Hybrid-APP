@@ -183,26 +183,58 @@ class FormTrusts extends Component {
       },
     ];
 
-    const time = [
+    const calculation = [
       {
         label: '회',
-        value: '회',
+        value: 'CS01',
       },
       {
-        label: '회2',
-        value: '회2',
+        label: '건',
+        value: 'CS02',
+      },
+      {
+        label: '일',
+        value: 'CS03',
+      },
+      {
+        label: '월',
+        value: 'CS04',
+      },
+      {
+        label: '분기',
+        value: 'CS05',
+      },
+      {
+        label: '반기',
+        value: 'CS06',
+      },
+      {
+        label: '연',
+        value: 'CS07',
       },
     ];
 
     // let commonA = parseInt(commonAreaState) * 2;
     // console.log('commonAreaState2 :>> ', commonAreaState2);
 
+    let defaultTypeCode =
+      dataSelect && dataSelect.find(item => item.value === formData.typeCode);
+    let defaultcalUnit =
+      settlement &&
+      settlement.find(item => item.value === formData.calUnitDvCode);
+    let defaultcalStd =
+    calculation &&
+    calculation.find(item => item.value === formData.calUnitDvCode);
+    // let defaulcmgmtChrg =
+    //   managementFees &&
+    //   managementFees.find(item => item.value === formData.mgmtChrgDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
             data={dataSelect}
             labelSelected="보관유형"
+            dataDefault={defaultTypeCode}
             selectedValue={formData.typeCode}
             valueProps={e => {
               let dataF = formData;
@@ -213,6 +245,7 @@ class FormTrusts extends Component {
           <Select
             data={settlement}
             labelSelected="정산단위"
+            dataDefault={defaultcalUnit}
             selectedValue={formData.calUnitDvCode}
             valueProps={e => {
               // this.setState({ calUnitDvCode: e })
@@ -222,8 +255,9 @@ class FormTrusts extends Component {
             }}
           />
           <Select
-            data={time}
+            data={calculation}
             labelSelected="산정기준"
+            defaultValue={defaultcalStd}
             selectedValue={formData.calStdDvCode}
             valueProps={e => {
               // this.setState({ calculationStandard: e });
@@ -233,7 +267,7 @@ class FormTrusts extends Component {
             }}
           />
           <TextField
-            labelTextField="기타"
+            labelTextField="가용수량"
             defaultValue={
               formData.usblValue ? numberToStd(formData.usblValue) : ''
             }

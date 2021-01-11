@@ -2,12 +2,17 @@ import React, {Component, Fragment} from 'react';
 import DefaultStyle from '@Styles/default';
 import {TouchableOpacity, View} from "react-native";
 import {Text} from "react-native-paper";
-
+import {Contract} from '@Services/apis';
+import {Button, Paragraph, Dialog, Portal} from 'react-native-paper';
 
 class TenantRs00Keep extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      completeContract: false,
+      visible: false
+    };
   }
 
   render() {
@@ -44,17 +49,10 @@ class TenantRs00Keep extends Component {
         <TouchableOpacity
           style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
           onPress={
-            () =>
-              this.setState({
-                isConfirmRequest: !this.state.isConfirmRequest,
-              })
-            // this.navigation.navigate('RequestContract', {
-            //   type,
-            //   warehouseRegNo,
-            //   warehSeq,
-            //   typeWH,
-            // })
-          }>
+            () => {
+              console.log('계약요청 버튼 클릭')
+              this.setState({visible: true});
+            }}>
           <Text
             style={[
               DefaultStyle._textButton,
@@ -64,6 +62,41 @@ class TenantRs00Keep extends Component {
           </Text>
         </TouchableOpacity>
       </View>
+      <Dialog
+        style={DefaultStyle.popup}
+        visible={this.state.visible}
+        onDismiss={() => {
+          this.setState({visible: false});
+        }}>
+        <Dialog.Title style={DefaultStyle._titleDialog}>
+          계약 요청
+        </Dialog.Title>
+        <Dialog.Content>
+          견적 금액을 확정하고 계약을 요청하시겠습니까?
+        </Dialog.Content>
+        <Dialog.Actions style={DefaultStyle._buttonPopup}>
+          <Button
+            style={DefaultStyle._buttonElement}
+            onPress={()=>{
+              Contract.createKeep({
+                idWarehouse: warehouseRegNo,
+                mgmtTrustSeq: warehSeq,
+                rentUserNo: rentUserNo
+              }).then((res) => {
+                if (res.status === 200) {
+                  this.setState({
+                    completeContract: true
+                  });
+                  alert('계약 요청이 완료되었습니다.');
+                } else {
+                  alert('계약 요청이 실패하였습니다.');
+                }
+              });
+            }}>
+            확인
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
     </View>;
   }
 

@@ -35,12 +35,6 @@ class TenantRq00Trust extends Component {
     const estmtTrustGroups = this.props.estmtTrustGroups;
     const groupOrders = this.props.groupOrders;
 
-
-    // console.log(gIndex, 'gIndex');
-    console.log(groupOrders, 'groupOrders');
-    // console.log(this.state.groupOrderIndex, 'groupOrderIndex');
-    // console.log(data, 'data');
-
     let viewRequestTrust =
       calUnitDvCodes && calUnitDvCodes.length > 0 &&
       calStdDvCodes && calStdDvCodes.length > 0 &&
@@ -151,7 +145,6 @@ class TenantRq00Trust extends Component {
                 <Select data={dataSelect}
                         valueSelected={dataSelect[this.state.groupOrderIndex].label}
                         valueProps={(value) => {
-                          alert(value)
                           this.setState({
                             groupOrderIndex: value
                           });
@@ -216,8 +209,8 @@ class TenantRq00Trust extends Component {
     // if (prevState.groupOrderIndex !== this.state.groupOrderIndex) {
     //   console.log(this.props.groupOrders, 'this.props.groupOrders');
     //   console.log(this.props.groupOrders.length - 1, 'this.props.groupOrders');
-    console.log(this.props, '>> props')
-    console.log(this.props.groupOrders, '> props.groupOrders')
+    // console.log(this.props, '>> props')
+    // console.log(this.props.groupOrders, '> props.groupOrders')
       // this.setState({
       //   groupOrderIndex: this.props.groupOrders ? this.props.groupOrders.length - 1 : 0
       // })

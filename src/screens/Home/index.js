@@ -371,23 +371,25 @@ class Home extends Component {
   // };
 
   _renderProductItem = item => {
-    // console.log('item==>', item);
     let { whList } = this.state;
     const cardItem = [];
     whList = whList.slice(0, 4);
     whList?.map((v, i) => {
-      cardItem.push(
-        <View key={i} style={styles.mainProductItem}>
-          {v?.thumbnail !== null ? (
-            <ProductCard navigation={this.navigation} data={v} />
-          ) : (
-            <ProductCard
-              navigation={this.navigation}
-              data={{ ...v, img: cardBG }}
-            />
-          )}
-        </View>,
-      );
+      if(i < 2){
+        cardItem.push(
+          <View key={i} style={styles.mainProductItem}>
+            {v?.thumbnail !== null ? (
+              <ProductCard navigation={this.navigation} data={v} />
+            ) : (
+              <ProductCard
+                navigation={this.navigation}
+                data={{ ...v, img: cardBG }}
+              />
+            )}
+          </View>,
+        );
+      }
+      
     });
 
     return cardItem;
@@ -479,7 +481,7 @@ class Home extends Component {
                 textAlignVertical="center"
                 numberOfLines={1}
                 ellipsizeMode="start"
-                onChange={e => this.setState({ textSearch: e.target.value })}
+                onChangeText={(text) => this.setState({ textSearch: text })}
               />
               {
                 <Icon
@@ -488,7 +490,7 @@ class Home extends Component {
                   color="white"
                   onPress={() =>
                     this.navigation.navigate('Search', {
-                      searchValue: textSearch,
+                      searchQuery: textSearch,
                     })
                   }
                 />

@@ -57,7 +57,7 @@ const data = [
     title: '정산관리',
   },
   {
-    title: '문의내역',
+    title: '관심 창고',
   },
   // {
   //   title: '관심 창고',
@@ -95,8 +95,6 @@ const dataSteps = [
     status: false,
   },
 ];
-
-const listImage = [card, card, card];
 
 class Mypage extends Component {
   constructor (props) {
@@ -158,12 +156,12 @@ class Mypage extends Component {
       return '';
     }
   };
-
-  render () {
-    const { imageStore, workComplete } = this.props;
+  render() {
+    const { route, workComplete } = this.props;
     const { title, isSwitchOn, dataWH } = this.state;
     // console.log('title :>> ', title);
     // console.log('dataWH :>> ', dataWH);
+    // console.log('route :>> ', route.params);
     let viewWH =
       dataWH &&
       dataWH.map((item, index) => {
@@ -328,11 +326,11 @@ class Mypage extends Component {
       case '정산관리':
         viewComponent = <SettlementManagement navigation={this.navigation} />;
         break;
-      // case '관심 창고':
-      //   viewComponent = <InterestWH navigation={this.navigation} />;
-      //   break;
-      default:
-        viewComponent;
+      case '관심 창고':
+        viewComponent = <InterestWH navigation={this.navigation} />;
+        break;
+      // default:
+      //   viewComponent;
       // code block
     }
 
@@ -431,6 +429,7 @@ class Mypage extends Component {
     //   const dataWH = getWH.data._embedded.warehouses;
     //   console.log('dataWH :>> ', dataWH);
     // }
+
     await Warehouse.myWH()
       .then(res => {
         console.log('res', res);
@@ -445,9 +444,15 @@ class Mypage extends Component {
 
     // SplashScreen.hide();
   }
-
+  componentWillReceiveProps(newProps) {
+    let titleProp =
+      newProps.route && newProps.route.params && newProps.route.params.title;
+    console.log('titleProp :>> ', titleProp);
+    this.setState({ title: titleProp });
+  }
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
+
   }
 }
 
