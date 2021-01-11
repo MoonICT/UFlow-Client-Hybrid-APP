@@ -607,7 +607,6 @@ export const pageWhrgQnA = ({
   sort = 'createdDate,desc',
   requiresToken = false,
 }) => {
-  console.log('idcc', id)
   return Axios.getRequest({
     methodType: 'GET',
     requiresToken: requiresToken,
