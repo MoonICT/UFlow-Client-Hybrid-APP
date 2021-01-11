@@ -134,18 +134,18 @@ class RegisterMoreInfo extends Component {
     }
     console.log('checkbox0001 :>> ', checkbox0001);
 
-    let isSubmitUpdate = false;
-    if (
-      addOptDvCodes.length > 0 &&
-      insrDvCodes.length > 0 &&
-      siteArea !== '' &&
-      bldgArea !== '' &&
-      totalArea !== '' &&
-      prvtArea !== '' &&
-      cmnArea !== ''
-    ) {
-      isSubmitUpdate = true;
-    }
+    let isSubmitUpdate = true;
+    // if (
+    //   addOptDvCodes.length > 0 &&
+    //   insrDvCodes.length > 0 &&
+    //   siteArea !== '' &&
+    //   bldgArea !== '' &&
+    //   totalArea !== '' &&
+    //   prvtArea !== '' &&
+    //   cmnArea !== ''
+    // ) {
+    //   isSubmitUpdate = true;
+    // }
     console.log('addOptDvCodes :>> ', addOptDvCodes);
     let viewOptionMore =
       addOptDvCodesData &&
@@ -257,7 +257,7 @@ class RegisterMoreInfo extends Component {
                 value={numberToStd(bldgArea)}
                 valueProps={e => {
                   let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ bldgArea: stdToNumber(text) });
+                  this.setState({ bldgArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
               <TextField
@@ -270,7 +270,7 @@ class RegisterMoreInfo extends Component {
                 value={numberToStd(siteArea)}
                 valueProps={e => {
                   let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ siteArea: stdToNumber(text) });
+                  this.setState({ siteArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
               <TextField
@@ -283,7 +283,7 @@ class RegisterMoreInfo extends Component {
                 value={numberToStd(totalArea)}
                 valueProps={e => {
                   let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ totalArea: stdToNumber(text) });
+                  this.setState({ totalArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
               <TextField
@@ -296,7 +296,7 @@ class RegisterMoreInfo extends Component {
                 value={numberToStd(prvtArea)}
                 valueProps={e => {
                   let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ prvtArea: stdToNumber(text) });
+                  this.setState({ prvtArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
               <TextField
@@ -309,7 +309,7 @@ class RegisterMoreInfo extends Component {
                 value={numberToStd(cmnArea)}
                 valueProps={e => {
                   let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ cmnArea: stdToNumber(text) });
+                  this.setState({ cmnArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
             </View>

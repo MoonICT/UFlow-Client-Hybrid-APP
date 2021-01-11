@@ -24,7 +24,7 @@ import Appbars from '@Components/organisms/AppBar';
 import Dialogs from '@Components/organisms/Dialog';
 
 import ActionCreator from '@Actions';
-import ignore2 from '@Assets/images/ignore2x.png';
+import illust10 from '@Assets/images/illust10.png';
 import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from './style';
@@ -39,7 +39,6 @@ class RegisterWH extends Component {
     this.navigation = props.navigation;
 
     this.doubleSubmitFlag = false;
-
   }
 
   /** listener when change props */
@@ -51,17 +50,17 @@ class RegisterWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  doubleSubmitCheck= () => {
-    if(this.doubleSubmitFlag){
-        return this.doubleSubmitFlag;
-    }else{
-        this.doubleSubmitFlag = true;
-        return false;
+  doubleSubmitCheck = () => {
+    if (this.doubleSubmitFlag) {
+      return this.doubleSubmitFlag;
+    } else {
+      this.doubleSubmitFlag = true;
+      return false;
     }
-  }
+  };
 
   submit = () => {
-    if(this.doubleSubmitCheck()) return;
+    if (this.doubleSubmitCheck()) return;
 
     let type = this.props.route.params && this.props.route.params.type;
     let warehouseRegNo =
@@ -75,10 +74,11 @@ class RegisterWH extends Component {
             this.props.showPopup({
               type: 'confirm',
               title: '창고 등록 완료',
-              content: ` UFLOW 관리자가 입력하신 정보를 {\n}
-              확인하기 위해 연락을 드릴 예정입니다.{\n}
-              자세한 내용은 [마이페이지 > 내 창고]에서 {\n}
+              content: ` UFLOW 관리자가 입력하신 정보를 \n
+              확인하기 위해 연락을 드릴 예정입니다.\n
+              자세한 내용은 [마이페이지 > 내 창고]에서 \n
               확인해주세요`,
+              image: illust10,
             });
 
             this.doubleSubmitFlag = false;
@@ -100,10 +100,11 @@ class RegisterWH extends Component {
             this.props.showPopup({
               type: 'confirm',
               title: '창고 등록 완료',
-              content: ` UFLOW 관리자가 입력하신 정보를 {\n}
-              확인하기 위해 연락을 드릴 예정입니다.{\n}
-              자세한 내용은 [마이페이지 > 내 창고]에서 {\n}
+              content: ` UFLOW 관리자가 입력하신 정보를 \n
+              확인하기 위해 연락을 드릴 예정입니다.\n
+              자세한 내용은 [마이페이지 > 내 창고]에서 \n
               확인해주세요`,
+              image: illust10,
             });
 
             this.doubleSubmitFlag = false;
