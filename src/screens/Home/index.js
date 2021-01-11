@@ -371,23 +371,25 @@ class Home extends Component {
   // };
 
   _renderProductItem = item => {
-    // console.log('item==>', item);
     let { whList } = this.state;
     const cardItem = [];
     whList = whList.slice(0, 4);
     whList?.map((v, i) => {
-      cardItem.push(
-        <View key={i} style={styles.mainProductItem}>
-          {v?.thumbnail !== null ? (
-            <ProductCard navigation={this.navigation} data={v} />
-          ) : (
-            <ProductCard
-              navigation={this.navigation}
-              data={{ ...v, img: cardBG }}
-            />
-          )}
-        </View>,
-      );
+      if(i < 2){
+        cardItem.push(
+          <View key={i} style={styles.mainProductItem}>
+            {v?.thumbnail !== null ? (
+              <ProductCard navigation={this.navigation} data={v} />
+            ) : (
+              <ProductCard
+                navigation={this.navigation}
+                data={{ ...v, img: cardBG }}
+              />
+            )}
+          </View>,
+        );
+      }
+      
     });
 
     return cardItem;
