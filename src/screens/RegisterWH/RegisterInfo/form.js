@@ -241,10 +241,11 @@ class FormInfo extends Component {
       settlement.find(item => item.value === formData.calUnitDvCode);
     let defaultcalStd =
       formData &&
-      calculation.find(item => item.value === formData.calUnitDvCode);
+      calculation.find(item => item.value === formData.calStdDvCode);
     let defaulcmgmtChrg =
       formData &&
       managementFees.find(item => item.value === formData.mgmtChrgDvCode);
+      
     return (
       <Card style={S.cards}>
         <View style>
@@ -266,7 +267,7 @@ class FormInfo extends Component {
           <Select
             data={settlement}
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
-            // selectedValue={formData.calUnitDvCode}
+            selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
             valueProps={e => {
               let dataF = formData;
@@ -274,10 +275,11 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
+
           <Select
             data={calculation}
-            // selectedValue={formData.calStdDvCode}
-            defaultValue={defaultcalStd !== undefined ? defaultcalStd : ''}
+            dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
+            selectedValue={formData.calStdDvCode}
             labelSelected="산정기준"
             valueProps={e => {
               let dataF = formData;
@@ -285,10 +287,11 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
+
           <Select
             data={managementFees}
-            // selectedValue={formData.mgmtChrgDvCode}
-            defaultValue={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
+            dataDefault={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
+            selectedValue={formData.mgmtChrgDvCode}
             labelSelected="관리비구분"
             valueProps={e => {
               let dataF = formData;
@@ -296,6 +299,8 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
+
+
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
