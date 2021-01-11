@@ -64,6 +64,7 @@ class RegisterWH extends Component {
           }
         })
         .catch(err => {
+          alert("Update err", err);
           console.log('err', err.response);
         });
     } else {
@@ -79,6 +80,7 @@ class RegisterWH extends Component {
           }
         })
         .catch(err => {
+          alert("Register err", err);
           console.log('err', err);
         });
     }
