@@ -53,6 +53,7 @@ class ContractInformation extends Component {
 
   render () {
     const {
+      dataContract,
       contractType, // KEEP || TRUST
       status,
       warehouseRegNo,
@@ -76,9 +77,9 @@ class ContractInformation extends Component {
       },
       {
         type: '첨부 서류',
-        isImageLink: true,
-        fileName: '통장 사본.jpg',
-        value: `${configURL.FILE_SERVER_ADDRESS}/${mediaFile?.file2}`,
+        isImageLink: dataContract?.entrpByOwner?.file2,
+        fileName: dataContract?.entrpByOwner?.file2 ? '통장 사본.jpg' : '-',
+        value: dataContract?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${dataContract?.entrpByOwner?.file2}` : '',
       },
     ];
 
@@ -117,6 +118,8 @@ class ContractInformation extends Component {
       case '2100':
         viewComponent = (
           <TermsContract
+            dataContract={dataContract}
+            dataTable={dataTable}
             status={status}
             warehouseRegNo={warehouseRegNo}
             rentUserNo={rentUserNo}

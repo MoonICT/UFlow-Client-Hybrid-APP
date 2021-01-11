@@ -15,16 +15,15 @@ class OwnerRs00Keep extends Component {
      * OWNER - RS00 - KEEP
      */
 
-    const { route } = this.props;
-    const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
-    const warehSeq = route && route.params && route.params.warehSeq;
-    const rentUserNo = route && route.params && route.params.rentUserNo;
-    const type = route && route.params && route.params.type;
-    const typeWH = route && route.params && route.params.typeWH;
-    const status = route && route.params && route.params.status;
-    const data = route && route.params && route.params.data;
-    const calUnitDvCodes = route && route.params && route.params.calUnitDvCodes;
-    const calStdDvCodes = route && route.params && route.params.calStdDvCodes;
+    const warehouseRegNo = this.props.warehouseRegNo;
+    const warehSeq = this.props.warehSeq;
+    const rentUserNo = this.props.rentUserNo;
+    const type = this.props.type;
+    const typeWH = this.props.typeWH;
+    const status = this.props.status;
+    const data = this.props.data;
+    const calUnitDvCodes = this.props.calUnitDvCodes;
+    const calStdDvCodes = this.props.calStdDvCodes;
 
     return <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
       <View style={DefaultStyle._listBtn}>

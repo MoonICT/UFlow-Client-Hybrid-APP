@@ -11,7 +11,7 @@ import {Warehouse} from '@Services/apis';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import moment from "moment";
 
-class ReqeustQTrust extends Component {
+class ResponseQTrust extends Component {
 
   constructor(props) {
     super(props);
@@ -87,7 +87,6 @@ class ReqeustQTrust extends Component {
       mnfctChrg,
       dlvyChrg,
       shipChrg,
-      remark
     } = this.state.formData;
 
     console.log(psnChrg, 'psnChrg 11');
@@ -105,6 +104,8 @@ class ReqeustQTrust extends Component {
     ) {
       isSubmitTrust = true;
     }
+
+    console.log(psnChrg, 'psnChrg');
 
     return <Fragment>
 
@@ -156,6 +157,7 @@ class ReqeustQTrust extends Component {
             <Text style={DefaultStyle._textDate}>
               {to ? moment(to).format('YYYY.MM.DD') : ''}
             </Text>
+
             <Text
               style={[
                 DefaultStyle._labelTextField,
@@ -373,6 +375,7 @@ class ReqeustQTrust extends Component {
 
           let formData = this.state.formData;
 
+          console.log(formData, 'formData1')
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
@@ -418,7 +421,7 @@ class ReqeustQTrust extends Component {
           };
 
           Warehouse.responQuotation({
-            type: `tenant/warehouse/${formData.warehouseRegNo}/trust/${formData.seq}`,
+            type: `owner/warehouse/${formData.warehouseRegNo}/trust/${formData.seq}/${this.props.rentUserNo}`,
             data: formData,
           })
             .then(res => {
@@ -430,8 +433,9 @@ class ReqeustQTrust extends Component {
                 this.setState({
                   isSubmitTrust: false
                 });
+
                 // TODO change illustrator popup
-                alert('견적요청이 완료되었습니다.');
+                alert('견적응답이 완료되었습니다.');
                 this.props.navigation.goBack();
               }
             })
@@ -469,4 +473,4 @@ class ReqeustQTrust extends Component {
   }
 }
 
-export default ReqeustQTrust;
+export default ResponseQTrust;
