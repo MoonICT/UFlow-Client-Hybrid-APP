@@ -26,13 +26,14 @@ import illust11 from '@Assets/images/illust11.png';
 import { styles as SS } from './style';
 import { Warehouse, Contract } from '@Services/apis';
 import CardMypage from '@Components/organisms/CardMypage';
-
+import DocumentPicker from 'react-native-document-picker';
 class TermsContract extends Component {
   constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
       isSubmit: false,
+      singleFile: null,
       isAgree: false,
       isComplete: false,
       file: null,
@@ -72,6 +73,42 @@ class TermsContract extends Component {
         this.setState({ isComplete: false });
       });
     }
+  }
+
+  handlePicker = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        
+      });
+      console.log('res', res)
+      this.setState({ singleFile: res });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  };
+  onSubmit = async () => {
+    let { singleFile } = this.state;
+    let {warehouseRegNo, rentUserNo, cntrYmdFrom, typeWH} = this.props
+    var formData = new FormData();
+    formData.append('file', singleFile);
+    formData.append('warehouseRegNo', warehouseRegNo);
+    formData.append('rentUserNo', rentUserNo);
+    formData.append('cntrYmdFrom', cntrYmdFrom.replace(/-/g, ''));
+    console.log('formData', formData)
+    await Warehouse.termsContract(formData, typeWH).then((res) => {
+      console.log('res', res)
+    })
+    // this.setState({ isSubmit: !isSubmit });
+    // this.props.showPopup({
+    //   image: illust11,
+    //   title: '계약서 등록 완료',
+    //   type: 'confirm',
+    //   content: `계약서 등록을 완료했습니다.\n  UFLOW 계약 담당자가\n  계약서를 확인 후 승인할 예정입니다.`,
+    // });
   }
 
   render () {
@@ -187,7 +224,7 @@ class TermsContract extends Component {
               </Text>
               <TouchableOpacity
                 style={SS.btnAttach}
-                onPress={() => console.log('attach')}>
+                onPress={() => this.handlePicker()}>
                 <Text style={SS.textAttach}>파일첨부</Text>
               </TouchableOpacity>
             </View>
@@ -199,13 +236,14 @@ class TermsContract extends Component {
           <TouchableOpacity
             style={[
               DefaultStyle._btnInline,
-              (file && isAgree) ? '' : DefaultStyle._oulineDisabled,
+              // (file && isAgree) ? '' : DefaultStyle._oulineDisabled,
             ]}
-            disabled={!file || !isAgree}
+            // disabled={!file || !isAgree}
             onPress={() => {
-              this.setState({
-                isComplete: true
-              });
+              this.onSubmit()
+              // this.setState({
+              //   isComplete: true
+              // });
             }}>
             <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
               계약 약관 동의

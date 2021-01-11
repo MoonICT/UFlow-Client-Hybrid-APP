@@ -65,6 +65,7 @@ class ContractInformation extends Component {
       cntrYmdFrom,
       cntrYmdTo,
       mediaFile,
+      typeWH
     } = this.props;
     let dataTable = [
       {
@@ -129,6 +130,8 @@ class ContractInformation extends Component {
             warehouse={warehouse}
             rentUser={rentUser}
             navigation={this.navigation}
+            cntrYmdFrom={cntrYmdFrom}	
+            typeWH={typeWH}
           />
         );
         break;

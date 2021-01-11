@@ -1,7 +1,7 @@
 import { Axios, parseQuery } from '@Services/http';
 import { mainAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import axios from "axios";
 //Contants
 import { TOKEN } from '@Constant';
 
@@ -143,20 +143,22 @@ export const postWhrgQuestion = async (payload) => {
   );
 };
 
-export const termsContract = async value => {
-  const token = await AsyncStorage.getItem('token');
-  // return await mainAxios.post(
-  //   `/api/v1/chat/contract/4100/${value.url}`,
-  //   value && value.data,
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       Accept: 'application/json',
-  //     },
-  //   },
-  // );
-};
-
+export const  termsContract = async (body, typeWH) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  let typeWHStr = typeWH === 'TRUST' ? 'trust' : 'keep';
+  console.log('body', body)
+  return axios({
+      method: 'Post',
+      url: `/api/v1/contract/4100/owner/${typeWHStr}`,
+      data: body,
+      headers: {
+          // 'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+      }
+  }).catch(err => {
+      console.log(err)
+  })
+}
 export const searchAddressKakao = async ({
   query = '',
   page = 0,
