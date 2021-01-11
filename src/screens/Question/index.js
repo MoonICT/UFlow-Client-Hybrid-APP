@@ -6,7 +6,19 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { SafeAreaView, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  ScrollView,
+  Image,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Dimensions,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
+} from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
@@ -18,25 +30,29 @@ import TextField from '@Components/organisms/TextField';
 import { styles as S } from './style';
 
 import { Question } from '@Services/apis';
+const windowHeight = Dimensions.get('window').height;
 
 class QuestionScreen extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    this.state = { 
-      visible: false, 
-      email: '', content: '',
+    this.state = {
+      visible: false,
+      email: '',
+      content: '',
     };
     this.navigation = props.navigation;
   }
 
   /** when after render DOM */
-  async componentDidMount() {
-
-  }
+  async componentDidMount() {}
 
   fetchData(params) {
-    Question.createQuestion({ ...params, email: this.state.email, content: this.state.content })
+    Question.createQuestion({
+      ...params,
+      email: this.state.email,
+      content: this.state.content,
+    })
       .then(res => {
         console.log('::::: Question :::::', res);
         if (res.status === 200) {
@@ -58,27 +74,26 @@ class QuestionScreen extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  handleChangeEmail = (value) => this.setState({ email: value })
+  handleChangeEmail = value => this.setState({ email: value });
 
-  handleChangeContent = (value) => this.setState({ content: value })
+  handleChangeContent = value => this.setState({ content: value });
 
   onSubmit = () => {
-    if ((this.state.email.length >0) && (this.state.content.length >0)){
+    if (this.state.email.length > 0 && this.state.content.length > 0) {
       this.fetchData();
-    }else{
+    } else {
       return;
     }
   };
 
   render() {
-
     // const windowHeight = Dimensions.get('window').height;
 
     return (
-      <ScrollView>
-      {console.log('email',(this.state.email.length >0 ? true : false ))}
-      {console.log('content',this.state.content)}
-        <SafeAreaView style={S.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <View>
           <Appbars>
             <Appbar.Action
               icon="arrow-left"
@@ -96,74 +111,79 @@ class QuestionScreen extends Component {
               color="#ff6d00"
               title="등록"
               style={S.headerButon}
-              onPress={ this.onSubmit }
-              // onPress={ 
+              onPress={this.onSubmit}
+              // onPress={
               //  ( if ((this.state.email !== 0) && (this.state.content !== 0)){
               //   this.onSubmit
               //   })}
               titleStyle={DefaultStyle._textHeaderRight}
             />
           </Appbars>
-          <ScrollView>
-            <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-              <View style={DefaultStyle._titleCard}>
-                <Text style={DefaultStyle._textTitleBody}>
-                  유플로우에 궁금하신 점을 {'\n'}
-                문의해 주세요.
-              </Text>
+        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.inner}>
+            <ScrollView>
+              <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
+                <View style={DefaultStyle._titleCard}>
+                  <Text style={DefaultStyle._textTitleBody}>
+                    유플로우에 궁금하신 점을 {'\n'}
+                    문의해 주세요.
+                  </Text>
+                </View>
+                <TextField
+                  labelTextField="이메일"
+                  placeholder="Please enter email"
+                  colorLabel="#000000"
+                  onChangeText={this.handleChangeEmail}
+                />
+                <TextField
+                  labelTextField="내용"
+                  colorLabel="#000000"
+                  numberOfLines={5}
+                  multiline={true}
+                  onChangeText={this.handleChangeContent}
+                />
               </View>
-              <TextField
-                labelTextField="이메일"
-                placeholder='Please enter email'
-                colorLabel="#000000"
-                onChangeText={this.handleChangeEmail}
-              />
-              <TextField
-                labelTextField="내용"
-                colorLabel="#000000"
-                numberOfLines={5}
-                multiline={true}
-                onChangeText={this.handleChangeContent}
-              />
-            </View>
-          </ScrollView>
-          <Dialog
-            style={DefaultStyle.popup}
-            visible={this.state.visible}
-            onDismiss={this.hideDialog}>
-            <Dialog.Content>
-              {/* <View style={DefaultStyle.imagePopup} /> */}
-              <Image
-                style={DefaultStyle.imagePopup}
-                source={{
-                  uri: 'https://cdn.discordapp.com/attachments/782864362171400235/793758658881257482/illust-popup-113x.png',
-                }}
-              />
-            </Dialog.Content>
-            <Dialog.Title
-              style={[DefaultStyle._titleDialog, S.titleQuestion]}>
-              문의 완료
-          </Dialog.Title>
-            <Dialog.Content>
-              <Paragraph style={[DefaultStyle.contentDialog, S.contentQuestion]}>
-                UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴
-              예정입니다. 자세한 내용은 [마이페이지 `{'>'}` 내 창고]에서 확인해
-              주세요.
-            </Paragraph>
-            </Dialog.Content>
-            <Dialog.Actions style={DefaultStyle._buttonPopup}>
-              <Button
-                style={DefaultStyle._buttonElement}
-                onPress={this.hideDialog}>
-                확인
-            </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </SafeAreaView>
-      </ScrollView>
+            </ScrollView>
+            <Dialog
+              style={DefaultStyle.popup}
+              visible={this.state.visible}
+              onDismiss={this.hideDialog}>
+              <Dialog.Content>
+                {/* <View style={DefaultStyle.imagePopup} /> */}
+                <Image
+                  style={DefaultStyle.imagePopup}
+                  source={{
+                    uri:
+                      'https://cdn.discordapp.com/attachments/782864362171400235/793758658881257482/illust-popup-113x.png',
+                  }}
+                />
+              </Dialog.Content>
+              <Dialog.Title
+                style={[DefaultStyle._titleDialog, S.titleQuestion]}>
+                문의 완료
+              </Dialog.Title>
+              <Dialog.Content>
+                <Paragraph
+                  style={[DefaultStyle.contentDialog, S.contentQuestion]}>
+                  UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴
+                  예정입니다. 자세한 내용은 [마이페이지 `{'>'}` 내 창고]에서
+                  확인해 주세요.
+                </Paragraph>
+              </Dialog.Content>
+              <Dialog.Actions style={DefaultStyle._buttonPopup}>
+                <Button
+                  style={DefaultStyle._buttonElement}
+                  onPress={this.hideDialog}>
+                  확인
+                </Button>
+              </Dialog.Actions>
+            </Dialog>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
-
 }
 
 /** map state with store states redux store */
@@ -177,10 +197,33 @@ function mapStateToProps(state) {
 
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
-  return {
-
-  };
+  return {};
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  inner: {
+    padding: 24,
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'space-around',
+  },
+  header: {
+    fontSize: 36,
+    marginBottom: 48,
+  },
+  textInput: {
+    height: 40,
+    borderColor: '#000000',
+    borderBottomWidth: 1,
+    marginBottom: 36,
+  },
+  btnContainer: {
+    backgroundColor: 'white',
+    marginTop: 12,
+  },
+});
 
 export default connect(
   mapStateToProps,
