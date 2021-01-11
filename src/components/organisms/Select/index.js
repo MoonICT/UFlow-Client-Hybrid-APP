@@ -19,7 +19,7 @@ export default class Selected extends Component {
     super(props);
 
     this.state = {
-      selectedValue: props.dataDefault ? props.dataDefault.label : '',
+      selectedValue: '',
       isToggle: false,
       indexActive: 0,
     };
@@ -29,8 +29,11 @@ export default class Selected extends Component {
   _hideSelect = () => this.setState({ isToggle: false });
   componentWillReceiveProps(newProps) {
     // let selectedValue = newProps.selectedValue;
-    // console.log('defaultValue :>> ', newProps);
-    // this.setState({ selectedValue: selectedValue });
+    // console.log('defaultValuenewProps :>> ', newProps);
+    if (newProps.dataDefault) {
+      // console.log('newProps :>> ', newProps);
+      this.setState({ selectedValue: newProps.dataDefault.label });
+    }
   }
   render() {
     const {
@@ -67,7 +70,7 @@ export default class Selected extends Component {
           </Text>
         );
       });
-      // console.log('selectedValue :>> ', selectedValue);
+    // console.log('selectedValue :>> ', selectedValue);
     // const items =
     //   data &&
     //   data.map((item, index) => {

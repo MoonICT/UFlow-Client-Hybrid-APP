@@ -8,6 +8,7 @@ import configURL from './ConfigURL';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Local Imports
+import { TOKEN } from '@Constant';
 
 // TODO  언어 쿠키 설정 필요.
 // const lang = Cookies.get(LANGUAGE_KEY_NAME) ? Cookies.get(LANGUAGE_KEY_NAME) : 'ko-KR'
@@ -28,7 +29,7 @@ const Axios = {
       config,
     } = parameter;
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       // axios request default options
       const headers = (config && config.headers) ? config.headers : {};
 
@@ -44,9 +45,12 @@ const Axios = {
 
       // if API endpoint requires a token
       if (requiresToken) {
-        AsyncStorage.getItem('token').then(value=>{
-          headers['Authorization'] = `Bearer ${value}`;
-        });
+        const token = await AsyncStorage.getItem(TOKEN);
+        headers['Authorization'] = `Bearer ${token}`;
+        console.log('토큰토큰토큰:::::', token)
+        // AsyncStorage.getItem('token').then(value => {
+        //   headers['Authorization'] = `Bearer ${value}`;
+        // });
       }
 
       // Request with axios

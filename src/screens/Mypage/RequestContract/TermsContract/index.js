@@ -15,7 +15,8 @@ import {
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Text, Dialog, Paragraph, Button } from 'react-native-paper';
-import moment from 'moment'
+import moment from 'moment';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -26,6 +27,8 @@ import illust11 from '@Assets/images/illust11.png';
 import { styles as SS } from './style';
 import { Warehouse, Contract } from '@Services/apis';
 import CardMypage from '@Components/organisms/CardMypage';
+import AsyncStorage from "@react-native-community/async-storage";
+
 import DocumentPicker from 'react-native-document-picker';
 class TermsContract extends Component {
   constructor (props) {
@@ -45,31 +48,41 @@ class TermsContract extends Component {
   /**
    * 약관 동의 및 계약협의 요청.
    * */
-  useImperativeHandle = () => {
+  useImperativeHandle = async () => {
+    await AsyncStorage.getItem('TOKEN').then(res => {
+      console.log('토큰확인1:::::', res)
+    });
+    console.log(this.props.type)
+    console.log('contractType', this.props.contractType.toLowerCase())
+    console.log('warehouseRegNo', this.props.warehouseRegNo)
+    console.log('rentUserNo', this.props.rentUserNo)
+    console.log('cntrYmdFrom', moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD'))
     if (!this.state.isAgree) {
       alert('계약 약관에 동의해주세요.')
       return false;
     }
-    if (this.props.type === 'owner') {
-      // TODO 통장 사본 체크.
-
+    if (this.props.type === 'OWNER') {
       let formData = new FormData();
-      // formData.append('file', file ? file : ''); // TODO 파일추가
+      formData.append('file', {
+        uri: this.state.file.uri,
+        name: this.state.file.fileName,
+        type: 'image/jpeg',
+      });
       formData.append('warehouseRegNo', this.props.warehouseRegNo);
       formData.append('rentUserNo', this.props.rentUserNo);
       formData.append('cntrYmdFrom', moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD'));
       Contract.owner4100(this.props.contractType.toLowerCase(), formData).then(res => {
-        console.debug('약관 동의 결과 : ', res)
+        console.debug('약관 동의 결과1 : ', res)
         this.setState({ isComplete: false });
       });
-    } else if (this.props.type === 'tenant') {
+    } else if (this.props.type === 'TENANT') {
       Contract.tenant4100({
         contractType: this.props.contractType.toLowerCase(),
         warehouseRegNo: this.props.warehouseRegNo,
         rentUserNo: this.props.rentUserNo,
         cntrYmdFrom: moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD')
       }).then(res => {
-        console.debug('약관 동의 결과 : ', res)
+        console.debug('약관 동의 결과2 : ', res)
         this.setState({ isComplete: false });
       }).catch(error => {
         alert('tenant4100:' + error);
@@ -80,7 +93,7 @@ class TermsContract extends Component {
   handlePicker = async () => {
     try {
       const res = await DocumentPicker.pick({
-        
+
       });
       console.log('res', res)
       this.setState({ singleFile: res });
@@ -114,6 +127,21 @@ class TermsContract extends Component {
     //   content: `계약서 등록을 완료했습니다.\n  UFLOW 계약 담당자가\n  계약서를 확인 후 승인할 예정입니다.`,
     // });
   }
+
+  /**
+   * 앨범 이미지 선택 핸들러
+   * */
+  handleLaunchImage = () => {
+    console.log('::: handleLaunchImage')
+    launchImageLibrary({
+      // includeBase64: true
+    }, (res) => {
+      console.log('이미지 선택 완료', res);
+      this.setState({
+        file: res
+      });
+    });
+  };
 
   render () {
     const {
@@ -210,7 +238,7 @@ class TermsContract extends Component {
         </View>
 
         {/** 추가 서류 업로드 */}
-        {type === 'OWNER' && (!dataContract || !dataContract.entrpByOwner || !dataContract.entrpByOwner) && (
+        {type === 'OWNER' && (dataContract && !dataContract.entrpByOwner?.file2) && (
           <View style={DefaultStyle._card}>
             <View style={DefaultStyle._headerCard}>
               <Text style={DefaultStyle._headerCardTitle}>추가 서류 등록</Text>
@@ -220,35 +248,45 @@ class TermsContract extends Component {
               <Text style={SS.describe}>
                 jpg, png, pdf 확장자 파일만 업로드가 가능합니다.
               </Text>
-              <View style={SS.infoRegister}>
-                <Text style={SS.textRegister}>사업자등록증...</Text>
+              <View style={[SS.infoRegister, { marginBottom: 16 }]}>
+                <Text style={SS.textRegister}>{file ? file.fileName : '통장 사본을 첨부해주세요.'}</Text>
               </View>
-              <Text style={SS.textSuccess}>
-                성공적으로 파일을 등록했습니다.
-              </Text>
-              <TouchableOpacity
-                style={SS.btnAttach}
-                onPress={() => this.handlePicker()}>
+              {/*<Text style={SS.textSuccess}>*/}
+              {/*성공적으로 파일을 등록했습니다.*/}
+              {/*</Text>*/}
+              <TouchableOpacity style={SS.btnAttach}
+                                onPress={() => this.handleLaunchImage()}>
+              {/*<Text style={SS.textSuccess}>*/}
+                {/*성공적으로 파일을 등록했습니다.*/}
+              {/*</Text>*/}
+              {/*<TouchableOpacity*/}
+                {/*style={SS.btnAttach}*/}
+                {/*onPress={() => this.handlePicker()}>*/}
                 <Text style={SS.textAttach}>파일첨부</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
 
+        {/** 동의 버튼 */}
         <View
           style={[DefaultStyle._listBtn, { marginTop: 12, marginBottom: 8 }]}>
           <TouchableOpacity
             style={[
               DefaultStyle._btnInline,
-              // (file && isAgree) ? '' : DefaultStyle._oulineDisabled,
+              (!isAgree || !(dataContract.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
             ]}
-            // disabled={!file || !isAgree}
-            onPress={() => {
-              this.onSubmit()
-              // this.setState({
-              //   isComplete: true
-              // });
-            }}>
+            disabled={!isAgree || !(dataContract.entrpByOwner?.file2 || file)}
+            onPress={() => this.useImperativeHandle()}>
+            {/*//   // (file && isAgree) ? '' : DefaultStyle._oulineDisabled,*/}
+            {/*// ]}*/}
+            {/*// // disabled={!file || !isAgree}*/}
+            {/*// onPress={() => {*/}
+            {/*//   this.onSubmit()*/}
+            {/*//   // this.setState({*/}
+            {/*//   //   isComplete: true*/}
+            {/*//   // });*/}
+            {/*// }}>*/}
             <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
               계약 약관 동의
             </Text>
