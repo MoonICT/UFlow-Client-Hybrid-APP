@@ -155,33 +155,44 @@ export const styles = StyleSheet.create({
     paddingLeft: 34,
     backgroundColor: color.primary.main,
   },
+  BoxContentTop:{
+    position:'relative',
+    top:-50
+  },
   introImage: {
-    width: '100%',
+    minWidth:167,
+    maxWidth:167,
+    marginLeft:(windowWidth/2)+84,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf:'center',
     position: 'relative',
-    marginBottom: 40,
+    // marginBottom: 40,
+    flex:1,
   },
   introFactoryImage: {
     width: 167,
     height: 114,
-    position: 'absolute',
-    top: -6,
+    // position: 'absolute',
+    // top: -6,
   },
-  introSymbolImage: {
-    width: 167,
-    height: 114,
+  BoxSearch:{
+    // backgroundColor:'blue'
+    alignContent:'center',
+    justifyContent:'center'
   },
-  introTitle: {
-    fontFamily: 'NotoSansCJKkr-Bold',
-    fontSize: 24,
-    letterSpacing: -0.5,
-    lineHeight: 28,
-    color: color.primary.constrast,
+  introDivider: {
+    // width: 257,
+    height: 2,
+    backgroundColor: color.primary.constrast,
   },
   introInput: {
-    width: '90%',
+    width: 260,
+    marginRight:10,
+    borderBottomWidth:2,
+    // backgroundColor:'red',
+    borderBottomColor:'white',
     // fontFamily: 'NotoSansCJKkr-Bold',
     fontSize: 24,
     letterSpacing: -0.5,
@@ -191,6 +202,31 @@ export const styles = StyleSheet.create({
     padding: 0,
     color: color.point.main,
   },
+  introRow: {
+    display: 'flex',
+    position:'relative',
+    // marginTop:-50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  introSymbolImage: {
+    width: 167,
+    top: -6,
+    // backgroundColor:'white',
+    height: 114,
+    paddingBottom: 0,
+    paddingTop: 0,
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  introTitle: {
+    fontFamily: 'NotoSansCJKkr-Bold',
+    fontSize: 24,
+    letterSpacing: -0.5,
+    lineHeight: 28,
+    color: color.primary.constrast,
+  },
   searchInput: {
     // fontFamily: 'NotoSansCJKkr-Bold',
     fontSize: 24,
@@ -198,12 +234,6 @@ export const styles = StyleSheet.create({
     // lineHeight: 32,
   },
 
-  introRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   introColum: {
     display: 'flex',
     flexDirection: 'row',
@@ -215,11 +245,6 @@ export const styles = StyleSheet.create({
     fontStyle: 'normal',
     color: color.primary.constrast,
     marginLeft: 6,
-  },
-  introDivider: {
-    width: 257,
-    height: 2,
-    backgroundColor: color.primary.constrast,
   },
   introBottom: {
     marginTop: 12,
