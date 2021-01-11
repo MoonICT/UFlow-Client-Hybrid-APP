@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import {
   SafeAreaView,
   View,
@@ -13,26 +13,37 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { Appbar, Text } from 'react-native-paper';
+import {connect} from 'react-redux';
+import {Appbar, Text} from 'react-native-paper';
 
 // Local Imports
-import DefaultStyle from '@Styles/default';
-// import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
+import DefaultStyle from '@Styles/default';
 
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import warehouse1 from '@Assets/images/warehouse-1.png';
-import { Warehouse } from '@Services/apis';
+import {Warehouse, MyPage} from '@Services/apis';
 
-import { styles as S } from '../style';
+import {styles as S} from '../style';
 import RequestView from './requestView';
-import { StringUtils } from '@Services/utils';
+
+import TenantRq00Trust from './tenantRq00Trust';
+import TenantRq00Keep from './tenantRq00Keep';
+import TenantRs00Trust from './tenantRs00Trust';
+import TenantRs00Keep from './tenantRs00Keep';
+
+import OwnerRq00Trust from './ownerRq00Trust';
+import OwnerRq00Keep from './ownerRq00Keep';
+import OwnerRs00Trust from './ownerRs00Trust';
+import OwnerRs00Keep from './ownerRs00Keep';
+
+import {StringUtils} from '@Services/utils';
 
 class Quotation extends Component {
+
   constructor(props) {
-    console.log('propssssssssssssssssssssssss', props)
+
     super(props);
     this.webView = null;
     this.state = {
@@ -41,58 +52,79 @@ class Quotation extends Component {
 
     this.navigation = props.navigation;
   }
+
   coverStatus = value => {
     switch (value) {
+
       case 'RQ00':
         // code block
-        return { processing: '견적 요청', data: [] };
+        return {
+          processing: '견적요청',
+          data: []
+        };
+
       case 'RS00':
         // code block
         return {
           data: [],
-          processing: '견적 응답',
+          processing: '견적응답',
         };
 
       case '1100':
         // code block
         return {
           data: [],
-          processing: '계약 요청',
+          processing: '계약협의',
         };
+
+
+      case '2100':
+        // code block
+        return {
+          data: [],
+          processing: '계약요청대기',
+        };
+
       case '4100':
         // code block
         return {
           data: [],
-          processing: '계약 진행',
+          processing: '계약중',
         };
+
       case '5100':
         // code block
         return {
           data: [],
-          processing: '계약 완료',
+          processing: '계약완료',
         };
 
       // code block
     }
   };
+
   coverTime = value => {
     let time = new Date();
     time.setTime(value);
     let changeTime = time.toLocaleDateString();
     return changeTime;
   };
+
+
   render() {
     // const { imageStore } = this.props;
-    const { route } = this.props;
+    const {route} = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
     const warehSeq = route && route.params && route.params.warehSeq;
     const rentUserNo = route && route.params && route.params.rentUserNo;
     const type = route && route.params && route.params.type;
     const typeWH = route && route.params && route.params.typeWH;
     const status = route && route.params && route.params.status;
-    console.log('routeQutation', route);
+    // console.log('routeQutation', route);
 
-    const { dataApi } = this.state;
+    const {dataApi} = this.state;
+    console.log(typeWH, 'typeWH');
+    console.log(dataApi, 'dataApi');
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
         {
@@ -108,9 +140,8 @@ class Quotation extends Component {
           value: dataApi.warehouse.address,
         },
         {
-          type: '선택 창고 유형',
-          // value: this.coverStatus(status).processing,
-          value: '임대 요청',
+          type: '계약유형',
+          value: '임대(보관)',
           highlight: true,
         },
         {
@@ -118,28 +149,32 @@ class Quotation extends Component {
           value: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         },
         {
-          type: '정산단위',
-          value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
+          type: '전용면적',
+          value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
         },
-        {
-          type: '산정기준',
-          value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
-        },
-        {
-          type: '가용면적',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue,''),
-        },
+        // {
+        //   type: '정산단위',
+        //   value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '산정기준',
+        //   value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '가용면적',
+        //   value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue),
+        // },
         {
           type: '임대 가능 기간',
-          value: this.coverTime(dataApi.whrgMgmtKeep.usblYmdFrom,''),
+          value: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
         },
         {
           type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.splyAmount,''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.splyAmount),
         },
         {
           type: '관리단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.mgmtChrg,''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.mgmtChrg),
         },
       ];
     let dataTrust = dataApi &&
@@ -157,8 +192,7 @@ class Quotation extends Component {
           value: dataApi.warehouse.address,
         },
         {
-          type: '선택 창고 유형',
-          // value: this.coverStatus(status).processing,
+          type: '계약유형',
           value: '수탁',
           highlight: true,
         },
@@ -176,41 +210,43 @@ class Quotation extends Component {
         },
         {
           type: '수탁 가능 기간',
-          value: this.coverTime(dataApi.whrgMgmtTrust.usblYmdFrom),
+          value: StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdTo),
         },
         {
-          type: '수탁 가용 수량',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.usblValue, ''),
+          type: '수탁 가용수량',
+          value: dataApi.whrgMgmtTrust.usblValue ? dataApi.whrgMgmtTrust.usblValue.toLocaleString() + ' ' + (dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName) : '-'
         },
         {
           type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount),
         },
         {
-          type: '입고단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whinChrg, ''),
-        },
-        {
-          type: '출고단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whoutChrg, ''),
+          type: '가공단가',
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg),
         },
         {
           type: '인건단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg),
         },
         {
-          type: '가용면적',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg, ''),
+          type: '입고단가',
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whinChrg),
+        },
+        {
+          type: '출고단가',
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whoutChrg),
         },
         {
           type: '택배단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg),
         },
         {
           type: '운송단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg),
         },
       ];
+
+    console.log(this.state.calUnitDvCodes, 'this.state.calUnitDvCodes');
 
     return (
       <SafeAreaView style={DefaultStyle._container}>
@@ -221,18 +257,21 @@ class Quotation extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="마이페이지"
+            title="견적･계약 관리"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={DefaultStyle._cards}>
-            <View style={[DefaultStyle._titleCard, DefaultStyle._titleStatus]}>
-              <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
+        <ScrollView style={[DefaultStyle.backgroundGray]}>
 
-              {type === 'OWNER' ? (
+          <View style={[DefaultStyle.backgroundWhiteDF2, {paddingBottom: 180}]}>
+            <View style={[DefaultStyle._cards, DefaultStyle.backgroundWhiteDF2]}>
+
+              {/** HEADER **/}
+              <View style={[DefaultStyle._titleCard, DefaultStyle._titleStatus]}>
+                <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
+
                 <Text
                   style={[
                     DefaultStyle._statusProcessing,
@@ -242,149 +281,187 @@ class Quotation extends Component {
                   ]}>
                   {this.coverStatus(status).processing}
                 </Text>
-              ) : null}
-              {/**
-                <Text
-                  style={[
-                    DefaultStyle._statusProcessing,
-                    DefaultStyle._statusSuccess,
-                  ]}>
-                  계약 완료
-                </Text>
-                 */}
-            </View>
-
-            <View style={DefaultStyle._card}>
-              <View style={DefaultStyle._headerCard}>
-                <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
               </View>
-              <View
-              // style={DefaultStyle._bodyCard}
-              >
-                <View style={DefaultStyle._infoTable}>
-                  <TableInfo data={typeWH === 'KEEP' ? dataKeep : dataTrust} />
-                </View>
-              </View>
-            </View>
-          </View>
+              {/** END:HEADER **/}
 
-          {
-            // typeWH === 'KEEP' ? viewRequest : viewRequestTrust
-          }
-          <RequestView data={dataApi} typeWH={typeWH && typeWH} />
-          {// type === 'OWNER' &&
-          status === 'RQ00' ? (
-            <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+              {/** WAREHOUSE INFO **/}
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
-                  <Text style={DefaultStyle._headerCardTitle}>
-                    견적 응답 정보
-                  </Text>
+                  <Image source={warehouse1} style={DefaultStyle._avatarHeader}/>
                 </View>
-                <Text style={S.noticeWaitting}>
-                  {type === 'OWNER' ? (
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.navigation.navigate('ResponseQuotation', {
-                          typeWH,
-                          warehouseRegNo,
-                          warehSeq,
-                          rentUserNo,
-                          status,
-                          type,
-                        });
-                      }}
-                      style={[
-                        DefaultStyle._btnOutline,
-                        { flex: 0, marginRight: 16 },
-                      ]}
-                      // disabled={this.state.checked ? false : true}
-                    >
-                      <Text style={DefaultStyle._textButton}>
-                        견적 응답하기
-                      </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    '창고주가 보내주신 견적 요청서를 확인하고 있습니다. 견적 응답이 올 때까지 잠시만 기다려 주세요.'
-                  )}
-                </Text>
-              </View>
-              {type === 'TENANT' ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    // this.props.dataAction(this.state);
-                    this.navigation.navigate('ResponseQuotation', {
-                      typeWH,
-                      warehouseRegNo,
-                      warehSeq,
-                      rentUserNo,
-                      status,
-                      type,
-                    });
-                  }}
-                  style={[
-                    type === 'OWNER'
-                      ? DefaultStyle._btnInline
-                      : DefaultStyle._btnOutline,
-                  ]}
-                  // disabled={this.state.checked ? false : true}
+                <View
+                  // style={DefaultStyle._bodyCard}
                 >
-                  <Text style={[DefaultStyle._textButton]}>견적 재요청</Text>
-                </TouchableOpacity>
-              ) : null}
-            </View>
-          ) : null}
-          {//BUTTON RESQUEST QUATATION AND CONTRACT REQUIREMENTS
-          type === 'TENANT' && status === 'RS00' ? (
-            <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-              <View style={DefaultStyle._listBtn}>
-                <TouchableOpacity
-                  style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
-                  onPress={() => {
-                    this.navigation.navigate('ResponseQuotation', {
-                      typeWH,
-                      warehouseRegNo,
-                      warehSeq,
-                      rentUserNo,
-                      status,
-                      type,
-                    });
-                  }}>
-                  <Text style={DefaultStyle._textButton}>견적 재요청</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
-                  onPress={
-                    () =>
-                      this.setState({
-                        isConfirmRequest: !this.state.isConfirmRequest,
-                      })
-                    // this.navigation.navigate('RequestContract', {
-                    //   type,
-                    //   warehouseRegNo,
-                    //   warehSeq,
-                    //   typeWH,
-                    // })
-                  }>
-                  <Text
-                    style={[
-                      DefaultStyle._textButton,
-                      DefaultStyle._textInline,
-                    ]}>
-                    계약 요청
-                  </Text>
-                </TouchableOpacity>
+                  <View style={DefaultStyle._infoTable}>
+                    <TableInfo data={typeWH === 'KEEP' ? dataKeep : dataTrust}/>
+                  </View>
+                </View>
               </View>
+              {/** END:WAREHOUSE INFO **/}
             </View>
-          ) : null}
-          {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-            {route.params.status === 'notAnswerd' ? (
+
+            {/** GRAY SPACE **/}
+            <View style={[DefaultStyle.backgroundGray, {height: 10}]}><>{/**Gray Space**/}</>
+            </View>
+            {/** END:GRAY SPACE **/}
+
+            {/** REQ/RES INFO **/}
+            {/*<RequestView data={dataApi} typeWH={typeWH && typeWH} />*/}
+            {/** END:REQ/RES INFO **/}
+
+
+            {/** REQ/RES ACTION **/}
+
+            {/* ====== STATUS DEBUG ====== */}
+            <Text>{type}</Text>
+            <Text>{typeWH}</Text>
+            <Text>{status}</Text>
+            {/* ====== END:STATUS DEBUG ====== */}
+
+            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST') &&
+            <TenantRq00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+
+            />
+            }
+            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'KEEP') &&
+            <TenantRq00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
+
+
+            {(type === 'TENANT' && status === 'RS00' && typeWH === 'TRUST') &&
+            <TenantRs00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
+            {(type === 'TENANT' && status === 'RS00' && typeWH === 'KEEP') &&
+            <TenantRs00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
+
+
+            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST') &&
+            <OwnerRq00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
+            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP') &&
+            <OwnerRq00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
+
+
+            {(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&
+            <OwnerRs00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
+            {(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&
+            <OwnerRs00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
+
+            {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+             {route.params.status === 'notAnswerd' ? (
               <Fragment>
                 <View style={DefaultStyle._card}>
                   <View style={DefaultStyle._headerCard}>
                     <Text style={DefaultStyle._headerCardTitle}>
                       견적 응답 정보
-                    </Text>
+                    </Text>tenantRq00
                     {type === 'OWNER' ? (
                       <TouchableOpacity
                         onPress={() => {
@@ -470,8 +547,11 @@ class Quotation extends Component {
                 </View>
               </Fragment>
             )}
+             </View>
+             */}
+            {/** END:REQ/RES ACTION **/}
           </View>
-         */}
+
         </ScrollView>
       </SafeAreaView>
     );
@@ -479,49 +559,57 @@ class Quotation extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
+
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let rentUserNo = this.props.route.params.rentUserNo;
-    let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-    let typeWH = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
-    let url =
-      type +
-      '/' +
-      warehouseRegNo +
-      '/' +
-      typeWH +
-      '/' +
-      warehSeq +
-      '/' +
-      rentUserNo;
-    let urlTenant = type + '/' + warehouseRegNo + '/' + typeWH + '/' + warehSeq;
+    let type = this.props.route.params.type;
+    let typeWH = this.props.route.params.typeWH;
 
-    let urlProps =
-      type +
-      '/warehouse/' +
-      warehouseRegNo +
-      '/' +
-      typeWH +
-      '/' +
-      warehSeq +
-      '/' +
-      rentUserNo;
+    let urlOwner = `${type.toLocaleLowerCase()}/${warehouseRegNo}/${typeWH.toLocaleLowerCase()}/${warehSeq}/${rentUserNo}`;
+    let urlTenant = `${type.toLocaleLowerCase()}/${warehouseRegNo}/${typeWH.toLocaleLowerCase()}/${warehSeq}`;
 
-    let urlPropsTenant =
-      type + '/warehouse/' + warehouseRegNo + '/' + typeWH + '/' + warehSeq;
+    let urlPropsOwner = `${type.toLocaleLowerCase()}/warehouse/${warehouseRegNo}/${typeWH.toLocaleLowerCase()}/${warehSeq}/${rentUserNo}`;
+    let urlPropsTenant = `${type.toLocaleLowerCase()}/warehouse/${warehouseRegNo}/${typeWH.toLocaleLowerCase()}/${warehSeq}`;
+
     console.log('urlTenant', urlTenant);
+
+    MyPage.getDetailCodes('WHRG0014').then((res) => {
+
+      if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
+        // console.log('detailCodes', res.data._embedded.detailCodes)
+        this.setState({
+          calStdDvCodes: res.data._embedded.detailCodes
+        });
+      }
+    });
+
+    MyPage.getDetailCodes('WHRG0013').then((res) => {
+
+      if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
+        // console.log('detailCodes', res.data._embedded.detailCodes)
+        this.setState({
+          calUnitDvCodes: res.data._embedded.detailCodes
+        });
+      }
+    });
+
+    // TODO 뭐지? ?????
     await Warehouse.quotation(
-      this.props.route.params.type === 'OWNER' ? url : urlTenant,
+      this.props.route.params.type === 'OWNER' ? urlOwner : urlTenant,
     )
       .then(res => {
         const status = res.status;
-        console.log('res', res);
+
         if (status === 200) {
           this.setState({
             dataApi: res.data,
+            estmtTrustGroups: res.data.estmtTrustGroups ? res.data.estmtTrustGroups : [],
+            estmtKeepGroups: res.data.estmtKeepGroups ? res.data.estmtKeepGroups : [],
+            groupOrders: res.data.orders ? res.data.orders : [],
             urlProps:
               this.props.route.params.type === 'OWNER'
-                ? urlProps
+                ? urlPropsOwner
                 : urlPropsTenant,
           });
           // this.props.quotationData(res.data);
@@ -544,9 +632,9 @@ class Quotation extends Component {
         this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
       let data =
         this.props.route.params.typeWH === 'TRUST'
-          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
-          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
-      Warehouse.requestContract({ typeWH, data })
+          ? {warehouseRegNo, mgmtTrustSeq: warehSeq}
+          : {warehouseRegNo, mgmtKeepSeq: warehSeq};
+      Warehouse.requestContract({typeWH, data})
         .then(res => {
           const status = res.status;
           console.log('res', res);
@@ -568,6 +656,7 @@ class Quotation extends Component {
         });
     }
   }
+
   componentWillUnmount() {
     console.log('Component WILL UNMOUNT!');
   }

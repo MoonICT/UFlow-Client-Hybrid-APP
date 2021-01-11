@@ -1,4 +1,5 @@
 /**
+ * 창고주 견적 응답하기
  * @create
  * @modify
  * @desc [description]
@@ -10,6 +11,7 @@ import { View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Text, Appbar } from 'react-native-paper';
+import { StringUtils, DeepLogs } from '@Services/utils';
 
 // Local Imports
 import Appbars from '@Components/organisms/AppBar';
@@ -131,13 +133,14 @@ class ResponseQuotation extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="견적 응답"
+            title="견적 응답하기"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
         <ScrollView>
+
           <View style={[DefaultStyle._cards, SS.body]}>
             <View style={[DefaultStyle._titleCard, SS.title]}>
               <Text
@@ -154,6 +157,7 @@ class ResponseQuotation extends Component {
                 }}>
                 <Icon name={'exclamationcircleo'} color={'#2196f3'} size={14} />
               </TouchableOpacity>
+
               {visible === true ? (
                 <View style={SS.popupInfo}>
                   <TouchableOpacity
@@ -501,6 +505,14 @@ class ResponseQuotation extends Component {
   /** when after render DOM */
   async componentDidMount() {
     console.log('::componentDidMount::');
+
+    DeepLogs.log(this.props.route.params , 'this.props ResponseQuotation : this.props.params')
+
+    const warehouseRegNo = this.props.route.params.warehouseRegNo;
+    if(!warehouseRegNo) {
+      alert('창고 ID가 존재하지 않습니다. 잘못된 접근입니다.');
+    }
+
 
     SplashScreen.hide();
   }

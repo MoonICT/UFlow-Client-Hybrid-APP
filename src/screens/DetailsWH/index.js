@@ -116,6 +116,7 @@ class DetailWH extends Component {
     this.webView = null;
     let { id } = props.route.params
     // let { } = props.route.qnaParams
+    // console.log('id', id);
     this.state = {
       id: id,
       active: 0,
@@ -126,9 +127,11 @@ class DetailWH extends Component {
       qnaParams: {},
       qnaList: [],
       pageInfo: {},
+      showAll: false,
+      floors:1,
+      whList: [],
     };
     this.navigation = props.navigation;
-    console.log('qnaParams', this.state.qnaParams)
   }
 
   hiddenName = (name) => {
@@ -141,49 +144,59 @@ class DetailWH extends Component {
     }
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
-  }
-
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
 
-  _renderProductItem = ({ item }) => {
-    return <ProductCard data={{ ...item, img: cardBG }} />;
-  };
+  // _renderProductItem = ({ item }) => {
+  //   return <ProductCard data={{ ...item, img: cardBG }} />;
+  // };
 
   _renderDialogBox = ({ item }) => {
     return <ProductCard data={{ ...item, img: cardBG }} />;
   };
 
+  _renderProductItem = ({ item }) => {
+    const cardItem = [];   
+      cardItem.push(
+        <View>
+          {item?.thumbnail !== null ? (
+            <ProductCard navigation={this.navigation} data={item} />
+          ) : (
+            <ProductCard
+              navigation={this.navigation}
+              data={{ ...item, img: cardBG }}
+            />
+          )}
+        </View>,
+      );
+
+    return cardItem;
+  };
+
   render() {
     const { imageStore, workComplete } = this.props;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList} = this.state;
+
     const dataTab = [
       {
         title: '지하 1층',
-        // id: 0,
+        id: 0,
         content: ''
       },
       {
         title: '지상 2층',
-        // id: 1,
+        id: 1,
         content: ''
       },
       {
         title: '지상 3층',
-        // id= 2,
+        id: 2,
         content: ''
       },
       {
         title: '지상 4층',
-        // id= 3,
+        id: 3,
         content: ''
       },
     ];
@@ -217,8 +230,6 @@ class DetailWH extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        {console.log('question', this.state.questionList)}
-
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -244,25 +255,25 @@ class DetailWH extends Component {
           <View style={DefaultStyle._cards}>
             <Text
               style={[DefaultStyle._titleWH, { backgroundColor: '#4caf50' }]}>
-              {this.state.whrgData.typeCode && this.state.whrgData.typeCode}
+              {whrgData.typeCode && whrgData.typeCode}
             </Text>
             <Text style={S.describeTitle}>
-              {`${this.state.whrgData.hasKeep ? "보관창고" : ""}`}
-              {`${this.state.whrgData.hasKeep && this.state.whrgData.hasTrust ? ", " : ""}`}
-              {`${this.state.whrgData.hasTrust ? "수탁창고" : ""}`}
+              {`${whrgData.hasKeep ? "보관창고" : ""}`}
+              {`${whrgData.hasKeep && whrgData.hasTrust ? ", " : ""}`}
+              {`${whrgData.hasTrust ? "수탁창고" : ""}`}
             </Text>
             <Text style={S.header}>
-              {this.state.whrgData.name}
+              {whrgData.name}
             </Text>
             <View style={S.labels}>
               <Text style={[S.textlabel, S.orange]}>상온</Text>
               <Text style={[S.textlabel, S.azure]}>상온</Text>
               <Text style={[S.textlabel, S.green]}>상온</Text>
               <Text style={[S.textlabel, S.gray]}>상온</Text>
-              <Text style={S.textlabel}>12,345평</Text>
+              {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
             <View style={S.background}>
-              <Image style={S.backgroundImage} source={card} />
+              <Image style={S.backgroundImage} source={ whrgData.whImages && whrgData.whImages.length > 0 ? {uri:whrgData.whImages[0].url}  : ''} />
               <Image style={S.iconBackground} source={circle} />
             </View>
             <View style={S.info}>
@@ -271,13 +282,13 @@ class DetailWH extends Component {
                 <TouchableOpacity
                   style={[
                     S.btnTabBarLeft,
-                    this.state.active === 0 ? S.activeBtn : null,
+                    active === 0 ? S.activeBtn : null,
                   ]}
                   onPress={() => this.setState({ active: 0 })}>
                   <Text
                     style={[
                       S.textBtn,
-                      this.state.active === 0 ? S.activeText : null,
+                      active === 0 ? S.activeText : null,
                     ]}>
                     보관
                   </Text>
@@ -285,13 +296,13 @@ class DetailWH extends Component {
                 <TouchableOpacity
                   style={[
                     S.btnTabBarRight,
-                    this.state.active === 1 ? S.activeBtn : null,
+                    active === 1 ? S.activeBtn : null,
                   ]}
                   onPress={() => this.setState({ active: 1 })}>
                   <Text
                     style={[
                       S.textBtn,
-                      this.state.active === 1 ? S.activeText : null,
+                      active === 1 ? S.activeText : null,
                     ]}>
                     수탁
                   </Text>
@@ -299,9 +310,9 @@ class DetailWH extends Component {
               </View>
 
               {/***** Keep (보관) *****/}
-              {this.state.active === 0 &&
-                (this.state.whrgData.keeps && this.state.whrgData.keeps.length > 0 ? (
-                  this.state.whrgData.keeps.map((keep, index) => (
+              {active === 0 &&
+                (whrgData.keeps && whrgData.keeps.length > 0 ? (
+                  whrgData.keeps.map((keep, index) => (
                     <View key={"listKeep" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
                         {keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
@@ -311,9 +322,9 @@ class DetailWH extends Component {
                         {keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
-                        checked={this.state.checked}
+                        checked={checked}
                         onPress={() =>
-                          this.setState({ checked: !this.state.checked })
+                          this.setState({ checked: !checked })
                         }
                       /> */}
                       </View>
@@ -398,13 +409,13 @@ class DetailWH extends Component {
                           <View style={S.tableRow}>
                             {keep.enable ?
                               <View style={S.rowBtn}>
-                                {this.state.whrgData.userTypeCode === '1100' ?
+                                {whrgData.userTypeCode === '1100' ?
                                   <View>
                                     <Text>
-                                      {this.state.whrgData.relativeEntrp ? this.state.whrgData.relativeEntrp.entrpName : ''}
+                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.entrpName : ''}
                                     </Text>
                                     <Text>
-                                      {this.state.whrgData.relativeEntrp ? this.state.whrgData.relativeEntrp.phone.no1 + this.state.whrgData.relativeEntrp.phone.no2 + this.state.whrgData.relativeEntrp.phone.no3 : ''}
+                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.phone.no1 + whrgData.relativeEntrp.phone.no2 + whrgData.relativeEntrp.phone.no3 : ''}
                                     </Text>
                                   </View>
                                   :
@@ -437,9 +448,9 @@ class DetailWH extends Component {
 
               {/***** Trust (수탁) *****/}
 
-              {this.state.active === 1 &&
-                (this.state.whrgData.trusts && this.state.whrgData.trusts.length > 0 ? (
-                  this.state.whrgData.trusts.map((trust, index) => (
+              {active === 1 &&
+                (whrgData.trusts && whrgData.trusts.length > 0 ? (
+                  whrgData.trusts.map((trust, index) => (
                     <View key={"listTrusts" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
                         {trust.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
@@ -449,9 +460,9 @@ class DetailWH extends Component {
                         {trust.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
-                        checked={this.state.checked}
+                        checked={checked}
                         onPress={() =>
-                          this.setState({ checked: !this.state.checked })
+                          this.setState({ checked: !checked })
                         }
                       /> */}
                       </View>
@@ -536,13 +547,13 @@ class DetailWH extends Component {
                           <View style={S.tableRow}>
                             {trust.enable ?
                               <View style={S.rowBtn}>
-                                {this.state.whrgData.userTypeCode === '1100' ?
+                                {whrgData.userTypeCode === '1100' ?
                                   <View>
                                     <Text>
-                                      {this.state.whrgData.relativeEntrp ? this.state.whrgData.relativeEntrp.entrpName : ''}
+                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.entrpName : ''}
                                     </Text>
                                     <Text>
-                                      {this.state.whrgData.relativeEntrp ? this.state.whrgData.relativeEntrp.phone.no1 + this.state.whrgData.relativeEntrp.phone.no2 + this.state.whrgData.relativeEntrp.phone.no3 : ''}
+                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.phone.no1 + whrgData.relativeEntrp.phone.no2 + whrgData.relativeEntrp.phone.no3 : ''}
                                     </Text>
                                   </View>
                                   :
@@ -582,7 +593,7 @@ class DetailWH extends Component {
                 <View style={S.bodyCard}>
                   <View style={S.viewBody}>
                     <Text style={S.textBodyCard}>
-                      {this.state.whrgData.description}
+                      {whrgData.description}
                     </Text>
                   </View>
                 </View>
@@ -600,7 +611,7 @@ class DetailWH extends Component {
                       this.navigation.navigate('DetailsLocationWH');
                     }}>
                     {/* <View>
-                      {this.state.whrgData.gps.latitude > 0 && this.state.whrgData.gps.longitude > 0 ? (
+                      {whrgData.gps.latitude > 0 && whrgData.gps.longitude > 0 ? (
                         <Text>
                           Kakao Map
                         </Text>
@@ -625,7 +636,7 @@ class DetailWH extends Component {
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>준공일자</Text>
                       <Text style={S.textTable}>
-                        {`${formatDateV1(this.state.whrgData.cmpltYmd)}`}
+                        {`${formatDateV1(whrgData.cmpltYmd)}`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -633,7 +644,7 @@ class DetailWH extends Component {
                         전용면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.prvtArea ? this.state.whrgData.prvtArea.toLocaleString() : 0}㎡`}
+                        {`${whrgData.prvtArea ? whrgData.prvtArea.toLocaleString() : 0}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -641,7 +652,7 @@ class DetailWH extends Component {
                         대지면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.siteArea ? this.state.whrgData.siteArea.toLocaleString() : 0}㎡`}
+                        {`${whrgData.siteArea ? whrgData.siteArea.toLocaleString() : 0}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -649,7 +660,7 @@ class DetailWH extends Component {
                         공용면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.cmnArea ? this.state.whrgData.cmnArea.toLocaleString() : 0}㎡`}
+                        {`${whrgData.cmnArea ? whrgData.cmnArea.toLocaleString() : 0}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -657,13 +668,13 @@ class DetailWH extends Component {
                         건축면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.bldgArea ? this.state.whrgData.bldgArea.toLocaleString() : 0}㎡`}
+                        {`${whrgData.bldgArea ? whrgData.bldgArea.toLocaleString() : 0}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>추가옵션</Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.addOptDvCodes ? this.state.whrgData.addOptDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
+                        {`${whrgData.addOptDvCodes ? whrgData.addOptDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -671,7 +682,7 @@ class DetailWH extends Component {
                         연면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.totalArea}㎡`}
+                        {`${whrgData.totalArea}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -679,7 +690,7 @@ class DetailWH extends Component {
                         보험가입
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.insrDvCodes ? this.state.whrgData.insrDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
+                        {`${whrgData.insrDvCodes ? whrgData.insrDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
                       </Text>
                     </View>
                   </View>
@@ -692,12 +703,13 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
-                <AppGrid data={dataTab} />
+                <AppGrid data={dataTab} valueProps={(e)=> this.setState({floors: e})}/>
               </View>
-              {this.state.whrgData.floors
-                ? this.state.whrgData.floors.map((floor, index) => {
+              {whrgData.floors
+                ? whrgData.floors.map((floor, index) => {
                   return (
-                    <View key={"floor" + index} style={DefaultStyle._card}>
+                      floors === index &&
+                      <View key={"floor" + index} style={DefaultStyle._card}>
                       <View style={S.bodyCard}>
                         <View style={S.table}>
                           <View style={S.tableRow}>
@@ -781,7 +793,7 @@ class DetailWH extends Component {
                         </View>
                       </View>
                     </View>
-                  )
+                   )
                 })
                 :
                 <Text style={S.textTable}></Text>
@@ -792,7 +804,7 @@ class DetailWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <View style={S.titleView}>
-                <Text style={S.title}>문의 ({this.state.pageInfo ? this.state.pageInfo.totalElements : 0})</Text>
+                <Text style={S.title}>문의 ({pageInfo.totalElements ? pageInfo.totalElements : 0})</Text>
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnInquiry}
@@ -803,13 +815,12 @@ class DetailWH extends Component {
               </View>
 
               <View style={DefaultStyle._card}>
-              {console.log('qnaList', this.state.qnaList)}
                 <View style={S.bodyCard}>
-                  {(this.state.qnaList && this.state.qnaList.length === 0) &&
+                  {(qnaList && qnaList.length === 0) &&
                     <Text key={'empty'} style={S.titleInquiry}>문의 내역이 없습니다.</Text>
                   }
                   {/* List */}
-                  {this.state.qnaList && this.state.qnaList.map((qnaItem, index) =>
+                  {qnaList && qnaList.map((qnaItem, index) =>
                     <View key={'qnaItem' + index} style={S.inquirys}>
                       <View style={S.leftInquiry}>
                       {console.log('answer', qnaItem?.answer)}
@@ -883,11 +894,15 @@ class DetailWH extends Component {
                       />
                     </View>
                   </View> */}
-                  <TouchableOpacity
-                    style={S.btnViewAll}
-                    onPress={() => this.navigation.navigate('InquiryWH')}>
-                    <Text style={S.textViewAll}>전체보기</Text>
-                  </TouchableOpacity>
+                  
+                  {
+                    (!showAll && pageInfo.totalElements > 4) &&
+                    <TouchableOpacity
+                      style={S.btnViewAll}
+                      onPress={() => {this.handleRequestQnaList(100), this.setState({showAll: true})}}>
+                      <Text style={S.textViewAll}>전체보기</Text>
+                    </TouchableOpacity>
+                  }
                 </View>
               </View>
             </View>
@@ -899,7 +914,7 @@ class DetailWH extends Component {
               <View style={S.mainProductList}>
                 <CarouselSnap
                   layout={'default'}
-                  data={slidesProduct}
+                  data={whList}
                   sliderWidth={328}
                   itemWidth={160}
                   renderItem={this._renderProductItem}
@@ -929,38 +944,69 @@ class DetailWH extends Component {
 
 
   /** when after render DOM */
-  componentDidMount() {
-    console.log('::componentDidMount::');
+  async componentDidMount() {
     SplashScreen.hide();
     this.getDataWH()
-    this.handleRequestQnaList()
+    this.handleRequestQnaList(4)
     this.hiddenName()
   }
 
   async getDataWH() {
-    let { id } = this.state;
+    const { id } = this.state;
+
     let params = {
       id: id
     };
-    await Warehouse.getWhrg(params).then((res) => {
-      // console.log('whrgData', res)
-      if (res) {
-        this.setState({ whrgData: res })
-        // console.log('gps', whrgData.gps.latitude);
-      }
-    })
+    const warehouse = await Warehouse.getWhrg(params);
+
+    this.setState({whrgData: warehouse.data});
+      
+        // 유사창고 파라미터 조건
+        let typeCodeNames = []
+        let gdsKeepTypeCodeNames = []
+        if (warehouse.data.keeps && warehouse.data.keeps.length > 0) {
+          typeCodeNames.push('KEEP')
+          warehouse.data.keeps.map(item => {
+            if (gdsKeepTypeCodeNames.indexOf(item.typeCode.stdDetailCode.toString()) < 0) {
+              gdsKeepTypeCodeNames.push(item.typeCode.stdDetailCode.toString())
+            }
+          })
+        }
+        if (warehouse.data.trusts && warehouse.data.trusts.length > 0) {
+          typeCodeNames.push('TRUST')
+          warehouse.data.trusts.map(item => {
+            console.debug(gdsKeepTypeCodeNames, item.typeCode.stdDetailCode)
+            if (gdsKeepTypeCodeNames.indexOf(item.typeCode.stdDetailCode.toString()) < 0) {
+              gdsKeepTypeCodeNames.push(item.typeCode.stdDetailCode.toString())
+            }
+          })
+        }
+
+        await Warehouse.listRecommend(
+        {
+          typeCodes: typeCodeNames.join(','),
+          gdsKeepTypeCodes: gdsKeepTypeCodeNames.join(','),
+        }
+       ).then(res => {
+          let list =
+          res.data?._embedded && res.data?._embedded?.warehouses
+              ? res.data?._embedded?.warehouses
+              : [];
+
+          this.setState({ whList: list });
+        })
   }
 
-  handleRequestQnaList = () => {
+  handleRequestQnaList = (q_size) => {
+    const { id } = this.state;
     let qnaParams = {
-      id: 'RG20201227195',
-      size: 4,
+      id: id,
+      size: q_size,
       page: 0,
       requiresToken: false
     }
     Warehouse.pageWhrgQnA(qnaParams).then(res => {
-      if (res && res._embedded && res._embedded.questions) {
-        console.log('res._embedded.questions', res._embedded.questions)
+      if (res && res._embedded && res._embedded) {
         let newFQAList = res._embedded.questions.map(item => {
           return {
             status: item.complete,
@@ -976,12 +1022,7 @@ class DetailWH extends Component {
       }
     })
   }
-
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
+  
 }
 
 /** map state with store states redux store */

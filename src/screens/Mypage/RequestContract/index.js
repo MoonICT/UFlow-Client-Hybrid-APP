@@ -23,17 +23,18 @@ import { Warehouse, MediaFileContract } from '@Services/apis';
 import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       contractLink: '',
       dataMedia: [],
+      dataApi: null,
     };
     this.navigation = props.navigation;
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
@@ -75,7 +76,22 @@ class RequestContract extends Component {
       // code block
     }
   };
-  render() {
+
+  /**
+   * 계약정보 가져오기 수탁 또는 임대
+   * */
+  getContract = () => {
+    if (this.state.dataApi) {
+      if (this.state.dataApi.keep) {
+        return this.state.dataApi.keep;
+      }
+      if (this.state.dataApi.trust) {
+        return this.state.dataApi.trust;
+      }
+    }
+  };
+
+  render () {
     const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
     const warehSeq = route && route.params && route.params.warehSeq;
@@ -86,7 +102,7 @@ class RequestContract extends Component {
     const status = route && route.params && route.params.status;
     // console.log('routeRequescontract', route);
     const { dataApi, dataMedia } = this.state;
-    // console.log('dataApi', dataApi);
+    console.log('dataApi', dataApi);
     // console.log('status', status);
     // console.log('dataMedia', dataMedia);
 
@@ -94,135 +110,124 @@ class RequestContract extends Component {
       typeWH === 'KEEP' && [
         {
           type: '창고명',
-          value: dataApi?.warehouse?.warehouse,
+          value: dataApi.warehouse.warehouse,
         },
         {
           type: '창고주',
-          value: dataApi?.warehouse?.owner,
+          value: dataApi.warehouse.owner,
         },
         {
           type: '위치',
-          value: dataApi?.warehouse?.address,
+          value: dataApi.warehouse.address,
         },
         {
-          type: '선택 창고 유형',
-          value: this.coverStatus(status)?.processing,
-          // value: '임대 요청',
+          type: '계약유형',
+          value: '임대(보관)',
           highlight: true,
         },
         {
           type: '보관유형',
-          value: dataApi?.keep?.whrgMgmtKeep?.typeCode?.stdDetailCodeName,
+          value: dataApi.warehouse.keep.typeCode.stdDetailCodeName,
         },
         {
-          type: '정산단위',
-          value: dataApi?.keep?.calUnitDvCode?.stdDetailCodeName,
+          type: '전용면적',
+          value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
         },
-        {
-          type: '산정기준',
-          value: dataApi?.keep?.typeCode?.stdDetailCodeName,
-        },
-        {
-          type: '가용면적',
-          value: dataApi?.keep?.cntrValue,
-        },
+        // {
+        //   type: '정산단위',
+        //   value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '산정기준',
+        //   value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '가용면적',
+        //   value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue),
+        // },
         {
           type: '임대 가능 기간',
-          value: this.coverTime(dataApi?.keep?.whrgMgmtKeep?.usblYmdFrom),
-        },
-        {
-          type: '가용수량',
-          value: StringUtils.moneyConvert(dataApi?.keep?.cntrValue, ''),
+          value: StringUtils.dateStr(dataApi.warehouse.keep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.warehouse.keep.usblYmdTo),
         },
         {
           type: '보관단가',
-          value: StringUtils.moneyConvert(
-            dataApi?.keep?.whrgMgmtKeep?.splyAmount,
-            '',
-          ),
+          value: StringUtils.moneyConvert(dataApi.keep.splyAmount),
         },
         {
           type: '관리단가',
-          value: StringUtils.moneyConvert(
-            dataApi?.keep?.whrgMgmtKeep?.mgmtChrg,
-            '',
-          ),
+          value: StringUtils.moneyConvert(dataApi.keep.mgmtChrg),
         },
       ];
     let dataTrust = dataApi &&
       typeWH === 'TRUST' && [
         {
           type: '창고명',
-          value: dataApi?.warehouse?.warehouse,
+          value: dataApi.warehouse.warehouse,
         },
         {
           type: '창고주',
-          value: dataApi?.warehouse?.owner,
+          value: dataApi.warehouse.owner,
         },
         {
           type: '위치',
-          value: dataApi?.warehouse?.address,
+          value: dataApi.warehouse.address,
         },
         {
-          type: '선택 창고 유형',
-          value: this.coverStatus(status)?.processing,
-          // value: '수탁',
+          type: '계약유형',
+          value: '수탁',
           highlight: true,
         },
         {
-          type: '보관유형',
-          value: dataApi?.trust?.whrgMgmtTrust?.typeCode?.stdDetailCodeName,
-        },
-        {
-          type: '정산단위',
-          value:
-            dataApi?.trust?.whrgMgmtTrust?.calUnitDvCode?.stdDetailCodeName,
-        },
-        {
-          type: '산정기준',
-          value: dataApi?.trust?.whrgMgmtTrust?.calStdDvCode?.stdDetailCodeName,
+          type: '가용수량',
+          value: dataApi.trust.cntrValue ? dataApi.trust.cntrValue.toLocaleString() : '0',
         },
         {
           type: '수탁 가능 기간',
-          value: `${dataApi?.trust?.id?.cntrYmdFrom} ~ ${
-            dataApi?.trust?.cntrYmdTo
-          }`,
+          value: StringUtils.dateStr(dataApi.warehouse.trust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.warehouse.trust.usblYmdTo),
         },
         // {
+        //   type: '보관유형',
+        //   value: dataApi.trust.typeCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '정산단위',
+        //   value: dataApi.trust.calUnitDvCode.stdDetailCodeName,
+        // },
+        // {
+        //   type: '산정기준',
+        //   value: dataApi.trust.calStdDvCode.stdDetailCodeName,
+        // },
+        // {
         //   type: '수탁 가용 수량',
-        //   value: StringUtils.moneyConvert(dataApi.trust.whrgMgmtTrust.usblValue,''),
+        //   value: StringUtils.moneyConvert(dataApi.trust.usblValue),
         // },
         {
-          type: '가용수량',
-          value: StringUtils.moneyConvert(dataApi?.trust?.cntrValue, ''),
-        },
-        {
           type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.splyAmount, ''),
+          value: StringUtils.moneyConvert(dataApi.trust.splyAmount),
         },
         {
-          type: '입고단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.whinChrg, ''),
-        },
-        {
-          type: '출고단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.whoutChrg, ''),
+          type: '가공단가',
+          value: StringUtils.moneyConvert(dataApi.trust.mnfctChrg),
         },
         {
           type: '인건단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.psnChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.trust.psnChrg),
         },
         {
-          type: '가용면적',
-          value: StringUtils.moneyConvert(dataApi?.trust?.mnfctChrg, ''),
+          type: '입고단가',
+          value: StringUtils.moneyConvert(dataApi.trust.whinChrg),
+        },
+        {
+          type: '출고단가',
+          value: StringUtils.moneyConvert(dataApi.trust.whoutChrg),
         },
         {
           type: '택배단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.dlvyChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.trust.dlvyChrg),
         },
         {
           type: '운송단가',
-          value: StringUtils.moneyConvert(dataApi?.trust?.shipChrg, ''),
+          value: StringUtils.moneyConvert(dataApi.trust.shipChrg),
         },
       ];
 
@@ -276,24 +281,27 @@ class RequestContract extends Component {
                   <Text style={S.amount}>예상 견적 금액</Text>
                   <Text style={S.total}>
                     {dataApi &&
-                      dataApi.keep &&
-                      StringUtils.moneyConvert(dataApi.keep.estimatedPrice)}
+                    dataApi.keep &&
+                    StringUtils.moneyConvert(dataApi.keep.estimatedPrice)}
                   </Text>
                 </View>
               </View>
             ) : null}
+
             <ContractInformation
-              cntrYmdFrom={dataApi?.trust?.id?.cntrYmdFrom || ''}
-              cntrYmdTo={dataApi?.trust?.cntrYmdTo || ''}
+              contractType={typeWH}
+              dataContract={this.getContract()}
+              cntrYmdFrom={this.getContract()?.id?.cntrYmdFrom || ''}
+              cntrYmdTo={this.getContract()?.cntrYmdTo || ''}
               warehouseRegNo={warehouseRegNo}
               rentUserNo={rentUserNo}
               warehSeq={warehSeq}
               type={type}
               status={status}
               rentUser={
-                dataApi && dataApi.warehouse && dataApi.warehouse.rentUser
+                this.getContract() && this.getContract().warehouse && this.getContract().warehouse.rentUser
               }
-              warehouse={dataApi && dataApi.warehouse}
+              warehouse={this.getContract() && this.getContract().warehouse}
               mediaFile={dataMedia && dataMedia.entrpByOwner}
               navigation={this.navigation}
             />
@@ -304,7 +312,7 @@ class RequestContract extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let rentUserNo = this.props.route.params.rentUserNo;
@@ -352,7 +360,8 @@ class RequestContract extends Component {
             {
               dataApi: res.data,
             },
-            () => {},
+            () => {
+            },
           );
           // this.props.quotationData(res.data);
         }
@@ -369,7 +378,8 @@ class RequestContract extends Component {
             {
               dataMedia: res.data,
             },
-            () => {},
+            () => {
+            },
           );
           // this.props.quotationData(res.data);
         }
@@ -386,13 +396,13 @@ class RequestContract extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -401,7 +411,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     // countUp: diff => {
     //   dispatch(ActionCreator.countUp(diff));

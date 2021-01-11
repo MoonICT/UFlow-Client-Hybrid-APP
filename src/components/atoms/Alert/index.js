@@ -68,7 +68,7 @@ class Checkbox extends Component {
         <TouchableOpacity onPress={this.props.onPress}>
           {this.props.buttonText ? <Text style={[styles.font, { color: colorVariant[this.props.type].text }]}>
             {this.props.buttonText}
-          </Text> : <Icon style={styles.iconClose} name={'close'} />}
+          </Text> : <Icon style={styles.iconClose} name={this.props.iconName ? this.props.iconName : 'close'} />}
         </TouchableOpacity>
       </View>
     );
@@ -81,6 +81,7 @@ Checkbox.protoType = {
   title: PropTypes.string,
   contents: PropTypes.string,
   buttonText: PropTypes.string,
+  iconName: PropTypes.string,
 };
 
 export default Checkbox;

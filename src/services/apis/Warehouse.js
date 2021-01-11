@@ -41,7 +41,7 @@ export const updateWH = async value => {
 };
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
-  return await mainAxios.get('/api/v1/warehouse/owner', {
+  return mainAxios.get('/api/v1/warehouse/owner', {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
@@ -499,7 +499,7 @@ export const registWhrg = whrgBody => {
  * @param context NextJS Context
  * @returns {Promise<unknown>}
  */
-export const getWhrg = ({ id = '', config = '' }) => {
+export const getWhrg = async ({ id = '', config = '' }) => {
   let configDefault = {
     headers: {
       contentType: 'application/json',
@@ -512,11 +512,21 @@ export const getWhrg = ({ id = '', config = '' }) => {
     };
   }
   console.log('API :::::', config);
-  return Axios.request({
-    methodType: 'GET',
-    url: `/api/v1/warehouse/${id}`,
-    requiresToken: true,
-    config: configDefault,
+  // return Axios.request({
+  //   methodType: 'GET',
+  //   url: `/api/v1/warehouse/${id}`,
+  //   requiresToken: true,
+  //   config: configDefault,
+  // });
+
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.get(`/api/v1/warehouse/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+    // config: configDefault
   });
 };
 
@@ -558,12 +568,17 @@ export const pageWhrg = ({
  * 추천 알고리즘 창고
  * @returns {Promise<unknown>}
  **/
-export const listRecommend = async () => {
-  const data = await mainAxios.request({
-    methodType: 'GET',
-    url: `/api/v1/warehouse/recommend`,
+export const listRecommend = async params => {
+
+  return await mainAxios.get(`/api/v1/warehouse/recommend`, {
+    params: {
+      ...params,
+    },
+    headers: {
+      // Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
   });
-  return data;
 };
 
 /**
@@ -587,11 +602,12 @@ export const pageWhrgQnA = ({
   query = '',
   startDate = '',
   endDate = '',
-  size = 5,
+  size = 15,
   page = 0,
   sort = 'createdDate,desc',
   requiresToken = false,
 }) => {
+  console.log('idcc', id)
   return Axios.getRequest({
     methodType: 'GET',
     requiresToken: requiresToken,
