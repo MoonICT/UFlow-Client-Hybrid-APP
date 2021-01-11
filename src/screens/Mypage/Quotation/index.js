@@ -14,7 +14,6 @@ import {
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {Appbar, Text} from 'react-native-paper';
 
 // Local Imports
 import TableInfo from '@Components/atoms/TableInfo';
@@ -26,6 +25,7 @@ import warehouse1 from '@Assets/images/warehouse-1.png';
 import {Warehouse, MyPage, Contract} from '@Services/apis';
 import {styles as S} from '../style';
 import RequestView from './requestView';
+import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 
 import TenantRq00Trust from './tenantRq00Trust';
 import TenantRq00Keep from './tenantRq00Keep';
@@ -312,10 +312,10 @@ class Quotation extends Component {
             {/** REQ/RES ACTION **/}
 
             {/* ====== STATUS DEBUG ====== */}
-            <Text>{type}</Text>
-            <Text>{typeWH}</Text>
-            <Text>{status}</Text>
-            <Text>{this.state.groupOrders}</Text>
+            {/*<Text>{type}</Text>*/}
+            {/*<Text>{typeWH}</Text>*/}
+            {/*<Text>{status}</Text>*/}
+            {/*<Text>{this.state.groupOrders}</Text>*/}
             {/* ====== END:STATUS DEBUG ====== */}
             {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST')
             && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
