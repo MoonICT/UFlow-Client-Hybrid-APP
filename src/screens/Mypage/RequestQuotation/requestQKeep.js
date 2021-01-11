@@ -11,13 +11,12 @@ import {Warehouse} from '@Services/apis';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import moment from "moment";
 
-class ReqeustQTrust extends Component {
+class ReqeustQKeep extends Component {
 
   constructor(props) {
     super(props);
     this.navigation = props.navigation;
 
-    console.log(props.warehSeq, 'props.warehSeq');
 
     this.state = {
       fromMinDate: props.from ? Moment(props.from).toDate() : null,
@@ -27,12 +26,7 @@ class ReqeustQTrust extends Component {
         to: props.to ? Moment(props.to).toDate() : null,
         rntlValue: props.rntlValue,
         splyAmount: props.splyAmount,
-        whinChrg: props.whinChrg,
-        whoutChrg: props.whoutChrg,
-        psnChrg: props.psnChrg,
-        mnfctChrg: props.mnfctChrg,
-        dlvyChrg: props.dlvyChrg,
-        shipChrg: props.shipChrg,
+        mgmtChrg: props.mgmtChrg,
         remark: ''
       }
     }
@@ -81,34 +75,26 @@ class ReqeustQTrust extends Component {
       to,
       rntlValue,
       splyAmount,
-      whinChrg,
-      whoutChrg,
-      psnChrg,
-      mnfctChrg,
-      dlvyChrg,
-      shipChrg,
-      remark
+      mgmtChrg,
+      remark,
     } = this.state.formData;
 
-    console.log(psnChrg, 'psnChrg 11');
-
-    let isSubmitTrust = false;
+    let isSubmitKeep = false;
 
     // 유효성 검사
     if (
       from &&
       to &&
       rntlValue &&
-      splyAmount &&
-      whinChrg &&
-      whoutChrg
+      splyAmount
     ) {
-      isSubmitTrust = true;
+      isSubmitKeep = true;
     }
+
 
     return <Fragment>
 
-      {/** 수탁기간 (필수) **/}
+      {/** 보관기간 (필수) **/}
       <View
         style={[
           S.row,
@@ -126,7 +112,7 @@ class ReqeustQTrust extends Component {
                 DefaultStyle._labelTextField,
                 {color: '#000000'},
               ]}>
-              수탁기간 시작일
+              보관기간 시작일
               <Text style={[
                 {color: 'red'}
               ]}> *</Text>
@@ -161,7 +147,7 @@ class ReqeustQTrust extends Component {
                 DefaultStyle._labelTextField,
                 {color: '#000000'},
               ]}>
-              수탁기간 종료일
+              보관기간 종료일
               <Text style={[
                 {color: 'red'}
               ]}> *</Text>
@@ -184,12 +170,12 @@ class ReqeustQTrust extends Component {
           </TouchableOpacity>
         </View>
       </View>
-      {/** END:수탁기간 (필수) **/}
+      {/** END:보관기간 (필수) **/}
 
-      {/** 수탁 요청 수량 (필수) **/}
+      {/** 요청 면적 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="수탁 요청 수량"
+        labelTextField="보관 요청 수량"
         keyboardType="numeric"
         placeholder={"0"}
         defaultValue={
@@ -227,119 +213,22 @@ class ReqeustQTrust extends Component {
           })
         }
       />
-      {/** 입고 단가 (필수) **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="입고단가"
-        textRight="원"
-        keyboardType="numeric"
-        defaultValue={
-          whinChrg ? String(whinChrg) : '0'
-        }
-        placeholder="0"
-        isRequired={true}
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              whinChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
-      {/** 출고 단가 (필수) **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="출고단가"
-        textRight="원"
-        keyboardType="numeric"
-        defaultValue={
-          whoutChrg ? String(whoutChrg) : '0'
-        }
-        placeholder="0"
-        isRequired={true}
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              whoutChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
-      {/** 인건 단가 **/}
 
+      {/** 관리 단가 **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="인건단가"
-        keyboardType="numeric"
-        defaultValue={
-          psnChrg ? String(psnChrg) : '0'
-        }
-        textRight="원"
-        placeholder="0"
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              psnChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
-      {/** 가공 단가 **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="가공단가"
+        labelTextField="관리단가"
         textRight="원"
         keyboardType="numeric"
         defaultValue={
-          mnfctChrg ? String(mnfctChrg) : '0'
+          mgmtChrg ? String(mgmtChrg) : '0'
         }
         placeholder="0"
         onChangeText={e =>
           this.setState({
             formData: {
               ...this.state.formData,
-              mnfctChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
-      {/** 택배 단가 **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="택배단가"
-        textRight="원"
-        keyboardType="numeric"
-        defaultValue={
-          dlvyChrg ? String(dlvyChrg) : '0'
-        }
-        placeholder="0"
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              dlvyChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
-      {/** 운송 단가 **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="운송단가"
-        textRight="원"
-        keyboardType="numeric"
-        defaultValue={
-          shipChrg ? String(shipChrg) : '0'
-        }
-        placeholder="0"
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              shipChrg: Number(e.replace(/[^0-9]/g), '')
+              mgmtChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
         }
@@ -362,11 +251,15 @@ class ReqeustQTrust extends Component {
           })
         }
       />
+      <View style={[DefaultStyle._footerCards, {marginBottom: 30}]}>
+        <Text style={S.amount}>예상 견적 금액</Text>
+        <Text style={S.total}>{StringUtils.money((this.state.formData.mgmtChrg ? Number(this.state.formData.mgmtChrg) : 0) + (this.state.formData.splyAmount ? Number(this.state.formData.splyAmount) : 0))}</Text>
+      </View>
 
 
       <TouchableOpacity
         onPress={() => {
-          if (!isSubmitTrust) {
+          if (!isSubmitKeep) {
             alert('필수값을 모두 입력하세요.')
             return;
           }
@@ -376,7 +269,7 @@ class ReqeustQTrust extends Component {
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
-            alert(`수탁요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
+            alert(`보관요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
             return;
           } else if (formData.splyAmount <= 0) {
             alert(`보관단가는 0이상으로 요청가능합니다.`);
@@ -384,17 +277,11 @@ class ReqeustQTrust extends Component {
           } else if (formData.splyAmount > this.props.splyAmount) {
             alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
             return;
-          } else if (formData.whinChrg <= 0) {
-            alert(`입고단가는 0이상으로 요청가능합니다.`);
+          } else if (formData.mgmtChrg <= 0) {
+            alert(`관리단가는 0이상으로 요청가능합니다.`);
             return;
-          } else if (formData.whinChrg > this.props.whinChrg) {
-            alert(`입고단가는 ${this.props.whinChrg} 이하로 요청가능합니다.`);
-            return;
-          } else if (formData.whoutChrg <= 0) {
-            alert(`출고단가는 0이상으로 요청가능합니다.`);
-            return;
-          } else if (formData.whoutChrg > this.props.whoutChrg) {
-            alert(`출고단가는 ${this.props.whoutChrg} 이하로 요청가능합니다.`);
+          } else if (formData.mgmtChrg > this.props.mgmtChrg) {
+            alert(`관리단가는 ${this.props.mgmtChrg} 이하로 요청가능합니다.`);
             return;
           }
 
@@ -408,17 +295,12 @@ class ReqeustQTrust extends Component {
             to: formData.to,
             rntlValue: formData.rntlValue,
             splyAmount: formData.splyAmount,
-            whinChrg: formData.whinChrg,
-            whoutChrg: formData.whoutChrg,
-            psnChrg: formData.psnChrg,
-            mnfctChrg: formData.mnfctChrg,
-            dlvyChrg: formData.dlvyChrg,
-            shipChrg: formData.shipChrg,
+            mgmtChrg: formData.mgmtChrg,
             remark: formData.remark
           };
 
           Warehouse.responQuotation({
-            type: `tenant/warehouse/${formData.warehouseRegNo}/trust/${formData.seq}`,
+            type: `tenant/warehouse/${formData.warehouseRegNo}/keep/${formData.seq}`,
             data: formData,
           })
             .then(res => {
@@ -428,7 +310,7 @@ class ReqeustQTrust extends Component {
                 console.log('res', res);
 
                 this.setState({
-                  isSubmitTrust: false
+                  isSubmitKeep: false
                 });
                 // TODO change illustrator popup
                 alert('견적요청이 완료되었습니다.');
@@ -444,14 +326,14 @@ class ReqeustQTrust extends Component {
         }}
         style={[
           DefaultStyle._btnInline,
-          isSubmitTrust ? null : SS.btnDisabled,
+          isSubmitKeep ? null : SS.btnDisabled,
         ]}
-        disabled={isSubmitTrust ? false : true}>
+        disabled={isSubmitKeep ? false : true}>
         <Text
           style={[
             DefaultStyle._textButton,
             SS.textSubmit,
-            isSubmitTrust ? null : SS.textDisabled,
+            isSubmitKeep ? null : SS.textDisabled,
           ]}>
           확인
         </Text>
@@ -469,4 +351,4 @@ class ReqeustQTrust extends Component {
   }
 }
 
-export default ReqeustQTrust;
+export default ReqeustQKeep;

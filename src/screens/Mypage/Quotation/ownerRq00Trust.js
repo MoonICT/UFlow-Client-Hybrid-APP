@@ -5,7 +5,6 @@ import Select from '@Components/organisms/Select';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import TableInfo from '@Components/atoms/TableInfo';
 import {Text} from "react-native-paper";
-import {styles as S} from "../style";
 import {styles as SS} from "./style";
 
 
@@ -37,10 +36,6 @@ class OwnerRq00Trust extends Component {
     const groupOrders = this.props.groupOrders;
 
     let lastRequestData = {};
-
-    // console.log(gIndex, 'gIndex');
-    console.log(groupOrders, 'groupOrders');
-
     if (estmtTrustGroups && estmtTrustGroups.length > 0) {
       lastRequestData = estmtTrustGroups[0][estmtTrustGroups[0].length-1];
     }

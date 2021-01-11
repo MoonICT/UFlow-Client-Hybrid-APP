@@ -39,6 +39,8 @@ export const toStdCd = (array, stdCd) => {
 };
 
 export const toStdName = (array, stdCd) => {
+  console.log(array, 'array');
+  console.log(stdCd, 'stdCd');
   let maps = array
     ? array.filter(item => {
         return item.stdDetailCode === stdCd;

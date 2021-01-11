@@ -1,5 +1,9 @@
 import {Axios} from '@Services/http';
 import moment from 'moment'
+import AsyncStorage from "@react-native-community/async-storage";
+import {mainAxios, mainAxiosToken} from '../libs/axios';
+
+import {TOKEN} from '@Constant';
 
 
 /**
@@ -9,16 +13,22 @@ import moment from 'moment'
  * @param cntrDvCode
  * @returns CntrMgmtKeepResBody
  */
-export const createKeep = ({idWarehouse = '', mgmtKeepSeq = '', rentUserNo = 0}) => {
-  return Axios.postRequest({
-    url: `/api/v1/contract/keep`,
-    requiresToken: true,
-    payload: {
+export const createKeep = async ({idWarehouse = '', mgmtKeepSeq = '', rentUserNo = 0}) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return Axios.postRequest(
+    `/api/v1/contract/keep`,
+    {
       mgmtKeepSeq: mgmtKeepSeq, // 견적 보관 seq
       warehouseRegNo: idWarehouse,
       rentUserNo: rentUserNo
-    }
-  })
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      }
+    });
 };
 
 /**
@@ -28,16 +38,22 @@ export const createKeep = ({idWarehouse = '', mgmtKeepSeq = '', rentUserNo = 0})
  * @param cntrDvCode
  * @returns CntrMgmtTrustResBody
  */
-export const createTrust = ({idWarehouse = '', mgmtTrustSeq = '', rentUserNo = 0}) => {
-  return Axios.postRequest({
-    url: `/api/v1/contract/trust`,
-    requiresToken: true,
-    payload: {
+export const createTrust = async ({idWarehouse = '', mgmtTrustSeq = '', rentUserNo = 0}) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.post(
+    `/api/v1/contract/trust`,
+    {
       warehouseRegNo: idWarehouse, // 창고등록관리테이블
       rentUserNo: rentUserNo, // 견적 수탁 seq
       mgmtTrustSeq: mgmtTrustSeq // 견적 수탁 seq
-    }
-  })
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      }
+    });
 };
 
 /**

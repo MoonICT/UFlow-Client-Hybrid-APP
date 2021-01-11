@@ -4,10 +4,10 @@ import {TouchableOpacity, View} from "react-native";
 import Select from '@Components/organisms/Select';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import TableInfo from '@Components/atoms/TableInfo';
-import {Text} from "react-native-paper";
+import {Button, Dialog, Text} from "react-native-paper";
+import {Contract} from '@Services/apis';
 import {styles as S} from "../style";
 import {styles as SS} from "./style";
-
 
 class TenantRs00Trust extends Component {
 
@@ -33,6 +33,7 @@ class TenantRs00Trust extends Component {
     const calStdDvCodes = this.props.calStdDvCodes;
     const estmtTrustGroups = this.props.estmtTrustGroups;
     const groupOrders = this.props.groupOrders;
+    const onClickContract = this.props.onClickContract;
 
     // console.log(gIndex, 'gIndex');
     console.log(groupOrders, 'groupOrders');
@@ -170,17 +171,21 @@ class TenantRs00Trust extends Component {
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                 onPress={
-                  () =>
-                    this.setState({
-                      isConfirmRequest: !this.state.isConfirmRequest,
-                    })
+                  () => {
+                    console.log('계약요청 버튼 클릭');
+
+                    onClickContract(true);
+                    // this.setState({
+                    //   visibleContractTrust: true,
+                    //   // isConfirmRequest: !this.state.isConfirmRequest,
+                    // })
                   // this.navigation.navigate('RequestContract', {
                   //   type,
                   //   warehouseRegNo,
                   //   warehSeq,
                   //   typeWH,
                   // })
-                }>
+                }}>
                 <Text
                   style={[
                     DefaultStyle._textButton,
@@ -191,7 +196,6 @@ class TenantRs00Trust extends Component {
               </TouchableOpacity>
             </View>
           </View>
-
 
         </Fragment>
       );
