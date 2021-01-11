@@ -60,6 +60,15 @@ class RegisterWH extends Component {
   };
 
   submit = () => {
+    // this.props.showPopup({
+    //   type: 'confirm',
+    //   title: '창고 등록 완료',
+    //   content: ` UFLOW 관리자가 입력하신 정보를 
+    //   확인하기 위해 연락을 드릴 예정입니다.
+    //   자세한 내용은 [마이페이지 > 내 창고]에서 
+    //   확인해주세요`,
+    //   image: illust10,
+    // });
     if (this.doubleSubmitCheck()) return;
 
     let type = this.props.route.params && this.props.route.params.type;
@@ -74,10 +83,7 @@ class RegisterWH extends Component {
             this.props.showPopup({
               type: 'confirm',
               title: '창고 등록 완료',
-              content: ` UFLOW 관리자가 입력하신 정보를 \n
-              확인하기 위해 연락을 드릴 예정입니다.\n
-              자세한 내용은 [마이페이지 > 내 창고]에서 \n
-              확인해주세요`,
+              content: ` UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요`,
               image: illust10,
             });
 
@@ -95,15 +101,15 @@ class RegisterWH extends Component {
       Warehouse.registerWH(this.props.dataWH)
         .then(res => {
           const status = res.status;
+
           if (status === 200) {
+            console.log('res :>> ', res);
+            console.log('this.props.dataWH :>> ', this.props.dataWH);
             // this.navigation.navigate('Home');
             this.props.showPopup({
               type: 'confirm',
               title: '창고 등록 완료',
-              content: ` UFLOW 관리자가 입력하신 정보를 \n
-              확인하기 위해 연락을 드릴 예정입니다.\n
-              자세한 내용은 [마이페이지 > 내 창고]에서 \n
-              확인해주세요`,
+              content: ` UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요`,
               image: illust10,
             });
 
@@ -318,7 +324,7 @@ class RegisterWH extends Component {
         </ScrollView>
         <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
-            disabled={isSubmitUpdate === true ? false : true}
+            // disabled={isSubmitUpdate === true ? false : true}
             style={[
               DefaultStyle.btnSubmit,
               isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
