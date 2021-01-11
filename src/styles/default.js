@@ -136,8 +136,7 @@ export default StyleSheet.create({
     fontWeight: '500',
     lineHeight: 21,
     letterSpacing: 0,
-    textAlign: 'right',
-    color: 'rgba(0, 0, 0, 0.47)',
+    textAlign: 'right'
   },
   titleDf: {
     marginTop: 20,

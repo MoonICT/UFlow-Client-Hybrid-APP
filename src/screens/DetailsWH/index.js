@@ -25,6 +25,7 @@ import {
 } from 'react-native-paper';
 
 // Local Imports
+import { Warehouse, WarehouseTenant } from '@Services/apis';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
@@ -47,8 +48,6 @@ import WHType6 from "@Assets/images/icon-warehouse-6.png";
 // import {ConvertUnits} from "@Service/utils";
 
 import { styles as S } from './style';
-import { Warehouse, WarehouseTenant } from '@Services/apis';
-
 class DetailWH extends Component {
   constructor(props) {
     super(props);
@@ -186,7 +185,7 @@ class DetailWH extends Component {
           {item?.thumbnail !== null ? (
             <ProductCard navigation={this.navigation} data={item} />
           ) : (
-            <ProductCard
+             <ProductCard
               navigation={this.navigation}
               data={{ ...item, img: cardBG }}
             />
@@ -198,7 +197,7 @@ class DetailWH extends Component {
   };
 
   render() {
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, isLogin} = this.state;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, isLogin, id} = this.state;
 
     const dataTab = [
       {
@@ -241,10 +240,10 @@ class DetailWH extends Component {
     const displayUsblValue = (usblValue, calUnitDvCode) => {
       let resultStr = '-'
       if (usblValue) {
-        if (calUnitDvCode.stdDetailCode === 'CU01') {
+        if (calUnitDvCode && calUnitDvCode.stdDetailCode === 'CU01') {
           resultStr = displayAreaUnit(usblValue)
         } else {
-          resultStr = usblValue.toLocaleString() + (calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
+          resultStr = usblValue.toLocaleString() + (calUnitDvCode && calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
         }
       }
       return resultStr;
@@ -347,11 +346,11 @@ class DetailWH extends Component {
                   whrgData.keeps.map((keep, index) => (
                     <View key={"listKeep" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
-                        {keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
-                        {keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
-                        {keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
-                        {keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
-                        {keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
                         checked={checked}
@@ -624,7 +623,7 @@ class DetailWH extends Component {
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.viewBody}>
-                    <Text style={S.textBodyCard}>
+                    <Text style={[S.textBodyCard, DefaultStyle.p_16]}>
                       {whrgData.description}
                     </Text>
                   </View>
@@ -735,7 +734,7 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
-                <AppGrid data={dataTab} valueProps={(e)=> this.setState({floors: e})}/>
+                <AppGrid valueActive={floors} data={dataTab} valueProps={(e)=> this.setState({floors: e})}/>
               </View>
               {whrgData.floors
                 ? whrgData.floors.map((floor, index) => {
@@ -840,7 +839,10 @@ class DetailWH extends Component {
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnInquiry}
-                    onPress={() => console.log('add')}>
+                    onPress={() => this.navigation.navigate('CreateInquiryWH', {
+                      idWH: id
+                    }
+                    )}>
                     <Text style={S.textInquiry}>문의하기</Text>
                   </TouchableOpacity>
                 </View>
@@ -849,26 +851,27 @@ class DetailWH extends Component {
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   {(qnaList && qnaList.length === 0) &&
+                  <View style={[DefaultStyle.d_center, DefaultStyle.p_16]}>
                     <Text key={'empty'} style={S.titleInquiry}>문의 내역이 없습니다.</Text>
+                  </View>
                   }
                   {/* List */}
                   {qnaList && qnaList.map((qnaItem, index) =>
                     <View key={'qnaItem' + index} style={S.inquirys}>
                       <View style={S.leftInquiry}>
-                        {qnaItem.answer ?
+                        {qnaItem.status ?
                           <Text style={S.titleCompleted}>답변완료</Text>
                           :
                           <Text style={S.titleInquiry}>미답변</Text>
                         }
-                        <Text style={S.contentInquiry}>비밀글입니다.</Text>
+                        <Text style={S.contentInquiry}>{qnaItem.title}</Text>
                         <Text style={S.footerInquiry}>
-                        {qnaItem.writer}
-                        {this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}
+                        {qnaItem.name} | {qnaItem.date}
                         </Text>
                       </View>
                       <View style={S.rightInquiry}>
-                        {qnaItem.me ? '' : (
-                          (qnaItem.secret || true) ?
+                        {
+                          (qnaItem.lock) ?
                             <IconButton
                               style={S.btnIcon}
                               icon="lock"
@@ -876,7 +879,7 @@ class DetailWH extends Component {
                             />
                             :
                             <Text></Text>
-                        )}
+                        }
                       </View>
                     </View>
                   )}
@@ -968,13 +971,14 @@ class DetailWH extends Component {
             </TouchableOpacity> */}
           </View>
         </ScrollView>
+        
       </SafeAreaView >
     );
   }
 
   /** when after render DOM */
-  async componentDidMount() {
-    SplashScreen.hide();
+  componentDidMount() {
+    const { route } = this.props;
     this.getDataWH()
     this.handleRequestQnaList(4)
     this.hiddenName();
@@ -982,28 +986,6 @@ class DetailWH extends Component {
       this.setState({ isLogin: v !== '' && v !== null });
     });
   }
-
-  // async UNSAFE_componentWillMount () {
-  //   const value = await AsyncStorage.getItem(TOKEN);
-  //   // console.log('More Token ==>', value);
-  //   Account.getMe()
-  //     .then(res => {
-  //       console.log('::::: Get Me :::::', res);
-  //       const status = res.status;
-  //       if (status === 200) {
-  //         console.log('rest', res)
-  //         this.setState({
-  //           isLogin: true
-  //         });
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log('errHome', err);
-  //     });
-  //   if (value) {
-  //     this.setState({ token: value });
-  //   }
-  // }
 
   async getDataWH() {
     const { id } = this.state;
@@ -1017,7 +999,6 @@ class DetailWH extends Component {
       whrgData: warehouse.data,
       favorite: warehouse.data.fav
     });
-      
         // 유사창고 파라미터 조건
         let typeCodeNames = []
         let gdsKeepTypeCodeNames = []
@@ -1065,6 +1046,7 @@ class DetailWH extends Component {
     Warehouse.pageWhrgQnA(qnaParams).then(res => {
       if (res && res._embedded && res._embedded) {
         let newFQAList = res._embedded.questions.map(item => {
+          console.log(item)
           return {
             status: item.complete,
             title: item.content,
@@ -1074,6 +1056,7 @@ class DetailWH extends Component {
           }
         })
 
+        console.log('newFQAList', newFQAList)
         this.setState({ qnaList: newFQAList })
         this.setState({ pageInfo: res.page })
       }
@@ -1092,12 +1075,6 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 

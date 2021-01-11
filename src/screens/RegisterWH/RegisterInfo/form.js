@@ -168,7 +168,7 @@ class FormInfo extends Component {
           <Select
             data={calUnitDvCodes}
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
-            // selectedValue={formData.calUnitDvCode}
+            selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
             valueProps={e => {
               let dataF = formData;
@@ -176,6 +176,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
+
           <Select
             data={calStdDvCodes}
             // selectedValue={formData.calStdDvCode}
@@ -199,6 +200,8 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
+
+
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField

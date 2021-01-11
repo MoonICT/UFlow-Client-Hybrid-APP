@@ -58,6 +58,7 @@ class FormTrusts extends Component {
           // id: 0,
           typeCode: '',
           calUnitDvCode: '',
+          calStdDvCode: '',
           calculationStandard: '',
           exclusiveArea: '',
           exclusiveArea2: '',
@@ -138,9 +139,19 @@ console.log('formDataTrust :>> ', formData);
       calUnitDvCodes &&
       calUnitDvCodes.find(item => item.value === formData.calUnitDvCode);
     let defaultcalStd =
+<<<<<<< HEAD
       formData &&
       calStdDvCodes &&
       calStdDvCodes.find(item => item.value === formData.calStdDvCode);
+=======
+    calculation &&
+    calculation.find(item => item.value === formData.calStdDvCode);
+    // let defaulcmgmtChrg =
+    //   managementFees &&
+    //   managementFees.find(item => item.value === formData.mgmtChrgDvCode);
+
+    console.log("defaultcalStd: ", defaultcalStd)
+>>>>>>> 6ad7ab56e14c735a250949584c8a7888dd170966
     return (
       <Card style={S.cards}>
         <View style>
@@ -170,10 +181,13 @@ console.log('formDataTrust :>> ', formData);
           <Select
             data={calStdDvCodes}
             labelSelected="산정기준"
+<<<<<<< HEAD
             dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
+=======
+            dataDefault={defaultcalStd}
+>>>>>>> 6ad7ab56e14c735a250949584c8a7888dd170966
             selectedValue={formData.calStdDvCode}
             valueProps={e => {
-              // this.setState({ calculationStandard: e });
               let dataF = formData;
               dataF.calStdDvCode = e;
               valueForm && valueForm(dataF);
@@ -265,13 +279,13 @@ console.log('formDataTrust :>> ', formData);
             labelTextField="출고단가"
             textRight="원"
             defaultValue={
-              formData.whinChrg ? numberToStd(formData.whinChrg) : ''
+              formData.whoutChrg ? numberToStd(formData.whoutChrg) : ''
             }
-            value={formData.whinChrg}
+            value={formData.whoutChrg}
             valueProps={e => {
               this.setState({ whoutChrg: e });
               let dataF = formData;
-              dataF.whinChrg = stdToNumber(e);
+              dataF.whoutChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />

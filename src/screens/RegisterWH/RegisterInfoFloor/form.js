@@ -375,7 +375,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          <TextField
+          {/* <TextField
             labelTextField="접안방식"
             // defaultValue={formData.aprchMthdDvCode ? numberToStd(formData.aprchMthdDvCode) : ''}
             value={formData.aprchMthdDvCode}
@@ -385,7 +385,7 @@ class FormInfo extends Component {
               dataF.aprchMthdDvCode = e;
               valueForm && valueForm(dataF);
             }}
-          />
+          /> */}
           <Select
             data={aprchMthdDvCodes}
             dataDefault={defaultAprchMthdDvCodes !== undefined ? defaultAprchMthdDvCodes : ''}

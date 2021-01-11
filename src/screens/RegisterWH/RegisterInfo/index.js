@@ -266,7 +266,12 @@ class RegisterInfo extends Component {
       (filterArea.length === 0 &&
         filterusblValue.length === 0 &&
         filtersplyAmount.length === 0 &&
-        filtermgmtChrg.length === 0) ||
+        filtermgmtChrg.length === 0) 
+    ) {
+      isSubmitUpdate = true;
+    }
+
+    if (
       (filterusblValueTrust.length === 0 &&
         filtersplyAmountTrust.length === 0 &&
         filterwhinChrgTrust.length === 0 &&

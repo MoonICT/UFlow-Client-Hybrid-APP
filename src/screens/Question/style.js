@@ -11,7 +11,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     width: windowWidth,
-    height: windowHeight,
+    height: windowHeight - 30,
     backgroundColor: 'white',
   },
   bodyView: {
