@@ -19,31 +19,22 @@ import warehouse1 from '@Assets/images/warehouse-1.png';
 import ContractInformation from './ContractInformation';
 // import { formatDateV2 } from '@Utils/dateFormat';
 import { styles as S } from '../style';
-import { Warehouse, MediaFileContract } from '@Services/apis';
+import { Warehouse, MediaFileContract, MyPageEstmtCntr, Contract } from '@Services/apis';
 import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      dataDetail: '', // 계약 기본 정보.
+      dataContractDetail: '', // 견적 완료 계약 정보.
+
       contractLink: '',
       dataMedia: [],
       dataApi: null,
     };
     this.navigation = props.navigation;
   }
-
-  /** listener when change props */
-  shouldComponentUpdate (nextProps, nextState) {
-    return true;
-  }
-
-  coverTime = value => {
-    let time = new Date();
-    time.setTime(value);
-    let changeTime = time.toLocaleDateString();
-    return changeTime;
-  };
 
   coverStatus = value => {
     switch (value) {
@@ -78,7 +69,7 @@ class RequestContract extends Component {
   };
 
   /**
-   * 계약정보 가져오기 수탁 또는 임대
+   * 보관/수탁 정보 추출.
    * */
   getContract = () => {
     if (this.state.dataApi) {
@@ -102,9 +93,6 @@ class RequestContract extends Component {
     const status = route && route.params && route.params.status;
     // console.log('routeRequescontract', route);
     const { dataApi, dataMedia } = this.state;
-    console.log('dataApi', dataApi);
-    // console.log('status', status);
-    // console.log('dataMedia', dataMedia);
 
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && [
@@ -133,18 +121,6 @@ class RequestContract extends Component {
           type: '전용면적',
           value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
         },
-        // {
-        //   type: '정산단위',
-        //   value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '산정기준',
-        //   value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '가용면적',
-        //   value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue),
-        // },
         {
           type: '임대 가능 기간',
           value: StringUtils.dateStr(dataApi.warehouse.keep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.warehouse.keep.usblYmdTo),
@@ -185,22 +161,6 @@ class RequestContract extends Component {
           type: '수탁 가능 기간',
           value: StringUtils.dateStr(dataApi.warehouse.trust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.warehouse.trust.usblYmdTo),
         },
-        // {
-        //   type: '보관유형',
-        //   value: dataApi.trust.typeCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '정산단위',
-        //   value: dataApi.trust.calUnitDvCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '산정기준',
-        //   value: dataApi.trust.calStdDvCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '수탁 가용 수량',
-        //   value: StringUtils.moneyConvert(dataApi.trust.usblValue),
-        // },
         {
           type: '보관단가',
           value: StringUtils.moneyConvert(dataApi.trust.splyAmount),
@@ -289,6 +249,9 @@ class RequestContract extends Component {
             ) : null}
 
             <ContractInformation
+              detailContract={this.state.detailContract}
+              detailEstimate={this.state.detailEstimate}
+              // TODO 확인 필요.
               contractType={typeWH}
               dataContract={this.getContract()}
               cntrYmdFrom={this.getContract()?.id?.cntrYmdFrom || ''}
@@ -315,15 +278,80 @@ class RequestContract extends Component {
   async componentDidMount () {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
-    let rentUserNo = this.props.route.params.rentUserNo;
     let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
+    let contractType = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+    let rentUserNo = this.props.route.params.rentUserNo;
+
+
+    // TODO no use
     let typeWH = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
     let rentUserID = this.props.route?.params?.rentUserID;
-    let rentUserDate = moment(this.props.route.params.regUserDate).format(
-      'YYYYMMDD',
-    );
-    // console.log('rentUserID', rentUserID);
-    // console.log('this.props.fromDate', this.props.fromDate);
+    let rentUserDate = moment(this.props.route.params.regUserDate).format('YYYYMMDD',);
+
+    if (type === 'owner') {
+      /**
+       * 마이페이지 견적보관 상세정보 (창고주 전용)
+       * */
+      MyPageEstmtCntr.getDetailEstmtCntrOwner({
+        warehouseRegNo: warehouseRegNo,
+        contractType: contractType,
+        warehSeq: warehSeq,
+        rentUserNo: rentUserNo,
+      }).then(res => {
+        let resultData = res
+        this.setState({ detailContract: resultData })
+
+        // 견적 완료, 계약 진행 중일 때.
+        let estmtData = resultData.estmtKeeps || resultData.estmtTrusts
+        Contract.getContractKeep({
+          type: 'owner',
+          contractType: contractType,
+          idWarehouse: warehouseRegNo,
+          rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
+          cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD'),
+        }).then(res => {
+          let resultEstmtData = {
+            warehouse: resultData.warehouse,
+            [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
+          };
+          console.debug('[3] 견적 완료, 계약 진행 중일 때. : ', resultEstmtData)
+          this.setState({ detailEstimate: resultEstmtData });
+        });
+      }).catch(err => {
+        console.log(err);
+      });
+    } else if (type === 'tenant') {
+      /**
+       * [estimate-4] 마이페이지 견적보관 상세정보 (임차인 전용)
+       */
+      MyPageEstmtCntr.getDetailEstmtCntrTenant({
+        warehouseRegNo: warehouseRegNo,
+        contractType: contractType,
+        warehSeq: warehSeq,
+      }).then(res => {
+        let resultData = res
+        this.setState({ detailContract: resultData })
+
+        // 견적 완료, 계약 진행 중일 때.
+        let estmtData = resultData.estmtKeeps || resultData.estmtTrusts
+        Contract.getContractKeep({
+          type: 'tenant',
+          contractType: contractType,
+          idWarehouse: warehouseRegNo,
+          rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
+          cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD'),
+        }).then(res => {
+          let resultEstmtData = {
+            warehouse: resultData.warehouse,
+            [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
+          };
+          console.debug('[3] 견적 완료, 계약 진행 중일 때. :  ', resultEstmtData)
+          this.setState({ detailEstimate: resultEstmtData });
+        });
+      }).catch(err => {
+        console.log(err);
+      });
+    }
 
     let url =
       type +
@@ -348,14 +376,12 @@ class RequestContract extends Component {
       '-' +
       rentUserDate;
 
-    // console.log('url', url);
-    // console.log('urlTenantImage', urlTenantImage);
     await Warehouse.quotation(
       this.props.route.params.type === 'OWNER' ? url : urlTenant,
     )
       .then(res => {
         if (res.status === 200) {
-          console.log('res', res);
+          console.log('계약 상세 데이터', res.data);
           this.setState(
             {
               dataApi: res.data,
@@ -373,7 +399,7 @@ class RequestContract extends Component {
     await MediaFileContract.getMediaFile(urlTenantImage)
       .then(res => {
         if (res.status === 200) {
-          console.log('getMediaFile', res);
+          // console.log('getMediaFile', res);
           this.setState(
             {
               dataMedia: res.data,
@@ -387,12 +413,6 @@ class RequestContract extends Component {
       .catch(err => {
         console.log('errRequest', err);
       });
-
-    // let bodyContractLink = {
-    //   warehouseId: "RG20210108293",
-    //   cntrYmdFr: "20210108",
-    //   cntrDvCd: "1100"
-    // }
   }
 
   /** when update state or props */
@@ -412,14 +432,7 @@ function mapStateToProps (state) {
 
 /** dispatch action to redux */
 function mapDispatchToProps (dispatch) {
-  return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
+  return {};
 }
 
 export default connect(
