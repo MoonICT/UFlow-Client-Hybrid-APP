@@ -71,6 +71,8 @@ class TermsContract extends Component {
       }).then(res => {
         console.debug('약관 동의 결과 : ', res)
         this.setState({ isComplete: false });
+      }).catch(error => {
+        alert('tenant4100:' + error);
       });
     }
   }
@@ -101,7 +103,9 @@ class TermsContract extends Component {
     console.log('formData', formData)
     await Warehouse.termsContract(formData, typeWH).then((res) => {
       console.log('res', res)
-    })
+    }).catch(error => {
+      alert('termsContract:' + error);
+    });
     // this.setState({ isSubmit: !isSubmit });
     // this.props.showPopup({
     //   image: illust11,

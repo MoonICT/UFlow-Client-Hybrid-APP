@@ -129,7 +129,9 @@ export default class SettlementManagement extends Component {
       this.setState({
         rows: newRows
       })
-    })
+    }).catch(error => {
+      alert('SettlementManagementService:' + error);
+    });
   }
 
 
@@ -414,7 +416,9 @@ export default class SettlementManagement extends Component {
                               console.log("Don't know how to open URI: " + res);
                             }
                           })
-                        })
+                        }).catch(error => {
+                          alert('getOzUrl:' + error);
+                        });
 
                       }}>
                       <Text style={[DefaultStyle._textButton]}> 거래명세서</Text>

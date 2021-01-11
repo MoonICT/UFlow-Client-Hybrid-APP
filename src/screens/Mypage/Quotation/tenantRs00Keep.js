@@ -91,6 +91,8 @@ class TenantRs00Keep extends Component {
                 } else {
                   alert('계약 요청이 실패하였습니다.');
                 }
+              }).catch(error => {
+                alert('createKeep:' + error);
               });
             }}>
             확인

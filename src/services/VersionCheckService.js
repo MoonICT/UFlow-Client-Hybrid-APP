@@ -56,6 +56,8 @@ class VersionCheckService {
             },
           ]);
         }
+      }).catch(error => {
+        alert(' VersionCheck: ' + error);
       });
     }
   };

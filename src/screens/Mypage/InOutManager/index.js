@@ -151,7 +151,9 @@ export default class InOutManager extends Component {
       this.setState({
         dataCard: newData
       })
-    })
+    }).catch(error => {
+      alert('InOutManagerService:' + error);
+    });
   }
 
   onChangeTab(value) {
@@ -296,7 +298,9 @@ export default class InOutManager extends Component {
       }
       this.showConfirm();
       this.hideDialog();
-    })
+    }).catch(error => {
+      alert('InOutManagerService:' + error);
+    });
   }
 
 

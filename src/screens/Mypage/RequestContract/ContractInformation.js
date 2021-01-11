@@ -47,6 +47,8 @@ class ContractInformation extends Component {
       cntrYmdFrom: moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD')
     }).then(res => {
       Linking.openURL(res.url);
+    }).catch(error => {
+      alert('requestOffLineContract:' + error);
     });
     this.setState({ isOffLineDialog: false });
   };

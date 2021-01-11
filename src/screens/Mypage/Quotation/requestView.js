@@ -82,6 +82,8 @@ class RequestView extends Component {
           calStdDvCodes: res.data._embedded.detailCodes
         });
       }
+    }).catch(error => {
+      alert('WHRG0014:' + error);
     });
 
     MyPage.getDetailCodes('WHRG0013').then((res) => {
@@ -92,6 +94,8 @@ class RequestView extends Component {
           calUnitDvCodes: res.data._embedded.detailCodes
         });
       }
+    }).catch(error => {
+      alert('WHRG0013:' + error);
     });
   }
 }
