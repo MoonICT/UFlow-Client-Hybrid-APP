@@ -297,10 +297,35 @@ class DetailWH extends Component {
               {whrgData.name}
             </Text>
             <View style={S.labels}>
-              <Text style={[S.textlabel, S.orange]}>상온</Text>
-              <Text style={[S.textlabel, S.azure]}>상온</Text>
-              <Text style={[S.textlabel, S.green]}>상온</Text>
-              <Text style={[S.textlabel, S.gray]}>상온</Text>
+              {
+                whrgData.keeps && whrgData.keeps.length > 0 && (
+                   whrgData.keeps.map((keep, index) => (
+                    <View key={index}>
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                   </View>
+                   )))
+              }
+
+              {
+                whrgData.trusts && whrgData.trusts.length > 0 && (
+                   whrgData.trusts.map((trust, index) => (
+                    <View key={index}>
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                   </View>
+                   )))
+              }
+            
+              
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
             <View style={S.background}>
