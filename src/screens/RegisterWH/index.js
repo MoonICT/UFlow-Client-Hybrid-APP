@@ -59,12 +59,16 @@ class RegisterWH extends Component {
             // this.navigation.navigate('Home');
             this.props.showPopup({
               type: 'confirm',
-              content: 'Update Complete',
+              title: '창고 등록 완료',
+              content: ` UFLOW 관리자가 입력하신 정보를 {\n}
+              확인하기 위해 연락을 드릴 예정입니다.{\n}
+              자세한 내용은 [마이페이지 > 내 창고]에서 {\n}
+              확인해주세요`,
             });
           }
         })
         .catch(err => {
-          alert("Update err", err);
+          alert('Update err', err);
           console.log('err', err.response);
         });
     } else {
@@ -75,12 +79,16 @@ class RegisterWH extends Component {
             // this.navigation.navigate('Home');
             this.props.showPopup({
               type: 'confirm',
-              content: 'Register Complete',
+              title: '창고 등록 완료',
+              content: ` UFLOW 관리자가 입력하신 정보를 {\n}
+              확인하기 위해 연락을 드릴 예정입니다.{\n}
+              자세한 내용은 [마이페이지 > 내 창고]에서 {\n}
+              확인해주세요`,
             });
           }
         })
         .catch(err => {
-          alert("Register err", err);
+          alert('Register err', err);
           console.log('err', err);
         });
     }

@@ -113,6 +113,7 @@ class RegisterInfoFloor extends Component {
     return (
       <Form
         flrDvCodes={this.state.flrDvCodes}
+        aprchMthdDvCodes={this.state.aprchMthdDvCodes}
         valueTab={this.state.valueTab}
         number={this.state.numberSlide}
         key={item.key}
@@ -257,6 +258,24 @@ class RegisterInfoFloor extends Component {
               };
             });
           this.setState({ flrDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errINFO', err);
+      });
+      await MyPage.getDetailCodes('WHRG0011')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let aprchMthdDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ aprchMthdDvCodes });
         }
       })
       .catch(err => {

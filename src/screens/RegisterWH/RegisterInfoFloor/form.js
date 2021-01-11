@@ -60,7 +60,13 @@ class FormInfo extends Component {
   _removeImage = () => console.log('_removeImage');
 
   render() {
-    const { data, formData, valueForm, flrDvCodes } = this.props;
+    const {
+      data,
+      formData,
+      valueForm,
+      flrDvCodes,
+      aprchMthdDvCodes,
+    } = this.props;
     console.log('formData :>> ', formData);
     const {
       flrAreaValue2,
@@ -89,6 +95,8 @@ class FormInfo extends Component {
     ];
     let defaultFlrDvCode =
       flrDvCodes && flrDvCodes.find(item => item.value === formData.flrDvCode);
+      let defaultAprchMthdDvCodes =
+      aprchMthdDvCodes && aprchMthdDvCodes.find(item => item.value === formData.aprchMthdDvCode);
     return (
       <Card style={S.cards}>
         <View style>
@@ -372,6 +380,17 @@ class FormInfo extends Component {
             // defaultValue={formData.aprchMthdDvCode ? numberToStd(formData.aprchMthdDvCode) : ''}
             value={formData.aprchMthdDvCode}
             colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.aprchMthdDvCode = e;
+              valueForm && valueForm(dataF);
+            }}
+          />
+          <Select
+            data={aprchMthdDvCodes}
+            dataDefault={defaultAprchMthdDvCodes !== undefined ? defaultAprchMthdDvCodes : ''}
+            selectedValue={formData.aprchMthdDvCode}
+            labelSelected="접안방식"
             valueProps={e => {
               let dataF = formData;
               dataF.aprchMthdDvCode = e;
