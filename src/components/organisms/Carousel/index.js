@@ -18,7 +18,7 @@ class Carousels extends Component {
 
   render() {
     const {custom} = this.props;
-    return <AppIntroSlider {...custom} />;
+    return <AppIntroSlider {...custom} goToSlide={2} />;
   }
 }
 
