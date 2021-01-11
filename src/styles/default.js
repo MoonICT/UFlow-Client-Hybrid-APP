@@ -1242,6 +1242,13 @@ export default StyleSheet.create({
     height: 56,
     marginBottom: 5,
   },
+  _btnDateFilter: {
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 4,
+    height: 36,
+    marginBottom: 5
+  },
   _btnDateCustom: {
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
