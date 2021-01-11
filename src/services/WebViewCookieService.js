@@ -30,6 +30,8 @@ class WebViewCookieService {
         if (cookies[cookieName]) {
           await AsyncStorage.setItem(cookieName, JSON.stringify(cookies[cookieName]));
         }
+      }).catch(error => {
+        alert(' CookieManager: ' + error);
       });
     }
   }

@@ -585,6 +585,8 @@ class Quotation extends Component {
           calStdDvCodes: res.data._embedded.detailCodes
         });
       }
+    }).catch(error => {
+      alert('WHRG0014:' + error);
     });
 
     MyPage.getDetailCodes('WHRG0013').then((res) => {
@@ -595,6 +597,8 @@ class Quotation extends Component {
           calUnitDvCodes: res.data._embedded.detailCodes
         });
       }
+    }).catch(error => {
+      alert('WHRG0014:' + error);
     });
 
     // TODO 뭐지? ?????

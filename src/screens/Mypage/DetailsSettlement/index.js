@@ -222,7 +222,9 @@ export default class DetailsSettlement extends Component {
       this.setState({
         dataInfo, inOutSubtotal, headerDetailResBody, dataCost, dataTotal, dataFee, keepSubtotal, cntrTypeCode
       })
-    })
+    }).catch(error => {
+      alert('SettlementManagementService.getDetail error:' + error);
+    });
 
   }
 
@@ -362,7 +364,9 @@ export default class DetailsSettlement extends Component {
                         Linking.openURL(res);
                       } else {
                         console.log("Don't know how to open URI: " + res);
-                      }})
+                      }}).catch(error => {
+                        alert('canOpenURL error:' + error);
+                      });
                   })
 
                 }}>

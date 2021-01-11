@@ -84,7 +84,9 @@ class InterestWarehouse extends Component {
     console.log('res.data')
     Fav.page().then(res => {
       console.log('res.data',res.data)
-    })
+    }).catch(error => {
+      alert(' Fav.page(): ' + error);
+    });
   }
 
   render() {

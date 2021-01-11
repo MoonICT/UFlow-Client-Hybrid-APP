@@ -1006,6 +1006,8 @@ class DetailWH extends Component {
     this.hiddenName();
     AsyncStorage.getItem(TOKEN).then(v => {
       this.setState({ isLogin: v !== '' && v !== null });
+    }).catch(error => {
+      alert('DetailWH componentDidMount error:' + error);
     });
   }
 
@@ -1054,7 +1056,9 @@ class DetailWH extends Component {
               : [];
 
           this.setState({ whList: list });
-        })
+        }).catch(error => {
+          alert('DetailWH listRecommend error:' + error);
+        });
   }
 
   handleRequestQnaList = (q_size) => {
@@ -1082,7 +1086,9 @@ class DetailWH extends Component {
         this.setState({ qnaList: newFQAList })
         this.setState({ pageInfo: res.page })
       }
-    })
+    }).catch(error => {
+      alert('DetailWH pageWhrgQnA error:' + error);
+    });
   }
   
 }

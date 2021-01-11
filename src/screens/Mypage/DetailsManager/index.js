@@ -584,7 +584,9 @@ export default class DetailsManager extends Component {
               ToastShow("출고 확정을 실패하였습니다. " + res);
               console.error(res)
             }
-          })
+          }).catch(error => {
+            alert('postExportOwner error:' + error);
+          });
       } else if (typeCreate === 'import') {
         // 입고 확정
         let data = {
@@ -616,7 +618,9 @@ export default class DetailsManager extends Component {
               ToastShow("입고 확정을 실패하였습니다. " + res);
               console.error(res)
             }
-          })
+          }).catch(error => {
+            alert('postExportOwner error:' + error);
+          });
       }
 
     } else if (type === 'TENANT') {
@@ -648,7 +652,9 @@ export default class DetailsManager extends Component {
               ToastShow("입고 요청이 실패하였습니다. " + res);
               console.error(res)
             }
-          })
+          }).catch(error => {
+            alert('postImportTenant error:' + error);
+          });
       } else if (typeCreate === 'export') {
         // 출고 요청
         let data = {
@@ -676,7 +682,9 @@ export default class DetailsManager extends Component {
               ToastShow("출고 요청이 실패하였습니다. " + res);
               console.error(res)
             }
-          })
+          }).catch(error => {
+            alert('postExportTenant error:' + error);
+          });
       }
     }
   }
@@ -702,7 +710,9 @@ export default class DetailsManager extends Component {
         this.setState({cancelRequestImport: true, isCancel: false}, () => {
           this.getAllData()
         })
-      })
+      }).catch(error => {
+        alert('postCancelImport error:' + error);
+      });
     } else if (typeCreate === 'export') {
       await InOutManagerService.postCancelExport({
         rentWarehNo: rentWarehNo,
@@ -717,7 +727,9 @@ export default class DetailsManager extends Component {
         this.setState({cancelRequestExport: true, isCancel: false}, () => {
           this.getAllData()
         })
-      })
+      }).catch(error => {
+        alert('postCancelExport error:' + error);
+      });
     }
 
   }

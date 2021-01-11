@@ -190,6 +190,8 @@ const App = () => {
     AsyncStorage.getItem(TOKEN).then(v => {
       // console.log('v==>', v);
       setIsLogin(v !== '' && v !== null);
+    }).catch(error => {
+      alert('TabScreenOptions error:' + error);
     });
   }, []);
 
@@ -208,6 +210,8 @@ const App = () => {
         AsyncStorage.setItem(TOKEN, loginData).then(() => {
           setIsLoading(false);
           setIsLogin(true);
+        }).catch(error => {
+          alert('TabScreenOptions loginData error:' + error);
         });
       },
       signUp: () => {
@@ -218,6 +222,8 @@ const App = () => {
         AsyncStorage.removeItem(TOKEN).then(() => {
           setIsLoading(false);
           setIsLogin(false);
+        }).catch(error => {
+          alert('TabScreenOptions signOut error:' + error);
         });
       },
     };
