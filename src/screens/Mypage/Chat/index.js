@@ -177,7 +177,7 @@ class Chatting extends Component {
         );
       });
 
-    console.log(warehouse)
+    console.log(warehouse);
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
