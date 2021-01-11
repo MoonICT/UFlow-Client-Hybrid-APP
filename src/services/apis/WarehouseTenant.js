@@ -80,19 +80,24 @@ export const regBusinessInfoByTenant = async businessInfo => {
  * @param seq : KEEP seq or TRUST seq
  * @returns {Promise<*>}
  */
-export const possibleContract = ({
-                                   contractType = '',
-                                   warehouseRegNo = '',
-                                   seq = 0,
-                                 }) => {
-  return Axios.getRequest({
-    url: `/api/v1/warehouse/tenant/possible-contract${parseQuery({
+export const possibleContract = async ({
+    contractType = '',
+    warehouseRegNo = '',
+    seq = null,
+  }) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.get(`/api/v1/warehouse/tenant/possible-contract`, {
+    params: {
       contractType: contractType,
       warehouseRegNo: warehouseRegNo,
       seq: seq
-    })}`,
-    requiresToken: true, // set access_token
-  })
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
 };
 
 /**

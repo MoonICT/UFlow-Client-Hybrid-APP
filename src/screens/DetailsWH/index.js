@@ -13,32 +13,26 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
-  ImageBackground,
   Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
-  DataTable,
   Appbar,
-  Paragraph,
   Text,
-  Button,
   IconButton,
 } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import Dialogs from '@Components/organisms/Dialog';
-import Checkbox from '@Components/atoms/Checkbox';
 import AppGrid from '@Components/organisms/AppGrid';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import ProductCard from '@Components/organisms/ProductCard';
+import { TOKEN } from '@Constant';
 
 import ActionCreator from '@Actions';
-import card from '@Assets/images/card-img.png';
 import circle from '@Assets/images/avatars-circle-icon.png';
 import mainBG from '@Assets/images/main-bg.png';
 import cardBG from '@Assets/images/card-img.png';
@@ -53,70 +47,13 @@ import WHType6 from "@Assets/images/icon-warehouse-6.png";
 // import {ConvertUnits} from "@Service/utils";
 
 import { styles as S } from './style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Warehouse, WarehouseTenant } from '@Services/apis';
 
-import { Warehouse } from '@Services/apis';
-
-
-const slidesProduct = [
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-];
 class DetailWH extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     let { id } = props.route.params
-    // let { } = props.route.qnaParams
-    // console.log('id', id);
     this.state = {
       id: id,
       active: 0,
@@ -127,9 +64,12 @@ class DetailWH extends Component {
       qnaParams: {},
       qnaList: [],
       pageInfo: {},
+      isLogin:false,
       showAll: false,
-      floors:1,
+      floors:0,
       whList: [],
+      favorite : false,
+      rentUserNo:''
     };
     this.navigation = props.navigation;
   }
@@ -148,9 +88,92 @@ class DetailWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  // _renderProductItem = ({ item }) => {
-  //   return <ProductCard data={{ ...item, img: cardBG }} />;
-  // };
+  /**
+   * 관심창고 토글
+   * */
+  toggleFavoriteWH = () => {
+    const { isLogin, id} = this.state;
+
+    if (isLogin) {
+      Warehouse.toggleFav(id)
+      .then(res => {
+        this.setState({
+          favorite: res.data.favorite
+        })
+      })
+      .catch(error => {
+        alert(error.response.data.message);
+      });
+    } else {
+      alert('로그인 후 이용해주세요.')
+    }
+  }
+
+  /**
+   * 창고 견적요청 가능 유/무 확인.
+   * @Params type: [String] KEEP|TRUST.
+   * @Params typeInfo: [Object] type info.
+   * */
+  checkContract = async (type, typeInfo) => {
+    const { isLogin, id} = this.state;
+    if (!type || !typeInfo) {
+      return false
+    }
+    if (!isLogin) {
+      // TODO Change to dialog UI
+      alert('로그인 후 이용가능합니다.')
+      return false
+    }
+    await WarehouseTenant.possibleContract({
+      contractType: type,
+      warehouseRegNo: typeInfo.id.warehouseRegNo,
+      seq: typeInfo.id.seq,
+    }).then(res => {
+      // 견적 등록 가능.
+      console.log('possibleContract', res)
+      if (res.data.status === 'PSB_CNT') {
+        console.log('res.data.status', res.data.status)
+        this.handleRouteRequestQuotation(typeInfo.id.warehouseRegNo, type, typeInfo.id.seq)
+      }
+    }).catch(error => {
+      if (error.response) {
+        if (error.response.status === 401) {
+          // TODO Change to dialog UI
+          alert('로그인 세션이 만료되었습니다.\n다시 로그인해주세요.')
+        }
+      }
+      switch (error.response.data.status) {
+        case 'NONE': // 등록된 사업자가 없음, 최초 임차인 등록
+          // TODO Change to dialog UI
+          alert('사업자정보 등록 후 견적 요청이 가능합니다.');
+          this.navigation.navigate('DetailRegisterTenant', {
+            typeWH: type,
+            warehouseRegNo : typeInfo.id.warehouseRegNo,
+            warehSeq : typeInfo.id.seq,
+            rentUserNo: '',
+            status: 'RQ00',
+            type : 'TENANT',
+          }
+          );
+          break;
+        case 'IMP_CNT': // 견적등록 불가능, 창고가 공실상태가 아님.
+          // TODO Change to dialog UI
+          alert('견적요청이 불가능합니다.\n현재 공실 상태가 아닙니다.')
+          break;
+      }
+    })
+  }
+
+  handleRouteRequestQuotation = (idWarehouse, type, seq) => {
+    this.navigation.navigate('ResponseQuotation', {
+      typeWH: type,
+      warehouseRegNo : idWarehouse,
+      warehSeq : seq,
+      rentUserNo: '',
+      status: 'RQ00',
+      type : 'TENANT',
+    });
+  }
 
   _renderDialogBox = ({ item }) => {
     return <ProductCard data={{ ...item, img: cardBG }} />;
@@ -175,8 +198,7 @@ class DetailWH extends Component {
   };
 
   render() {
-    const { imageStore, workComplete } = this.props;
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList} = this.state;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, isLogin} = this.state;
 
     const dataTab = [
       {
@@ -242,14 +264,24 @@ class DetailWH extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-          <Appbar.Action
+          {favorite ?
+            <Appbar.Action
+            icon="heart"
+            color="#f2453d"
+            onPress={() => {
+              this.toggleFavoriteWH();
+            }}
+          />
+            :
+            <Appbar.Action
             icon="heart-outline"
             color="black"
             onPress={() => {
-              this.handlePicker();
-              // this.props.registerAction('44444');
+              this.toggleFavoriteWH();
             }}
           />
+          }
+          
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
@@ -421,7 +453,7 @@ class DetailWH extends Component {
                                   :
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
-                                    onPress={() => this.navigation.navigate('DetailRegisterTenant')}>
+                                    onPress={() => this.checkContract("KEEP", keep)}>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
                                   </Text>
@@ -559,7 +591,7 @@ class DetailWH extends Component {
                                   :
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
-                                    onPress={() => this.navigation.navigate('DetailRegisterTenant')}>
+                                    onPress={() => checkContract("TRUST", trust)}>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
                                   </Text>
@@ -823,7 +855,6 @@ class DetailWH extends Component {
                   {qnaList && qnaList.map((qnaItem, index) =>
                     <View key={'qnaItem' + index} style={S.inquirys}>
                       <View style={S.leftInquiry}>
-                      {console.log('answer', qnaItem?.answer)}
                         {qnaItem.answer ?
                           <Text style={S.titleCompleted}>답변완료</Text>
                           :
@@ -832,7 +863,6 @@ class DetailWH extends Component {
                         <Text style={S.contentInquiry}>비밀글입니다.</Text>
                         <Text style={S.footerInquiry}>
                         {qnaItem.writer}
-                        {console.log('writer', qnaItem.writer)}
                         {this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}
                         </Text>
                       </View>
@@ -922,7 +952,7 @@ class DetailWH extends Component {
                 />
               </View>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
               onPress={() => {
                 // this.showDialog();
@@ -935,21 +965,45 @@ class DetailWH extends Component {
                 ]}>
                 견적 요청하기
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </ScrollView>
       </SafeAreaView >
     );
   }
 
-
   /** when after render DOM */
   async componentDidMount() {
     SplashScreen.hide();
     this.getDataWH()
     this.handleRequestQnaList(4)
-    this.hiddenName()
+    this.hiddenName();
+    AsyncStorage.getItem(TOKEN).then(v => {
+      this.setState({ isLogin: v !== '' && v !== null });
+    });
   }
+
+  // async UNSAFE_componentWillMount () {
+  //   const value = await AsyncStorage.getItem(TOKEN);
+  //   // console.log('More Token ==>', value);
+  //   Account.getMe()
+  //     .then(res => {
+  //       console.log('::::: Get Me :::::', res);
+  //       const status = res.status;
+  //       if (status === 200) {
+  //         console.log('rest', res)
+  //         this.setState({
+  //           isLogin: true
+  //         });
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log('errHome', err);
+  //     });
+  //   if (value) {
+  //     this.setState({ token: value });
+  //   }
+  // }
 
   async getDataWH() {
     const { id } = this.state;
@@ -959,7 +1013,10 @@ class DetailWH extends Component {
     };
     const warehouse = await Warehouse.getWhrg(params);
 
-    this.setState({whrgData: warehouse.data});
+    this.setState({
+      whrgData: warehouse.data,
+      favorite: warehouse.data.fav
+    });
       
         // 유사창고 파라미터 조건
         let typeCodeNames = []
@@ -1029,8 +1086,6 @@ class DetailWH extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.pimages,
-    workComplete: state.registerWH.workComplete,
   };
 }
 
