@@ -14,7 +14,7 @@ import {
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {Appbar, Button, Dialog, Text} from 'react-native-paper';
+import {Appbar, Text} from 'react-native-paper';
 
 // Local Imports
 import TableInfo from '@Components/atoms/TableInfo';
@@ -23,7 +23,8 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import warehouse1 from '@Assets/images/warehouse-1.png';
-import {Warehouse, MyPage,Contract} from '@Services/apis';
+import {Warehouse, MyPage} from '@Services/apis';
+
 import {styles as S} from '../style';
 import RequestView from './requestView';
 
@@ -47,7 +48,6 @@ class Quotation extends Component {
     this.webView = null;
     this.state = {
       isConfirmRequest: false,
-      visibleContractTrust: false
     };
 
     this.navigation = props.navigation;
@@ -110,11 +110,6 @@ class Quotation extends Component {
     return changeTime;
   };
 
-  onClickContract = visible => {
-    this.setState({
-      visibleContractTrust: visible
-    });
-  }
 
   render() {
     // const { imageStore } = this.props;
@@ -324,154 +319,143 @@ class Quotation extends Component {
             <Text>{this.state.groupOrders}</Text>
             {/* ====== END:STATUS DEBUG ====== */}
 
-              {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST')
-              && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
-              <TenantRq00Trust
-                navigation={this.props.navigation}
-                warehouseRegNo={warehouseRegNo}
-                warehSeq={warehSeq}
-                rentUserNo={rentUserNo}
-                type={type}
-                typeWH={typeWH}
-                status={status}
-                data={dataApi}
-                calUnitDvCodes={this.state.calUnitDvCodes}
-                calStdDvCodes={this.state.calStdDvCodes}
-                estmtTrustGroups={this.state.estmtTrustGroups}
-                groupOrders={this.state.groupOrders}
-                groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
+            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST') && this.state.groupOrders &&
+            <TenantRq00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
 
-              />
-              }
-              {(type === 'TENANT' && status === 'RQ00' && typeWH === 'KEEP')
-              && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
-                <TenantRq00Keep
-                navigation={this.props.navigation}
-                warehouseRegNo={warehouseRegNo}
-                warehSeq={warehSeq}
-                rentUserNo={rentUserNo}
-                type={type}
-                typeWH={typeWH}
-                status={status}
-                data={dataApi}
-                calUnitDvCodes={this.state.calUnitDvCodes}
-                calStdDvCodes={this.state.calStdDvCodes}
-                estmtKeepGroups={this.state.estmtKeepGroups}
-                groupOrders={this.state.groupOrders}
-                groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
-                />
-              }
+            />
+            }
+            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'KEEP') &&
+            <TenantRq00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}groupOrderIndex
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
 
 
-              {(type === 'TENANT' && status === 'RS00' && typeWH === 'TRUST')
-              && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
-                <TenantRs00Trust
-                navigation={this.props.navigation}
-                warehouseRegNo={warehouseRegNo}
-                warehSeq={warehSeq}
-                rentUserNo={rentUserNo}
-                type={type}
-                typeWH={typeWH}
-                status={status}
-                data={dataApi}
-                calUnitDvCodes={this.state.calUnitDvCodes}
-                calStdDvCodes={this.state.calStdDvCodes}
-                estmtTrustGroups={this.state.estmtTrustGroups}
-                groupOrders={this.state.groupOrders}
-                onClickContract={this.onClickContract}
-                />
-              }
-              {(type === 'TENANT' && status === 'RS00' && typeWH === 'KEEP')
-              && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
-                <TenantRs00Keep
-                navigation={this.props.navigation}
-                warehouseRegNo={warehouseRegNo}
-                warehSeq={warehSeq}
-                rentUserNo={rentUserNo}
-                type={type}
-                typeWH={typeWH}
-                status={status}
-                data={dataApi}
-                calUnitDvCodes={this.state.calUnitDvCodes}
-                calStdDvCodes={this.state.calStdDvCodes}
-                estmtKeepGroups={this.state.estmtKeepGroups}
-                groupOrders={this.state.groupOrders}
-                />
-              }
+            {(type === 'TENANT' && status === 'RS00' && typeWH === 'TRUST') &&
+            <TenantRs00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
+            {(type === 'TENANT' && status === 'RS00' && typeWH === 'KEEP') &&
+            <TenantRs00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
 
 
-              {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST')
-              && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
-                <OwnerRq00Trust
-                navigation={this.props.navigation}
-                warehouseRegNo={warehouseRegNo}
-                warehSeq={warehSeq}
-                rentUserNo={rentUserNo}
-                type={type}
-                typeWH={typeWH}
-                status={status}
-                data={dataApi}
-                calUnitDvCodes={this.state.calUnitDvCodes}
-                calStdDvCodes={this.state.calStdDvCodes}
-                estmtTrustGroups={this.state.estmtTrustGroups}
-                groupOrders={this.state.groupOrders}
-                groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
-                />
-              }
-              {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP')
-              && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
-                <OwnerRq00Keep
-                navigation={this.props.navigation}
-                warehouseRegNo={warehouseRegNo}
-                warehSeq={warehSeq}
-                rentUserNo={rentUserNo}
-                type={type}
-                typeWH={typeWH}
-                status={status}
-                data={dataApi}
-                calUnitDvCodes={this.state.calUnitDvCodes}
-                calStdDvCodes={this.state.calStdDvCodes}
-                estmtKeepGroups={this.state.estmtKeepGroups}
-                groupOrders={this.state.groupOrders}
-                />
-              }
+            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST') && this.state.groupOrders &&
+            <OwnerRq00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
+            />
+            }
+            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP') &&
+            <OwnerRq00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
 
-              {/** 엑션 없음 **/}
-              {/*{(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&*/}
-              {/*<OwnerRs00Trust*/}
-              {/*  navigation={this.props.navigation}*/}
-              {/*  warehouseRegNo={warehouseRegNo}*/}
-              {/*  warehSeq={warehSeq}*/}
-              {/*  rentUserNo={rentUserNo}*/}
-              {/*  type={type}*/}
-              {/*  typeWH={typeWH}*/}
-              {/*  status={status}*/}
-              {/*  data={dataApi}*/}
-              {/*  calUnitDvCodes={this.state.calUnitDvCodes}*/}
-              {/*  calStdDvCodes={this.state.calStdDvCodes}*/}
-              {/*  estmtTrustGroups={this.state.estmtTrustGroups}*/}
-              {/*  groupOrders={this.state.groupOrders}*/}
-              {/*/>*/}
-              {/*}*/}
 
-              {/** 엑션 없음 **/}
-              {/*{(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&*/}
-              {/*<OwnerRs00Keep*/}
-              {/*  navigation={this.props.navigation}*/}
-              {/*  warehouseRegNo={warehouseRegNo}*/}
-              {/*  warehSeq={warehSeq}*/}
-              {/*  rentUserNo={rentUserNo}*/}
-              {/*  type={type}*/}
-              {/*  typeWH={typeWH}*/}
-              {/*  status={status}*/}
-              {/*  data={dataApi}*/}
-              {/*  calUnitDvCodes={this.state.calUnitDvCodes}*/}
-              {/*  calStdDvCodes={this.state.calStdDvCodes}*/}
-              {/*  estmtKeepGroups={this.state.estmtKeepGroups}*/}
-              {/*  groupOrders={this.state.groupOrders}*/}
-              {/*/>*/}
-              {/*}*/}
-
+            {/*{(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&*/}
+            {/*<OwnerRs00Trust*/}
+            {/*  navigation={this.props.navigation}*/}
+            {/*  warehouseRegNo={warehouseRegNo}*/}
+            {/*  warehSeq={warehSeq}*/}
+            {/*  rentUserNo={rentUserNo}*/}
+            {/*  type={type}*/}
+            {/*  typeWH={typeWH}*/}
+            {/*  status={status}*/}
+            {/*  data={dataApi}*/}
+            {/*  calUnitDvCodes={this.state.calUnitDvCodes}*/}
+            {/*  calStdDvCodes={this.state.calStdDvCodes}*/}
+            {/*  estmtTrustGroups={this.state.estmtTrustGroups}*/}
+            {/*  groupOrders={this.state.groupOrders}*/}
+            {/*/>*/}
+            {/*}*/}
+            {(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&
+            <OwnerRs00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+            />
+            }
 
             {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
              {route.params.status === 'notAnswerd' ? (
@@ -570,99 +554,8 @@ class Quotation extends Component {
              */}
             {/** END:REQ/RES ACTION **/}
           </View>
+
         </ScrollView>
-
-        {/** 수탁 계약협의 요청 **/}
-        <Dialog
-            style={DefaultStyle.popup}
-            visible={this.state.visibleContractTrust}
-            onDismiss={() => {
-              this.setState({visibleContractTrust: false});
-            }}>
-            <Dialog.Title style={DefaultStyle._titleDialog}>
-              수탁 계약협의 요청
-            </Dialog.Title>
-            <Dialog.Content>
-              <Text>견적 금액을 확정하고 계약을 요청하시겠습니까?</Text>
-            </Dialog.Content>
-            <Dialog.Actions style={DefaultStyle._buttonPopup}>
-              <Button
-                style={DefaultStyle._buttonElement}
-                onPress={()=>this.setState({visibleContractTrust: false})}>
-                아니오
-              </Button>
-              <Button
-                style={DefaultStyle._buttonElement}
-                onPress={()=>{
-
-                  Contract.createTrust({
-                    idWarehouse: warehouseRegNo,
-                    mgmtTrustSeq: warehSeq,
-                    rentUserNo: rentUserNo
-                  }).then((res) => {
-                    if (res.status === 200) {
-                      this.setState({
-                        completeContract: true
-                      });
-                      alert('계약 요청이 완료되었습니다.');
-                      // TODO 마이페이지 부모 refresh!!
-                      this.navigation.goBack();
-                    } else {
-                      alert('계약 요청이 실패하였습니다.\n다시 시도해보세요.');
-                      this.navigation.goBack();
-                    }
-                  });
-                }}>
-                확인
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-
-        {/** 임대(보관) 계약협의 요청 **/}
-        <Dialog
-          style={DefaultStyle.popup}
-          visible={this.state.visibleContractTrust}
-          onDismiss={() => {
-            this.setState({visibleContractTrust: false});
-          }}>
-          <Dialog.Title style={DefaultStyle._titleDialog}>
-            임대(보관) 계약협의 요청
-          </Dialog.Title>
-          <Dialog.Content>
-            <Text>견적 금액을 확정하고 계약을 요청하시겠습니까?</Text>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={()=>this.setState({visibleContractTrust: false})}>
-              아니오
-            </Button>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={()=>{
-
-                Contract.createKeep({
-                  idWarehouse: warehouseRegNo,
-                  mgmtKeepSeq: warehSeq,
-                  rentUserNo: rentUserNo
-                }).then((res) => {
-                  if (res.status === 200) {
-                    this.setState({
-                      completeContract: true
-                    });
-                    alert('계약 요청이 완료되었습니다.');
-                    // TODO 마이페이지 부모 refresh!!
-                    this.navigation.goBack();
-                  } else {
-                    alert('계약 요청이 실패하였습니다.\n다시 시도해보세요.');
-                    this.navigation.goBack();
-                  }
-                });
-              }}>
-              확인
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
       </SafeAreaView>
     );
   }
@@ -708,8 +601,6 @@ class Quotation extends Component {
     const res = await Warehouse.quotation(
       this.props.route.params.type === 'OWNER' ? urlOwner : urlTenant,
     )
-
-    console.log("res 1", res)
     const status = res.status;
 
     if (status === 200) {
@@ -737,36 +628,36 @@ class Quotation extends Component {
     // }
 
     if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
-      // let warehSeq = this.props.route.params.warehSeq;
-      // let warehouseRegNo = this.props.route.params.warehouseRegNo;
-      // let rentUserNo = this.props.route.params.rentUserNo;
-      // let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-      // let typeWH =
-      //   this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
-      // let data =
-      //   this.props.route.params.typeWH === 'TRUST'
-      //     ? {warehouseRegNo, mgmtTrustSeq: warehSeq}
-      //     : {warehouseRegNo, mgmtKeepSeq: warehSeq};
-      // Warehouse.requestContract({typeWH, data})
-      //   .then(res => {
-      //     const status = res.status;
-      //     console.log('res', res);
-      //     if (status === 200) {
-      //       // this.setState({
-      //       //   dataApi: res.data,
-      //       // });
-      //       this.navigation.navigate('RequestContract', {
-      //         type,
-      //         warehouseRegNo,
-      //         warehSeq,
-      //         typeWH,
-      //         rentUserNo,
-      //       });
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log('err', err);
-      //   });
+      let warehSeq = this.props.route.params.warehSeq;
+      let warehouseRegNo = this.props.route.params.warehouseRegNo;
+      let rentUserNo = this.props.route.params.rentUserNo;
+      let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
+      let typeWH =
+        this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+      let data =
+        this.props.route.params.typeWH === 'TRUST'
+          ? {warehouseRegNo, mgmtTrustSeq: warehSeq}
+          : {warehouseRegNo, mgmtKeepSeq: warehSeq};
+      Warehouse.requestContract({typeWH, data})
+        .then(res => {
+          const status = res.status;
+          console.log('res', res);
+          if (status === 200) {
+            // this.setState({
+            //   dataApi: res.data,
+            // });
+            this.navigation.navigate('RequestContract', {
+              type,
+              warehouseRegNo,
+              warehSeq,
+              typeWH,
+              rentUserNo,
+            });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
     }
   }
 
