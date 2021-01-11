@@ -13,6 +13,10 @@ class TenantRq00Keep extends Component {
 
   constructor(props) {
     super(props);
+    this.navigation = props.navigation;
+    this.state = {
+      groupOrderIndex: props.groupOrderIndex
+    }
   }
 
   render() {
@@ -29,118 +33,155 @@ class TenantRq00Keep extends Component {
     const data = this.props.data;
     const calUnitDvCodes = this.props.calUnitDvCodes;
     const calStdDvCodes = this.props.calStdDvCodes;
+    const estmtKeepGroups = this.props.estmtKeepGroups;
+    const groupOrders = this.props.groupOrders;
 
+    let total = 0;
 
-    let viewRequest =
+    let viewRequestKeep =
       calUnitDvCodes && calUnitDvCodes.length > 0 &&
-      calStdDvCodes && this.calStdDvCodes.length > 0 &&
-      data &&
-      data.estmtKeeps &&
-      data.estmtKeeps.map((item, index) => {
+      calStdDvCodes && calStdDvCodes.length > 0 &&
+      estmtKeepGroups && estmtKeepGroups.length > 0 &&
+      // estmtTrustGroups[this.props.groupOrders ? this.props.groupOrders.length - 1 : 0].map((item, index) => {
+      estmtKeepGroups[this.state.groupOrderIndex].map((item, index) => {
+        console.log(item, '>>>>item');
 
-        let dataRequest = [
-          {
-            type: item.estmtDvCd === 'RQ00' ? '요청 일시' : '응답 일시',
-            value: StringUtils.dateStr(item.occrYmd),
-          },
-          {
-            type: '요청 보관 기간',
-            value: StringUtils.dateStr(item.from) + ' - ' + StringUtils.dateStr(item.to),
-          },
-          {
-            type: '요청 가용 면적',
-            value: item.rntlValue ? item.rntlValue.toLocaleString() : '-',
-          },
-          {
-            type: '정산단위',
-            value: item.calUnitDvCode ? StringUtils.toStdName(this.state.calUnitDvCodes, item.calUnitDvCode) : '-'
-          },
-          {
-            type: '산정기준',
-            value: item.calStdDvCode ? StringUtils.toStdName(this.state.calStdDvCodes, item.calStdDvCode) : '-'
-          },
-          {
-            type: '요청 보관단가',
-            value: item.splyAmount ? StringUtils.money(item.splyAmount) : '-'
-          },
-          {
-            type: '요청 관리단가',
-            value: item.mgmtChrg ? StringUtils.money(item.mgmtChrg) : '-',
-          },
-          {
-            type: '추가 요청사항',
-            value: item.remark,
-          },
-        ];
+        total = item.splyAmount + item.mgmtChrg;
+          let dataRequest = [
+            {
+              type: '요청 일시',
+              value: StringUtils.dateStr(item.occrYmd),
+              // value: 0,
+            },
+            {
+              type: '요청 보관 기간',
+              value: StringUtils.dateStr(item.from) + ' - ' + StringUtils.dateStr(item.to),
+              // value: 0,
+            },
+            {
+              type: '요청 가용 면적',
+              value: item.rntlValue ? item.rntlValue.toLocaleString() : '-',
+            },
+            {
+              type: '정산단위',
+              value: item.calUnitDvCode ? StringUtils.toStdName(calUnitDvCodes, item.calUnitDvCode) : '-'
+            },
+            {
+              type: '산정기준',
+              value: item.calStdDvCode ? StringUtils.toStdName(calStdDvCodes, item.calStdDvCode) : '-'
+            },
+            {
+              type: '요청 보관단가',
+              value: item.splyAmount ? StringUtils.money(item.splyAmount) : '-'
+            },
+            {
+              type: '요청 관리단가',
+              value: item.mgmtChrg ? StringUtils.money(item.mgmtChrg) : '-',
+            },
+            {
+              type: '추가 요청사항',
+              value: item.remark,
+            },
+          ];
+          return (
+            <Fragment key={index}>
 
-        let orders = data?.orders[0] || [
-          {
-            label: StringUtils.dateStr(new Date()) + '(1차)',
-            value: StringUtils.dateStr(new Date()) + '(1차)',
-          },
-        ];
+              {/*<Text>{this.state.groupOrderIndex}</Text>*/}
+              {/*<Text>{this.props.groupOrderIndex}</Text>*/}
+              {/*<Text>{item.occrYmd}</Text>*/}
 
-        const dataSelect = [
-          {
-            label: StringUtils.dateStr(orders) + '(1차)',
-            value: StringUtils.dateStr(orders) + '(1차)',
-          },
-        ];
-
-        return (
-          <Fragment key={index}>
-            {item.estmtDvCd === 'RQ00' ? (
-              <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0, {marginTop: 0}]}
-                key={index}>
-                {(data.estmtKeeps[index - 1] &&
-                  data.estmtKeeps[index - 1].estmtDvCd !== 'RQ00') ||
-                !data.estmtKeeps[index - 1] ? (
-                  <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
-                    <Text style={DefaultStyle._textTitleCard}>
-                      견적 요청 정보
-                    </Text>
-                    <View style={DefaultStyle._optionList}>
-                      <Select data={dataSelect} style={SS.optionSelect}/>
-                    </View>
-                  </View>
-                ) : null}
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest}/>
-                  </View>
+              <View style={DefaultStyle._card}>
+                <View style={DefaultStyle._headerCard}>
+                  <Text style={DefaultStyle._headerCardTitle}>
+                    {item.estmtDvCd === 'RQ00' ? '요청한 견적 정보' : '창고주의 견적응답 정보'}
+                  </Text>
                 </View>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={S.amount}>예상 견적 금액</Text>
-                  <Text style={S.total}>{item.estimatedPrice}원</Text>
+                <View style={DefaultStyle._infoTable}>
+                  <TableInfo data={dataRequest}/>
                 </View>
               </View>
-            ) : null}
-            {item.estmtDvCd === 'RS00' ? (
-              <View
-                style={[DefaultStyle._cards, DefaultStyle._margin0, {marginTop: 0}]}
-                key={index}>
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._headerCard}>
-                    <Text style={DefaultStyle._headerCardTitle}>
-                      견적 응답 정보
-                    </Text>
-                  </View>
-                  <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={dataRequest}/>
-                  </View>
-                </View>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={S.amount}>예상 견적 금액</Text>
-                  <Text style={S.total}>{item.estimatedPrice}원</Text>
-                </View>
+
+            </Fragment>
+          );
+        }
+      );
+    if (groupOrders) {
+      const dataSelect = groupOrders ? groupOrders.map((item, index) => {
+        console.log(item, 'item');
+        return {
+          label: StringUtils.dateStr(item) + `(${(index + 1)}차)`,
+          value: index
+        };
+      }) : [];
+
+
+      return (
+        <Fragment>
+
+          <View
+            style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+
+            <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
+              <Text style={DefaultStyle._textTitleCard}>
+                견적 요청 정보
+              </Text>
+              <View style={DefaultStyle._optionList}>
+                <Select data={dataSelect}
+                        valueSelected={dataSelect[this.state.groupOrderIndex].label}
+                        valueProps={(value) => {
+                          this.setState({
+                            groupOrderIndex: value
+                          });
+                        }}
+                        style={SS.optionSelect}/>
               </View>
-            ) : null}
-          </Fragment>
-        );
-      });
+            </View>
+
+            {viewRequestKeep}
+
+            <View style={DefaultStyle._footerCards}>
+              <Text style={S.amount}>예상 견적 금액</Text>
+              <Text style={S.total}>{StringUtils.money(total)}</Text>
+            </View>
+
+            <View style={DefaultStyle._card}>
+              <View style={DefaultStyle._headerCard}>
+                <Text style={DefaultStyle._headerCardTitle}>
+                  견적 응답 정보
+                </Text>
+              </View>
+              <Text style={S.noticeWaitting}>
+                창고주가 보내주신 견적 요청서를 확인하고 있습니다.
+                견적 응답이 올 때까지 잠시만 기다려 주세요.
+              </Text>
+            </View>
 
 
+            <View style={DefaultStyle._listBtn}>
+              <TouchableOpacity
+                style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
+                onPress={() => {
+                  /** Go To 견적 재요청 **/
+                  this.navigation.navigate('RequestQuotation', {
+                    data,
+                    typeWH,
+                    warehouseRegNo,
+                    warehSeq,
+                    rentUserNo,
+                    status,
+                    type,
+                  });
+                }}>
+                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+        </Fragment>
+      );
+    } else {
+      return <></>;
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
