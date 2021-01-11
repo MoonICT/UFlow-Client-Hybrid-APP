@@ -148,6 +148,7 @@ class ResponseQuotation extends Component {
                   DefaultStyle._textTitleCard,
                   { paddingBottom: 0, marginRight: 4 },
                 ]}>
+                {'견적 응답 정보'}
               </Text>
 
               <TouchableOpacity
