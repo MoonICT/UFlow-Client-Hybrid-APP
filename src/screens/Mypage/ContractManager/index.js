@@ -421,9 +421,10 @@ class ContractManager extends Component {
               onPressHeader={() =>
                 this.navigation.navigate(
                   item.status === 'RQ00' || item.status === 'RS00'
-                    ? 'Quotation'
-                    : 'RequestContract',
+                    ? 'Quotation' // Goto RQ00, RS00
+                    : 'RequestContract', // Goto 1100, 2100, 4100, 5100
                   {
+                    onRefresh: this.onRefresh,
                     type: valueTab,
                     typeWH: item.type2,
                     warehouseRegNo: item.warehouseRegNo,
@@ -645,6 +646,14 @@ class ContractManager extends Component {
         {viewProprietor}
       </View>
     );
+  }
+
+  onRefresh(valueTab) {
+    console.log("::::ContractManager Mount::::");
+    console.log(valueTab,'valueTab');
+    this.setState({
+      valueTab: valueTab
+    })
   }
 
   /** when after render DOM */

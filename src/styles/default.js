@@ -7,6 +7,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { color } from '../themes/colors';
 import { theme } from '../themes/index';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -524,7 +525,7 @@ export default StyleSheet.create({
     borderColor: color.input.default_border,
     justifyContent: 'center',
     flex: 1,
-    padding: 0,
+    paddingVertical: 6,
     margin: 0,
     borderRadius: 0,
   },
@@ -970,7 +971,7 @@ export default StyleSheet.create({
     height: 50,
   },
   rightTitleHeader: {
-    marginRight: 16,
+    // marginRight: 16,
   },
   _bodyCard: {
     padding: 16,
@@ -1142,6 +1143,9 @@ export default StyleSheet.create({
     height: 42,
     borderRadius: 21,
     alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    paddingHorizontal: 8,
   },
   _btnInline: {
     alignItems: 'center',
@@ -1236,6 +1240,8 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
+    height:36,
+    marginBottom:5
   },
   _textDate: {
     color: color.text.secondary,

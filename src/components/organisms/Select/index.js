@@ -17,6 +17,7 @@ import { styles } from './style';
 export default class Selected extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       selectedValue: props.dataDefault ? props.dataDefault.label : '',
       isToggle: false,
@@ -112,7 +113,7 @@ export default class Selected extends Component {
             <Dialog.Content>{items}</Dialog.Content>
           </Dialog>
         </Portal>
-        {/** 
+        {/**
         <Picker
           style={DefaultStyle._textSelected}
           mode="dropdown"

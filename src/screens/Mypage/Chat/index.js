@@ -171,6 +171,8 @@ class Chatting extends Component {
           </View>
         );
       });
+
+    console.log(warehouse)
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -190,7 +192,7 @@ class Chatting extends Component {
           <View style={SS.header}>
             <List.Section>
               <List.Accordion
-                title="에이씨티앤코아물류"
+                title={''}
                 titleStyle={SS.name}
                 style={SS.headerChat}
                 left={() => (
@@ -247,13 +249,14 @@ class Chatting extends Component {
             </List.Section>
           </View>
           <View style={SS.chatting}>
-            <View style={SS.dateTop}>
-              <Text style={SS.textDateTop}>2020년 10월 30일</Text>
-            </View>
+            {/*<View style={SS.dateTop}>*/}
+            {/*  <Text style={SS.textDateTop}>2020년 10월 30일</Text>*/}
+            {/*</View>*/}
             {listChat}
           </View>
+
         </ScrollView>
-        <View style={SS.footer}>
+        <View style={[SS.footer, {position:'absolute', bottom:0, marginBottom:56}]}>
           <View style={SS.footerItem}>
             <View style={SS.inputChat}>
               <TextField

@@ -34,11 +34,12 @@ class AppGrid extends Component {
     }
   }
   render() {
-    const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height;
-    const { data, titleProps, titleCenter } = this.props;
+    
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+    const { data, titleProps, titleCenter, valueProps } = this.props;
     if (this.props.type === 'controlTitleActive') {
-      const { data, titleProps } = this.props;
+      const { data, titleProps, valueProps} = this.props;
       const tabItem =
         data &&
         data.map((item, index) => {
@@ -53,6 +54,7 @@ class AppGrid extends Component {
               onPress={() => {
                 this.handlePress(item);
                 titleProps && titleProps(item.title, index);
+                valueProps && valueProps(item.id, index);
               }}
               style={[
                 DefaultStyle._tabItem,
@@ -103,6 +105,7 @@ class AppGrid extends Component {
             onPress={() => {
               this.handlePress(item);
               titleProps && titleProps(item.title, index);
+              valueProps && valueProps(item.id, index);
             }}
             style={[
               DefaultStyle._tabItem,
