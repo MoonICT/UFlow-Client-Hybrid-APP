@@ -45,13 +45,13 @@ class RegisterMoreInfo extends Component {
     super(props);
     this.webView = null;
     this.state = {
-      addOptDvCode:
-        props.dataMoreInfo && props.dataMoreInfo.addOptDvCode
-          ? props.dataMoreInfo.addOptDvCode
+      addOptDvCodes:
+        props.dataMoreInfo && props.dataMoreInfo.addOptDvCodes
+          ? props.dataMoreInfo.addOptDvCodes
           : ['', '', ''],
-      insrDvCode:
-        props.dataMoreInfo && props.dataMoreInfo.insrDvCode
-          ? props.dataMoreInfo.insrDvCode
+      insrDvCodes:
+        props.dataMoreInfo && props.dataMoreInfo.insrDvCodes
+          ? props.dataMoreInfo.insrDvCodes
           : ['', '', ''],
       cmpltYmd:
         props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
@@ -102,8 +102,8 @@ class RegisterMoreInfo extends Component {
   render() {
     const { imageStore, route, dataMoreInfo } = this.props;
     const {
-      addOptDvCode,
-      insrDvCode,
+      addOptDvCodes,
+      insrDvCodes,
       cmpltYmd,
       siteArea,
       bldgArea,
@@ -114,11 +114,27 @@ class RegisterMoreInfo extends Component {
       mode,
       showFrom,
     } = this.state;
-    console.log('dataMoreInfo :>> ', dataMoreInfo);
+    console.log('insrDvCodes :>> ', insrDvCodes);
+
+    let checkbox0001  = [-1, -1, -1, -1, -1, -1];
+
+    if(addOptDvCodes.length > 0){
+      checkbox0001[0] = addOptDvCodes.indexOf("0001");
+      checkbox0001[1] = addOptDvCodes.indexOf("0002");
+      checkbox0001[2] = addOptDvCodes.indexOf("0003");
+    }
+
+    if(insrDvCodes.length > 0){
+      checkbox0001[3] = insrDvCodes.indexOf("0001");
+      checkbox0001[4] = insrDvCodes.indexOf("0002");
+      checkbox0001[5] = insrDvCodes.indexOf("0003");
+    }
+    console.log('checkbox0001 :>> ', checkbox0001);
+
     let isSubmitUpdate = false;
     if (
-      addOptDvCode.length > 0 &&
-      insrDvCode.length > 0 &&
+      addOptDvCodes.length > 0 &&
+      insrDvCodes.length > 0 &&
       siteArea !== '' &&
       bldgArea !== '' &&
       totalArea !== '' &&
@@ -164,6 +180,8 @@ class RegisterMoreInfo extends Component {
                   onPress={this.showDatepicker}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
+                  {console.log("======> toLocaleDateString: ", from.toLocaleDateString())}
+
                     {from.toLocaleDateString()}
                   </Text>
                   <Text
@@ -248,36 +266,37 @@ class RegisterMoreInfo extends Component {
             </View>
             <View style={S.options}>
               <View style={S.optionCheck}>
+                {console.log("addOptDvCodes[0]: ", addOptDvCodes[0], addOptDvCodes[1], addOptDvCodes[2])}
                 <Checkbox
-                  status={addOptDvCode[0] === '0001' ? 'checked' : 'unchecked'}
+                  status={checkbox0001[0] > -1 ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    addOptDvCode[0] === '0001'
-                      ? this.setState({ ...(addOptDvCode[0] = '') })
-                      : this.setState({ ...(addOptDvCode[0] = '0001') });
+                    addOptDvCodes[0] === '0001'
+                      ? this.setState({ ...(addOptDvCodes[0] = '') })
+                      : this.setState({ ...(addOptDvCodes[0] = '0001') });
                   }}
                 />
                 <Text style={S.labelCheck}>보세</Text>
               </View>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={addOptDvCode[1] === '0002' ? 'checked' : 'unchecked'}
+                  status={checkbox0001[1] > -1 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     // this.setState({ checkMedicine: !checkMedicine });
-                    addOptDvCode[1] === '0002'
-                      ? this.setState({ ...(addOptDvCode[1] = '') })
-                      : this.setState({ ...(addOptDvCode[1] = '0002') });
+                    addOptDvCodes[1] === '0002'
+                      ? this.setState({ ...(addOptDvCodes[1] = '') })
+                      : this.setState({ ...(addOptDvCodes[1] = '0002') });
                   }}
                 />
                 <Text style={S.labelCheck}>의약품</Text>
               </View>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={addOptDvCode[2] === '0003' ? 'checked' : 'unchecked'}
+                  status={checkbox0001[2] > -1 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     // this.setState({ checkDanger: !checkDanger });
-                    addOptDvCode[2] === '0003'
-                      ? this.setState({ ...(addOptDvCode[2] = '') })
-                      : this.setState({ ...(addOptDvCode[2] = '0003') });
+                    addOptDvCodes[2] === '0003'
+                      ? this.setState({ ...(addOptDvCodes[2] = '') })
+                      : this.setState({ ...(addOptDvCodes[2] = '0003') });
                   }}
                 />
                 <Text style={S.labelCheck}>위험물</Text>
@@ -292,36 +311,36 @@ class RegisterMoreInfo extends Component {
             <View style={[S.options, S.optionsFooter]}>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={insrDvCode[0] === '0001' ? 'checked' : 'unchecked'}
+                  status={checkbox0001[3] > -1 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     // this.setState({ checkBuilding: !checkBuilding });
-                    insrDvCode[0] === '0001'
-                      ? this.setState({ ...(insrDvCode[0] = '') })
-                      : this.setState({ ...(insrDvCode[0] = '0001') });
+                    insrDvCodes[0] === '0001'
+                      ? this.setState({ ...(insrDvCodes[0] = '') })
+                      : this.setState({ ...(insrDvCodes[0] = '0001') });
                   }}
                 />
                 <Text style={S.labelCheck}>건물보험</Text>
               </View>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={insrDvCode[1] === '0002' ? 'checked' : 'unchecked'}
+                  status={checkbox0001[4] > -1 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     // this.setState({ checkInventory: !checkInventory });
-                    insrDvCode[1] === '0002'
-                      ? this.setState({ ...(insrDvCode[1] = '') })
-                      : this.setState({ ...(insrDvCode[1] = '0002') });
+                    insrDvCodes[1] === '0002'
+                      ? this.setState({ ...(insrDvCodes[1] = '') })
+                      : this.setState({ ...(insrDvCodes[1] = '0002') });
                   }}
                 />
                 <Text style={S.labelCheck}>재고보험</Text>
               </View>
               <View style={S.optionCheck}>
                 <Checkbox
-                  status={insrDvCode[2] === '0003' ? 'checked' : 'unchecked'}
+                  status={checkbox0001[5] > -1 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     // this.setState({ checkCompensation: !checkCompensation });
-                    insrDvCode[2] === '0003'
-                      ? this.setState({ ...(insrDvCode[2] = '') })
-                      : this.setState({ ...(insrDvCode[2] = '0003') });
+                    insrDvCodes[2] === '0003'
+                      ? this.setState({ ...(insrDvCodes[2] = '') })
+                      : this.setState({ ...(insrDvCodes[2] = '0003') });
                   }}
                 />
                 <Text style={S.labelCheck}>영업배상보험</Text>
@@ -334,8 +353,8 @@ class RegisterMoreInfo extends Component {
                   completeMoreInfo: true,
                 });
                 this.props.updateInfo({
-                  addOptDvCode,
-                  insrDvCode,
+                  addOptDvCodess,
+                  insrDvCodes,
                   cmpltYmd,
                   siteArea,
                   bldgArea,
