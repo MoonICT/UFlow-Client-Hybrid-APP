@@ -42,6 +42,7 @@ let dataImage = (state, listImage) => {
       ...state,
       pnImages: listImage,
       whImages: listImage,
+      thImages: state.whImages[0],
     };
     return result;
   } catch (e) {
@@ -58,6 +59,7 @@ let upImage = (state, image) => {
       ...state,
       pnImages: imageUpload,
       whImages: imageUpload,
+      thImages: [state.whImages[0]],
     };
     return result;
   } catch (e) {
@@ -77,6 +79,7 @@ let removeImg = (state, id) => {
       ...state,
       whImages: imageL,
       pnImages: imageL,
+      thImages: [state.whImages[0]],
     };
     return result;
   } catch (e) {
