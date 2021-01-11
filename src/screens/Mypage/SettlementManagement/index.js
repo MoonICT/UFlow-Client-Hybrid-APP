@@ -276,7 +276,7 @@ export default class SettlementManagement extends Component {
               <View style={{flex: 1}}>
                 <TouchableOpacity
                   onPress={() => this.showDateStart()}
-                  style={DefaultStyle._btnDate}>
+                  style={DefaultStyle._btnDateCustom}>
                   <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
                     {dateStr(startDate) || 'YYYY-MM-DD'}
                   </Text>
@@ -319,7 +319,7 @@ export default class SettlementManagement extends Component {
               <View style={{flex: 1}}>
                 <TouchableOpacity
                   onPress={() => this.showDateEnd()}
-                  style={DefaultStyle._btnDate}>
+                  style={DefaultStyle._btnDateCustom}>
                   <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
                     {dateStr(endDate) || 'YYYY-MM-DD'}
                   </Text>

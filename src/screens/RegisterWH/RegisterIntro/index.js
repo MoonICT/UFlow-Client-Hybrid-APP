@@ -289,8 +289,6 @@ class RegisterIntro extends Component {
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::prevState.firstQuery::', prevState.firstQuery);
-    console.log('::this.state.firstQuery::', this.state.firstQuery);
     if (prevState.firstQuery !== this.state.firstQuery) {
       Warehouse.searchAddressKakao({ query: this.state.firstQuery })
         .then(res => {

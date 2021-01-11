@@ -50,7 +50,7 @@ class RegisterInfoFloor extends Component {
           ? props.dataInfoFloor.floors
           : [
               {
-                flrDvCode: 'F1',
+                flrDvCode: 'F2',
                 flrArea: '',
                 parkArea: '',
                 opcArea: '',
@@ -94,7 +94,17 @@ class RegisterInfoFloor extends Component {
 
     this.setState({ floors: list });
   };
-  _removeImage = () => console.log('_removeImage');
+  _removeForm = () => {
+    let listFloors = this.state.floors;
+    let numberSlide = this.state.numberSlide;
+    let slideStart = numberSlide > 0 ? numberSlide - 1 : 0;
+    let filterFloors =
+      listFloors && listFloors.filter(item => item !== listFloors[slideStart]);
+    this.setState({
+      floors: filterFloors,
+      numberSlide: slideStart,
+    });
+  };
 
   onToggleSwitch = () => this.setState({ isSwitchOn: !this.state.isSwitchOn });
   _renderItem = ({ item }) => {
@@ -169,7 +179,7 @@ class RegisterInfoFloor extends Component {
                 <IconButton
                   style={S.btnIcon}
                   icon="delete"
-                  onPress={() => console.log('remove')}
+                  onPress={() => this._removeForm()}
                 />
               </View>
             </View>
