@@ -217,7 +217,7 @@ class RegisterWH extends Component {
                   type: route && route.params && route.params.type,
                 })
               }>
-              <Text style={S.textLeftBtn}>부가 정보</Text>
+              <Text style={S.textLeftBtn}>추가 정보</Text>
               <View style={S.rightBtn}>
                 {(route && route.params && route.params.type === 'ModifyWH') ||
                 (dataWH && dataWH.siteArea) ? (

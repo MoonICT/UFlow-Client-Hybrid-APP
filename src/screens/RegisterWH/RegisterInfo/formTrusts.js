@@ -267,7 +267,7 @@ class FormTrusts extends Component {
             }}
           />
           <TextField
-            labelTextField="기타"
+            labelTextField="가용수량"
             defaultValue={
               formData.usblValue ? numberToStd(formData.usblValue) : ''
             }
