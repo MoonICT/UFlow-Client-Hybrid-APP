@@ -60,7 +60,7 @@ class FormInfo extends Component {
   _removeImage = () => console.log('_removeImage');
 
   render() {
-    const { data, formData, valueForm } = this.props;
+    const { data, formData, valueForm, flrDvCodes } = this.props;
     console.log('formData :>> ', formData);
     const {
       flrAreaValue2,
@@ -87,15 +87,14 @@ class FormInfo extends Component {
         value: 'B1',
       },
     ];
-    let dataDefault =
-      dataSelect &&
-      dataSelect.find(item => item.value === formData.flrDvCode);
+    let defaultFlrDvCode =
+      flrDvCodes && flrDvCodes.find(item => item.value === formData.flrDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
-            data={dataSelect}
-            dataDefault={dataDefault}
+            data={flrDvCodes}
+            dataDefault={defaultFlrDvCode !== undefined ? defaultFlrDvCode : ''}
             selectedValue={formData.flrDvCode}
             labelSelected="층 수"
             valueProps={e => {

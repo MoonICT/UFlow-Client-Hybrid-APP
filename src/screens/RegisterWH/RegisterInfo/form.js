@@ -91,14 +91,29 @@ class FormInfo extends Component {
   };
   componentWillReceiveProps(newProps) {
     // let selectedValue = newProps.selectedValue;
-    console.log('newPropsIntro :>> ', newProps);
-    // if(newProps.formData===undefined){
-    //   this.setState()
-    // }
+    let newUsblYmdFrom = newProps.formData.usblYmdFrom;
+    let newUsblYmdTo = newProps.formData.usblYmdTo;
+    if (newProps.formData && newUsblYmdFrom !== undefined) {
+      this.setState({ from: new Date(newProps.formData.usblYmdFrom) });
+    }
+    if (newProps.formData && newUsblYmdTo !== undefined) {
+      this.setState({ to: new Date(newProps.formData.usblYmdTo) });
+    }
     // this.setState({ selectedValue: selectedValue });
   }
   render() {
-    const { data, valueTab, number, valueForm, formData,dataKeep } = this.props;
+    const {
+      data,
+      valueTab,
+      number,
+      valueForm,
+      formData,
+      dataKeep,
+      typeCodes,
+      mgmtChrgDvCodes,
+      calUnitDvCodes,
+      calStdDvCodes,
+    } = this.props;
     const {
       splyAmount,
       mgmtChrg,
@@ -116,140 +131,27 @@ class FormInfo extends Component {
     // console.log('formDataKeep :>> ', formData);
     // console.log('dataKeep :>> ', dataKeep);
 
-    const dataSelect = [
-      {
-        label: '냉동',
-        value: '0001',
-      },
-      {
-        label: '냉장',
-        value: '0002',
-      },
-      {
-        label: '상온',
-        value: '0003',
-      },
-      {
-        label: '위험물',
-        value: '0004',
-      },
-      {
-        label: '기타',
-        value: '9100',
-      },
-    ];
-
-    const settlement = [
-      {
-        label: '제곱미터(㎡)',
-        value: 'CU01',
-      },
-      {
-        label: '평',
-        value: 'CU02',
-      },
-      {
-        label: '파렛트',
-        value: 'CU03',
-      },
-      {
-        label: '중량',
-        value: 'CU04',
-      },
-      {
-        label: 'BOX',
-        value: 'CU05',
-      },
-      {
-        label: 'PCS',
-        value: 'CU06',
-      },
-      {
-        label: 'CBM',
-        value: 'CU07',
-      },
-      {
-        label: '명수',
-        value: 'CU08',
-      },
-      {
-        label: '건수',
-        value: 'CU09',
-      },
-      {
-        label: '횟수',
-        value: 'CU010',
-      },
-      {
-        label: '일수',
-        value: 'CU011',
-      },
-      {
-        label: '월수',
-        value: 'CU011',
-      },
-    ];
-    const calculation = [
-      {
-        label: '회',
-        value: 'CS01',
-      },
-      {
-        label: '건',
-        value: 'CS02',
-      },
-      {
-        label: '일',
-        value: 'CS03',
-      },
-      {
-        label: '월',
-        value: 'CS04',
-      },
-      {
-        label: '분기',
-        value: 'CS05',
-      },
-      {
-        label: '반기',
-        value: 'CS06',
-      },
-      {
-        label: '연',
-        value: 'CS07',
-      },
-    ];
-
-    const managementFees = [
-      {
-        label: '일반관리비',
-        value: '0001',
-      },
-      {
-        label: '수도광열비',
-        value: '0002',
-      },
-      {
-        label: '기타',
-        value: '9100',
-      },
-    ];
     let defaultTypeCode =
-      formData && dataSelect.find(item => item.value === formData.typeCode);
+      formData &&
+      typeCodes &&
+      typeCodes.find(item => item.value === formData.typeCode);
     let defaultcalUnit =
       formData &&
-      settlement.find(item => item.value === formData.calUnitDvCode);
+      calUnitDvCodes &&
+      calUnitDvCodes.find(item => item.value === formData.calUnitDvCode);
     let defaultcalStd =
       formData &&
-      calculation.find(item => item.value === formData.calUnitDvCode);
+      calStdDvCodes &&
+      calStdDvCodes.find(item => item.value === formData.calStdDvCode);
     let defaulcmgmtChrg =
       formData &&
-      managementFees.find(item => item.value === formData.mgmtChrgDvCode);
+      mgmtChrgDvCodes &&
+      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
-            data={dataSelect}
+            data={typeCodes}
             dataDefault={defaultTypeCode !== undefined ? defaultTypeCode : ''}
             valueProps={e => {
               // let index = dataForm.findIndex(el => el.id === number);
@@ -264,7 +166,7 @@ class FormInfo extends Component {
             labelSelected="보관유형"
           />
           <Select
-            data={settlement}
+            data={calUnitDvCodes}
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             // selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
@@ -275,9 +177,9 @@ class FormInfo extends Component {
             }}
           />
           <Select
-            data={calculation}
+            data={calStdDvCodes}
             // selectedValue={formData.calStdDvCode}
-            defaultValue={defaultcalStd !== undefined ? defaultcalStd : ''}
+            dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
             labelSelected="산정기준"
             valueProps={e => {
               let dataF = formData;
@@ -285,10 +187,11 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
+
           <Select
-            data={managementFees}
+            data={mgmtChrgDvCodes && mgmtChrgDvCodes}
             // selectedValue={formData.mgmtChrgDvCode}
-            defaultValue={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
+            dataDefault={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
             labelSelected="관리비구분"
             valueProps={e => {
               let dataF = formData;

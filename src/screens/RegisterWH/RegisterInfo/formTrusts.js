@@ -106,135 +106,48 @@ class FormTrusts extends Component {
     this.props.valueForm && this.props.valueForm(dataF);
   };
 
+  componentWillReceiveProps(newProps) {
+    let newUsblYmdFrom = newProps.formData.usblYmdFrom;
+    let newUsblYmdTo = newProps.formData.usblYmdTo;
+    if (newProps.formData && newUsblYmdFrom !== undefined) {
+      this.setState({ from: new Date(newProps.formData.usblYmdFrom) });
+    }
+    if (newProps.formData && newUsblYmdTo !== undefined) {
+      this.setState({ to: new Date(newProps.formData.usblYmdTo) });
+    }
+  }
   render() {
-    const { data, valueTab, number, valueForm, formData } = this.props;
+    const {
+      data,
+      valueTab,
+      number,
+      valueForm,
+      formData,
+      typeCodes,
+      calUnitDvCodes,
+      calStdDvCodes,
+    } = this.props;
     const { from, showFrom, to, showTo, mode } = this.state;
-    const dataSelect = [
-      {
-        label: '냉동',
-        value: '0001',
-      },
-      {
-        label: '냉장',
-        value: '0002',
-      },
-      {
-        label: '상온',
-        value: '0003',
-      },
-      {
-        label: '위험물',
-        value: '0004',
-      },
-      {
-        label: '기타',
-        value: '9100',
-      },
-    ];
-
-    const settlement = [
-      {
-        label: '제곱미터(㎡)',
-        value: 'CU01',
-      },
-      {
-        label: '평',
-        value: 'CU02',
-      },
-      {
-        label: '파렛트',
-        value: 'CU03',
-      },
-      {
-        label: '중량',
-        value: 'CU04',
-      },
-      {
-        label: 'BOX',
-        value: 'CU05',
-      },
-      {
-        label: 'PCS',
-        value: 'CU06',
-      },
-      {
-        label: 'CBM',
-        value: 'CU07',
-      },
-      {
-        label: '명수',
-        value: 'CU08',
-      },
-      {
-        label: '건수',
-        value: 'CU09',
-      },
-      {
-        label: '횟수',
-        value: 'CU010',
-      },
-      {
-        label: '일수',
-        value: 'CU011',
-      },
-      {
-        label: '월수',
-        value: 'CU011',
-      },
-    ];
-
-    const calculation = [
-      {
-        label: '회',
-        value: 'CS01',
-      },
-      {
-        label: '건',
-        value: 'CS02',
-      },
-      {
-        label: '일',
-        value: 'CS03',
-      },
-      {
-        label: '월',
-        value: 'CS04',
-      },
-      {
-        label: '분기',
-        value: 'CS05',
-      },
-      {
-        label: '반기',
-        value: 'CS06',
-      },
-      {
-        label: '연',
-        value: 'CS07',
-      },
-    ];
-
-    // let commonA = parseInt(commonAreaState) * 2;
-    // console.log('commonAreaState2 :>> ', commonAreaState2);
-
-    let defaultTypeCode =
-      dataSelect && dataSelect.find(item => item.value === formData.typeCode);
+console.log('formDataTrust :>> ', formData);
+    let defaultTypeCodeT =
+      formData &&
+      typeCodes &&
+      typeCodes.find(item => item.value === formData.typeCode);
     let defaultcalUnit =
-      settlement &&
-      settlement.find(item => item.value === formData.calUnitDvCode);
+      formData &&
+      calUnitDvCodes &&
+      calUnitDvCodes.find(item => item.value === formData.calUnitDvCode);
     let defaultcalStd =
-    calculation &&
-    calculation.find(item => item.value === formData.calUnitDvCode);
-    // let defaulcmgmtChrg =
-    //   managementFees &&
-    //   managementFees.find(item => item.value === formData.mgmtChrgDvCode);
+      formData &&
+      calStdDvCodes &&
+      calStdDvCodes.find(item => item.value === formData.calStdDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
-            data={dataSelect}
+            data={typeCodes}
             labelSelected="보관유형"
-            dataDefault={defaultTypeCode}
+            dataDefault={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
             selectedValue={formData.typeCode}
             valueProps={e => {
               let dataF = formData;
@@ -243,9 +156,9 @@ class FormTrusts extends Component {
             }}
           />
           <Select
-            data={settlement}
+            data={calUnitDvCodes}
             labelSelected="정산단위"
-            dataDefault={defaultcalUnit}
+            dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             selectedValue={formData.calUnitDvCode}
             valueProps={e => {
               // this.setState({ calUnitDvCode: e })
@@ -255,9 +168,9 @@ class FormTrusts extends Component {
             }}
           />
           <Select
-            data={calculation}
+            data={calStdDvCodes}
             labelSelected="산정기준"
-            defaultValue={defaultcalStd}
+            dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
             selectedValue={formData.calStdDvCode}
             valueProps={e => {
               // this.setState({ calculationStandard: e });
@@ -320,22 +233,6 @@ class FormTrusts extends Component {
             </TouchableOpacity>
           </View>
 
-          {/**    <View style={DefaultStyle._listElement}>
-            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-              <TextField
-                labelTextField="전용면적"
-                textRight="평"
-                valueProps={e => console.log('e', e)}
-              />
-            </View>
-            <IconButton
-              style={{ marginBottom: 15 }}
-              size={25}
-              icon="plus-circle-outline"
-              color={'rgba(0, 0, 0, 0.54)'}
-              onPress={() => console.log('add')}
-            />
-          </View>  */}
           <TextField
             labelTextField="보관단가"
             textRight="개"
@@ -451,21 +348,18 @@ class FormTrusts extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    if (this.props.formData) {
+      this.setState({ formData: this.props.formData });
+    }
     SplashScreen.hide();
   }
 
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
 /** map state with store states redux store */
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    // count: state.home.count,
     imageStore: state.registerWH.pimages,
   };
 }
@@ -479,9 +373,6 @@ function mapDispatchToProps(dispatch) {
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 
