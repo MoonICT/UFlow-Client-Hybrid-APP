@@ -47,6 +47,8 @@ class ContractInformation extends Component {
       cntrYmdFrom: moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD')
     }).then(res => {
       Linking.openURL(res.url);
+    }).catch(error => {
+      alert('requestOffLineContract:' + error);
     });
     this.setState({ isOffLineDialog: false });
   };
@@ -65,6 +67,7 @@ class ContractInformation extends Component {
       cntrYmdFrom,
       cntrYmdTo,
       mediaFile,
+      typeWH
     } = this.props;
     let dataTable = [
       {
@@ -129,6 +132,8 @@ class ContractInformation extends Component {
             warehouse={warehouse}
             rentUser={rentUser}
             navigation={this.navigation}
+            cntrYmdFrom={cntrYmdFrom}	
+            typeWH={typeWH}
           />
         );
         break;

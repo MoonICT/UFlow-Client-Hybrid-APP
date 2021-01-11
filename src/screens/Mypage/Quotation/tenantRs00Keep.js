@@ -195,6 +195,7 @@ class TenantRs00Keep extends Component {
     } else {
       return <></>;
     }
+
   }
 
   componentDidUpdate(prevProps, prevState) {

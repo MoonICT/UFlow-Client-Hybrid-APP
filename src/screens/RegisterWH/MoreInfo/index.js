@@ -353,7 +353,7 @@ class RegisterMoreInfo extends Component {
                   completeMoreInfo: true,
                 });
                 this.props.updateInfo({
-                  addOptDvCodess,
+                  addOptDvCodes,
                   insrDvCodes,
                   cmpltYmd,
                   siteArea,

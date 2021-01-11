@@ -81,6 +81,8 @@ class FCMService {
       // Get device token
       await messaging().getToken().then(async token => {
         await this._saveTokenToDatabase(token);
+      }).catch(error => {
+        console.log(' messaging().getToken(): ' + error);
       });
       // Listen to whether the token changes
       await messaging().onTokenRefresh(async token => {
@@ -131,6 +133,8 @@ class FCMService {
         console.log('+++ Notification caused app to open from quit state:', remoteMessage.notification);
         // TODO 확인 클릭 시 원하는 동작.(ex. 딥링크 처리, 스크린 이동 등.)
       }
+    }).catch(error => {
+      console.log(' messaging().getInitialNotification(): ' + error);
     });
   }
 }

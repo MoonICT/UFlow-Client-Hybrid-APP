@@ -78,7 +78,9 @@ class MypageBusinessInfo extends Component {
       });
 
       this.setBusinessData(dataConvert[0])
-    })
+    }).catch(error => {
+      alert('MypageBusinessInfo error:' + error);
+    });
   }
 
   handleClickTab = (tabName, index) => {
@@ -154,6 +156,8 @@ class MypageBusinessInfo extends Component {
                 }
               });
             }
+          }).catch(error => {
+            alert('MediaUpload.uploadFile error:' + error);
           });
         } else {
           // If no file selected the show alert

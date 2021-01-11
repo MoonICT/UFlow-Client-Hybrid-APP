@@ -37,9 +37,10 @@ class AppGrid extends Component {
     
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-    const { data, titleProps, titleCenter, valueProps } = this.props;
+    const { data, titleProps, titleCenter, valueProps, valueActive, titleActive } = this.props;
+    const { active } = this.state;
+
     if (this.props.type === 'controlTitleActive') {
-      const { data, titleProps, valueProps} = this.props;
       const tabItem =
         data &&
         data.map((item, index) => {
@@ -47,7 +48,7 @@ const windowHeight = Dimensions.get('window').height;
             <Button
               key={index}
               color={
-                this.props.titleActive === item.title
+                titleActive === item.title
                   ? '#000000'
                   : 'rgba(0, 0, 0, 0.54)'
               }
@@ -58,8 +59,7 @@ const windowHeight = Dimensions.get('window').height;
               }}
               style={[
                 DefaultStyle._tabItem,
-
-                this.props.titleActive === item.title
+                titleActive === item.title
                   ? DefaultStyle._tabItemActive
                   : '',
               ]}>
@@ -98,7 +98,7 @@ const windowHeight = Dimensions.get('window').height;
           <Button
             key={index}
             color={
-              this.state.active === item.title
+              (active === item.title  || valueActive === item.id)
                 ? '#000000'
                 : 'rgba(0, 0, 0, 0.54)'
             }
@@ -109,7 +109,7 @@ const windowHeight = Dimensions.get('window').height;
             }}
             style={[
               DefaultStyle._tabItem,
-              this.state.active === item.title
+              (active === item.title  || valueActive === item.id)
                 ? DefaultStyle._tabItemActive
                 : '',
             ]}>

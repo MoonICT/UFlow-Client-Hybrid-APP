@@ -37,6 +37,9 @@ class RegisterWH extends Component {
     this.webView = null;
     this.state = { visible: false };
     this.navigation = props.navigation;
+
+    this.doubleSubmitFlag = false;
+
   }
 
   /** listener when change props */
@@ -47,7 +50,19 @@ class RegisterWH extends Component {
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
+
+  doubleSubmitCheck= () => {
+    if(this.doubleSubmitFlag){
+        return this.doubleSubmitFlag;
+    }else{
+        this.doubleSubmitFlag = true;
+        return false;
+    }
+  }
+
   submit = () => {
+    if(this.doubleSubmitCheck()) return;
+
     let type = this.props.route.params && this.props.route.params.type;
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
@@ -60,6 +75,11 @@ class RegisterWH extends Component {
             this.props.showPopup({
               type: 'confirm',
               content: 'Update Complete',
+            });
+
+            this.doubleSubmitFlag = false;
+            this.navigation.navigate('Mypage', {
+              title: '내 창고',
             });
           }
         })
@@ -76,6 +96,11 @@ class RegisterWH extends Component {
             this.props.showPopup({
               type: 'confirm',
               content: '창고 등록 완료',
+            });
+
+            this.doubleSubmitFlag = false;
+            this.navigation.navigate('Mypage', {
+              title: '내 창고',
             });
           }
         })

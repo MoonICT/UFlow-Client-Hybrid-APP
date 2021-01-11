@@ -58,6 +58,7 @@ class FormTrusts extends Component {
           // id: 0,
           typeCode: '',
           calUnitDvCode: '',
+          calStdDvCode: '',
           calculationStandard: '',
           exclusiveArea: '',
           exclusiveArea2: '',
@@ -224,10 +225,12 @@ class FormTrusts extends Component {
       settlement.find(item => item.value === formData.calUnitDvCode);
     let defaultcalStd =
     calculation &&
-    calculation.find(item => item.value === formData.calUnitDvCode);
+    calculation.find(item => item.value === formData.calStdDvCode);
     // let defaulcmgmtChrg =
     //   managementFees &&
     //   managementFees.find(item => item.value === formData.mgmtChrgDvCode);
+
+    console.log("defaultcalStd: ", defaultcalStd)
     return (
       <Card style={S.cards}>
         <View style>
@@ -257,10 +260,9 @@ class FormTrusts extends Component {
           <Select
             data={calculation}
             labelSelected="산정기준"
-            defaultValue={defaultcalStd}
+            dataDefault={defaultcalStd}
             selectedValue={formData.calStdDvCode}
             valueProps={e => {
-              // this.setState({ calculationStandard: e });
               let dataF = formData;
               dataF.calStdDvCode = e;
               valueForm && valueForm(dataF);
@@ -368,13 +370,13 @@ class FormTrusts extends Component {
             labelTextField="출고단가"
             textRight="원"
             defaultValue={
-              formData.whinChrg ? numberToStd(formData.whinChrg) : ''
+              formData.whoutChrg ? numberToStd(formData.whoutChrg) : ''
             }
-            value={formData.whinChrg}
+            value={formData.whoutChrg}
             valueProps={e => {
               this.setState({ whoutChrg: e });
               let dataF = formData;
-              dataF.whinChrg = stdToNumber(e);
+              dataF.whoutChrg = stdToNumber(e);
               valueForm && valueForm(dataF);
             }}
           />
