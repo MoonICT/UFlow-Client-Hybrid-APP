@@ -247,7 +247,7 @@ class Quotation extends Component {
       ];
 
     console.log(this.state.calUnitDvCodes, 'this.state.calUnitDvCodes');
-
+    console.log("###3")
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -316,9 +316,10 @@ class Quotation extends Component {
             <Text>{type}</Text>
             <Text>{typeWH}</Text>
             <Text>{status}</Text>
+            <Text>{this.state.groupOrders}</Text>
             {/* ====== END:STATUS DEBUG ====== */}
 
-            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST') &&
+            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST') && this.state.groupOrders &&
             <TenantRq00Trust
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
@@ -332,6 +333,7 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtTrustGroups={this.state.estmtTrustGroups}
               groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
 
             />
             }
@@ -340,7 +342,7 @@ class Quotation extends Component {
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
               warehSeq={warehSeq}
-              rentUserNo={rentUserNo}
+              rentUserNo={rentUserNo}groupOrderIndex
               type={type}
               typeWH={typeWH}
               status={status}
@@ -387,7 +389,7 @@ class Quotation extends Component {
             }
 
 
-            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST') &&
+            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST') && this.state.groupOrders &&
             <OwnerRq00Trust
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
@@ -401,6 +403,7 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtTrustGroups={this.state.estmtTrustGroups}
               groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
             />
             }
             {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP') &&
@@ -421,22 +424,22 @@ class Quotation extends Component {
             }
 
 
-            {(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&
-            <OwnerRs00Trust
-              navigation={this.props.navigation}
-              warehouseRegNo={warehouseRegNo}
-              warehSeq={warehSeq}
-              rentUserNo={rentUserNo}
-              type={type}
-              typeWH={typeWH}
-              status={status}
-              data={dataApi}
-              calUnitDvCodes={this.state.calUnitDvCodes}
-              calStdDvCodes={this.state.calStdDvCodes}
-              estmtTrustGroups={this.state.estmtTrustGroups}
-              groupOrders={this.state.groupOrders}
-            />
-            }
+            {/*{(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&*/}
+            {/*<OwnerRs00Trust*/}
+            {/*  navigation={this.props.navigation}*/}
+            {/*  warehouseRegNo={warehouseRegNo}*/}
+            {/*  warehSeq={warehSeq}*/}
+            {/*  rentUserNo={rentUserNo}*/}
+            {/*  type={type}*/}
+            {/*  typeWH={typeWH}*/}
+            {/*  status={status}*/}
+            {/*  data={dataApi}*/}
+            {/*  calUnitDvCodes={this.state.calUnitDvCodes}*/}
+            {/*  calStdDvCodes={this.state.calStdDvCodes}*/}
+            {/*  estmtTrustGroups={this.state.estmtTrustGroups}*/}
+            {/*  groupOrders={this.state.groupOrders}*/}
+            {/*/>*/}
+            {/*}*/}
             {(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&
             <OwnerRs00Keep
               navigation={this.props.navigation}
@@ -595,34 +598,37 @@ class Quotation extends Component {
     });
 
     // TODO 뭐지? ?????
-    await Warehouse.quotation(
+    const res = await Warehouse.quotation(
       this.props.route.params.type === 'OWNER' ? urlOwner : urlTenant,
     )
-      .then(res => {
-        const status = res.status;
 
-        if (status === 200) {
-          this.setState({
-            dataApi: res.data,
-            estmtTrustGroups: res.data.estmtTrustGroups ? res.data.estmtTrustGroups : [],
-            estmtKeepGroups: res.data.estmtKeepGroups ? res.data.estmtKeepGroups : [],
-            groupOrders: res.data.orders ? res.data.orders : [],
-            urlProps:
-              this.props.route.params.type === 'OWNER'
-                ? urlPropsOwner
-                : urlPropsTenant,
-          });
-          // this.props.quotationData(res.data);
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
+    console.log("### 1")
+    const status = res.status;
+
+    if (status === 200) {
+      this.setState({
+        dataApi: res.data,
+        estmtTrustGroups: res.data.estmtTrustGroups ? res.data.estmtTrustGroups : [],
+        estmtKeepGroups: res.data.estmtKeepGroups ? res.data.estmtKeepGroups : [],
+        groupOrders: res.data.orders ? res.data.orders : [],
+        urlProps:
+          this.props.route.params.type === 'OWNER'
+            ? urlPropsOwner
+            : urlPropsTenant,
       });
+      // this.props.quotationData(res.data);
+    };
+
+    console.log("### 2")
     // SplashScreen.hide();
   }
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
+    // if (this.state.isOpen && prevProps.whFilter !== this.props.whFilter) {
+    //   this.requestWhList(false);
+    // }
+
     if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
       let warehSeq = this.props.route.params.warehSeq;
       let warehouseRegNo = this.props.route.params.warehouseRegNo;

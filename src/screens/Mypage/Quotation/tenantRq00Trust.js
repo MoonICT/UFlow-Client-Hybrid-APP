@@ -14,7 +14,7 @@ class TenantRq00Trust extends Component {
     super(props);
     this.navigation = props.navigation;
     this.state = {
-      groupOrderIndex: 0
+      groupOrderIndex: props.groupOrderIndex
     }
   }
 
@@ -35,13 +35,17 @@ class TenantRq00Trust extends Component {
     const estmtTrustGroups = this.props.estmtTrustGroups;
     const groupOrders = this.props.groupOrders;
 
+
     // console.log(gIndex, 'gIndex');
     console.log(groupOrders, 'groupOrders');
+    // console.log(this.state.groupOrderIndex, 'groupOrderIndex');
+    // console.log(data, 'data');
 
     let viewRequestTrust =
       calUnitDvCodes && calUnitDvCodes.length > 0 &&
       calStdDvCodes && calStdDvCodes.length > 0 &&
       estmtTrustGroups && estmtTrustGroups.length > 0 &&
+      // estmtTrustGroups[this.props.groupOrders ? this.props.groupOrders.length - 1 : 0].map((item, index) => {
       estmtTrustGroups[this.state.groupOrderIndex].map((item, index) => {
 
           let dataRequest = [
@@ -102,10 +106,14 @@ class TenantRq00Trust extends Component {
           return (
             <Fragment key={index}>
 
+              {/*<Text>{this.state.groupOrderIndex}</Text>*/}
+              {/*<Text>{this.props.groupOrderIndex}</Text>*/}
+              {/*<Text>{item.occrYmd}</Text>*/}
+
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
                   <Text style={DefaultStyle._headerCardTitle}>
-                    {item.estmtDvCd === 'RQ00' ? '견적 요청 정보' : '견적 응답 정보'}
+                    {item.estmtDvCd === 'RQ00' ? '요청한 견적 정보' : '창고주의 견적응답 정보'}
                   </Text>
                 </View>
                 <View style={DefaultStyle._infoTable}>
@@ -128,8 +136,10 @@ class TenantRq00Trust extends Component {
         };
       }) : [];
 
+      // console.log(dataSelect[this.state.groupOrderIndex].value);
       return (
         <Fragment>
+
           <View
             style={[DefaultStyle._cards, DefaultStyle._margin0]}>
 
@@ -139,7 +149,9 @@ class TenantRq00Trust extends Component {
               </Text>
               <View style={DefaultStyle._optionList}>
                 <Select data={dataSelect}
+                        valueSelected={dataSelect[this.state.groupOrderIndex].label}
                         valueProps={(value) => {
+                          alert(value)
                           this.setState({
                             groupOrderIndex: value
                           });
@@ -166,8 +178,9 @@ class TenantRq00Trust extends Component {
               <TouchableOpacity
                 style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
                 onPress={() => {
-                  /** 견적 재요청 **/
+                  /** Go To 견적 재요청 **/
                   this.navigation.navigate('RequestQuotation', {
+                    data,
                     typeWH,
                     warehouseRegNo,
                     warehSeq,
@@ -191,10 +204,24 @@ class TenantRq00Trust extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
+
   }
 
   componentDidMount() {
+
     console.log('::componentDidMount::');
+    // this.setState({
+    //   groupOrderIndex: this.props.groupOrders ? this.props.groupOrders.length - 1 : 0
+    // })
+    // if (prevState.groupOrderIndex !== this.state.groupOrderIndex) {
+    //   console.log(this.props.groupOrders, 'this.props.groupOrders');
+    //   console.log(this.props.groupOrders.length - 1, 'this.props.groupOrders');
+    console.log(this.props, '>> props')
+    console.log(this.props.groupOrders, '> props.groupOrders')
+      // this.setState({
+      //   groupOrderIndex: this.props.groupOrders ? this.props.groupOrders.length - 1 : 0
+      // })
+    // }
 
   }
 }
