@@ -75,7 +75,7 @@ class RegisterWH extends Component {
             // this.navigation.navigate('Home');
             this.props.showPopup({
               type: 'confirm',
-              content: 'Register Complete',
+              content: '창고 등록 완료',
             });
           }
         })
