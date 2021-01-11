@@ -203,6 +203,8 @@ class DetailRegisterTenant extends Component {
                 }
               });
             }
+          }).catch(error => {
+            alert('DetailRegisterTenant MediaUpload error:' + error);
           });
         } else {
           // If no file selected the show alert

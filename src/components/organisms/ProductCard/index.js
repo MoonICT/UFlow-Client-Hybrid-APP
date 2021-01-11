@@ -49,6 +49,8 @@ class ProductCard extends Component {
   componentDidMount() {
     AsyncStorage.getItem(TOKEN).then(v => {
       this.setState({ isLogin: v !== '' && v !== null });
+    }).catch(error => {
+      alert('ProductCard error:' + error);
     });
   }
 

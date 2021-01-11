@@ -65,10 +65,11 @@ class DetailWH extends Component {
       pageInfo: {},
       isLogin:false,
       showAll: false,
-      floors:0,
+      floors:'지하 1층',
       whList: [],
       favorite : false,
-      rentUserNo:''
+      rentUserNo:'',
+      activeIndex: 0
     };
     this.navigation = props.navigation;
   }
@@ -197,27 +198,23 @@ class DetailWH extends Component {
   };
 
   render() {
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, isLogin, id} = this.state;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, activeIndex, id} = this.state;
 
     const dataTab = [
       {
         title: '지하 1층',
-        id: 0,
         content: ''
       },
       {
         title: '지상 2층',
-        id: 1,
         content: ''
       },
       {
         title: '지상 3층',
-        id: 2,
         content: ''
       },
       {
         title: '지상 4층',
-        id: 3,
         content: ''
       },
     ];
@@ -297,10 +294,35 @@ class DetailWH extends Component {
               {whrgData.name}
             </Text>
             <View style={S.labels}>
-              <Text style={[S.textlabel, S.orange]}>상온</Text>
-              <Text style={[S.textlabel, S.azure]}>상온</Text>
-              <Text style={[S.textlabel, S.green]}>상온</Text>
-              <Text style={[S.textlabel, S.gray]}>상온</Text>
+              {
+                whrgData.keeps && whrgData.keeps.length > 0 && (
+                   whrgData.keeps.map((keep, index) => (
+                    <View key={index}>
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                   </View>
+                   )))
+              }
+
+              {
+                whrgData.trusts && whrgData.trusts.length > 0 && (
+                   whrgData.trusts.map((trust, index) => (
+                    <View key={index}>
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                   </View>
+                   )))
+              }
+            
+              
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
             <View style={S.background}>
@@ -734,12 +756,12 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
-                <AppGrid valueActive={floors} data={dataTab} valueProps={(e)=> this.setState({floors: e})}/>
+                  <AppGrid data={dataTab} title={floors} titleProps={(e, index)=> this.setState({ floors: e, activeIndex: index  })} />
               </View>
               {whrgData.floors
                 ? whrgData.floors.map((floor, index) => {
                   return (
-                      floors === index &&
+                    activeIndex === index &&
                       <View key={"floor" + index} style={DefaultStyle._card}>
                       <View style={S.bodyCard}>
                         <View style={S.table}>
@@ -984,6 +1006,8 @@ class DetailWH extends Component {
     this.hiddenName();
     AsyncStorage.getItem(TOKEN).then(v => {
       this.setState({ isLogin: v !== '' && v !== null });
+    }).catch(error => {
+      alert('DetailWH componentDidMount error:' + error);
     });
   }
 
@@ -1032,7 +1056,9 @@ class DetailWH extends Component {
               : [];
 
           this.setState({ whList: list });
-        })
+        }).catch(error => {
+          alert('DetailWH listRecommend error:' + error);
+        });
   }
 
   handleRequestQnaList = (q_size) => {
@@ -1060,7 +1086,9 @@ class DetailWH extends Component {
         this.setState({ qnaList: newFQAList })
         this.setState({ pageInfo: res.page })
       }
-    })
+    }).catch(error => {
+      alert('DetailWH pageWhrgQnA error:' + error);
+    });
   }
   
 }

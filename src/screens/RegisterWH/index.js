@@ -37,6 +37,9 @@ class RegisterWH extends Component {
     this.webView = null;
     this.state = { visible: false };
     this.navigation = props.navigation;
+
+    this.doubleSubmitFlag = false;
+
   }
 
   /** listener when change props */
@@ -47,7 +50,19 @@ class RegisterWH extends Component {
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
+
+  doubleSubmitCheck= () => {
+    if(this.doubleSubmitFlag){
+        return this.doubleSubmitFlag;
+    }else{
+        this.doubleSubmitFlag = true;
+        return false;
+    }
+  }
+
   submit = () => {
+    if(this.doubleSubmitCheck()) return;
+
     let type = this.props.route.params && this.props.route.params.type;
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
@@ -64,6 +79,11 @@ class RegisterWH extends Component {
               확인하기 위해 연락을 드릴 예정입니다.{\n}
               자세한 내용은 [마이페이지 > 내 창고]에서 {\n}
               확인해주세요`,
+            });
+
+            this.doubleSubmitFlag = false;
+            this.navigation.navigate('Mypage', {
+              title: '내 창고',
             });
           }
         })
@@ -84,6 +104,11 @@ class RegisterWH extends Component {
               확인하기 위해 연락을 드릴 예정입니다.{\n}
               자세한 내용은 [마이페이지 > 내 창고]에서 {\n}
               확인해주세요`,
+            });
+
+            this.doubleSubmitFlag = false;
+            this.navigation.navigate('Mypage', {
+              title: '내 창고',
             });
           }
         })

@@ -337,6 +337,8 @@ class Home extends Component {
   UNSAFE_componentWillMount() {
     AsyncStorage.getItem(TOKEN).then(v => {
       this.setState({ isLogin: v !== '' && v !== null });
+    }).catch(error => {
+      alert('서버에러:' + error);
     });
   }
 
