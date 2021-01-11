@@ -364,8 +364,8 @@ export default class InOutManager extends Component {
               <View style={{flex: 1}}>
                 <TouchableOpacity
                   onPress={() => this.showDateStart()}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
+                  style={DefaultStyle._btnDateFilter}>
+                  <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 5, textAlign: 'center'}]}>
                     {dateStr(startDate) || 'YYYY-MM-DD'}
                   </Text>
                   <Text
@@ -395,8 +395,8 @@ export default class InOutManager extends Component {
               <View style={{flex: 1}}>
                 <TouchableOpacity
                   onPress={() => this.showDateEnd()}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
+                  style={DefaultStyle._btnDateFilter}>
+                  <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 5, textAlign: 'center'}]}>
                     {dateStr(endDate) || 'YYYY-MM-DD'}
                   </Text>
                   <Text

@@ -65,10 +65,11 @@ class DetailWH extends Component {
       pageInfo: {},
       isLogin:false,
       showAll: false,
-      floors:0,
+      floors:'지하 1층',
       whList: [],
       favorite : false,
-      rentUserNo:''
+      rentUserNo:'',
+      activeIndex: 0
     };
     this.navigation = props.navigation;
   }
@@ -197,27 +198,23 @@ class DetailWH extends Component {
   };
 
   render() {
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, isLogin, id} = this.state;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, activeIndex, id} = this.state;
 
     const dataTab = [
       {
         title: '지하 1층',
-        id: 0,
         content: ''
       },
       {
         title: '지상 2층',
-        id: 1,
         content: ''
       },
       {
         title: '지상 3층',
-        id: 2,
         content: ''
       },
       {
         title: '지상 4층',
-        id: 3,
         content: ''
       },
     ];
@@ -759,12 +756,12 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
-                <AppGrid valueActive={floors} data={dataTab} valueProps={(e)=> this.setState({floors: e})}/>
+                  <AppGrid data={dataTab} title={floors} titleProps={(e, index)=> this.setState({ floors: e, activeIndex: index  })} />
               </View>
               {whrgData.floors
                 ? whrgData.floors.map((floor, index) => {
                   return (
-                      floors === index &&
+                    activeIndex === index &&
                       <View key={"floor" + index} style={DefaultStyle._card}>
                       <View style={S.bodyCard}>
                         <View style={S.table}>
