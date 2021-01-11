@@ -13,6 +13,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {Text, Appbar, Dialog, Paragraph, Button} from 'react-native-paper';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import ReqeustQTrust from './reqeustQTrust';
+import ReqeustQKeep from './requestQKeep';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 // Local Imports
@@ -31,34 +32,59 @@ class RequestQuotation extends Component {
     super(props);
 
     // console.log(props.route.params, '======props.data======');
+    console.log(props.route.params.data, '======props.route.params.data======');
     console.log(props.route.params.data.whrgMgmtTrust, '======whrgMgmtTrust======');
+    console.log(props.route.params.data.whrgMgmtKeep, '======whrgMgmtKeep======');
 
-    let whrgMgmtTrust = null;
     if (props.route.params.data && props.route.params.data.whrgMgmtTrust) {
-      whrgMgmtTrust = props.route.params.data.whrgMgmtTrust;
-      console.log(whrgMgmtTrust, 'whrgMgmtTrust');
-      console.log(whrgMgmtTrust && whrgMgmtTrust.psnChrg ? whrgMgmtTrust.psnChrg : 0, 'psnChrg');
-    }
+      let whrgMgmtTrust = null;
+      if (props.route.params.data && props.route.params.data.whrgMgmtTrust) {
+        whrgMgmtTrust = props.route.params.data.whrgMgmtTrust;
+        console.log(whrgMgmtTrust, 'whrgMgmtTrust');
+        console.log(whrgMgmtTrust && whrgMgmtTrust.psnChrg ? whrgMgmtTrust.psnChrg : 0, 'psnChrg');
+      }
 
-    this.state = {
-      rntlValue: whrgMgmtTrust && whrgMgmtTrust.usblValue ? whrgMgmtTrust.usblValue : 0,
-      splyAmount: whrgMgmtTrust && whrgMgmtTrust.splyAmount ? whrgMgmtTrust.splyAmount : 0,
-      mgmtChrg: whrgMgmtTrust && whrgMgmtTrust.mgmtChrg ? whrgMgmtTrust.mgmtChrg : 0,
-      whinChrg: whrgMgmtTrust && whrgMgmtTrust.whinChrg ? whrgMgmtTrust.whinChrg : 0,
-      whoutChrg: whrgMgmtTrust && whrgMgmtTrust.whoutChrg ? whrgMgmtTrust.whoutChrg : 0,
-      psnChrg: whrgMgmtTrust && whrgMgmtTrust.psnChrg ? whrgMgmtTrust.psnChrg : 0,
-      mnfctChrg: whrgMgmtTrust && whrgMgmtTrust.mnfctChrg ? whrgMgmtTrust.mnfctChrg : 0,
-      dlvyChrg: whrgMgmtTrust && whrgMgmtTrust.dlvyChrg ? whrgMgmtTrust.dlvyChrg : 0,
-      shipChrg: whrgMgmtTrust && whrgMgmtTrust.shipChrg ? whrgMgmtTrust.shipChrg : 0,
-      visible: false,
-      mode: 'date',
-      from: whrgMgmtTrust && whrgMgmtTrust.usblYmdFrom ? whrgMgmtTrust.usblYmdFrom : null,
-      to: whrgMgmtTrust && whrgMgmtTrust.usblYmdTo ? whrgMgmtTrust.usblYmdTo : null,
-      showFrom: false,
-      showTo: false,
-      isSubmit: false,
-      remark: '',
-    };
+      this.state = {
+        rntlValue: whrgMgmtTrust && whrgMgmtTrust.usblValue ? whrgMgmtTrust.usblValue : 0,
+        splyAmount: whrgMgmtTrust && whrgMgmtTrust.splyAmount ? whrgMgmtTrust.splyAmount : 0,
+        mgmtChrg: whrgMgmtTrust && whrgMgmtTrust.mgmtChrg ? whrgMgmtTrust.mgmtChrg : 0,
+        whinChrg: whrgMgmtTrust && whrgMgmtTrust.whinChrg ? whrgMgmtTrust.whinChrg : 0,
+        whoutChrg: whrgMgmtTrust && whrgMgmtTrust.whoutChrg ? whrgMgmtTrust.whoutChrg : 0,
+        psnChrg: whrgMgmtTrust && whrgMgmtTrust.psnChrg ? whrgMgmtTrust.psnChrg : 0,
+        mnfctChrg: whrgMgmtTrust && whrgMgmtTrust.mnfctChrg ? whrgMgmtTrust.mnfctChrg : 0,
+        dlvyChrg: whrgMgmtTrust && whrgMgmtTrust.dlvyChrg ? whrgMgmtTrust.dlvyChrg : 0,
+        shipChrg: whrgMgmtTrust && whrgMgmtTrust.shipChrg ? whrgMgmtTrust.shipChrg : 0,
+        visible: false,
+        mode: 'date',
+        from: whrgMgmtTrust && whrgMgmtTrust.usblYmdFrom ? whrgMgmtTrust.usblYmdFrom : null,
+        to: whrgMgmtTrust && whrgMgmtTrust.usblYmdTo ? whrgMgmtTrust.usblYmdTo : null,
+        showFrom: false,
+        showTo: false,
+        isSubmit: false,
+        remark: '',
+      };
+
+    } else if (props.route.params.data && props.route.params.data.whrgMgmtKeep) {
+      let whrgMgmtKeep = null;
+      if (props.route.params.data && props.route.params.data.whrgMgmtKeep) {
+        whrgMgmtKeep = props.route.params.data.whrgMgmtKeep;
+        console.log(whrgMgmtKeep, 'whrgMgmtKeep');
+      }
+
+      this.state = {
+        rntlValue: whrgMgmtKeep && whrgMgmtKeep.usblValue ? whrgMgmtKeep.usblValue : 0,
+        splyAmount: whrgMgmtKeep && whrgMgmtKeep.splyAmount ? whrgMgmtKeep.splyAmount : 0,
+        mgmtChrg: whrgMgmtKeep && whrgMgmtKeep.mgmtChrg ? whrgMgmtKeep.mgmtChrg : 0,
+        visible: false,
+        mode: 'date',
+        from: whrgMgmtKeep && whrgMgmtKeep.usblYmdFrom ? whrgMgmtKeep.usblYmdFrom : null,
+        to: whrgMgmtKeep && whrgMgmtKeep.usblYmdTo ? whrgMgmtKeep.usblYmdTo : null,
+        showFrom: false,
+        showTo: false,
+        isSubmit: false,
+        remark: '',
+      };
+    }
     this.navigation = props.navigation;
   }
 
@@ -152,7 +178,7 @@ class RequestQuotation extends Component {
             </View>
             {/** END:HEADER **/}
 
-            <Text>{typeWH}</Text>
+            {/*<Text>{typeWH}</Text>*/}
 
             {typeWH === 'TRUST' ? (
               <ReqeustQTrust
@@ -171,144 +197,16 @@ class RequestQuotation extends Component {
                 shipChrg={shipChrg}
               />
             ) : (
-              <Fragment>
-                <View
-                  style={[
-                    S.row,
-                    {justifyContent: 'center', marginBottom: 18},
-                  ]}>
-                  <View style={{flex: 1}}>
-                    <TouchableOpacity
-                      onPress={this.showDatepicker}
-                      style={DefaultStyle._btnDate}>
-                      <Text style={DefaultStyle._textDate}>
-                        {from.toLocaleDateString()}
-                      </Text>
-                      <Text
-                        style={[
-                          DefaultStyle._labelTextField,
-                          {color: '#000000'},
-                        ]}>
-                        보관 기간
-                      </Text>
-                      <DatePicker
-                        mode={mode}
-                        show={showFrom}
-                        onChange={this.onChangeFrom}
-                        value={from}
-                        testID="dateTimePicker"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <Text style={SS.hyphen}>-</Text>
-                  <View style={{flex: 1}}>
-                    <TouchableOpacity
-                      onPress={this.showDatepickerTo}
-                      style={DefaultStyle._btnDate}>
-                      <Text style={DefaultStyle._textDate}>
-                        {to.toLocaleDateString()}
-                      </Text>
-                      <Text
-                        style={[
-                          DefaultStyle._labelTextField,
-                          {color: '#000000'},
-                        ]}>
-                        보관 기간
-                      </Text>
-                      <DatePicker
-                        mode={mode}
-                        show={showTo}
-                        onChange={this.onChangeTo}
-                        value={to}
-                        testID="dateTimePickerTo"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="응답 면적"
-                  textRight="m2"
-                  keyboardType="numeric"
-                  value={rntlValue}
-                  placeholder="0"
-                  valueProps={e =>
-                    this.setState({rntlValue: e.replace(/[^0-9]/g, '')})
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="보관비 (평)"
-                  textRight="원"
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={splyAmount}
-                  valueProps={e =>
-                    this.setState({splyAmount: e.replace(/[^0-9]/g, '')})
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="관리비"
-                  textRight="원"
-                  placeholder="0"
-                  keyboardType="numeric"
-                  value={mgmtChrg}
-                  valueProps={e =>
-                    this.setState({mgmtChrg: e.replace(/[^0-9]/g, '')})
-                  }
-                />
-                <TextField
-                  colorLabel="#000000"
-                  labelTextField="추가 요청 사항"
-                  placeholder="내용입력"
-                  numberOfLines={5}
-                  multiline={true}
-                  textAlignVertical="top"
-                  valueProps={e => this.setState({remark: e})}
-                />
-                <TouchableOpacity
-                  onPress={() => {
-                    // this.props.dataAction(this.state);
-                    // this.navigation.navigate('ResponseQuotation');
-                    // console.log('submit :>> ');
-                    this.setState({isSubmit: !isSubmit});
-                  }}
-                  style={[
-                    DefaultStyle._btnInline,
-                    from !== '' &&
-                    to !== '' &&
-                    rntlValue !== '' &&
-                    splyAmount !== '' &&
-                    mgmtChrg !== ''
-                      ? null
-                      : SS.btnDisabled,
-                  ]}
-                  disabled={
-                    from !== '' &&
-                    to !== '' &&
-                    rntlValue !== '' &&
-                    splyAmount !== '' &&
-                    mgmtChrg !== ''
-                      ? false
-                      : true
-                  }>
-                  <Text
-                    style={[
-                      DefaultStyle._textButton,
-                      SS.textSubmit,
-                      from !== '' &&
-                      to !== '' &&
-                      rntlValue !== '' &&
-                      splyAmount !== '' &&
-                      mgmtChrg !== ''
-                        ? null
-                        : SS.textDisabled,
-                    ]}>
-                    확인
-                  </Text>
-                </TouchableOpacity>
-              </Fragment>
+              <ReqeustQKeep
+                navigation={this.navigation}
+                warehouseRegNo={warehouseRegNo}
+                warehSeq={warehSeq}
+                from={from}
+                to={to}
+                rntlValue={rntlValue}
+                splyAmount={splyAmount}
+                mgmtChrg={mgmtChrg}
+              />
             )}
           </View>
         </ScrollView>
