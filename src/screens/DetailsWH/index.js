@@ -25,12 +25,12 @@ import {
 } from 'react-native-paper';
 
 // Local Imports
+import { Warehouse, WarehouseTenant } from '@Services/apis';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import ProductCard from '@Components/organisms/ProductCard';
-import CreateInquiryWH from './CreateInquiryWH';
 import { TOKEN } from '@Constant';
 
 import ActionCreator from '@Actions';
@@ -48,8 +48,6 @@ import WHType6 from "@Assets/images/icon-warehouse-6.png";
 // import {ConvertUnits} from "@Service/utils";
 
 import { styles as S } from './style';
-import { Warehouse, WarehouseTenant } from '@Services/apis';
-
 class DetailWH extends Component {
   constructor(props) {
     super(props);
@@ -187,7 +185,7 @@ class DetailWH extends Component {
           {item?.thumbnail !== null ? (
             <ProductCard navigation={this.navigation} data={item} />
           ) : (
-            <ProductCard
+             <ProductCard
               navigation={this.navigation}
               data={{ ...item, img: cardBG }}
             />
@@ -242,10 +240,10 @@ class DetailWH extends Component {
     const displayUsblValue = (usblValue, calUnitDvCode) => {
       let resultStr = '-'
       if (usblValue) {
-        if (calUnitDvCode.stdDetailCode === 'CU01') {
+        if (calUnitDvCode && calUnitDvCode.stdDetailCode === 'CU01') {
           resultStr = displayAreaUnit(usblValue)
         } else {
-          resultStr = usblValue.toLocaleString() + (calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
+          resultStr = usblValue.toLocaleString() + (calUnitDvCode && calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
         }
       }
       return resultStr;
@@ -348,11 +346,11 @@ class DetailWH extends Component {
                   whrgData.keeps.map((keep, index) => (
                     <View key={"listKeep" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
-                        {keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
-                        {keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
-                        {keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
-                        {keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
-                        {keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
                         checked={checked}
@@ -625,7 +623,7 @@ class DetailWH extends Component {
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.viewBody}>
-                    <Text style={S.textBodyCard}>
+                    <Text style={[S.textBodyCard, DefaultStyle.p_16]}>
                       {whrgData.description}
                     </Text>
                   </View>
@@ -736,7 +734,7 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
-                <AppGrid data={dataTab} valueProps={(e)=> this.setState({floors: e})}/>
+                <AppGrid valueActive={floors} data={dataTab} valueProps={(e)=> this.setState({floors: e})}/>
               </View>
               {whrgData.floors
                 ? whrgData.floors.map((floor, index) => {
@@ -853,7 +851,9 @@ class DetailWH extends Component {
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   {(qnaList && qnaList.length === 0) &&
+                  <View style={[DefaultStyle.d_center, DefaultStyle.p_16]}>
                     <Text key={'empty'} style={S.titleInquiry}>문의 내역이 없습니다.</Text>
+                  </View>
                   }
                   {/* List */}
                   {qnaList && qnaList.map((qnaItem, index) =>
@@ -980,7 +980,6 @@ class DetailWH extends Component {
   componentDidMount() {
     const { route } = this.props;
     this.getDataWH()
-
     this.handleRequestQnaList(4)
     this.hiddenName();
     AsyncStorage.getItem(TOKEN).then(v => {
