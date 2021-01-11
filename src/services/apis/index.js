@@ -2,6 +2,7 @@ import * as Sample from './Sample';
 import * as Account from './Account';
 import * as Calculate from './Calculate';
 import * as Contract from './Contract';
+import * as MyPageEstmtCntr from './MyPageEstmtCntr';
 import * as Warehouse from './Warehouse';
 import * as WarehouseOut from './WarehouseOut';
 import * as Annoucement from './Annoucement';
@@ -29,6 +30,7 @@ export {
   Account,
   Calculate,
   Contract,
+  MyPageEstmtCntr,
   Warehouse,
   WarehouseOut,
   Annoucement,
