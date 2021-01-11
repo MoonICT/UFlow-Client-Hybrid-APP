@@ -59,6 +59,7 @@ class TableInfo extends Component {
                       style={[
                         DefaultStyle._rightInfoTable,
                         DefaultStyle.linkColor,
+                        styleRight,
                       ]}
                       onPress={() => Linking.openURL(item.value)}>
                       {item.fileName}

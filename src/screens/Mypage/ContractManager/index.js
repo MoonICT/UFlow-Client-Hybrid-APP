@@ -421,8 +421,8 @@ class ContractManager extends Component {
               onPressHeader={() =>
                 this.navigation.navigate(
                   item.status === 'RQ00' || item.status === 'RS00'
-                    ? 'Quotation'
-                    : 'RequestContract',
+                    ? 'Quotation' // Goto RQ00, RS00
+                    : 'RequestContract', // Goto 1100, 2100, 4100, 5100
                   {
                     type: valueTab,
                     typeWH: item.type2,
@@ -685,13 +685,13 @@ class ContractManager extends Component {
             },
             {
               statusCode: '4100',
-              title: '계약완료',
+              title: '계약중',
               status: data.count4100 > 0 ? true : false,
               number: data.count4100,
             },
             {
               statusCode: '5100',
-              title: '계약승인',
+              title: '계약완료',
               number: data.count5100,
               status: data.count5100 > 0 ? true : false,
             },
@@ -746,13 +746,13 @@ class ContractManager extends Component {
               },
               {
                 statusCode: '4100',
-                title: '계약완료',
+                title: '계약중',
                 status: data.count4100 > 0 ? true : false,
                 number: data.count4100,
               },
               {
                 statusCode: '5100',
-                title: '계약승인',
+                title: '계약완료',
                 number: data.count5100,
                 status: data.count5100 > 0 ? true : false,
               },
@@ -767,24 +767,24 @@ class ContractManager extends Component {
     }
 
     if (prevState.isConfirmRequest !== this.state.isConfirmRequest) {
+
       let warehSeq = this.state.dataProps.warehSeq;
       let warehouseRegNo = this.state.dataProps.warehouseRegNo;
       let rentUserNo = this.state.dataProps.rentUserNo;
-      // let status = this.state.dataProps.status;
+
       let type = this.state.valueTab;
       let typeWH = this.state.dataProps.typeWH === 'TRUST' ? 'trust' : 'tenant';
       let data =
         this.state.dataProps.typeWH === 'TRUST'
           ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
           : { warehouseRegNo, mgmtKeepSeq: warehSeq };
-      // console.log('typeWH', typeWH);
-      // console.log('data', data);
+
       Warehouse.requestContract({ typeWH, data })
         .then(res => {
-          // console.log('resdddddddddd', res);
-          if (res.status === 200) {
-            // console.log('resRequestContract', res);
 
+          if (res.status === 200) {
+
+            // TODO 견적요청 하기로 가기전에 현재 기본값을 가져가야함
             this.navigation.navigate('RequestContract', {
               type,
               warehouseRegNo,
