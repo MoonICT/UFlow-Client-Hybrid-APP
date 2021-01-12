@@ -16,6 +16,7 @@ import {
   Image,
   TextInput,
   Platform,
+  LogBox
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -37,6 +38,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 
+LogBox.ignoreLogs(['Warning: ...']);
 class FormTrusts extends Component {
   constructor(props) {
     super(props);
@@ -107,7 +109,7 @@ class FormTrusts extends Component {
     this.props.valueForm && this.props.valueForm(dataF);
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     let newUsblYmdFrom = newProps.formData.usblYmdFrom;
     let newUsblYmdTo = newProps.formData.usblYmdTo;
     if (
