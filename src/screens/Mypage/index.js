@@ -97,7 +97,7 @@ const dataSteps = [
 ];
 
 class Mypage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       isSwitchOn: true,
@@ -112,12 +112,12 @@ class Mypage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount () {
+  componentWillUnmount() {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -268,14 +268,14 @@ class Mypage extends Component {
                   onPress={() => {
                     item.sttsDbCode.stdDetailCode === '0001'
                       ? this.props.showPopup({
-                        type: 'confirm',
-                        image: '',
-                        content: '공실이 검증되지 않은 창고입니다.',
-                      })
+                          type: 'confirm',
+                          image: '',
+                          content: '공실이 검증되지 않은 창고입니다.',
+                        })
                       : this.navigation.navigate('RegisterWH', {
-                        type: 'ModifyWH',
-                        warehouseRegNo: item.id,
-                      });
+                          type: 'ModifyWH',
+                          warehouseRegNo: item.id,
+                        });
                     // this.props.imageAction(listImage);
                   }}>
                   <Text
@@ -340,7 +340,11 @@ class Mypage extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.goBack()}
+            onPress={() =>
+              route.params && route.params.prevView === 'PrevView'
+                ? this.navigation.navigate('Home')
+                : this.navigation.goBack()
+            }
           />
           <Appbar.Content
             title="마이페이지"
@@ -353,7 +357,7 @@ class Mypage extends Component {
           <AppGrid
             data={data}
             title={this.state.title}
-            titleProps={(e) => {
+            titleProps={e => {
               this.setState({
                 title: e,
               });
@@ -421,9 +425,9 @@ class Mypage extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount () {
+  async componentDidMount() {
     console.log('::componentDidMount:: MyPage', this.props.route.params.title);
-    this.setState({ title: this.props.route.params.title })
+    this.setState({ title: this.props.route.params.title });
     // const getWH = await Warehouse.myWH();
     // if (getWH.status === 200) {
     //   const dataWH = getWH.data._embedded.warehouses;
@@ -451,13 +455,11 @@ class Mypage extends Component {
     this.setState({ title: titleProp });
   }
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-
-  }
+  componentDidUpdate(prevProps, prevState) {}
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -466,7 +468,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     imageAction: action => {
       dispatch(ActionCreator.dataImage(action));
