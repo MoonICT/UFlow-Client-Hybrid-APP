@@ -80,13 +80,15 @@ class ContractInformation extends Component {
         type: '계약 승인일자',
         value: keepTrustContract.cntrYmdTo,
       },
-      {
+    ];
+    if (type === 'owner') {
+      dataTable.push({
         type: '첨부 서류',
         isImageLink: keepTrustContract?.entrpByOwner?.file2,
         fileName: keepTrustContract?.entrpByOwner?.file2 ? '통장 사본.jpg' : '-',
         value: keepTrustContract?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${keepTrustContract?.entrpByOwner?.file2}` : '',
-      },
-    ];
+      });
+    }
 
     let viewComponent;
     switch (status) {

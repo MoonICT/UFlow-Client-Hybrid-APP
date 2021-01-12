@@ -54,6 +54,7 @@ class TermsContract extends Component {
       type: 'confirm',
       content: `계약 약관 동의가 처리되었습니다.`,
     });
+    // 라우트 강제 새로고침.
     this.props.route.params.onRefresh('견적･계약 관리')
     this.navigation.navigate('Mypage',);
   };
@@ -241,27 +242,32 @@ class TermsContract extends Component {
         {/** 동의 버튼 */}
         <View
           style={[DefaultStyle._listBtn, { marginTop: 12, marginBottom: 8 }]}>
-          <TouchableOpacity
-            style={[
-              DefaultStyle._btnInline,
-              (!isAgree || !(keepTrustContract.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
-            ]}
-            disabled={!isAgree || !(keepTrustContract.entrpByOwner?.file2 || file)}
-            onPress={() => this.useImperativeHandle()}>
-            <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-              계약 약관 동의
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[DefaultStyle._btnInline,]}
-            onPress={() => {
-              this.props.route.params.onRefresh('견적･계약 관리')
-              this.navigation.navigate('Mypage',);
-            }}>
-            <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-              뒤로가기
-            </Text>
-          </TouchableOpacity>
+
+          {type === 'owner' ?
+            <TouchableOpacity
+              style={[
+                DefaultStyle._btnInline,
+                (!isAgree || !(keepTrustContract.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
+              ]}
+              disabled={!isAgree || !(keepTrustContract.entrpByOwner?.file2 || file)}
+              onPress={() => this.useImperativeHandle()}>
+              <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
+                계약 약관 동의
+              </Text>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity
+              style={[
+                DefaultStyle._btnInline,
+                !isAgree ? DefaultStyle._oulineDisabled : '',
+              ]}
+              disabled={!isAgree}
+              onPress={() => this.useImperativeHandle()}>
+              <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
+                계약 약관 동의
+              </Text>
+            </TouchableOpacity>
+          }
         </View>
       </View>
     );

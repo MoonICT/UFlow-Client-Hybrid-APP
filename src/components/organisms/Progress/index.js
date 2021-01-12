@@ -34,7 +34,6 @@ class Progress extends Component {
           alignItems: 'center',
           flex: 1,
           height: (40 + 32),
-          padding: 16,
         }}>
           <View style={{ width: 40, }}>
             <ProgressNative.CircleSnail color={'#ff6d00'} />

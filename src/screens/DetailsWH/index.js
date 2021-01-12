@@ -45,8 +45,9 @@ import WHType6 from '@Assets/images/icon-warehouse-6.png';
 // import {ConvertUnits} from "@Service/utils";
 
 import { styles as S } from './style';
+
 class DetailWH extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     let { id } = props.route.params;
@@ -84,14 +85,14 @@ class DetailWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps (nextProps, prevState) {
     if (nextProps?.route?.params?.id !== prevState.id) {
       return { id: nextProps?.route?.params?.id };
     }
     return null;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     if (prevProps.route?.params?.id !== this.props?.route?.params?.id) {
       this.setState({ id: this.props?.route?.params?.id });
       this.getDataWH();
@@ -207,9 +208,9 @@ class DetailWH extends Component {
     });
   };
 
-  _renderDialogBox = ({ item }) => {
-    return <ProductCard data={{ ...item, img: cardBG }} />;
-  };
+  // _renderDialogBox = ({ item }) => {
+  //   return <ProductCard data={{ ...item, img: cardBG }} />;
+  // };
 
   _renderProductItem = ({ item }) => {
     const cardItem = [];
@@ -230,7 +231,7 @@ class DetailWH extends Component {
     return cardItem;
   };
 
-  render() {
+  render () {
     const {
       active,
       whrgData,
@@ -308,7 +309,7 @@ class DetailWH extends Component {
             onPress={() => this.navigation.pop(2)}
           />
           <Appbar.Content
-            title=""
+            title="창고 상세"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -608,7 +609,7 @@ class DetailWH extends Component {
                               )}
                             </View>
                           ) : (
-                            <Text style={[S.textBtnQuote,{color: '#ff0000', padding: 16}]}>
+                            <Text style={[S.textBtnQuote, { color: '#ff0000', padding: 16 }]}>
                               계약 완료된 정보입니다.
                             </Text>
                           )}
@@ -855,7 +856,7 @@ class DetailWH extends Component {
                             </View>
                           ) : (
 
-                            <Text style={[S.textBtnQuote,{color: '#ff0000', padding: 16}]}>
+                            <Text style={[S.textBtnQuote, { color: '#ff0000', padding: 16 }]}>
                               계약 완료된 정보입니다.
                             </Text>
 
@@ -890,28 +891,27 @@ class DetailWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <Text style={S.title}>위치</Text>
+              <Text style={S.describeTitle}>
+                {whrgData.roadAddr ? `${whrgData.roadAddr.address} ${whrgData.roadAddr.detail}` : '-'}
+              </Text>
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <TouchableOpacity
                     onPress={() => {
-                      this.navigation.navigate('DetailsLocationWH');
+                      this.navigation.navigate('DetailsLocationWH', {
+                        latitude: whrgData.gps && whrgData.gps.latitude > 0 ? whrgData.gps.latitude : 0,
+                        longitude: whrgData.gps && whrgData.gps.longitude > 0 ? whrgData.gps.longitude : 0,
+                        address: whrgData.roadAddr ? `${whrgData.roadAddr.address} ${whrgData.roadAddr.detail}` : '',
+                      });
                     }}>
 
                     <View style={{ height: 220 }}>
-                      <WebviewMap latitude={37.56681068671429}
-                                  longitude={126.97864660315285} />
+                      {whrgData.gps && whrgData.gps.latitude > 0 && whrgData.gps.longitude > 0 &&
+                      <WebviewMap latitude={whrgData.gps.latitude}
+                                  longitude={whrgData.gps.longitude}
+                                  isToggleBtn={false} />}
+
                     </View>
-                    {/* <View>
-                      {whrgData.gps.latitude > 0 && whrgData.gps.longitude > 0 ? (
-                        <Text>
-                          Kakao Map
-                        </Text>
-                      ) : (
-                          <Text>
-                            등록된 좌표가 없습니다.
-                          </Text>
-                        )}
-                    </View> */}
                   </TouchableOpacity>
                 </View>
               </View>
@@ -1240,14 +1240,34 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>유사한 창고</Text>
               <View style={S.mainProductList}>
-                <CarouselSnap
-                  layout={'default'}
-                  data={whList}
-                  sliderWidth={328}
-                  itemWidth={160}
-                  renderItem={this._renderProductItem}
-                  onSnapToItem={index => this.setState({ activeIndex: index })}
-                />
+
+                {/*<CarouselSnap*/}
+                {/*layout={'default'}*/}
+                {/*data={whList}*/}
+                {/*sliderWidth={328}*/}
+                {/*itemWidth={160}*/}
+                {/*renderItem={this._renderProductItem}*/}
+                {/*onSnapToItem={index => this.setState({ activeIndex: index })}*/}
+                {/*/>*/}
+
+                {whList && whList.length > 0 &&
+                <>
+                  {whList.slice(0, 4).map((item, index) =>
+                    <View style={S.mainProductItem}>
+                      <TouchableOpacity onPress={() => this.navigation.replace('DetailsWH', { id: item.id })}>
+                        {item.thumbnail !== null ? (
+                          <ProductCard navigation={this.navigation} data={item} />
+                        ) : (
+                          <ProductCard
+                            navigation={this.navigation}
+                            data={{ ...item, img: cardBG }}
+                          />
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </>}
+
               </View>
             </View>
             {/* <TouchableOpacity
@@ -1271,7 +1291,7 @@ class DetailWH extends Component {
   }
 
   /** when after render DOM */
-  componentDidMount() {
+  componentDidMount () {
     const { route } = this.props;
     this.getDataWH();
     this.handleRequestQnaList(4);
@@ -1307,7 +1327,7 @@ class DetailWH extends Component {
       });
   }
 
-  async getDataWH() {
+  async getDataWH () {
     const { id } = this.state;
 
     let params = {
@@ -1400,13 +1420,13 @@ class DetailWH extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {};
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {};
 }
 
