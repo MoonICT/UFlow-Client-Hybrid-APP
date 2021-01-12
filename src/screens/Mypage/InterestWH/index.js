@@ -27,7 +27,7 @@ import box from '@Assets/images/box.png';
 import { styles as S } from '../style';
 
 class InterestWarehouse extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -38,11 +38,11 @@ class InterestWarehouse extends Component {
   }
 
   /** when after render DOM */
-  componentDidMount() {
+  componentDidMount () {
     this.getDataFavorite();
   }
 
-  getDataFavorite = () =>{
+  getDataFavorite = () => {
     Fav.page().then(res => {
       let resultData = res.data && res.data._embedded && res.data._embedded.mbspUserFavResBodies ? res.data._embedded.mbspUserFavResBodies : [];
       let dataConvert = [];
@@ -124,7 +124,7 @@ class InterestWarehouse extends Component {
       });
   }
 
-  render() {
+  render () {
     const { listItem } = this.state;
     let view =
       listItem &&
@@ -185,13 +185,20 @@ class InterestWarehouse extends Component {
         {listItem.length > 0 ? (
           view
         ) : (
-            <View style={S.boxNodata}>
-              <Image source={box} />
-              <Text style={[DefaultStyle._textDF3, { marginTop: 40 }]}>
-                관심 창고로 등록한 창고가 없습니다.
-            </Text>
+          <View style={S.boxNodata}>
+            <View style={{
+              marginTop: 30,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Image style={{ flex: 1 }} source={box} />
             </View>
-          )}
+            <Text style={[DefaultStyle._textDF3, { marginTop: 40, textAlign: 'center' }]}>
+              관심 창고로 등록한 창고가 없습니다.
+            </Text>
+          </View>
+        )}
       </ScrollView>
     );
   }

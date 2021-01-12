@@ -162,6 +162,7 @@ export const styles = StyleSheet.create({
   },
   boxNodata: {
     margin: 59,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
