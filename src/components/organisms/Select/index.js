@@ -30,10 +30,9 @@ export default class Selected extends Component {
   componentWillReceiveProps(newProps) {
     // let selectedValue = newProps.selectedValue;
     // console.log('defaultValuenewProps :>> ', newProps);
-    if (newProps.dataDefault) {
-      // console.log('newProps :>> ', newProps);
-      this.setState({ selectedValue: newProps.dataDefault.label });
-    }
+    newProps.dataDefault
+      ? this.setState({ selectedValue: newProps.dataDefault.label })
+      : this.setState({ selectedValue: '' });
   }
   render() {
     const {

@@ -60,15 +60,6 @@ class RegisterWH extends Component {
   };
 
   submit = () => {
-    // this.props.showPopup({
-    //   type: 'confirm',
-    //   title: '창고 등록 완료',
-    //   content: ` UFLOW 관리자가 입력하신 정보를 
-    //   확인하기 위해 연락을 드릴 예정입니다.
-    //   자세한 내용은 [마이페이지 > 내 창고]에서 
-    //   확인해주세요`,
-    //   image: illust10,
-    // });
     if (this.doubleSubmitCheck()) return;
 
     let type = this.props.route.params && this.props.route.params.type;
@@ -82,19 +73,21 @@ class RegisterWH extends Component {
             // this.navigation.navigate('Home');
             this.props.showPopup({
               type: 'confirm',
-              title: '창고 등록 완료',
-              content: ` UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요`,
+              title: '수정 완료',
+              content: '창고정보 수정을 완료했습니다.',
               image: illust10,
+              navigation: () =>
+                this.navigation.navigate('Mypage', {
+                  title: '내 창고',
+                  prevView: 'PrevView',
+                }),
             });
 
             this.doubleSubmitFlag = false;
-            this.navigation.navigate('Mypage', {
-              title: '내 창고',
-            });
           }
         })
         .catch(err => {
-          alert('Update err', err);
+          // alert('Update err', err);
           console.log('err', err.response);
         });
     } else {
@@ -109,14 +102,19 @@ class RegisterWH extends Component {
             this.props.showPopup({
               type: 'confirm',
               title: '창고 등록 완료',
-              content: ` UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요`,
+              content:
+                ' UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요',
               image: illust10,
+              navigation: () =>
+                this.navigation.navigate('Mypage', {
+                  title: '내 창고',
+                  prevView: 'PrevView',
+                }),
             });
-
             this.doubleSubmitFlag = false;
-            this.navigation.navigate('Mypage', {
-              title: '내 창고',
-            });
+            // this.navigation.navigate('Mypage', {
+            //   title: '내 창고',
+            // });
           }
         })
         .catch(err => {
@@ -324,7 +322,7 @@ class RegisterWH extends Component {
         </ScrollView>
         <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
-            // disabled={isSubmitUpdate === true ? false : true}
+            disabled={isSubmitUpdate === true ? false : true}
             style={[
               DefaultStyle.btnSubmit,
               isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
@@ -338,7 +336,9 @@ class RegisterWH extends Component {
                 DefaultStyle.textSubmit,
                 isSubmitUpdate === true ? DefaultStyle.textActiveSubmit : null,
               ]}>
-              창고 등록하기
+              {route && route.params && route.params.type === 'ModifyWH'
+                ? '창고 수정하기'
+                : '창고 등록하기'}
             </Text>
           </TouchableOpacity>
         </View>

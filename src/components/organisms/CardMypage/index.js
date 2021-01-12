@@ -19,13 +19,13 @@ import DefaultStyle from '@Styles/default';
 import { styles as S } from './style';
 
 class CardMypage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = { visible: false };
     this.navigation = props.navigation;
   }
 
-  render() {
+  render () {
     const {
       data,
       styleLeft,
@@ -69,7 +69,7 @@ class CardMypage extends Component {
           <Text>{console.log(bgrImage)}</Text>
           <Card.Cover
             source={bgrImage ? {
-              uri: bgrImage.uri.replace(/\\/g, '')
+              uri: bgrImage.uri ? bgrImage.uri.replace(/\\/g, '') : ''
             } : cardBG}
             style={S.imgAva}
           />
