@@ -44,7 +44,7 @@ class CreateInquiryWH extends Component {
       warehouseRegNo: route.params.idWH,
       content: questionContent
     }).then(res => {
-      this.navigation.push('DetailsWH', {
+      this.navigation.pop('DetailsWH', {
         id:route.params.idWH
       } )
     })
