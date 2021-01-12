@@ -110,7 +110,9 @@ export default class SettlementManagement extends Component {
             },
           ]
         }
-      })
+      }).catch(error => {
+        alert(' SettlementManagementService: ' + error);
+      });
 
 
       this.setState({

@@ -137,7 +137,6 @@ export default StyleSheet.create({
     lineHeight: 21,
     letterSpacing: 0,
     textAlign: 'right',
-    color: 'rgba(0, 0, 0, 0.47)',
   },
   titleDf: {
     marginTop: 20,
@@ -1243,6 +1242,13 @@ export default StyleSheet.create({
     height: 56,
     marginBottom: 5,
   },
+  _btnDateFilter: {
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 4,
+    height: 36,
+    marginBottom: 5
+  },
   _btnDateCustom: {
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
@@ -1287,5 +1293,8 @@ export default StyleSheet.create({
   linkColor: {
     color: '#0398fc',
     textDecorationLine: 'underline',
+  },
+  _errorText: {
+    borderColor: 'red',
   },
 });

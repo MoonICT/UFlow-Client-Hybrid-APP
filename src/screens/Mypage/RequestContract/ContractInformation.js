@@ -33,8 +33,26 @@ class ContractInformation extends Component {
       isOnLineDialog: false,
       isOffLineDialog: false
     };
+
+    console.debug('견적 약관 detailContract : ', props.detailContract)
+    console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+
     this.navigation = props.navigation;
   }
+
+  /**
+   * 보관/수탁 정보 추출.
+   * */
+  getContract = () => {
+    if (this.props.detailEstimate) {
+      if (this.props.detailEstimate.keep) {
+        return this.props.detailEstimate.keep;
+      }
+      if (this.props.detailEstimate.trust) {
+        return this.props.detailEstimate.trust;
+      }
+    }
+  };
 
   /**
    * 오프라인 견적 요청하기
@@ -42,19 +60,22 @@ class ContractInformation extends Component {
   requestOffLineContract = () => {
     Contract.ozContractURl({
       type: this.props.contractType.toLowerCase(),
-      warehouseRegNo: this.props.warehouseRegNo,
-      cntrDvCd: this.props.dataContract.id.cntrDvCode,
-      cntrYmdFrom: moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD')
+      warehouseRegNo: this.getContract().id.warehouseRegNo,
+      cntrDvCd: this.getContract().id.cntrDvCode,
+      cntrYmdFrom: moment(this.getContract().id.cntrYmdFrom).format('YYYYMMDD')
     }).then(res => {
       Linking.openURL(res.url);
+    }).catch(error => {
+      alert('requestOffLineContract:' + error);
     });
     this.setState({ isOffLineDialog: false });
   };
 
   render () {
     const {
-      dataContract,
       contractType, // KEEP || TRUST
+
+      dataContract,
       status,
       warehouseRegNo,
       rentUserNo,
@@ -65,6 +86,7 @@ class ContractInformation extends Component {
       cntrYmdFrom,
       cntrYmdTo,
       mediaFile,
+      typeWH
     } = this.props;
     let dataTable = [
       {
@@ -129,6 +151,8 @@ class ContractInformation extends Component {
             warehouse={warehouse}
             rentUser={rentUser}
             navigation={this.navigation}
+            cntrYmdFrom={cntrYmdFrom}	
+            typeWH={typeWH}
           />
         );
         break;

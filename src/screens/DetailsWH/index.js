@@ -25,6 +25,7 @@ import {
 } from 'react-native-paper';
 
 // Local Imports
+import { Warehouse, WarehouseTenant } from '@Services/apis';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
@@ -47,8 +48,6 @@ import WHType6 from "@Assets/images/icon-warehouse-6.png";
 // import {ConvertUnits} from "@Service/utils";
 
 import { styles as S } from './style';
-import { Warehouse, WarehouseTenant } from '@Services/apis';
-
 class DetailWH extends Component {
   constructor(props) {
     super(props);
@@ -66,10 +65,11 @@ class DetailWH extends Component {
       pageInfo: {},
       isLogin:false,
       showAll: false,
-      floors:0,
+      floors:'지하 1층',
       whList: [],
       favorite : false,
-      rentUserNo:''
+      rentUserNo:'',
+      activeIndex: 0
     };
     this.navigation = props.navigation;
   }
@@ -186,7 +186,7 @@ class DetailWH extends Component {
           {item?.thumbnail !== null ? (
             <ProductCard navigation={this.navigation} data={item} />
           ) : (
-            <ProductCard
+             <ProductCard
               navigation={this.navigation}
               data={{ ...item, img: cardBG }}
             />
@@ -198,27 +198,23 @@ class DetailWH extends Component {
   };
 
   render() {
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, isLogin} = this.state;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, activeIndex, id} = this.state;
 
     const dataTab = [
       {
         title: '지하 1층',
-        id: 0,
         content: ''
       },
       {
         title: '지상 2층',
-        id: 1,
         content: ''
       },
       {
         title: '지상 3층',
-        id: 2,
         content: ''
       },
       {
         title: '지상 4층',
-        id: 3,
         content: ''
       },
     ];
@@ -241,10 +237,10 @@ class DetailWH extends Component {
     const displayUsblValue = (usblValue, calUnitDvCode) => {
       let resultStr = '-'
       if (usblValue) {
-        if (calUnitDvCode.stdDetailCode === 'CU01') {
+        if (calUnitDvCode && calUnitDvCode.stdDetailCode === 'CU01') {
           resultStr = displayAreaUnit(usblValue)
         } else {
-          resultStr = usblValue.toLocaleString() + (calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
+          resultStr = usblValue.toLocaleString() + (calUnitDvCode && calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
         }
       }
       return resultStr;
@@ -298,10 +294,35 @@ class DetailWH extends Component {
               {whrgData.name}
             </Text>
             <View style={S.labels}>
-              <Text style={[S.textlabel, S.orange]}>상온</Text>
-              <Text style={[S.textlabel, S.azure]}>상온</Text>
-              <Text style={[S.textlabel, S.green]}>상온</Text>
-              <Text style={[S.textlabel, S.gray]}>상온</Text>
+              {
+                whrgData.keeps && whrgData.keeps.length > 0 && (
+                   whrgData.keeps.map((keep, index) => (
+                    <View key={index}>
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                   </View>
+                   )))
+              }
+
+              {
+                whrgData.trusts && whrgData.trusts.length > 0 && (
+                   whrgData.trusts.map((trust, index) => (
+                    <View key={index}>
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                   </View>
+                   )))
+              }
+            
+              
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
             <View style={S.background}>
@@ -347,11 +368,11 @@ class DetailWH extends Component {
                   whrgData.keeps.map((keep, index) => (
                     <View key={"listKeep" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
-                        {keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
-                        {keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
-                        {keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
-                        {keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
-                        {keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
                         checked={checked}
@@ -624,7 +645,7 @@ class DetailWH extends Component {
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.viewBody}>
-                    <Text style={S.textBodyCard}>
+                    <Text style={[S.textBodyCard, DefaultStyle.p_16]}>
                       {whrgData.description}
                     </Text>
                   </View>
@@ -735,12 +756,12 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
-                <AppGrid data={dataTab} valueProps={(e)=> this.setState({floors: e})}/>
+                  <AppGrid data={dataTab} title={floors} titleProps={(e, index)=> this.setState({ floors: e, activeIndex: index  })} />
               </View>
               {whrgData.floors
                 ? whrgData.floors.map((floor, index) => {
                   return (
-                      floors === index &&
+                    activeIndex === index &&
                       <View key={"floor" + index} style={DefaultStyle._card}>
                       <View style={S.bodyCard}>
                         <View style={S.table}>
@@ -840,7 +861,10 @@ class DetailWH extends Component {
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnInquiry}
-                    onPress={() => console.log('add')}>
+                    onPress={() => this.navigation.navigate('CreateInquiryWH', {
+                      idWH: id
+                    }
+                    )}>
                     <Text style={S.textInquiry}>문의하기</Text>
                   </TouchableOpacity>
                 </View>
@@ -849,26 +873,27 @@ class DetailWH extends Component {
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   {(qnaList && qnaList.length === 0) &&
+                  <View style={[DefaultStyle.d_center, DefaultStyle.p_16]}>
                     <Text key={'empty'} style={S.titleInquiry}>문의 내역이 없습니다.</Text>
+                  </View>
                   }
                   {/* List */}
                   {qnaList && qnaList.map((qnaItem, index) =>
                     <View key={'qnaItem' + index} style={S.inquirys}>
                       <View style={S.leftInquiry}>
-                        {qnaItem.answer ?
+                        {qnaItem.status ?
                           <Text style={S.titleCompleted}>답변완료</Text>
                           :
                           <Text style={S.titleInquiry}>미답변</Text>
                         }
-                        <Text style={S.contentInquiry}>비밀글입니다.</Text>
+                        <Text style={S.contentInquiry}>{qnaItem.title}</Text>
                         <Text style={S.footerInquiry}>
-                        {qnaItem.writer}
-                        {this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}
+                        {qnaItem.name} | {qnaItem.date}
                         </Text>
                       </View>
                       <View style={S.rightInquiry}>
-                        {qnaItem.me ? '' : (
-                          (qnaItem.secret || true) ?
+                        {
+                          (qnaItem.lock) ?
                             <IconButton
                               style={S.btnIcon}
                               icon="lock"
@@ -876,7 +901,7 @@ class DetailWH extends Component {
                             />
                             :
                             <Text></Text>
-                        )}
+                        }
                       </View>
                     </View>
                   )}
@@ -968,42 +993,23 @@ class DetailWH extends Component {
             </TouchableOpacity> */}
           </View>
         </ScrollView>
+        
       </SafeAreaView >
     );
   }
 
   /** when after render DOM */
-  async componentDidMount() {
-    SplashScreen.hide();
+  componentDidMount() {
+    const { route } = this.props;
     this.getDataWH()
     this.handleRequestQnaList(4)
     this.hiddenName();
     AsyncStorage.getItem(TOKEN).then(v => {
       this.setState({ isLogin: v !== '' && v !== null });
+    }).catch(error => {
+      alert('DetailWH componentDidMount error:' + error);
     });
   }
-
-  // async UNSAFE_componentWillMount () {
-  //   const value = await AsyncStorage.getItem(TOKEN);
-  //   // console.log('More Token ==>', value);
-  //   Account.getMe()
-  //     .then(res => {
-  //       console.log('::::: Get Me :::::', res);
-  //       const status = res.status;
-  //       if (status === 200) {
-  //         console.log('rest', res)
-  //         this.setState({
-  //           isLogin: true
-  //         });
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log('errHome', err);
-  //     });
-  //   if (value) {
-  //     this.setState({ token: value });
-  //   }
-  // }
 
   async getDataWH() {
     const { id } = this.state;
@@ -1017,7 +1023,6 @@ class DetailWH extends Component {
       whrgData: warehouse.data,
       favorite: warehouse.data.fav
     });
-      
         // 유사창고 파라미터 조건
         let typeCodeNames = []
         let gdsKeepTypeCodeNames = []
@@ -1051,7 +1056,9 @@ class DetailWH extends Component {
               : [];
 
           this.setState({ whList: list });
-        })
+        }).catch(error => {
+          alert('DetailWH listRecommend error:' + error);
+        });
   }
 
   handleRequestQnaList = (q_size) => {
@@ -1065,6 +1072,7 @@ class DetailWH extends Component {
     Warehouse.pageWhrgQnA(qnaParams).then(res => {
       if (res && res._embedded && res._embedded) {
         let newFQAList = res._embedded.questions.map(item => {
+          console.log(item)
           return {
             status: item.complete,
             title: item.content,
@@ -1074,10 +1082,13 @@ class DetailWH extends Component {
           }
         })
 
+        console.log('newFQAList', newFQAList)
         this.setState({ qnaList: newFQAList })
         this.setState({ pageInfo: res.page })
       }
-    })
+    }).catch(error => {
+      alert('DetailWH pageWhrgQnA error:' + error);
+    });
   }
   
 }
@@ -1092,12 +1103,6 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 
