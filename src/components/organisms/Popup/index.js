@@ -20,8 +20,18 @@ class Popup extends Component {
     super(props);
   }
 
+  _hidePopup = () => {
+    console.log('this.props :>> ', this.props);
+    if (typeof this.props.hidePopup === 'function') {
+      this.props.hidePopup();
+    }
+    if (typeof this.props.navigation === 'function') {
+      this.props.navigation();
+    }
+  };
+
   render() {
-    const { popup, title, content, hidePopup, type,image } = this.props;
+    const { popup, title, content, hidePopup, type, image } = this.props;
     // console.log('type :>> ', type);
     return (
       <Fragment>
@@ -44,7 +54,9 @@ class Popup extends Component {
                 </Paragraph>
               </Dialog.Content>
               <Dialog.Actions style={DefaultStyle._buttonPopup}>
-                <Button style={DefaultStyle._buttonElement} onPress={hidePopup}>
+                <Button
+                  style={DefaultStyle._buttonElement}
+                  onPress={() => this._hidePopup()}>
                   확인
                 </Button>
               </Dialog.Actions>
@@ -83,6 +95,7 @@ function mapStateToProps(state) {
     title: state.popup.title,
     type: state.popup.type,
     image: state.popup.image,
+    navigation: state.popup.navigation
   };
 }
 
