@@ -21,7 +21,6 @@ import ContractInformation from './ContractInformation';
 import { styles as S } from '../style';
 import {
   Warehouse,
-  MediaFileContract,
   MyPageEstmtCntr,
   Contract,
 } from '@Services/apis';
@@ -43,34 +42,6 @@ class RequestContract extends Component {
     };
     this.navigation = props.navigation;
   }
-
-  /**
-   * 보관/수탁 정보 추출.
-   * */
-  getContract = () => {
-    if (this.state.detailEstimate) {
-      if (this.state.detailEstimate.estmtKeeps) {
-        return this.state.detailEstimate.estmtKeeps;
-      }
-      if (this.state.detailEstimate.estmtTrusts) {
-        return this.state.detailEstimate.estmtTrusts;
-      }
-    }
-  };
-
-  /**
-   *  보관/수탁 결정 견 정보 추출.
-   * */
-  getEstimate = (data) => {
-    if (data) {
-      if (data.estmtKeeps) {
-        return data.estmtKeeps.whrgMgmtKeep;
-      }
-      if (data.estmtTrusts) {
-        return data.estmtTrusts.whrgMgmtTrust;
-      }
-    }
-  };
 
   render () {
     let warehSeq = this.props.route.params.warehSeq;
@@ -107,7 +78,7 @@ class RequestContract extends Component {
                   status === '5100' ? { backgroundColor: '#4caf50' } : '',
                 ]}>
                 {ContractUtils.coverStatus(status) && ContractUtils.coverStatus(status).processingTrust &&
-                typeWH === 'TRUST'
+                contractType === 'trust'
                   ? ContractUtils.coverStatus(status).processingTrust
                   : ContractUtils.coverStatus(status).processing}
               </Text>
@@ -115,7 +86,7 @@ class RequestContract extends Component {
 
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>
-                {/** TODO Bug2-1 보관 상태에 따라 이미지 변경 */ }
+                {/** TODO Bug2-1 보관 상태에 따라 이미지 변경 */}
                 <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
               </View>
               <View>
@@ -141,13 +112,8 @@ class RequestContract extends Component {
             {keepTrustContract ?
               <ContractInformation
                 navigation={this.navigation}
-
                 detailEstimate={detailEstimate} // 계약 기본 정보
                 keepTrustContract={keepTrustContract} // keep|trust
-
-                // detailContract={this.state.detailContract}
-                // detailEstimate={keepTrustContract}
-
                 type={type}
                 contractType={contractType}
                 status={status}
@@ -242,30 +208,6 @@ class RequestContract extends Component {
       });
     }
 
-    // TODO 밑에 확인
-    let url = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + typeWH + '/' + rentUserNo;
-
-    let urlTenant = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + typeWH;
-
-    await Warehouse.quotation(
-      this.props.route.params.type === 'OWNER' ? url : urlTenant,
-    )
-      .then(res => {
-        if (res.status === 200) {
-          console.log('계약 상세 데이터', res.data);
-          this.setState(
-            {
-              dataApi: res.data,
-            },
-            () => {
-            },
-          );
-          // this.props.quotationData(res.data);
-        }
-      })
-      .catch(err => {
-        console.log('errRequest', err);
-      });
     const { detailEstimate, keepTrustContract, keepTrustEstimate } = this.state;
 
     // console.log('check 1', detailEstimate)
