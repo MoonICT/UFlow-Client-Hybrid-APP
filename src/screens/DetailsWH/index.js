@@ -391,14 +391,7 @@ class DetailWH extends Component {
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
             <View style={S.background}>
-              <Image
-                style={S.backgroundImage}
-                source={
-                  whrgData.whImages && whrgData.whImages.length > 0
-                    ? { uri: whrgData.whImages[0].url }
-                    : ''
-                }
-              />
+              <Image style={S.backgroundImage} source={ whrgData.whImages && whrgData.whImages.length > 0 ? {uri:whrgData.whImages[0].url}  : cardBG} />
               <Image style={S.iconBackground} source={circle} />
             </View>
             <View style={S.info}>
