@@ -68,7 +68,7 @@ class CardMypage extends Component {
         <View style={[DefaultStyle._bodyCard, style]}>
           <Text>{console.log(bgrImage)}</Text>
           <Card.Cover
-            source={bgrImage ? {
+            source={(bgrImage && bgrImage.uri) ? {
               uri: bgrImage.uri.replace(/\\/g, '')
             } : cardBG}
             style={S.imgAva}
