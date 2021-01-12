@@ -532,7 +532,7 @@ export default class DetailsManager extends Component {
     }
     this.setState({
       filter: filter
-    },() => {
+    }, () => {
       this.getAllData()
     })
   };
@@ -581,14 +581,14 @@ export default class DetailsManager extends Component {
     // 수량 유효성
     if (!createValue || createValue === 0) {
       errorMessage = '수량은 0이상 입력해야합니다.'
-      console.error(errorMessage);
+      alert(errorMessage);
       return;
     }
 
     // 날짜 유효성
     if (!createDate || (!(Moment(createDate).isSame(Moment(), 'day')) && Moment(createDate).isBefore(Moment()))) {
       errorMessage = '오늘부터 입력이 가능합니다.'
-      console.error(errorMessage);
+      alert(errorMessage);
       return;
     }
 
@@ -596,6 +596,19 @@ export default class DetailsManager extends Component {
     if (type === 'OWNER') {
       if (typeCreate === 'export') {
         // 출고 확정
+        if (!ExpctYmd) {
+          alert('일자 정보가 없습니다.');
+          return;
+        } if (!createDateStr) {
+          alert('일자 정보가 없습니다.');
+          return;
+        } else if (!createValue) {
+          alert('수량 정보가 없습니다.');
+          return;
+        } else if (!rentWarehNo || !ExpctSeq) {
+          alert('공유창고 정보가 없습니다.');
+          return;
+        }
         let data = {
           rentWarehNo: rentWarehNo,
           whoutExpct: Moment(ExpctYmd).valueOf(),
@@ -626,10 +639,23 @@ export default class DetailsManager extends Component {
               console.error(res)
             }
           }).catch(error => {
-            alert('postExportOwner error:' + error);
-          });
+          alert('postExportOwner error:' + error);
+        });
       } else if (typeCreate === 'import') {
         // 입고 확정
+        if (!ExpctYmd) {
+          alert('일자 정보가 없습니다.');
+          return;
+        } if (!createDateStr) {
+          alert('일자 정보가 없습니다.');
+          return;
+        } else if (!createValue) {
+          alert('수량 정보가 없습니다.');
+          return;
+        } else if (!rentWarehNo || !ExpctSeq) {
+          alert('공유창고 정보가 없습니다.');
+          return;
+        }
         let data = {
           rentWarehNo: rentWarehNo,
           whinExpct: Moment(ExpctYmd).valueOf(),
@@ -660,14 +686,25 @@ export default class DetailsManager extends Component {
               console.error(res)
             }
           }).catch(error => {
-            alert('postExportOwner error:' + error);
-          });
+          alert('postExportOwner error:' + error);
+        });
       }
 
     } else if (type === 'TENANT') {
       // 임차인
       if (typeCreate === 'import') {
         // 입고 요청
+
+        if (!createDateStr) {
+          alert('일자 정보가 없습니다.');
+          return;
+        } else if (!createValue) {
+          alert('수량 정보가 없습니다.');
+          return;
+        } else if (!rentWarehNo) {
+          alert('공유창고 정보가 없습니다.');
+          return;
+        }
         let data = {
           rentWarehNo: rentWarehNo,
           whinExpct: Moment(createDateStr).valueOf(),
@@ -694,9 +731,19 @@ export default class DetailsManager extends Component {
               console.error(res)
             }
           }).catch(error => {
-            alert('postImportTenant error:' + error);
-          });
+          alert('postImportTenant error:' + error);
+        });
       } else if (typeCreate === 'export') {
+        if (!createDateStr) {
+          alert('일자 정보가 없습니다.');
+          return;
+        } else if (!createValue) {
+          alert('수량 정보가 없습니다.');
+          return;
+        } else if (!rentWarehNo) {
+          alert('공유창고 정보가 없습니다.');
+          return;
+        }
         // 출고 요청
         let data = {
           rentWarehNo: rentWarehNo,
@@ -724,8 +771,8 @@ export default class DetailsManager extends Component {
               console.error(res)
             }
           }).catch(error => {
-            alert('postExportTenant error:' + error);
-          });
+          alert('postExportTenant error:' + error);
+        });
       }
     }
   }
@@ -1352,9 +1399,9 @@ export default class DetailsManager extends Component {
                         });
 
                         InOutManagerService.uploadImage(formData).then(data => {
-                            this.setState({
-                              ImageFilename: data.filename
-                            })
+                          this.setState({
+                            ImageFilename: data.filename
+                          })
                         });
                       })
 

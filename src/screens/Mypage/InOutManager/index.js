@@ -665,7 +665,7 @@ export default class InOutManager extends Component {
                           DefaultStyle._labelTextField,
                           { color: '#000000' },
                         ]}>
-                        수탁 기간
+                        입고 예정일
                       </Text>
                       {isOpenTimeCreateImport &&
                         // <DatePicker
