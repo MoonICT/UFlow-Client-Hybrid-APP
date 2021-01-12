@@ -28,6 +28,7 @@ import imgType0002 from '@Assets/images/type-0002.png';
 import imgType0003 from '@Assets/images/type-0003.png';
 import imgType0004 from '@Assets/images/type-0004.png';
 import imgType9100 from '@Assets/images/type-9100.png';
+import illust15 from '@Assets/images/illust15.png';
 
 import {
   Appbar,
@@ -1345,23 +1346,16 @@ export default class DetailsManager extends Component {
                         let formData = new FormData();
 
                         formData.append('file', {
-                          uri: response.uri.replace("file://", ""),
+                          uri: response.uri,
                           type: response.type,
                           name: response.fileName,
                         });
 
-
-                        // InOutManagerService.uploadImage(formData).then(res => {
-                        //   if (res.status === 200) {
-                        //     let {url} = res.data;
-                        //     console.log('url', url);
-
-                        // TODO 업로드된 이미지 URL 가져오기
-                        this.setState({
-                          ImageFilename: ""
-                        })
-                        //   }
-                        // });
+                        InOutManagerService.uploadImage(formData).then(data => {
+                            this.setState({
+                              ImageFilename: data.filename
+                            })
+                        });
                       })
 
 
@@ -1493,7 +1487,8 @@ export default class DetailsManager extends Component {
           visible={this.state.completeRequestImport}
           onDismiss={() => this.setState({completeRequestImport: false})}>
           <Dialog.Content>
-            <View style={DefaultStyle.imagePopup}/>
+            {/*<View style={DefaultStyle.imagePopup}/>*/}
+            <Image source={illust15} style={DefaultStyle._avatarHeader}/>
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1521,7 +1516,8 @@ export default class DetailsManager extends Component {
           visible={this.state.completeRequestExport}
           onDismiss={() => this.setState({completeRequestExport: false})}>
           <Dialog.Content>
-            <View style={DefaultStyle.imagePopup}/>
+            {/*<View style={DefaultStyle.imagePopup}/>*/}
+            <Image source={illust15} style={DefaultStyle._avatarHeader}/>
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>

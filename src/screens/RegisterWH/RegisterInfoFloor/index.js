@@ -7,6 +7,7 @@
 // Global Imports
 import React, {Component} from 'react';
 import {
+  Dimensions,
   StyleSheet,
   SafeAreaView,
   View,
@@ -39,6 +40,7 @@ import {styles as S} from '../style';
 import {styles as SS} from './style';
 import Form from './form';
 import {MyPage} from '@Services/apis';
+
 
 class RegisterInfoFloor extends Component {
   constructor(props) {
@@ -79,6 +81,11 @@ class RegisterInfoFloor extends Component {
     //console.log('//::componentWillUnmount::');
   }
 
+  goToSlider = (index) => {
+    console.log(index, 'goToSlider');
+    this.slider.goTo(index)
+  }
+
   _addForm = valueTab => {
     console.log(valueTab, 'valueTab')
     let list = this.state.floors;
@@ -94,6 +101,7 @@ class RegisterInfoFloor extends Component {
       aprchMthdDvCode: '',
       dockQty: '',
     });
+    console.log(list.length, 'list.length 1111');
     this.setState({floors: list});
   };
   _removeForm = () => {
@@ -140,6 +148,9 @@ class RegisterInfoFloor extends Component {
   render() {
     const {imageStore, dataInfoFloor} = this.props;
     const {floors} = this.state;
+
+    const { width: screenWidth } = Dimensions.get('window');
+
     console.log('dataInfoFloor', dataInfoFloor);
     console.log('floors', floors);
     let isSubmitUpdate = false;
@@ -202,6 +213,7 @@ class RegisterInfoFloor extends Component {
                 </View>
               </View>
             </View>
+            <Text>{screenWidth}</Text>
             <View style={[S.bodyCard, SS.bodyInfoFloor]}>
               <Carousel
                 // style={styles.carousel}
@@ -226,6 +238,7 @@ class RegisterInfoFloor extends Component {
                     marginTop: 100,
                   },
                 }}
+                ref={(ref) => (this.slider = ref)}
               />
             </View>
             {floors && floors.length > 0 &&
@@ -306,6 +319,8 @@ class RegisterInfoFloor extends Component {
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
+
+
   }
 }
 

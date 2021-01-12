@@ -100,13 +100,17 @@ class Login extends Component {
 
     return (
       <SafeAreaView style={S.container}>
+        {isLogin &&
         <Appbars>
           <Appbar.Action
             icon="close"
             color="black"
-            onPress={() => isLogin && this.navigation.navigate('Home')}
+            onPress={() => {
+              isLogin ? this.navigation.navigate('Home') : alert('로그인을 해주세요.');
+            }}
           />
         </Appbars>
+        }
         <ScrollView>
           {/* <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text> */}
           <Image source={Logo} alt="logo" style={[S.titleLogin]} />

@@ -375,6 +375,7 @@ class RegisterInfo extends Component {
                       marginTop: 100,
                     },
                   }}
+
                 />
               ) : (
                 <Carousel
@@ -400,6 +401,7 @@ class RegisterInfo extends Component {
                       marginTop: 100,
                     },
                   }}
+
                 />
               )}
             </View>

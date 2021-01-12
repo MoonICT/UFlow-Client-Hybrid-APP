@@ -432,6 +432,7 @@ export default class Notification extends Component {
                   height: 8,
                 },
               }}
+
             />
             <Text
               style={[S.descriptionSmall, { marginTop: 50, lineHeight: 18 }]}>
@@ -486,6 +487,7 @@ export default class Notification extends Component {
                   height: 8,
                 },
               }}
+
             />
           </View>
 
@@ -543,6 +545,7 @@ export default class Notification extends Component {
                   height: 8,
                 },
               }}
+
             />
           </View>
           {/* section 4 */}
@@ -566,6 +569,7 @@ export default class Notification extends Component {
                   height: 8,
                 },
               }}
+
             />
           </View>
           {/* section 5 */}

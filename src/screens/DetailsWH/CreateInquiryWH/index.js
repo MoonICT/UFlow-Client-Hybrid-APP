@@ -78,7 +78,7 @@ class CreateInquiryWH extends Component {
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={SS.bodyCard}>
             <View style={SS.titleBody}>
-              <Text style={SS.textTitleBody}>에이씨티앤코아물류</Text>
+              <Text style={SS.textTitleBody}>창고 문의 작성</Text>
             </View>
             {/* <TextField
               labelTextField="제목"
@@ -89,9 +89,11 @@ class CreateInquiryWH extends Component {
               labelTextField="내용"
               placeholder="문의하실 내용을 입랙해 주세요."
               colorLabel="#000000"
+              styleProps={{height:120}}
               valueProps={text => this.setState({
                 questionContent: text
               })}
+              multiline={true}
               numberOfLines={4}
             />
           </View>
