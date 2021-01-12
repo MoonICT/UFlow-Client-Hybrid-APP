@@ -112,41 +112,43 @@ class RequestContract extends Component {
         },
         {
           type: '보관유형',
-          value: dataApi?.keep?.whrgMgmtKeep?.typeCode?.stdDetailCodeName,
+          value: dataApi?.keep?.whrgMgmtKeep?.typeCode?.stdDetailCodeName || 0,
         },
         {
           type: '정산단위',
-          value: dataApi?.keep?.calUnitDvCode?.stdDetailCodeName,
+          value: dataApi?.keep?.calUnitDvCode?.stdDetailCodeName || 0,
         },
         {
           type: '산정기준',
-          value: dataApi?.keep?.typeCode?.stdDetailCodeName,
+          value: dataApi?.keep?.typeCode?.stdDetailCodeName || 0,
         },
         {
           type: '가용면적',
-          value: dataApi?.keep?.cntrValue,
+          value: dataApi?.keep?.cntrValue || 0,
         },
         {
           type: '임대 가능 기간',
-          value: this.coverTime(dataApi?.keep?.whrgMgmtKeep?.usblYmdFrom),
+          value: this.coverTime(dataApi?.keep?.whrgMgmtKeep?.usblYmdFrom) || 0,
         },
         {
           type: '가용수량',
-          value: StringUtils.moneyConvert(dataApi?.keep?.cntrValue, ''),
+          value: StringUtils.moneyConvert(dataApi?.keep?.cntrValue, '') || 0,
         },
         {
           type: '보관단가',
-          value: StringUtils.moneyConvert(
-            dataApi?.keep?.whrgMgmtKeep?.splyAmount,
-            '',
-          ),
+          value:
+            StringUtils.moneyConvert(
+              dataApi?.keep?.whrgMgmtKeep?.splyAmount,
+              '',
+            ) || 0,
         },
         {
           type: '관리단가',
-          value: StringUtils.moneyConvert(
-            dataApi?.keep?.whrgMgmtKeep?.mgmtChrg,
-            '',
-          ),
+          value:
+            StringUtils.moneyConvert(
+              dataApi?.keep?.whrgMgmtKeep?.mgmtChrg,
+              '',
+            ) || 0,
         },
       ];
     let dataTrust = dataApi &&
@@ -171,16 +173,16 @@ class RequestContract extends Component {
         },
         {
           type: '보관유형',
-          value: dataApi?.trust?.whrgMgmtTrust?.typeCode?.stdDetailCodeName,
+          value: dataApi?.trust?.whrgMgmtTrust?.typeCode?.stdDetailCodeName  || 0,
         },
         {
           type: '정산단위',
           value:
-            dataApi?.trust?.whrgMgmtTrust?.calUnitDvCode?.stdDetailCodeName,
+            dataApi?.trust?.whrgMgmtTrust?.calUnitDvCode?.stdDetailCodeName  || 0,
         },
         {
           type: '산정기준',
-          value: dataApi?.trust?.whrgMgmtTrust?.calStdDvCode?.stdDetailCodeName,
+          value: dataApi?.trust?.whrgMgmtTrust?.calStdDvCode?.stdDetailCodeName  || 0,
         },
         {
           type: '수탁 가능 기간',
@@ -347,7 +349,7 @@ class RequestContract extends Component {
     )
       .then(res => {
         if (res.status === 200) {
-          console.log('res', res);
+          // console.log('res', res);
           this.setState(
             {
               dataApi: res.data,
@@ -364,7 +366,7 @@ class RequestContract extends Component {
     await MediaFileContract.getMediaFile(urlTenantImage)
       .then(res => {
         if (res.status === 200) {
-          console.log('getMediaFile', res);
+          // console.log('getMediaFile', res);
           this.setState(
             {
               dataMedia: res.data,
