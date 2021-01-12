@@ -93,7 +93,7 @@ class RegisterBusinessInfo extends Component {
 
       }
     }).catch(error => {
-      alert('statusWhrgByOwner:' + error);
+      alert('statusWhrgByOwner:' + error.response.data.message);
     });
 
     WarehouseOwner.possibleEntrp().then(res => {
