@@ -9,6 +9,7 @@ import { SafeAreaView, View , TouchableOpacity} from 'react-native';
 import TextField from '@Components/organisms/TextField';
 import {Text} from 'react-native-paper';
 import { WarehouseMobileAuth} from '@Services/apis';
+import moment from 'moment';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 
@@ -22,31 +23,32 @@ export default class CertMobile extends Component {
       isCompleteCert: false,
       errorMsg:'',
       isTimeOver:false,
-      timer: 180
+      timer: 180,
+      duration : moment.duration(180 * 1000, 'milliseconds')
     };
   }
 
-  componentDidMount(){
-    this.interval = setInterval(
-      () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
-      1000
-    );
-  }
-  
-  componentDidUpdate(){
-    if(this.state.timer === 1){ 
-      clearInterval(this.interval);
-      alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.')
-
-      this.setState({
-        isTimeOver:true,
-        isSendCode:false
-      })
+  //countdown overtime
+  startTimer = () => {
+    const {duration } = this.state;
+    clearInterval(this.interval);
+    this.setState({
+      duration : moment.duration(180 * 1000, 'milliseconds')
+    })
+    this.interval = setInterval(()=>{
+      duration.subtract(1000, "milliseconds");
+      if(duration.asMilliseconds() !== 0){
+        this.setState(()=> ({ timer: duration.asMilliseconds() }))
+      }else{
+        alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.')
+        clearInterval(this.interval);
+        this.setState({
+          isTimeOver:true,
+          isSendCode:false
+        })
+      }
     }
-  }
-  
-  componentWillUnmount(){
-   clearInterval(this.interval);
+    , 1000 );
   }
 
   /**
@@ -71,9 +73,10 @@ export default class CertMobile extends Component {
       this.setState({
         isSendCode: true,
         isTimeOver: false,
-        isCompleteCert: false,
-        timer:180
+        isCompleteCert: false
       })
+      this.startTimer()
+
     }).catch(err => {
       this.setState({
         isSendCode:false
@@ -146,7 +149,7 @@ export default class CertMobile extends Component {
             ]}>
             {'인증번호 발송'}
             {isSendCode ?
-            <Text style={[DefaultStyle._textErrorInput]}>({timer})</Text>
+            <Text style={[DefaultStyle._textErrorInput]}>({moment(timer).format('mm:ss')})</Text>
             :
             <Text></Text>
         }

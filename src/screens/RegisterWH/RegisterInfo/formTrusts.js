@@ -16,6 +16,7 @@ import {
   Image,
   TextInput,
   Platform,
+  LogBox
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -37,6 +38,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 
+LogBox.ignoreLogs(['Warning: ...']);
 class FormTrusts extends Component {
   constructor(props) {
     super(props);
@@ -111,7 +113,7 @@ class FormTrusts extends Component {
     this.props.valueForm && this.props.valueForm(dataF);
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     let newUsblYmdFrom = newProps.formData.usblYmdFrom;
     let newUsblYmdTo = newProps.formData.usblYmdTo;
     if (
@@ -183,6 +185,7 @@ class FormTrusts extends Component {
           <Select
             data={typeCodes}
             labelSelected="보관유형"
+            valueSelected={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
             dataDefault={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
             selectedValue={formData.typeCode}
             valueProps={e => {
@@ -194,6 +197,7 @@ class FormTrusts extends Component {
           <Select
             data={calUnitDvCodes}
             labelSelected="정산단위"
+            valueSelected={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             selectedValue={formData.calUnitDvCode}
             valueProps={e => {
@@ -206,6 +210,7 @@ class FormTrusts extends Component {
           <Select
             data={calStdDvCodes}
             labelSelected="산정기준"
+            valueSelected={defaultcalStd !== undefined ? defaultcalStd : ''}
             dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
             selectedValue={formData.calStdDvCode}
             valueProps={e => {

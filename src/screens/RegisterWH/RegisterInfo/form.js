@@ -93,7 +93,7 @@ class FormInfo extends Component {
     dataF.usblYmdTo = d;
     this.props.valueForm && this.props.valueForm(dataF);
   };
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     // let selectedValue = newProps.selectedValue;
     let newUsblYmdFrom = newProps.formData.usblYmdFrom;
     let newUsblYmdTo = newProps.formData.usblYmdTo;
@@ -170,6 +170,7 @@ class FormInfo extends Component {
         <View style>
           <Select
             data={typeCodes}
+            valueSelected={defaultTypeCode !== undefined ? defaultTypeCode : ''}
             dataDefault={defaultTypeCode !== undefined ? defaultTypeCode : ''}
             valueProps={e => {
               // let index = dataForm.findIndex(el => el.id === number);
@@ -185,6 +186,7 @@ class FormInfo extends Component {
           />
           <Select
             data={calUnitDvCodes}
+            valueSelected={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
@@ -198,6 +200,7 @@ class FormInfo extends Component {
           <Select
             data={calStdDvCodes}
             // selectedValue={formData.calStdDvCode}
+            valueSelected={defaultcalStd !== undefined ? defaultcalStd : ''}
             dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
             labelSelected="산정기준"
             valueProps={e => {
@@ -210,6 +213,7 @@ class FormInfo extends Component {
           <Select
             data={mgmtChrgDvCodes && mgmtChrgDvCodes}
             // selectedValue={formData.mgmtChrgDvCode}
+            valueSelected={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
             dataDefault={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
             labelSelected="관리비구분"
             valueProps={e => {
