@@ -42,6 +42,9 @@ class TermsContract extends Component {
       file: null,
     };
 
+    console.debug('견적 약관 detailContract : ', props.detailContract)
+    console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+
     this.navigation = props.navigation;
   }
 
@@ -54,9 +57,9 @@ class TermsContract extends Component {
     });
     console.log(this.props.type)
     console.log('contractType', this.props.contractType.toLowerCase())
-    console.log('warehouseRegNo', this.props.warehouseRegNo)
+    console.log('warehouseRegNo', this.props.detailEstimate.id.warehouseRegNo)
     console.log('rentUserNo', this.props.rentUserNo)
-    console.log('cntrYmdFrom', moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD'))
+    console.log('cntrYmdFrom', moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD'))
     if (!this.state.isAgree) {
       alert('계약 약관에 동의해주세요.')
       return false;
@@ -68,9 +71,9 @@ class TermsContract extends Component {
         name: this.state.file.fileName,
         type: 'image/jpeg',
       });
-      formData.append('warehouseRegNo', this.props.warehouseRegNo);
+      formData.append('warehouseRegNo', this.props.detailEstimate.id.warehouseRegNo);
       formData.append('rentUserNo', this.props.rentUserNo);
-      formData.append('cntrYmdFrom', moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD'));
+      formData.append('cntrYmdFrom', moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD'));
       Contract.owner4100(this.props.contractType.toLowerCase(), formData).then(res => {
         console.debug('약관 동의 결과1 : ', res)
         this.setState({ isComplete: false });
@@ -78,9 +81,9 @@ class TermsContract extends Component {
     } else if (this.props.type === 'TENANT') {
       Contract.tenant4100({
         contractType: this.props.contractType.toLowerCase(),
-        warehouseRegNo: this.props.warehouseRegNo,
+        warehouseRegNo: this.props.detailEstimate.id.warehouseRegNo,
         rentUserNo: this.props.rentUserNo,
-        cntrYmdFrom: moment(this.props.dataContract.id.cntrYmdFrom).format('YYYYMMDD')
+        cntrYmdFrom: moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD')
       }).then(res => {
         console.debug('약관 동의 결과2 : ', res)
         this.setState({ isComplete: false });
@@ -107,14 +110,14 @@ class TermsContract extends Component {
   };
   onSubmit = async () => {
     let { singleFile } = this.state;
-    let {warehouseRegNo, rentUserNo, cntrYmdFrom, typeWH} = this.props
+    let {detailEstimate, rentUserNo, contractType} = this.props
     var formData = new FormData();
     formData.append('file', singleFile);
-    formData.append('warehouseRegNo', warehouseRegNo);
+    formData.append('warehouseRegNo', detailEstimate.id.warehouseRegNo);
     formData.append('rentUserNo', rentUserNo);
-    formData.append('cntrYmdFrom', cntrYmdFrom.replace(/-/g, ''));
+    formData.append('cntrYmdFrom', detailEstimate.id.cntrYmdFrom.replace(/-/g, ''));
     console.log('formData', formData)
-    await Warehouse.termsContract(formData, typeWH).then((res) => {
+    await Warehouse.termsContract(formData, contractType.toLowerCase()).then((res) => {
       console.log('res', res)
     }).catch(error => {
       alert('termsContract:' + error);
@@ -145,17 +148,12 @@ class TermsContract extends Component {
 
   render () {
     const {
-      route,
-      status,
-      warehouseRegNo,
-      rentUserNo,
-      warehSeq,
+      dataTable, // 계약 정보 테이블 데이
+      detailEstimate,
+      // TODO 확인 필요
       contractType, // KEEP || TRUST
       type, // owner || tenant
-      warehouse,
-      rentUser,
-      dataTable, // 계약 정보 테이블 데이
-      dataContract, // 계약 정보.
+
     } = this.props;
     const { isAgree, file } = this.state;
     return (
@@ -238,7 +236,7 @@ class TermsContract extends Component {
         </View>
 
         {/** 추가 서류 업로드 */}
-        {type === 'OWNER' && (dataContract && !dataContract.entrpByOwner?.file2) && (
+        {type === 'OWNER' && (detailEstimate && !detailEstimate.entrpByOwner?.file2) && (
           <View style={DefaultStyle._card}>
             <View style={DefaultStyle._headerCard}>
               <Text style={DefaultStyle._headerCardTitle}>추가 서류 등록</Text>
@@ -274,9 +272,9 @@ class TermsContract extends Component {
           <TouchableOpacity
             style={[
               DefaultStyle._btnInline,
-              (!isAgree || !(dataContract.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
+              (!isAgree || !(detailEstimate.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
             ]}
-            disabled={!isAgree || !(dataContract.entrpByOwner?.file2 || file)}
+            disabled={!isAgree || !(detailEstimate.entrpByOwner?.file2 || file)}
             onPress={() => this.useImperativeHandle()}>
             {/*//   // (file && isAgree) ? '' : DefaultStyle._oulineDisabled,*/}
             {/*// ]}*/}
