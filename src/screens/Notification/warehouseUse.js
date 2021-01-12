@@ -364,7 +364,7 @@ export default class Notification extends Component {
             onPress={() => this.props.nav.goBack()}
           />
           <Appbar.Content
-            title="마이페이지"
+            title="이용방법"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}

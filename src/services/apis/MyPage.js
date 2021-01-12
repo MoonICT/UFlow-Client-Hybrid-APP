@@ -36,7 +36,6 @@ export const getUserInfo = async params => {
 //select Detail Code
 export const getDetailCodes = async params => {
   const token = await AsyncStorage.getItem(TOKEN);
-console.log('params :>> ', params);
   let url = `/api/v1/mang/codes/${params}`;
   return await mainAxios.get(`${url}`, {
     headers: {

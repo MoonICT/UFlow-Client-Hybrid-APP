@@ -115,6 +115,7 @@ export default class Notification extends Component {
             navitationTitle={
               <Select
                 data={navitationTitle2}
+                valueSelected={page}
                 valueProps={e => {
                   this.setState({ page: e });
                 }}
@@ -128,6 +129,7 @@ export default class Notification extends Component {
             navitationTitle={
               <Select
                 data={navitationTitle2}
+                valueSelected={page}
                 valueProps={e => {
                   this.setState({ page: e });
                 }}
@@ -140,7 +142,7 @@ export default class Notification extends Component {
             nav={this.navigation}
             navitationTitle={
               <Select
-                selec
+                valueSelected={page}
                 data={navitationTitle3}
                 valueProps={e => {
                   this.setState({ page: e });
