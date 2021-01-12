@@ -17,8 +17,6 @@ import {
   Paragraph,
 } from 'react-native-paper';
 
-import AppGrid from '@Components/organisms/AppGrid';
-
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
@@ -82,7 +80,7 @@ class MypageInfo extends Component {
     //   console.log(err);
     // })
 
-    SplashScreen.hide();
+    // SplashScreen.hide();
   }
 
   /** listener when change props */
