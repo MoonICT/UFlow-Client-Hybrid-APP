@@ -19,13 +19,13 @@ import DefaultStyle from '@Styles/default';
 import { styles as S } from './style';
 
 class CardMypage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = { visible: false };
     this.navigation = props.navigation;
   }
 
-  render () {
+  render() {
     const {
       data,
       styleLeft,
@@ -50,26 +50,26 @@ class CardMypage extends Component {
           {headerComponent ? (
             headerComponent
           ) : (
-            <Text style={DefaultStyle._headerCardTitle}>{headerTitle}</Text>
-          )}
+              <Text style={DefaultStyle._headerCardTitle}>{headerTitle}</Text>
+            )}
 
           <View style={DefaultStyle.rightTitleHeader}>
             {rightHeader ? (
               rightHeader
             ) : (
-              <Icon
-                name="arrow-forward-ios"
-                size={12}
-                color="rgba(0, 0, 0, 0.87)"
-              />
-            )}
+                <Icon
+                  name="arrow-forward-ios"
+                  size={12}
+                  color="rgba(0, 0, 0, 0.87)"
+                />
+              )}
           </View>
         </TouchableOpacity>
         <View style={[DefaultStyle._bodyCard, style]}>
           <Text>{console.log(bgrImage)}</Text>
           <Card.Cover
-            source={bgrImage ? {
-              uri: bgrImage.uri ? bgrImage.uri.replace(/\\/g, '') : ''
+            source={(bgrImage.uri !== undefined) ? {
+              uri: bgrImage.uri.replace(/\\/g, '')
             } : cardBG}
             style={S.imgAva}
           />

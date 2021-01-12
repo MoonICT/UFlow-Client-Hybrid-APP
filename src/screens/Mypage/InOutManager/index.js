@@ -29,6 +29,8 @@ import card from '@Assets/images/card-img.png';
 import {InOutManagerService} from '@Services/apis'
 
 import DatePicker from '@react-native-community/datetimepicker';
+import cardBG from '@Assets/images/card-img.png';
+
 
 var searchTimerQuery;
 var searchTimerQuery2;
@@ -36,7 +38,6 @@ export default class InOutManager extends Component {
 
   constructor(props) {
     super(props);
-
     this.webView = null;
     this.state = {
       dataCard: [],
@@ -463,7 +464,7 @@ export default class InOutManager extends Component {
                 borderRow={false}
                 styleLeft={S.styleLeftTable}
                 styleRight={S.styleRightTable}
-                bgrImage={item.image}
+                bgrImage={item.image ? item.image : ""}
                 footer={
                   <>
                   {valueTab === 'TENANT' &&
