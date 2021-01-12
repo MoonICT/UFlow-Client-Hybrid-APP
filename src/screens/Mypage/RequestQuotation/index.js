@@ -31,10 +31,11 @@ class RequestQuotation extends Component {
   constructor(props) {
     super(props);
 
-    // console.log(props.route.params, '======props.data======');
-    console.log(props.route.params.data, '======props.route.params.data======');
-    console.log(props.route.params.data.whrgMgmtTrust, '======whrgMgmtTrust======');
-    console.log(props.route.params.data.whrgMgmtKeep, '======whrgMgmtKeep======');
+    console.log(props, '======props======');
+    console.log(props.route.params, '======props.data======');
+    // console.log(props.route.params.data, '======props.route.params.data======');
+    // console.log(props.route.params.data.whrgMgmtTrust, '======whrgMgmtTrust======');
+    // console.log(props.route.params.data.whrgMgmtKeep, '======whrgMgmtKeep======');
 
     if (props.route.params.data && props.route.params.data.whrgMgmtTrust) {
       let whrgMgmtTrust = null;
