@@ -101,6 +101,7 @@ class RegisterInfoFloor extends Component {
       aprchMthdDvCode: '',
       dockQty: '',
     });
+    console.log(list.length, 'list.length 1111');
     this.setState({floors: list});
   };
   _removeForm = () => {
@@ -318,8 +319,8 @@ class RegisterInfoFloor extends Component {
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
-    console.log(this.state.floors.length - 1, 'this.state.floors.length - 1')
-    this.goToSlider(this.state.floors.length - 1);
+
+
   }
 }
 

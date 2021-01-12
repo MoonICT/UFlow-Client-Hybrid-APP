@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import {mainAxios, mainMediaAxios} from '../libs/axios';
+import { Axios, parseQuery } from '@Services/http';
 import axios, {AxiosResponse} from "axios";
 import {TOKEN} from '@Constant'
 
@@ -297,40 +298,15 @@ export const postCancelExport = async ({
  * @param formData
  * @returns {Promise<*>}
  */
-export const uploadImage = async (formData) => {
-  const token = await AsyncStorage.getItem(TOKEN);
-  console.log(token, 'token')
-  console.log(formData, 'formData')
-  // mainMediaAxios.body = formData;
-  // const url = '/api/v1/rtwh/upload';
-  // const data =  mainMediaAxios.request({
-  //   method: 'POST',
-  //   url: url,
-  //   headers: {
-  //     Authorization: `Bearer ${token}`
-  //   }
-  // });
-  // return data;
-
-
-  // return mainAxios.post(`/api/v1/rtwh/upload`, formData,
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       contentType: 'multipart/form-data'
-  //     }
-  //   });
-
-  return axios.request({
+export const uploadImage = (formData) => {
+  return Axios.postRequest({
     url: `/api/v1/rtwh/upload`,
-    method: 'POST',
-    data: formData,
+    payload: formData,
     requiresToken: true, // set access_token
-    headers: {
-      Authorization: `Bearer ${token}`,
-      contentType: 'multipart/form-data'
-    },
-    withCredentials: true,
+    config: {
+      headers: {
+        contentType: 'multipart/form-data'
+      }
+    }
   });
 };
-
