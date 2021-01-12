@@ -36,6 +36,7 @@ import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
+import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 
 class FormInfo extends Component {
   constructor(props) {
@@ -59,13 +60,23 @@ class FormInfo extends Component {
   _removeImage = () => console.log('_removeImage');
 
   render() {
-    const { data, formData, valueForm } = this.props;
+    const {
+      data,
+      formData,
+      valueForm,
+      flrDvCodes,
+      aprchMthdDvCodes,
+    } = this.props;
+    console.log('formData :>> ', formData);
     const {
       flrAreaValue2,
       parkAreaValue2,
       opcAreaValue2,
       prvtAreaValue2,
       cmnAreaValue2,
+      flrHi,
+      efctvHi,
+      dockQty,
     } = this.state;
     const dataSelect = [
       {
@@ -85,11 +96,17 @@ class FormInfo extends Component {
         value: 'B1',
       },
     ];
+    let defaultFlrDvCode =
+      flrDvCodes && flrDvCodes.find(item => item.value === formData.flrDvCode);
+    let defaultAprchMthdDvCodes =
+      aprchMthdDvCodes &&
+      aprchMthdDvCodes.find(item => item.value === formData.aprchMthdDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
-            data={dataSelect}
+            data={flrDvCodes}
+            dataDefault={defaultFlrDvCode !== undefined ? defaultFlrDvCode : ''}
             selectedValue={formData.flrDvCode}
             labelSelected="층 수"
             valueProps={e => {
@@ -104,16 +121,19 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="층면적"
                 textRight="m2"
-                defaultValue="0"
+                defaultValue={
+                  formData.flrArea ? numberToStd(formData.flrArea) : '0'
+                }
                 colorLabel="#000000"
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let text = e.replace(/[^0-9]/g, '');
+                  let value = parseInt(text);
                   let valueCover = toPyeong(value);
                   this.setState({
                     flrAreaValue2: valueCover,
                   });
                   let dataF = formData;
-                  dataF.flrArea = e.replace(/[^0-9]/g, '');
+                  dataF.flrArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
                 value={flrAreaValue2 === '' ? '0' : formData.flrArea}
@@ -124,14 +144,18 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="층면적"
                 textRight="평"
-                defaultValue="0"
+                defaultValue={
+                  formData.flrArea
+                    ? numberToStd(toPyeong(formData.flrArea))
+                    : '0'
+                }
                 colorLabel="#000000"
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let value = parseInt(e.replace(/[^0-9]/g, ''));
                   let valueCover = toSquareMeter(value);
                   this.setState({ flrAreaValue2: e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.flrArea = valueCover;
+                  dataF.flrArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
                 value={formData.flrArea === '' ? '0' : flrAreaValue2}
@@ -144,17 +168,21 @@ class FormInfo extends Component {
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField="주차면적"
-                defaultValue="0"
+                defaultValue={
+                  formData.parkArea ? numberToStd(formData.parkArea) : '0'
+                }
                 textRight="m2"
                 colorLabel="#000000"
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let text = e.replace(/[^0-9]/g, '');
+                  const value = parseInt(text);
+
                   let valueCover = toPyeong(value);
                   this.setState({
                     parkAreaValue2: valueCover,
                   });
                   let dataF = formData;
-                  dataF.parkArea = e.replace(/[^0-9]/g, '');
+                  dataF.parkArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
                 value={flrAreaValue2 === '' ? '0' : formData.parkArea}
@@ -164,7 +192,11 @@ class FormInfo extends Component {
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="주차면적"
-                defaultValue="0"
+                defaultValue={
+                  formData.parkArea
+                    ? numberToStd(toPyeong(formData.parkArea))
+                    : '0'
+                }
                 textRight="평"
                 colorLabel="#000000"
                 valueProps={e => {
@@ -172,7 +204,7 @@ class FormInfo extends Component {
                   let valueCover = toSquareMeter(value);
                   this.setState({ parkAreaValue2: e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.parkArea = valueCover;
+                  dataF.parkArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
                 value={formData.parkArea === '' ? '0' : parkAreaValue2}
@@ -185,17 +217,20 @@ class FormInfo extends Component {
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField="사무실면적"
-                defaultValue="0"
+                defaultValue={
+                  formData.opcArea ? numberToStd(formData.opcArea) : '0'
+                }
                 textRight="m2"
                 colorLabel="#000000"
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let text = e.replace(/[^0-9]/g, '');
+                  const value = parseInt(text);
                   let valueCover = toPyeong(value);
                   this.setState({
                     opcAreaValue2: valueCover,
                   });
                   let dataF = formData;
-                  dataF.opcArea = e.replace(/[^0-9]/g, '');
+                  dataF.opcArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
                 value={opcAreaValue2 === '' ? '0' : formData.opcArea}
@@ -205,7 +240,11 @@ class FormInfo extends Component {
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="사무실면적"
-                defaultValue="0"
+                defaultValue={
+                  formData.opcArea
+                    ? numberToStd(toPyeong(formData.opcArea))
+                    : '0'
+                }
                 textRight="평"
                 colorLabel="#000000"
                 valueProps={e => {
@@ -213,7 +252,7 @@ class FormInfo extends Component {
                   let valueCover = toSquareMeter(value);
                   this.setState({ opcAreaValue2: e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.opcArea = valueCover;
+                  dataF.opcArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
                 value={formData.opcArea === '' ? '0' : opcAreaValue2}
@@ -226,17 +265,20 @@ class FormInfo extends Component {
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField="전용면적"
-                defaultValue="0"
+                defaultValue={
+                  formData.prvtArea ? numberToStd(formData.prvtArea) : '0'
+                }
                 textRight="m2"
                 colorLabel="#000000"
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let text = e.replace(/[^0-9]/g, '');
+                  const value = parseInt(text);
                   let valueCover = toPyeong(value);
                   this.setState({
                     prvtAreaValue2: valueCover,
                   });
                   let dataF = formData;
-                  dataF.prvtArea = e.replace(/[^0-9]/g, '');
+                  dataF.prvtArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
                 value={prvtAreaValue2 === '' ? '0' : formData.prvtArea}
@@ -246,7 +288,11 @@ class FormInfo extends Component {
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="전용면적"
-                defaultValue="0"
+                defaultValue={
+                  formData.prvtArea
+                    ? numberToStd(toPyeong(formData.prvtArea))
+                    : '0'
+                }
                 textRight="평"
                 colorLabel="#000000"
                 valueProps={e => {
@@ -254,7 +300,7 @@ class FormInfo extends Component {
                   let valueCover = toSquareMeter(value);
                   this.setState({ prvtAreaValue2: e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.prvtArea = valueCover;
+                  dataF.prvtArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
                 value={formData.prvtArea === '' ? '0' : prvtAreaValue2}
@@ -267,17 +313,20 @@ class FormInfo extends Component {
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField="공용면적"
-                defaultValue="0"
+                defaultValue={
+                  formData.cmnArea ? numberToStd(formData.cmnArea) : '0'
+                }
                 textRight="m2"
                 colorLabel="#000000"
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let text = e.replace(/[^0-9]/g, '');
+                  let value = parseInt(text);
                   let valueCover = toPyeong(value);
                   this.setState({
                     cmnAreaValue2: valueCover,
                   });
                   let dataF = formData;
-                  dataF.cmnArea = e.replace(/[^0-9]/g, '');
+                  dataF.cmnArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
                 value={cmnAreaValue2 === '' ? '0' : formData.cmnArea}
@@ -287,15 +336,19 @@ class FormInfo extends Component {
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="공용면적"
-                defaultValue="0"
+                defaultValue={
+                  formData.cmnArea
+                    ? numberToStd(toPyeong(formData.cmnArea))
+                    : '0'
+                }
                 textRight="평"
                 colorLabel="#000000"
                 valueProps={e => {
-                  const value = parseInt(e.replace(/[^0-9]/g, ''));
+                  let value = parseInt(e.replace(/[^0-9]/g, ''));
                   let valueCover = toSquareMeter(value);
                   this.setState({ cmnAreaValue2: e.replace(/[^0-9]/g, '') });
                   let dataF = formData;
-                  dataF.cmnArea = valueCover;
+                  dataF.cmnArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
                 value={formData.cmnArea === '' ? '0' : cmnAreaValue2}
@@ -306,29 +359,52 @@ class FormInfo extends Component {
 
           <TextField
             labelTextField="층고"
-            value={formData.flrHi}
+            defaultValue={formData.flrHi ? numberToStd(formData.flrHi) : ''}
+            value={flrHi}
+            keyboardType="numeric"
             colorLabel="#000000"
             valueProps={e => {
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ flrHi: text });
               let dataF = formData;
-              dataF.flrHi = e;
+              dataF.flrHi = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
           <TextField
             labelTextField="유효고"
-            defaultValue="0"
-            value={formData.efctvHi}
+            defaultValue={formData.efctvHi ? numberToStd(formData.efctvHi) : ''}
+            value={efctvHi}
+            keyboardType="numeric"
             colorLabel="#000000"
             valueProps={e => {
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ efctvHi: text });
               let dataF = formData;
-              dataF.efctvHi = e;
+              dataF.efctvHi = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />
-          <TextField
+          {/* <TextField
             labelTextField="접안방식"
+            // defaultValue={formData.aprchMthdDvCode ? numberToStd(formData.aprchMthdDvCode) : ''}
             value={formData.aprchMthdDvCode}
             colorLabel="#000000"
+            valueProps={e => {
+              let dataF = formData;
+              dataF.aprchMthdDvCode = e;
+              valueForm && valueForm(dataF);
+            }}
+          /> */}
+          <Select
+            data={aprchMthdDvCodes}
+            dataDefault={
+              defaultAprchMthdDvCodes !== undefined
+                ? defaultAprchMthdDvCodes
+                : ''
+            }
+            selectedValue={formData.aprchMthdDvCode}
+            labelSelected="접안방식"
             valueProps={e => {
               let dataF = formData;
               dataF.aprchMthdDvCode = e;
@@ -337,12 +413,15 @@ class FormInfo extends Component {
           />
           <TextField
             labelTextField="도크 수"
-            defaultValue="0"
+            defaultValue={formData.dockQty ? numberToStd(formData.dockQty) : ''}
             colorLabel="#000000"
-            value={formData.dockQty}
+            keyboardType="numeric"
+            value={dockQty}
             valueProps={e => {
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ dockQty: text });
               let dataF = formData;
-              dataF.dockQty = e;
+              dataF.dockQty = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
           />

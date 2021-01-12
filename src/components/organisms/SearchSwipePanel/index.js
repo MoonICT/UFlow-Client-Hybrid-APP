@@ -6,9 +6,8 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Dimensions, Platform, Animated } from 'react-native';
 import { withTheme, } from 'react-native-paper';
-import { withNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Modalize } from 'react-native-modalize';
@@ -17,8 +16,7 @@ import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 // Local Imports
 import { styles } from './style';
-import ActionCreator from '@Actions';
-import { WhrgSearch } from '@Services/apis';
+import { WhrgSearch, WarehouseRecommend } from '@Services/apis';
 import Alert from '@Components/atoms/Alert';
 import Progress from '@Components/organisms/Progress';
 import ProductCard from '@Components/organisms/ProductCard';
@@ -29,14 +27,19 @@ class SearchSwipePanel extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      accordionAnimation: new Animated.Value(0), // 추천창고 아코디 애니메이션.
       isOpen: false,
-      isProgress: false,
+      isOpenRecommend: false,
+      WHRecommendList: [],
+      isProgress: false, // 목록 로딩.
       WHList: [],
       pageInfo: null,
     };
     this.navigation = props.navigation;
     // Ref
     this.sheetRef = React.createRef();
+
+    this.handleOnScroll = this.handleOnScroll.bind(this);
   }
 
   /**
@@ -47,6 +50,8 @@ class SearchSwipePanel extends Component {
     if (position === 'top') {
       // 패널이 열릴 때, 최초 목록 불러오기.
       this.requestWhList(false);
+    } else {
+      this.setState({ WHList: [] })
     }
     // 패널 열림 상태.
     this.setState({ isOpen: position === 'top' });
@@ -63,18 +68,9 @@ class SearchSwipePanel extends Component {
       .then(res => {
         let array = this.state.WHList;
         if (isMore) {
-          array = array.concat(
-            res._embedded && res._embedded.warehouses
-              ? res._embedded.warehouses
-              : [],
-          );
+          array = array.concat(res._embedded && res._embedded.warehouses ? res._embedded.warehouses : [],);
         } else {
-          array =
-            res._embedded && res._embedded.warehouses
-              ? res._embedded.warehouses
-              : [];
-          // 스크롤 상단 이동.
-          // handleTopScroll()
+          array = res._embedded && res._embedded.warehouses ? res._embedded.warehouses : [];
         }
         this.setState({
           WHList: array,
@@ -85,6 +81,36 @@ class SearchSwipePanel extends Component {
       .catch(err => {
         console.log(err.response.data);
       });
+  };
+
+  /**
+   * 추천 차아고 토글.
+   * */
+  toggleRecommendWH = () => {
+
+    Animated.timing(
+      this.state.accordionAnimation,
+      {
+        toValue: this.state.isOpenRecommend ? 0 : 1,
+        duration: this.state.isOpenRecommend ? 10 : 500
+      }
+    ).start();
+    this.setState({ isOpenRecommend: !this.state.isOpenRecommend });
+  }
+
+  /**
+   * 스크롤 이벤트
+   * */
+  handleOnScroll = (e) => {
+    let paddingToBottom = 40;
+    paddingToBottom += e.nativeEvent.layoutMeasurement.height;
+    // console.log(Math.floor(paddingToBottom) + "-" + Math.floor(e.nativeEvent.contentOffset.y) + "-" + Math.floor(e.nativeEvent.contentSize.height));
+    if (e.nativeEvent.contentOffset.y + paddingToBottom >= e.nativeEvent.contentSize.height) {
+      // 데이터 요청 중일 때는 실행 되지 않게 처리.
+      if (!this.state.isProgress && this.state.pageInfo.number < (this.state.pageInfo.totalPages - 1)) {
+        this.requestWhList(true);
+      }
+    }
   };
 
   render () {
@@ -115,19 +141,45 @@ class SearchSwipePanel extends Component {
             this._onChange(position);
           }}
           handleStyle={styles.sheetHandleBar}
-          childrenStyle={styles.sheetContent}>
+          childrenStyle={styles.sheetContent}
+          scrollViewProps={{
+            scrollEventThrottle: 16,
+            onScroll: this.handleOnScroll
+          }}
+        >
           {/** 목록 스크롤 뷰 */}
           <ScrollView>
+
             <View style={{ paddingHorizontal: 16 }}>
-              <Text style={styles.counterText}>{'창고 목록 총 1,400개'}</Text>
-              <Alert
-                type={'INFO'}
-                buttonText={'확인'}
-                content={'이 지역 UFLOW 추천 광고 보기'}
-                onPress={() => {
-                  alert('추천광고 목록');
-                }}
-              />
+              <TouchableOpacity onPress={this.toggleRecommendWH}>
+                <Alert
+                  type={'INFO'}
+                  iconName={this.state.isOpenRecommend ? 'chevron-up' : 'chevron-down'}
+                  content={'UFLOW 추천 창고 보기'}
+                  onPress={this.toggleRecommendWH}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/** 추천 창고 목록 */}
+            <Animated.View style={{
+              opacity: this.state.accordionAnimation,
+              height: this.state.isOpenRecommend ? 'auto' : 0,
+            }}>
+              <View style={{ marginBottom: 28, }}>
+                <View style={styles.divider} />
+                {this.state.WHRecommendList.map((item, index) =>
+                  <View key={index} style={{ paddingHorizontal: 16, }}>
+                    <ProductCard navigation={this.props.navigation} data={item} isShadow={false} type={'HORIZONTAL'} />
+                    {this.state.WHRecommendList.length - 1 !== index && <View style={styles.divider} />}
+                  </View>
+                )}
+              </View>
+            </Animated.View>
+
+            <View style={{ paddingHorizontal: 16 }}>
+              <Text
+                style={styles.counterText}>{`창고 목록 총 ${this.state.pageInfo ? this.state.pageInfo.totalElements.toString().toLocaleString() : 0}개`}</Text>
             </View>
 
             {/** 목록 없음. */}
@@ -137,9 +189,9 @@ class SearchSwipePanel extends Component {
             {/** 목록 */}
             <View style={styles.divider} />
             {this.state.WHList.map((item, index) =>
-              <View key={index} style={{ paddingHorizontal: 16, }}>
+              <View key={index} style={{ paddingHorizontal: 16, paddingBottom: 16, }}>
                 <ProductCard navigation={this.props.navigation} data={item} isShadow={false} type={'HORIZONTAL'} />
-                <View style={styles.divider} />
+                {this.state.WHList.length - 1 !== index && <View style={styles.divider} />}
               </View>
             )}
 
@@ -152,13 +204,22 @@ class SearchSwipePanel extends Component {
     );
   }
 
-  componentDidMount () {
-    console.log('::: componentDidMount : 검색 목록 :::');
+  async componentDidMount () {
+    // console.log('::: componentDidMount : 검색 목록 :::');
+
+    // UFLOW 추천 창고
+    await WarehouseRecommend.recommendWarehouse().then(res => {
+      this.setState({
+        WHRecommendList: res._embedded && res._embedded.warehouses ? res._embedded.warehouses : []
+      });
+    });
   }
+
+  색
 
   // 컴포넌트 업데이트 직후 호출.
   componentDidUpdate (prevProps, prevState) {
-    console.log('::: componentDidUpdate : 검색 목록 :::', prevProps.whFilter);
+    // console.log('::: componentDidUpdate : 검색 목록 :::', prevProps.whFilter);
     // Props(Redux state) 변경 될 때 호출.
     // 패널이 열려 있을 때만 목록을 갱신한다.
     if (this.state.isOpen && prevProps.whFilter !== this.props.whFilter) {

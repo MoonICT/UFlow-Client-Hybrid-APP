@@ -13,6 +13,11 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  StyleSheet,
+  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -144,7 +149,7 @@ class Chatting extends Component {
                       <Image
                         source={
                           item.type === 'OWNER'
-                            ? { uri: warehouse.thumbnail }
+                            ? { uri: warehouse?.thumbnail }
                             : null
                         }
                         style={SS.avatar}
@@ -171,8 +176,12 @@ class Chatting extends Component {
           </View>
         );
       });
+
+    console.log(warehouse);
     return (
-      <SafeAreaView style={S.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -186,102 +195,66 @@ class Chatting extends Component {
             titleStyle={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView>
-          <View style={SS.header}>
-            <List.Section>
-              <List.Accordion
-                title="에이씨티앤코아물류"
-                titleStyle={SS.name}
-                style={SS.headerChat}
-                left={() => (
-                  <Image
-                    source={
-                      type === 'OWNER' ? null : { uri: warehouse.thumbnail }
-                    }
-                    style={SS.avatar}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.inner}>
+            <ScrollView>
+              <View style={SS.header}>
+                <List.Section>
+                  <List.Accordion
+                    title="에이씨티앤코아물류"
+                    titleStyle={SS.name}
+                    style={SS.headerChat}
+                    left={() => (
+                      <Image
+                        source={
+                          type === 'OWNER'
+                            ? null
+                            : { uri: warehouse?.thumbnail }
+                        }
+                        style={SS.avatar}
+                      />
+                    )}
                   />
-                )}>
-                {
-                  //  <List.Item
-                  //   titleStyle={{ display: 'none' }}
-                  //   style={SS.popupBtn}
-                  //   descriptionStyle={SS.btnConfirm}
-                  //   description={() => (
-                  //     <View style={[DefaultStyle._listBtn, SS.listBtn]}>
-                  //       <TouchableOpacity
-                  //         style={[
-                  //           DefaultStyle._btnOutline,
-                  //           DefaultStyle._btnLeft,
-                  //           { borderColor: '#000000' },
-                  //         ]}
-                  //         onPress={() => console.log('계약 요청 취소')}>
-                  //         <Text
-                  //           style={[
-                  //             DefaultStyle._textButton,
-                  //             { color: '#000000' },
-                  //           ]}>
-                  //           계약 요청 취소
-                  //         </Text>
-                  //       </TouchableOpacity>
-                  //       <TouchableOpacity
-                  //         style={[
-                  //           DefaultStyle._btnInline,
-                  //           DefaultStyle._btnRight,
-                  //         ]}
-                  //         onPress={() =>
-                  //           this.navigation.navigate('StorageAgreement')
-                  //         }>
-                  //         <Text
-                  //           style={[
-                  //             DefaultStyle._textButton,
-                  //             { color: '#ffffff' },
-                  //           ]}>
-                  //           계약서 작성
-                  //         </Text>
-                  //       </TouchableOpacity>
-                  //     </View>
-                  //   )}
-                  // />
-                }
-              </List.Accordion>
-            </List.Section>
-          </View>
-          <View style={SS.chatting}>
-            <View style={SS.dateTop}>
-              <Text style={SS.textDateTop}>2020년 10월 30일</Text>
-            </View>
-            {listChat}
-          </View>
-        </ScrollView>
-        <View style={SS.footer}>
-          <View style={SS.footerItem}>
-            <View style={SS.inputChat}>
-              <TextField
-                multiline={true}
-                styleProps={SS.inputType}
-                placeholder="입력해 주세요."
-                value={chatting}
-                rightComponent={
-                  <Icon
-                    name="arrow-forward"
-                    size={20}
-                    style={SS.iconRight}
-                    onPress={() =>
-                      this.setState({ isSendMessage: !isSendMessage })
+                </List.Section>
+              </View>
+              <View style={SS.chatting}>
+                <View style={SS.dateTop}>
+                  <Text style={SS.textDateTop}>2020년 10월 30일</Text>
+                </View>
+                {listChat}
+              </View>
+            </ScrollView>
+            <View style={SS.footer}>
+              <View style={SS.footerItem}>
+                <View style={SS.inputChat}>
+                  <TextField
+                    multiline={true}
+                    styleProps={SS.inputType}
+                    placeholder="입력해 주세요."
+                    value={chatting}
+                    rightComponent={
+                      <Icon
+                        name="arrow-forward"
+                        size={20}
+                        style={SS.iconRight}
+                        onPress={() =>
+                          this.setState({ isSendMessage: !isSendMessage })
+                        }
+                      />
                     }
+                    valueProps={e => this.setState({ chatting: e })}
                   />
-                }
-                valueProps={e => this.setState({ chatting: e })}
-              />
+                </View>
+                <IconButton
+                  style={SS.btnAdd}
+                  icon="plus"
+                  onPress={() => console.log('remove')}
+                />
+              </View>
             </View>
-            <IconButton
-              style={SS.btnAdd}
-              icon="plus"
-              onPress={() => console.log('remove')}
-            />
           </View>
-        </View>
-      </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -328,7 +301,16 @@ function mapDispatchToProps(dispatch) {
     // },
   };
 }
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  inner: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'space-around',
+  },
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

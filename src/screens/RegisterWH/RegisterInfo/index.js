@@ -60,13 +60,13 @@ class RegisterInfo extends Component {
           ? props.dataInfo.keeps
           : [
               {
-                // key: 0,
-                typeCode: '0001',
-                calUnitDvCode: 'CU01',
-                calStdDvCode: 'CS01',
-                // exclusiveArea: '',
+                typeCode: '',
+                calUnitDvCode: '',
+                calStdDvCode: '',
+                mgmtChrgDvCode: '',
                 // exclusiveArea2: '',
                 commonArea: '',
+                usblValue: '',
                 // rentalArea: '',
                 // rentalArea2: '',
                 usblYmdFrom: '',
@@ -81,9 +81,9 @@ class RegisterInfo extends Component {
           ? props.dataInfo.trusts
           : [
               {
-                typeCode: '0001',
-                calUnitDvCode: 'CU01',
-                calStdDvCode: 'CS01',
+                typeCode: '',
+                calUnitDvCode: '',
+                calStdDvCode: '',
                 usblYmdFrom: '',
                 usblYmdTo: '',
                 splyAmount: '',
@@ -122,9 +122,9 @@ class RegisterInfo extends Component {
     valueTab === 'trusts'
       ? listTrusts.push({
           // key: lengths,
-          typeCode: '0001',
-          calUnitDvCode: 'CU01',
-          calStdDvCode: 'CS01',
+          typeCode: '',
+          calUnitDvCode: '',
+          calStdDvCode: '',
           usblYmdFrom: '',
           usblYmdTo: '',
           splyAmount: '',
@@ -138,16 +138,12 @@ class RegisterInfo extends Component {
           remark: '',
         })
       : listKeeps.push({
-          // key: lengths,
-          typeCode: '0001',
-          calUnitDvCode: 'CU01',
-          calStdDvCode: 'CS01',
-          mgmtChrgDvCode: '0001',
-          // exclusiveArea2: '',
+          typeCode: '',
+          calUnitDvCode: '',
+          calStdDvCode: '',
+          mgmtChrgDvCode: '',
           commonArea: '',
           usblValue: '',
-          // rentalArea: '',
-          // rentalArea2: '',
           usblYmdFrom: '',
           usblYmdTo: '',
           splyAmount: '',
@@ -160,6 +156,11 @@ class RegisterInfo extends Component {
     let listKeeps = this.state.keeps;
     let listTrusts = this.state.trusts;
     let numberSlideKeep = this.state.numberSlide;
+    let slideKeepStart =
+      this.state.numberSlide > 0 ? this.state.numberSlide - 1 : 0;
+    let slideTrustStart =
+      this.state.numberSlideTrusts > 0 ? this.state.numberSlideTrusts - 1 : 0;
+    console.log('slideKeepStart :>> ', slideKeepStart);
     let numberSlideTrusts = this.state.numberSlideTrusts;
     let filterKeep =
       listKeeps &&
@@ -167,10 +168,13 @@ class RegisterInfo extends Component {
     let filterTrust =
       listTrusts &&
       listTrusts.filter(item => item !== listTrusts[numberSlideTrusts]);
-    console.log('filter', filterKeep);
+    // console.log('filterkEepppppppppppppp', filterKeep);
     valueTab === 'trusts'
-      ? this.setState({ trusts: filterTrust })
-      : this.setState({ keeps: filterKeep });
+      ? this.setState({
+          trusts: filterTrust,
+          numberSlideTrusts: slideTrustStart,
+        })
+      : this.setState({ keeps: filterKeep, numberSlide: slideKeepStart });
     // console.log('valueTab :>> ', valueTab);
     // console.log('listKeeps', listKeeps);
   };
@@ -178,13 +182,18 @@ class RegisterInfo extends Component {
     this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
 
   _renderItem = ({ item }) => {
+    let dataKeep = this.state.keeps;
     return (
       <Form
-        managementFees={this.state.managementFees}
+        mgmtChrgDvCodes={this.state.mgmtChrgDvCodes}
+        typeCodes={this.state.typeCodes}
+        calUnitDvCodes={this.state.calUnitDvCodes}
+        calStdDvCodes={this.state.calStdDvCodes}
         valueTab={this.state.valueTab}
         number={this.state.numberSlide}
         key={item.key}
-        formData={this.state.keeps[this.state.numberSlide]}
+        formData={dataKeep[this.state.numberSlide]}
+        dataKeep={dataKeep}
         valueForm={e => {
           let index = this.state.numberSlide;
           this.setState({
@@ -198,6 +207,9 @@ class RegisterInfo extends Component {
   _renderItemTrusts = ({ item }) => {
     return (
       <FormTrusts
+        typeCodes={this.state.typeCodes}
+        calUnitDvCodes={this.state.calUnitDvCodes}
+        calStdDvCodes={this.state.calStdDvCodes}
         valueTab={this.state.valueTab}
         number={this.state.numberSlideTrusts}
         key={item.key}
@@ -221,9 +233,12 @@ class RegisterInfo extends Component {
       trusts,
       isSubmit,
     } = this.state;
+    // console.log('dataInfo :>> ', dataInfo);
+    // console.log('keeps :>> ', dataInfo.keeps);
+    // console.log('managementFeeIndex :>> ', this.props.managementFee);
     let isSubmitUpdate = false;
-    console.log('keeps', keeps);
-    console.log('trusts', trusts);
+    // console.log('keeps', keeps);
+    // console.log('numberSlide', numberSlide);
     let filterArea = keeps && keeps.filter(item => item.cmnArea === '');
     let filterusblValue = keeps && keeps.filter(item => item.usblValue === '');
     let filtersplyAmount =
@@ -251,7 +266,12 @@ class RegisterInfo extends Component {
       (filterArea.length === 0 &&
         filterusblValue.length === 0 &&
         filtersplyAmount.length === 0 &&
-        filtermgmtChrg.length === 0) ||
+        filtermgmtChrg.length === 0) 
+    ) {
+      isSubmitUpdate = true;
+    }
+
+    if (
       (filterusblValueTrust.length === 0 &&
         filtersplyAmountTrust.length === 0 &&
         filterwhinChrgTrust.length === 0 &&
@@ -263,7 +283,7 @@ class RegisterInfo extends Component {
     ) {
       isSubmitUpdate = true;
     }
-    console.log('isSubmitUpdate', isSubmitUpdate);
+    // console.log('isSubmitUpdate', isSubmitUpdate);
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -424,30 +444,86 @@ class RegisterInfo extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    await MyPage.getDetailCode('WHRG0012')
+    await MyPage.getDetailCodes('WHRG0001')
       .then(res => {
         if (res.status === 200) {
           let data = res.data._embedded.detailCodes;
-
-          let managementFees =
+          let typeCodes =
             data &&
             data.map((item, index) => {
               return {
-                type: item.stdDetailCodeName,
+                label: item.stdDetailCodeName,
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ managementFees });
+          this.setState({ typeCodes });
         }
       })
       .catch(err => {
-        console.log('err', err);
+        console.log('errINFO', err);
+      });
+
+    await MyPage.getDetailCodes('WHRG0013')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let calUnitDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ calUnitDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errCalUnitDvCode', err);
+      });
+
+    await MyPage.getDetailCodes('WHRG0014')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let calStdDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ calStdDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errCalStdDvCode', err);
+      });
+    await MyPage.getDetailCodes('WHRG0012')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let mgmtChrgDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ mgmtChrgDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errINFO', err);
       });
   }
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+    // console.log('::prevPropsFormKeep::', prevState);
+    // console.log('::propsFormKeep::', this.state);
   }
 }
 

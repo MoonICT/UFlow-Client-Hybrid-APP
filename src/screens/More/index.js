@@ -34,10 +34,11 @@ import { TOKEN } from '@Constant';
 //---> Assets
 import AsyncStorage from '@react-native-community/async-storage';
 import { Account } from '@Services/apis';
+
 class More extends Component {
   static contextType = AuthContext;
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -46,7 +47,7 @@ class More extends Component {
     this.navigation = props.navigation;
   }
 
-  async UNSAFE_componentWillMount() {
+  async UNSAFE_componentWillMount () {
     const value = await AsyncStorage.getItem(TOKEN);
     // console.log('More Token ==>', value);
     Account.getMe()
@@ -69,7 +70,7 @@ class More extends Component {
     }
   }
 
-  render() {
+  render () {
     let { email, fullName, isLogin } = this.state;
     // const { route, isLogin } = this.props;
     const { signOut } = this.context;
@@ -191,7 +192,9 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('DetailAnnoucement')}>
+                  onPress={() => this.navigation.navigate('Mypage', {
+                    title: '관심 창고',
+                  })}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={save} />
                     <Text style={DefaultStyle.titleItem}>관심창고</Text>
@@ -398,7 +401,8 @@ class More extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
+    console.log('::componentDidMont::More');
     // const value = await AsyncStorage.getItem(TOKEN);
     // console.log('hello==>', value);
     // Account.getMe()
@@ -424,13 +428,13 @@ class More extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
@@ -439,7 +443,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     countUp: diff => {
       dispatch(ActionCreator.countUp(diff));

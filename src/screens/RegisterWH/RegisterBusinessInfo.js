@@ -92,6 +92,8 @@ class RegisterBusinessInfo extends Component {
         });
 
       }
+    }).catch(error => {
+      alert('statusWhrgByOwner:' + error);
     });
 
     WarehouseOwner.possibleEntrp().then(res => {
@@ -113,7 +115,9 @@ class RegisterBusinessInfo extends Component {
           ...dataConvert
         ]
       });
-    })
+    }).catch(error => {
+      alert('possibleEntrp:' + error);
+    });
   }
 
   handleClickTab = (tabName, index) => {
@@ -252,6 +256,8 @@ class RegisterBusinessInfo extends Component {
                 }
               });
             }
+          }).catch(error => {
+            alert(' MediaUpload.uploadFile:' + error);
           });
         } else {
           // If no file selected the show alert

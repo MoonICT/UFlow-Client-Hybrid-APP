@@ -35,11 +35,13 @@ import ContractManager from './ContractManager';
 import InOutManager from './InOutManager';
 import ActionCreator from '@Actions';
 import SettlementManagement from './SettlementManagement';
+import InterestWH from './InterestWH';
 
 import card from '@Assets/images/card-img.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
+import { money } from '@Services/utils/StringUtils';
 
 const data = [
   {
@@ -55,11 +57,11 @@ const data = [
     title: '정산관리',
   },
   {
-    title: '문의내역',
-  },
-  {
     title: '관심 창고',
   },
+  // {
+  //   title: '관심 창고',
+  // },
 ];
 const dataSteps = [
   {
@@ -94,9 +96,8 @@ const dataSteps = [
   },
 ];
 
-const listImage = [card, card, card];
 class Mypage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       isSwitchOn: true,
@@ -111,12 +112,12 @@ class Mypage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -130,34 +131,50 @@ class Mypage extends Component {
   coverColor = value => {
     switch (value) {
       case '0001':
-        return '#fbc02d';
+        return 'rgba(0, 0, 0, 0.54)';
       case '1100':
-        return 'rgb(33, 150, 243)';
+        return '#2196f3';
       case '4100':
         return '#fbc02d';
       case '5100':
         return '#4caf50';
       case '9100':
-        return 'rgba(0, 0, 0, 0.54)';
+        return '#f44336';
+    }
+  };
+  coverType = value => {
+    if (value.keep !== null && value.trust !== null) {
+      return '보관창고, 수탁창고';
+    }
+    if (value.keep !== null && value.trust === null) {
+      return '보관창고';
+    }
+    if (value.keep === null && value.trust !== null) {
+      return ' 수탁창고';
+    }
+    if (value.keep === null && value.trust === null) {
+      return '';
     }
   };
   render() {
-    const { imageStore, workComplete } = this.props;
+    const { route, workComplete } = this.props;
     const { title, isSwitchOn, dataWH } = this.state;
-    console.log('title :>> ', title);
-    console.log('dataWH :>> ', dataWH);
+    // console.log('title :>> ', title);
+    // console.log('dataWH :>> ', dataWH);
+    // console.log('route :>> ', route.params);
     let viewWH =
       dataWH &&
       dataWH.map((item, index) => {
         let subTitle = item.keep && item.keep.subTitle;
-        let splyAmount = item.keep && item.keep.splyAmount;
-        let mgmtChrg = item.keep && item.keep.mgmtChrg;
+        let splyAmount = item.keep && money(item.keep.splyAmount);
+        let mgmtChrg = item.keep && money(item.keep.mgmtChrg);
         let unit = item.keep && item.keep.unit;
 
         let subTitleTrust = item.trust && item.trust.subTitle;
-        let whoutChrgTrustTrust = item.trust && item.trust.whoutChrg;
-        let whinChrgTrust = item.trust && item.trust.whinChrg;
+        let whoutChrgTrustTrust = item.trust && money(item.trust.whoutChrg);
+        let whinChrgTrust = item.trust && money(item.trust.whinChrg);
         let unitTrust = item.trust && item.trust.unit;
+        let typeCover = this.coverType(item);
 
         let dataKeep =
           '최대' +
@@ -186,14 +203,17 @@ class Mypage extends Component {
         let dataTable = [
           {
             type: '등록 상태',
-            value: item.sttsDbCode && item.sttsDbCode.stdDetailCodeName,
+            value:
+              item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001'
+                ? '미검증 공실'
+                : item.sttsDbCode.stdDetailCodeName,
             colorValue: this.coverColor(
               item.sttsDbCode && item.sttsDbCode.stdDetailCode,
             ),
           },
           {
             type: '창고 유형',
-            value: item.sttsDbCode && item.sttsDbCode.stdCodeName,
+            value: typeCover,
           },
           {
             type: '창고 주소',
@@ -227,14 +247,15 @@ class Mypage extends Component {
                 </Text>
               </View>
             }
-            // rightHeader={
-            //   <Switch
-            //     value={isSwitchOn}
-            //     onValueChange={() => {
-            //       this.setState({ isSwitchOn: !isSwitchOn });
-            //     }}
-            //   />
-            // }
+            rightHeader={
+              <Text />
+              // <Switch
+              //   value={isSwitchOn}
+              //   onValueChange={() => {
+              //     this.setState({ isSwitchOn: !isSwitchOn });
+              //   }}
+              // />
+            }
             data={dataTable}
             borderRow={false}
             styleLeft={S.styleLeftTable}
@@ -247,14 +268,14 @@ class Mypage extends Component {
                   onPress={() => {
                     item.sttsDbCode.stdDetailCode === '0001'
                       ? this.props.showPopup({
-                          type: 'confirm',
-                          image: '',
-                          content: '공실이 검증되지 않은 창고입니다.',
-                        })
+                        type: 'confirm',
+                        image: '',
+                        content: '공실이 검증되지 않은 창고입니다.',
+                      })
                       : this.navigation.navigate('RegisterWH', {
-                          type: 'ModifyWH',
-                          warehouseRegNo: item.id,
-                        });
+                        type: 'ModifyWH',
+                        warehouseRegNo: item.id,
+                      });
                     // this.props.imageAction(listImage);
                   }}>
                   <Text
@@ -285,7 +306,7 @@ class Mypage extends Component {
         </TouchableOpacity>
       </View>
     );
-    switch (title) {
+    switch (this.state.title) {
       case '견적･계약 관리':
         viewComponent = (
           <ContractManager
@@ -305,11 +326,11 @@ class Mypage extends Component {
       case '정산관리':
         viewComponent = <SettlementManagement navigation={this.navigation} />;
         break;
-      // case '관심 창고':
-      //   viewComponent = <InterestWH navigation={this.navigation} />;
-      //   break;
-      default:
-        viewComponent;
+      case '관심 창고':
+        viewComponent = <InterestWH navigation={this.navigation} />;
+        break;
+      // default:
+      //   viewComponent;
       // code block
     }
 
@@ -331,8 +352,12 @@ class Mypage extends Component {
         <ScrollView>
           <AppGrid
             data={data}
-            title={title}
-            titleProps={e => this.setState({ title: e })}
+            title={this.state.title}
+            titleProps={(e) => {
+              this.setState({
+                title: e,
+              });
+            }}
           />
           {viewComponent}
         </ScrollView>
@@ -396,12 +421,15 @@ class Mypage extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
+    console.log('::componentDidMount:: MyPage', this.props.route.params.title);
+    this.setState({ title: this.props.route.params.title })
     // const getWH = await Warehouse.myWH();
     // if (getWH.status === 200) {
     //   const dataWH = getWH.data._embedded.warehouses;
     //   console.log('dataWH :>> ', dataWH);
     // }
+
     await Warehouse.myWH()
       .then(res => {
         console.log('res', res);
@@ -416,15 +444,20 @@ class Mypage extends Component {
 
     // SplashScreen.hide();
   }
-
+  componentWillReceiveProps(newProps) {
+    let titleProp =
+      newProps.route && newProps.route.params && newProps.route.params.title;
+    console.log('titleProp :>> ', titleProp);
+    this.setState({ title: titleProp });
+  }
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -433,7 +466,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     imageAction: action => {
       dispatch(ActionCreator.dataImage(action));

@@ -33,7 +33,8 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(0, 0, 0, 0.87)',
     lineHeight: 20,
-    marginBottom: 12,
+    paddingTop: 16,
+    // marginBottom: 12,
   },
   divider: {
     borderBottomWidth: 1,

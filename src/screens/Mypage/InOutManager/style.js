@@ -14,9 +14,10 @@ export const styles = StyleSheet.create({
   infoContent: {
     color: 'rgba(0, 0, 0, 0.54)',
     lineHeight: 20,
-    // fontFamily: 'NotoSansCJKkr-Regular',
-    fontSize: 12,
-    // textAlign: 'center',
+    fontSize: 14,
+    margin:0,
+    padding:0,
+    marginBottom:16,
   },
 
   popupHeader: {

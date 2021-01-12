@@ -32,6 +32,11 @@ class FilterScale extends Component {
    *  필터 닫기.
    *  */
   _onClickCancel () {
+    // 취소 시, 값 초기화.
+    this.props.setSearchFilter({
+      prvtArea: '',
+      cmnArea: '',
+    });
     this.props.onClosed(); // Event emit
   }
 

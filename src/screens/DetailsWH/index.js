@@ -13,32 +13,27 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
-  ImageBackground,
   Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
-  DataTable,
   Appbar,
-  Paragraph,
   Text,
-  Button,
   IconButton,
 } from 'react-native-paper';
 
 // Local Imports
+import { Warehouse, WarehouseTenant } from '@Services/apis';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import Dialogs from '@Components/organisms/Dialog';
-import Checkbox from '@Components/atoms/Checkbox';
 import AppGrid from '@Components/organisms/AppGrid';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import ProductCard from '@Components/organisms/ProductCard';
+import { TOKEN } from '@Constant';
 
 import ActionCreator from '@Actions';
-import card from '@Assets/images/card-img.png';
 import circle from '@Assets/images/avatars-circle-icon.png';
 import mainBG from '@Assets/images/main-bg.png';
 import cardBG from '@Assets/images/card-img.png';
@@ -53,69 +48,11 @@ import WHType6 from "@Assets/images/icon-warehouse-6.png";
 // import {ConvertUnits} from "@Service/utils";
 
 import { styles as S } from './style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
-import { Warehouse } from '@Services/apis';
-
-
-const slidesProduct = [
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-  {
-    key: 'somethun',
-    type: '보관창고',
-    title: `과천동 상온 50평`,
-    img: mainBG,
-    backgroundColor: '#59b2ab',
-    price: '12,345평',
-    address: '경기도 화천시 부평읍',
-    totalPrice: '60,000원/평',
-  },
-];
 class DetailWH extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     let { id } = props.route.params
-    // let { } = props.route.qnaParams
     this.state = {
       id: id,
       active: 0,
@@ -126,9 +63,15 @@ class DetailWH extends Component {
       qnaParams: {},
       qnaList: [],
       pageInfo: {},
+      isLogin:false,
+      showAll: false,
+      floors:'지하 1층',
+      whList: [],
+      favorite : false,
+      rentUserNo:'',
+      activeIndex: 0
     };
     this.navigation = props.navigation;
-    console.log('qnaParams', this.state.qnaParams)
   }
 
   hiddenName = (name) => {
@@ -141,49 +84,137 @@ class DetailWH extends Component {
     }
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
-  }
-
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
 
-  _renderProductItem = ({ item }) => {
-    return <ProductCard data={{ ...item, img: cardBG }} />;
-  };
+  /**
+   * 관심창고 토글
+   * */
+  toggleFavoriteWH = () => {
+    const { isLogin, id} = this.state;
+
+    if (isLogin) {
+      Warehouse.toggleFav(id)
+      .then(res => {
+        this.setState({
+          favorite: res.data.favorite
+        })
+      })
+      .catch(error => {
+        alert(error.response.data.message);
+      });
+    } else {
+      alert('로그인 후 이용해주세요.')
+    }
+  }
+
+  /**
+   * 창고 견적요청 가능 유/무 확인.
+   * @Params type: [String] KEEP|TRUST.
+   * @Params typeInfo: [Object] type info.
+   * */
+  checkContract = async (type, typeInfo) => {
+    const { isLogin, id} = this.state;
+    if (!type || !typeInfo) {
+      return false
+    }
+    if (!isLogin) {
+      // TODO Change to dialog UI
+      alert('로그인 후 이용가능합니다.')
+      return false
+    }
+    await WarehouseTenant.possibleContract({
+      contractType: type,
+      warehouseRegNo: typeInfo.id.warehouseRegNo,
+      seq: typeInfo.id.seq,
+    }).then(res => {
+      // 견적 등록 가능.
+      console.log('possibleContract', res)
+      if (res.data.status === 'PSB_CNT') {
+        console.log('res.data.status', res.data.status)
+        this.handleRouteRequestQuotation(typeInfo.id.warehouseRegNo, type, typeInfo.id.seq)
+      }
+    }).catch(error => {
+      if (error.response) {
+        if (error.response.status === 401) {
+          // TODO Change to dialog UI
+          alert('로그인 세션이 만료되었습니다.\n다시 로그인해주세요.')
+        }
+      }
+      switch (error.response.data.status) {
+        case 'NONE': // 등록된 사업자가 없음, 최초 임차인 등록
+          // TODO Change to dialog UI
+          alert('사업자정보 등록 후 견적 요청이 가능합니다.');
+          this.navigation.navigate('DetailRegisterTenant', {
+            typeWH: type,
+            warehouseRegNo : typeInfo.id.warehouseRegNo,
+            warehSeq : typeInfo.id.seq,
+            rentUserNo: '',
+            status: 'RQ00',
+            type : 'TENANT',
+          }
+          );
+          break;
+        case 'IMP_CNT': // 견적등록 불가능, 창고가 공실상태가 아님.
+          // TODO Change to dialog UI
+          alert('견적요청이 불가능합니다.\n현재 공실 상태가 아닙니다.')
+          break;
+      }
+    })
+  }
+
+  handleRouteRequestQuotation = (idWarehouse, type, seq) => {
+    this.navigation.navigate('ResponseQuotation', {
+      typeWH: type,
+      warehouseRegNo : idWarehouse,
+      warehSeq : seq,
+      rentUserNo: '',
+      status: 'RQ00',
+      type : 'TENANT',
+    });
+  }
 
   _renderDialogBox = ({ item }) => {
     return <ProductCard data={{ ...item, img: cardBG }} />;
   };
 
+  _renderProductItem = ({ item }) => {
+    const cardItem = [];   
+      cardItem.push(
+        <View>
+          {item?.thumbnail !== null ? (
+            <ProductCard navigation={this.navigation} data={item} />
+          ) : (
+             <ProductCard
+              navigation={this.navigation}
+              data={{ ...item, img: cardBG }}
+            />
+          )}
+        </View>,
+      );
+
+    return cardItem;
+  };
+
   render() {
-    const { imageStore, workComplete } = this.props;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, activeIndex, id} = this.state;
+
     const dataTab = [
       {
         title: '지하 1층',
-        // id: 0,
         content: ''
       },
       {
         title: '지상 2층',
-        // id: 1,
         content: ''
       },
       {
         title: '지상 3층',
-        // id= 2,
         content: ''
       },
       {
         title: '지상 4층',
-        // id= 3,
         content: ''
       },
     ];
@@ -206,10 +237,10 @@ class DetailWH extends Component {
     const displayUsblValue = (usblValue, calUnitDvCode) => {
       let resultStr = '-'
       if (usblValue) {
-        if (calUnitDvCode.stdDetailCode === 'CU01') {
+        if (calUnitDvCode && calUnitDvCode.stdDetailCode === 'CU01') {
           resultStr = displayAreaUnit(usblValue)
         } else {
-          resultStr = usblValue.toLocaleString() + (calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
+          resultStr = usblValue.toLocaleString() + (calUnitDvCode && calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
         }
       }
       return resultStr;
@@ -217,8 +248,6 @@ class DetailWH extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        {console.log('question', this.state.questionList)}
-
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -231,38 +260,73 @@ class DetailWH extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-          <Appbar.Action
+          {favorite ?
+            <Appbar.Action
+            icon="heart"
+            color="#f2453d"
+            onPress={() => {
+              this.toggleFavoriteWH();
+            }}
+          />
+            :
+            <Appbar.Action
             icon="heart-outline"
             color="black"
             onPress={() => {
-              this.handlePicker();
-              // this.props.registerAction('44444');
+              this.toggleFavoriteWH();
             }}
           />
+          }
+          
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
             <Text
               style={[DefaultStyle._titleWH, { backgroundColor: '#4caf50' }]}>
-              {this.state.whrgData.typeCode && this.state.whrgData.typeCode}
+              {whrgData.typeCode && whrgData.typeCode}
             </Text>
             <Text style={S.describeTitle}>
-              {`${this.state.whrgData.hasKeep ? "보관창고" : ""}`}
-              {`${this.state.whrgData.hasKeep && this.state.whrgData.hasTrust ? ", " : ""}`}
-              {`${this.state.whrgData.hasTrust ? "수탁창고" : ""}`}
+              {`${whrgData.hasKeep ? "보관창고" : ""}`}
+              {`${whrgData.hasKeep && whrgData.hasTrust ? ", " : ""}`}
+              {`${whrgData.hasTrust ? "수탁창고" : ""}`}
             </Text>
             <Text style={S.header}>
-              {this.state.whrgData.name}
+              {whrgData.name}
             </Text>
             <View style={S.labels}>
-              <Text style={[S.textlabel, S.orange]}>상온</Text>
-              <Text style={[S.textlabel, S.azure]}>상온</Text>
-              <Text style={[S.textlabel, S.green]}>상온</Text>
-              <Text style={[S.textlabel, S.gray]}>상온</Text>
-              <Text style={S.textlabel}>12,345평</Text>
+              {
+                whrgData.keeps && whrgData.keeps.length > 0 && (
+                   whrgData.keeps.map((keep, index) => (
+                    <View key={index}>
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                   </View>
+                   )))
+              }
+
+              {
+                whrgData.trusts && whrgData.trusts.length > 0 && (
+                   whrgData.trusts.map((trust, index) => (
+                    <View key={index}>
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                   </View>
+                   )))
+              }
+            
+              
+              {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
             <View style={S.background}>
-              <Image style={S.backgroundImage} source={card} />
+              <Image style={S.backgroundImage} source={ whrgData.whImages && whrgData.whImages.length > 0 ? {uri:whrgData.whImages[0].url}  : ''} />
               <Image style={S.iconBackground} source={circle} />
             </View>
             <View style={S.info}>
@@ -271,13 +335,13 @@ class DetailWH extends Component {
                 <TouchableOpacity
                   style={[
                     S.btnTabBarLeft,
-                    this.state.active === 0 ? S.activeBtn : null,
+                    active === 0 ? S.activeBtn : null,
                   ]}
                   onPress={() => this.setState({ active: 0 })}>
                   <Text
                     style={[
                       S.textBtn,
-                      this.state.active === 0 ? S.activeText : null,
+                      active === 0 ? S.activeText : null,
                     ]}>
                     보관
                   </Text>
@@ -285,13 +349,13 @@ class DetailWH extends Component {
                 <TouchableOpacity
                   style={[
                     S.btnTabBarRight,
-                    this.state.active === 1 ? S.activeBtn : null,
+                    active === 1 ? S.activeBtn : null,
                   ]}
                   onPress={() => this.setState({ active: 1 })}>
                   <Text
                     style={[
                       S.textBtn,
-                      this.state.active === 1 ? S.activeText : null,
+                      active === 1 ? S.activeText : null,
                     ]}>
                     수탁
                   </Text>
@@ -299,21 +363,21 @@ class DetailWH extends Component {
               </View>
 
               {/***** Keep (보관) *****/}
-              {this.state.active === 0 &&
-                (this.state.whrgData.keeps && this.state.whrgData.keeps.length > 0 ? (
-                  this.state.whrgData.keeps.map((keep, index) => (
+              {active === 0 &&
+                (whrgData.keeps && whrgData.keeps.length > 0 ? (
+                  whrgData.keeps.map((keep, index) => (
                     <View key={"listKeep" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
-                        {keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
-                        {keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
-                        {keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
-                        {keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
-                        {keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
+                        {keep.typeCode && keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
-                        checked={this.state.checked}
+                        checked={checked}
                         onPress={() =>
-                          this.setState({ checked: !this.state.checked })
+                          this.setState({ checked: !checked })
                         }
                       /> */}
                       </View>
@@ -398,19 +462,19 @@ class DetailWH extends Component {
                           <View style={S.tableRow}>
                             {keep.enable ?
                               <View style={S.rowBtn}>
-                                {this.state.whrgData.userTypeCode === '1100' ?
+                                {whrgData.userTypeCode === '1100' ?
                                   <View>
                                     <Text>
-                                      {this.state.whrgData.relativeEntrp ? this.state.whrgData.relativeEntrp.entrpName : ''}
+                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.entrpName : ''}
                                     </Text>
                                     <Text>
-                                      {this.state.whrgData.relativeEntrp ? this.state.whrgData.relativeEntrp.phone.no1 + this.state.whrgData.relativeEntrp.phone.no2 + this.state.whrgData.relativeEntrp.phone.no3 : ''}
+                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.phone.no1 + whrgData.relativeEntrp.phone.no2 + whrgData.relativeEntrp.phone.no3 : ''}
                                     </Text>
                                   </View>
                                   :
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
-                                    onPress={() => this.navigation.navigate('DetailRegisterTenant')}>
+                                    onPress={() => this.checkContract("KEEP", keep)}>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
                                   </Text>
@@ -437,9 +501,9 @@ class DetailWH extends Component {
 
               {/***** Trust (수탁) *****/}
 
-              {this.state.active === 1 &&
-                (this.state.whrgData.trusts && this.state.whrgData.trusts.length > 0 ? (
-                  this.state.whrgData.trusts.map((trust, index) => (
+              {active === 1 &&
+                (whrgData.trusts && whrgData.trusts.length > 0 ? (
+                  whrgData.trusts.map((trust, index) => (
                     <View key={"listTrusts" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
                         {trust.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
@@ -449,9 +513,9 @@ class DetailWH extends Component {
                         {trust.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
-                        checked={this.state.checked}
+                        checked={checked}
                         onPress={() =>
-                          this.setState({ checked: !this.state.checked })
+                          this.setState({ checked: !checked })
                         }
                       /> */}
                       </View>
@@ -536,19 +600,19 @@ class DetailWH extends Component {
                           <View style={S.tableRow}>
                             {trust.enable ?
                               <View style={S.rowBtn}>
-                                {this.state.whrgData.userTypeCode === '1100' ?
+                                {whrgData.userTypeCode === '1100' ?
                                   <View>
                                     <Text>
-                                      {this.state.whrgData.relativeEntrp ? this.state.whrgData.relativeEntrp.entrpName : ''}
+                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.entrpName : ''}
                                     </Text>
                                     <Text>
-                                      {this.state.whrgData.relativeEntrp ? this.state.whrgData.relativeEntrp.phone.no1 + this.state.whrgData.relativeEntrp.phone.no2 + this.state.whrgData.relativeEntrp.phone.no3 : ''}
+                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.phone.no1 + whrgData.relativeEntrp.phone.no2 + whrgData.relativeEntrp.phone.no3 : ''}
                                     </Text>
                                   </View>
                                   :
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
-                                    onPress={() => this.navigation.navigate('DetailRegisterTenant')}>
+                                    onPress={() => checkContract("TRUST", trust)}>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
                                   </Text>
@@ -581,8 +645,8 @@ class DetailWH extends Component {
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.viewBody}>
-                    <Text style={S.textBodyCard}>
-                      {this.state.whrgData.description}
+                    <Text style={[S.textBodyCard, DefaultStyle.p_16]}>
+                      {whrgData.description}
                     </Text>
                   </View>
                 </View>
@@ -600,7 +664,7 @@ class DetailWH extends Component {
                       this.navigation.navigate('DetailsLocationWH');
                     }}>
                     {/* <View>
-                      {this.state.whrgData.gps.latitude > 0 && this.state.whrgData.gps.longitude > 0 ? (
+                      {whrgData.gps.latitude > 0 && whrgData.gps.longitude > 0 ? (
                         <Text>
                           Kakao Map
                         </Text>
@@ -625,7 +689,7 @@ class DetailWH extends Component {
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>준공일자</Text>
                       <Text style={S.textTable}>
-                        {`${formatDateV1(this.state.whrgData.cmpltYmd)}`}
+                        {`${formatDateV1(whrgData.cmpltYmd)}`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -633,7 +697,7 @@ class DetailWH extends Component {
                         전용면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.prvtArea ? this.state.whrgData.prvtArea.toLocaleString() : 0}㎡`}
+                        {`${whrgData.prvtArea ? whrgData.prvtArea.toLocaleString() : 0}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -641,7 +705,7 @@ class DetailWH extends Component {
                         대지면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.siteArea ? this.state.whrgData.siteArea.toLocaleString() : 0}㎡`}
+                        {`${whrgData.siteArea ? whrgData.siteArea.toLocaleString() : 0}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -649,7 +713,7 @@ class DetailWH extends Component {
                         공용면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.cmnArea ? this.state.whrgData.cmnArea.toLocaleString() : 0}㎡`}
+                        {`${whrgData.cmnArea ? whrgData.cmnArea.toLocaleString() : 0}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -657,13 +721,13 @@ class DetailWH extends Component {
                         건축면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.bldgArea ? this.state.whrgData.bldgArea.toLocaleString() : 0}㎡`}
+                        {`${whrgData.bldgArea ? whrgData.bldgArea.toLocaleString() : 0}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>추가옵션</Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.addOptDvCodes ? this.state.whrgData.addOptDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
+                        {`${whrgData.addOptDvCodes ? whrgData.addOptDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -671,7 +735,7 @@ class DetailWH extends Component {
                         연면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.totalArea}㎡`}
+                        {`${whrgData.totalArea}㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -679,7 +743,7 @@ class DetailWH extends Component {
                         보험가입
                       </Text>
                       <Text style={S.textTable}>
-                        {`${this.state.whrgData.insrDvCodes ? this.state.whrgData.insrDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
+                        {`${whrgData.insrDvCodes ? whrgData.insrDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
                       </Text>
                     </View>
                   </View>
@@ -692,12 +756,13 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
-                <AppGrid data={dataTab} />
+                  <AppGrid data={dataTab} title={floors} titleProps={(e, index)=> this.setState({ floors: e, activeIndex: index  })} />
               </View>
-              {this.state.whrgData.floors
-                ? this.state.whrgData.floors.map((floor, index) => {
+              {whrgData.floors
+                ? whrgData.floors.map((floor, index) => {
                   return (
-                    <View key={"floor" + index} style={DefaultStyle._card}>
+                    activeIndex === index &&
+                      <View key={"floor" + index} style={DefaultStyle._card}>
                       <View style={S.bodyCard}>
                         <View style={S.table}>
                           <View style={S.tableRow}>
@@ -781,7 +846,7 @@ class DetailWH extends Component {
                         </View>
                       </View>
                     </View>
-                  )
+                   )
                 })
                 :
                 <Text style={S.textTable}></Text>
@@ -792,42 +857,43 @@ class DetailWH extends Component {
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <View style={S.titleView}>
-                <Text style={S.title}>문의 ({this.state.pageInfo ? this.state.pageInfo.totalElements : 0})</Text>
+                <Text style={S.title}>문의 ({pageInfo.totalElements ? pageInfo.totalElements : 0})</Text>
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnInquiry}
-                    onPress={() => console.log('add')}>
+                    onPress={() => this.navigation.navigate('CreateInquiryWH', {
+                      idWH: id
+                    }
+                    )}>
                     <Text style={S.textInquiry}>문의하기</Text>
                   </TouchableOpacity>
                 </View>
               </View>
 
               <View style={DefaultStyle._card}>
-              {console.log('qnaList', this.state.qnaList)}
                 <View style={S.bodyCard}>
-                  {(this.state.qnaList && this.state.qnaList.length === 0) &&
+                  {(qnaList && qnaList.length === 0) &&
+                  <View style={[DefaultStyle.d_center, DefaultStyle.p_16]}>
                     <Text key={'empty'} style={S.titleInquiry}>문의 내역이 없습니다.</Text>
+                  </View>
                   }
                   {/* List */}
-                  {this.state.qnaList && this.state.qnaList.map((qnaItem, index) =>
+                  {qnaList && qnaList.map((qnaItem, index) =>
                     <View key={'qnaItem' + index} style={S.inquirys}>
                       <View style={S.leftInquiry}>
-                      {console.log('answer', qnaItem?.answer)}
-                        {qnaItem.answer ?
+                        {qnaItem.status ?
                           <Text style={S.titleCompleted}>답변완료</Text>
                           :
                           <Text style={S.titleInquiry}>미답변</Text>
                         }
-                        <Text style={S.contentInquiry}>비밀글입니다.</Text>
+                        <Text style={S.contentInquiry}>{qnaItem.title}</Text>
                         <Text style={S.footerInquiry}>
-                        {qnaItem.writer}
-                        {console.log('writer', qnaItem.writer)}
-                        {this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}
+                        {qnaItem.name} | {qnaItem.date}
                         </Text>
                       </View>
                       <View style={S.rightInquiry}>
-                        {qnaItem.me ? '' : (
-                          (qnaItem.secret || true) ?
+                        {
+                          (qnaItem.lock) ?
                             <IconButton
                               style={S.btnIcon}
                               icon="lock"
@@ -835,7 +901,7 @@ class DetailWH extends Component {
                             />
                             :
                             <Text></Text>
-                        )}
+                        }
                       </View>
                     </View>
                   )}
@@ -883,11 +949,15 @@ class DetailWH extends Component {
                       />
                     </View>
                   </View> */}
-                  <TouchableOpacity
-                    style={S.btnViewAll}
-                    onPress={() => this.navigation.navigate('InquiryWH')}>
-                    <Text style={S.textViewAll}>전체보기</Text>
-                  </TouchableOpacity>
+                  
+                  {
+                    (!showAll && pageInfo.totalElements > 4) &&
+                    <TouchableOpacity
+                      style={S.btnViewAll}
+                      onPress={() => {this.handleRequestQnaList(100), this.setState({showAll: true})}}>
+                      <Text style={S.textViewAll}>전체보기</Text>
+                    </TouchableOpacity>
+                  }
                 </View>
               </View>
             </View>
@@ -899,7 +969,7 @@ class DetailWH extends Component {
               <View style={S.mainProductList}>
                 <CarouselSnap
                   layout={'default'}
-                  data={slidesProduct}
+                  data={whList}
                   sliderWidth={328}
                   itemWidth={160}
                   renderItem={this._renderProductItem}
@@ -907,7 +977,7 @@ class DetailWH extends Component {
                 />
               </View>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
               onPress={() => {
                 // this.showDialog();
@@ -920,48 +990,89 @@ class DetailWH extends Component {
                 ]}>
                 견적 요청하기
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </ScrollView>
+        
       </SafeAreaView >
     );
   }
 
-
   /** when after render DOM */
   componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
+    const { route } = this.props;
     this.getDataWH()
-    this.handleRequestQnaList()
-    this.hiddenName()
+    this.handleRequestQnaList(4)
+    this.hiddenName();
+    AsyncStorage.getItem(TOKEN).then(v => {
+      this.setState({ isLogin: v !== '' && v !== null });
+    }).catch(error => {
+      alert('DetailWH componentDidMount error:' + error);
+    });
   }
 
   async getDataWH() {
-    let { id } = this.state;
+    const { id } = this.state;
+
     let params = {
       id: id
     };
-    await Warehouse.getWhrg(params).then((res) => {
-      // console.log('whrgData', res)
-      if (res) {
-        this.setState({ whrgData: res })
-        // console.log('gps', whrgData.gps.latitude);
-      }
-    })
+    const warehouse = await Warehouse.getWhrg(params);
+
+    this.setState({
+      whrgData: warehouse.data,
+      favorite: warehouse.data.fav
+    });
+        // 유사창고 파라미터 조건
+        let typeCodeNames = []
+        let gdsKeepTypeCodeNames = []
+        if (warehouse.data.keeps && warehouse.data.keeps.length > 0) {
+          typeCodeNames.push('KEEP')
+          warehouse.data.keeps.map(item => {
+            if (gdsKeepTypeCodeNames.indexOf(item.typeCode.stdDetailCode.toString()) < 0) {
+              gdsKeepTypeCodeNames.push(item.typeCode.stdDetailCode.toString())
+            }
+          })
+        }
+        if (warehouse.data.trusts && warehouse.data.trusts.length > 0) {
+          typeCodeNames.push('TRUST')
+          warehouse.data.trusts.map(item => {
+            console.debug(gdsKeepTypeCodeNames, item.typeCode.stdDetailCode)
+            if (gdsKeepTypeCodeNames.indexOf(item.typeCode.stdDetailCode.toString()) < 0) {
+              gdsKeepTypeCodeNames.push(item.typeCode.stdDetailCode.toString())
+            }
+          })
+        }
+
+        await Warehouse.listRecommend(
+        {
+          typeCodes: typeCodeNames.join(','),
+          gdsKeepTypeCodes: gdsKeepTypeCodeNames.join(','),
+        }
+       ).then(res => {
+          let list =
+          res.data?._embedded && res.data?._embedded?.warehouses
+              ? res.data?._embedded?.warehouses
+              : [];
+
+          this.setState({ whList: list });
+        }).catch(error => {
+          alert('DetailWH listRecommend error:' + error);
+        });
   }
 
-  handleRequestQnaList = () => {
+  handleRequestQnaList = (q_size) => {
+    const { id } = this.state;
     let qnaParams = {
-      id: 'RG20201227195',
-      size: 4,
+      id: id,
+      size: q_size,
       page: 0,
       requiresToken: false
     }
     Warehouse.pageWhrgQnA(qnaParams).then(res => {
-      if (res && res._embedded && res._embedded.questions) {
-        console.log('res._embedded.questions', res._embedded.questions)
+      if (res && res._embedded && res._embedded) {
         let newFQAList = res._embedded.questions.map(item => {
+          console.log(item)
           return {
             status: item.complete,
             title: item.content,
@@ -971,37 +1082,27 @@ class DetailWH extends Component {
           }
         })
 
+        console.log('newFQAList', newFQAList)
         this.setState({ qnaList: newFQAList })
         this.setState({ pageInfo: res.page })
       }
-    })
+    }).catch(error => {
+      alert('DetailWH pageWhrgQnA error:' + error);
+    });
   }
-
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
+  
 }
 
 /** map state with store states redux store */
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    imageStore: state.registerWH.pimages,
-    workComplete: state.registerWH.workComplete,
   };
 }
 
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    // countUp: diff => {
-    //   dispatch(ActionCreator.countUp(diff));
-    // },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 

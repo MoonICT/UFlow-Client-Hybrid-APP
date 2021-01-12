@@ -226,7 +226,7 @@ class RegisterIntro extends Component {
             <TextInput
               style={[SS.inputIntro, SS.inputLoction]}
               onChangeText={text => this.onChangeLocation(text)}
-              value={this.state.textIntro}
+              value={address && address.address && address.address.detail}
               placeholder={'에이씨티앤코아물류'}
             />
           </View>
@@ -289,8 +289,6 @@ class RegisterIntro extends Component {
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::prevState.firstQuery::', prevState.firstQuery);
-    console.log('::this.state.firstQuery::', this.state.firstQuery);
     if (prevState.firstQuery !== this.state.firstQuery) {
       Warehouse.searchAddressKakao({ query: this.state.firstQuery })
         .then(res => {

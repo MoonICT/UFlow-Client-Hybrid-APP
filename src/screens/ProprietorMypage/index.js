@@ -40,21 +40,27 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const data = [
   {
     title: '내 창고',
+    id:0
   },
   {
     title: '견적･계약 관리',
+    id:1
   },
   {
     title: '입･출고 관리',
+    id:2
   },
   {
     title: '정산관리',
+    id:3
   },
   {
     title: '문의내역',
+    id:4
   },
   {
     title: '관심 창고',
+    id:5
   },
 ];
 const dataSteps = [
@@ -373,7 +379,7 @@ class ProprietorMypage extends Component {
   hideConfirm = () => this.setState({ visibleConfirm: false });
   render() {
     const { imageStore, workComplete } = this.props;
-    const { title, isSwitchOn } = this.state;
+    const { title, isSwitchOn, tabActive } = this.state;
     console.log('title', title);
     let viewComponent = (
       <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>

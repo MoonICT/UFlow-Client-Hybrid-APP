@@ -6,7 +6,7 @@ const defaultState = {
   pnImages: [],
   whImages: [],
   thImages: [],
-  entrpNo: '987654321',
+  entrpNo: '',
   // data: {
   //   test: 1,
   // },
@@ -25,6 +25,8 @@ export default (state = defaultState, action) => {
       return ContractConditions(state, action.data);
     case types.UPDATE_INFO_WH:
       return updateInfo(state, action.data);
+    case types.REMOVE_INFO_WH:
+      return removeData(state, action.data);
     default:
       return state;
   }
@@ -40,10 +42,11 @@ let dataImage = (state, listImage) => {
       ...state,
       pnImages: listImage,
       whImages: listImage,
+      thImages: state.whImages[0],
     };
     return result;
   } catch (e) {
-    console.log('error_origin_reducer', e);
+    console.log('error_data_image', e);
     return state;
   }
 };
@@ -56,10 +59,11 @@ let upImage = (state, image) => {
       ...state,
       pnImages: imageUpload,
       whImages: imageUpload,
+      thImages: [state.whImages[0]],
     };
     return result;
   } catch (e) {
-    console.log('error_origin_reducer', e);
+    console.log('error_upImage', e);
     return state;
   }
 };
@@ -75,10 +79,11 @@ let removeImg = (state, id) => {
       ...state,
       whImages: imageL,
       pnImages: imageL,
+      thImages: [state.whImages[0]],
     };
     return result;
   } catch (e) {
-    console.log('error_origin_reducer', e);
+    console.log('error_remove_image', e);
     return state;
   }
 };
@@ -106,6 +111,22 @@ let updateInfo = (state, data) => {
       ...state,
       ...data,
       // name: data.name,
+    };
+    return result;
+  } catch (e) {
+    console.log('error_origin_reducer', e);
+    return state;
+  }
+};
+
+let removeData = (state, data) => {
+  console.log('stateREdex :>> ', state);
+  try {
+    let result = {
+      pnImages: [],
+      whImages: [],
+      thImages: [],
+      entrpNo: '',
     };
     return result;
   } catch (e) {

@@ -9,7 +9,7 @@ import { theme } from '@Themes';
 export const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    zIndex: 10,
+    zIndex: 9999,//10
     top: 0,
     right: 0,
     bottom: 0,

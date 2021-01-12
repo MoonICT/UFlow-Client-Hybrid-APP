@@ -3,7 +3,7 @@
  * @desc [description]
  * */
 import React, { Component, Fragment } from 'react';
-import { ScrollView, Text, View,Dimensions } from 'react-native';
+import { ScrollView, Text, View, Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 
@@ -16,22 +16,30 @@ class AppGrid extends Component {
     };
   }
   handlePress = item => {
-    this.setState({ active: item.title, content: item.content });
+    this.setState({ active: item.title, content: item.content});
   };
 
   componentWillReceiveProps(newProps) {
     const dataTitle = newProps.dataTitle;
     const data = newProps.data;
     const value = newProps.value;
-    if (value < data.length) {
-      this.setState({ active: dataTitle.title });
+    const title = newProps.title;
+    console.log('newProps :>> ', newProps);
+    console.log('dataTitle :>> ', dataTitle);
+    // if (value < data.length) {
+    //   this.setState({ active: dataTitle.title });
+    // }
+    if (title !== this.state.active) {
+      this.setState({ active: title });
     }
   }
   render() {
     
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-    const { data, titleProps, titleCenter } = this.props;
+    const { data, titleProps, titleCenter, valueActive, titleActive } = this.props;
+    const { active } = this.state;
+
     if (this.props.type === 'controlTitleActive') {
       const { data, titleProps } = this.props;
       const tabItem =
@@ -41,7 +49,7 @@ const windowHeight = Dimensions.get('window').height;
             <Button
               key={index}
               color={
-                this.props.titleActive === item.title
+                titleActive === item.title
                   ? '#000000'
                   : 'rgba(0, 0, 0, 0.54)'
               }
@@ -51,8 +59,7 @@ const windowHeight = Dimensions.get('window').height;
               }}
               style={[
                 DefaultStyle._tabItem,
-
-                this.props.titleActive === item.title
+                titleActive === item.title
                   ? DefaultStyle._tabItemActive
                   : '',
               ]}>
@@ -70,9 +77,9 @@ const windowHeight = Dimensions.get('window').height;
                   flex: 1,
                   alignSelf: 'center',
                   flexDirection: 'row',
-                  alignContent:'center',
-                  justifyContent:'center',
-                  width:windowWidth
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                  width: windowWidth,
                 }}>
                 {tabItem}
               </View>
@@ -91,7 +98,7 @@ const windowHeight = Dimensions.get('window').height;
           <Button
             key={index}
             color={
-              this.state.active === item.title
+              active === item.title
                 ? '#000000'
                 : 'rgba(0, 0, 0, 0.54)'
             }
@@ -101,7 +108,7 @@ const windowHeight = Dimensions.get('window').height;
             }}
             style={[
               DefaultStyle._tabItem,
-              this.state.active === item.title
+              active === item.title
                 ? DefaultStyle._tabItemActive
                 : '',
             ]}>

@@ -6,7 +6,7 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
@@ -53,19 +53,34 @@ class TableInfo extends Component {
                       </Text>
                     ) : null}
                   </View>
-                  <Text
-                    style={[
-                      DefaultStyle._rightInfoTable,
-                      styleRight,
-                      item && item.highlight === true
-                        ? DefaultStyle._highlightInfoTable
-                        : item.highlight === false
-                        ? DefaultStyle._completeInfoTable
-                        : '',
-                      item && item.colorValue ? { color: item.colorValue } : '',
-                    ]}>
-                    {item.value ? item.value : '-'}
-                  </Text>
+
+                  {item.isImageLink ? (
+                    <Text
+                      style={[
+                        DefaultStyle._rightInfoTable,
+                        DefaultStyle.linkColor,
+                        styleRight,
+                      ]}
+                      onPress={() => Linking.openURL(item.value)}>
+                      {item.fileName}
+                    </Text>
+                  ) : (
+                    <Text
+                      style={[
+                        DefaultStyle._rightInfoTable,
+                        styleRight,
+                        item && item.highlight === true
+                          ? DefaultStyle._highlightInfoTable
+                          : item.highlight === false
+                          ? DefaultStyle._completeInfoTable
+                          : '',
+                        item && item.colorValue
+                          ? { color: item.colorValue }
+                          : '',
+                      ]}>
+                      {item.value ? item.value : '-'}
+                    </Text>
+                  )}
                 </View>
               ) : null;
             return viewComponent;

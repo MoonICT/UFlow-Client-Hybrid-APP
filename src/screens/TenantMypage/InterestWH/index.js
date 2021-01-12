@@ -17,7 +17,7 @@ import {
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Text } from 'react-native-paper';
-import Select from '@Components/organisms/Select';
+import { Fav } from '@Services/apis';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -68,7 +68,7 @@ const dataList = [
     title: '에이씨티앤코아물류2',
   },
 ];
-class SettlementManagement extends Component {
+class InterestWarehouse extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -77,6 +77,16 @@ class SettlementManagement extends Component {
     };
 
     this.navigation = props.navigation;
+  }
+
+  /** when after render DOM */
+  componentDidMount() {
+    console.log('res.data')
+    Fav.page().then(res => {
+      console.log('res.data',res.data)
+    }).catch(error => {
+      alert(' Fav.page(): ' + error);
+    });
   }
 
   render() {
@@ -151,17 +161,6 @@ class SettlementManagement extends Component {
       </View>
     );
   }
-
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
 /** map state with store states redux store */
@@ -188,4 +187,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SettlementManagement);
+)(InterestWarehouse);

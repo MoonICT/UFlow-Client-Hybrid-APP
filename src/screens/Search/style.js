@@ -35,5 +35,19 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-
+  loadingWrap: {
+    position: 'absolute',
+    zIndex: 9999,
+    backgroundColor: '#f1f1f1',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  loadingInner: {
+    width: '100%',
+    height: 40,
+  }
 });

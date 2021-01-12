@@ -7,6 +7,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { color } from '../themes/colors';
 import { theme } from '../themes/index';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -42,7 +43,7 @@ export default StyleSheet.create({
     backgroundColor: color.input.default_border,
   },
   mt_0: {
-    marginTop:0
+    marginTop: 0,
   },
   mt_20: {
     marginTop: 20,
@@ -69,10 +70,10 @@ export default StyleSheet.create({
     padding: 12,
   },
   p_16: {
-    padding:16
+    padding: 16,
   },
-  _colorMuted:{
-    color: 'rgba(0, 0, 0, 0.87)'
+  _colorMuted: {
+    color: 'rgba(0, 0, 0, 0.87)',
   },
   w_50: {
     width: '50%',
@@ -88,7 +89,7 @@ export default StyleSheet.create({
   },
   d_flex_between: {
     display: 'flex',
-    justifyContent:'space-between'
+    justifyContent: 'space-between',
   },
   d_flex_center: {
     display: 'flex',
@@ -106,8 +107,8 @@ export default StyleSheet.create({
   flex_1: {
     flex: 1,
   },
-  bgMuted:{
-    backgroundColor:'rgba(0, 0, 0, 0.04)'
+  bgMuted: {
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
   },
   header: {
     height: 48,
@@ -136,7 +137,6 @@ export default StyleSheet.create({
     lineHeight: 21,
     letterSpacing: 0,
     textAlign: 'right',
-    color: 'rgba(0, 0, 0, 0.47)',
   },
   titleDf: {
     marginTop: 20,
@@ -211,10 +211,10 @@ export default StyleSheet.create({
   },
   /** Text, Button, TextField */
   fontColor: {
-    color: color.text.primary
+    color: color.text.primary,
   },
   fontSecondaryColor: {
-    color: color.text.secondary
+    color: color.text.secondary,
   },
   /** Container button */
   containerBTN: {
@@ -524,7 +524,7 @@ export default StyleSheet.create({
     borderColor: color.input.default_border,
     justifyContent: 'center',
     flex: 1,
-    padding: 0,
+    paddingVertical: 6,
     margin: 0,
     borderRadius: 0,
   },
@@ -776,6 +776,7 @@ export default StyleSheet.create({
   /** App Components**/
   _inputSearch: {
     height: 36,
+    lineHeight: 20,
     borderRadius: 4,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
@@ -886,8 +887,8 @@ export default StyleSheet.create({
   _cards: {
     padding: 16,
     backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    // borderBottomWidth: 1,
+    // borderColor: 'rgba(0, 0, 0, 0.1)',
     marginBottom: 10,
   },
   _titleWH: {
@@ -969,7 +970,7 @@ export default StyleSheet.create({
     height: 50,
   },
   rightTitleHeader: {
-    marginRight: 16,
+    // marginRight: 16,
   },
   _bodyCard: {
     padding: 16,
@@ -1141,6 +1142,9 @@ export default StyleSheet.create({
     height: 42,
     borderRadius: 21,
     alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    paddingHorizontal: 8,
   },
   _btnInline: {
     alignItems: 'center',
@@ -1235,6 +1239,22 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
+    height: 56,
+    marginBottom: 5,
+  },
+  _btnDateFilter: {
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 4,
+    height: 36,
+    marginBottom: 5
+  },
+  _btnDateCustom: {
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 4,
+    height: 6,
+    marginBottom: 5,
   },
   _textDate: {
     color: color.text.secondary,
@@ -1268,5 +1288,13 @@ export default StyleSheet.create({
     fontWeight: 'normal',
     lineHeight: 1.43,
     // color: this.fontColor,
+  },
+
+  linkColor: {
+    color: '#0398fc',
+    textDecorationLine: 'underline',
+  },
+  _errorText: {
+    borderColor: 'red',
   },
 });
