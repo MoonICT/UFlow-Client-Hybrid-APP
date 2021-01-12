@@ -755,7 +755,7 @@ export default class DetailsManager extends Component {
               console.log(item.whoutValue, 'item.whoutValue');
               console.log(item.whinValue, 'item.whinValue');
               return (
-                <Fragment>
+                <Fragment key={index}>
                   <View style={{
                     paddingBottom: 20,
                     marginBottom: 20,

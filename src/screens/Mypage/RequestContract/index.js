@@ -19,11 +19,16 @@ import warehouse1 from '@Assets/images/warehouse-1.png';
 import ContractInformation from './ContractInformation';
 // import { formatDateV2 } from '@Utils/dateFormat';
 import { styles as S } from '../style';
-import { Warehouse, MediaFileContract, MyPageEstmtCntr, Contract } from '@Services/apis';
+import {
+  Warehouse,
+  MediaFileContract,
+  MyPageEstmtCntr,
+  Contract,
+} from '@Services/apis';
 import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       dataDetail: '', // 계약 기본 정보.
@@ -82,7 +87,7 @@ class RequestContract extends Component {
     }
   };
 
-  render () {
+  render() {
     const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
     const warehSeq = route && route.params && route.params.warehSeq;
@@ -119,11 +124,16 @@ class RequestContract extends Component {
         },
         {
           type: '전용면적',
-          value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
+          value: dataApi.warehouse.prvtArea
+            ? dataApi.warehouse.prvtArea.toLocaleString() + ' ㎡'
+            : '0 ㎡',
         },
         {
           type: '임대 가능 기간',
-          value: StringUtils.dateStr(dataApi.warehouse.keep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.warehouse.keep.usblYmdTo),
+          value:
+            StringUtils.dateStr(dataApi.warehouse.keep.usblYmdFrom) +
+            '~' +
+            StringUtils.dateStr(dataApi.warehouse.keep.usblYmdTo),
         },
         {
           type: '보관단가',
@@ -155,11 +165,16 @@ class RequestContract extends Component {
         },
         {
           type: '가용수량',
-          value: dataApi.trust.cntrValue ? dataApi.trust.cntrValue.toLocaleString() : '0',
+          value: dataApi.trust.cntrValue
+            ? dataApi.trust.cntrValue.toLocaleString()
+            : '0',
         },
         {
           type: '수탁 가능 기간',
-          value: StringUtils.dateStr(dataApi.warehouse.trust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.warehouse.trust.usblYmdTo),
+          value:
+            StringUtils.dateStr(dataApi.warehouse.trust.usblYmdFrom) +
+            '~' +
+            StringUtils.dateStr(dataApi.warehouse.trust.usblYmdTo),
         },
         {
           type: '보관단가',
@@ -241,8 +256,8 @@ class RequestContract extends Component {
                   <Text style={S.amount}>예상 견적 금액</Text>
                   <Text style={S.total}>
                     {dataApi &&
-                    dataApi.keep &&
-                    StringUtils.moneyConvert(dataApi.keep.estimatedPrice)}
+                      dataApi.keep &&
+                      StringUtils.moneyConvert(dataApi.keep.estimatedPrice)}
                   </Text>
                 </View>
               </View>
@@ -262,7 +277,9 @@ class RequestContract extends Component {
               type={type}
               status={status}
               rentUser={
-                this.getContract() && this.getContract().warehouse && this.getContract().warehouse.rentUser
+                this.getContract() &&
+                this.getContract().warehouse &&
+                this.getContract().warehouse.rentUser
               }
               warehouse={this.getContract() && this.getContract().warehouse}
               mediaFile={dataMedia && dataMedia.entrpByOwner}
@@ -275,18 +292,20 @@ class RequestContract extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount () {
+  async componentDidMount() {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-    let contractType = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+    let contractType =
+      this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
     let rentUserNo = this.props.route.params.rentUserNo;
-
 
     // TODO no use
     let typeWH = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
     let rentUserID = this.props.route?.params?.rentUserID;
-    let rentUserDate = moment(this.props.route.params.regUserDate).format('YYYYMMDD',);
+    let rentUserDate = moment(this.props.route.params.regUserDate).format(
+      'YYYYMMDD',
+    );
 
     if (type === 'owner') {
       /**
@@ -297,29 +316,36 @@ class RequestContract extends Component {
         contractType: contractType,
         warehSeq: warehSeq,
         rentUserNo: rentUserNo,
-      }).then(res => {
-        let resultData = res
-        this.setState({ detailContract: resultData })
+      })
+        .then(res => {
+          let resultData = res;
+          this.setState({ detailContract: resultData });
 
-        // 견적 완료, 계약 진행 중일 때.
-        let estmtData = resultData.estmtKeeps || resultData.estmtTrusts
-        Contract.getContractKeep({
-          type: 'owner',
-          contractType: contractType,
-          idWarehouse: warehouseRegNo,
-          rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
-          cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD'),
-        }).then(res => {
-          let resultEstmtData = {
-            warehouse: resultData.warehouse,
-            [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
-          };
-          console.debug('[3] 견적 완료, 계약 진행 중일 때. : ', resultEstmtData)
-          this.setState({ detailEstimate: resultEstmtData });
+          // 견적 완료, 계약 진행 중일 때.
+          let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
+          Contract.getContractKeep({
+            type: 'owner',
+            contractType: contractType,
+            idWarehouse: warehouseRegNo,
+            rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
+            cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format(
+              'YYYYMMDD',
+            ),
+          }).then(res => {
+            let resultEstmtData = {
+              warehouse: resultData.warehouse,
+              [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
+            };
+            console.debug(
+              '[3] 견적 완료, 계약 진행 중일 때. : ',
+              resultEstmtData,
+            );
+            this.setState({ detailEstimate: resultEstmtData });
+          });
+        })
+        .catch(err => {
+          console.log(err);
         });
-      }).catch(err => {
-        console.log(err);
-      });
     } else if (type === 'tenant') {
       /**
        * [estimate-4] 마이페이지 견적보관 상세정보 (임차인 전용)
@@ -328,29 +354,36 @@ class RequestContract extends Component {
         warehouseRegNo: warehouseRegNo,
         contractType: contractType,
         warehSeq: warehSeq,
-      }).then(res => {
-        let resultData = res
-        this.setState({ detailContract: resultData })
+      })
+        .then(res => {
+          let resultData = res;
+          this.setState({ detailContract: resultData });
 
-        // 견적 완료, 계약 진행 중일 때.
-        let estmtData = resultData.estmtKeeps || resultData.estmtTrusts
-        Contract.getContractKeep({
-          type: 'tenant',
-          contractType: contractType,
-          idWarehouse: warehouseRegNo,
-          rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
-          cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD'),
-        }).then(res => {
-          let resultEstmtData = {
-            warehouse: resultData.warehouse,
-            [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
-          };
-          console.debug('[3] 견적 완료, 계약 진행 중일 때. :  ', resultEstmtData)
-          this.setState({ detailEstimate: resultEstmtData });
+          // 견적 완료, 계약 진행 중일 때.
+          let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
+          Contract.getContractKeep({
+            type: 'tenant',
+            contractType: contractType,
+            idWarehouse: warehouseRegNo,
+            rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
+            cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format(
+              'YYYYMMDD',
+            ),
+          }).then(res => {
+            let resultEstmtData = {
+              warehouse: resultData.warehouse,
+              [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
+            };
+            console.debug(
+              '[3] 견적 완료, 계약 진행 중일 때. :  ',
+              resultEstmtData,
+            );
+            this.setState({ detailEstimate: resultEstmtData });
+          });
+        })
+        .catch(err => {
+          console.log(err);
         });
-      }).catch(err => {
-        console.log(err);
-      });
     }
 
     let url =
@@ -386,8 +419,7 @@ class RequestContract extends Component {
             {
               dataApi: res.data,
             },
-            () => {
-            },
+            () => {},
           );
           // this.props.quotationData(res.data);
         }
@@ -404,8 +436,7 @@ class RequestContract extends Component {
             {
               dataMedia: res.data,
             },
-            () => {
-            },
+            () => {},
           );
           // this.props.quotationData(res.data);
         }
@@ -416,13 +447,13 @@ class RequestContract extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -431,7 +462,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {};
 }
 

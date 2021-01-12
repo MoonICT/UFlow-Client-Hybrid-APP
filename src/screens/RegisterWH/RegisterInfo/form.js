@@ -68,7 +68,9 @@ class FormInfo extends Component {
   onChangeFrom = (event, selectedDate) => {
     const currentDate = selectedDate || this.state.from;
     this.setState({ from: currentDate, showFrom: false });
-    let d = new Date(selectedDate).getTime();
+    let d = selectedDate
+      ? new Date(selectedDate).getTime()
+      : new Date().getTime();
     let dataF = this.props.formData;
     dataF.usblYmdFrom = d;
     this.props.valueForm && this.props.valueForm(dataF);
@@ -84,7 +86,9 @@ class FormInfo extends Component {
   onChangeTo = (event, selectedDate) => {
     const currentDate = selectedDate || this.state.to;
     this.setState({ to: currentDate, showTo: false });
-    let d = new Date(selectedDate).getTime();
+    let d = selectedDate
+      ? new Date(selectedDate).getTime()
+      : new Date().getTime();
     let dataF = this.props.formData;
     dataF.usblYmdTo = d;
     this.props.valueForm && this.props.valueForm(dataF);
@@ -98,7 +102,6 @@ class FormInfo extends Component {
       newUsblYmdFrom !== undefined &&
       newUsblYmdFrom !== ''
     ) {
-      console.log('newProps :>> ', newProps);
       this.setState({ from: new Date(newProps.formData.usblYmdFrom) });
     }
     if (
@@ -138,10 +141,12 @@ class FormInfo extends Component {
       mode,
     } = this.state;
     // console.log('formDataKeep :>> ', formData);
-    // console.log('dataKeep :>> ', dataKeep);
     let timeCheck = false;
 
-    if (to >= from && from >= new Date()) {
+    if (
+      to.toLocaleDateString() >= from.toLocaleDateString() &&
+      from.toLocaleDateString() >= new Date().toLocaleDateString()
+    ) {
       timeCheck = true;
     }
     let defaultTypeCode =
@@ -312,7 +317,9 @@ class FormInfo extends Component {
                 timeCheck === false ? DefaultStyle._errorText : '',
               ]}>
               <Text style={DefaultStyle._textDate}>
-                {from.toLocaleDateString()}
+                {from
+                  ? from.toLocaleDateString()
+                  : new Date().toLocaleDateString()}
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>

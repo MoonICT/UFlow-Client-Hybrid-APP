@@ -160,9 +160,9 @@ export const styles = StyleSheet.create({
     top:-50
   },
   introImage: {
-    minWidth:167,
-    maxWidth:167,
-    marginLeft:(windowWidth/2)+84,
+    // minWidth:167,
+    // maxWidth:167,
+    // marginLeft:(windowWidth/2)+84,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -172,7 +172,11 @@ export const styles = StyleSheet.create({
     flex:1,
   },
   introFactoryImage: {
-    width: 167,
+    
+    minWidth:167,
+    maxWidth:167,
+    alignContent:'center',
+    justifyContent:'center',
     height: 114,
     // position: 'absolute',
     // top: -6,
@@ -188,11 +192,10 @@ export const styles = StyleSheet.create({
     backgroundColor: color.primary.constrast,
   },
   introInput: {
-    width: 260,
+    width: 263,
     marginRight:10,
     borderBottomWidth:2,
-    // backgroundColor:'red',
-    borderBottomColor:'white',
+    borderColor:'white',
     // fontFamily: 'NotoSansCJKkr-Bold',
     fontSize: 24,
     letterSpacing: -0.5,
@@ -211,9 +214,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   introSymbolImage: {
+    alignContent:'center',
+    alignSelf:'center',
     width: 167,
     top: -6,
-    // backgroundColor:'white',
     height: 114,
     paddingBottom: 0,
     paddingTop: 0,

@@ -87,7 +87,9 @@ class FormTrusts extends Component {
   onChangeFrom = (event, selectedDate) => {
     const currentDate = selectedDate || this.state.from;
     this.setState({ from: currentDate, showFrom: false });
-    let d = new Date(selectedDate).getTime();
+    let d = selectedDate
+      ? new Date(selectedDate).getTime()
+      : new Date().getTime();
     let dataF = this.props.formData;
     dataF.usblYmdFrom = d;
     this.props.valueForm && this.props.valueForm(dataF);
@@ -103,7 +105,9 @@ class FormTrusts extends Component {
   onChangeTo = (event, selectedDate) => {
     const currentDate = selectedDate || this.state.to;
     this.setState({ to: currentDate, showTo: false });
-    let d = new Date(selectedDate).getTime();
+    let d = selectedDate
+      ? new Date(selectedDate).getTime()
+      : new Date().getTime();
     let dataF = this.props.formData;
     dataF.usblYmdTo = d;
     this.props.valueForm && this.props.valueForm(dataF);
@@ -156,7 +160,10 @@ class FormTrusts extends Component {
 
     let timeCheck = false;
 
-    if (to >= from && from >= new Date()) {
+    if (
+      to.toLocaleDateString() >= from.toLocaleDateString() &&
+      from.toLocaleDateString() >= new Date().toLocaleDateString()
+    ) {
       timeCheck = true;
     }
     console.log('formDataTrust :>> ', formData);

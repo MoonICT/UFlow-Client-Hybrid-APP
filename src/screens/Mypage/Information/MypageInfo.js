@@ -18,6 +18,8 @@ import {
 } from 'react-native-paper';
 
 import AppGrid from '@Components/organisms/AppGrid';
+import SplashScreen from 'react-native-splash-screen';
+
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
