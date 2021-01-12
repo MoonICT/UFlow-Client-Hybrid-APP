@@ -204,7 +204,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inner: {
-    padding: 24,
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'space-around',
