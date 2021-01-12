@@ -17,6 +17,7 @@ class CarouselSnaps extends Component {
   }
 
   render() {
+    console.log(this.props.itemWidth, 'itemWidth');
     return <CarouselSnap {...this.props} />;
   }
 }

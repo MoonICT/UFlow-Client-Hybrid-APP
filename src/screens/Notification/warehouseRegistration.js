@@ -433,6 +433,7 @@ export default class Notification extends Component {
                   height: 8,
                 },
               }}
+
             />
             <Text style={[S.descriptionSmall, { marginTop: 50 }]}>
               ･ 수탁 계약 유형 선택 시 임대 계약 유형을 선택할 수 없습니다.
@@ -517,6 +518,7 @@ export default class Notification extends Component {
                   height: 8,
                 },
               }}
+
             />
           </View>
           {/* section 4 */}
@@ -573,6 +575,7 @@ export default class Notification extends Component {
                   height: 8,
                 },
               }}
+
             />
           </View>
 
@@ -597,6 +600,7 @@ export default class Notification extends Component {
                   height: 8,
                 },
               }}
+
             />
           </View>
           {/* section 6 */}
