@@ -248,8 +248,8 @@ class RequestContract extends Component {
 
     const { detailEstimate, keepTrustContract, keepTrustEstimate } = this.state;
 
-    console.log('check 1', detailEstimate)
-    console.log('check 2', keepTrustContract)
+    // console.log('check 1', detailEstimate)
+    // console.log('check 2', keepTrustContract)
     // console.log('check 3', keepTrustEstimate)
     // console.log('check 4', contractType)
 
