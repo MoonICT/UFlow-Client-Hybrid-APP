@@ -27,11 +27,11 @@ import { log } from 'react-native-reanimated';
 const selectOptions = [
   {
     label: '창고주 ',
-    value: 'OWNER',
+    value: '창고주 ',
   },
   {
     label: '임차인 ',
-    value: 'TENANT',
+    value: '임차인 ',
   },
 ];
 
@@ -97,10 +97,8 @@ class Inquiry extends Component {
       ...params
     }
 
-    console.log("userTypeParams",userType)
-
     await getAllInquiry(defaultParams).then((res) => {
-      // console.log('res', res)
+      console.log('res', res)
       if (res.data._embedded.questions === null) {
         return;
       }
@@ -122,7 +120,6 @@ class Inquiry extends Component {
 
   onChangeFrom = (event, selectedDate) => {
     const startDate = selectedDate || this.state.from;
-    console.log('this.state.from', this.state.from)
     let dateObj = new Date(startDate);
     let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
     this.setState({ from: startDate, showFrom: false }, () => {
@@ -136,23 +133,12 @@ class Inquiry extends Component {
 
   onChangeTo = (event, selectedDate) => {
     const endDate = selectedDate || this.state.to;
-    console.log('this.state.to', this.state.to)
     let dateObj = new Date(endDate);
     let dateStr = dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate() + '-' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
     this.setState({ to: endDate, showTo: false }, () => {
       this.getAllData({ endDate: dateStr })
     });
   };
-
-  // onChangeFrom = (value) =>{
-  // this.setState({ from: value })
-  // console.log('from',this.state.from);
-  // }
-  // onChangeTo = (value) => {
-  //   this.setState({ to: value })
-  // console.log('to',this.state.to);
-  // }
-
 
   showDialog = () => this.setState({ visible: true });
 
@@ -167,7 +153,6 @@ class Inquiry extends Component {
       this.getAllData({ query: query })
     }, 200)
 
-      // console.log('startDate', this.state.from)
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -250,12 +235,6 @@ class Inquiry extends Component {
                   <Select
                     data={selectOptions}
                     style={S.select}
-                    valueProps={e => {
-                      this.setState({ userType: e }, () => {
-                        this.getAllData()
-                      });
-                      // console.log("userType", userType)
-                    }}
                   />
                 </View>
               )}
@@ -270,7 +249,7 @@ class Inquiry extends Component {
                 let dateTime = new Date(item.date);
                 let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate();
                 let _item = { ...item, userType: userType }
-                {/* console.log('_item  ', _item); */}
+                console.log('_item  ', _item);
                 return (
                   <TouchableOpacity
                     key={index}
