@@ -154,6 +154,47 @@ export const keepTableDatas = (
         value: mgmtChrg,
       },
     ];
+  } else if (mode == 3) {
+    // 5100 계약완료 정보
+    return [
+      {
+        type: warehouseNameLabel,
+        value: warehouseName,
+      },
+      {
+        type: ownerNameLabel,
+        value: ownerName,
+      },
+      {
+        type: addressLabel,
+        value: address,
+      },
+      {
+        type: typeLabel,
+        value: type,
+        highlight: true,
+      },
+      {
+        type: keepTypeLabel,
+        value: keepType,
+      },
+      {
+        type: prvtAreaLabel,
+        value: prvtArea,
+      },
+      {
+        type: usblYmdLabel,
+        value: usblYmd,
+      },
+      {
+        type: splyAmountLabel,
+        value: splyAmount,
+      },
+      {
+        type: mgmtChrgLabel,
+        value: mgmtChrg,
+      },
+    ];
   }
   return [];
 };
@@ -271,6 +312,67 @@ export const trustTableDatas = (
     ];
   } else if (mode === 2) {
     // 1100, 2100, 4100, 5100
+    return [
+      {
+        type: warehouseNameLabel,
+        value: warehouseName,
+      },
+      {
+        type: ownerNameLabel,
+        value: ownerName,
+      },
+      {
+        type: addressLabel,
+        value: address,
+      },
+      {
+        type: typeLabel,
+        value: type,
+        highlight: true,
+      },
+      {
+        type: keepTypeLabel,
+        value: keepType,
+      },
+      {
+        type: usblYmdLabel,
+        value: usblYmd,
+      },
+      {
+        type: usblValueLabel,
+        value: usblValue,
+      },
+      {
+        type: splyAmountLabel,
+        value: splyAmount,
+      },
+      {
+        type: whinChrgLabel,
+        value: whinChrg,
+      },
+      {
+        type: whoutChrgLabel,
+        value: whoutChrg,
+      },
+      {
+        type: mnfctChrgLabel,
+        value: mnfctChrg,
+      },
+      {
+        type: psnChrgLabel,
+        value: psnChrg,
+      },
+      {
+        type: dlvyChrgLabel,
+        value: dlvyChrg,
+      },
+      {
+        type: shipChrgLabel,
+        value: shipChrg,
+      },
+    ];
+  } else if (mode === 3) {
+    // 5100 계약완료 정보
     return [
       {
         type: warehouseNameLabel,

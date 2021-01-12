@@ -46,7 +46,8 @@ class RequestContract extends Component {
 
       contractLink: '',
       imgType: null,
-    };
+      contract: null
+    }
     this.navigation = props.navigation;
   }
 
@@ -77,7 +78,7 @@ class RequestContract extends Component {
           />
         </Appbars>
         <ScrollView>
-          <View style={DefaultStyle._body}>
+          <View style={[DefaultStyle._body, {paddingBottom: 300}]}>
 
             {/** HEADER **/}
             <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
@@ -95,8 +96,10 @@ class RequestContract extends Component {
             </View>
             {/** END:HEADER **/}
 
-            {/** WAREHOUSE INFO **/}
+            {/** WAREHOUSE INFO 청고 정보 **/}
+            {status === '1100' &&
             <View style={DefaultStyle._card}>
+
               <View style={DefaultStyle._headerCard}>
                 {this.state.imgType &&
                 <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
@@ -104,16 +107,25 @@ class RequestContract extends Component {
               </View>
               <View>
                 <View style={DefaultStyle._infoTable}>
-                  {(contractType === 'keep' && dataKeep) ?
-                    <TableInfo data={dataKeep}/> :
-                    <TableInfo data={dataTrust}/>}
+                  <Text>Quotation.dataKeep or Quotation.dataTrust</Text>
+                  {/*{(contractType === 'keep' && estimateKeep) ?*/}
+                  {/*  <TableInfo data={dataKeep}/> :*/}
+                  {/*  <TableInfo data={dataTrust}/>}*/}
                 </View>
               </View>
             </View>
-            {/** END:WAREHOUSE INFO **/}
+            }
+            {/** END:ESTIMATE INFO **/}
 
             {/** CONTRACT INFO **/}
             <View style={DefaultStyle._card}>
+              {(status === '2100' || status === '4100' || status === '5100') &&
+              <View style={DefaultStyle._headerCard}>
+                {this.state.imgType &&
+                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                }
+              </View>
+              }
               <View>
                 <View style={DefaultStyle._infoTable}>
                   {(contractType === 'keep' && dataKeep) ?
@@ -123,6 +135,7 @@ class RequestContract extends Component {
               </View>
             </View>
             {/** END:CONTRACT INFO **/}
+
             {contractType === 'keep' ? (
               <View style={[DefaultStyle._body, DefaultStyle._margin0]}>
                 <View style={DefaultStyle._footerCards}>
@@ -171,29 +184,47 @@ class RequestContract extends Component {
         rentUserNo: rentUserNo,
       }).then(async (res) => {
         let resultData = res;
-        this.setState({detailContract: resultData});
+        this.setState({
+          detailContract: resultData
+        });
+
+        console.log(resultData, 'resultData');
+
+        if (contractType === 'trust') {
+          if (resultData.cntrTrusts && resultData.cntrTrusts.length > 0) {
+            this.setState({
+              contract: resultData.cntrTrusts[0]
+            });
+          }
+        } else if (contractType === 'keep') {
+          if (resultData.cntrKeeps && resultData.cntrKeeps.length > 0) {
+            this.setState({
+              contract: resultData.cntrKeeps[0]
+            });
+          }
+        }
 
         // 견적 완료, 계약 진행 중일 때.
-        let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
-        await Contract.getContractKeep({
-          type: 'owner',
-          contractType: contractType,
-          idWarehouse: warehouseRegNo,
-          rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
-          cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD',),
-        }).then(res => {
-          let resultEstmtData = {
-            warehouse: resultData.warehouse,
-            [contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts']: res,
-          };
-
-          // console.debug('[3] 견적 완료, 계약 진행 중일 때.1 : ', res);
-          this.setState({
-            detailEstimate: resultEstmtData,
-            keepTrustContract: res, // keep|trust
-            keepTrustEstimate: contractType === 'keep' ? res.whrgMgmtKeep : res.whrgMgmtTrust, // keep|trust
-          });
-        });
+        // let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
+        // await Contract.getContractKeep({
+        //   type: 'owner',
+        //   contractType: contractType,
+        //   idWarehouse: warehouseRegNo,
+        //   rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
+        //   cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD',),
+        // }).then(res => {
+        //   let resultEstmtData = {
+        //     warehouse: resultData.warehouse,
+        //     [contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts']: res,
+        //   };
+        //
+        //   // console.debug('[3] 견적 완료, 계약 진행 중일 때.1 : ', res);
+        //   this.setState({
+        //     detailEstimate: resultEstmtData,
+        //     keepTrustContract: res, // keep|trust
+        //     keepTrustEstimate: contractType === 'keep' ? res.whrgMgmtKeep : res.whrgMgmtTrust, // keep|trust
+        //   });
+        // });
       })
         .catch(err => {
           console.log(err);
@@ -207,8 +238,27 @@ class RequestContract extends Component {
         contractType: contractType,
         warehSeq: warehSeq,
       }).then(async (res) => {
+
         let resultData = res
         this.setState({detailContract: resultData})
+
+        console.log(resultData, 'resultData');
+
+        if (contractType === 'trust') {
+          if (resultData.cntrTrusts && resultData.cntrTrusts.length > 0) {
+            this.setState({
+              contract: resultData.cntrTrusts[0]
+            });
+            console.log(resultData.cntrTrusts, 'cntrTrusts');
+          }
+        } else if (contractType === 'keep') {
+          if (resultData.cntrKeeps && resultData.cntrKeeps.length > 0) {
+            this.setState({
+              contract: resultData.cntrKeeps[0]
+            });
+            console.log(resultData.cntrKeeps, 'cntrKeeps');
+          }
+        }
 
         // 견적 완료, 계약 진행 중일 때.
         let estmtData = resultData.estmtKeeps || resultData.estmtTrusts
@@ -219,6 +269,7 @@ class RequestContract extends Component {
           rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
           cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD'),
         }).then(res => {
+          console.log(res, 'res111');
           let resultEstmtData = {
             warehouse: resultData.warehouse,
             [contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts']: res,
@@ -231,47 +282,36 @@ class RequestContract extends Component {
             keepTrustEstimate: contractType === 'keep' ? res.whrgMgmtKeep : res.whrgMgmtTrust, // keep|trust
           });
         });
-      });
+      })
+        .catch(async (err) => {
+          if (err.response) {
+            if (err.response.status >= 400 && err.response.status < 500) {
+              const errData = err.response.data;
+              console.log('::: Error Code :', errData.code);
+              console.log('::: Error Message :', errData.message);
+              alert(errData.message);
+              // alert(errData.message)
+            } else {
+              const errData = err.response.data;
+              console.log('::: Error Code :', errData.code);
+              alert('서버에러:' + errData.message + "\n관리자에 문의하세요.");
+            }
+          }
+        });
     }
 
+    const status = this.props.route.params.status;
     const {detailEstimate, keepTrustContract, keepTrustEstimate} = this.state;
 
-    if (detailEstimate && keepTrustContract && contractType === 'keep') {
+    console.log(status, 'status')
+    if (status === '1100' || status === '2100' || status === '4100') {
+      if (detailEstimate && keepTrustContract && contractType === 'keep') {
 
-      this.setState({
-        dataKeep: ContractUtils.keepTableDatas(2, {
-          /**한국어 기본**/
-          prvtAreaLabel: '공용면적',
-          usblYmdLabel: '임대가능기간',
-        }, {
-          /*창고명*/
-          warehouseName: detailEstimate ? detailEstimate.warehouse.warehouse : '-',
-          /*창고주*/
-          ownerName: detailEstimate ? detailEstimate.warehouse.owner : '-',
-          /*위치*/
-          address: detailEstimate ? detailEstimate.warehouse.address : '-',
-          /*계약유형*/
-          type: '임대(보관)',
-          /*보관유형*/
-          keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
-          /*공용면적*/
-          prvtArea: keepTrustEstimate.cmnArea ? keepTrustEstimate.cmnArea.toLocaleString() + " ㎡" : "0 ㎡",
-          /*임대 가능기간*/
-          usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
-          /*보관단가*/
-          splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
-          /*관리단가*/
-          mgmtChrg: StringUtils.moneyConvert(keepTrustContract.mgmtChrg),
-        }),
-      });
-    }
-
-    if (detailEstimate && keepTrustContract && contractType === 'trust') {
-      this.setState({
-        dataTrust:
-          ContractUtils.trustTableDatas(2, {
+        this.setState({
+          dataKeep: ContractUtils.keepTableDatas(2, {
             /**한국어 기본**/
-            usblYmdLabel: '수탁 가용일자'
+            prvtAreaLabel: '공용면적',
+            usblYmdLabel: '임대 계약기간',
           }, {
             /*창고명*/
             warehouseName: detailEstimate ? detailEstimate.warehouse.warehouse : '-',
@@ -280,29 +320,141 @@ class RequestContract extends Component {
             /*위치*/
             address: detailEstimate ? detailEstimate.warehouse.address : '-',
             /*계약유형*/
-            type: '수탁',
+            type: '임대(보관)',
             /*보관유형*/
-            keepType: keepTrustContract.typeCode.stdDetailCodeName,
-            /*수탁 가용일자*/
-            usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
-            /*수탁 가용수량*/
-            usblValue: keepTrustContract.cntrValue ? keepTrustContract.cntrValue.toLocaleString() + ' ' + (keepTrustContract.calUnitDvCode.stdDetailCodeName) : '-',
+            keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
+            /*공용면적*/
+            prvtArea: keepTrustEstimate.cmnArea ? keepTrustEstimate.cmnArea.toLocaleString() + " ㎡" : "0 ㎡",
+            /*임대 가능기간*/
+            // usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
+            usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
             /*보관단가*/
             splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
-            /*가공단가*/
-            mnfctChrg: StringUtils.moneyConvert(keepTrustContract.mnfctChrg),
-            /*인건단가*/
-            psnChrg: StringUtils.moneyConvert(keepTrustContract.psnChrg),
-            /*입고단가*/
-            whinChrg: StringUtils.moneyConvert(keepTrustContract.whinChrg),
-            /*출고단가*/
-            whoutChrg: StringUtils.moneyConvert(keepTrustContract.whoutChrg),
-            /*택배단가*/
-            dlvyChrg: StringUtils.moneyConvert(keepTrustContract.dlvyChrg),
-            /*운송단가*/
-            shipChrg: StringUtils.moneyConvert(keepTrustContract.shipChrg),
+            /*관리단가*/
+            mgmtChrg: StringUtils.moneyConvert(keepTrustContract.mgmtChrg),
           }),
-      });
+        });
+      }
+
+      if (detailEstimate && keepTrustContract && contractType === 'trust') {
+        this.setState({
+          dataTrust:
+            ContractUtils.trustTableDatas(2, {
+              /**한국어 기본**/
+              usblYmdLabel: '수탁 계약일자'
+            }, {
+              /*창고명*/
+              warehouseName: detailEstimate ? detailEstimate.warehouse.warehouse : '-',
+              /*창고주*/
+              ownerName: detailEstimate ? detailEstimate.warehouse.owner : '-',
+              /*위치*/
+              address: detailEstimate ? detailEstimate.warehouse.address : '-',
+              /*계약유형*/
+              type: '수탁',
+              /*보관유형*/
+              keepType: keepTrustContract.typeCode.stdDetailCodeName,
+              /*수탁 가용일자*/
+              // usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
+              usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
+              /*수탁 가용수량*/
+              usblValue: keepTrustContract.cntrValue ? keepTrustContract.cntrValue.toLocaleString() + ' ' + (keepTrustContract.calUnitDvCode.stdDetailCodeName) : '-',
+              /*보관단가*/
+              splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
+              /*가공단가*/
+              mnfctChrg: StringUtils.moneyConvert(keepTrustContract.mnfctChrg),
+              /*인건단가*/
+              psnChrg: StringUtils.moneyConvert(keepTrustContract.psnChrg),
+              /*입고단가*/
+              whinChrg: StringUtils.moneyConvert(keepTrustContract.whinChrg),
+              /*출고단가*/
+              whoutChrg: StringUtils.moneyConvert(keepTrustContract.whoutChrg),
+              /*택배단가*/
+              dlvyChrg: StringUtils.moneyConvert(keepTrustContract.dlvyChrg),
+              /*운송단가*/
+              shipChrg: StringUtils.moneyConvert(keepTrustContract.shipChrg),
+            }),
+        });
+      }
+    }
+    if (status === '5100') {
+
+      if (detailEstimate && keepTrustContract && contractType === 'keep') {
+
+        this.setState({
+          dataKeep: ContractUtils.keepTableDatas(2, {
+            /**한국어 기본**/
+            prvtAreaLabel: '공용면적',
+            usblYmdLabel: '임대 계약기간',
+            splyAmountLabel: '보관비',
+            mgmtChrgLabel: '관리비',
+          }, {
+            /*창고명*/
+            warehouseName: detailEstimate ? detailEstimate.warehouse.warehouse : '-',
+            /*창고주*/
+            ownerName: detailEstimate ? detailEstimate.warehouse.owner : '-',
+            /*위치*/
+            address: detailEstimate ? detailEstimate.warehouse.address : '-',
+            /*계약유형*/
+            type: '임대(보관)',
+            /*보관유형*/
+            keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
+            /*공용면적*/
+            prvtArea: keepTrustEstimate.cmnArea ? keepTrustEstimate.cmnArea.toLocaleString() + " ㎡" : "0 ㎡",
+            /*임대 가능기간*/
+            usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
+            /*보관단가*/
+            splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
+            /*관리단가*/
+            mgmtChrg: StringUtils.moneyConvert(keepTrustContract.mgmtChrg),
+          }),
+        });
+      }
+
+      if (detailEstimate && keepTrustContract && contractType === 'trust') {
+        this.setState({
+          dataTrust:
+            ContractUtils.trustTableDatas(2, {
+              /**한국어 기본**/
+              usblYmdLabel: '수탁 계약기간',
+              splyAmountLabel: '보관비',
+              mnfctChrgLabel: '가공비',
+              psnChrgLabel: '인건비',
+              whinChrgLabel: '입고비',
+              whoutChrgLabel: '출고비',
+              dlvyChrgLabel: '택배비',
+              shipChrgLabel: '운송비'
+            }, {
+              /*창고명*/
+              warehouseName: detailEstimate ? detailEstimate.warehouse.warehouse : '-',
+              /*창고주*/
+              ownerName: detailEstimate ? detailEstimate.warehouse.owner : '-',
+              /*위치*/
+              address: detailEstimate ? detailEstimate.warehouse.address : '-',
+              /*계약유형*/
+              type: '수탁',
+              /*보관유형*/
+              keepType: keepTrustContract.typeCode.stdDetailCodeName,
+              /*수탁 가용일자*/
+              usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
+              /*수탁 가용수량*/
+              usblValue: keepTrustContract.cntrValue ? keepTrustContract.cntrValue.toLocaleString() + ' ' + (keepTrustContract.calUnitDvCode.stdDetailCodeName) : '-',
+              /*보관단가*/
+              splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
+              /*가공단가*/
+              mnfctChrg: StringUtils.moneyConvert(keepTrustContract.mnfctChrg),
+              /*인건단가*/
+              psnChrg: StringUtils.moneyConvert(keepTrustContract.psnChrg),
+              /*입고단가*/
+              whinChrg: StringUtils.moneyConvert(keepTrustContract.whinChrg),
+              /*출고단가*/
+              whoutChrg: StringUtils.moneyConvert(keepTrustContract.whoutChrg),
+              /*택배단가*/
+              dlvyChrg: StringUtils.moneyConvert(keepTrustContract.dlvyChrg),
+              /*운송단가*/
+              shipChrg: StringUtils.moneyConvert(keepTrustContract.shipChrg),
+            }),
+        });
+      }
     }
 
     if (keepTrustEstimate && keepTrustEstimate.typeCode) {

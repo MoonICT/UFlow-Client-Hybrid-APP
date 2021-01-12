@@ -153,18 +153,18 @@ class ContractInformation extends Component {
                 { marginTop: 12, marginBottom: Platform.OS === 'ios' ? 90 : 12 },
               ]}>
 
-              <TouchableOpacity
-                style={[DefaultStyle._btnInline, DefaultStyle._btnLeft]}
-                onPress={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>
-                <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-                  전자계약
-                </Text>
-              </TouchableOpacity>
+              {/*<TouchableOpacity*/}
+              {/*  style={[DefaultStyle._btnInline, DefaultStyle._btnLeft]}*/}
+              {/*  onPress={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>*/}
+              {/*  <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>*/}
+              {/*    전자계약*/}
+              {/*  </Text>*/}
+              {/*</TouchableOpacity>*/}
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                 onPress={() => this.setState({ isOffLineDialog: !this.state.isOffLineDialog })}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-                  오프라인 계약
+                  오프라인 계약서
                 </Text>
               </TouchableOpacity>
             </View>
