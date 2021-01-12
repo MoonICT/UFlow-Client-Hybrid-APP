@@ -65,11 +65,12 @@ class DetailWH extends Component {
       pageInfo: {},
       isLogin:false,
       showAll: false,
-      floors:'지하 1층',
+      floors:'',
       whList: [],
       favorite : false,
       rentUserNo:'',
-      activeIndex: 0
+      activeIndex: 0,
+      dataTab:[]
     };
     this.navigation = props.navigation;
   }
@@ -171,7 +172,7 @@ class DetailWH extends Component {
       warehSeq : seq,
       rentUserNo: '',
       status: 'RQ00',
-      type : 'TENANT',
+      type : 'TENANT'
     });
   }
 
@@ -198,26 +199,27 @@ class DetailWH extends Component {
   };
 
   render() {
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, activeIndex, id} = this.state;
+    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, activeIndex, id, dataTab} = this.state;
 
-    const dataTab = [
-      {
-        title: '지하 1층',
-        content: ''
-      },
-      {
-        title: '지상 2층',
-        content: ''
-      },
-      {
-        title: '지상 3층',
-        content: ''
-      },
-      {
-        title: '지상 4층',
-        content: ''
-      },
-    ];
+    console.log('floors', floors)
+    // const dataTab = [
+    //   {
+    //     title: '지하 1층',
+    //     content: ''
+    //   },
+    //   {
+    //     title: '지상 2층',
+    //     content: ''
+    //   },
+    //   {
+    //     title: '지상 3층',
+    //     content: ''
+    //   },
+    //   {
+    //     title: '지상 4층',
+    //     content: ''
+    //   },
+    // ];
 
     const toSquareMeter = (value) => {
       //return value ?  Math.ceil((Math.trunc(Number(value)*10)/10) * 3.305785) : ''
@@ -1023,6 +1025,19 @@ class DetailWH extends Component {
       whrgData: warehouse.data,
       favorite: warehouse.data.fav
     });
+
+    const dataTabs = []
+    warehouse.data.floors.forEach(element => {
+      dataTabs.push({
+          title: element.flrDvCode.stdDetailCodeName,
+          content: ''
+      })
+    })
+
+    this.setState({
+      dataTab: dataTabs,
+      floors : (dataTabs && dataTabs.length) > 0 ? dataTabs[0]?.title : 'null'
+    })
         // 유사창고 파라미터 조건
         let typeCodeNames = []
         let gdsKeepTypeCodeNames = []

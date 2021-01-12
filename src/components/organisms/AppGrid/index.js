@@ -6,15 +6,43 @@ import React, { Component, Fragment } from 'react';
 import { ScrollView, Text, View, Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
+import { debounce } from "lodash";
 
 class AppGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: props.title ? props.title : props.data && props.data[0].title,
-      content: props.data && props.data[0].content,
+      active:'',
+      content: '',
     };
   }
+
+  setDebounce = debounce((callback) => {
+    callback();
+  });
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.title !== this.props.title) {
+      this.setDebounce(() => {
+        this.setState({
+          active: this.props && this.props.title ? this.props.title : this.props.data && this.props.data[0].title,
+          content: this.props.data && this.props.data.length > 0 && this.props.data[0].content,
+        });
+      });
+    }
+  }
+
+  // componentDidMount() {
+  //   const {title} = this.props;
+  //   title
+  //     ? this.setState({ active: this.props.title })
+  //     : this.setState({ 
+  //       active: this.props.data && this.props.data[0].title,
+  //       content:  this.props.data && this.props.data[0].content
+      
+  //     });
+  // }
+
   handlePress = item => {
     this.setState({ active: item.title, content: item.content});
   };
