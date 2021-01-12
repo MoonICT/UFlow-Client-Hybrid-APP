@@ -237,10 +237,10 @@ class DetailWH extends Component {
     const displayUsblValue = (usblValue, calUnitDvCode) => {
       let resultStr = '-'
       if (usblValue) {
-        if (calUnitDvCode && calUnitDvCode.stdDetailCode === 'CU01') {
+        if (calUnitDvCode && calUnitDvCode?.stdDetailCode === 'CU01') {
           resultStr = displayAreaUnit(usblValue)
         } else {
-          resultStr = usblValue.toLocaleString() + (calUnitDvCode && calUnitDvCode.stdDetailCodeName ? calUnitDvCode.stdDetailCodeName : '')
+          resultStr = usblValue.toLocaleString() + (calUnitDvCode && calUnitDvCode?.stdDetailCodeName ? calUnitDvCode?.stdDetailCodeName : '')
         }
       }
       return resultStr;
@@ -297,13 +297,13 @@ class DetailWH extends Component {
               {
                 whrgData.keeps && whrgData.keeps.length > 0 && (
                    whrgData.keeps.map((keep, index) => (
-                    <View key={'keeps'+index}>
-                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
-                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
-                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
-                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
-                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
-                      {(keep.typeCode && keep.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                    <View key={index}>
+                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
                    </View>
                    )))
               }
@@ -311,13 +311,13 @@ class DetailWH extends Component {
               {
                 whrgData.trusts && whrgData.trusts.length > 0 && (
                    whrgData.trusts.map((trust, index) => (
-                    <View key={'trusts'+ index}>
-                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
-                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
-                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
-                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
-                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
-                      {(trust.typeCode && trust.typeCode.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
+                    <View key={index}>
+                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
+                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
+                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
+                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
+                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
+                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
                    </View>
                    )))
               }
@@ -368,11 +368,11 @@ class DetailWH extends Component {
                   whrgData.keeps.map((keep, index) => (
                     <View key={"listKeep" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
-                        {keep.typeCode && keep.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
-                        {keep.typeCode && keep.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
-                        {keep.typeCode && keep.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
-                        {keep.typeCode && keep.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
-                        {keep.typeCode && keep.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
+                        {keep.typeCode && keep.typeCode?.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
+                        {keep.typeCode && keep.typeCode?.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
+                        {keep.typeCode && keep.typeCode?.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
+                        {keep.typeCode && keep.typeCode?.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
+                        {keep.typeCode && keep.typeCode?.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
                         checked={checked}
@@ -388,7 +388,7 @@ class DetailWH extends Component {
                               보관유형
                           </Text>
                             <Text style={S.textTable}>
-                              {keep.typeCode ? keep.typeCode.stdDetailCodeName : "-"}
+                              {keep.typeCode ? keep.typeCode?.stdDetailCodeName : "-"}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -396,7 +396,7 @@ class DetailWH extends Component {
                               정산단위
                           </Text>
                             <Text style={S.textTable}>
-                              {keep.calUnitDvCode ? keep.calUnitDvCode.stdDetailCodeName : "-"}
+                              {keep.calUnitDvCode ? keep.calUnitDvCode?.stdDetailCodeName : "-"}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -404,7 +404,7 @@ class DetailWH extends Component {
                               산정기준
                           </Text>
                             <Text style={S.textTable}>
-                              {keep.calStdDvCode ? keep.calStdDvCode.stdDetailCodeName : "-"}
+                              {keep.calStdDvCode ? keep.calStdDvCode?.stdDetailCodeName : "-"}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -412,7 +412,7 @@ class DetailWH extends Component {
                               관리비구분
                           </Text>
                             <Text style={S.textTable}>
-                              {keep.mgmtChrgDvCode ? keep.mgmtChrgDvCode.stdDetailCodeName : "-"}
+                              {keep.mgmtChrgDvCode ? keep.mgmtChrgDvCode?.stdDetailCodeName : "-"}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -506,11 +506,11 @@ class DetailWH extends Component {
                   whrgData.trusts.map((trust, index) => (
                     <View key={"listTrusts" + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
-                        {trust.typeCode.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
-                        {trust.typeCode.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
-                        {trust.typeCode.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
-                        {trust.typeCode.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
-                        {trust.typeCode.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
+                        {trust.typeCode?.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
+                        {trust.typeCode?.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
+                        {trust.typeCode?.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
+                        {trust.typeCode?.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
+                        {trust.typeCode?.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
                         checked={checked}
@@ -526,7 +526,7 @@ class DetailWH extends Component {
                               보관유형
                           </Text>
                             <Text style={S.textTable}>
-                              {trust.typeCode ? trust.typeCode.stdDetailCodeName : "-"}
+                              {trust.typeCode ? trust.typeCode?.stdDetailCodeName : "-"}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -534,7 +534,7 @@ class DetailWH extends Component {
                               정산단위
                           </Text>
                             <Text style={S.textTable}>
-                              {trust.calUnitDvCode ? trust.calUnitDvCode.stdDetailCodeName : "-"}
+                              {trust.calUnitDvCode ? trust.calUnitDvCode?.stdDetailCodeName : "-"}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -542,7 +542,7 @@ class DetailWH extends Component {
                               산정기준
                           </Text>
                             <Text style={S.textTable}>
-                              {trust.calStdDvCode ? trust.calStdDvCode.stdDetailCodeName : "-"}
+                              {trust.calStdDvCode ? trust.calStdDvCode?.stdDetailCodeName : "-"}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -550,7 +550,7 @@ class DetailWH extends Component {
                               관리비구분
                           </Text>
                             <Text style={S.textTable}>
-                              {trust.mgmtChrgDvCode ? trust.mgmtChrgDvCode.stdDetailCodeName : "-"}
+                              {trust.mgmtChrgDvCode ? trust.mgmtChrgDvCode?.stdDetailCodeName : "-"}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -727,7 +727,7 @@ class DetailWH extends Component {
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>추가옵션</Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.addOptDvCodes ? whrgData.addOptDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
+                        {`${whrgData.addOptDvCodes ? whrgData.addOptDvCodes.map(code => code?.stdDetailCodeName).join(",") : ""}`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -743,7 +743,7 @@ class DetailWH extends Component {
                         보험가입
                       </Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.insrDvCodes ? whrgData.insrDvCodes.map(code => code.stdDetailCodeName).join(",") : ""}`}
+                        {`${whrgData.insrDvCodes ? whrgData.insrDvCodes.map(code => code?.stdDetailCodeName).join(",") : ""}`}
                       </Text>
                     </View>
                   </View>
@@ -770,7 +770,7 @@ class DetailWH extends Component {
                               층 수
                             </Text>
                             <Text style={S.textTable}>
-                              {floor.flrDvCode ? floor.flrDvCode.stdDetailCodeName : ""}
+                              {floor.flrDvCode ? floor.flrDvCode?.stdDetailCodeName : ""}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -832,7 +832,7 @@ class DetailWH extends Component {
                               접안방식
                             </Text>
                             <Text style={S.textTable}>
-                              {floor.aprchMthdDvCode ? floor.aprchMthdDvCode.stdDetailCodeName : ""}
+                              {floor.aprchMthdDvCode ? floor.aprchMthdDvCode?.stdDetailCodeName : ""}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
@@ -1029,17 +1029,17 @@ class DetailWH extends Component {
         if (warehouse.data.keeps && warehouse.data.keeps.length > 0) {
           typeCodeNames.push('KEEP')
           warehouse.data.keeps.map(item => {
-            if (gdsKeepTypeCodeNames.indexOf(item.typeCode.stdDetailCode.toString()) < 0) {
-              gdsKeepTypeCodeNames.push(item.typeCode.stdDetailCode.toString())
+            if (gdsKeepTypeCodeNames.indexOf(item.typeCode?.stdDetailCode.toString()) < 0) {
+              gdsKeepTypeCodeNames.push(item.typeCode?.stdDetailCode.toString())
             }
           })
         }
         if (warehouse.data.trusts && warehouse.data.trusts.length > 0) {
           typeCodeNames.push('TRUST')
           warehouse.data.trusts.map(item => {
-            console.debug(gdsKeepTypeCodeNames, item.typeCode.stdDetailCode)
-            if (gdsKeepTypeCodeNames.indexOf(item.typeCode.stdDetailCode.toString()) < 0) {
-              gdsKeepTypeCodeNames.push(item.typeCode.stdDetailCode.toString())
+            console.debug(gdsKeepTypeCodeNames, item.typeCode?.stdDetailCode)
+            if (gdsKeepTypeCodeNames.indexOf(item.typeCode?.stdDetailCode.toString()) < 0) {
+              gdsKeepTypeCodeNames.push(item.typeCode?.stdDetailCode.toString())
             }
           })
         }

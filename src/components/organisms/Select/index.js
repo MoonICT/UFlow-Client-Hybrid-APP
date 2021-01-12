@@ -27,13 +27,12 @@ export default class Selected extends Component {
   _showSelect = () => this.setState({ isToggle: true });
 
   _hideSelect = () => this.setState({ isToggle: false });
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     // let selectedValue = newProps.selectedValue;
     // console.log('defaultValuenewProps :>> ', newProps);
-    if (newProps.dataDefault) {
-      // console.log('newProps :>> ', newProps);
-      this.setState({ selectedValue: newProps.dataDefault.label });
-    }
+    newProps.dataDefault
+      ? this.setState({ selectedValue: newProps.dataDefault.label })
+      : this.setState({ selectedValue: '' });
   }
   render() {
     const {
@@ -43,8 +42,10 @@ export default class Selected extends Component {
       colorLabel,
       valueProps,
       indexProps,
+      required,
     } = this.props;
     const { isToggle, selectedValue, indexActive } = this.state;
+    console.log('required',required);
     const items =
       data &&
       data.map((item, index) => {
@@ -89,7 +90,7 @@ export default class Selected extends Component {
         <TouchableOpacity
           // {...this.props}
           onPress={() => this._showSelect()}
-          style={[DefaultStyle._selected]}>
+          style={[DefaultStyle._selected,{ borderColor: required ? 'red' : '#cccccc' }]}>
           {labelSelected ? (
             <Text
               style={[

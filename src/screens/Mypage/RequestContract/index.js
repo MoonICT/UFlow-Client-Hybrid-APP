@@ -31,13 +31,15 @@ class RequestContract extends Component {
     super(props);
     this.state = {
       detailContract: '', // 계약 기본 정보.
-      detailEstimate: '', // 견적 완료 계약 정보.
+      detailEstimate: '', // 계약 기본 정보
+
+      keepTrustContract: '', // keep|trust
+      keepTrustEstimate: '', // keep|trust
 
       dataKeep: [],
       dataTrust: [],
 
       contractLink: '',
-      dataApi: null,
     };
     this.navigation = props.navigation;
   }
@@ -71,14 +73,14 @@ class RequestContract extends Component {
   };
 
   render () {
-    const { route } = this.props;
-    const warehSeq = route && route.params && route.params.warehSeq;
-    const rentUserNo = route && route.params && route.params.rentUserNo;
-    const type = route && route.params && route.params.type;
-    const typeWH = route && route.params && route.params.typeWH;
-    const status = route && route.params && route.params.status;
+    let warehSeq = this.props.route.params.warehSeq;
+    let warehouseRegNo = this.props.route.params.warehouseRegNo;
+    let type = this.props.route.params.type.toLowerCase(); // owner | tenant
+    let contractType = this.props.route.params.typeWH.toLowerCase(); // keep | trust
+    let rentUserNo = this.props.route.params.rentUserNo;
+    const status = this.props.route.params.status;
 
-    const { dataTrust, dataKeep } = this.state;
+    const { dataTrust, dataKeep, detailEstimate, keepTrustContract } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -118,35 +120,40 @@ class RequestContract extends Component {
               </View>
               <View>
                 <View style={DefaultStyle._infoTable}>
-                  {(typeWH === 'KEEP' && dataKeep) ?
+                  {(contractType === 'keep' && dataKeep) ?
                     <TableInfo data={dataKeep} /> :
                     <TableInfo data={dataTrust} />}
                 </View>
               </View>
             </View>
-            {typeWH === 'KEEP' ? (
+            {contractType === 'keep' ? (
               <View style={[DefaultStyle._body, DefaultStyle._margin0]}>
                 <View style={DefaultStyle._footerCards}>
                   <Text style={S.amount}>예상 견적 금액</Text>
                   <Text style={S.total}>
-                    {(this.getContract()) ?
-                      StringUtils.moneyConvert(Number(this.getContract().splyAmount) + Number(this.getContract().mgmtChrg)) : '-'}
+                    {(keepTrustContract) ?
+                      StringUtils.moneyConvert(Number(keepTrustContract.splyAmount) + Number(keepTrustContract.mgmtChrg)) : '-'}
                   </Text>
                 </View>
               </View>
             ) : null}
 
-            {this.getContract() &&
-            <ContractInformation
-              navigation={this.navigation}
-              detailContract={this.state.detailContract}
-              detailEstimate={this.getContract()}
-              type={type}
-              contractType={typeWH}
-              status={status}
-              rentUserNo={rentUserNo}
-              warehSeq={warehSeq}
-            />}
+            {keepTrustContract ?
+              <ContractInformation
+                navigation={this.navigation}
+
+                detailEstimate={detailEstimate} // 계약 기본 정보
+                keepTrustContract={keepTrustContract} // keep|trust
+
+                // detailContract={this.state.detailContract}
+                // detailEstimate={keepTrustContract}
+
+                type={type}
+                contractType={contractType}
+                status={status}
+                rentUserNo={rentUserNo}
+                warehSeq={warehSeq}
+              /> : <></>}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -157,17 +164,9 @@ class RequestContract extends Component {
   async componentDidMount () {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
-    let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-    let contractType =
-      this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+    let type = this.props.route.params.type.toLowerCase(); // owner | tenant
+    let contractType = this.props.route.params.typeWH.toLowerCase(); // keep | trust
     let rentUserNo = this.props.route.params.rentUserNo;
-
-    // TODO no use
-    let typeWH = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
-    let rentUserID = this.props.route?.params?.rentUserID;
-    let rentUserDate = moment(this.props.route.params.regUserDate).format(
-      'YYYYMMDD',
-    );
 
     if (type === 'owner') {
       /**
@@ -178,31 +177,32 @@ class RequestContract extends Component {
         contractType: contractType,
         warehSeq: warehSeq,
         rentUserNo: rentUserNo,
-      })
-        .then(res => {
-          let resultData = res;
-          this.setState({ detailContract: resultData });
+      }).then(async (res) => {
+        let resultData = res;
+        this.setState({ detailContract: resultData });
 
-          // 견적 완료, 계약 진행 중일 때.
-          let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
-          Contract.getContractKeep({
-            type: 'owner',
-            contractType: contractType,
-            idWarehouse: warehouseRegNo,
-            rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
-            cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD',),
-          }).then(res => {
-            let resultEstmtData = {
-              warehouse: resultData.warehouse,
-              [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
-            };
-            console.debug(
-              '[3] 견적 완료, 계약 진행 중일 때. : ',
-              resultEstmtData,
-            );
-            this.setState({ detailEstimate: resultEstmtData });
+        // 견적 완료, 계약 진행 중일 때.
+        let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
+        await Contract.getContractKeep({
+          type: 'owner',
+          contractType: contractType,
+          idWarehouse: warehouseRegNo,
+          rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
+          cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD',),
+        }).then(res => {
+          let resultEstmtData = {
+            warehouse: resultData.warehouse,
+            [contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts']: res,
+          };
+
+          // console.debug('[3] 견적 완료, 계약 진행 중일 때.1 : ', res);
+          this.setState({
+            detailEstimate: resultEstmtData,
+            keepTrustContract: res, // keep|trust
+            keepTrustEstimate: contractType === 'keep' ? res.whrgMgmtKeep : res.whrgMgmtTrust, // keep|trust
           });
-        })
+        });
+      })
         .catch(err => {
           console.log(err);
         });
@@ -229,10 +229,15 @@ class RequestContract extends Component {
         }).then(res => {
           let resultEstmtData = {
             warehouse: resultData.warehouse,
-            [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
+            [contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts']: res,
           };
-          console.debug('[3] 견적 완료, 계약 진행 중일 때. :  ', resultEstmtData)
-          this.setState({ detailEstimate: resultEstmtData });
+
+          // console.debug('[3] 견적 완료, 계약 진행 중일 때.1 :  ', resultEstmtData)
+          this.setState({
+            detailEstimate: resultEstmtData,
+            keepTrustContract: res, // keep|trust
+            keepTrustEstimate: contractType === 'keep' ? res.whrgMgmtKeep : res.whrgMgmtTrust, // keep|trust
+          });
         });
       });
     }
@@ -261,9 +266,7 @@ class RequestContract extends Component {
       .catch(err => {
         console.log('errRequest', err);
       });
-
-    const { dataApi, detailEstimate } = this.state;
-
+    const { detailEstimate, keepTrustContract, keepTrustEstimate } = this.state;
 
     if (dataApi && detailEstimate && this.getContract() && typeWH === 'keep') {
 
@@ -287,31 +290,30 @@ class RequestContract extends Component {
             highlight: true,
           },
           {
-            type: '보관유형11',
-            value: this.getContract().typeCode.stdDetailCodeName,
+            type: '보관유형',
+            value: keepTrustEstimate.typeCode.stdDetailCodeName,
           },
-          // {
-          //   type: '전용면적',
-          //   value: detailEstimate.warehouse.prvtArea ? detailEstimate.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
-          // },
-          // {
-          //   type: '임대 가능 기간',
-          //   value: StringUtils.dateStr(this.getContract().id.cntrYmdFrom) + '~' + StringUtils.dateStr(this.getContract().cntrYmdFrom),
-          // },
-          // {
-          //   type: '보관단가',
-          //   value: StringUtils.moneyConvert(this.getContract().splyAmount),
-          // },
-          // {
-          //   type: '관리단가',
-          //   value: StringUtils.moneyConvert(this.getContract().mgmtChrg),
-          // },
+          {
+            type: '전용면적',
+            value: detailEstimate.warehouse.prvtArea ? detailEstimate.warehouse.prvtArea.toLocaleString() + " ㎡" : "-",
+          },
+          {
+            type: '임대 가능 기간',
+            value: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
+          },
+          {
+            type: '보관단가',
+            value: StringUtils.moneyConvert(keepTrustContract.splyAmount),
+          },
+          {
+            type: '관리단가',
+            value: StringUtils.moneyConvert(keepTrustContract.mgmtChrg),
+          },
         ],
       });
     }
 
-    if (detailEstimate && this.getContract() && typeWH === 'trust') {
-      console.log(':::::TRUST DATA')
+    if (detailEstimate && keepTrustContract && contractType === 'trust') {
       this.setState({
         dataTrust: [
           {
@@ -333,43 +335,44 @@ class RequestContract extends Component {
           },
           {
             type: '가용수량',
-            value: this.getContract().cntrValue ? this.getContract().cntrValue : '0',
+            value: keepTrustContract.cntrValue ? keepTrustContract.cntrValue : '0',
           },
           {
             type: '수탁 가능 기간',
-            value: StringUtils.dateStr(this.getContract().id.cntrYmdFrom) + '~' + StringUtils.dateStr(this.getContract().cntrYmdTo),
+            value: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
           },
           {
             type: '보관단가',
-            value: StringUtils.moneyConvert(this.getContract().splyAmount),
+            value: StringUtils.moneyConvert(keepTrustContract.splyAmount),
           },
           {
             type: '가공단가',
-            value: StringUtils.moneyConvert(this.getContract().mnfctChrg),
+            value: StringUtils.moneyConvert(keepTrustContract.mnfctChrg),
           },
           {
             type: '인건단가',
-            value: StringUtils.moneyConvert(this.getContract().psnChrg),
+            value: StringUtils.moneyConvert(keepTrustContract.psnChrg),
           },
           {
             type: '입고단가',
-            value: StringUtils.moneyConvert(this.getContract().whinChrg),
+            value: StringUtils.moneyConvert(keepTrustContract.whinChrg),
           },
           {
             type: '출고단가',
-            value: StringUtils.moneyConvert(this.getContract().whoutChrg),
+            value: StringUtils.moneyConvert(keepTrustContract.whoutChrg),
           },
           {
             type: '택배단가',
-            value: StringUtils.moneyConvert(this.getContract().dlvyChrg),
+            value: StringUtils.moneyConvert(keepTrustContract.dlvyChrg),
           },
           {
             type: '운송단가',
-            value: StringUtils.moneyConvert(this.getContract().shipChrg),
+            value: StringUtils.moneyConvert(keepTrustContract.shipChrg),
           },
         ],
       });
     }
+
   }
 
   /** when update state or props */
