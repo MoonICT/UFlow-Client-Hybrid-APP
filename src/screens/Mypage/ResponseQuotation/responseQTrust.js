@@ -74,6 +74,7 @@ class ResponseQTrust extends Component {
       showFrom,
       showTo,
       isSubmit,
+      formData
     } = this.state;
 
     const {
@@ -89,7 +90,7 @@ class ResponseQTrust extends Component {
       shipChrg,
     } = this.state.formData;
 
-    console.log(psnChrg, 'psnChrg 11');
+    console.log(formData, 'formData');
 
     let isSubmitTrust = false;
 
@@ -105,8 +106,12 @@ class ResponseQTrust extends Component {
       isSubmitTrust = true;
     }
 
-    console.log(psnChrg, 'psnChrg');
-
+    // console.log(psnChrg, 'psnChrg');
+    let checkRntlValue = false;
+    if (( this.props.rntlValue >= rntlValue)&&(rntlValue>0)){
+      checkRntlValue = true;
+    }
+    console.log('checkRntlValue :>> ', checkRntlValue);
     return <Fragment>
 
       {/** 수탁기간 (필수) **/}
@@ -197,7 +202,7 @@ class ResponseQTrust extends Component {
         defaultValue={
           rntlValue ? String(rntlValue) : '0'
         }
-
+        textError={ checkRntlValue === true ? null : '단가가 허용범위를 초과했습니다.'}
         isRequired={true}
         onChangeText={e => {
           this.setState({
