@@ -296,8 +296,8 @@ class RegisterIntro extends Component {
           if (res.status === 200) {
             let data = res.data.documents[0];
             let gps = {
-              latitude: data.x,
-              longitude: data.y,
+              latitude: data.y,
+              longitude: data.x,
             };
             this.setState({ gps });
             // this.props.quotationData(res.data);
