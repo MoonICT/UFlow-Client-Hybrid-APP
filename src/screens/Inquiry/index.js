@@ -26,11 +26,11 @@ import { log } from 'react-native-reanimated';
 const selectOptions = [
   {
     label: '창고주 ',
-    value: 'OWNER',
+    value: '창고주 ',
   },
   {
     label: '임차인 ',
-    value: 'TENANT',
+    value: '임차인 ',
   },
 ];
 
@@ -198,7 +198,6 @@ class Inquiry extends Component {
       listQuestion,
     } = this.state;
 
-      // console.log('startDate', this.state.from)
     return (
       <SafeAreaView style={S.container}>
         <Appbars>

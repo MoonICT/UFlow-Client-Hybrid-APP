@@ -14,7 +14,6 @@ import {
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {Appbar, Text} from 'react-native-paper';
 
 // Local Imports
 import TableInfo from '@Components/atoms/TableInfo';
@@ -23,10 +22,10 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import warehouse1 from '@Assets/images/warehouse-1.png';
-import {Warehouse, MyPage} from '@Services/apis';
-
+import {Warehouse, MyPage, Contract} from '@Services/apis';
 import {styles as S} from '../style';
 import RequestView from './requestView';
+import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 
 import TenantRq00Trust from './tenantRq00Trust';
 import TenantRq00Keep from './tenantRq00Keep';
@@ -287,6 +286,7 @@ class Quotation extends Component {
               {/** WAREHOUSE INFO **/}
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
+                  {/** TODO 보관 상태에 따라 이미지 변경 **/ }
                   <Image source={warehouse1} style={DefaultStyle._avatarHeader}/>
                 </View>
                 <View
@@ -313,13 +313,13 @@ class Quotation extends Component {
             {/** REQ/RES ACTION **/}
 
             {/* ====== STATUS DEBUG ====== */}
-            <Text>{type}</Text>
-            <Text>{typeWH}</Text>
-            <Text>{status}</Text>
-            <Text>{this.state.groupOrders}</Text>
+            {/*<Text>{type}</Text>*/}
+            {/*<Text>{typeWH}</Text>*/}
+            {/*<Text>{status}</Text>*/}
+            {/*<Text>{this.state.groupOrders}</Text>*/}
             {/* ====== END:STATUS DEBUG ====== */}
-
-            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST') && this.state.groupOrders &&
+            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'TRUST')
+            && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
             <TenantRq00Trust
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
@@ -337,12 +337,13 @@ class Quotation extends Component {
 
             />
             }
-            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'KEEP') &&
+            {(type === 'TENANT' && status === 'RQ00' && typeWH === 'KEEP')
+            && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
             <TenantRq00Keep
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
               warehSeq={warehSeq}
-              rentUserNo={rentUserNo}groupOrderIndex
+              rentUserNo={rentUserNo}
               type={type}
               typeWH={typeWH}
               status={status}
@@ -351,11 +352,12 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtKeepGroups={this.state.estmtKeepGroups}
               groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
             />
             }
 
-
-            {(type === 'TENANT' && status === 'RS00' && typeWH === 'TRUST') &&
+            {(type === 'TENANT' && status === 'RS00' && typeWH === 'TRUST')
+            && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
             <TenantRs00Trust
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
@@ -369,9 +371,11 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtTrustGroups={this.state.estmtTrustGroups}
               groupOrders={this.state.groupOrders}
+              onClickContract={this.onClickContract}
             />
             }
-            {(type === 'TENANT' && status === 'RS00' && typeWH === 'KEEP') &&
+            {(type === 'TENANT' && status === 'RS00' && typeWH === 'KEEP')
+            && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
             <TenantRs00Keep
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
@@ -385,11 +389,12 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtKeepGroups={this.state.estmtKeepGroups}
               groupOrders={this.state.groupOrders}
+              onClickContract={this.onClickContract}
             />
             }
 
-
-            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST') && this.state.groupOrders &&
+            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'TRUST')
+            && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
             <OwnerRq00Trust
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
@@ -406,7 +411,8 @@ class Quotation extends Component {
               groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
             />
             }
-            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP') &&
+            {(type === 'OWNER' && status === 'RQ00' && typeWH === 'KEEP')
+            && this.state.groupOrders && this.state.calUnitDvCodes && this.state.calStdDvCodes &&
             <OwnerRq00Keep
               navigation={this.props.navigation}
               warehouseRegNo={warehouseRegNo}
@@ -420,10 +426,11 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtKeepGroups={this.state.estmtKeepGroups}
               groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
             />
             }
 
-
+            {/** 엑션 없음 **/}
             {/*{(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&*/}
             {/*<OwnerRs00Trust*/}
             {/*  navigation={this.props.navigation}*/}
@@ -440,22 +447,24 @@ class Quotation extends Component {
             {/*  groupOrders={this.state.groupOrders}*/}
             {/*/>*/}
             {/*}*/}
-            {(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&
-            <OwnerRs00Keep
-              navigation={this.props.navigation}
-              warehouseRegNo={warehouseRegNo}
-              warehSeq={warehSeq}
-              rentUserNo={rentUserNo}
-              type={type}
-              typeWH={typeWH}
-              status={status}
-              data={dataApi}
-              calUnitDvCodes={this.state.calUnitDvCodes}
-              calStdDvCodes={this.state.calStdDvCodes}
-              estmtKeepGroups={this.state.estmtKeepGroups}
-              groupOrders={this.state.groupOrders}
-            />
-            }
+
+            {/** 엑션 없음 **/}
+            {/*{(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&*/}
+            {/*<OwnerRs00Keep*/}
+            {/*  navigation={this.props.navigation}*/}
+            {/*  warehouseRegNo={warehouseRegNo}*/}
+            {/*  warehSeq={warehSeq}*/}
+            {/*  rentUserNo={rentUserNo}*/}
+            {/*  type={type}*/}
+            {/*  typeWH={typeWH}*/}
+            {/*  status={status}*/}
+            {/*  data={dataApi}*/}
+            {/*  calUnitDvCodes={this.state.calUnitDvCodes}*/}
+            {/*  calStdDvCodes={this.state.calStdDvCodes}*/}
+            {/*  estmtKeepGroups={this.state.estmtKeepGroups}*/}
+            {/*  groupOrders={this.state.groupOrders}*/}
+            {/*/>*/}
+            {/*}*/}
 
             {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
              {route.params.status === 'notAnswerd' ? (
@@ -556,6 +565,98 @@ class Quotation extends Component {
           </View>
 
         </ScrollView>
+        {/** 수탁 계약협의 요청 **/}
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={this.state.visibleContractTrust}
+          onDismiss={() => {
+            this.setState({visibleContractTrust: false});
+          }}>
+          <Dialog.Title style={DefaultStyle._titleDialog}>
+            수탁 계약협의 요청
+          </Dialog.Title>
+          <Dialog.Content>
+            <Text>견적 금액을 확정하고 계약을 요청하시겠습니까?</Text>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => this.setState({visibleContractTrust: false})}>
+              아니오
+            </Button>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => {
+
+                Contract.createTrust({
+                  idWarehouse: warehouseRegNo,
+                  mgmtTrustSeq: warehSeq,
+                  rentUserNo: rentUserNo
+                }).then((res) => {
+                  if (res.status === 200) {
+                    this.setState({
+                      completeContract: true
+                    });
+                    alert('계약 요청이 완료되었습니다.');
+                    // TODO 마이페이지 부모 refresh!!
+                    this.navigation.goBack();
+                  } else {
+                    alert('계약 요청이 실패하였습니다.\n다시 시도해보세요.');
+                    this.navigation.goBack();
+                  }
+                });
+              }}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+
+        {/** 임대(보관) 계약협의 요청 **/}
+        <Dialog
+          style={DefaultStyle.popup}
+          visible={this.state.visibleContractTrust}
+          onDismiss={() => {
+            this.setState({visibleContractTrust: false});
+          }}>
+          <Dialog.Title style={DefaultStyle._titleDialog}>
+            임대(보관) 계약협의 요청
+          </Dialog.Title>
+          <Dialog.Content>
+            <Text>견적 금액을 확정하고 계약을 요청하시겠습니까?</Text>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => this.setState({visibleContractTrust: false})}>
+              아니오
+            </Button>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => {
+
+                Contract.createKeep({
+                  idWarehouse: warehouseRegNo,
+                  mgmtKeepSeq: warehSeq,
+                  rentUserNo: rentUserNo
+                }).then((res) => {
+                  if (res.status === 200) {
+                    this.setState({
+                      completeContract: true
+                    });
+                    alert('계약 요청이 완료되었습니다.');
+                    // TODO 마이페이지 부모 refresh!!
+                    this.navigation.goBack();
+                  } else {
+                    alert('계약 요청이 실패하였습니다.\n다시 시도해보세요.');
+                    this.navigation.goBack();
+                  }
+                });
+              }}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+
       </SafeAreaView>
     );
   }
@@ -605,6 +706,7 @@ class Quotation extends Component {
     const res = await Warehouse.quotation(
       this.props.route.params.type === 'OWNER' ? urlOwner : urlTenant,
     )
+
     const status = res.status;
 
     if (status === 200) {
@@ -619,10 +721,87 @@ class Quotation extends Component {
             : urlPropsTenant,
       });
       // this.props.quotationData(res.data);
-    };
+    }
+    ;
 
-    console.log("### 2")
-    // SplashScreen.hide();
+    console.log(this.props.route.params.mode, '#### this.props.mode');
+    if (this.props.route.params.mode) {
+      switch (this.props.route.params.mode) {
+        case 'RE':
+          /** 임차인 견적 재요청 바로보내기 **/
+          // console.log(this.props.route.params.typeWH, 'this.props.route.params.typeWH');
+          /** Go To 견적 재요청 **/
+          const {dataApi} = this.state;
+          if (dataApi)
+            this.navigation.navigate('RequestQuotation', {
+              data: dataApi,
+              typeWH,
+              warehouseRegNo,
+              warehSeq,
+              rentUserNo,
+              status,
+              type,
+            });
+          break;
+        case 'RS':
+          /** 창고주 응답하기 바로보내기 **/
+          // console.log(this.props.route.params.typeWH, 'this.props.route.params.typeWH');
+          // console.log(this.state.estmtKeepGroups, 'this.state.estmtKeepGroups');
+          // console.log(this.state.estmtTrustGroups, 'this.state.estmtTrustGroups');
+          // console.log(this.state.groupOrders, 'this.state.groupOrders');
+          // console.log({
+          //   typeWH,
+          //   warehouseRegNo,
+          //   warehSeq,
+          //   rentUserNo,
+          //   status,
+          //   type,
+          // }, 'body');
+          if (this.props.route.params.typeWH === 'KEEP' && this.state.estmtKeepGroups && this.state.groupOrders) {
+            const estmtKeepGroups = this.state.estmtKeepGroups;
+            const index = this.state.groupOrders ? this.state.groupOrders.length - 1 : 0;
+            let lastRequestData = {};
+            if (estmtKeepGroups && estmtKeepGroups.length > 0) {
+              lastRequestData = estmtKeepGroups[index][estmtKeepGroups[index].length - 1];
+            }
+            /** GO TO 견적응답하기 **/
+            this.navigation.navigate('ResponseQuotation', {
+              lastRequestData,
+              typeWH,
+              warehouseRegNo,
+              warehSeq,
+              rentUserNo,
+              status,
+              type,
+            });
+            console.log(lastRequestData, 'KEEP lastRequestData');
+          } else if (this.props.route.params.typeWH === 'TRUST' && this.state.estmtTrustGroups && this.state.groupOrders) {
+            const estmtTrustGroups = this.state.estmtTrustGroups;
+            const index = this.state.groupOrders ? this.state.groupOrders.length - 1 : 0;
+            let lastRequestData = {};
+            if (estmtTrustGroups && estmtTrustGroups.length > 0) {
+              lastRequestData = estmtTrustGroups[index][estmtTrustGroups[index].length - 1];
+            }
+            /** GO TO 견적응답하기 **/
+            this.navigation.navigate('ResponseQuotation', {
+              lastRequestData,
+              typeWH,
+              warehouseRegNo,
+              warehSeq,
+              rentUserNo,
+              status,
+              type,
+            });
+            console.log(lastRequestData, 'TRUST lastRequestData');
+          }
+
+          break;
+        case 'CT':
+          /** 견적 신청 얼럿 **/
+          this.setState({visibleContractTrust: true});
+          break;
+      }
+    }
   }
 
   /** when update state or props */
