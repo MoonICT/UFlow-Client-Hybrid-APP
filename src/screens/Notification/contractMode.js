@@ -14,6 +14,7 @@ import {
   ScrollView,
   Text,
   Image,
+  Dimensions,
   ImageBackground,
 } from 'react-native';
 
@@ -70,6 +71,7 @@ const data = [
 //     titleList: '패밀리사이트',
 //   },
 // ];
+const windowHeight = Dimensions.get('window').height;
 export default class Notification extends Component {
   constructor(props) {
     super(props);
@@ -82,7 +84,7 @@ export default class Notification extends Component {
     const { title } = this.state;
 
     return (
-      <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <SafeAreaView style={{ backgroundColor: 'white',minHeight:windowHeight }}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -90,7 +92,7 @@ export default class Notification extends Component {
             onPress={() => this.props.nav.goBack()}
           />
           <Appbar.Content
-            title="마이페이지"
+            title="이용방법"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
