@@ -27,7 +27,6 @@ import imgType9100 from '@Assets/images/type-9100.png';
 
 import {
   Warehouse,
-  MediaFileContract,
   MyPageEstmtCntr,
   Contract,
 } from '@Services/apis';
@@ -51,33 +50,6 @@ class RequestContract extends Component {
     this.navigation = props.navigation;
   }
 
-  /**
-   * 보관/수탁 정보 추출.
-   * */
-  getContract = () => {
-    if (this.state.detailEstimate) {
-      if (this.state.detailEstimate.estmtKeeps) {
-        return this.state.detailEstimate.estmtKeeps;
-      }
-      if (this.state.detailEstimate.estmtTrusts) {
-        return this.state.detailEstimate.estmtTrusts;
-      }
-    }
-  };
-
-  /**
-   *  보관/수탁 결정 견 정보 추출.
-   * */
-  getEstimate = (data) => {
-    if (data) {
-      if (data.estmtKeeps) {
-        return data.estmtKeeps.whrgMgmtKeep;
-      }
-      if (data.estmtTrusts) {
-        return data.estmtTrusts.whrgMgmtTrust;
-      }
-    }
-  };
 
   render() {
     let warehSeq = this.props.route.params.warehSeq;
@@ -106,6 +78,8 @@ class RequestContract extends Component {
         </Appbars>
         <ScrollView>
           <View style={DefaultStyle._body}>
+
+            {/** HEADER **/}
             <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
               <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
               <Text
@@ -119,11 +93,13 @@ class RequestContract extends Component {
                   : ContractUtils.coverStatus(status).processing}
               </Text>
             </View>
+            {/** END:HEADER **/}
 
+            {/** WAREHOUSE INFO **/}
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>
                 {this.state.imgType &&
-                  <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
                 }
               </View>
               <View>
@@ -134,6 +110,19 @@ class RequestContract extends Component {
                 </View>
               </View>
             </View>
+            {/** END:WAREHOUSE INFO **/}
+
+            {/** CONTRACT INFO **/}
+            <View style={DefaultStyle._card}>
+              <View>
+                <View style={DefaultStyle._infoTable}>
+                  {(contractType === 'keep' && dataKeep) ?
+                    <TableInfo data={dataKeep}/> :
+                    <TableInfo data={dataTrust}/>}
+                </View>
+              </View>
+            </View>
+            {/** END:CONTRACT INFO **/}
             {contractType === 'keep' ? (
               <View style={[DefaultStyle._body, DefaultStyle._margin0]}>
                 <View style={DefaultStyle._footerCards}>
@@ -149,13 +138,8 @@ class RequestContract extends Component {
             {keepTrustContract ?
               <ContractInformation
                 navigation={this.navigation}
-
                 detailEstimate={detailEstimate} // 계약 기본 정보
                 keepTrustContract={keepTrustContract} // keep|trust
-
-                // detailContract={this.state.detailContract}
-                // detailEstimate={keepTrustContract}
-
                 type={type}
                 contractType={contractType}
                 status={status}
@@ -250,30 +234,6 @@ class RequestContract extends Component {
       });
     }
 
-    // TODO 밑에 확인
-    let url = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + contractType + '/' + rentUserNo;
-
-    let urlTenant = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + contractType;
-
-    await Warehouse.quotation(
-      this.props.route.params.type === 'OWNER' ? url : urlTenant,
-    )
-      .then(res => {
-        if (res.status === 200) {
-          console.log('계약 상세 데이터', res.data);
-          this.setState(
-            {
-              dataApi: res.data,
-            },
-            () => {
-            },
-          );
-          // this.props.quotationData(res.data);
-        }
-      })
-      .catch(err => {
-        console.log('errRequest', err);
-      });
     const {detailEstimate, keepTrustContract, keepTrustEstimate} = this.state;
 
     if (detailEstimate && keepTrustContract && contractType === 'keep') {

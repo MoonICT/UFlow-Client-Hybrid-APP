@@ -448,7 +448,7 @@ class Mypage extends Component {
 
     // SplashScreen.hide();
   }
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     let titleProp =
       newProps.route && newProps.route.params && newProps.route.params.title;
     console.log('titleProp :>> ', titleProp);
