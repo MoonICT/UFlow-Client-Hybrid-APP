@@ -277,7 +277,7 @@ class RegisterWH extends Component {
 
         {/******* Content *******/}
         <ScrollView>
-          <View>
+          <View style={[{paddingBottom: 300}]}>
             <TouchableOpacity
               style={S.imageRegister}
               onPress={() => this.navigation.navigate('RegisterImage')}>
