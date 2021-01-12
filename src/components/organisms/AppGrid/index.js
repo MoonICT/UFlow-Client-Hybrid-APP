@@ -52,8 +52,6 @@ class AppGrid extends Component {
     const data = newProps.data;
     const value = newProps.value;
     const title = newProps.title;
-    console.log('newProps :>> ', newProps);
-    console.log('dataTitle :>> ', dataTitle);
     // if (value < data.length) {
     //   this.setState({ active: dataTitle.title });
     // }

@@ -34,8 +34,8 @@ class ContractInformation extends Component {
       isOffLineDialog: false
     };
 
-    console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
-    console.debug('견적 약관 keepTrustContract : ', props.keepTrustContract)
+    // console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+    // console.debug('견적 약관 keepTrustContract : ', props.keepTrustContract)
 
     this.navigation = props.navigation;
   }
@@ -123,6 +123,7 @@ class ContractInformation extends Component {
         viewComponent = (
           <TermsContract
             navigation={this.navigation}
+            route={this.props.route}
             detailEstimate={detailEstimate}
             keepTrustContract={keepTrustContract}
             dataTable={dataTable}
@@ -153,18 +154,18 @@ class ContractInformation extends Component {
                 { marginTop: 12, marginBottom: Platform.OS === 'ios' ? 90 : 12 },
               ]}>
 
-              <TouchableOpacity
-                style={[DefaultStyle._btnInline, DefaultStyle._btnLeft]}
-                onPress={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>
-                <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-                  전자계약
-                </Text>
-              </TouchableOpacity>
+              {/*<TouchableOpacity*/}
+              {/*  style={[DefaultStyle._btnInline, DefaultStyle._btnLeft]}*/}
+              {/*  onPress={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>*/}
+              {/*  <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>*/}
+              {/*    전자계약*/}
+              {/*  </Text>*/}
+              {/*</TouchableOpacity>*/}
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                 onPress={() => this.setState({ isOffLineDialog: !this.state.isOffLineDialog })}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-                  오프라인 계약
+                  오프라인 계약서
                 </Text>
               </TouchableOpacity>
             </View>

@@ -47,7 +47,6 @@ const Axios = {
       if (requiresToken) {
         const token = await AsyncStorage.getItem(TOKEN);
         headers['Authorization'] = `Bearer ${token}`;
-        console.log('토큰토큰토큰:::::', token)
         // AsyncStorage.getItem('token').then(value => {
         //   headers['Authorization'] = `Bearer ${value}`;
         // });
