@@ -174,7 +174,10 @@ class TenantRs00Trust extends Component {
                   () => {
                     console.log('계약요청 버튼 클릭');
 
-                    onClickContract(true);
+                    if (onClickContract)
+                      onClickContract(true);
+                    else
+                      alert('오류가 발생하였습니다. 상세페이지에서 요청해주세요. (-2)')
                     // this.setState({
                     //   visibleContractTrust: true,
                     //   // isConfirmRequest: !this.state.isConfirmRequest,
