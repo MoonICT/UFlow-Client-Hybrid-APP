@@ -183,26 +183,16 @@ class RegisterInfo extends Component {
 
   _renderItem = ({ item }) => {
     let dataKeep = this.state.keeps;
-    // let prevKeep =
-    //   this.state.numberSlide === this.state.keeps.length
-    //     ? this.state.keeps[this.state.numberSlide - 1]
-    //     : [];
-
-    // console.log('prevKeep :>> ', prevKeep);
     return (
       <Form
-        managementFees={this.state.managementFees}
+        mgmtChrgDvCodes={this.state.mgmtChrgDvCodes}
+        typeCodes={this.state.typeCodes}
+        calUnitDvCodes={this.state.calUnitDvCodes}
+        calStdDvCodes={this.state.calStdDvCodes}
         valueTab={this.state.valueTab}
         number={this.state.numberSlide}
         key={item.key}
-        formData={
-          //   this.state.keeps[this.state.numberSlide]
-          //     ? this.state.keeps[this.state.numberSlide]
-          //     : prevKeep
-          dataKeep[this.state.numberSlide]
-          // ? this.state.keeps[this.state.numberSlide]
-          // : prevKeep
-        }
+        formData={dataKeep[this.state.numberSlide]}
         dataKeep={dataKeep}
         valueForm={e => {
           let index = this.state.numberSlide;
@@ -217,6 +207,9 @@ class RegisterInfo extends Component {
   _renderItemTrusts = ({ item }) => {
     return (
       <FormTrusts
+        typeCodes={this.state.typeCodes}
+        calUnitDvCodes={this.state.calUnitDvCodes}
+        calStdDvCodes={this.state.calStdDvCodes}
         valueTab={this.state.valueTab}
         number={this.state.numberSlideTrusts}
         key={item.key}
@@ -241,6 +234,8 @@ class RegisterInfo extends Component {
       isSubmit,
     } = this.state;
     // console.log('dataInfo :>> ', dataInfo);
+    // console.log('keeps :>> ', dataInfo.keeps);
+    // console.log('managementFeeIndex :>> ', this.props.managementFee);
     let isSubmitUpdate = false;
     // console.log('keeps', keeps);
     // console.log('numberSlide', numberSlide);
@@ -449,24 +444,79 @@ class RegisterInfo extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    await MyPage.getDetailCode('WHRG0012')
+    await MyPage.getDetailCodes('WHRG0001')
       .then(res => {
         if (res.status === 200) {
           let data = res.data._embedded.detailCodes;
-
-          let managementFees =
+          let typeCodes =
             data &&
             data.map((item, index) => {
               return {
-                type: item.stdDetailCodeName,
+                label: item.stdDetailCodeName,
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ managementFees });
+          this.setState({ typeCodes });
         }
       })
       .catch(err => {
-        console.log('err', err);
+        console.log('errINFO', err);
+      });
+
+    await MyPage.getDetailCodes('WHRG0013')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let calUnitDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ calUnitDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errCalUnitDvCode', err);
+      });
+
+    await MyPage.getDetailCodes('WHRG0014')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let calStdDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ calStdDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errCalStdDvCode', err);
+      });
+    await MyPage.getDetailCodes('WHRG0012')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let mgmtChrgDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ mgmtChrgDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errINFO', err);
       });
   }
 

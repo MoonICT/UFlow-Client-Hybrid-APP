@@ -28,8 +28,8 @@ import {
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar } from 'react-native-paper'; //Button
-import { SliderBox } from 'react-native-image-slider-box';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { SliderBox } from 'react-native-image-slider-box';
 // import Video from 'react-native-video';
 // import VideoPlayer from 'react-native-video-player';
 
@@ -57,6 +57,11 @@ import { styles } from './styles';
 // import symbolsBG from '@Assets/images/symbol.png';
 import factoryBG from '@Assets/images/factory.png';
 import boxMain from '@Assets/images/box_main_1.png';
+
+import bannerSearchWh1 from '@Assets/images/bannerSearchWh1.png';
+import bannerSearchWh2 from '@Assets/images/bannerSearchWh2.png';
+import bannerSearchWh3 from '@Assets/images/bannerSearchWh3.png';
+
 import cardBG from '@Assets/images/card-img.png';
 // import stepBG from '@Assets/images/step.png';
 // import slogan1 from '@Assets/images/slogan1.png';
@@ -336,11 +341,13 @@ class Home extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    AsyncStorage.getItem(TOKEN).then(v => {
-      this.setState({ isLogin: v !== '' && v !== null });
-    }).catch(error => {
-      alert('서버에러:' + error);
-    });
+    AsyncStorage.getItem(TOKEN)
+      .then(v => {
+        this.setState({ isLogin: v !== '' && v !== null });
+      })
+      .catch(error => {
+        alert('서버에러:' + error);
+      });
   }
 
   componentWillUnmount() {
@@ -374,23 +381,24 @@ class Home extends Component {
   // };
 
   _renderProductItem = item => {
-    // console.log('item==>', item);
     let { whList } = this.state;
     const cardItem = [];
     whList = whList.slice(0, 4);
     whList?.map((v, i) => {
-      cardItem.push(
-        <View key={i} style={styles.mainProductItem}>
-          {v?.thumbnail !== null ? (
-            <ProductCard navigation={this.navigation} data={v} />
-          ) : (
-            <ProductCard
-              navigation={this.navigation}
-              data={{ ...v, img: cardBG }}
-            />
-          )}
-        </View>,
-      );
+      if (i < 2) {
+        cardItem.push(
+          <View key={i} style={styles.mainProductItem}>
+            {v?.thumbnail !== null ? (
+              <ProductCard navigation={this.navigation} data={v} />
+            ) : (
+              <ProductCard
+                navigation={this.navigation}
+                data={{ ...v, img: cardBG }}
+              />
+            )}
+          </View>,
+        );
+      }
     });
 
     return cardItem;
@@ -474,12 +482,12 @@ class Home extends Component {
                 style={styles.introSymbolImage}
                 autoplay
                 circleLoop
-                images={[boxMain, factoryBG]}
+                images={[bannerSearchWh1, bannerSearchWh2, bannerSearchWh3]}
               />
             </View>
             {/*--Content--*/}
             <View style={styles.BoxContentTop}>
-              <View style={[styles.introRow,styles.BoxSearch]}>
+              <View style={[styles.introRow, styles.BoxSearch]}>
                 {/* <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text> */}
                 <TextInputNormal
                   placeholder="어떤 창고를 찾고 계시나요?"
@@ -495,7 +503,7 @@ class Home extends Component {
                     name="search"
                     size={24}
                     color="white"
-                    style={{marginLeft:10}}
+                    style={{ marginLeft: 10 }}
                     onPress={() =>
                       this.navigation.navigate('Search', {
                         searchValue: textSearch,
@@ -507,14 +515,23 @@ class Home extends Component {
 
               {/* <View style={styles.introDivider} /> */}
 
-              <View style={[styles.introRow, styles.introBottom,{justifyContent:'center'}]}>
+              <View
+                style={[
+                  styles.introRow,
+                  styles.introBottom,
+                  { justifyContent: 'center' },
+                ]}>
                 <View style={styles.introColum}>
                   {<Icon name="check" size={12} color="white" />}
                   <Text style={[styles.font9, styles.introColumText]}>
                     빠르고 편리하게
                   </Text>
                 </View>
-                <View style={[styles.introColum,{marginLeft:10,marginRight:10}]}>
+                <View
+                  style={[
+                    styles.introColum,
+                    { marginLeft: 10, marginRight: 10 },
+                  ]}>
                   {<Icon name="check" size={12} color="white" />}
                   <Text style={[styles.font9, styles.introColumText]}>
                     신뢰할 수 있는

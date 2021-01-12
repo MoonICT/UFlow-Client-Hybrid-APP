@@ -19,6 +19,7 @@ export default (state = defaultState, action) => {
         title: action.payload.title || '',
         content: action.payload.content || '',
         image: action.payload.image || '',
+        navigation: action.payload.navigation || ''
       };
     case types.POPUP_HIDE:
       return {

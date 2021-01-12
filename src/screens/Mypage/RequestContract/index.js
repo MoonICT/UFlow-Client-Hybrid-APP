@@ -19,7 +19,12 @@ import warehouse1 from '@Assets/images/warehouse-1.png';
 import ContractInformation from './ContractInformation';
 // import { formatDateV2 } from '@Utils/dateFormat';
 import { styles as S } from '../style';
-import { Warehouse, MediaFileContract, MyPageEstmtCntr, Contract } from '@Services/apis';
+import {
+  Warehouse,
+  MediaFileContract,
+  MyPageEstmtCntr,
+  Contract,
+} from '@Services/apis';
 import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
@@ -185,14 +190,16 @@ class RequestContract extends Component {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-    let contractType = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
+    let contractType =
+      this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
     let rentUserNo = this.props.route.params.rentUserNo;
-
 
     // TODO no use
     let typeWH = this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
     let rentUserID = this.props.route?.params?.rentUserID;
-    let rentUserDate = moment(this.props.route.params.regUserDate).format('YYYYMMDD',);
+    let rentUserDate = moment(this.props.route.params.regUserDate).format(
+      'YYYYMMDD',
+    );
 
     if (type === 'owner') {
       /**
@@ -203,29 +210,34 @@ class RequestContract extends Component {
         contractType: contractType,
         warehSeq: warehSeq,
         rentUserNo: rentUserNo,
-      }).then(async (res) => {
-        let resultData = res
-        this.setState({ detailContract: resultData })
+      })
+        .then(res => {
+          let resultData = res;
+          this.setState({ detailContract: resultData });
 
-        // 견적 완료, 계약 진행 중일 때.
-        let estmtData = resultData.estmtKeeps || resultData.estmtTrusts
-        await Contract.getContractKeep({
-          type: 'owner',
-          contractType: contractType,
-          idWarehouse: warehouseRegNo,
-          rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
-          cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD'),
-        }).then(res => {
-          let resultEstmtData = {
-            warehouse: resultData.warehouse,
-            [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
-          };
-          console.debug('[3] 견적 완료, 계약 진행 중일 때. : ', resultEstmtData)
-          this.setState({ detailEstimate: resultEstmtData });
+          // 견적 완료, 계약 진행 중일 때.
+          let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
+          Contract.getContractKeep({
+            type: 'owner',
+            contractType: contractType,
+            idWarehouse: warehouseRegNo,
+            rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
+            cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD',),
+          }).then(res => {
+            let resultEstmtData = {
+              warehouse: resultData.warehouse,
+              [contractType === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts']: res,
+            };
+            console.debug(
+              '[3] 견적 완료, 계약 진행 중일 때. : ',
+              resultEstmtData,
+            );
+            this.setState({ detailEstimate: resultEstmtData });
+          });
+        })
+        .catch(err => {
+          console.log(err);
         });
-      }).catch(err => {
-        console.log(err);
-      });
     } else if (type === 'tenant') {
       /**
        * [estimate-4] 마이페이지 견적보관 상세정보 (임차인 전용)
@@ -254,22 +266,12 @@ class RequestContract extends Component {
           console.debug('[3] 견적 완료, 계약 진행 중일 때. :  ', resultEstmtData)
           this.setState({ detailEstimate: resultEstmtData });
         });
-      }).catch(err => {
-        console.log(err);
       });
     }
 
     // TODO 밑에 확인
-    let url =
-      type +
-      '/' +
-      warehouseRegNo +
-      '-' +
-      warehSeq +
-      '/' +
-      typeWH +
-      '/' +
-      rentUserNo;
+    let url = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + typeWH + '/' + rentUserNo;
+
     let urlTenant = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + typeWH;
 
     let urlTenantImage =

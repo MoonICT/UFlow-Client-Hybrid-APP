@@ -68,7 +68,9 @@ class FormInfo extends Component {
   onChangeFrom = (event, selectedDate) => {
     const currentDate = selectedDate || this.state.from;
     this.setState({ from: currentDate, showFrom: false });
-    let d = new Date(selectedDate).getTime();
+    let d = selectedDate
+      ? new Date(selectedDate).getTime()
+      : new Date().getTime();
     let dataF = this.props.formData;
     dataF.usblYmdFrom = d;
     this.props.valueForm && this.props.valueForm(dataF);
@@ -84,21 +86,46 @@ class FormInfo extends Component {
   onChangeTo = (event, selectedDate) => {
     const currentDate = selectedDate || this.state.to;
     this.setState({ to: currentDate, showTo: false });
-    let d = new Date(selectedDate).getTime();
+    let d = selectedDate
+      ? new Date(selectedDate).getTime()
+      : new Date().getTime();
     let dataF = this.props.formData;
     dataF.usblYmdTo = d;
     this.props.valueForm && this.props.valueForm(dataF);
   };
   componentWillReceiveProps(newProps) {
     // let selectedValue = newProps.selectedValue;
-    console.log('newPropsIntro :>> ', newProps);
-    // if(newProps.formData===undefined){
-    //   this.setState()
-    // }
+    let newUsblYmdFrom = newProps.formData.usblYmdFrom;
+    let newUsblYmdTo = newProps.formData.usblYmdTo;
+    if (
+      newProps.formData &&
+      newUsblYmdFrom !== undefined &&
+      newUsblYmdFrom !== ''
+    ) {
+      this.setState({ from: new Date(newProps.formData.usblYmdFrom) });
+    }
+    if (
+      newProps.formData &&
+      newUsblYmdTo !== undefined &&
+      newUsblYmdTo !== ''
+    ) {
+      this.setState({ to: new Date(newProps.formData.usblYmdTo) });
+    }
     // this.setState({ selectedValue: selectedValue });
   }
   render() {
-    const { data, valueTab, number, valueForm, formData,dataKeep } = this.props;
+    const {
+      data,
+      valueTab,
+      number,
+      valueForm,
+      formData,
+      dataKeep,
+      typeCodes,
+      mgmtChrgDvCodes,
+      calUnitDvCodes,
+      calStdDvCodes,
+    } = this.props;
     const {
       splyAmount,
       mgmtChrg,
@@ -114,143 +141,35 @@ class FormInfo extends Component {
       mode,
     } = this.state;
     // console.log('formDataKeep :>> ', formData);
-    // console.log('dataKeep :>> ', dataKeep);
+    let timeCheck = false;
 
-    const dataSelect = [
-      {
-        label: '냉동',
-        value: '0001',
-      },
-      {
-        label: '냉장',
-        value: '0002',
-      },
-      {
-        label: '상온',
-        value: '0003',
-      },
-      {
-        label: '위험물',
-        value: '0004',
-      },
-      {
-        label: '기타',
-        value: '9100',
-      },
-    ];
-
-    const settlement = [
-      {
-        label: '제곱미터(㎡)',
-        value: 'CU01',
-      },
-      {
-        label: '평',
-        value: 'CU02',
-      },
-      {
-        label: '파렛트',
-        value: 'CU03',
-      },
-      {
-        label: '중량',
-        value: 'CU04',
-      },
-      {
-        label: 'BOX',
-        value: 'CU05',
-      },
-      {
-        label: 'PCS',
-        value: 'CU06',
-      },
-      {
-        label: 'CBM',
-        value: 'CU07',
-      },
-      {
-        label: '명수',
-        value: 'CU08',
-      },
-      {
-        label: '건수',
-        value: 'CU09',
-      },
-      {
-        label: '횟수',
-        value: 'CU010',
-      },
-      {
-        label: '일수',
-        value: 'CU011',
-      },
-      {
-        label: '월수',
-        value: 'CU011',
-      },
-    ];
-    const calculation = [
-      {
-        label: '회',
-        value: 'CS01',
-      },
-      {
-        label: '건',
-        value: 'CS02',
-      },
-      {
-        label: '일',
-        value: 'CS03',
-      },
-      {
-        label: '월',
-        value: 'CS04',
-      },
-      {
-        label: '분기',
-        value: 'CS05',
-      },
-      {
-        label: '반기',
-        value: 'CS06',
-      },
-      {
-        label: '연',
-        value: 'CS07',
-      },
-    ];
-
-    const managementFees = [
-      {
-        label: '일반관리비',
-        value: '0001',
-      },
-      {
-        label: '수도광열비',
-        value: '0002',
-      },
-      {
-        label: '기타',
-        value: '9100',
-      },
-    ];
+    if (
+      to.toLocaleDateString() >= from.toLocaleDateString() &&
+      from.toLocaleDateString() >= new Date().toLocaleDateString()
+    ) {
+      timeCheck = true;
+    }
     let defaultTypeCode =
-      formData && dataSelect.find(item => item.value === formData.typeCode);
+      formData &&
+      typeCodes &&
+      typeCodes.find(item => item.value === formData.typeCode);
     let defaultcalUnit =
       formData &&
-      settlement.find(item => item.value === formData.calUnitDvCode);
+      calUnitDvCodes &&
+      calUnitDvCodes.find(item => item.value === formData.calUnitDvCode);
     let defaultcalStd =
       formData &&
-      calculation.find(item => item.value === formData.calStdDvCode);
+      calStdDvCodes &&
+      calStdDvCodes.find(item => item.value === formData.calStdDvCode);
     let defaulcmgmtChrg =
       formData &&
-      managementFees.find(item => item.value === formData.mgmtChrgDvCode);
-      
+      mgmtChrgDvCodes &&
+      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
     return (
       <Card style={S.cards}>
         <View style>
           <Select
-            data={dataSelect}
+            data={typeCodes}
             dataDefault={defaultTypeCode !== undefined ? defaultTypeCode : ''}
             valueProps={e => {
               // let index = dataForm.findIndex(el => el.id === number);
@@ -265,7 +184,7 @@ class FormInfo extends Component {
             labelSelected="보관유형"
           />
           <Select
-            data={settlement}
+            data={calUnitDvCodes}
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
@@ -277,9 +196,9 @@ class FormInfo extends Component {
           />
 
           <Select
-            data={calculation}
+            data={calStdDvCodes}
+            // selectedValue={formData.calStdDvCode}
             dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
-            selectedValue={formData.calStdDvCode}
             labelSelected="산정기준"
             valueProps={e => {
               let dataF = formData;
@@ -289,9 +208,9 @@ class FormInfo extends Component {
           />
 
           <Select
-            data={managementFees}
+            data={mgmtChrgDvCodes && mgmtChrgDvCodes}
+            // selectedValue={formData.mgmtChrgDvCode}
             dataDefault={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
-            selectedValue={formData.mgmtChrgDvCode}
             labelSelected="관리비구분"
             valueProps={e => {
               let dataF = formData;
@@ -299,7 +218,6 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-
 
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
@@ -394,9 +312,14 @@ class FormInfo extends Component {
           <View style={{ flex: 1, marginBottom: 18 }}>
             <TouchableOpacity
               onPress={this.showDatepicker}
-              style={DefaultStyle._btnDate}>
+              style={[
+                DefaultStyle._btnDate,
+                timeCheck === false ? DefaultStyle._errorText : '',
+              ]}>
               <Text style={DefaultStyle._textDate}>
-                {from.toLocaleDateString()}
+                {from
+                  ? from.toLocaleDateString()
+                  : new Date().toLocaleDateString()}
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
@@ -414,7 +337,10 @@ class FormInfo extends Component {
           <View style={{ flex: 1, marginBottom: 18 }}>
             <TouchableOpacity
               onPress={this.showDatepickerTo}
-              style={DefaultStyle._btnDate}>
+              style={[
+                DefaultStyle._btnDate,
+                timeCheck === false ? DefaultStyle._errorText : '',
+              ]}>
               <Text style={DefaultStyle._textDate}>
                 {to.toLocaleDateString()}
               </Text>
@@ -434,31 +360,36 @@ class FormInfo extends Component {
 
           <TextField
             labelTextField="보관단가"
-            value={formData.splyAmount}
+            value={splyAmount}
             defaultValue={
               formData.splyAmount ? numberToStd(formData.splyAmount) : ''
             }
             textRight="원"
             valueProps={e => {
-              this.setState({ splyAmount: e });
+              let text = e.replace(/[^0-9]/g, '');
+              this.setState({ splyAmount: text });
               let dataF = formData;
-              dataF.splyAmount = stdToNumber(e);
+              dataF.splyAmount = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
+            keyboardType="numeric"
           />
           <TextField
             labelTextField="관리단가"
-            value={formData.mgmtChrg}
+            value={mgmtChrg}
             defaultValue={
               formData.mgmtChrg ? numberToStd(formData.mgmtChrg) : ''
             }
             textRight="원"
             valueProps={e => {
-              this.setState({ mgmtChrg: e });
+              let text = e.replace(/[^0-9]/g, '');
+              console.log('text :>> ', text);
+              this.setState({ mgmtChrg: text });
               let dataF = formData;
-              dataF.mgmtChrg = stdToNumber(e);
+              dataF.mgmtChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
+            keyboardType="numeric"
           />
 
           <TextField
