@@ -78,7 +78,10 @@ class QuestionScreen extends Component {
 
   showDialog = () => this.setState({ visible: true });
 
-  hideDialog = () => this.setState({ visible: false });
+  hideDialog = () => {
+    this.setState({ visible: false });
+    this.navigation.goBack();
+  };
 
   handleChangeEmail = value => this.setState({ email: value });
 
@@ -104,10 +107,10 @@ class QuestionScreen extends Component {
         console.log('err submit', err);
       });
   };
-  onCancel = ()=>{
+  onCancel = () => {
     this.hideDialog;
     this.navigation.goBack();
-  }
+  };
   valueProps = value => {
     this.setState({ email: value });
   };
