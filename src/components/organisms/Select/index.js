@@ -9,6 +9,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 // import { Picker } from '@react-native-community/picker';
 // import RNPickerSelect from 'react-native-picker-select';
 // Local Imports
+import { debounce } from "lodash";
 import { Button, Paragraph, Dialog, Portal } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -27,13 +28,26 @@ export default class Selected extends Component {
   _showSelect = () => this.setState({ isToggle: true });
 
   _hideSelect = () => this.setState({ isToggle: false });
-  componentWillReceiveProps(newProps) {
-    // let selectedValue = newProps.selectedValue;
-    // console.log('defaultValuenewProps :>> ', newProps);
-    newProps.dataDefault
-      ? this.setState({ selectedValue: newProps.dataDefault.label })
+
+  setDebounce = debounce((callback) => {
+    callback();
+  });
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.dataDefault !== this.props.dataDefault) {
+      this.setDebounce(() => {
+        this.setState({ selectedValue: this.props.dataDefault.label })
+      });
+    }
+  }
+
+  componentDidMount() {
+    const {dataDefault} = this.props;
+    dataDefault
+      ? this.setState({ selectedValue: dataDefault.label })
       : this.setState({ selectedValue: '' });
   }
+
   render() {
     const {
       data,
@@ -42,8 +56,10 @@ export default class Selected extends Component {
       colorLabel,
       valueProps,
       indexProps,
+      required,
     } = this.props;
     const { isToggle, selectedValue, indexActive } = this.state;
+    console.log('required',required);
     const items =
       data &&
       data.map((item, index) => {
@@ -69,7 +85,7 @@ export default class Selected extends Component {
           </Text>
         );
       });
-    // console.log('selectedValue :>> ', selectedValue);
+    console.log('selectedValue :>> ', selectedValue);
     // const items =
     //   data &&
     //   data.map((item, index) => {
@@ -88,7 +104,7 @@ export default class Selected extends Component {
         <TouchableOpacity
           // {...this.props}
           onPress={() => this._showSelect()}
-          style={[DefaultStyle._selected]}>
+          style={[DefaultStyle._selected,{ borderColor: required ? 'red' : '#cccccc' }]}>
           {labelSelected ? (
             <Text
               style={[

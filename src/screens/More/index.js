@@ -285,9 +285,9 @@ class More extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('FindPassWord')}>
+                onPress={() => this.navigation.navigate('Emergency')}>
                 <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>긴급차량지원</Text>
+                  <Text style={DefaultStyle.titleItem}>긴급차량 지원</Text>
                 </View>
                 <View style={DefaultStyle.rightItem}>
                   <Icon

@@ -17,6 +17,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { Text, Dialog, Paragraph, Button } from 'react-native-paper';
 import moment from 'moment';
 import { launchImageLibrary } from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -27,79 +28,95 @@ import illust11 from '@Assets/images/illust11.png';
 import { styles as SS } from './style';
 import { Warehouse, Contract } from '@Services/apis';
 import CardMypage from '@Components/organisms/CardMypage';
-import AsyncStorage from "@react-native-community/async-storage";
 
-import DocumentPicker from 'react-native-document-picker';
 class TermsContract extends Component {
   constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
-      isSubmit: false,
-      singleFile: null,
       isAgree: false,
-      isComplete: false,
       file: null,
     };
 
-    console.debug('견적 약관 detailContract : ', props.detailContract)
     console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+    console.debug('견적 약관 keepTrustContract : ', props.keepTrustContract)
 
     this.navigation = props.navigation;
   }
 
   /**
+   * 약관 동의 핸들러
+   * */
+  handleCompplete = () => {
+    this.props.showPopup({
+      image: illust11,
+      title: '계약 약관 동의',
+      type: 'confirm',
+      content: `계약 약관 동의가 처리되었습니다.`,
+    });
+    this.navigation.navigate('Mypage', { title: '견적･계약 관리' });
+  };
+
+  /**
    * 약관 동의 및 계약협의 요청.
    * */
   useImperativeHandle = async () => {
-    await AsyncStorage.getItem('TOKEN').then(res => {
-      console.log('토큰확인1:::::', res)
-    });
-    console.log(this.props.type)
-    console.log('contractType', this.props.contractType.toLowerCase())
-    console.log('warehouseRegNo', this.props.detailEstimate.id.warehouseRegNo)
-    console.log('rentUserNo', this.props.rentUserNo)
-    console.log('cntrYmdFrom', moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD'))
+    const { contractType, keepTrustContract, rentUserNo } = this.props;
     if (!this.state.isAgree) {
       alert('계약 약관에 동의해주세요.')
       return false;
     }
-    if (this.props.type === 'OWNER') {
+
+    if (this.props.type === 'owner') {
       let formData = new FormData();
       formData.append('file', {
         uri: this.state.file.uri,
+        type: this.state.file.type,
         name: this.state.file.fileName,
-        type: 'image/jpeg',
       });
-      formData.append('warehouseRegNo', this.props.detailEstimate.id.warehouseRegNo);
-      formData.append('rentUserNo', this.props.rentUserNo);
-      formData.append('cntrYmdFrom', moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD'));
-      Contract.owner4100(this.props.contractType.toLowerCase(), formData).then(res => {
+      formData.append('warehouseRegNo', keepTrustContract.id.warehouseRegNo);
+      formData.append('rentUserNo', rentUserNo);
+      formData.append('cntrYmdFrom', moment(keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD'));
+      Contract.owner4100(contractType.toLowerCase(), formData).then(res => {
         console.debug('약관 동의 결과1 : ', res)
-        this.setState({ isComplete: false });
+        this.handleCompplete();
       });
-    } else if (this.props.type === 'TENANT') {
+    } else if (this.props.type === 'tenant') {
       Contract.tenant4100({
-        contractType: this.props.contractType.toLowerCase(),
-        warehouseRegNo: this.props.detailEstimate.id.warehouseRegNo,
-        rentUserNo: this.props.rentUserNo,
-        cntrYmdFrom: moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD')
+        contractType: contractType.toLowerCase(),
+        warehouseRegNo: keepTrustContract.id.warehouseRegNo,
+        rentUserNo: rentUserNo,
+        cntrYmdFrom: moment(keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD')
       }).then(res => {
-        console.debug('약관 동의 결과2 : ', res)
-        this.setState({ isComplete: false });
+        this.handleCompplete();
       }).catch(error => {
         alert('tenant4100:' + error);
       });
     }
   }
 
+  /**
+   * 앨범 이미지 선택 핸들러
+   * */
+  handleLaunchImage = () => {
+    launchImageLibrary({}, (res) => {
+      this.setState({
+        file: res
+      });
+    });
+  };
+
+  /**
+   * 파일 선택기
+   * TODO iOS에서 갤러리 선택이 안됨.
+   * */
   handlePicker = async () => {
     try {
       const res = await DocumentPicker.pick({
-
+        type: [DocumentPicker.types.images],
       });
       console.log('res', res)
-      this.setState({ singleFile: res });
+      this.setState({ file: res });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker, exit any dialogs or menus and move on
@@ -108,52 +125,12 @@ class TermsContract extends Component {
       }
     }
   };
-  onSubmit = async () => {
-    let { singleFile } = this.state;
-    let {detailEstimate, rentUserNo, contractType} = this.props
-    var formData = new FormData();
-    formData.append('file', singleFile);
-    formData.append('warehouseRegNo', detailEstimate.id.warehouseRegNo);
-    formData.append('rentUserNo', rentUserNo);
-    formData.append('cntrYmdFrom', detailEstimate.id.cntrYmdFrom.replace(/-/g, ''));
-    console.log('formData', formData)
-    await Warehouse.termsContract(formData, contractType.toLowerCase()).then((res) => {
-      console.log('res', res)
-    }).catch(error => {
-      alert('termsContract:' + error);
-    });
-    // this.setState({ isSubmit: !isSubmit });
-    // this.props.showPopup({
-    //   image: illust11,
-    //   title: '계약서 등록 완료',
-    //   type: 'confirm',
-    //   content: `계약서 등록을 완료했습니다.\n  UFLOW 계약 담당자가\n  계약서를 확인 후 승인할 예정입니다.`,
-    // });
-  }
-
-  /**
-   * 앨범 이미지 선택 핸들러
-   * */
-  handleLaunchImage = () => {
-    console.log('::: handleLaunchImage')
-    launchImageLibrary({
-      // includeBase64: true
-    }, (res) => {
-      console.log('이미지 선택 완료', res);
-      this.setState({
-        file: res
-      });
-    });
-  };
 
   render () {
     const {
       dataTable, // 계약 정보 테이블 데이
-      detailEstimate,
-      // TODO 확인 필요
-      contractType, // KEEP || TRUST
+      keepTrustContract,
       type, // owner || tenant
-
     } = this.props;
     const { isAgree, file } = this.state;
     return (
@@ -236,7 +213,7 @@ class TermsContract extends Component {
         </View>
 
         {/** 추가 서류 업로드 */}
-        {type === 'OWNER' && (detailEstimate && !detailEstimate.entrpByOwner?.file2) && (
+        {type === 'owner' && (keepTrustContract && !keepTrustContract.entrpByOwner?.file2) && (
           <View style={DefaultStyle._card}>
             <View style={DefaultStyle._headerCard}>
               <Text style={DefaultStyle._headerCardTitle}>추가 서류 등록</Text>
@@ -254,12 +231,6 @@ class TermsContract extends Component {
               {/*</Text>*/}
               <TouchableOpacity style={SS.btnAttach}
                                 onPress={() => this.handleLaunchImage()}>
-              {/*<Text style={SS.textSuccess}>*/}
-                {/*성공적으로 파일을 등록했습니다.*/}
-              {/*</Text>*/}
-              {/*<TouchableOpacity*/}
-                {/*style={SS.btnAttach}*/}
-                {/*onPress={() => this.handlePicker()}>*/}
                 <Text style={SS.textAttach}>파일첨부</Text>
               </TouchableOpacity>
             </View>
@@ -272,44 +243,15 @@ class TermsContract extends Component {
           <TouchableOpacity
             style={[
               DefaultStyle._btnInline,
-              (!isAgree || !(detailEstimate.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
+              (!isAgree || !(keepTrustContract.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
             ]}
-            disabled={!isAgree || !(detailEstimate.entrpByOwner?.file2 || file)}
+            disabled={!isAgree || !(keepTrustContract.entrpByOwner?.file2 || file)}
             onPress={() => this.useImperativeHandle()}>
-            {/*//   // (file && isAgree) ? '' : DefaultStyle._oulineDisabled,*/}
-            {/*// ]}*/}
-            {/*// // disabled={!file || !isAgree}*/}
-            {/*// onPress={() => {*/}
-            {/*//   this.onSubmit()*/}
-            {/*//   // this.setState({*/}
-            {/*//   //   isComplete: true*/}
-            {/*//   // });*/}
-            {/*// }}>*/}
             <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
               계약 약관 동의
             </Text>
           </TouchableOpacity>
         </View>
-
-        {/** 약관 동 확인 모달 */}
-        <Dialog style={DefaultStyle.popup}
-                visible={this.state.isComplete}
-                onDismiss={() => this.setState({ isComplete: !this.state.isComplete })}>
-          <Dialog.Title style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>계약 약관 동의</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={DefaultStyle.contentDialog}>
-              계약 약관 동의가 처리되었습니다.
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
-              onPress={() => {
-                this.setState({ isComplete: false });
-                this.navigation.navigate('Mypage', { title: '견적･계약 관리' });
-              }}>확인</Button>
-          </Dialog.Actions>
-        </Dialog>
       </View>
     );
   }
@@ -323,34 +265,6 @@ class TermsContract extends Component {
   /** when update state or props */
   componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
-    // if (prevState.isSubmit !== this.state.isSubmit) {
-    // let warehSeq = this.props.route.params.warehSeq;
-    // let warehouseRegNo = this.props.route.params.warehouseRegNo;
-    // let rentUserNo = this.props.route.params.rentUserNo;
-    // let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-    // let typeWH =
-    //   this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
-    // let url = type + '/' + typeWH;
-
-    // Warehouse.termsContract({ url, data })
-    //   .then(res => {
-    //     console.log('res', res);
-    //     if (res.status === 200) {
-    //       console.log('resRequestContract', res);
-    //       this.navigation.navigate('RequestContract', {
-    //         type,
-    //         warehouseRegNo,
-    //         warehSeq,
-    //         typeWH: this.state.dataProps.typeWH,
-    //         rentUserNo,
-    //         status: '1100',
-    //       });
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log('err', err);
-    //   });
-    // }
   }
 }
 
@@ -358,7 +272,6 @@ class TermsContract extends Component {
 function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    // count: state.home.count,
     imageStore: state.registerWH.pimages,
   };
 }

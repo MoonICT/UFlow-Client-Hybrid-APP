@@ -153,6 +153,7 @@ class RegisterInfo extends Component {
     this.setState({ keeps: listKeeps, trusts: listTrusts });
   };
   _removeForm = valueTab => {
+    console.log('vaodaynao')
     let listKeeps = this.state.keeps;
     let listTrusts = this.state.trusts;
     let numberSlideKeep = this.state.numberSlide;

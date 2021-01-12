@@ -106,6 +106,7 @@ class FormInfo extends Component {
         <View style>
           <Select
             data={flrDvCodes}
+            valueSelected={defaultFlrDvCode !== undefined ? defaultFlrDvCode : ''}
             dataDefault={defaultFlrDvCode !== undefined ? defaultFlrDvCode : ''}
             selectedValue={formData.flrDvCode}
             labelSelected="층 수"
@@ -403,6 +404,9 @@ class FormInfo extends Component {
                 ? defaultAprchMthdDvCodes
                 : ''
             }
+            valueSelected={defaultAprchMthdDvCodes !== undefined
+              ? defaultAprchMthdDvCodes
+              : ''}
             selectedValue={formData.aprchMthdDvCode}
             labelSelected="접안방식"
             valueProps={e => {

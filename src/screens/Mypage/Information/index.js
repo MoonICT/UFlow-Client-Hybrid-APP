@@ -17,6 +17,7 @@ import {
 import AppGrid from '@Components/organisms/AppGrid';
 import MypageInfo from "./MypageInfo";
 import MypageBusinessInfo from "./MypageBusinessInfo";
+import SplashScreen from 'react-native-splash-screen';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';

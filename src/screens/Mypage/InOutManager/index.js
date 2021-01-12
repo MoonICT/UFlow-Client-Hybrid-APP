@@ -21,20 +21,18 @@ import DefaultStyle from '@Styles/default';
 import CardMypage from '@Components/organisms/CardMypage';
 import TextField from '@Components/organisms/TextField';
 
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from 'react-native-vector-icons/Fontisto';
 import card from '@Assets/images/card-img.png';
 import { InOutManagerService } from '@Services/apis';
 
 // import DatePicker from '@react-native-community/datetimepicker';
 
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-
 var searchTimerQuery;
 var searchTimerQuery2;
 export default class InOutManager extends Component {
   constructor(props) {
     super(props);
-
     this.webView = null;
     this.state = {
       dataCard: [],
@@ -110,6 +108,7 @@ export default class InOutManager extends Component {
     await InOutManagerService.getAll(params)
       .then(res => {
         let newData = res.data.data.content.map(item => {
+
           let status = '';
           let highlight = false;
           if (
@@ -138,7 +137,7 @@ export default class InOutManager extends Component {
           }
           console.log('item', item);
           return {
-            image: card,
+            image: item.whrgImg,
             statusCode: item.cntrDvCode,
             rentWarehNo: item.rentWarehNo,
             status: item.status,
@@ -150,9 +149,8 @@ export default class InOutManager extends Component {
               },
               {
                 type: '수탁 기간',
-                value: `${
-                  item.cntrYmdFrom ? dateStr(item.cntrYmdFrom) : ''
-                } ~ ${item.cntrYmdTo ? dateStr(item.cntrYmdTo) : ''}`,
+                value: `${item.cntrYmdFrom ? dateStr(item.cntrYmdFrom) : ''
+                  } ~ ${item.cntrYmdTo ? dateStr(item.cntrYmdTo) : ''}`,
               },
               {
                 type: '진행 상태',
@@ -203,44 +201,69 @@ export default class InOutManager extends Component {
 
   onChangeStart = (event, selectedDate) => {
     let { isOpenStart } = this.state;
-    if (event.type == 'dismissed') {
-      this.setState({
+    let filter = { ...this.state.filter };
+    filter.startDate = event;
+    this.setState(
+      {
+        filter: filter,
         isOpenStart: !isOpenStart,
-      });
-    } else {
-      let filter = { ...this.state.filter };
-      filter.startDate = event.nativeEvent.timestamp;
-      this.setState(
-        {
-          filter: filter,
-          isOpenStart: !isOpenStart,
-        },
-        () => {
-          this.getAllData();
-        },
-      );
-    }
+      },
+      () => {
+        this.getAllData();
+      },
+    );
+
+    // if (event.type == 'dismissed') {
+    //   this.setState({
+    //     isOpenStart: !isOpenStart,
+    //   });
+    // } else {
+    //   let filter = { ...this.state.filter };
+    //   filter.startDate = event.nativeEvent.timestamp;
+    //   this.setState(
+    //     {
+    //       filter: filter,
+    //       isOpenStart: !isOpenStart,
+    //     },
+    //     () => {
+    //       this.getAllData();
+    //     },
+    //   );
+    // }
   };
 
   onChangeEnd = (event, selectedDate) => {
     let { isOpenEnd } = this.state;
-    if (event.type == 'dismissed') {
-      this.setState({
+
+    let filter = { ...this.state.filter };
+    filter.endDate = event;
+    this.setState(
+      {
+        filter: filter,
         isOpenEnd: !isOpenEnd,
-      });
-    } else {
-      let filter = { ...this.state.filter };
-      filter.endDate = event.nativeEvent.timestamp;
-      this.setState(
-        {
-          filter: filter,
-          isOpenEnd: !isOpenEnd,
-        },
-        () => {
-          this.getAllData();
-        },
-      );
-    }
+      },
+      () => {
+        this.getAllData();
+      },
+    );
+
+    // if (event.type == 'dismissed') {
+    //   this.setState({
+    //     isOpenEnd: !isOpenEnd,
+    //   });
+    // } else {
+    //   let filter = { ...this.state.filter };
+    //   filter.endDate = event.nativeEvent.timestamp;
+    //   this.setState(
+    //     {
+    //       filter: filter,
+    //       isOpenEnd: !isOpenEnd,
+    //     },
+    //     () => {
+    //       this.getAllData();
+    //     },
+    //   );
+    // }
   };
 
   onChangeRangeDay = value => {
@@ -286,16 +309,16 @@ export default class InOutManager extends Component {
 
   onChangeTimeCreateImport = (event, selectedDate) => {
     let { isOpenTimeCreateImport } = this.state;
-    if (event.type == 'dismissed') {
-      this.setState({
-        isOpenTimeCreateImport: !isOpenTimeCreateImport,
-      });
-    } else {
-      this.setState({
-        timeCreateImport: event.nativeEvent.timestamp,
-        isOpenTimeCreateImport: !isOpenTimeCreateImport,
-      });
-    }
+    // if (event.type === 'dismissed') {
+    //   this.setState({
+    //     isOpenTimeCreateImport: !isOpenTimeCreateImport,
+    //   });
+    // } else {
+    this.setState({
+      timeCreateImport: event.nativeEvent.timestamp,
+      isOpenTimeCreateImport: !isOpenTimeCreateImport,
+    });
+    // }
   };
 
   showTimeCreateImport = () => {
@@ -429,27 +452,27 @@ export default class InOutManager extends Component {
                     시작일
                   </Text>
                   {// isOpenStart &&
-                  // <DateTimePickerModal
-                  //   mode={'date'}
-                  //   show={isOpenStart}
-                  //   onChange={(e) => this.onChangeStart(e)}
-                  //   value={startDate || new Date()}
-                  //   testID="dateTimePicker"
-                  // />
+                    // <DateTimePickerModal
+                    //   mode={'date'}
+                    //   show={isOpenStart}
+                    //   onChange={(e) => this.onChangeStart(e)}
+                    //   value={startDate || new Date()}
+                    //   testID="dateTimePicker"
+                    // />
 
-                  isOpenStart && (
-                    <DateTimePickerModal
-                      mode="date"
-                      isVisible={isOpenStart}
-                      date={startDate ? startDate : new Date()}
-                      onConfirm={date => this.onChangeStart(date)}
-                      onCancel={() => {
-                        this.setState({
-                          isOpenStart: false,
-                        });
-                      }}
-                    />
-                  )}
+                    isOpenStart && (
+                      <DateTimePickerModal
+                        mode="date"
+                        isVisible={isOpenStart}
+                        date={startDate ? startDate : new Date()}
+                        onConfirm={date => this.onChangeStart(date)}
+                        onCancel={() => {
+                          this.setState({
+                            isOpenStart: false,
+                          });
+                        }}
+                      />
+                    )}
                 </TouchableOpacity>
               </View>
             </View>
@@ -523,6 +546,7 @@ export default class InOutManager extends Component {
 
         {dataCard.length > 0 &&
           dataCard.map((item, index) => {
+            console.log(item,'item');
             return (
               <CardMypage
                 key={index}
@@ -537,7 +561,9 @@ export default class InOutManager extends Component {
                 borderRow={false}
                 styleLeft={S.styleLeftTable}
                 styleRight={S.styleRightTable}
-                bgrImage={item.image}
+                bgrImage={{
+                  uri: item.image
+                }}
                 footer={
                   <>
                     {valueTab === 'TENANT' && (
@@ -641,7 +667,7 @@ export default class InOutManager extends Component {
                         ]}>
                         수탁 기간
                       </Text>
-                      {isOpenTimeCreateImport && (
+                      {isOpenTimeCreateImport &&
                         // <DatePicker
                         //   mode={'date'}
                         //   show={isOpenTimeCreateImport}
@@ -654,14 +680,16 @@ export default class InOutManager extends Component {
                           mode="date"
                           isVisible={isOpenTimeCreateImport}
                           date={endDate ? endDate : new Date()}
-                          onConfirm={date => this.onChangeTimeCreateImport(date)}
+                          onConfirm={date =>
+                            this.onChangeTimeCreateImport(date)
+                          }
                           onCancel={() => {
                             this.setState({
                               isOpenTimeCreateImport: false,
                             });
                           }}
                         />
-                      )}
+                      }
                     </TouchableOpacity>
                   </View>
                 </View>

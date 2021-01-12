@@ -288,7 +288,7 @@ class Consulting extends Component {
             <Button
               mode="contained"
               style={[S.styleButton, { margin: 'auto' }]}
-              onPress={() => this.setState({ step: 1 })}>
+              onPress={() => {this.setState({ step: 1 }),this.getAllData,console.log('hihi',this.state.listAnswer)}}>
               <Text style={[S.textButton]}>물류 컨설팅 시작하기</Text>
             </Button>
           </View>
@@ -302,7 +302,11 @@ class Consulting extends Component {
             <Button
               mode="contained"
               style={[S.styleButton, { marginTop: 30 }]}
-              onPress={() => {this.navigation.navigate('ConsultingComplete')}}>
+              onPress={() => {
+                this.setState({ step: 0 }),
+                  this.getAllData,
+                  this.navigation.navigate('ConsultingComplete');
+              }}>
               <Text style={[S.textButton, { width: 175 }]}>
                 컨설팅 결과 확인하기
               </Text>
