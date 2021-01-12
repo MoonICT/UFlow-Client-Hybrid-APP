@@ -33,7 +33,6 @@ var searchTimerQuery2;
 export default class InOutManager extends Component {
   constructor(props) {
     super(props);
-
     this.webView = null;
     this.state = {
       dataCard: [],

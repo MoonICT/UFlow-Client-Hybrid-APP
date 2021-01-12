@@ -243,6 +243,7 @@ export default class Notification extends Component {
   render() {
     let slidesText = [
       {
+        key:'one',
         contentText: (
           <Text>
             [창고 조회] 버튼을 클릭하여 {'\n'}
@@ -252,6 +253,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key:'two',
         contentText: (
           <Text>
             [창고 조회] 버튼을 클릭하여 {'\n'}
@@ -261,6 +263,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key:'three',
         contentText: (
           <Text>
             [창고 조회] 버튼을 클릭하여 {'\n'}
@@ -272,6 +275,7 @@ export default class Notification extends Component {
     ];
     let _slides2 = [
       {
+        key:'one',
         title: '추가 정보 입력',
         url: ImgHTW5,
         content: (
@@ -282,6 +286,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key:'two',
         title: '추가 정보 입력',
         url: ImgHTW5,
         content: (
@@ -295,6 +300,7 @@ export default class Notification extends Component {
 
     let _slides3 = [
       {
+        key:'one',
         title: '전자 계약',
         url: ImgHTW5,
         content: (
@@ -305,6 +311,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key:'two',
         title: '전자 계약',
         url: ImgHTW5,
         content: (
@@ -317,6 +324,7 @@ export default class Notification extends Component {
     ];
     let _slides4 = [
       {
+        key: 'one',
         title: '전자 계약',
         url: ImgHTW4,
         content: (
@@ -329,6 +337,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'two',
         title: '전자 계약',
         url: ImgHTW4,
         content: (
@@ -341,6 +350,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'three',
         title: '전자 계약',
         url: ImgHTW4,
         content: (

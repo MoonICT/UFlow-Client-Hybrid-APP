@@ -14,7 +14,7 @@ import {
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
-import { StringUtils, ContractUtils } from '@Services/utils';
+import {StringUtils, ContractUtils} from '@Services/utils';
 
 // Local Imports
 import TableInfo from '@Components/atoms/TableInfo';
@@ -24,7 +24,7 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import warehouse1 from '@Assets/images/warehouse-1.png';
 import {Warehouse, MyPage, Contract} from '@Services/apis';
-import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
+import {Appbar, Text, Dialog, Paragraph, Button} from 'react-native-paper';
 
 import TenantRq00Trust from './tenantRq00Trust';
 import TenantRq00Keep from './tenantRq00Keep';
@@ -34,6 +34,12 @@ import TenantRs00Keep from './tenantRs00Keep';
 import OwnerRq00Trust from './ownerRq00Trust';
 import OwnerRq00Keep from './ownerRq00Keep';
 
+import imgType0001 from '@Assets/images/type-0001.png';
+import imgType0002 from '@Assets/images/type-0002.png';
+import imgType0003 from '@Assets/images/type-0003.png';
+import imgType0004 from '@Assets/images/type-0004.png';
+import imgType9100 from '@Assets/images/type-9100.png';
+
 class Quotation extends Component {
 
   constructor(props) {
@@ -42,6 +48,7 @@ class Quotation extends Component {
     this.webView = null;
     this.state = {
       isConfirmRequest: false,
+      imgType: null
     };
 
     this.navigation = props.navigation;
@@ -73,116 +80,63 @@ class Quotation extends Component {
     // console.log('routeQutation', route);
 
     const {dataApi} = this.state;
-    console.log(typeWH, 'typeWH');
-    console.log(dataApi, 'dataApi');
+
     let dataKeep = dataApi &&
-      typeWH === 'KEEP' && [
-        {
-          type: '창고명',
-          value: dataApi.warehouse.warehouse,
-        },
-        {
-          type: '창고주',
-          value: dataApi.warehouse.owner,
-        },
-        {
-          type: '위치',
-          value: dataApi.warehouse.address,
-        },
-        {
-          type: '계약유형',
-          value: '임대(보관)',
-          highlight: true,
-        },
-        {
-          type: '보관유형',
-          value: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
-        },
-        {
-          type: '전용면적',
-          value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
-        },
-        {
-          type: '임대 가능 기간',
-          value: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
-        },
-        {
-          type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.splyAmount),
-        },
-        {
-          type: '관리단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.mgmtChrg),
-        },
-      ];
+      typeWH === 'KEEP' && ContractUtils.keepTableDatas(1, {/**한국어 기본**/}, {
+        /*창고명*/
+        warehouseName: dataApi.warehouse.warehouse,
+        /*창고주*/
+        ownerName: dataApi.warehouse.owner,
+        /*위치*/
+        address: dataApi.warehouse.address,
+        /*계약유형*/
+        type: '임대(보관)',
+        /*보관유형*/
+        keepType: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
+        /*전용면적*/
+        prvtArea: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
+        /*임대 가능기간*/
+        usblYmd: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
+        /*보관단가*/
+        splyAmount: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.splyAmount),
+        /*관리단가*/
+        mgmtChrg: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.mgmtChrg),
+      });
     let dataTrust = dataApi &&
-      typeWH === 'TRUST' && [
-        {
-          type: '창고명',
-          value: dataApi.warehouse.warehouse,
-        },
-        {
-          type: '창고주',
-          value: dataApi.warehouse.owner,
-        },
-        {
-          type: '위치',
-          value: dataApi.warehouse.address,
-        },
-        {
-          type: '계약유형',
-          value: '수탁',
-          highlight: true,
-        },
-        {
-          type: '보관유형',
-          value: dataApi.whrgMgmtTrust.typeCode.stdDetailCodeName,
-        },
-        {
-          type: '정산단위',
-          value: dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
-        },
-        {
-          type: '산정기준',
-          value: dataApi.whrgMgmtTrust.calStdDvCode.stdDetailCodeName,
-        },
-        {
-          type: '수탁 가능 기간',
-          value: StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdTo),
-        },
-        {
-          type: '수탁 가용수량',
-          value: dataApi.whrgMgmtTrust.usblValue ? dataApi.whrgMgmtTrust.usblValue.toLocaleString() + ' ' + (dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName) : '-'
-        },
-        {
-          type: '보관단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount),
-        },
-        {
-          type: '가공단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg),
-        },
-        {
-          type: '인건단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg),
-        },
-        {
-          type: '입고단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whinChrg),
-        },
-        {
-          type: '출고단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whoutChrg),
-        },
-        {
-          type: '택배단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg),
-        },
-        {
-          type: '운송단가',
-          value: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg),
-        },
-      ];
+      typeWH === 'TRUST' && ContractUtils.trustTableDatas(1, {/**한국어 기본**/}, {
+        /*창고명*/
+        warehouseName: dataApi.warehouse.warehouse,
+        /*창고주*/
+        ownerName: dataApi.warehouse.owner,
+        /*위치*/
+        address: dataApi.warehouse.address,
+        /*계약유형*/
+        type: '수탁',
+        /*보관유형*/
+        keepType: dataApi.whrgMgmtTrust.typeCode.stdDetailCodeName,
+        /*정산단위*/
+        calUnitDvCode: dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
+        /*산정기준*/
+        calStdDvCode: dataApi.whrgMgmtTrust.calStdDvCode.stdDetailCodeName,
+        /*수탁 가능기간*/
+        usblYmd: StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdTo),
+        /*수탁 가용수량*/
+        usblValue: dataApi.whrgMgmtTrust.usblValue ? dataApi.whrgMgmtTrust.usblValue.toLocaleString() + ' ' + (dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName) : '-',
+        /*보관단가*/
+        splyAmount: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount),
+        /*가공단가*/
+        mnfctChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg),
+        /*인건단가*/
+        psnChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg),
+        /*입고단가*/
+        whinChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whinChrg),
+        /*출고단가*/
+        whoutChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whoutChrg),
+        /*택배단가*/
+        dlvyChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg),
+        /*운송단가*/
+        shipChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg),
+      });
 
     return (
       <SafeAreaView style={DefaultStyle._container}>
@@ -223,8 +177,9 @@ class Quotation extends Component {
               {/** WAREHOUSE INFO **/}
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
-                  {/** TODO Bug2-1 보관 상태에 따라 이미지 변경 */ }
-                  <Image source={warehouse1} style={DefaultStyle._avatarHeader}/>
+                  {this.state.imgType &&
+                    <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                  }
                 </View>
                 <View
                   // style={DefaultStyle._bodyCard}
@@ -660,15 +615,14 @@ class Quotation extends Component {
       // this.props.quotationData(res.data);
     }
     ;
-
-    console.log(this.props.route.params.mode, '#### this.props.mode');
+    const {dataApi} = this.state;
     if (this.props.route.params.mode) {
       switch (this.props.route.params.mode) {
         case 'RE':
           /** 임차인 견적 재요청 바로보내기 **/
           // console.log(this.props.route.params.typeWH, 'this.props.route.params.typeWH');
           /** Go To 견적 재요청 **/
-          const {dataApi} = this.state;
+
           if (dataApi)
             this.navigation.navigate('RequestQuotation', {
               data: dataApi,
@@ -739,6 +693,75 @@ class Quotation extends Component {
           break;
       }
     }
+
+    console.log(typeWH, 'typeWH')
+    if(dataApi.whrgMgmtTrust.typeCode)
+    console.log(dataApi.whrgMgmtTrust.typeCode.stdDetailCode, 'dataApi.whrgMgmtKeep.typeCode')
+
+    if (typeWH.toLocaleLowerCase() === 'trust') {
+
+      if (dataApi && dataApi.whrgMgmtTrust && dataApi.whrgMgmtTrust.typeCode) {
+        switch (String(dataApi.whrgMgmtTrust.typeCode.stdDetailCode)) {
+          case "0001":
+            this.setState({
+              imgType: imgType0001
+            })
+            break;
+          case "0002":
+            this.setState({
+              imgType: imgType0002
+            })
+            break;
+          case "0003":
+            this.setState({
+              imgType: imgType0003
+            })
+            break;
+          case "0004":
+            this.setState({
+              imgType: imgType0004
+            })
+            break;
+          default:
+            this.setState({
+              imgType: imgType9100
+            })
+            break;
+        }
+      }
+    } else if (typeWH.toLocaleLowerCase() === 'keep') {
+      if (dataApi && dataApi.whrgMgmtKeep && dataApi.whrgMgmtKeep.typeCode) {
+
+        switch (String(dataApi.whrgMgmtKeep.typeCode.stdDetailCode)) {
+          case "0001":
+            this.setState({
+              imgType: imgType0001
+            })
+            break;
+          case "0002":
+            this.setState({
+              imgType: imgType0002
+            })
+            break;
+          case "0003":
+            this.setState({
+              imgType: imgType0003
+            })
+            break;
+          case "0004":
+            this.setState({
+              imgType: imgType0004
+            })
+            break;
+          default:
+            this.setState({
+              imgType: imgType9100
+            })
+            break;
+        }
+      }
+    }
+
   }
 
   /** when update state or props */
@@ -779,6 +802,7 @@ class Quotation extends Component {
           console.log('err', err);
         });
     }
+
   }
 
   componentWillUnmount() {

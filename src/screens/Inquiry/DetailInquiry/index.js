@@ -16,6 +16,8 @@ import TextField from '@Components/organisms/TextField';
 import Appbars from '@Components/organisms/AppBar';
 import { styles as S } from '../style';
 import { InquiryAPI } from '@Services/apis';
+import HTML from 'react-native-render-html';
+
 
 class DetailInquiry extends Component {
   constructor(props) {
@@ -119,9 +121,13 @@ class DetailInquiry extends Component {
               </Text>
               <Text style={DefaultStyle.contentItem}>{dateStr ?? ''}</Text>
               <View style={[S.answers, S.answerContents]}>
-                <Text style={[S.textAnswers, { marginBottom: 15 }]}>
+                {/* <Text style={[S.textAnswers, { marginBottom: 15 }]}>
                   {params?.inquiryDetails?.answer?.content ?? ''}
-                </Text>
+                </Text> */}
+                <HTML
+                  tagsStyles={{p: { marginBottom: 0, marginTop: 0 }}}
+                  source={{ html:params?.inquiryDetails?.answer?.content ? params?.inquiryDetails?.answer?.content : 'empty content' }}
+                />
               </View>
             </View>
           }

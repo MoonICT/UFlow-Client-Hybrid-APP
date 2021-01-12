@@ -220,6 +220,7 @@ export default class Notification extends Component {
     const windowWidth = Dimensions.get('window').width;
     let slidesText = [
       {
+        key: 'one',
         contentText: (
           <Text>
             [창고 등록] 버튼을 클릭하여 {'\n'}창고 등록 페이지로 이동 후 {'\n'}
@@ -228,6 +229,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'two',
         contentText: (
           <Text>
             [창고 등록] 버튼을 클릭하여 {'\n'}창고 등록 페이지로 이동 후 {'\n'}
@@ -236,6 +238,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'three',
         contentText: (
           <Text>
             [창고 등록] 버튼을 클릭하여 {'\n'}창고 등록 페이지로 이동 후 {'\n'}
@@ -246,6 +249,7 @@ export default class Notification extends Component {
     ];
     let _slides = [
       {
+        key: 'one',
         title: '견적 요청 정보',
         url: ImgHTW4,
         content: (
@@ -256,6 +260,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'two',
         title: '견적 요청 정보',
         url: ImgHTW4,
         content: (
@@ -266,6 +271,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'three',
         title: '견적 요청 정보',
         url: ImgHTW4,
         content: (
@@ -278,6 +284,7 @@ export default class Notification extends Component {
     ];
     let _slides2 = [
       {
+        key: 'one',
         title: '전자 계약',
         url: ImgHTW5,
         content: (
@@ -288,6 +295,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'two',
         title: '전자 계약',
         url: ImgHTW5,
         content: (
@@ -298,6 +306,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'three',
         title: '전자 계약',
         url: ImgHTW5,
         content: (
@@ -311,6 +320,7 @@ export default class Notification extends Component {
 
     let _slides3 = [
       {
+        key: 'one',
         title: '계약 내용 확인',
         url: ImgHTW4,
         content: (
@@ -323,6 +333,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'two',
         title: '계약 내용 확인',
         url: ImgHTW4,
         content: (
@@ -335,6 +346,7 @@ export default class Notification extends Component {
         ),
       },
       {
+        key: 'three',
         title: '계약 내용 확인',
         url: ImgHTW4,
         content: (
@@ -359,7 +371,7 @@ export default class Notification extends Component {
             onPress={() => this.props.nav.goBack()}
           />
           <Appbar.Content
-            title="이용방법"
+            title="마이페이지"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
