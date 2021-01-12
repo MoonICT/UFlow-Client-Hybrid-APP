@@ -268,7 +268,11 @@ class RequestContract extends Component {
       });
     const { detailEstimate, keepTrustContract, keepTrustEstimate } = this.state;
 
-    if (dataApi && detailEstimate && this.getContract() && typeWH === 'keep') {
+    // console.log('check 1', detailEstimate)
+    // console.log('check 2', keepTrustContract)
+    // console.log('check 3', keepTrustEstimate)
+    // console.log('check 4', contractType)
+    if (detailEstimate && keepTrustContract && contractType === 'keep') {
 
       this.setState({
         dataKeep: [

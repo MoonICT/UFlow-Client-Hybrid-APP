@@ -41,6 +41,8 @@ class CardMypage extends Component {
       borderBottom,
     } = this.props;
     // item && item.highlight === true ? DefaultStyle._highlightInfoTable : null;
+
+    console.log(bgrImage, 'bgrImage.uri')
     return (
       <View style={DefaultStyle._card}>
 

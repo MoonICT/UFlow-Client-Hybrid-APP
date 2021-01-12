@@ -46,7 +46,6 @@ class TermsContract extends Component {
     console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
     console.debug('견적 약관 keepTrustContract : ', props.keepTrustContract)
 
-
     this.navigation = props.navigation;
   }
 
@@ -359,7 +358,6 @@ class TermsContract extends Component {
 function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    // count: state.home.count,
     imageStore: state.registerWH.pimages,
   };
 }
