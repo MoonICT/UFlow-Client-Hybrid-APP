@@ -1003,7 +1003,7 @@ class DetailWH extends Component {
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
                 <AppGrid
-                  data={dataCover && dataCover}
+                  data={dataTab && dataTab}
                   title={floors}
                   titleProps={(e, index) =>
                     this.setState({ floors: e, activeIndex: index })
