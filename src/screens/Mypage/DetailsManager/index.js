@@ -20,8 +20,15 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableHighlight,
-  Linking
+  Linking, Image
 } from 'react-native';
+
+import imgType0001 from '@Assets/images/type-0001.png';
+import imgType0002 from '@Assets/images/type-0002.png';
+import imgType0003 from '@Assets/images/type-0003.png';
+import imgType0004 from '@Assets/images/type-0004.png';
+import imgType9100 from '@Assets/images/type-9100.png';
+
 import {
   Appbar,
   Dialog,
@@ -185,6 +192,8 @@ export default class DetailsManager extends Component {
   componentDidMount() {
 
     this.getAllData()
+
+
   }
 
 
@@ -248,6 +257,7 @@ export default class DetailsManager extends Component {
         },
       ];
 
+      console.log(dataInfo, 'dataInfo');
       let responseFilter = res.data.data.content.map((item, index) => {
         let status = ''
         let dateStr = ''
@@ -385,6 +395,36 @@ export default class DetailsManager extends Component {
       this.setState({
         dataInfo, responseFilter, cntrTrustResBody, isExpired, totalMoney, isEmpty
       })
+
+      if (cntrTrustResBody && cntrTrustResBody.typeCode) {
+        switch (cntrTrustResBody.typeCode) {
+          case "0001":
+            this.setState({
+              imgType: imgType0001
+            })
+            break;
+          case "0002":
+            this.setState({
+              imgType: imgType0002
+            })
+            break;
+          case "0003":
+            this.setState({
+              imgType: imgType0003
+            })
+            break;
+          case "0004":
+            this.setState({
+              imgType: imgType0004
+            })
+            break;
+          default:
+            this.setState({
+              imgType: imgType9100
+            })
+            break;
+        }
+      }
     })
   }
 
@@ -966,8 +1006,10 @@ export default class DetailsManager extends Component {
             </View>
 
             <View style={DefaultStyle._card}>
-              <View style={DefaultStyle._headerCardTitle}>
-                <View style={S.avatarHeader}/>
+              <View style={DefaultStyle._headerCard}>
+                {this.state.imgType &&
+                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                }
               </View>
               <View style={DefaultStyle._infoTable}>
                 <TableInfo data={dataInfo}/>
@@ -981,7 +1023,7 @@ export default class DetailsManager extends Component {
                   <View style={{flex: 1}}>
                     <TouchableOpacity
                       onPress={() => this.showDateStart()}
-                      style={DefaultStyle._btnDate}>
+                      style={DefaultStyle._btnDateFilter}>
                       <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
                         {dateStr(startDate) || 'YYYY-MM-DD'}
                       </Text>
@@ -1018,7 +1060,7 @@ export default class DetailsManager extends Component {
                   <View style={{flex: 1}}>
                     <TouchableOpacity
                       onPress={() => this.showDateEnd()}
-                      style={DefaultStyle._btnDate}>
+                      style={DefaultStyle._btnDateFilter}>
                       <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
                         {dateStr(endDate) || 'YYYY-MM-DD'}
                       </Text>
