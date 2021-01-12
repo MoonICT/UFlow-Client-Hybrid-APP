@@ -194,9 +194,18 @@ class InterestWarehouse extends Component {
             }}>
               <Image style={{ flex: 1 }} source={box} />
             </View>
-            <Text style={[DefaultStyle._textDF3, { marginTop: 40, textAlign: 'center' }]}>
+            <Text style={[DefaultStyle._textDF3, { marginTop: 40, textAlign: 'center', marginBottom: 24, }]}>
               관심 창고로 등록한 창고가 없습니다.
             </Text>
+            <TouchableOpacity
+              style={[DefaultStyle._btnInline,]}
+              onPress={() => {
+              }}>
+              <Text
+                style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
+                창고 조회하기
+              </Text>
+            </TouchableOpacity>
           </View>
         )}
       </ScrollView>
