@@ -68,7 +68,10 @@ class RequestContract extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.goBack()}
+            onPress={() => {
+              this.props.route.params.onRefresh('견적･계약 관리')
+              this.navigation.goBack()
+            }}
           />
           <Appbar.Content
             title="견적･계약 관리"
@@ -151,6 +154,7 @@ class RequestContract extends Component {
             {keepTrustContract ?
               <ContractInformation
                 navigation={this.navigation}
+                route={this.props.route}
                 detailEstimate={detailEstimate} // 계약 기본 정보
                 keepTrustContract={keepTrustContract} // keep|trust
                 type={type}

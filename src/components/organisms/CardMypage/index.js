@@ -42,7 +42,6 @@ class CardMypage extends Component {
     } = this.props;
     // item && item.highlight === true ? DefaultStyle._highlightInfoTable : null;
 
-    console.log(bgrImage, 'bgrImage.uri')
     return (
       <View style={DefaultStyle._card}>
 
@@ -68,7 +67,6 @@ class CardMypage extends Component {
           </View>
         </TouchableOpacity>
         <View style={[DefaultStyle._bodyCard, style]}>
-          <Text>{console.log(bgrImage)}</Text>
           {bgrImage &&
           <Card.Cover
             source={bgrImage ? {

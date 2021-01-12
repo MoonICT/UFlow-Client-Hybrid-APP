@@ -415,6 +415,7 @@ class ContractManager extends Component {
 
       console.log(mode, 'mode');
       if (item) {
+        console.log('상세보기 클릭')
         this.navigation.navigate(
           item.status === 'RQ00' || item.status === 'RS00'
             ? 'Quotation' // Goto RQ00, RS00
@@ -593,12 +594,12 @@ class ContractManager extends Component {
     );
   }
 
-  onRefresh(valueTab) {
-    console.log("::::ContractManager Mount::::");
-
-    this.setState({
-      valueTab: valueTab
-    })
+  onRefresh = (valueTab) => {
+    console.log("::::ContractManager Mount::::", valueTab);
+    this.props.doRefresh(valueTab);
+    // this.setState({
+    //   valueTab: valueTab
+    // })
   }
 
   /** when after render DOM */
