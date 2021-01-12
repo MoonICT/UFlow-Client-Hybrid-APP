@@ -188,7 +188,7 @@ export const styles = StyleSheet.create({
     backgroundColor: color.primary.constrast,
   },
   introInput: {
-    width: 260,
+    width: 263,
     marginRight:10,
     borderBottomWidth:2,
     // backgroundColor:'red',
