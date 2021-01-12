@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Local Imports
@@ -26,7 +26,7 @@ class FilterButton extends Component {
         this.props.style
       ]}>
         <View>
-          {this.props.children}
+          {this.props.children ? this.props.children : <Text>{this.props.label}</Text>}
         </View>
         {this.props.isToggle ?
           <Icon name={'menu-up'} style={[styles.icon, { color: '#000' }]} /> :

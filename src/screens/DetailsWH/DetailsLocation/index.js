@@ -14,12 +14,14 @@ import { Appbar, Text, IconButton } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
+import WebviewMap from '@Components/organisms/WebviewMap';
 import ActionCreator from '@Actions';
 import mapImg from '@Assets/images/mapImg.png';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
+
 class RegisterInfo extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = { isSwitchOn: false };
@@ -28,18 +30,19 @@ class RegisterInfo extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+  componentWillUnmount () {
+    //console.log('//::componentWillUnmount::');
   }
 
-  render() {
+  render () {
+    const { latitude, longitude } = this.props.route.params
     return (
-      <SafeAreaView style={S.container}>
+      <SafeAreaView style={[S.container, { flex: 1 }]}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -53,34 +56,35 @@ class RegisterInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView>
-          <ImageBackground source={mapImg} style={SS.imageMap}>
-            <View style={SS.location}>
-              <IconButton size={18} style={SS.icon} icon="file-multiple" />
-              <Text style={SS.textLocation}>
-                인천광역시 중구 서해대로94번길 100
-              </Text>
-            </View>
-          </ImageBackground>
-        </ScrollView>
+        <View style={{
+          flex: 1,
+        }}>
+          {latitude > 0 && longitude > 0 &&
+          <WebviewMap latitude={latitude}
+                      longitude={longitude}
+                      isToggleBtn={true} />}
+          {/*<Text style={SS.textLocation}>*/}
+          {/*인천광역시 중구 서해대로94번길 100*/}
+          {/*</Text>*/}
+        </View>
       </SafeAreaView>
     );
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount::');
     SplashScreen.hide();
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
@@ -89,7 +93,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     registerAction: action => {
       dispatch(ActionCreator.uploadImage(action));
