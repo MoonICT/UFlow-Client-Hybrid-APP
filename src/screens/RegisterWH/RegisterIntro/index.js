@@ -184,7 +184,7 @@ class RegisterIntro extends Component {
                 </Text>
               </View>
               <TextInput
-                style={SS.inputIntro}
+                style={[SS.inputIntro, {height:300}]}
                 multiline={true}
                 numberOfLines={4}
                 // onChangeText={text => this.onChangeIntro(text)}
