@@ -84,6 +84,7 @@ class RegisterWH extends Component {
       activeIndex: 0,
       dutyDvCode: '',
       faqList: [],
+      title:'전체'
     };
     this.navigation = props.navigation;
   }
@@ -116,7 +117,7 @@ class RegisterWH extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   render() {
-    const { faqList } = this.state;
+    const { faqList, title } = this.state;
     console.log('faqList -> ', faqList);
 
     const Divider = () => {
@@ -132,7 +133,10 @@ class RegisterWH extends Component {
     const handleClickTab = (tabName, index) => {
       // console.log('tabName -> ', tabName);
       // console.log('index -> ', index);
-      this.setState({ dutyDvCode: tabDutyDvCode[index].id }, function () {
+      this.setState({ 
+        dutyDvCode: tabDutyDvCode[index].id,
+        title:tabName
+      }, function () {
         this.fetchData()
       });
     }
@@ -187,7 +191,7 @@ class RegisterWH extends Component {
               value={this.state.firstQuery}
             />
           </View>
-          <AppGrid data={tabDutyDvCode} titleProps={handleClickTab} />
+          <AppGrid data={tabDutyDvCode} title={title} titleProps={handleClickTab} />
           <Accordion type="group">{items}</Accordion>
         </ScrollView>
       </ScrollView>

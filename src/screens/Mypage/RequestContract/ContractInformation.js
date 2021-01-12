@@ -34,8 +34,8 @@ class ContractInformation extends Component {
       isOffLineDialog: false
     };
 
-    console.debug('견적 약관 detailContract : ', props.detailContract)
-    console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+    // console.debug('견적 약관 detailContract : ', props.detailContract)
+    // console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
 
     this.navigation = props.navigation;
   }
@@ -73,35 +73,29 @@ class ContractInformation extends Component {
 
   render () {
     const {
+      type, // owner || tenant
       contractType, // KEEP || TRUST
-
-      dataContract,
+      detailContract,
+      detailEstimate,
       status,
-      warehouseRegNo,
       rentUserNo,
       warehSeq,
-      type,
-      warehouse,
-      rentUser,
-      cntrYmdFrom,
-      cntrYmdTo,
-      mediaFile,
-      typeWH
     } = this.props;
+
     let dataTable = [
       {
         type: '계약 요청일자',
-        value: cntrYmdFrom,
+        value: detailEstimate.id.cntrYmdFrom,
       },
       {
         type: '계약 승인일자',
-        value: cntrYmdTo,
+        value: detailEstimate.cntrYmdTo,
       },
       {
         type: '첨부 서류',
-        isImageLink: dataContract?.entrpByOwner?.file2,
-        fileName: dataContract?.entrpByOwner?.file2 ? '통장 사본.jpg' : '-',
-        value: dataContract?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${dataContract?.entrpByOwner?.file2}` : '',
+        isImageLink: detailEstimate?.entrpByOwner?.file2,
+        fileName: detailEstimate?.entrpByOwner?.file2 ? '통장 사본.jpg' : '-',
+        value: detailEstimate?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${detailEstimate?.entrpByOwner?.file2}` : '',
       },
     ];
 
@@ -117,12 +111,11 @@ class ContractInformation extends Component {
             ]}
             onPress={() =>
               this.navigation.navigate('Chatting', {
-                warehouseRegNo,
+                warehouseRegNo: detailEstimate.id.warehouseRegNo,
                 rentUserNo,
                 warehSeq,
                 type,
-                warehouse,
-                rentUser,
+                warehouse: detailEstimate.warehouse,
               })
             }>
             <Icon name="wechat" size={20} color="#fff" />
@@ -140,19 +133,14 @@ class ContractInformation extends Component {
       case '2100':
         viewComponent = (
           <TermsContract
-            dataContract={dataContract}
-            contractType={contractType}
+            navigation={this.navigation}
+            detailContract={detailContract}
+            detailEstimate={detailEstimate}
             dataTable={dataTable}
-            status={status}
-            warehouseRegNo={warehouseRegNo}
+            type={type} // owner || tenant
+            contractType={contractType} // KEEP || TRUST
             rentUserNo={rentUserNo}
             warehSeq={warehSeq}
-            type={type}
-            warehouse={warehouse}
-            rentUser={rentUser}
-            navigation={this.navigation}
-            cntrYmdFrom={cntrYmdFrom}	
-            typeWH={typeWH}
           />
         );
         break;

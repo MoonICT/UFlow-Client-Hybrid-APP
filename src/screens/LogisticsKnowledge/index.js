@@ -83,6 +83,7 @@ class LogisticsKnowledge extends Component {
       activeIndex: 0,
       dutyDvCode: '',
       logisticsList: [],
+      title:'전체'
     };
     this.navigation = props.navigation;
   }
@@ -129,7 +130,7 @@ class LogisticsKnowledge extends Component {
 
   render() {
 
-    const { logisticsList } = this.state;
+    const { logisticsList, title } = this.state;
     // console.log('logisticsList -> ', logisticsList);
 
     const Divider = () => {
@@ -145,7 +146,10 @@ class LogisticsKnowledge extends Component {
     const handleClickTab = (tabName, index) => {
       // console.log('tabName -> ', tabName);
       // console.log('index -> ', index);
-      this.setState({ dutyDvCode: tabDutyDvCode[index].id }, function () {
+      this.setState({ 
+        dutyDvCode: tabDutyDvCode[index].id,
+        title:tabName
+      }, function () {
         this.fetchData()
       });
     }
@@ -196,7 +200,7 @@ class LogisticsKnowledge extends Component {
               value={this.state.firstQuery}
             />
           </View>
-          <AppGrid data={tabDutyDvCode} titleProps={handleClickTab} />
+          <AppGrid data={tabDutyDvCode} title={title} titleProps={handleClickTab} />
           <Accordion type="group">{items}</Accordion>
         </ScrollView>
       </SafeAreaView>

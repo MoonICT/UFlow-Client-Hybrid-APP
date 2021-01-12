@@ -6,12 +6,9 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import {
-  Checkbox,
   Appbar,
-  Searchbar,
-  Text,
   Button,
   Dialog,
   Paragraph,
@@ -25,7 +22,6 @@ import SplashScreen from 'react-native-splash-screen';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';
 
 import { getUserInfo } from '@Services/apis/MyPage';
@@ -60,7 +56,7 @@ class Information extends Component {
   async componentDidMount() {
     console.log('::componentDidMount::');
     this.getInfoUser();
-    SplashScreen.hide();
+    // SplashScreen.hide();
   }
 
   /** listener when change props */
@@ -81,7 +77,9 @@ class Information extends Component {
   }
 
   handleClickTab = (tabName, index) => {
-    this.setState({ tabInfo: tabSelect[index].title });
+    this.setState({ 
+      tabInfo: tabName
+    });
   }
 
   showDialog = () => this.setState({ visible: true });
@@ -90,7 +88,7 @@ class Information extends Component {
 
   render() {
 
-    const { checkAll, checkSMS, checkMail, tabInfo, userInfo } = this.state;
+    const {tabInfo } = this.state;
 
     return (
       <ScrollView style={S.container}>
@@ -109,7 +107,7 @@ class Information extends Component {
         </Appbars>
         <ScrollView>
           <View style={{ flex: 1 }}>
-            <AppGrid data={tabSelect} titleProps={this.handleClickTab} />
+            <AppGrid data={tabSelect} title={tabInfo} titleProps={this.handleClickTab} />
           </View>
           {tabInfo === '기본 정보' && <MypageInfo />}
           {tabInfo === '사업자 등록 정보' && <MypageBusinessInfo />}
