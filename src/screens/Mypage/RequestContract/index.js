@@ -5,20 +5,26 @@
  */
 
 // Global Imports
-import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView, Image } from 'react-native';
-import { connect } from 'react-redux';
-import { Appbar, Text } from 'react-native-paper';
+import React, {Component} from 'react';
+import {SafeAreaView, View, ScrollView, Image} from 'react-native';
+import {connect} from 'react-redux';
+import {Appbar, Text} from 'react-native-paper';
 import moment from 'moment';
-import { StringUtils, ContractUtils } from '@Services/utils';
+import {StringUtils, ContractUtils} from '@Services/utils';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TableInfo from '@Components/atoms/TableInfo';
-import warehouse1 from '@Assets/images/warehouse-1.png';
 import ContractInformation from './ContractInformation';
-import { styles as S } from '../style';
+import {styles as S} from '../style';
+
+import imgType0001 from '@Assets/images/type-0001.png';
+import imgType0002 from '@Assets/images/type-0002.png';
+import imgType0003 from '@Assets/images/type-0003.png';
+import imgType0004 from '@Assets/images/type-0004.png';
+import imgType9100 from '@Assets/images/type-9100.png';
+
 import {
   Warehouse,
   MediaFileContract,
@@ -27,7 +33,7 @@ import {
 } from '@Services/apis';
 
 class RequestContract extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       detailContract: '', // 계약 기본 정보.
@@ -40,6 +46,7 @@ class RequestContract extends Component {
       dataTrust: [],
 
       contractLink: '',
+      imgType: null,
     };
     this.navigation = props.navigation;
   }
@@ -72,7 +79,7 @@ class RequestContract extends Component {
     }
   };
 
-  render () {
+  render() {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let type = this.props.route.params.type.toLowerCase(); // owner | tenant
@@ -80,7 +87,7 @@ class RequestContract extends Component {
     let rentUserNo = this.props.route.params.rentUserNo;
     const status = this.props.route.params.status;
 
-    const { dataTrust, dataKeep, detailEstimate, keepTrustContract } = this.state;
+    const {dataTrust, dataKeep, detailEstimate, keepTrustContract} = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -104,10 +111,10 @@ class RequestContract extends Component {
               <Text
                 style={[
                   DefaultStyle._statusProcessing,
-                  status === '5100' ? { backgroundColor: '#4caf50' } : '',
+                  status === '5100' ? {backgroundColor: '#4caf50'} : '',
                 ]}>
                 {ContractUtils.coverStatus(status) && ContractUtils.coverStatus(status).processingTrust &&
-                typeWH === 'TRUST'
+                contractType === 'trust'
                   ? ContractUtils.coverStatus(status).processingTrust
                   : ContractUtils.coverStatus(status).processing}
               </Text>
@@ -115,14 +122,15 @@ class RequestContract extends Component {
 
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>
-                {/** TODO Bug2-1 보관 상태에 따라 이미지 변경 */ }
-                <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
+                {this.state.imgType &&
+                  <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                }
               </View>
               <View>
                 <View style={DefaultStyle._infoTable}>
                   {(contractType === 'keep' && dataKeep) ?
-                    <TableInfo data={dataKeep} /> :
-                    <TableInfo data={dataTrust} />}
+                    <TableInfo data={dataKeep}/> :
+                    <TableInfo data={dataTrust}/>}
                 </View>
               </View>
             </View>
@@ -161,7 +169,7 @@ class RequestContract extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount () {
+  async componentDidMount() {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let type = this.props.route.params.type.toLowerCase(); // owner | tenant
@@ -179,7 +187,7 @@ class RequestContract extends Component {
         rentUserNo: rentUserNo,
       }).then(async (res) => {
         let resultData = res;
-        this.setState({ detailContract: resultData });
+        this.setState({detailContract: resultData});
 
         // 견적 완료, 계약 진행 중일 때.
         let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
@@ -216,7 +224,7 @@ class RequestContract extends Component {
         warehSeq: warehSeq,
       }).then(async (res) => {
         let resultData = res
-        this.setState({ detailContract: resultData })
+        this.setState({detailContract: resultData})
 
         // 견적 완료, 계약 진행 중일 때.
         let estmtData = resultData.estmtKeeps || resultData.estmtTrusts
@@ -243,9 +251,9 @@ class RequestContract extends Component {
     }
 
     // TODO 밑에 확인
-    let url = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + typeWH + '/' + rentUserNo;
+    let url = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + contractType + '/' + rentUserNo;
 
-    let urlTenant = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + typeWH;
+    let urlTenant = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + contractType;
 
     await Warehouse.quotation(
       this.props.route.params.type === 'OWNER' ? url : urlTenant,
@@ -266,127 +274,116 @@ class RequestContract extends Component {
       .catch(err => {
         console.log('errRequest', err);
       });
-    const { detailEstimate, keepTrustContract, keepTrustEstimate } = this.state;
+    const {detailEstimate, keepTrustContract, keepTrustEstimate} = this.state;
 
-    // console.log('check 1', detailEstimate)
-    // console.log('check 2', keepTrustContract)
-    // console.log('check 3', keepTrustEstimate)
-    // console.log('check 4', contractType)
     if (detailEstimate && keepTrustContract && contractType === 'keep') {
 
       this.setState({
-        dataKeep: [
-          {
-            type: '창고명',
-            value: detailEstimate ? detailEstimate.warehouse.warehouse : '-',
-          },
-          {
-            type: '창고주',
-            value: detailEstimate ? detailEstimate.warehouse.owner : '-',
-          },
-          {
-            type: '위치',
-            value: detailEstimate ? detailEstimate.warehouse.address : '-',
-          },
-          {
-            type: '계약유형',
-            value: '임대(보관)',
-            highlight: true,
-          },
-          {
-            type: '보관유형',
-            value: keepTrustEstimate.typeCode.stdDetailCodeName,
-          },
-          {
-            type: '전용면적',
-            value: detailEstimate.warehouse.prvtArea ? detailEstimate.warehouse.prvtArea.toLocaleString() + " ㎡" : "-",
-          },
-          {
-            type: '임대 가능 기간',
-            value: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
-          },
-          {
-            type: '보관단가',
-            value: StringUtils.moneyConvert(keepTrustContract.splyAmount),
-          },
-          {
-            type: '관리단가',
-            value: StringUtils.moneyConvert(keepTrustContract.mgmtChrg),
-          },
-        ],
+        dataKeep: ContractUtils.keepTableDatas(2, {
+          /**한국어 기본**/
+          prvtAreaLabel: '공용면적',
+          usblYmdLabel: '임대가능기간',
+        }, {
+          /*창고명*/
+          warehouseName: detailEstimate ? detailEstimate.warehouse.warehouse : '-',
+          /*창고주*/
+          ownerName: detailEstimate ? detailEstimate.warehouse.owner : '-',
+          /*위치*/
+          address: detailEstimate ? detailEstimate.warehouse.address : '-',
+          /*계약유형*/
+          type: '임대(보관)',
+          /*보관유형*/
+          keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
+          /*공용면적*/
+          prvtArea: keepTrustEstimate.cmnArea ? keepTrustEstimate.cmnArea.toLocaleString() + " ㎡" : "0 ㎡",
+          /*임대 가능기간*/
+          usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
+          /*보관단가*/
+          splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
+          /*관리단가*/
+          mgmtChrg: StringUtils.moneyConvert(keepTrustContract.mgmtChrg),
+        }),
       });
     }
 
     if (detailEstimate && keepTrustContract && contractType === 'trust') {
       this.setState({
-        dataTrust: [
-          {
-            type: '창고명',
-            value: detailEstimate ? detailEstimate.warehouse.warehouse : '',
-          },
-          {
-            type: '창고주',
-            value: detailEstimate ? detailEstimate.warehouse.owner : '',
-          },
-          {
-            type: '위치',
-            value: detailEstimate ? detailEstimate.warehouse.address : '',
-          },
-          {
-            type: '계약유형',
-            value: '수탁',
-            highlight: true,
-          },
-          {
-            type: '가용수량',
-            value: keepTrustContract.cntrValue ? keepTrustContract.cntrValue : '0',
-          },
-          {
-            type: '수탁 가능 기간',
-            value: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
-          },
-          {
-            type: '보관단가',
-            value: StringUtils.moneyConvert(keepTrustContract.splyAmount),
-          },
-          {
-            type: '가공단가',
-            value: StringUtils.moneyConvert(keepTrustContract.mnfctChrg),
-          },
-          {
-            type: '인건단가',
-            value: StringUtils.moneyConvert(keepTrustContract.psnChrg),
-          },
-          {
-            type: '입고단가',
-            value: StringUtils.moneyConvert(keepTrustContract.whinChrg),
-          },
-          {
-            type: '출고단가',
-            value: StringUtils.moneyConvert(keepTrustContract.whoutChrg),
-          },
-          {
-            type: '택배단가',
-            value: StringUtils.moneyConvert(keepTrustContract.dlvyChrg),
-          },
-          {
-            type: '운송단가',
-            value: StringUtils.moneyConvert(keepTrustContract.shipChrg),
-          },
-        ],
+        dataTrust:
+          ContractUtils.trustTableDatas(2, {
+            /**한국어 기본**/
+            usblYmdLabel: '수탁 가용일자'
+          }, {
+            /*창고명*/
+            warehouseName: detailEstimate ? detailEstimate.warehouse.warehouse : '-',
+            /*창고주*/
+            ownerName: detailEstimate ? detailEstimate.warehouse.owner : '-',
+            /*위치*/
+            address: detailEstimate ? detailEstimate.warehouse.address : '-',
+            /*계약유형*/
+            type: '수탁',
+            /*보관유형*/
+            keepType: keepTrustContract.typeCode.stdDetailCodeName,
+            /*수탁 가용일자*/
+            usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
+            /*수탁 가용수량*/
+            usblValue: keepTrustContract.cntrValue ? keepTrustContract.cntrValue.toLocaleString() + ' ' + (keepTrustContract.calUnitDvCode.stdDetailCodeName) : '-',
+            /*보관단가*/
+            splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
+            /*가공단가*/
+            mnfctChrg: StringUtils.moneyConvert(keepTrustContract.mnfctChrg),
+            /*인건단가*/
+            psnChrg: StringUtils.moneyConvert(keepTrustContract.psnChrg),
+            /*입고단가*/
+            whinChrg: StringUtils.moneyConvert(keepTrustContract.whinChrg),
+            /*출고단가*/
+            whoutChrg: StringUtils.moneyConvert(keepTrustContract.whoutChrg),
+            /*택배단가*/
+            dlvyChrg: StringUtils.moneyConvert(keepTrustContract.dlvyChrg),
+            /*운송단가*/
+            shipChrg: StringUtils.moneyConvert(keepTrustContract.shipChrg),
+          }),
       });
     }
 
+    if (keepTrustEstimate && keepTrustEstimate.typeCode) {
+      switch (keepTrustEstimate.typeCode) {
+        case "0001":
+          this.setState({
+            imgType: imgType0001
+          })
+          break;
+        case "0002":
+          this.setState({
+            imgType: imgType0002
+          })
+          break;
+        case "0003":
+          this.setState({
+            imgType: imgType0003
+          })
+          break;
+        case "0004":
+          this.setState({
+            imgType: imgType0004
+          })
+          break;
+        default:
+          this.setState({
+            imgType: imgType9100
+          })
+          break;
+      }
+    }
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -395,7 +392,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {};
 }
 
