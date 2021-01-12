@@ -65,10 +65,16 @@ class RegisterBusinessInfo extends Component {
       selectedInfoIndex: 0,
       isCert: false,
       photo: null,
-      businessList:[{
+      businessList:[
+        {
+          label: '사업자정보 신규 등록',
+          value: -1,
+        }
+      ],
+      defautSelect:{
         label: '사업자정보 신규 등록',
         value: -1,
-      }],
+      },
       isPossible: false,
       singleFile: null
     };
@@ -306,7 +312,7 @@ class RegisterBusinessInfo extends Component {
 
 
   render() {
-    const { businessMode,businessInfo, photo,businessList } = this.state;
+    const { businessMode,businessInfo, photo,businessList, defautSelect } = this.state;
 
     return (
       <ScrollView style={[DefaultStyle._container]}>
@@ -319,10 +325,23 @@ class RegisterBusinessInfo extends Component {
             <Select
               data={businessList}
               labelSelected="기등록 사업자 등록정보"
+              dataDefault={defautSelect}
               indexProps={(e, index) => {
                 this.handleChangeSelectBox(e, index)
               }}
             />
+            {/* <Select
+              data={calUnitDvCodes}
+              labelSelected="정산단위"
+              dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
+              selectedValue={formData.calUnitDvCode}
+              valueProps={e => {
+                // this.setState({ calUnitDvCode: e })
+                let dataF = formData;
+                dataF.calUnitDvCode = e;
+                valueForm && valueForm(dataF);
+              }}
+          /> */}
             <View style={[DefaultStyle.line, DefaultStyle.mb_20]}></View>
               {
                 businessMode > -1 ?

@@ -165,6 +165,8 @@ class FormInfo extends Component {
       formData &&
       mgmtChrgDvCodes &&
       mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
+
+      console.log('defaultTypeCode', defaultTypeCode)
     return (
       <Card style={S.cards}>
         <View style>
