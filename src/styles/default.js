@@ -489,6 +489,11 @@ export default StyleSheet.create({
     fontStyle: 'normal',
     paddingRight: 14,
   },
+  _errorTextField: {
+    color: 'red',
+    // fontFamily: 'NotoSansCJKkr',
+    fontSize: 13,
+  },
 
   /** Notifi Input*/
   _notifiInput: {
@@ -1247,7 +1252,7 @@ export default StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 4,
     height: 36,
-    marginBottom: 5
+    marginBottom: 5,
   },
   _btnDateCustom: {
     borderWidth: 1,

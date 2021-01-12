@@ -174,14 +174,19 @@ class RegisterInfo extends Component {
           trusts: filterTrust,
           numberSlideTrusts: slideTrustStart,
         })
-      : this.setState({ keeps: filterKeep, numberSlide: slideKeepStart });
+      : this.setState({
+          keeps: filterKeep,
+          numberSlide: slideKeepStart,
+          goToSlideKeep:slideKeepStart,
+        });
     // console.log('valueTab :>> ', valueTab);
     // console.log('listKeeps', listKeeps);
   };
   onToggleSwitch = () =>
     this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
-
+    _renderPagination
   _renderItem = ({ item }) => {
+    console.log('item :>> ', item);
     let dataKeep = this.state.keeps;
     return (
       <Form
@@ -232,10 +237,11 @@ class RegisterInfo extends Component {
       keeps,
       trusts,
       isSubmit,
+      goToSlideKeep,
     } = this.state;
     // console.log('dataInfo :>> ', dataInfo);
     // console.log('keeps :>> ', dataInfo.keeps);
-    // console.log('managementFeeIndex :>> ', this.props.managementFee);
+    console.log('goToSlideKeep :>> ', goToSlideKeep);
     let isSubmitUpdate = false;
     // console.log('keeps', keeps);
     // console.log('numberSlide', numberSlide);
@@ -263,23 +269,23 @@ class RegisterInfo extends Component {
       trusts && trusts.filter(item => item.shipChrg === '');
 
     if (
-      (filterArea.length === 0 &&
-        filterusblValue.length === 0 &&
-        filtersplyAmount.length === 0 &&
-        filtermgmtChrg.length === 0) 
+      filterArea.length === 0 &&
+      filterusblValue.length === 0 &&
+      filtersplyAmount.length === 0 &&
+      filtermgmtChrg.length === 0
     ) {
       isSubmitUpdate = true;
     }
 
     if (
-      (filterusblValueTrust.length === 0 &&
-        filtersplyAmountTrust.length === 0 &&
-        filterwhinChrgTrust.length === 0 &&
-        filterwhoutChrgTrust.length === 0 &&
-        filterpsnChrgTrust.length === 0 &&
-        filtermnfctChrgTrust.length === 0 &&
-        filterdlvyChrgTrust.length === 0 &&
-        filtershipChrgTrust.length === 0)
+      filterusblValueTrust.length === 0 &&
+      filtersplyAmountTrust.length === 0 &&
+      filterwhinChrgTrust.length === 0 &&
+      filterwhoutChrgTrust.length === 0 &&
+      filterpsnChrgTrust.length === 0 &&
+      filtermnfctChrgTrust.length === 0 &&
+      filterdlvyChrgTrust.length === 0 &&
+      filtershipChrgTrust.length === 0
     ) {
       isSubmitUpdate = true;
     }
@@ -342,6 +348,7 @@ class RegisterInfo extends Component {
                 // style={styles.carousel}
                 custom={{
                   data: keeps,
+                  renderPagination: this._renderPagination,
                   renderItem: this._renderItem,
                   showNextButton: false,
                   showDoneButton: false,
