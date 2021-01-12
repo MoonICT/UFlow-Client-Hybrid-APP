@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Appbar, Text, IconButton } from 'react-native-paper';
+import ImageView from 'react-native-image-view';
 
 // Local Imports
 import { Warehouse, WarehouseTenant, MyPage } from '@Services/apis';
@@ -52,6 +53,7 @@ class DetailWH extends Component {
     this.webView = null;
     let { id } = props.route.params;
     this.state = {
+      isImageViewVisible: false,
       id: id,
       active: 0,
       checked: true,
@@ -63,11 +65,11 @@ class DetailWH extends Component {
       pageInfo: {},
       isLogin: false,
       showAll: false,
-      floors:'',
+      floors: '',
       whList: [],
-      favorite : false,
-      rentUserNo:'',
-      dataTab:[]
+      favorite: false,
+      rentUserNo: '',
+      dataTab: []
     };
     this.navigation = props.navigation;
   }
@@ -205,7 +207,7 @@ class DetailWH extends Component {
       warehSeq: typeInfo.id.seq,
       rentUserNo: 0,
       status: 'RQ00',
-      type : 'TENANT'
+      type: 'TENANT'
     });
   };
 
@@ -232,8 +234,8 @@ class DetailWH extends Component {
     return cardItem;
   };
 
-  render() {
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, activeIndex, id, dataTab} = this.state;
+  render () {
+    const { active, whrgData, pageInfo, qnaList, showAll, floors, whList, favorite, activeIndex, id, dataTab } = this.state;
 
     // const dataTab = [
     //   {
@@ -285,6 +287,17 @@ class DetailWH extends Component {
       }
       return resultStr;
     };
+
+    const images = [
+      {
+        source: {
+          uri: 'https://cdn.pixabay.com/photo/2017/08/17/10/47/paris-2650808_960_720.jpg',
+        },
+        title: 'Paris',
+        width: 806,
+        height: 720,
+      },
+    ];
 
     return (
       <SafeAreaView style={S.container}>
@@ -395,17 +408,40 @@ class DetailWH extends Component {
 
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
-            <View style={S.background}>
-              <Image
-                style={S.backgroundImage}
-                source={
-                  whrgData.whImages && whrgData.whImages.length > 0
-                    ? { uri: whrgData.whImages[0].url }
-                    : cardBG
+            {/** 창고 이미지 */}
+            {whrgData.whImages && whrgData.whImages.length > 0 &&
+            <>
+              <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>
+                <View style={S.background}>
+                  {console.log('이미지 목', whrgData.whImages)}
+                  <Image
+                    style={S.backgroundImage}
+                    source={
+                      whrgData.whImages && whrgData.whImages.length > 0 ?
+                        { uri: whrgData.whImages[0].url } : cardBG
+                    }
+                  />
+                  {/** TODO 파노라마 이미지 */}
+                  {/*<Image style={S.iconBackground} source={circle} />*/}
+                </View>
+              </TouchableOpacity>
+
+              <ImageView
+                images={
+                  whrgData.whImages.map((item) => {
+                    return {
+                      source: {
+                        uri: item.url,
+                      }
+                    };
+                  })
                 }
+                imageIndex={0}
+                isVisible={this.state.isImageViewVisible}
+                onClose={() => this.setState({ isImageViewVisible: false })}
+                renderFooter={(currentImage) => (<View><Text>My footer</Text></View>)}
               />
-              <Image style={S.iconBackground} source={circle} />
-            </View>
+            </>}
             <View style={S.info}>
               <Text style={DefaultStyle._textTitleBody}>창고 정보</Text>
               <View style={DefaultStyle.row}>
@@ -1118,6 +1154,7 @@ class DetailWH extends Component {
                     onPress={() =>
                       this.navigation.navigate('CreateInquiryWH', {
                         idWH: id,
+                        onReloadQna: this.handleRequestQnaList
                       })
                     }>
                     <Text style={S.textInquiry}>문의하기</Text>
@@ -1329,25 +1366,25 @@ class DetailWH extends Component {
     const dataTabs = []
     warehouse.data.floors.forEach(element => {
       dataTabs.push({
-          title: element.flrDvCode.stdDetailCodeName,
-          content: ''
+        title: element.flrDvCode.stdDetailCodeName,
+        content: ''
       })
     })
 
     this.setState({
       dataTab: dataTabs,
-      floors : (dataTabs && dataTabs.length) > 0 ? dataTabs[0]?.title : 'null'
+      floors: (dataTabs && dataTabs.length) > 0 ? dataTabs[0]?.title : 'null'
     })
-        // 유사창고 파라미터 조건
-        let typeCodeNames = []
-        let gdsKeepTypeCodeNames = []
-        if (warehouse.data.keeps && warehouse.data.keeps.length > 0) {
-          typeCodeNames.push('KEEP')
-          warehouse.data.keeps.map(item => {
-            if (gdsKeepTypeCodeNames.indexOf(item.typeCode?.stdDetailCode.toString()) < 0) {
-              gdsKeepTypeCodeNames.push(item.typeCode?.stdDetailCode.toString())
-            }
-          })
+    // 유사창고 파라미터 조건
+    let typeCodeNames = []
+    let gdsKeepTypeCodeNames = []
+    if (warehouse.data.keeps && warehouse.data.keeps.length > 0) {
+      typeCodeNames.push('KEEP')
+      warehouse.data.keeps.map(item => {
+        if (gdsKeepTypeCodeNames.indexOf(item.typeCode?.stdDetailCode.toString()) < 0) {
+          gdsKeepTypeCodeNames.push(item.typeCode?.stdDetailCode.toString())
+        }
+      })
     }
     if (warehouse.data.trusts && warehouse.data.trusts.length > 0) {
       typeCodeNames.push('TRUST');
