@@ -297,7 +297,7 @@ class DetailWH extends Component {
               {
                 whrgData.keeps && whrgData.keeps.length > 0 && (
                    whrgData.keeps.map((keep, index) => (
-                    <View key={index}>
+                    <View key={'keeps'+index}>
                       {(keep.typeCode && keep.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
                       {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
                       {(keep.typeCode && keep.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
@@ -311,7 +311,7 @@ class DetailWH extends Component {
               {
                 whrgData.trusts && whrgData.trusts.length > 0 && (
                    whrgData.trusts.map((trust, index) => (
-                    <View key={index}>
+                    <View key={'trusts'+ index}>
                       {(trust.typeCode && trust.typeCode.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
                       {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
                       {(trust.typeCode && trust.typeCode.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
