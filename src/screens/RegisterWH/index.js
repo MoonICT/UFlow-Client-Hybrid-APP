@@ -60,15 +60,16 @@ class RegisterWH extends Component {
   };
 
   submit = () => {
-    // this.props.showPopup({
-    //   type: 'confirm',
-    //   title: '창고 등록 완료',
-    //   content: ` UFLOW 관리자가 입력하신 정보를 
-    //   확인하기 위해 연락을 드릴 예정입니다.
-    //   자세한 내용은 [마이페이지 > 내 창고]에서 
-    //   확인해주세요`,
-    //   image: illust10,
-    // });
+    this.props.showPopup({
+      type: 'confirm',
+      title: '창고 등록 완료',
+      content: ` UFLOW 관리자가 입력하신 정보를 
+      확인하기 위해 연락을 드릴 예정입니다.
+      자세한 내용은 [마이페이지 > 내 창고]에서 
+      확인해주세요`,
+      image: illust10,
+      navigation: () => this.navigation.navigate('Home'),
+    });
     if (this.doubleSubmitCheck()) return;
 
     let type = this.props.route.params && this.props.route.params.type;
@@ -85,12 +86,14 @@ class RegisterWH extends Component {
               title: '창고 등록 완료',
               content: ` UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요`,
               image: illust10,
+              navigation: () =>
+                this.navigation.navigate('Mypage', {
+                  title: '내 창고',
+                }),
             });
 
             this.doubleSubmitFlag = false;
-            this.navigation.navigate('Mypage', {
-              title: '내 창고',
-            });
+         
           }
         })
         .catch(err => {
@@ -111,12 +114,16 @@ class RegisterWH extends Component {
               title: '창고 등록 완료',
               content: ` UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요`,
               image: illust10,
+              navigation: () =>
+              this.navigation.navigate('Mypage', {
+                title: '내 창고',
+              }),
             });
 
             this.doubleSubmitFlag = false;
-            this.navigation.navigate('Mypage', {
-              title: '내 창고',
-            });
+            // this.navigation.navigate('Mypage', {
+            //   title: '내 창고',
+            // });
           }
         })
         .catch(err => {
