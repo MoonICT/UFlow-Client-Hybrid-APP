@@ -42,6 +42,7 @@ import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
 import { money } from '@Services/utils/StringUtils';
+import Progress from '@Components/organisms/Progress';
 
 const data = [
   {
@@ -97,11 +98,12 @@ const dataSteps = [
 ];
 
 class Mypage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       isSwitchOn: true,
       visibleConfirm: false,
+      refreshKey: '',
       title:
         props.route.params && props.route.params.title
           ? props.route.params.title
@@ -112,14 +114,24 @@ class Mypage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
+
+  /**
+   * 탭 리로드를 위한 함수.
+   * */
+  doRefreshTab = (title) => {
+    this.setState({ title: '' });
+    setTimeout(() => {
+      this.setState({ title: title });
+    });
+  };
 
   showDialog = () => this.setState({ visible: true });
 
@@ -156,7 +168,8 @@ class Mypage extends Component {
       return '';
     }
   };
-  render() {
+
+  render () {
     const { route, workComplete } = this.props;
     const { title, isSwitchOn, dataWH } = this.state;
     // console.log('title :>> ', title);
@@ -268,14 +281,14 @@ class Mypage extends Component {
                   onPress={() => {
                     item.sttsDbCode.stdDetailCode === '0001'
                       ? this.props.showPopup({
-                          type: 'confirm',
-                          image: '',
-                          content: '공실이 검증되지 않은 창고입니다.',
-                        })
+                        type: 'confirm',
+                        image: '',
+                        content: '공실이 검증되지 않은 창고입니다.',
+                      })
                       : this.navigation.navigate('RegisterWH', {
-                          type: 'ModifyWH',
-                          warehouseRegNo: item.id,
-                        });
+                        type: 'ModifyWH',
+                        warehouseRegNo: item.id,
+                      });
                     // this.props.imageAction(listImage);
                   }}>
                   <Text
@@ -288,28 +301,35 @@ class Mypage extends Component {
           />
         );
       });
-    let viewComponent = (
-      <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-        <View style={DefaultStyle._titleCard}>
-          <Text style={[DefaultStyle._textTitleCard]}>내 창고</Text>
-        </View>
-        {viewWH}
-        <TouchableOpacity
-          style={DefaultStyle._btnInline}
-          onPress={() => {
-            this.navigation.navigate('RegisterWH');
-            this.props.imageAction([]);
-          }}>
-          <Text style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-            신규 등록
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
+    let viewComponent = (<View>
+      <Progress />
+    </View>);
     switch (this.state.title) {
+      // TODO 라우트 갱신할 합수 전달.
+      case '내 창고':
+        viewComponent = (
+          <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+            <View style={DefaultStyle._titleCard}>
+              <Text style={[DefaultStyle._textTitleCard]}>내 창고</Text>
+            </View>
+            {viewWH}
+            <TouchableOpacity
+              style={DefaultStyle._btnInline}
+              onPress={() => {
+                this.navigation.navigate('RegisterWH');
+                this.props.imageAction([]);
+              }}>
+              <Text style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
+                신규 등록
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )
+        break;
       case '견적･계약 관리':
         viewComponent = (
           <ContractManager
+            doRefresh={this.doRefreshTab}
             dataSteps={dataSteps}
             navigation={this.navigation}
             // type="ProprietorMypage"
@@ -321,13 +341,13 @@ class Mypage extends Component {
         );
         break;
       case '입･출고 관리':
-        viewComponent = <InOutManager navigation={this.navigation} />;
+        viewComponent = <InOutManager navigation={this.navigation} doRefresh={this.doRefreshTab} />;
         break;
       case '정산관리':
-        viewComponent = <SettlementManagement navigation={this.navigation} />;
+        viewComponent = <SettlementManagement navigation={this.navigation} doRefresh={this.doRefreshTab} />;
         break;
       case '관심 창고':
-        viewComponent = <InterestWH navigation={this.navigation} />;
+        viewComponent = <InterestWH navigation={this.navigation} doRefresh={this.doRefreshTab} />;
         break;
       // default:
       //   viewComponent;
@@ -363,6 +383,7 @@ class Mypage extends Component {
               });
             }}
           />
+          <Text>{this.state.refreshKey}</Text>
           {viewComponent}
         </ScrollView>
 
@@ -425,7 +446,7 @@ class Mypage extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount:: MyPage', this.props.route.params.title);
     this.setState({ title: this.props.route.params.title });
     // const getWH = await Warehouse.myWH();
@@ -448,18 +469,21 @@ class Mypage extends Component {
 
     // SplashScreen.hide();
   }
-  UNSAFE_componentWillReceiveProps(newProps) {
+
+  UNSAFE_componentWillReceiveProps (newProps) {
     let titleProp =
       newProps.route && newProps.route.params && newProps.route.params.title;
     console.log('titleProp :>> ', titleProp);
     this.setState({ title: titleProp });
   }
+
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate (prevProps, prevState) {
+  }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -468,7 +492,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     imageAction: action => {
       dispatch(ActionCreator.dataImage(action));

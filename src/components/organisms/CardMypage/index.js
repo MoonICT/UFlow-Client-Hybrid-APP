@@ -67,7 +67,6 @@ class CardMypage extends Component {
           </View>
         </TouchableOpacity>
         <View style={[DefaultStyle._bodyCard, style]}>
-          <Text>{console.log(bgrImage)}</Text>
           {bgrImage &&
           <Card.Cover
             source={bgrImage ? {

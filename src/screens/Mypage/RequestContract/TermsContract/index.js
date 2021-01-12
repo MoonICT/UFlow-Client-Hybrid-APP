@@ -38,8 +38,8 @@ class TermsContract extends Component {
       file: null,
     };
 
-    console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
-    console.debug('견적 약관 keepTrustContract : ', props.keepTrustContract)
+    // console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+    // console.debug('견적 약관 keepTrustContract : ', props.keepTrustContract)
 
     this.navigation = props.navigation;
   }
@@ -54,7 +54,8 @@ class TermsContract extends Component {
       type: 'confirm',
       content: `계약 약관 동의가 처리되었습니다.`,
     });
-    this.navigation.navigate('Mypage', { title: '견적･계약 관리' });
+    this.props.route.params.onRefresh('견적･계약 관리')
+    this.navigation.navigate('Mypage',);
   };
 
   /**
@@ -69,11 +70,11 @@ class TermsContract extends Component {
 
     if (this.props.type === 'owner') {
       let formData = new FormData();
-      formData.append('file', {
+      formData.append('file', this.state.file ? {
         uri: this.state.file.uri,
         type: this.state.file.type,
         name: this.state.file.fileName,
-      });
+      } : '');
       formData.append('warehouseRegNo', keepTrustContract.id.warehouseRegNo);
       formData.append('rentUserNo', rentUserNo);
       formData.append('cntrYmdFrom', moment(keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD'));
@@ -249,6 +250,16 @@ class TermsContract extends Component {
             onPress={() => this.useImperativeHandle()}>
             <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
               계약 약관 동의
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[DefaultStyle._btnInline,]}
+            onPress={() => {
+              this.props.route.params.onRefresh('견적･계약 관리')
+              this.navigation.navigate('Mypage',);
+            }}>
+            <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
+              뒤로가기
             </Text>
           </TouchableOpacity>
         </View>

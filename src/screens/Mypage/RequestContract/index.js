@@ -138,6 +138,7 @@ class RequestContract extends Component {
             {keepTrustContract ?
               <ContractInformation
                 navigation={this.navigation}
+                route={this.props.route}
                 detailEstimate={detailEstimate} // 계약 기본 정보
                 keepTrustContract={keepTrustContract} // keep|trust
                 type={type}
