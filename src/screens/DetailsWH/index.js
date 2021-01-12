@@ -353,23 +353,23 @@ class DetailWH extends Component {
                       )}
                     {keep.typeCode &&
                       keep.typeCode?.stdDetailCodeName === '냉동' && (
-                        <Text style={[S.textlabel, S.orange]}>냉동</Text>
+                        <Text style={[S.textlabel, S.azure]}>냉동</Text>
                       )}
                     {keep.typeCode &&
                       keep.typeCode?.stdDetailCodeName === '냉장' && (
-                        <Text style={[S.textlabel, S.orange]}>냉장</Text>
+                        <Text style={[S.textlabel, S.green]}>냉장</Text>
                       )}
                     {keep.typeCode &&
                       keep.typeCode?.stdDetailCodeName === '야적' && (
-                        <Text style={[S.textlabel, S.orange]}>야적</Text>
+                        <Text style={[S.textlabel, S.gray]}>야적</Text>
                       )}
                     {keep.typeCode &&
                       keep.typeCode?.stdDetailCodeName === '위험물' && (
-                        <Text style={[S.textlabel, S.orange]}>위험물</Text>
+                        <Text style={[S.textlabel, S.gray]}>위험물</Text>
                       )}
                     {keep.typeCode &&
                       keep.typeCode?.stdDetailCodeName === '기타' && (
-                        <Text style={[S.textlabel, S.orange]}>기타</Text>
+                        <Text style={[S.textlabel, S.gray]}>기타</Text>
                       )}
                   </View>
                 ))}
