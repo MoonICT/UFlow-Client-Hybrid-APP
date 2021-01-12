@@ -2,9 +2,9 @@
  * [창고등록] 보관계약 모델
  * */
 export const WarehouseKeepsModel = {
-  typeCode: "", // "0001", 보관유형
-  calUnitDvCode: "", //"CU01", 정산단위
-  calStdDvCode: "", // "CS03", 정산기준
+  typeCode: "", // "0001", 보관유형 // required
+  calUnitDvCode: "", //"CU01", 정산단위 // required
+  calStdDvCode: "", // "CS03", 정산기준 // required
   mgmtChrgDvCode: "", // "0001",
   usblYmdFrom: null, //1606310400000,
   usblYmdTo: null, // 1606316400000,
@@ -56,35 +56,35 @@ export const WarehouseFloorsModel = {
  * [창고등록] 창고 모델
  * */
 export const WarehouseModel = {
-  name: "",
-  description: "",
-  entrpNo: "", // 사업자번호
+  name: "", // required
+  description: "", // required
+  entrpNo: "", // 사업자번호 required
   // telNo: "",
   // cnsltPossYn: true,
   // sttsDbCode: "0001",
   // vrfctFailReason: "",
   // 주소정보
   address: {
-    zipNo: "",
-    sidoName: "",
-    skkCd: "",
-    skkName: "",
-    bjdongCd: "",
-    bjdongName: "",
-    hjdongCd: "",
-    hjdongName: "",
-    roadNmCd: "",
-    address: "",
-    detail: ""
+    zipNo: "", // required
+    sidoName: "", // required
+    skkCd: "", // required
+    skkName: "", // required
+    bjdongCd: "", // required
+    bjdongName: "", // required
+    hjdongCd: "", // required
+    hjdongName: "", // required
+    roadNmCd: "", // required
+    address: "", // required
+    detail: "" // required
   },
   roadAddr: {
-    zipNo: "",
-    address: "",
-    detail: ""
+    zipNo: "", // required
+    address: "", // required
+    detail: "" // required
   },
   gps: {
-    latitude: 0,
-    longitude: 0
+    latitude: 0, // required
+    longitude: 0 // required
   },
   // 추가 정보.
   cmpltYmd: null, // 준공일자
@@ -218,9 +218,8 @@ export const WarehouseSearchFilterModel = {
   siteArea: '', // Master : 대지면적 max
   bldgArea: '', // Master : 건축면적 max
   totalArea: '', // Master : 연면적 max
-  flrHi: '',//  Floor : 층고 max
-
   flrDvCodes: '', // WHRG0010 층 구분 (복수) (,구분)
+  flrHi: '',//  Floor : 층고 max
   cmpltYmds: '', // Master: 준공일자 (,구분) A,B,C
   aprchMthdDvCodes: '', // Floor : WHRG0011 접안 방식 (복수) (,구분)
   insrDvCodes: '', // Master : WHRG0009 보험 (복수) (,구분)

@@ -184,8 +184,6 @@ class ResponseQuotation extends Component {
             </View>
             {/** END:HEADER **/}
 
-            <Text>{typeWH}</Text>
-
             {typeWH === 'TRUST' ? (
               <ResponseQTrust
                 rentUserNo={rentUserNo}

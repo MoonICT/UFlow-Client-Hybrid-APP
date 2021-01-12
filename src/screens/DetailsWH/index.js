@@ -146,9 +146,8 @@ class DetailWH extends Component {
         if (res.data.status === 'PSB_CNT') {
           console.log('res.data.status', res.data.status);
           this.handleRouteRequestQuotation(
-            typeInfo.id.warehouseRegNo,
-            type,
-            typeInfo.id.seq,
+            typeInfo,
+            type
           );
         }
       })
@@ -180,12 +179,30 @@ class DetailWH extends Component {
       });
   };
 
-  handleRouteRequestQuotation = (idWarehouse, type, seq) => {
-    this.navigation.navigate('ResponseQuotation', {
+  // handleRouteRequestQuotation = (idWarehouse, type, seq) => {
+  handleRouteRequestQuotation = (typeInfo, type) => {
+    // typeInfo.id.warehouseRegNo,
+//             type,
+//             typeInfo.id.seq,
+    // this.navigation.navigate('ResponseQuotation', {
+    //   typeWH: type,
+    //   warehouseRegNo: idWarehouse,
+    //   warehSeq: seq,
+    //   rentUserNo: '',
+    //   status: 'RQ00',
+    //   type: 'TENANT',
+    // });
+    console.log(typeInfo, 'typeInfo');
+    console.log(type, 'type');
+    this.navigation.navigate('RequestQuotation', {
+      data: {
+        whrgMgmtTrust: type === 'TRUST' ? typeInfo : null,
+        whrgMgmtKeep: type === 'KEEP' ? typeInfo : null,
+      },
       typeWH: type,
-      warehouseRegNo: idWarehouse,
-      warehSeq: seq,
-      rentUserNo: '',
+      warehouseRegNo: typeInfo.id.warehouseRegNo,
+      warehSeq: typeInfo.id.seq,
+      rentUserNo: 0,
       status: 'RQ00',
       type: 'TENANT',
     });
@@ -563,7 +580,7 @@ class DetailWH extends Component {
                                         : ''}
                                     </Text>
                                     <Text>
-                                      {whrgData.relativeEntrp
+                                      {(whrgData.relativeEntrp && whrgData.relativeEntrp.phone)
                                         ? whrgData.relativeEntrp.phone.no1 +
                                           whrgData.relativeEntrp.phone.no2 +
                                           whrgData.relativeEntrp.phone.no3
@@ -583,7 +600,7 @@ class DetailWH extends Component {
                                 )}
                               </View>
                             ) : (
-                              <Text style={[S.textBtnQuote]}>
+                              <Text style={[S.textBtnQuote,{color: '#ff0000', padding: 16}]}>
                                 계약 완료된 정보입니다.
                               </Text>
                             )}
@@ -660,16 +677,16 @@ class DetailWH extends Component {
                                 : '-'}
                             </Text>
                           </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              관리비구분
-                            </Text>
-                            <Text style={S.textTable}>
-                              {trust.mgmtChrgDvCode
-                                ? trust.mgmtChrgDvCode?.stdDetailCodeName
-                                : '-'}
-                            </Text>
-                          </View>
+                          {/*<View style={S.tableRow}>*/}
+                          {/*  <Text style={[S.textTable, S.textLeftTable]}>*/}
+                          {/*    관리비구분*/}
+                          {/*  </Text>*/}
+                          {/*  <Text style={S.textTable}>*/}
+                          {/*    {trust.mgmtChrgDvCode*/}
+                          {/*      ? trust.mgmtChrgDvCode?.stdDetailCodeName*/}
+                          {/*      : '-'}*/}
+                          {/*  </Text>*/}
+                          {/*</View>*/}
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               가용일자
@@ -715,18 +732,82 @@ class DetailWH extends Component {
                               }`}
                             </Text>
                           </View>
+
+                          {/** 정보 수정 시작 **/}
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
-                              관리단가
+                              입고단가
                             </Text>
                             <Text style={S.textTable}>
                               {`${
-                                trust.mgmtChrg
-                                  ? trust.mgmtChrg.toLocaleString() + '원'
+                                trust.whinChrg
+                                  ? trust.whinChrg.toLocaleString() + '원'
                                   : '-'
                               }`}
                             </Text>
                           </View>
+                          <View style={S.tableRow}>
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              출고단가
+                            </Text>
+                            <Text style={S.textTable}>
+                              {`${
+                                trust.whoutChrg
+                                  ? trust.whoutChrg.toLocaleString() + '원'
+                                  : '-'
+                              }`}
+                            </Text>
+                          </View>
+                          <View style={S.tableRow}>
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              인건단가
+                            </Text>
+                            <Text style={S.textTable}>
+                              {`${
+                                trust.psnChrg
+                                  ? trust.psnChrg.toLocaleString() + '원'
+                                  : '-'
+                              }`}
+                            </Text>
+                          </View>
+                          <View style={S.tableRow}>
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              가공단가
+                            </Text>
+                            <Text style={S.textTable}>
+                              {`${
+                                trust.mnfctChrg
+                                  ? trust.mnfctChrg.toLocaleString() + '원'
+                                  : '-'
+                              }`}
+                            </Text>
+                          </View>
+                          <View style={S.tableRow}>
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              택배단가
+                            </Text>
+                            <Text style={S.textTable}>
+                              {`${
+                                trust.dlvyChrg
+                                  ? trust.dlvyChrg.toLocaleString() + '원'
+                                  : '-'
+                              }`}
+                            </Text>
+                          </View>
+                          <View style={S.tableRow}>
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              운송단가
+                            </Text>
+                            <Text style={S.textTable}>
+                              {`${
+                                trust.shipChrg
+                                  ? trust.shipChrg.toLocaleString() + '원'
+                                  : '-'
+                              }`}
+                            </Text>
+                          </View>
+
+                          {/** 정보 수정 시작 **/}
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               비고
@@ -734,6 +815,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>{trust.remark}</Text>
                           </View>
                           <View style={S.tableRow}>
+
                             {trust.enable ? (
                               <View style={S.rowBtn}>
                                 {whrgData.userTypeCode === '1100' ? (
@@ -744,7 +826,7 @@ class DetailWH extends Component {
                                         : ''}
                                     </Text>
                                     <Text>
-                                      {whrgData.relativeEntrp
+                                      {(whrgData.relativeEntrp && whrgData.relativeEntrp.phone)
                                         ? whrgData.relativeEntrp.phone.no1 +
                                           whrgData.relativeEntrp.phone.no2 +
                                           whrgData.relativeEntrp.phone.no3
@@ -755,7 +837,7 @@ class DetailWH extends Component {
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
                                     onPress={() =>
-                                      checkContract('TRUST', trust)
+                                      this.checkContract('TRUST', trust)
                                     }>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
@@ -764,9 +846,11 @@ class DetailWH extends Component {
                                 )}
                               </View>
                             ) : (
-                              <Text style={[S.textBtnQuote]}>
+
+                              <Text style={[S.textBtnQuote,{color: '#ff0000', padding: 16}]}>
                                 계약 완료된 정보입니다.
                               </Text>
+
                             )}
                           </View>
                         </View>
@@ -840,49 +924,38 @@ class DetailWH extends Component {
                         전용면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${
-                          whrgData.prvtArea
-                            ? whrgData.prvtArea.toLocaleString()
-                            : 0
-                        }㎡`}
+                        {whrgData.prvtArea ? displayAreaUnit(whrgData.prvtArea) : '-'}
                       </Text>
                     </View>
+
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
                         대지면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${
-                          whrgData.siteArea
-                            ? whrgData.siteArea.toLocaleString()
-                            : 0
-                        }㎡`}
+                        {whrgData.siteArea ? displayAreaUnit(whrgData.siteArea) : '-'}
                       </Text>
                     </View>
+
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
                         공용면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${
-                          whrgData.cmnArea
-                            ? whrgData.cmnArea.toLocaleString()
-                            : 0
-                        }㎡`}
+                        {whrgData.cmnArea ? displayAreaUnit(whrgData.cmnArea) : '-'}
+
                       </Text>
                     </View>
+
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
                         건축면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${
-                          whrgData.bldgArea
-                            ? whrgData.bldgArea.toLocaleString()
-                            : 0
-                        }㎡`}
+                        {whrgData.bldgArea ? displayAreaUnit(whrgData.bldgArea) : '-'}
                       </Text>
                     </View>
+
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
                         추가옵션
@@ -897,12 +970,14 @@ class DetailWH extends Component {
                         }`}
                       </Text>
                     </View>
+
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>연면적</Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.totalArea}㎡`}
+                        {whrgData.totalArea ? displayAreaUnit(whrgData.totalArea) : '-'}
                       </Text>
                     </View>
+
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
                         보험가입
@@ -957,11 +1032,7 @@ class DetailWH extends Component {
                                 층면적
                               </Text>
                               <Text style={S.textTable}>
-                                {`${
-                                  floor.flrArea
-                                    ? floor.flrArea.toLocaleString()
-                                    : 0
-                                }㎡`}
+                                {floor.flrArea ? displayAreaUnit(floor.flrArea) : '-'}
                               </Text>
                             </View>
                             <View style={S.tableRow}>
@@ -969,11 +1040,7 @@ class DetailWH extends Component {
                                 사무실면적
                               </Text>
                               <Text style={S.textTable}>
-                                {`${
-                                  floor.opcArea
-                                    ? floor.opcArea.toLocaleString()
-                                    : 0
-                                }㎡`}
+                                {floor.opcArea ? displayAreaUnit(floor.opcArea) : '-'}
                               </Text>
                             </View>
                             <View style={S.tableRow}>
@@ -981,11 +1048,7 @@ class DetailWH extends Component {
                                 주차장면적
                               </Text>
                               <Text style={S.textTable}>
-                                {`${
-                                  floor.parkArea
-                                    ? floor.parkArea.toLocaleString()
-                                    : 0
-                                }㎡`}
+                                {floor.parkArea ? displayAreaUnit(floor.parkArea) : '-'}
                               </Text>
                             </View>
                             <View style={S.tableRow}>
@@ -993,11 +1056,7 @@ class DetailWH extends Component {
                                 전용면적
                               </Text>
                               <Text style={S.textTable}>
-                                {`${
-                                  floor.prvtArea
-                                    ? floor.prvtArea.toLocaleString()
-                                    : 0
-                                }㎡`}
+                                {floor.prvtArea ? displayAreaUnit(floor.prvtArea) : '-'}
                               </Text>
                             </View>
                             <View style={S.tableRow}>
@@ -1005,11 +1064,7 @@ class DetailWH extends Component {
                                 공용면적
                               </Text>
                               <Text style={S.textTable}>
-                                {`${
-                                  floor.cmnArea
-                                    ? floor.cmnArea.toLocaleString()
-                                    : 0
-                                }㎡`}
+                                {floor.cmnArea ? displayAreaUnit(floor.cmnArea) : '-'}
                               </Text>
                             </View>
                             <View style={S.tableRow}>
@@ -1283,6 +1338,7 @@ class DetailWH extends Component {
       page: 0,
       requiresToken: false,
     };
+    console.log(qnaParams, 'qnaParams');
     Warehouse.pageWhrgQnA(qnaParams)
       .then(res => {
         if (res && res._embedded && res._embedded) {
