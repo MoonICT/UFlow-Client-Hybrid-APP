@@ -19,7 +19,7 @@ class AppGrid extends Component {
     this.setState({ active: item.title, content: item.content});
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     const dataTitle = newProps.dataTitle;
     const data = newProps.data;
     const value = newProps.value;

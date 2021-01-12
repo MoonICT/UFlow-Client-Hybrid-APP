@@ -27,7 +27,7 @@ export default class Selected extends Component {
   _showSelect = () => this.setState({ isToggle: true });
 
   _hideSelect = () => this.setState({ isToggle: false });
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     // let selectedValue = newProps.selectedValue;
     // console.log('defaultValuenewProps :>> ', newProps);
     newProps.dataDefault

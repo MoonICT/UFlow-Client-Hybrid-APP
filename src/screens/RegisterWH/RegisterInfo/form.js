@@ -93,7 +93,7 @@ class FormInfo extends Component {
     dataF.usblYmdTo = d;
     this.props.valueForm && this.props.valueForm(dataF);
   };
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     // let selectedValue = newProps.selectedValue;
     let newUsblYmdFrom = newProps.formData.usblYmdFrom;
     let newUsblYmdTo = newProps.formData.usblYmdTo;

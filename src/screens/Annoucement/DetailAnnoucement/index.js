@@ -83,8 +83,7 @@ class RegisterInfo extends Component {
               <View style={{ flex: 1 }}>
                 <HTML
                   tagsStyles={{p: { marginBottom: 0, marginTop: 0 }}}
-                  source={{ html: data && data.content }}
-                  contentWidth={'100%'}
+                  source={{ html:(data && data.content) ? data.content : 'empty content' }}
                 />
               </View>
             </View>
@@ -105,6 +104,7 @@ class RegisterInfo extends Component {
           this.setState({
             data: res.data,
           });
+            console.log('data =>>>', data)
         }
       })
       .catch(err => {
