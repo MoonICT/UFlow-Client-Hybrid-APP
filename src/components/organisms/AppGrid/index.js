@@ -75,10 +75,8 @@ const windowHeight = Dimensions.get('window').height;
               <View
                 style={{
                   flex: 1,
-                  alignSelf: 'center',
                   flexDirection: 'row',
-                  alignContent: 'center',
-                  justifyContent: 'center',
+                  justifyContent: 'space-around',
                   width: windowWidth,
                 }}>
                 {tabItem}
