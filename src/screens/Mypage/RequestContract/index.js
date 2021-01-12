@@ -67,7 +67,10 @@ class RequestContract extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.goBack()}
+            onPress={() => {
+              this.props.route.params.onRefresh('견적･계약 관리')
+              this.navigation.goBack()
+            }}
           />
           <Appbar.Content
             title="견적･계약 관리"

@@ -129,7 +129,7 @@ class Mypage extends Component {
   doRefreshTab = (title) => {
     this.setState({ title: '' });
     setTimeout(() => {
-      this.setState({ title: title });
+      this.setState({ title: title ? title : '내 창고' });
     });
   };
 
