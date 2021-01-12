@@ -5,19 +5,19 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
-import {SafeAreaView, View, ScrollView, Image} from 'react-native';
-import {connect} from 'react-redux';
-import {Appbar, Text} from 'react-native-paper';
+import React, { Component } from 'react';
+import { SafeAreaView, View, ScrollView, Image } from 'react-native';
+import { connect } from 'react-redux';
+import { Appbar, Text } from 'react-native-paper';
 import moment from 'moment';
-import {StringUtils, ContractUtils} from '@Services/utils';
+import { StringUtils, ContractUtils } from '@Services/utils';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TableInfo from '@Components/atoms/TableInfo';
 import ContractInformation from './ContractInformation';
-import {styles as S} from '../style';
+import { styles as S } from '../style';
 
 import imgType0001 from '@Assets/images/type-0001.png';
 import imgType0002 from '@Assets/images/type-0002.png';
@@ -32,7 +32,7 @@ import {
 } from '@Services/apis';
 
 class RequestContract extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       detailContract: '', // 계약 기본 정보.
@@ -40,6 +40,9 @@ class RequestContract extends Component {
 
       keepTrustContract: '', // keep|trust
       keepTrustEstimate: '', // keep|trust
+
+      warehouseInfoData: '', // 창고정보 1100전
+      warehouseInfo: '', // 창고정보 1100전
 
       dataKeep: [],
       dataTrust: [],
@@ -52,7 +55,7 @@ class RequestContract extends Component {
   }
 
 
-  render() {
+  render () {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let type = this.props.route.params.type.toLowerCase(); // owner | tenant
@@ -60,7 +63,7 @@ class RequestContract extends Component {
     let rentUserNo = this.props.route.params.rentUserNo;
     const status = this.props.route.params.status;
 
-    const {dataTrust, dataKeep, detailEstimate, keepTrustContract} = this.state;
+    const { dataTrust, dataKeep, detailEstimate, keepTrustContract, warehouseInfo } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
@@ -81,7 +84,7 @@ class RequestContract extends Component {
           />
         </Appbars>
         <ScrollView>
-          <View style={[DefaultStyle._body, {paddingBottom: 300}]}>
+          <View style={[DefaultStyle._body, { paddingBottom: 300 }]}>
 
             {/** HEADER **/}
             <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
@@ -89,7 +92,7 @@ class RequestContract extends Component {
               <Text
                 style={[
                   DefaultStyle._statusProcessing,
-                  status === '5100' ? {backgroundColor: '#4caf50'} : '',
+                  status === '5100' ? { backgroundColor: '#4caf50' } : '',
                 ]}>
                 {ContractUtils.coverStatus(status) && ContractUtils.coverStatus(status).processingTrust &&
                 contractType === 'trust'
@@ -105,15 +108,14 @@ class RequestContract extends Component {
 
               <View style={DefaultStyle._headerCard}>
                 {this.state.imgType &&
-                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader} />
                 }
               </View>
               <View>
                 <View style={DefaultStyle._infoTable}>
-                  <Text>Quotation.dataKeep or Quotation.dataTrust</Text>
-                  {/*{(contractType === 'keep' && estimateKeep) ?*/}
-                  {/*  <TableInfo data={dataKeep}/> :*/}
-                  {/*  <TableInfo data={dataTrust}/>}*/}
+                  {contractType === 'keep' && warehouseInfo.dataKeep && <TableInfo data={warehouseInfo.dataKeep} />}
+                  {contractType === 'trust' && warehouseInfo.dataTrust && <TableInfo data={warehouseInfo.dataTrust} />}
+
                 </View>
               </View>
             </View>
@@ -125,15 +127,15 @@ class RequestContract extends Component {
               {(status === '2100' || status === '4100' || status === '5100') &&
               <View style={DefaultStyle._headerCard}>
                 {this.state.imgType &&
-                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader} />
                 }
               </View>
               }
               <View>
                 <View style={DefaultStyle._infoTable}>
                   {(contractType === 'keep' && dataKeep) ?
-                    <TableInfo data={dataKeep}/> :
-                    <TableInfo data={dataTrust}/>}
+                    <TableInfo data={dataKeep} /> :
+                    <TableInfo data={dataTrust} />}
                 </View>
               </View>
             </View>
@@ -170,7 +172,7 @@ class RequestContract extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let type = this.props.route.params.type.toLowerCase(); // owner | tenant
@@ -189,7 +191,12 @@ class RequestContract extends Component {
       }).then(async (res) => {
         let resultData = res;
         this.setState({
-          detailContract: resultData
+          detailContract: resultData,
+          warehouseInfoData: {
+            warehouse: resultData.warehouse,
+            whrgMgmtTrust: resultData.whrgMgmtTrust,
+            whrgMgmtKeep: resultData.whrgMgmtKeep,
+          },
         });
 
         console.log(resultData, 'resultData');
@@ -209,26 +216,26 @@ class RequestContract extends Component {
         }
 
         // 견적 완료, 계약 진행 중일 때.
-        // let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
-        // await Contract.getContractKeep({
-        //   type: 'owner',
-        //   contractType: contractType,
-        //   idWarehouse: warehouseRegNo,
-        //   rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
-        //   cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD',),
-        // }).then(res => {
-        //   let resultEstmtData = {
-        //     warehouse: resultData.warehouse,
-        //     [contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts']: res,
-        //   };
-        //
-        //   // console.debug('[3] 견적 완료, 계약 진행 중일 때.1 : ', res);
-        //   this.setState({
-        //     detailEstimate: resultEstmtData,
-        //     keepTrustContract: res, // keep|trust
-        //     keepTrustEstimate: contractType === 'keep' ? res.whrgMgmtKeep : res.whrgMgmtTrust, // keep|trust
-        //   });
-        // });
+        let estmtData = resultData.estmtKeeps || resultData.estmtTrusts;
+        await Contract.getContractKeep({
+          type: 'owner',
+          contractType: contractType,
+          idWarehouse: warehouseRegNo,
+          rentUserNo: estmtData[estmtData.length - 1].rentUserNo,
+          cntrYmdFrom: moment(estmtData[estmtData.length - 1].from).format('YYYYMMDD',),
+        }).then(res => {
+          let resultEstmtData = {
+            warehouse: resultData.warehouse,
+            [contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts']: res,
+          };
+
+          // console.debug('[3] 견적 완료, 계약 진행 중일 때.1 : ', res);
+          this.setState({
+            detailEstimate: resultEstmtData,
+            keepTrustContract: res, // keep|trust
+            keepTrustEstimate: contractType === 'keep' ? res.whrgMgmtKeep : res.whrgMgmtTrust, // keep|trust
+          });
+        });
       })
         .catch(err => {
           console.log(err);
@@ -244,7 +251,14 @@ class RequestContract extends Component {
       }).then(async (res) => {
 
         let resultData = res
-        this.setState({detailContract: resultData})
+        this.setState({
+          detailContract: resultData,
+          warehouseInfoData: {
+            warehouse: resultData.warehouse,
+            whrgMgmtTrust: resultData.whrgMgmtTrust,
+            whrgMgmtKeep: resultData.whrgMgmtKeep,
+          },
+        })
 
         console.log(resultData, 'resultData');
 
@@ -305,9 +319,69 @@ class RequestContract extends Component {
     }
 
     const status = this.props.route.params.status;
-    const {detailEstimate, keepTrustContract, keepTrustEstimate} = this.state;
+    const { detailEstimate, keepTrustContract, keepTrustEstimate, warehouseInfoData, } = this.state;
 
-    console.log(status, 'status')
+    console.log(warehouseInfoData, 'kdjf;kdsajflks;ajflkas;')
+
+    this.setState({
+      warehouseInfo: {
+        dataKeep: warehouseInfoData.whrgMgmtKeep ? ContractUtils.keepTableDatas(1, {/**한국어 기본**/ }, {
+          /*창고명*/
+          warehouseName: warehouseInfoData.warehouse.warehouse,
+          /*창고주*/
+          ownerName: warehouseInfoData.warehouse.owner,
+          /*위치*/
+          address: warehouseInfoData.warehouse.address,
+          /*계약유형*/
+          type: '임대(보관)',
+          /*보관유형*/
+          keepType: warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
+          /*전용면적*/
+          prvtArea: warehouseInfoData.warehouse.prvtArea ? warehouseInfoData.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
+          /*임대 가능기간*/
+          usblYmd: StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdTo),
+          /*보관단가*/
+          splyAmount: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtKeep.splyAmount),
+          /*관리단가*/
+          mgmtChrg: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtKeep.mgmtChrg),
+        }) : '',
+        dataTrust: warehouseInfoData.whrgMgmtTrust ? ContractUtils.trustTableDatas(1, {/**한국어 기본**/ }, {
+          /*창고명*/
+          warehouseName: warehouseInfoData.warehouse.warehouse,
+          /*창고주*/
+          ownerName: warehouseInfoData.warehouse.owner,
+          /*위치*/
+          address: warehouseInfoData.warehouse.address,
+          /*계약유형*/
+          type: '수탁',
+          /*보관유형*/
+          keepType: warehouseInfoData.whrgMgmtTrust.typeCode.stdDetailCodeName,
+          /*정산단위*/
+          calUnitDvCode: warehouseInfoData.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
+          /*산정기준*/
+          calStdDvCode: warehouseInfoData.whrgMgmtTrust.calStdDvCode.stdDetailCodeName,
+          /*수탁 가능기간*/
+          usblYmd: StringUtils.dateStr(warehouseInfoData.whrgMgmtTrust.usblYmdFrom) + '~' + StringUtils.dateStr(warehouseInfoData.whrgMgmtTrust.usblYmdTo),
+          /*수탁 가용수량*/
+          usblValue: warehouseInfoData.whrgMgmtTrust.usblValue ? warehouseInfoData.whrgMgmtTrust.usblValue.toLocaleString() + ' ' + (warehouseInfoData.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName) : '-',
+          /*보관단가*/
+          splyAmount: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtTrust.splyAmount),
+          /*가공단가*/
+          mnfctChrg: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtTrust.mnfctChrg),
+          /*인건단가*/
+          psnChrg: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtTrust.psnChrg),
+          /*입고단가*/
+          whinChrg: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtTrust.whinChrg),
+          /*출고단가*/
+          whoutChrg: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtTrust.whoutChrg),
+          /*택배단가*/
+          dlvyChrg: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtTrust.dlvyChrg),
+          /*운송단가*/
+          shipChrg: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtTrust.shipChrg),
+        }) : '',
+      }
+    });
+
     if (status === '1100' || status === '2100' || status === '4100') {
       if (detailEstimate && keepTrustContract && contractType === 'keep') {
 
@@ -493,13 +567,13 @@ class RequestContract extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -508,7 +582,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {};
 }
 
