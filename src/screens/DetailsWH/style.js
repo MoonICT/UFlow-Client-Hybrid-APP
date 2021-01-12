@@ -301,6 +301,19 @@ export const styles = StyleSheet.create({
   mainProductList: {
     marginTop: 24,
     marginBottom: 24,
+
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    marginLeft: -4,
+    marginRight: -4,
+  },
+  mainProductItem: {
+    width: '50%',
+    paddingLeft: 4,
+    paddingRight: 4,
+    marginBottom: 8,
   },
   rowBtn:{
     display: 'flex',

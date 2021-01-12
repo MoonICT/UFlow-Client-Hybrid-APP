@@ -45,9 +45,22 @@ class WebviewMap extends Component {
     }
   }
 
+  _WVSendMessage (msgObj) {
+    const resultMsg = JSON.stringify(msgObj);
+    this.webView.postMessage(resultMsg);
+    // console.log(':::: Send Message ::::', resultMsg);
+  }
+
   render () {
     const { latitude, longitude } = this.props;
     const strMsgType = JSON.stringify(WVMsgService.types);
+    const mapDefaultData = JSON.stringify({
+      isToggleBtn: this.props.isToggleBtn,
+      gps: {
+        latitude: this.props.latitude,
+        longitude: this.props.longitude,
+      }
+    })
     let injectJSCode = `
     window.consoleLog = function(...args){
     window.ReactNativeWebView.postMessage(JSON.stringify({
@@ -58,16 +71,17 @@ class WebviewMap extends Component {
     window.ReactNativeEnv = {
       isNativeApp: true,
       types: ${strMsgType},
+      mapData: ${mapDefaultData}
     };
+   
     `;
     return (
       <View style={{
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: 'red',
       }}>
 
-        {latitude > 0 && longitude > 0 && true ?
+        {latitude > 0 && longitude > 0 ?
           <>
             {/** 로딩 */}
             {this.state.progress < 1 &&
@@ -77,16 +91,12 @@ class WebviewMap extends Component {
               </View>
             </View>}
 
-            <View style={styles.loadingWrap}>
-              <View style={styles.loadingInner}>
-                <Progress />
-              </View>
-            </View>
-
             {/** 지도웹뷰 */}
             <WebView
+              // source={{ uri: `http://localhost:13000/webview/map` }}
               source={{ uri: `${API_CLIENT_ADDRESS}/webview/map` }}
               style={{
+                flex: 1,
                 height: '100%',
               }}
               ref={webView => (this.webView = webView)}
