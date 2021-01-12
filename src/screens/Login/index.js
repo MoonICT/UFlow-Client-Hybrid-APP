@@ -8,17 +8,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Platform,
-  KeyboardAvoidingView,
-  Keyboard,
-  Image,
-} from 'react-native';
+import { SafeAreaView, View, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
@@ -34,31 +24,7 @@ import { AuthContext } from '@Store/context';
 
 //Contants
 import { TOKEN } from '@Constant';
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  inner: {
-    // paddingTop: 24,
-    flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'space-around',
-  },
-  header: {
-    fontSize: 36,
-    marginBottom: 48,
-  },
-  textInput: {
-    height: 40,
-    borderColor: '#000000',
-    borderBottomWidth: 1,
-    marginBottom: 36,
-  },
-  btnContainer: {
-    backgroundColor: 'white',
-    marginTop: 12,
-  },
-});
+
 import AsyncStorage from '@react-native-community/async-storage';
 //---> Assets
 const Logo = require('@Assets/images/logo.png');
@@ -133,9 +99,7 @@ class Login extends Component {
     const { email, password, isRemember, isLogin } = this.state;
 
     return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={[styles.container,{backgroundColor:'white'}]}>
+      <SafeAreaView style={S.container}>
         <Appbars>
           <Appbar.Action
             icon="close"
@@ -143,89 +107,85 @@ class Login extends Component {
             onPress={() => isLogin && this.navigation.navigate('Home')}
           />
         </Appbars>
-        {/* <ScrollView> */}
-        {/* <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text> */}
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={[styles.inner,{maxHeight:400}]}>
-            <Image source={Logo} alt="logo" style={[S.titleLogin]} />
-            <View style={[S.formLogin]}>
-              <TextInput
-                label="이메일"
-                mode="outlined"
-                value={email}
-                type="number"
-                maxLength={30}
-                style={[DefaultStyle.inputs]}
-                onChangeText={text => this.setState({ email: text })}
-              />
-              <TextInput
-                label="비밀번호"
-                mode="outlined"
-                value={password}
-                type="text"
-                secureTextEntry={true}
-                maxLength={20}
-                style={[DefaultStyle.inputs, S.inputPass]}
-                onChangeText={text => this.setState({ password: text })}
-              />
-              <View style={[S.plusFormLogin]}>
-                <View style={S.rememberLogin}>
-                  <Checkbox
-                    status={isRemember ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                      this.setState({ isRemember: !isRemember });
-                    }}
-                  />
-                  <Text style={[S.fontS14]}>자동 로그인</Text>
-                </View>
-                <View style={S.ortherLink}>
-                  {/* <Text
+        <ScrollView>
+          {/* <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text> */}
+          <Image source={Logo} alt="logo" style={[S.titleLogin]} />
+          <View style={S.formLogin}>
+            <TextInput
+              label="이메일"
+              mode="outlined"
+              value={email}
+              type="number"
+              maxLength={30}
+              style={[DefaultStyle.inputs]}
+              onChangeText={text => this.setState({ email: text })}
+            />
+            <TextInput
+              label="비밀번호"
+              mode="outlined"
+              value={password}
+              type="text"
+              secureTextEntry={true}
+              maxLength={20}
+              style={[DefaultStyle.inputs, S.inputPass]}
+              onChangeText={text => this.setState({ password: text })}
+            />
+            <View style={S.plusFormLogin}>
+              <View style={S.rememberLogin}>
+                <Checkbox
+                  status={isRemember ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    this.setState({ isRemember: !isRemember });
+                  }}
+                />
+                <Text style={[S.fontS14]}>자동 로그인</Text>
+              </View>
+              <View style={S.ortherLink}>
+                {/* <Text
                   style={[S.fontS14]}
                   onPress={() => {
                     this.navigation.navigate('FindID');
                   }}>
                   아이디 찾기
                 </Text> */}
-                  {/* <Text style={S.rectangle}>|</Text> */}
-                  <Text
-                    style={[S.fontS14]}
-                    onPress={() => this.navigation.navigate('FindPassWord')}>
-                    비밀번호 찾기
-                  </Text>
-                </View>
-              </View>
-              <Button
-                mode="contained"
-                style={[
-                  DefaultStyle.containerBTN,
-                  S.loginBtn,
-                  DefaultStyle._primary,
-                ]}
-                color="red"
-                onPress={() => {
-                  // this.navigation.navigate('Home');
-                  this.handleOnClickLogin({
-                    email,
-                    password,
-                  });
-                }}>
-                확인
-              </Button>
-              <View style={[S.plusFormLogin, S.forgot]}>
-                <Text style={[S.ask, S.fontS14]}>유플로우가 처음이신가요?</Text>
+                {/* <Text style={S.rectangle}>|</Text> */}
                 <Text
-                  style={[S.mrL10, S.fontS14]}
-                  onPress={() => {
-                    this.navigation.navigate('Register');
-                  }}>
-                  회원가입
+                  style={[S.fontS14]}
+                  onPress={() => this.navigation.navigate('FindPassWord')}>
+                  비밀번호 찾기
                 </Text>
               </View>
             </View>
+            <Button
+              mode="contained"
+              style={[
+                DefaultStyle.containerBTN,
+                S.loginBtn,
+                DefaultStyle._primary,
+              ]}
+              color="red"
+              onPress={() => {
+                // this.navigation.navigate('Home');
+                this.handleOnClickLogin({
+                  email,
+                  password,
+                });
+              }}>
+              확인
+            </Button>
+            <View style={[S.plusFormLogin, S.forgot]}>
+              <Text style={[S.ask, S.fontS14]}>유플로우가 처음이신가요?</Text>
+              <Text
+                style={[S.mrL10, S.fontS14]}
+                onPress={() => {
+                  this.navigation.navigate('Register');
+                }}>
+                회원가입
+              </Text>
+            </View>
           </View>
-        </TouchableWithoutFeedback>
-        {/* </ScrollView> */}
-      </KeyboardAvoidingView>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
