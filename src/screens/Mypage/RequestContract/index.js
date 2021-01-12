@@ -10,6 +10,7 @@ import { SafeAreaView, View, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Appbar, Text } from 'react-native-paper';
 import moment from 'moment';
+import { StringUtils, ContractUtils } from '@Services/utils';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -17,7 +18,6 @@ import Appbars from '@Components/organisms/AppBar';
 import TableInfo from '@Components/atoms/TableInfo';
 import warehouse1 from '@Assets/images/warehouse-1.png';
 import ContractInformation from './ContractInformation';
-// import { formatDateV2 } from '@Utils/dateFormat';
 import { styles as S } from '../style';
 import {
   Warehouse,
@@ -25,7 +25,6 @@ import {
   MyPageEstmtCntr,
   Contract,
 } from '@Services/apis';
-import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
   constructor (props) {
@@ -42,38 +41,6 @@ class RequestContract extends Component {
     };
     this.navigation = props.navigation;
   }
-
-  coverStatus = value => {
-    switch (value) {
-      case '1100':
-        // code block
-        return {
-          data: [],
-          processing: '계약 협의',
-        };
-      case '2100':
-        // code block
-        return {
-          data: [],
-          processing: '계약 요청 대기',
-        };
-      case '4100':
-        // code block
-        return {
-          data: [],
-          processing: '계약 진행 중',
-          processingTrust: '계약중',
-        };
-      case '5100':
-        // code block
-        return {
-          data: [],
-          processing: '계약 완료',
-        };
-
-      // code block
-    }
-  };
 
   /**
    * 보관/수탁 정보 추출.
@@ -122,7 +89,7 @@ class RequestContract extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="마이페이지"
+            title="견적･계약 관리"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -137,10 +104,10 @@ class RequestContract extends Component {
                   DefaultStyle._statusProcessing,
                   status === '5100' ? { backgroundColor: '#4caf50' } : '',
                 ]}>
-                {this.coverStatus(status) && this.coverStatus(status).processingTrust &&
+                {ContractUtils.coverStatus(status) && ContractUtils.coverStatus(status).processingTrust &&
                 typeWH === 'TRUST'
-                  ? this.coverStatus(status).processingTrust
-                  : this.coverStatus(status).processing}
+                  ? ContractUtils.coverStatus(status).processingTrust
+                  : ContractUtils.coverStatus(status).processing}
               </Text>
             </View>
 
@@ -274,17 +241,6 @@ class RequestContract extends Component {
 
     let urlTenant = type + '/' + warehouseRegNo + '-' + warehSeq + '/' + typeWH;
 
-    let urlTenantImage =
-      type +
-      '/' +
-      typeWH +
-      '/' +
-      warehouseRegNo +
-      '-' +
-      rentUserID +
-      '-' +
-      rentUserDate;
-
     await Warehouse.quotation(
       this.props.route.params.type === 'OWNER' ? url : urlTenant,
     )
@@ -307,14 +263,9 @@ class RequestContract extends Component {
 
     const { dataApi, detailEstimate } = this.state;
 
-    console.log('check 1', dataApi)
-    console.log('check 2', detailEstimate)
-    console.log('check 3', this.getContract())
-    // console.log('check 4', this.getEstimate())
-    console.log('check 5', typeWH)
 
     if (dataApi && detailEstimate && this.getContract() && typeWH === 'keep') {
-      console.log(':::::KEEP DATA')
+
       this.setState({
         dataKeep: [
           {
