@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Appbar, Text, IconButton } from 'react-native-paper';
 
 // Local Imports
-import { Warehouse, WarehouseTenant } from '@Services/apis';
+import { Warehouse, WarehouseTenant, MyPage } from '@Services/apis';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
@@ -61,7 +61,7 @@ class DetailWH extends Component {
       pageInfo: {},
       isLogin: false,
       showAll: false,
-      floors: '지하 1층',
+      floors: '',
       whList: [],
       favorite: false,
       rentUserNo: '',
@@ -96,8 +96,6 @@ class DetailWH extends Component {
       this.getDataWH();
     }
   }
-
-
 
   /**
    * 관심창고 토글
@@ -226,6 +224,7 @@ class DetailWH extends Component {
       favorite,
       activeIndex,
       id,
+      dataCover,
     } = this.state;
 
     console.log('ID DEtails', id);
@@ -248,7 +247,8 @@ class DetailWH extends Component {
         content: '',
       },
     ];
-
+    console.log('floors :>> ', floors);
+    console.log('whrgData :>> ', whrgData);
     const toSquareMeter = value => {
       //return value ?  Math.ceil((Math.trunc(Number(value)*10)/10) * 3.305785) : ''
       return value ? Number(Number(value) * 3.305785).toFixed(0) : '';
@@ -391,7 +391,14 @@ class DetailWH extends Component {
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
             <View style={S.background}>
-              <Image style={S.backgroundImage} source={ whrgData.whImages && whrgData.whImages.length > 0 ? {uri:whrgData.whImages[0].url}  : cardBG} />
+              <Image
+                style={S.backgroundImage}
+                source={
+                  whrgData.whImages && whrgData.whImages.length > 0
+                    ? { uri: whrgData.whImages[0].url }
+                    : cardBG
+                }
+              />
               <Image style={S.iconBackground} source={circle} />
             </View>
             <View style={S.info}>
@@ -928,7 +935,7 @@ class DetailWH extends Component {
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
                 <AppGrid
-                  data={dataTab}
+                  data={dataCover && dataCover}
                   title={floors}
                   titleProps={(e, index) =>
                     this.setState({ floors: e, activeIndex: index })
@@ -1215,6 +1222,28 @@ class DetailWH extends Component {
       .catch(error => {
         alert('DetailWH componentDidMount error:' + error);
       });
+    MyPage.getDetailCodes('WHRG0010')
+      .then(res => {
+        if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
+          // console.log('detailCodes', res.data._embedded.detailCodes);
+          let dataCode = res.data._embedded.detailCodes;
+          let dataCover =
+            dataCode &&
+            dataCode.map((item, index) => {
+              return {
+                title: item.stdDetailCodeName,
+                value: item.stdDetailCod,
+              };
+            });
+          this.setState({
+            dataCover: dataCover,
+            floors: dataCover[0].title,
+          });
+        }
+      })
+      .catch(error => {
+        alert('WHRG0010:' + error);
+      });
   }
 
   async getDataWH() {
@@ -1224,7 +1253,7 @@ class DetailWH extends Component {
       id: id,
     };
     const warehouse = await Warehouse.getWhrg(params);
-
+    console.log('warehouse :>> ', warehouse);
     this.setState({
       whrgData: warehouse.data,
       favorite: warehouse.data.fav,
