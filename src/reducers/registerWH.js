@@ -33,8 +33,8 @@ export default (state = defaultState, action) => {
 };
 
 let dataImage = (state, listImage) => {
-  console.log('state', state);
-  console.log('listImage', listImage);
+  // console.log('state', state);
+  // console.log('listImage', listImage);
   try {
     // let imageUpload = [...state.pimages];
     // imageUpload.push(image);
@@ -42,6 +42,7 @@ let dataImage = (state, listImage) => {
       ...state,
       pnImages: listImage,
       whImages: listImage,
+      // thImages: state.whImages[0],
     };
     return result;
   } catch (e) {
@@ -51,13 +52,19 @@ let dataImage = (state, listImage) => {
 };
 
 let upImage = (state, image) => {
+  console.log('state', state);
+  console.log('listImage', image);
   try {
     let imageUpload = [...state.whImages];
+    let imageTh = [...state.whImages];
+
     imageUpload.push(image);
+    imageTh.length > 0 ? imageTh : imageTh.push(image);
     let result = {
       ...state,
       pnImages: imageUpload,
       whImages: imageUpload,
+      thImages: imageTh,
     };
     return result;
   } catch (e) {
@@ -77,6 +84,8 @@ let removeImg = (state, id) => {
       ...state,
       whImages: imageL,
       pnImages: imageL,
+      thImages: imageL.length === 0 ? [] : state.thImages,
+      // thImages: [state.whImages[0]],
     };
     return result;
   } catch (e) {

@@ -24,7 +24,7 @@ import Appbars from '@Components/organisms/AppBar';
 import Dialogs from '@Components/organisms/Dialog';
 
 import ActionCreator from '@Actions';
-import ignore2 from '@Assets/images/ignore2x.png';
+import illust10 from '@Assets/images/illust10.png';
 import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from './style';
@@ -39,7 +39,6 @@ class RegisterWH extends Component {
     this.navigation = props.navigation;
 
     this.doubleSubmitFlag = false;
-
   }
 
   /** listener when change props */
@@ -51,17 +50,17 @@ class RegisterWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  doubleSubmitCheck= () => {
-    if(this.doubleSubmitFlag){
-        return this.doubleSubmitFlag;
-    }else{
-        this.doubleSubmitFlag = true;
-        return false;
+  doubleSubmitCheck = () => {
+    if (this.doubleSubmitFlag) {
+      return this.doubleSubmitFlag;
+    } else {
+      this.doubleSubmitFlag = true;
+      return false;
     }
-  }
+  };
 
   submit = () => {
-    if(this.doubleSubmitCheck()) return;
+    if (this.doubleSubmitCheck()) return;
 
     let type = this.props.route.params && this.props.route.params.type;
     let warehouseRegNo =
@@ -74,42 +73,45 @@ class RegisterWH extends Component {
             // this.navigation.navigate('Home');
             this.props.showPopup({
               type: 'confirm',
-              title: '창고 등록 완료',
-              content: ` UFLOW 관리자가 입력하신 정보를 {\n}
-              확인하기 위해 연락을 드릴 예정입니다.{\n}
-              자세한 내용은 [마이페이지 > 내 창고]에서 {\n}
-              확인해주세요`,
+              title: '수정 완료',
+              content: '창고정보 수정을 완료했습니다.',
+              image: illust10,
+              navigation: () =>
+                this.navigation.navigate('Mypage', {
+                  title: '내 창고',
+                }),
             });
 
             this.doubleSubmitFlag = false;
-            this.navigation.navigate('Mypage', {
-              title: '내 창고',
-            });
           }
         })
         .catch(err => {
-          alert('Update err', err);
+          // alert('Update err', err);
           console.log('err', err.response);
         });
     } else {
       Warehouse.registerWH(this.props.dataWH)
         .then(res => {
           const status = res.status;
+
           if (status === 200) {
+            console.log('res :>> ', res);
+            console.log('this.props.dataWH :>> ', this.props.dataWH);
             // this.navigation.navigate('Home');
             this.props.showPopup({
               type: 'confirm',
               title: '창고 등록 완료',
-              content: ` UFLOW 관리자가 입력하신 정보를 {\n}
-              확인하기 위해 연락을 드릴 예정입니다.{\n}
-              자세한 내용은 [마이페이지 > 내 창고]에서 {\n}
-              확인해주세요`,
+              content: ' UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요',
+              image: illust10,
+              navigation: () =>
+                this.navigation.navigate('Mypage', {
+                  title: '내 창고',
+                }),
             });
-
             this.doubleSubmitFlag = false;
-            this.navigation.navigate('Mypage', {
-              title: '내 창고',
-            });
+            // this.navigation.navigate('Mypage', {
+            //   title: '내 창고',
+            // });
           }
         })
         .catch(err => {
@@ -331,7 +333,9 @@ class RegisterWH extends Component {
                 DefaultStyle.textSubmit,
                 isSubmitUpdate === true ? DefaultStyle.textActiveSubmit : null,
               ]}>
-              창고 등록하기
+              {route && route.params && route.params.type === 'ModifyWH'
+                ? '창고 수정하기'
+                : '창고 등록하기'}
             </Text>
           </TouchableOpacity>
         </View>
