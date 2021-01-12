@@ -28,8 +28,6 @@ import { InOutManagerService } from '@Services/apis';
 
 // import DatePicker from '@react-native-community/datetimepicker';
 
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-
 var searchTimerQuery;
 var searchTimerQuery2;
 export default class InOutManager extends Component {
@@ -111,6 +109,7 @@ export default class InOutManager extends Component {
     await InOutManagerService.getAll(params)
       .then(res => {
         let newData = res.data.data.content.map(item => {
+
           let status = '';
           let highlight = false;
           if (
@@ -139,7 +138,7 @@ export default class InOutManager extends Component {
           }
           console.log('item', item);
           return {
-            image: card,
+            image: item.whrgImg,
             statusCode: item.cntrDvCode,
             rentWarehNo: item.rentWarehNo,
             status: item.status,
@@ -549,6 +548,7 @@ export default class InOutManager extends Component {
 
         {dataCard.length > 0 &&
           dataCard.map((item, index) => {
+            console.log(item,'item');
             return (
               <CardMypage
                 key={index}
@@ -563,7 +563,9 @@ export default class InOutManager extends Component {
                 borderRow={false}
                 styleLeft={S.styleLeftTable}
                 styleRight={S.styleRightTable}
-                bgrImage={item.image}
+                bgrImage={{
+                  uri: item.image
+                }}
                 footer={
                   <>
                     {valueTab === 'TENANT' && (
@@ -689,7 +691,7 @@ export default class InOutManager extends Component {
                             });
                           }}
                         />
-                      )}
+                      }
                     </TouchableOpacity>
                   </View>
                 </View>
