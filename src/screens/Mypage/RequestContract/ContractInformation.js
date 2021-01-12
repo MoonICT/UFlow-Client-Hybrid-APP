@@ -34,35 +34,22 @@ class ContractInformation extends Component {
       isOffLineDialog: false
     };
 
-    // console.debug('견적 약관 detailContract : ', props.detailContract)
-    // console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+    console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+    console.debug('견적 약관 keepTrustContract : ', props.keepTrustContract)
 
     this.navigation = props.navigation;
   }
 
   /**
-   * 보관/수탁 정보 추출.
-   * */
-  getContract = () => {
-    if (this.props.detailEstimate) {
-      if (this.props.detailEstimate.keep) {
-        return this.props.detailEstimate.keep;
-      }
-      if (this.props.detailEstimate.trust) {
-        return this.props.detailEstimate.trust;
-      }
-    }
-  };
-
-  /**
    * 오프라인 견적 요청하기
    * */
   requestOffLineContract = () => {
+    const { keepTrustContract } = this.props
     Contract.ozContractURl({
       type: this.props.contractType.toLowerCase(),
-      warehouseRegNo: this.getContract().id.warehouseRegNo,
-      cntrDvCd: this.getContract().id.cntrDvCode,
-      cntrYmdFrom: moment(this.getContract().id.cntrYmdFrom).format('YYYYMMDD')
+      warehouseRegNo: keepTrustContract.id.warehouseRegNo,
+      cntrDvCd: keepTrustContract.id.cntrDvCode,
+      cntrYmdFrom: moment(keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD')
     }).then(res => {
       Linking.openURL(res.url);
     }).catch(error => {
@@ -75,8 +62,10 @@ class ContractInformation extends Component {
     const {
       type, // owner || tenant
       contractType, // KEEP || TRUST
-      detailContract,
+
       detailEstimate,
+      keepTrustContract,
+
       status,
       rentUserNo,
       warehSeq,
@@ -85,17 +74,17 @@ class ContractInformation extends Component {
     let dataTable = [
       {
         type: '계약 요청일자',
-        value: detailEstimate.id.cntrYmdFrom,
+        value: keepTrustContract.id.cntrYmdFrom,
       },
       {
         type: '계약 승인일자',
-        value: detailEstimate.cntrYmdTo,
+        value: keepTrustContract.cntrYmdTo,
       },
       {
         type: '첨부 서류',
-        isImageLink: detailEstimate?.entrpByOwner?.file2,
-        fileName: detailEstimate?.entrpByOwner?.file2 ? '통장 사본.jpg' : '-',
-        value: detailEstimate?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${detailEstimate?.entrpByOwner?.file2}` : '',
+        isImageLink: keepTrustContract?.entrpByOwner?.file2,
+        fileName: keepTrustContract?.entrpByOwner?.file2 ? '통장 사본.jpg' : '-',
+        value: keepTrustContract?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${keepTrustContract?.entrpByOwner?.file2}` : '',
       },
     ];
 
@@ -111,11 +100,11 @@ class ContractInformation extends Component {
             ]}
             onPress={() =>
               this.navigation.navigate('Chatting', {
-                warehouseRegNo: detailEstimate.id.warehouseRegNo,
+                warehouseRegNo: keepTrustContract.id.warehouseRegNo,
                 rentUserNo,
                 warehSeq,
                 type,
-                warehouse: detailEstimate.warehouse,
+                warehouse: keepTrustContract.warehouse,
               })
             }>
             <Icon name="wechat" size={20} color="#fff" />
@@ -134,8 +123,8 @@ class ContractInformation extends Component {
         viewComponent = (
           <TermsContract
             navigation={this.navigation}
-            detailContract={detailContract}
             detailEstimate={detailEstimate}
+            keepTrustContract={keepTrustContract}
             dataTable={dataTable}
             type={type} // owner || tenant
             contractType={contractType} // KEEP || TRUST
@@ -152,7 +141,7 @@ class ContractInformation extends Component {
               }}
               headerTitle={'계약 정보'}
               data={dataTable}
-              borderRow={false}
+              borderRow={false} 정
               styleLeft={DefaultStyle._leftTableCard}
               styleRight={DefaultStyle._rightTableCard}
               bgrImage={false}

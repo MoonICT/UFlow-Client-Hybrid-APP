@@ -30,6 +30,7 @@ import CardMypage from '@Components/organisms/CardMypage';
 import AsyncStorage from "@react-native-community/async-storage";
 
 import DocumentPicker from 'react-native-document-picker';
+
 class TermsContract extends Component {
   constructor (props) {
     super(props);
@@ -42,8 +43,9 @@ class TermsContract extends Component {
       file: null,
     };
 
-    console.debug('견적 약관 detailContract : ', props.detailContract)
     console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+    console.debug('견적 약관 keepTrustContract : ', props.keepTrustContract)
+
 
     this.navigation = props.navigation;
   }
@@ -52,14 +54,15 @@ class TermsContract extends Component {
    * 약관 동의 및 계약협의 요청.
    * */
   useImperativeHandle = async () => {
+    const {contractType, keepTrustContract, rentUserNo } = this.props
     await AsyncStorage.getItem('TOKEN').then(res => {
       console.log('토큰확인1:::::', res)
     });
     console.log(this.props.type)
-    console.log('contractType', this.props.contractType.toLowerCase())
-    console.log('warehouseRegNo', this.props.detailEstimate.id.warehouseRegNo)
-    console.log('rentUserNo', this.props.rentUserNo)
-    console.log('cntrYmdFrom', moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD'))
+    console.log('contractType', contractType.toLowerCase())
+    console.log('warehouseRegNo', keepTrustContract.id.warehouseRegNo)
+    console.log('rentUserNo', rentUserNo)
+    console.log('cntrYmdFrom', moment(keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD'))
     if (!this.state.isAgree) {
       alert('계약 약관에 동의해주세요.')
       return false;
@@ -71,19 +74,19 @@ class TermsContract extends Component {
         name: this.state.file.fileName,
         type: 'image/jpeg',
       });
-      formData.append('warehouseRegNo', this.props.detailEstimate.id.warehouseRegNo);
-      formData.append('rentUserNo', this.props.rentUserNo);
-      formData.append('cntrYmdFrom', moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD'));
-      Contract.owner4100(this.props.contractType.toLowerCase(), formData).then(res => {
+      formData.append('warehouseRegNo', keepTrustContract.id.warehouseRegNo);
+      formData.append('rentUserNo', rentUserNo);
+      formData.append('cntrYmdFrom', moment(keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD'));
+      Contract.owner4100(contractType.toLowerCase(), formData).then(res => {
         console.debug('약관 동의 결과1 : ', res)
         this.setState({ isComplete: false });
       });
     } else if (this.props.type === 'TENANT') {
       Contract.tenant4100({
-        contractType: this.props.contractType.toLowerCase(),
-        warehouseRegNo: this.props.detailEstimate.id.warehouseRegNo,
-        rentUserNo: this.props.rentUserNo,
-        cntrYmdFrom: moment(this.props.detailEstimate.id.cntrYmdFrom).format('YYYYMMDD')
+        contractType: contractType.toLowerCase(),
+        warehouseRegNo: keepTrustContract.id.warehouseRegNo,
+        rentUserNo: rentUserNo,
+        cntrYmdFrom: moment(keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD')
       }).then(res => {
         console.debug('약관 동의 결과2 : ', res)
         this.setState({ isComplete: false });
@@ -95,9 +98,7 @@ class TermsContract extends Component {
 
   handlePicker = async () => {
     try {
-      const res = await DocumentPicker.pick({
-
-      });
+      const res = await DocumentPicker.pick({});
       console.log('res', res)
       this.setState({ singleFile: res });
     } catch (err) {
@@ -110,12 +111,12 @@ class TermsContract extends Component {
   };
   onSubmit = async () => {
     let { singleFile } = this.state;
-    let {detailEstimate, rentUserNo, contractType} = this.props
+    let { keepTrustContract, rentUserNo, contractType } = this.props
     var formData = new FormData();
     formData.append('file', singleFile);
-    formData.append('warehouseRegNo', detailEstimate.id.warehouseRegNo);
+    formData.append('warehouseRegNo', keepTrustContract.id.warehouseRegNo);
     formData.append('rentUserNo', rentUserNo);
-    formData.append('cntrYmdFrom', detailEstimate.id.cntrYmdFrom.replace(/-/g, ''));
+    formData.append('cntrYmdFrom', keepTrustContract.id.cntrYmdFrom.replace(/-/g, ''));
     console.log('formData', formData)
     await Warehouse.termsContract(formData, contractType.toLowerCase()).then((res) => {
       console.log('res', res)
@@ -149,7 +150,7 @@ class TermsContract extends Component {
   render () {
     const {
       dataTable, // 계약 정보 테이블 데이
-      detailEstimate,
+      keepTrustContract,
       // TODO 확인 필요
       contractType, // KEEP || TRUST
       type, // owner || tenant
@@ -236,7 +237,7 @@ class TermsContract extends Component {
         </View>
 
         {/** 추가 서류 업로드 */}
-        {type === 'OWNER' && (detailEstimate && !detailEstimate.entrpByOwner?.file2) && (
+        {type === 'OWNER' && (keepTrustContract && !keepTrustContract.entrpByOwner?.file2) && (
           <View style={DefaultStyle._card}>
             <View style={DefaultStyle._headerCard}>
               <Text style={DefaultStyle._headerCardTitle}>추가 서류 등록</Text>
@@ -254,10 +255,10 @@ class TermsContract extends Component {
               {/*</Text>*/}
               <TouchableOpacity style={SS.btnAttach}
                                 onPress={() => this.handleLaunchImage()}>
-              {/*<Text style={SS.textSuccess}>*/}
+                {/*<Text style={SS.textSuccess}>*/}
                 {/*성공적으로 파일을 등록했습니다.*/}
-              {/*</Text>*/}
-              {/*<TouchableOpacity*/}
+                {/*</Text>*/}
+                {/*<TouchableOpacity*/}
                 {/*style={SS.btnAttach}*/}
                 {/*onPress={() => this.handlePicker()}>*/}
                 <Text style={SS.textAttach}>파일첨부</Text>
@@ -272,9 +273,9 @@ class TermsContract extends Component {
           <TouchableOpacity
             style={[
               DefaultStyle._btnInline,
-              (!isAgree || !(detailEstimate.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
+              (!isAgree || !(keepTrustContract.entrpByOwner?.file2 || file)) ? DefaultStyle._oulineDisabled : '',
             ]}
-            disabled={!isAgree || !(detailEstimate.entrpByOwner?.file2 || file)}
+            disabled={!isAgree || !(keepTrustContract.entrpByOwner?.file2 || file)}
             onPress={() => this.useImperativeHandle()}>
             {/*//   // (file && isAgree) ? '' : DefaultStyle._oulineDisabled,*/}
             {/*// ]}*/}
