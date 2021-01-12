@@ -26,14 +26,19 @@ import Icon from 'react-native-vector-icons/Fontisto';
 import card from '@Assets/images/card-img.png';
 import { InOutManagerService } from '@Services/apis';
 
+<<<<<<< HEAD
+import DatePicker from '@react-native-community/datetimepicker';
+import cardBG from '@Assets/images/card-img.png';
+
+=======
 // import DatePicker from '@react-native-community/datetimepicker';
+>>>>>>> 45a1f17e505e0145db2b81ec1bf523ce9357e818
 
 var searchTimerQuery;
 var searchTimerQuery2;
 export default class InOutManager extends Component {
   constructor(props) {
     super(props);
-
     this.webView = null;
     this.state = {
       dataCard: [],
