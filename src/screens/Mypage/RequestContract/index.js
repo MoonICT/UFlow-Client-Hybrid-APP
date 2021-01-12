@@ -10,6 +10,7 @@ import { SafeAreaView, View, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Appbar, Text } from 'react-native-paper';
 import moment from 'moment';
+import { StringUtils, ContractUtils } from '@Services/utils';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -17,15 +18,12 @@ import Appbars from '@Components/organisms/AppBar';
 import TableInfo from '@Components/atoms/TableInfo';
 import warehouse1 from '@Assets/images/warehouse-1.png';
 import ContractInformation from './ContractInformation';
-// import { formatDateV2 } from '@Utils/dateFormat';
 import { styles as S } from '../style';
 import {
   Warehouse,
-  MediaFileContract,
   MyPageEstmtCntr,
   Contract,
 } from '@Services/apis';
-import { StringUtils } from '@Services/utils';
 
 class RequestContract extends Component {
   constructor (props) {
@@ -44,38 +42,6 @@ class RequestContract extends Component {
     };
     this.navigation = props.navigation;
   }
-
-  coverStatus = value => {
-    switch (value) {
-      case '1100':
-        // code block
-        return {
-          data: [],
-          processing: '계약 협의',
-        };
-      case '2100':
-        // code block
-        return {
-          data: [],
-          processing: '계약 요청 대기',
-        };
-      case '4100':
-        // code block
-        return {
-          data: [],
-          processing: '계약 진행 중',
-          processingTrust: '계약중',
-        };
-      case '5100':
-        // code block
-        return {
-          data: [],
-          processing: '계약 완료',
-        };
-
-      // code block
-    }
-  };
 
   render () {
     let warehSeq = this.props.route.params.warehSeq;
@@ -96,7 +62,7 @@ class RequestContract extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="마이페이지"
+            title="견적･계약 관리"
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -111,15 +77,16 @@ class RequestContract extends Component {
                   DefaultStyle._statusProcessing,
                   status === '5100' ? { backgroundColor: '#4caf50' } : '',
                 ]}>
-                {this.coverStatus(status) && this.coverStatus(status).processingTrust &&
+                {ContractUtils.coverStatus(status) && ContractUtils.coverStatus(status).processingTrust &&
                 contractType === 'trust'
-                  ? this.coverStatus(status).processingTrust
-                  : this.coverStatus(status).processing}
+                  ? ContractUtils.coverStatus(status).processingTrust
+                  : ContractUtils.coverStatus(status).processing}
               </Text>
             </View>
 
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>
+                {/** TODO Bug2-1 보관 상태에 따라 이미지 변경 */}
                 <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
               </View>
               <View>
@@ -145,13 +112,8 @@ class RequestContract extends Component {
             {keepTrustContract ?
               <ContractInformation
                 navigation={this.navigation}
-
                 detailEstimate={detailEstimate} // 계약 기본 정보
                 keepTrustContract={keepTrustContract} // keep|trust
-
-                // detailContract={this.state.detailContract}
-                // detailEstimate={keepTrustContract}
-
                 type={type}
                 contractType={contractType}
                 status={status}
@@ -248,12 +210,12 @@ class RequestContract extends Component {
 
     const { detailEstimate, keepTrustContract, keepTrustEstimate } = this.state;
 
-    console.log('check 1', detailEstimate)
-    console.log('check 2', keepTrustContract)
+    // console.log('check 1', detailEstimate)
+    // console.log('check 2', keepTrustContract)
     // console.log('check 3', keepTrustEstimate)
     // console.log('check 4', contractType)
-
     if (detailEstimate && keepTrustContract && contractType === 'keep') {
+
       this.setState({
         dataKeep: [
           {

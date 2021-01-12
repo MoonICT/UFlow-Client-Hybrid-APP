@@ -439,8 +439,6 @@ class ContractManager extends Component {
     const viewProprietor =
       dataFilter &&
       dataFilter.map((item, index) => {
-        console.log(this.cover(item), 'this.cover(item)');
-        console.log(item, 'item');
         let dataTable = this.cover(item) && this.cover(item).data;
         let listBtnTenant = this.cover(item) && this.cover(item).listBtnTenant;
         let titleButton = this.cover(item) && this.cover(item).footerTitle;

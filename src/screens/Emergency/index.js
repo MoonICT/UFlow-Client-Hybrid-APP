@@ -141,6 +141,7 @@ class QuestionScreen extends Component {
                   ]}>
                   <Select
                     required={isEmail}
+                    valueSelected={email}
                     data={dataEvs}
                     labelSelected="이메일"
                     valueProps={this.valueProps}

@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 16:42:35
- * @modify date 2021-01-08 20:09:29
+ * @modify date 2021-01-12 18:13:23
  * @desc [description]
  */
 
@@ -47,11 +47,13 @@ class ProductCard extends Component {
   };
 
   componentDidMount() {
-    AsyncStorage.getItem(TOKEN).then(v => {
-      this.setState({ isLogin: v !== '' && v !== null });
-    }).catch(error => {
-      alert('ProductCard error:' + error);
-    });
+    AsyncStorage.getItem(TOKEN)
+      .then(v => {
+        this.setState({ isLogin: v !== '' && v !== null });
+      })
+      .catch(error => {
+        alert('ProductCard error:' + error);
+      });
   }
 
   render() {
@@ -78,7 +80,11 @@ class ProductCard extends Component {
           this.props.isShadow && styles.shadow,
         ]}>
         <TouchableOpacity
-          onPress={() => this.navigation.navigate('DetailsWH', { id: data.id })}>
+          onPress={() =>
+            isLogin
+              ? this.navigation.navigate('DetailsWH', { id: data.id })
+              : this.navigation.navigate('Login')
+          }>
           <View
             style={[
               styles.innerWrap,
