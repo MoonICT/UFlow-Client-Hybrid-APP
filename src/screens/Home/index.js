@@ -29,6 +29,7 @@ import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar } from 'react-native-paper'; //Button
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { SliderBox } from 'react-native-image-slider-box';
 // import Video from 'react-native-video';
 // import VideoPlayer from 'react-native-video-player';
 
@@ -54,8 +55,13 @@ import { styles } from './styles';
 
 // import mainBG from '@Assets/images/main-bg.png';
 // import symbolsBG from '@Assets/images/symbol.png';
-// import factoryBG from '@Assets/images/factory.png';
+import factoryBG from '@Assets/images/factory.png';
 import boxMain from '@Assets/images/box_main_1.png';
+
+import bannerSearchWh1 from '@Assets/images/bannerSearchWh1.png';
+import bannerSearchWh2 from '@Assets/images/bannerSearchWh2.png';
+import bannerSearchWh3 from '@Assets/images/bannerSearchWh3.png';
+
 import cardBG from '@Assets/images/card-img.png';
 // import stepBG from '@Assets/images/step.png';
 // import slogan1 from '@Assets/images/slogan1.png';
@@ -335,11 +341,13 @@ class Home extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    AsyncStorage.getItem(TOKEN).then(v => {
-      this.setState({ isLogin: v !== '' && v !== null });
-    }).catch(error => {
-      alert('서버에러:' + error);
-    });
+    AsyncStorage.getItem(TOKEN)
+      .then(v => {
+        this.setState({ isLogin: v !== '' && v !== null });
+      })
+      .catch(error => {
+        alert('서버에러:' + error);
+      });
   }
 
   componentWillUnmount() {
@@ -377,7 +385,7 @@ class Home extends Component {
     const cardItem = [];
     whList = whList.slice(0, 4);
     whList?.map((v, i) => {
-      if(i < 2){
+      if (i < 2) {
         cardItem.push(
           <View key={i} style={styles.mainProductItem}>
             {v?.thumbnail !== null ? (
@@ -391,7 +399,6 @@ class Home extends Component {
           </View>,
         );
       }
-      
     });
 
     return cardItem;
@@ -469,56 +476,73 @@ class Home extends Component {
 
           {/**### INTRO ###*/}
           <View style={isLogin ? styles.introHide : styles.intro}>
-            <View style={[styles.introImage]}>
-              <Image source={boxMain} style={styles.introSymbolImage} />
-              {/* <Image source={factoryBG} style={styles.introFactoryImage} /> */}
+            <View style={styles.introImage}>
+              <SliderBox
+                dotStyle={{ display: 'none' }}
+                style={styles.introSymbolImage}
+                autoplay
+                circleLoop
+                images={[bannerSearchWh1, bannerSearchWh2, bannerSearchWh3]}
+              />
             </View>
             {/*--Content--*/}
-            <View style={styles.introRow}>
-              {/* <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text> */}
-              <TextInputNormal
-                placeholder="어떤 창고를 찾고 계시나요?"
-                style={styles.introInput}
-                placeholderTextColor="white"
-                textAlignVertical="center"
-                numberOfLines={1}
-                ellipsizeMode="start"
-                onChangeText={(text) => this.setState({ textSearch: text })}
-              />
-              {
-                <Icon
-                  name="search"
-                  size={24}
-                  color="white"
-                  onPress={() =>
-                    this.navigation.navigate('Search', {
-                      searchQuery: textSearch,
-                    })
-                  }
+            <View style={styles.BoxContentTop}>
+              <View style={[styles.introRow, styles.BoxSearch]}>
+                {/* <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text> */}
+                <TextInputNormal
+                  placeholder="어떤 창고를 찾고 계시나요?"
+                  style={styles.introInput}
+                  placeholderTextColor="white"
+                  textAlignVertical="center"
+                  numberOfLines={1}
+                  ellipsizeMode="start"
+                  onChange={e => this.setState({ textSearch: e.target.value })}
                 />
-              }
-            </View>
-
-            <View style={styles.introDivider} />
-
-            <View style={[styles.introRow, styles.introBottom]}>
-              <View style={styles.introColum}>
-                {<Icon name="check" size={12} color="white" />}
-                <Text style={[styles.font9, styles.introColumText]}>
-                  빠르고 편리하게
-                </Text>
+                {
+                  <Icon
+                    name="search"
+                    size={24}
+                    color="white"
+                    style={{ marginLeft: 10 }}
+                    onPress={() =>
+                      this.navigation.navigate('Search', {
+                        searchValue: textSearch,
+                      })
+                    }
+                  />
+                }
               </View>
-              <View style={styles.introColum}>
-                {<Icon name="check" size={12} color="white" />}
-                <Text style={[styles.font9, styles.introColumText]}>
-                  신뢰할 수 있는
-                </Text>
-              </View>
-              <View style={styles.introColum}>
-                {<Icon name="check" size={12} color="white" />}
-                <Text style={[styles.font9, styles.introColumText]}>
-                  안전한 보험, 계약 시스템
-                </Text>
+
+              {/* <View style={styles.introDivider} /> */}
+
+              <View
+                style={[
+                  styles.introRow,
+                  styles.introBottom,
+                  { justifyContent: 'center' },
+                ]}>
+                <View style={styles.introColum}>
+                  {<Icon name="check" size={12} color="white" />}
+                  <Text style={[styles.font9, styles.introColumText]}>
+                    빠르고 편리하게
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.introColum,
+                    { marginLeft: 10, marginRight: 10 },
+                  ]}>
+                  {<Icon name="check" size={12} color="white" />}
+                  <Text style={[styles.font9, styles.introColumText]}>
+                    신뢰할 수 있는
+                  </Text>
+                </View>
+                <View style={styles.introColum}>
+                  {<Icon name="check" size={12} color="white" />}
+                  <Text style={[styles.font9, styles.introColumText]}>
+                    안전한 보험, 계약 시스템
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
