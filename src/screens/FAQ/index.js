@@ -141,7 +141,7 @@ class RegisterWH extends Component {
       faqList && faqList.length > 0 &&
       faqList.map((item, index) => {
         return (
-          <View>
+          <View key={index}>
             <List.Accordion
               key={index}
               style={DefaultStyle._titleAccordion}

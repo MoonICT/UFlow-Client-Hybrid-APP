@@ -154,7 +154,7 @@ class LogisticsKnowledge extends Component {
       logisticsList && logisticsList.length > 0 &&
       logisticsList.map((item, index) => {
         return (
-          <View>
+          <View key={index}>
             <List.Accordion
               key={index}
               style={DefaultStyle._titleAccordion}
