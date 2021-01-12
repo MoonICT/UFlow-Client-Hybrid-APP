@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -17,7 +17,7 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
   TextInput,
@@ -35,11 +35,11 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
-import { styles as S } from '../style';
-import { styles as SS } from './style';
+import {styles as S} from '../style';
+import {styles as SS} from './style';
 import Form from './form';
 import FormTrusts from './formTrusts';
-import { MyPage } from '@Services/apis';
+import {MyPage} from '@Services/apis';
 
 class RegisterInfo extends Component {
   constructor(props) {
@@ -59,44 +59,44 @@ class RegisterInfo extends Component {
         props.dataInfo && props.dataInfo.keeps
           ? props.dataInfo.keeps
           : [
-              {
-                typeCode: '',
-                calUnitDvCode: '',
-                calStdDvCode: '',
-                mgmtChrgDvCode: '',
-                // exclusiveArea2: '',
-                commonArea: '',
-                usblValue: '',
-                // rentalArea: '',
-                // rentalArea2: '',
-                usblYmdFrom: '',
-                usblYmdTo: '',
-                splyAmount: '',
-                mgmtChrg: '',
-                remark: '',
-              },
-            ],
+            {
+              typeCode: '',
+              calUnitDvCode: '',
+              calStdDvCode: '',
+              mgmtChrgDvCode: '',
+              // exclusiveArea2: '',
+              commonArea: '',
+              usblValue: '',
+              // rentalArea: '',
+              // rentalArea2: '',
+              usblYmdFrom: '',
+              usblYmdTo: '',
+              splyAmount: '',
+              mgmtChrg: '',
+              remark: '',
+            },
+          ],
       trusts:
         props.dataInfo && props.dataInfo.trusts
           ? props.dataInfo.trusts
           : [
-              {
-                typeCode: '',
-                calUnitDvCode: '',
-                calStdDvCode: '',
-                usblYmdFrom: '',
-                usblYmdTo: '',
-                splyAmount: '',
-                usblValue: '',
-                whinChrg: '',
-                whoutChrg: '',
-                psnChrg: '',
-                mnfctChrg: '',
-                dlvyChrg: '',
-                shipChrg: '',
-                remark: '',
-              },
-            ],
+            {
+              typeCode: '',
+              calUnitDvCode: '',
+              calStdDvCode: '',
+              usblYmdFrom: '',
+              usblYmdTo: '',
+              splyAmount: '',
+              usblValue: '',
+              whinChrg: '',
+              whoutChrg: '',
+              psnChrg: '',
+              mnfctChrg: '',
+              dlvyChrg: '',
+              shipChrg: '',
+              remark: '',
+            },
+          ],
     };
 
     this.navigation = props.navigation;
@@ -121,36 +121,36 @@ class RegisterInfo extends Component {
     let listTrusts = this.state.trusts;
     valueTab === 'trusts'
       ? listTrusts.push({
-          // key: lengths,
-          typeCode: '',
-          calUnitDvCode: '',
-          calStdDvCode: '',
-          usblYmdFrom: '',
-          usblYmdTo: '',
-          splyAmount: '',
-          usblValue: '',
-          whinChrg: '',
-          whoutChrg: '',
-          psnChrg: '',
-          mnfctChrg: '',
-          dlvyChrg: '',
-          shipChrg: '',
-          remark: '',
-        })
+        // key: lengths,
+        typeCode: '',
+        calUnitDvCode: '',
+        calStdDvCode: '',
+        usblYmdFrom: '',
+        usblYmdTo: '',
+        splyAmount: '',
+        usblValue: '',
+        whinChrg: '',
+        whoutChrg: '',
+        psnChrg: '',
+        mnfctChrg: '',
+        dlvyChrg: '',
+        shipChrg: '',
+        remark: '',
+      })
       : listKeeps.push({
-          typeCode: '',
-          calUnitDvCode: '',
-          calStdDvCode: '',
-          mgmtChrgDvCode: '',
-          commonArea: '',
-          usblValue: '',
-          usblYmdFrom: '',
-          usblYmdTo: '',
-          splyAmount: '',
-          mgmtChrg: '',
-          remark: '',
-        });
-    this.setState({ keeps: listKeeps, trusts: listTrusts });
+        typeCode: '',
+        calUnitDvCode: '',
+        calStdDvCode: '',
+        mgmtChrgDvCode: '',
+        commonArea: '',
+        usblValue: '',
+        usblYmdFrom: '',
+        usblYmdTo: '',
+        splyAmount: '',
+        mgmtChrg: '',
+        remark: '',
+      });
+    this.setState({keeps: listKeeps, trusts: listTrusts});
   };
   _removeForm = valueTab => {
     console.log('vaodaynao')
@@ -172,21 +172,21 @@ class RegisterInfo extends Component {
     // console.log('filterkEepppppppppppppp', filterKeep);
     valueTab === 'trusts'
       ? this.setState({
-          trusts: filterTrust,
-          numberSlideTrusts: slideTrustStart,
-        })
+        trusts: filterTrust,
+        numberSlideTrusts: slideTrustStart,
+      })
       : this.setState({
-          keeps: filterKeep,
-          numberSlide: slideKeepStart,
-          goToSlideKeep:slideKeepStart,
-        });
+        keeps: filterKeep,
+        numberSlide: slideKeepStart,
+        goToSlideKeep: slideKeepStart,
+      });
     // console.log('valueTab :>> ', valueTab);
     // console.log('listKeeps', listKeeps);
   };
   onToggleSwitch = () =>
-    this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
-    _renderPagination
-  _renderItem = ({ item }) => {
+    this.setState({cnsltPossYn: !this.state.cnsltPossYn});
+  _renderPagination
+  _renderItem = ({item}) => {
     console.log('item :>> ', item);
     let dataKeep = this.state.keeps;
     return (
@@ -210,7 +210,7 @@ class RegisterInfo extends Component {
       />
     );
   };
-  _renderItemTrusts = ({ item }) => {
+  _renderItemTrusts = ({item}) => {
     return (
       <FormTrusts
         typeCodes={this.state.typeCodes}
@@ -229,8 +229,9 @@ class RegisterInfo extends Component {
       />
     );
   };
+
   render() {
-    const { imageStore, route, dataInfo } = this.props;
+    const {imageStore, route, dataInfo} = this.props;
     const {
       valueTab,
       numberSlide,
@@ -311,139 +312,141 @@ class RegisterInfo extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={SS.tabBar}>
-            <TouchableOpacity
-              style={this.state.valueTab === 'keeps' ? SS.btnTabBar : null}
-              onPress={() => this.setState({ valueTab: 'keeps' })}>
-              <Text style={SS.textTabBar}>보관</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={this.state.valueTab === 'trusts' ? SS.btnTabBar : null}
-              onPress={() => this.setState({ valueTab: 'trusts' })}>
-              <Text style={SS.textTabBar}>수탁</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={DefaultStyle._cards}>
-            <View style={[DefaultStyle._titleCard, { marginBottom: 12 }]}>
-              <Text style={DefaultStyle._textTitleCard}>
-                {route && route.params && route.params.type === 'ModifyWH'
-                  ? '보관유형 상세정보'
-                  : '임대유형 상세정보'}
-                <Text style={S.textNote}>*</Text>
-              </Text>
-              <View style={DefaultStyle._titleBody}>
-                <TouchableOpacity
-                  style={S.btnAdd}
-                  onPress={() => this._addForm(valueTab)}>
-                  <Text style={DefaultStyle._textButton}>추가</Text>
-                </TouchableOpacity>
-                <IconButton
-                  icon="delete"
-                  color={'rgba(0, 0, 0, 0.54)'}
-                  onPress={() => this._removeForm(valueTab)}
-                />
+          <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
+            <View style={SS.tabBar}>
+              <TouchableOpacity
+                style={this.state.valueTab === 'keeps' ? SS.btnTabBar : null}
+                onPress={() => this.setState({valueTab: 'keeps'})}>
+                <Text style={SS.textTabBar}>보관</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={this.state.valueTab === 'trusts' ? SS.btnTabBar : null}
+                onPress={() => this.setState({valueTab: 'trusts'})}>
+                <Text style={SS.textTabBar}>수탁</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={DefaultStyle._cards}>
+              <View style={[DefaultStyle._titleCard, {marginBottom: 12}]}>
+                <Text style={DefaultStyle._textTitleCard}>
+                  {route && route.params && route.params.type === 'ModifyWH'
+                    ? '보관유형 상세정보'
+                    : '임대유형 상세정보'}
+                  <Text style={S.textNote}>*</Text>
+                </Text>
+                <View style={DefaultStyle._titleBody}>
+                  <TouchableOpacity
+                    style={S.btnAdd}
+                    onPress={() => this._addForm(valueTab)}>
+                    <Text style={DefaultStyle._textButton}>추가</Text>
+                  </TouchableOpacity>
+                  <IconButton
+                    icon="delete"
+                    color={'rgba(0, 0, 0, 0.54)'}
+                    onPress={() => this._removeForm(valueTab)}
+                  />
+                </View>
               </View>
-            </View>
-            {valueTab === 'keeps' ? (
-              <Carousel
-                // style={styles.carousel}
-                custom={{
-                  data: keeps,
-                  renderPagination: this._renderPagination,
-                  renderItem: this._renderItem,
-                  showNextButton: false,
-                  showDoneButton: false,
-                  onSlideChange: e => {
-                    this.setState({ numberSlide: e });
-                  },
-                  dotStyle: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-                    width: 8,
-                    height: 8,
-                    marginTop: 100,
-                  },
-                  activeDotStyle: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.54)',
-                    width: 8,
-                    height: 8,
-                    marginTop: 100,
-                  },
-                }}
-              />
-            ) : (
-              <Carousel
-                // style={styles.carousel}
-                custom={{
-                  data: trusts,
-                  renderItem: this._renderItemTrusts,
-                  showNextButton: false,
-                  showDoneButton: false,
-                  onSlideChange: e => {
-                    this.setState({ numberSlideTrusts: e });
-                  },
-                  dotStyle: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-                    width: 8,
-                    height: 8,
-                    marginTop: 100,
-                  },
-                  activeDotStyle: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.54)',
-                    width: 8,
-                    height: 8,
-                    marginTop: 100,
-                  },
-                }}
-              />
-            )}
-          </View>
-          <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
-            <View style={DefaultStyle._titleCard}>
-              <Text style={DefaultStyle._textTitleCard}>
-                가격 협의 가능<Text style={S.textNote}>*</Text>
-              </Text>
-              <View>
-                <Switch
-                  // thumbColor={color.primary.main}
-                  value={this.state.cnsltPossYn}
-                  onValueChange={this.onToggleSwitch}
+              {valueTab === 'keeps' ? (
+                <Carousel
+                  // style={styles.carousel}
+                  custom={{
+                    data: keeps,
+                    renderPagination: this._renderPagination,
+                    renderItem: this._renderItem,
+                    showNextButton: false,
+                    showDoneButton: false,
+                    onSlideChange: e => {
+                      this.setState({numberSlide: e});
+                    },
+                    dotStyle: {
+                      backgroundColor: 'rgba(0, 0, 0, 0.12)',
+                      width: 8,
+                      height: 8,
+                      marginTop: 100,
+                    },
+                    activeDotStyle: {
+                      backgroundColor: 'rgba(0, 0, 0, 0.54)',
+                      width: 8,
+                      height: 8,
+                      marginTop: 100,
+                    },
+                  }}
                 />
+              ) : (
+                <Carousel
+                  // style={styles.carousel}
+                  custom={{
+                    data: trusts,
+                    renderItem: this._renderItemTrusts,
+                    showNextButton: false,
+                    showDoneButton: false,
+                    onSlideChange: e => {
+                      this.setState({numberSlideTrusts: e});
+                    },
+                    dotStyle: {
+                      backgroundColor: 'rgba(0, 0, 0, 0.12)',
+                      width: 8,
+                      height: 8,
+                      marginTop: 100,
+                    },
+                    activeDotStyle: {
+                      backgroundColor: 'rgba(0, 0, 0, 0.54)',
+                      width: 8,
+                      height: 8,
+                      marginTop: 100,
+                    },
+                  }}
+                />
+              )}
+            </View>
+            <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
+              <View style={DefaultStyle._titleCard}>
+                <Text style={DefaultStyle._textTitleCard}>
+                  가격 협의 가능<Text style={S.textNote}>*</Text>
+                </Text>
+                <View>
+                  <Switch
+                    // thumbColor={color.primary.main}
+                    value={this.state.cnsltPossYn}
+                    onValueChange={this.onToggleSwitch}
+                  />
+                </View>
               </View>
-            </View>
-            <View style={SS.textsFooter}>
-              <Text style={SS.textFooter}>
-                가격 협의 가능 선택 시 임차인이 견적 요청
-              </Text>
-              <Text style={SS.textFooter}>할 때 가격 협의가 가능합니다.</Text>
-            </View>
-            <TouchableOpacity
-              disabled={isSubmitUpdate === true ? false : true}
-              onPress={() => {
-                this.navigation.navigate('RegisterWH', {
-                  completeInfo: true,
-                });
-                this.props.updateInfo({
-                  cnsltPossYn: this.state.cnsltPossYn,
-                  keeps: this.state.keeps,
-                  trusts: this.state.trusts,
-                });
-              }}
-              style={[
-                DefaultStyle.btnSubmit,
-                isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
-              ]}
-              // disabled={imageStore.length > 2 ? false : true}
-            >
-              <Text
+              <View style={SS.textsFooter}>
+                <Text style={SS.textFooter}>
+                  가격 협의 가능 선택 시 임차인이 견적 요청
+                </Text>
+                <Text style={SS.textFooter}>할 때 가격 협의가 가능합니다.</Text>
+              </View>
+              <TouchableOpacity
+                disabled={isSubmitUpdate === true ? false : true}
+                onPress={() => {
+                  this.navigation.navigate('RegisterWH', {
+                    completeInfo: true,
+                  });
+                  this.props.updateInfo({
+                    cnsltPossYn: this.state.cnsltPossYn,
+                    keeps: this.state.keeps,
+                    trusts: this.state.trusts,
+                  });
+                }}
                 style={[
-                  DefaultStyle.textSubmit,
-                  isSubmitUpdate === true
-                    ? DefaultStyle.textActiveSubmit
-                    : null,
-                ]}>
-                확인
-              </Text>
-            </TouchableOpacity>
+                  DefaultStyle.btnSubmit,
+                  isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
+                ]}
+                // disabled={imageStore.length > 2 ? false : true}
+              >
+                <Text
+                  style={[
+                    DefaultStyle.textSubmit,
+                    isSubmitUpdate === true
+                      ? DefaultStyle.textActiveSubmit
+                      : null,
+                  ]}>
+                  확인
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -464,7 +467,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ typeCodes });
+          this.setState({typeCodes});
         }
       })
       .catch(err => {
@@ -483,7 +486,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ calUnitDvCodes });
+          this.setState({calUnitDvCodes});
         }
       })
       .catch(err => {
@@ -502,7 +505,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ calStdDvCodes });
+          this.setState({calStdDvCodes});
         }
       })
       .catch(err => {
@@ -520,7 +523,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ mgmtChrgDvCodes });
+          this.setState({mgmtChrgDvCodes});
         }
       })
       .catch(err => {

@@ -73,7 +73,7 @@ class RegisterContractConditions extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={{paddingBottom: 300}}>
+          <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
                 <Text style={DefaultStyle._textTitleBody}>정산조건</Text>

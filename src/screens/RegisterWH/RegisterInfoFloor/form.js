@@ -101,12 +101,13 @@ class FormInfo extends Component {
     let defaultAprchMthdDvCodes =
       aprchMthdDvCodes &&
       aprchMthdDvCodes.find(item => item.value === formData.aprchMthdDvCode);
+    console.log(defaultFlrDvCode, 'defaultFlrDvCode')
     return (
       <Card style={S.cards}>
         <View style>
           <Select
             data={flrDvCodes}
-            valueSelected={defaultFlrDvCode !== undefined ? defaultFlrDvCode : ''}
+            valueSelected={defaultFlrDvCode !== undefined ? defaultFlrDvCode.label : ''}
             dataDefault={defaultFlrDvCode !== undefined ? defaultFlrDvCode : ''}
             selectedValue={formData.flrDvCode}
             labelSelected="층 수"
@@ -405,7 +406,7 @@ class FormInfo extends Component {
                 : ''
             }
             valueSelected={defaultAprchMthdDvCodes !== undefined
-              ? defaultAprchMthdDvCodes
+              ? defaultAprchMthdDvCodes.label
               : ''}
             selectedValue={formData.aprchMthdDvCode}
             labelSelected="접안방식"

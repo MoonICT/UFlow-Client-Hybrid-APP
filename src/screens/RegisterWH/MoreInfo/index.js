@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -17,7 +17,7 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
   Card,
@@ -35,10 +35,10 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
-import { styles as S } from '../style';
-import { styles as SS } from './style';
-import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
-import { MyPage } from '@Services/apis';
+import {styles as S} from '../style';
+import {styles as SS} from './style';
+import {stdToNumber, numberToStd} from '@Services/utils/StringUtils';
+import {MyPage} from '@Services/apis';
 
 // import Form from './form';
 class RegisterMoreInfo extends Component {
@@ -90,18 +90,18 @@ class RegisterMoreInfo extends Component {
   }
 
   showDatepicker = () => {
-    this.setState({ showFrom: true });
+    this.setState({showFrom: true});
   };
 
   onChangeFrom = (event, selectedDate) => {
     const currentDate = selectedDate || this.state.from;
     let d = new Date(selectedDate).getTime();
 
-    this.setState({ from: currentDate, showFrom: false, cmpltYmd: d });
+    this.setState({from: currentDate, showFrom: false, cmpltYmd: d});
   };
 
   render() {
-    const { imageStore, route, dataMoreInfo } = this.props;
+    const {imageStore, route, dataMoreInfo} = this.props;
     const {
       addOptDvCodes,
       insrDvCodes,
@@ -159,8 +159,8 @@ class RegisterMoreInfo extends Component {
               onPress={() => {
                 let indexItem = addOptDvCodes.indexOf(item.value);
                 indexItem > -1
-                  ? this.setState({ ...addOptDvCodes.splice(indexItem, 1) })
-                  : this.setState({ ...addOptDvCodes.push(item.value) });
+                  ? this.setState({...addOptDvCodes.splice(indexItem, 1)})
+                  : this.setState({...addOptDvCodes.push(item.value)});
               }}
             />
             <Text style={S.labelCheck}>{item.label}</Text>
@@ -179,8 +179,8 @@ class RegisterMoreInfo extends Component {
               onPress={() => {
                 let indexItem = insrDvCodes.indexOf(item.value);
                 indexItem > -1
-                  ? this.setState({ ...insrDvCodes.splice(indexItem, 1) })
-                  : this.setState({ ...insrDvCodes.push(item.value) });
+                  ? this.setState({...insrDvCodes.splice(indexItem, 1)})
+                  : this.setState({...insrDvCodes.push(item.value)});
               }}
             />
             <Text style={S.labelCheck}>{item.label}</Text>
@@ -207,159 +207,161 @@ class RegisterMoreInfo extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={DefaultStyle._cards}>
-            <View style={DefaultStyle._titleBody}>
-              <Text style={DefaultStyle._textTitleBody}>추가 정보</Text>
-            </View>
-            <View style>
-              {/**
-              <Select
-                data={dataSelect}
-                labelSelected="준공일"
-                colorLabel="#000000"
-              />
-             */}
-              <View style={{ flex: 1, marginBottom: 18 }}>
-                <TouchableOpacity
-                  onPress={this.showDatepicker}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={DefaultStyle._textDate}>
-                    {console.log(
-                      '======> toLocaleDateString: ',
-                      from.toLocaleDateString(),
-                    )}
-
-                    {from.toLocaleDateString()}
-                  </Text>
-                  <Text
-                    style={[
-                      DefaultStyle._labelTextField,
-                      { color: '#000000' },
-                    ]}>
-                    준공일
-                  </Text>
-                  <DatePicker
-                    mode={mode}
-                    show={showFrom}
-                    onChange={this.onChangeFrom}
-                    value={from}
-                    testID="dateTimePicker"
-                  />
-                </TouchableOpacity>
+          <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
+            <View style={DefaultStyle._cards}>
+              <View style={DefaultStyle._titleBody}>
+                <Text style={DefaultStyle._textTitleBody}>추가 정보</Text>
               </View>
-              <TextField
-                labelTextField="건축면적"
-                textRight="평"
-                placeholder="0"
-                defaultValue={bldgArea ? numberToStd(bldgArea) : ''}
-                colorLabel="#000000"
-                keyboardType="numeric"
-                value={numberToStd(bldgArea)}
-                valueProps={e => {
-                  let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ bldgArea: text !== '' ? stdToNumber(text) : '' });
-                }}
-              />
-              <TextField
-                labelTextField="대지면적"
-                textRight="평"
-                placeholder="0"
-                defaultValue={siteArea ? numberToStd(siteArea) : ''}
-                colorLabel="#000000"
-                keyboardType="numeric"
-                value={numberToStd(siteArea)}
-                valueProps={e => {
-                  let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ siteArea: text !== '' ? stdToNumber(text) : '' });
-                }}
-              />
-              <TextField
-                labelTextField="연면적"
-                textRight="평"
-                placeholder="0"
-                defaultValue={totalArea ? numberToStd(totalArea) : ''}
-                colorLabel="#000000"
-                keyboardType="numeric"
-                value={numberToStd(totalArea)}
-                valueProps={e => {
-                  let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ totalArea: text !== '' ? stdToNumber(text) : '' });
-                }}
-              />
-              <TextField
-                labelTextField="전용면적"
-                textRight="평"
-                placeholder="0"
-                defaultValue={prvtArea ? numberToStd(prvtArea) : ''}
-                colorLabel="#000000"
-                keyboardType="numeric"
-                value={numberToStd(prvtArea)}
-                valueProps={e => {
-                  let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ prvtArea: text !== '' ? stdToNumber(text) : '' });
-                }}
-              />
-              <TextField
-                labelTextField="공용면적"
-                textRight="평"
-                placeholder="0"
-                defaultValue={cmnArea ? numberToStd(cmnArea) : ''}
-                colorLabel="#000000"
-                keyboardType="numeric"
-                value={numberToStd(cmnArea)}
-                valueProps={e => {
-                  let text = e.replace(/[^0-9]/g, '');
-                  this.setState({ cmnArea: text !== '' ? stdToNumber(text) : '' });
-                }}
-              />
-            </View>
-          </View>
+              <View style>
+                {/**
+                 <Select
+                 data={dataSelect}
+                 labelSelected="준공일"
+                 colorLabel="#000000"
+                 />
+                 */}
+                <View style={{flex: 1, marginBottom: 18}}>
+                  <TouchableOpacity
+                    onPress={this.showDatepicker}
+                    style={DefaultStyle._btnDate}>
+                    <Text style={DefaultStyle._textDate}>
+                      {console.log(
+                        '======> toLocaleDateString: ',
+                        from.toLocaleDateString(),
+                      )}
 
-          <View style={DefaultStyle._cards}>
-            <View style={DefaultStyle._titleBody}>
-              <Text style={[DefaultStyle._textTitleBody]}>추가옵션</Text>
+                      {from.toLocaleDateString()}
+                    </Text>
+                    <Text
+                      style={[
+                        DefaultStyle._labelTextField,
+                        {color: '#000000'},
+                      ]}>
+                      준공일
+                    </Text>
+                    <DatePicker
+                      mode={mode}
+                      show={showFrom}
+                      onChange={this.onChangeFrom}
+                      value={from}
+                      testID="dateTimePicker"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <TextField
+                  labelTextField="건축면적"
+                  textRight="평"
+                  placeholder="0"
+                  defaultValue={bldgArea ? numberToStd(bldgArea) : ''}
+                  colorLabel="#000000"
+                  keyboardType="numeric"
+                  value={numberToStd(bldgArea)}
+                  valueProps={e => {
+                    let text = e.replace(/[^0-9]/g, '');
+                    this.setState({bldgArea: text !== '' ? stdToNumber(text) : ''});
+                  }}
+                />
+                <TextField
+                  labelTextField="대지면적"
+                  textRight="평"
+                  placeholder="0"
+                  defaultValue={siteArea ? numberToStd(siteArea) : ''}
+                  colorLabel="#000000"
+                  keyboardType="numeric"
+                  value={numberToStd(siteArea)}
+                  valueProps={e => {
+                    let text = e.replace(/[^0-9]/g, '');
+                    this.setState({siteArea: text !== '' ? stdToNumber(text) : ''});
+                  }}
+                />
+                <TextField
+                  labelTextField="연면적"
+                  textRight="평"
+                  placeholder="0"
+                  defaultValue={totalArea ? numberToStd(totalArea) : ''}
+                  colorLabel="#000000"
+                  keyboardType="numeric"
+                  value={numberToStd(totalArea)}
+                  valueProps={e => {
+                    let text = e.replace(/[^0-9]/g, '');
+                    this.setState({totalArea: text !== '' ? stdToNumber(text) : ''});
+                  }}
+                />
+                <TextField
+                  labelTextField="전용면적"
+                  textRight="평"
+                  placeholder="0"
+                  defaultValue={prvtArea ? numberToStd(prvtArea) : ''}
+                  colorLabel="#000000"
+                  keyboardType="numeric"
+                  value={numberToStd(prvtArea)}
+                  valueProps={e => {
+                    let text = e.replace(/[^0-9]/g, '');
+                    this.setState({prvtArea: text !== '' ? stdToNumber(text) : ''});
+                  }}
+                />
+                <TextField
+                  labelTextField="공용면적"
+                  textRight="평"
+                  placeholder="0"
+                  defaultValue={cmnArea ? numberToStd(cmnArea) : ''}
+                  colorLabel="#000000"
+                  keyboardType="numeric"
+                  value={numberToStd(cmnArea)}
+                  valueProps={e => {
+                    let text = e.replace(/[^0-9]/g, '');
+                    this.setState({cmnArea: text !== '' ? stdToNumber(text) : ''});
+                  }}
+                />
+              </View>
             </View>
-            <View style={S.options}>{viewOptionMore}</View>
-          </View>
 
-          <View style={DefaultStyle._body}>
-            <View style={DefaultStyle._titleBody}>
-              <Text style={DefaultStyle._textTitleBody}>보험 가입 여부</Text>
+            <View style={DefaultStyle._cards}>
+              <View style={DefaultStyle._titleBody}>
+                <Text style={[DefaultStyle._textTitleBody]}>추가옵션</Text>
+              </View>
+              <View style={S.options}>{viewOptionMore}</View>
             </View>
-            <View style={[S.options, S.optionsFooter]}>{viewInsrDvCodes}</View>
-            <TouchableOpacity
-              disabled={isSubmitUpdate === true ? false : true}
-              onPress={() => {
-                this.navigation.navigate('RegisterWH', {
-                  completeMoreInfo: true,
-                });
-                this.props.updateInfo({
-                  addOptDvCodes,
-                  insrDvCodes,
-                  cmpltYmd,
-                  siteArea,
-                  bldgArea,
-                  totalArea,
-                  prvtArea,
-                  cmnArea,
-                });
-              }}
-              style={[
-                DefaultStyle.btnSubmit,
-                isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
-              ]}
-              // disabled={imageStore.length > 2 ? false : true}
-            >
-              <Text
+
+            <View style={DefaultStyle._body}>
+              <View style={DefaultStyle._titleBody}>
+                <Text style={DefaultStyle._textTitleBody}>보험 가입 여부</Text>
+              </View>
+              <View style={[S.options, S.optionsFooter]}>{viewInsrDvCodes}</View>
+              <TouchableOpacity
+                disabled={isSubmitUpdate === true ? false : true}
+                onPress={() => {
+                  this.navigation.navigate('RegisterWH', {
+                    completeMoreInfo: true,
+                  });
+                  this.props.updateInfo({
+                    addOptDvCodes,
+                    insrDvCodes,
+                    cmpltYmd,
+                    siteArea,
+                    bldgArea,
+                    totalArea,
+                    prvtArea,
+                    cmnArea,
+                  });
+                }}
                 style={[
-                  DefaultStyle.textSubmit,
-                  isSubmitUpdate === true
-                    ? DefaultStyle.textActiveSubmit
-                    : null,
-                ]}>
-                확인
-              </Text>
-            </TouchableOpacity>
+                  DefaultStyle.btnSubmit,
+                  isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
+                ]}
+                // disabled={imageStore.length > 2 ? false : true}
+              >
+                <Text
+                  style={[
+                    DefaultStyle.textSubmit,
+                    isSubmitUpdate === true
+                      ? DefaultStyle.textActiveSubmit
+                      : null,
+                  ]}>
+                  확인
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -380,7 +382,7 @@ class RegisterMoreInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ addOptDvCodesData });
+          this.setState({addOptDvCodesData});
         }
       })
       .catch(err => {
@@ -399,7 +401,7 @@ class RegisterMoreInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ insrDvCodeData });
+          this.setState({insrDvCodeData});
         }
       })
       .catch(err => {

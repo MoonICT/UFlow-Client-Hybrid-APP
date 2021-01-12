@@ -60,6 +60,7 @@ export default class Selected extends Component {
     } = this.props;
     const { isToggle, selectedValue, indexActive } = this.state;
     console.log('required',required);
+    console.log('valueSelected',valueSelected);
     const items =
       data &&
       data.map((item, index) => {
