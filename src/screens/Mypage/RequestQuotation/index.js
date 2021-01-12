@@ -32,7 +32,8 @@ class RequestQuotation extends Component {
     super(props);
 
     console.log(props, '======props======');
-    console.log(props.route.params, '======props.data======');
+    console.log(props.route.params, '======props.datadata======');
+    console.log(props.route.params.data, '======props.datadata.data======');
     // console.log(props.route.params.data, '======props.route.params.data======');
     // console.log(props.route.params.data.whrgMgmtTrust, '======whrgMgmtTrust======');
     // console.log(props.route.params.data.whrgMgmtKeep, '======whrgMgmtKeep======');
@@ -136,6 +137,7 @@ class RequestQuotation extends Component {
       showTo,
       isSubmit,
     } = this.state;
+    console.log('routeRequest :>> ', route);
 
     console.log(warehSeq,'warehSeq');
 

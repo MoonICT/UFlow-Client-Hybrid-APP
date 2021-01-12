@@ -4,8 +4,8 @@
  * @flow strict-local
  * */
 // Global Imports
-import React, {Component} from 'react';
-import {View, Text, TextInput} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, TextInput } from 'react-native';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -16,7 +16,7 @@ export default class TextField extends Component {
     super(props);
     this.state = {
       isFocused: true,
-      isNotifi: false
+      isNotifi: false,
     };
   }
 
@@ -27,15 +27,15 @@ export default class TextField extends Component {
   }
 
   onFocusChange(e) {
-    this.setState({isFocused: true});
+    this.setState({ isFocused: true });
   }
 
   onBlurChange(e) {
-    this.setState({isFocused: false});
+    this.setState({ isFocused: false });
     if (this.state.value === '') {
-      this.setState({isNotifi: true});
+      this.setState({ isNotifi: true });
     } else {
-      this.setState({isNotifi: false});
+      this.setState({ isNotifi: false });
     }
   }
 
@@ -49,6 +49,7 @@ export default class TextField extends Component {
       styleRight,
       valueProps,
       isRequired,
+      textError,
     } = this.props;
 
     return (
@@ -58,16 +59,12 @@ export default class TextField extends Component {
             <Text
               style={[
                 DefaultStyle._labelTextField,
-                colorLabel ? {color: colorLabel} : null,
+                colorLabel ? { color: colorLabel } : null,
               ]}>
               {labelTextField}
 
-              {isRequired &&
-              <Text style={[
-                {color: 'red'}
-              ]}> *</Text>}
+              {isRequired && <Text style={[{ color: 'red' }]}> *</Text>}
             </Text>
-
           </>
         ) : null}
 
@@ -90,6 +87,9 @@ export default class TextField extends Component {
             {textRight}
           </Text>
         )}
+        {textError ? (
+          <Text style={[DefaultStyle._errorTextField]}>{textError}</Text>
+        ) : null}
       </View>
     );
   }

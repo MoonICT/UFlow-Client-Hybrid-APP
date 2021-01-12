@@ -145,7 +145,7 @@ class ResponseQuotation extends Component {
       showTo,
       isSubmit,
     } = this.state;
-
+console.log('routeRespon :>> ', route);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -183,8 +183,6 @@ class ResponseQuotation extends Component {
               </TouchableOpacity>
             </View>
             {/** END:HEADER **/}
-
-            <Text>{typeWH}</Text>
 
             {typeWH === 'TRUST' ? (
               <ResponseQTrust

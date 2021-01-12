@@ -33,7 +33,7 @@ class TableInfo extends Component {
     return (
       <View>
         {data && data.length > 0 && data.map((item, index) =>
-          <View
+         item.type ? <View
             style={[
               DefaultStyle._rowTable,
               style,
@@ -82,7 +82,8 @@ class TableInfo extends Component {
               </Text>
             )}
           </View>
-        )}
+        : null
+          )}
       </View>
     );
   }
