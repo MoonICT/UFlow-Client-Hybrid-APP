@@ -103,7 +103,7 @@ class FormInfo extends Component {
       aprchMthdDvCodes.find(item => item.value === formData.aprchMthdDvCode);
     console.log(defaultFlrDvCode, 'defaultFlrDvCode')
     return (
-      <Card style={S.cards}>
+      <Card style={[S.cards]}>
         <View style>
           <Select
             data={flrDvCodes}

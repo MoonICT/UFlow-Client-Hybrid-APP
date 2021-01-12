@@ -326,7 +326,11 @@ class RegisterInfo extends Component {
               </TouchableOpacity>
             </View>
             <View style={DefaultStyle._cards}>
-              <View style={[DefaultStyle._titleCard, {marginBottom: 12}]}>
+              <View style={[DefaultStyle._titleCard, {
+                marginBottom:
+                  (valueTab === 'keeps' && (!keeps || keeps.length === 0)) ? 60 :
+                    ((valueTab === 'trusts' && (!trusts || trusts.length === 0)) ? 60 : 16)
+              }]}>
                 <Text style={DefaultStyle._textTitleCard}>
                   {route && route.params && route.params.type === 'ModifyWH'
                     ? '보관유형 상세정보'
@@ -418,6 +422,12 @@ class RegisterInfo extends Component {
                 </Text>
                 <Text style={SS.textFooter}>할 때 가격 협의가 가능합니다.</Text>
               </View>
+
+              {
+                valueTab === 'keeps' && (keeps && keeps.length > 0)
+                ||
+                valueTab === 'trusts' && (trusts && trusts.length > 0)
+                &&
               <TouchableOpacity
                 disabled={isSubmitUpdate === true ? false : true}
                 onPress={() => {
@@ -445,7 +455,7 @@ class RegisterInfo extends Component {
                   ]}>
                   확인
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity>}
             </View>
           </View>
         </ScrollView>

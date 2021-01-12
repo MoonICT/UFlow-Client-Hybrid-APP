@@ -109,8 +109,8 @@ class RegisterInfoFloor extends Component {
     let filterFloors =
       listFloors && listFloors.filter(item => item !== listFloors[slideStart]);
 
-    console.log(filterFloors, 'filterFloors');
-    console.log(slideStart, 'slideStart');
+    console.log(filterFloors,'filterFloors');
+    console.log(slideStart,'slideStart');
     this.setState({
       floors: filterFloors ? filterFloors : [],
       numberSlide: slideStart,
@@ -182,8 +182,7 @@ class RegisterInfoFloor extends Component {
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
-
-            <View style={[{marginBottom: 60, backgroundColor:'red'}]}>
+            <View style={[{paddingLeft:16,paddingRight:16, marginBottom: !floors || floors.length === 0 ? 60 : 0}]}>
               <View style={S.titleBody}>
                 <Text style={S.textTitleBody}>층별 상세 정보</Text>
                 <View style={S.rightTitle}>
@@ -203,7 +202,7 @@ class RegisterInfoFloor extends Component {
                 </View>
               </View>
             </View>
-            <View>
+            <View style={[S.bodyCard, SS.bodyInfoFloor]}>
               <Carousel
                 // style={styles.carousel}
                 custom={{
@@ -229,6 +228,7 @@ class RegisterInfoFloor extends Component {
                 }}
               />
             </View>
+            {floors && floors.length > 0 &&
             <View style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
               <TouchableOpacity
                 disabled={isSubmitUpdate === true ? false : true}
@@ -255,6 +255,7 @@ class RegisterInfoFloor extends Component {
                 </Text>
               </TouchableOpacity>
             </View>
+            }
           </View>
         </ScrollView>
       </SafeAreaView>
