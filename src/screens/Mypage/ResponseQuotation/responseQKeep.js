@@ -9,15 +9,15 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Moment from 'moment';
 import {Warehouse} from '@Services/apis';
 import {StringUtils, DeepLogs} from '@Services/utils';
+import moment from "moment";
 
-class ReqeustQKeep extends Component {
+class ResponseQKeep extends Component {
 
   constructor(props) {
     super(props);
     this.navigation = props.navigation;
 
-    console.log(props.from ? Moment(props.from).toDate() : null, 'from');
-    console.log(props.to ? Moment(props.to).toDate() : null, 'to');
+    console.log(props.warehSeq, 'props.warehSeq');
 
     this.state = {
       fromMinDate: props.from ? Moment(props.from).toDate() : null,
@@ -77,8 +77,10 @@ class ReqeustQKeep extends Component {
       rntlValue,
       splyAmount,
       mgmtChrg,
-      remark,
+      whoutChrg,
+      remark
     } = this.state.formData;
+
 
     let isSubmitKeep = false;
 
@@ -87,11 +89,11 @@ class ReqeustQKeep extends Component {
       from &&
       to &&
       rntlValue &&
-      splyAmount
+      splyAmount &&
+      mgmtChrg
     ) {
       isSubmitKeep = true;
     }
-
 
     return <Fragment>
 
@@ -106,7 +108,7 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment(from).format('YYYY.MM.DD') : ''}
+              {from ? moment(from).format('YYYY.MM.DD') : ''}
             </Text>
             <Text
               style={[
@@ -121,11 +123,10 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? Moment(from).toDate() : new Date()}
+              date={from ? moment(from).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
-                console.log(date,'date');
                 this.onChangeFrom(date);
               }}
               onCancel={() => {
@@ -142,8 +143,9 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? Moment(to).format('YYYY.MM.DD') : ''}
+              {to ? moment(to).format('YYYY.MM.DD') : ''}
             </Text>
+
             <Text
               style={[
                 DefaultStyle._labelTextField,
@@ -157,7 +159,7 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? Moment(to).toDate() : new Date()}
+              date={to ? moment(to).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -174,10 +176,10 @@ class ReqeustQKeep extends Component {
       </View>
       {/** END:보관기간 (필수) **/}
 
-      {/** 요청 면적 (필수) **/}
+      {/** 응답 면적 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="보관 요청 수량"
+        labelTextField="응답 면적"
         keyboardType="numeric"
         placeholder={"0"}
         defaultValue={
@@ -215,8 +217,7 @@ class ReqeustQKeep extends Component {
           })
         }
       />
-
-      {/** 관리 단가 **/}
+      {/** 관리단가 (필수) **/}
       <TextField
         colorLabel="#000000"
         labelTextField="관리단가"
@@ -226,6 +227,7 @@ class ReqeustQKeep extends Component {
           mgmtChrg ? String(mgmtChrg) : '0'
         }
         placeholder="0"
+        isRequired={true}
         onChangeText={e =>
           this.setState({
             formData: {
@@ -253,10 +255,6 @@ class ReqeustQKeep extends Component {
           })
         }
       />
-      <View style={[DefaultStyle._footerCards, {marginBottom: 30}]}>
-        <Text style={S.amount}>예상 견적 금액</Text>
-        <Text style={S.total}>{StringUtils.money((this.state.formData.mgmtChrg ? Number(this.state.formData.mgmtChrg) : 0) + (this.state.formData.splyAmount ? Number(this.state.formData.splyAmount) : 0))}</Text>
-      </View>
 
 
       <TouchableOpacity
@@ -268,6 +266,7 @@ class ReqeustQKeep extends Component {
 
           let formData = this.state.formData;
 
+          console.log(formData, 'formData1')
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
@@ -279,7 +278,7 @@ class ReqeustQKeep extends Component {
           } else if (formData.splyAmount > this.props.splyAmount) {
             alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
             return;
-          } else if (formData.mgmtChrg <= 0) {
+          } else if (formData.whinChrg <= 0) {
             alert(`관리단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.mgmtChrg > this.props.mgmtChrg) {
@@ -302,7 +301,7 @@ class ReqeustQKeep extends Component {
           };
 
           Warehouse.responQuotation({
-            type: `tenant/warehouse/${formData.warehouseRegNo}/keep/${formData.seq}`,
+            type: `owner/warehouse/${formData.warehouseRegNo}/keep/${formData.seq}/${this.props.rentUserNo}`,
             data: formData,
           })
             .then(res => {
@@ -314,8 +313,9 @@ class ReqeustQKeep extends Component {
                 this.setState({
                   isSubmitKeep: false
                 });
+
                 // TODO change illustrator popup
-                alert('견적요청이 완료되었습니다.');
+                alert('견적응답이 완료되었습니다.');
                 this.props.navigation.goBack();
               }
             })
@@ -353,4 +353,4 @@ class ReqeustQKeep extends Component {
   }
 }
 
-export default ReqeustQKeep;
+export default ResponseQKeep;

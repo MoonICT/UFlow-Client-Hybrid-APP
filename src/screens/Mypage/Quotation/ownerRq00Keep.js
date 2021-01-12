@@ -38,13 +38,12 @@ class OwnerRq00Keep extends Component {
 
     let lastRequestData = {};
     if (estmtKeepGroups && estmtKeepGroups.length > 0) {
-      lastRequestData = estmtKeepGroups[0][estmtKeepGroups[0].length - 1];
+      lastRequestData = estmtKeepGroups[this.state.groupOrderIndex][estmtKeepGroups[this.state.groupOrderIndex].length - 1];
     }
 
     let viewRequestKeep =
       calUnitDvCodes && calUnitDvCodes.length > 0 &&
-      calStdDvCodes && this.calStdDvCodes.length > 0 &&
-      data &&
+      calStdDvCodes && calStdDvCodes.length > 0 &&
       estmtKeepGroups && estmtKeepGroups.length > 0 &&
       estmtKeepGroups[this.state.groupOrderIndex].map((item, index) => {
 
@@ -63,11 +62,11 @@ class OwnerRq00Keep extends Component {
             },
             {
               type: '정산단위',
-              value: item.calUnitDvCode ? StringUtils.toStdName(this.state.calUnitDvCodes, item.calUnitDvCode) : '-'
+              value: item.calUnitDvCode ? StringUtils.toStdName(calUnitDvCodes, item.calUnitDvCode) : '-'
             },
             {
               type: '산정기준',
-              value: item.calStdDvCode ? StringUtils.toStdName(this.state.calStdDvCodes, item.calStdDvCode) : '-'
+              value: item.calStdDvCode ? StringUtils.toStdName(calStdDvCodes, item.calStdDvCode) : '-'
             },
             {
               type: '요청 보관단가',
@@ -111,10 +110,8 @@ class OwnerRq00Keep extends Component {
 
       return (
         <Fragment>
-
           <View
             style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-
 
             <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
               <Text style={DefaultStyle._textTitleCard}>
@@ -134,35 +131,27 @@ class OwnerRq00Keep extends Component {
 
             {viewRequestKeep}
 
-            <View style={DefaultStyle._card}>
-              <View style={DefaultStyle._infoTable}>
-                <TableInfo data={dataRequest}/>
-              </View>
-            </View>
-            <View style={DefaultStyle._footerCards}>
-              <Text style={S.amount}>예상 견적 금액</Text>
-              <Text style={S.total}>{item.estimatedPrice}원</Text>
+            <View style={DefaultStyle._listBtn}>
+              <TouchableOpacity
+                style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
+                onPress={() => {
+                  /** GO TO 견적응답하기 **/
+                  this.navigation.navigate('ResponseQuotation', {
+                    lastRequestData,
+                    typeWH,
+                    warehouseRegNo,
+                    warehSeq,
+                    rentUserNo,
+                    status,
+                    type,
+                  });
+                }}>
+                <Text style={DefaultStyle._textButton}>견적 응답하기</Text>
+              </TouchableOpacity>
             </View>
           </View>
 
-          <View style={DefaultStyle._listBtn}>
-            <TouchableOpacity
-              style={[DefaultStyle._btnOutline, DefaultStyle._btnLeft]}
-              onPress={() => {
-                /** GO TO 견적응답하기 **/
-                this.navigation.navigate('ResponseQuotation', {
-                  lastRequestData,
-                  typeWH,
-                  warehouseRegNo,
-                  warehSeq,
-                  rentUserNo,
-                  status,
-                  type,
-                });
-              }}>
-              <Text style={DefaultStyle._textButton}>견적 응답하기</Text>
-            </TouchableOpacity>
-          </View>
+
         </Fragment>
       );
     } else {
