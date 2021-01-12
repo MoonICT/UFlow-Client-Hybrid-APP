@@ -185,6 +185,7 @@ class FormTrusts extends Component {
           <Select
             data={typeCodes}
             labelSelected="보관유형"
+            valueSelected={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
             dataDefault={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
             selectedValue={formData.typeCode}
             valueProps={e => {
@@ -196,6 +197,7 @@ class FormTrusts extends Component {
           <Select
             data={calUnitDvCodes}
             labelSelected="정산단위"
+            valueSelected={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             selectedValue={formData.calUnitDvCode}
             valueProps={e => {
@@ -208,6 +210,7 @@ class FormTrusts extends Component {
           <Select
             data={calStdDvCodes}
             labelSelected="산정기준"
+            valueSelected={defaultcalStd !== undefined ? defaultcalStd : ''}
             dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
             selectedValue={formData.calStdDvCode}
             valueProps={e => {

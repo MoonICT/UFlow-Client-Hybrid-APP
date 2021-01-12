@@ -14,6 +14,7 @@ import {
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
+import { StringUtils, ContractUtils } from '@Services/utils';
 
 // Local Imports
 import TableInfo from '@Components/atoms/TableInfo';
@@ -23,8 +24,6 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import warehouse1 from '@Assets/images/warehouse-1.png';
 import {Warehouse, MyPage, Contract} from '@Services/apis';
-import {styles as S} from '../style';
-import RequestView from './requestView';
 import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 
 import TenantRq00Trust from './tenantRq00Trust';
@@ -34,10 +33,6 @@ import TenantRs00Keep from './tenantRs00Keep';
 
 import OwnerRq00Trust from './ownerRq00Trust';
 import OwnerRq00Keep from './ownerRq00Keep';
-import OwnerRs00Trust from './ownerRs00Trust';
-import OwnerRs00Keep from './ownerRs00Keep';
-
-import {StringUtils} from '@Services/utils';
 
 class Quotation extends Component {
 
@@ -52,62 +47,18 @@ class Quotation extends Component {
     this.navigation = props.navigation;
   }
 
-  coverStatus = value => {
-    switch (value) {
-
-      case 'RQ00':
-        // code block
-        return {
-          processing: '견적요청',
-          data: []
-        };
-
-      case 'RS00':
-        // code block
-        return {
-          data: [],
-          processing: '견적응답',
-        };
-
-      case '1100':
-        // code block
-        return {
-          data: [],
-          processing: '계약협의',
-        };
-
-
-      case '2100':
-        // code block
-        return {
-          data: [],
-          processing: '계약요청대기',
-        };
-
-      case '4100':
-        // code block
-        return {
-          data: [],
-          processing: '계약중',
-        };
-
-      case '5100':
-        // code block
-        return {
-          data: [],
-          processing: '계약완료',
-        };
-
-      // code block
-    }
-  };
-
   coverTime = value => {
     let time = new Date();
     time.setTime(value);
     let changeTime = time.toLocaleDateString();
     return changeTime;
   };
+
+  onClickContract = () => {
+    this.setState({
+      visibleContractTrust: !this.state.visibleContractTrust
+    })
+  }
 
 
   render() {
@@ -151,18 +102,6 @@ class Quotation extends Component {
           type: '전용면적',
           value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
         },
-        // {
-        //   type: '정산단위',
-        //   value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '산정기준',
-        //   value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '가용면적',
-        //   value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue),
-        // },
         {
           type: '임대 가능 기간',
           value: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
@@ -245,8 +184,6 @@ class Quotation extends Component {
         },
       ];
 
-    console.log(this.state.calUnitDvCodes, 'this.state.calUnitDvCodes');
-    console.log("###3")
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -278,7 +215,7 @@ class Quotation extends Component {
                     //   ? { backgroundColor: 'rgba(0, 0, 0, 0.54)' }
                     //   : '',
                   ]}>
-                  {this.coverStatus(status).processing}
+                  {ContractUtils.coverStatus(status).processing}
                 </Text>
               </View>
               {/** END:HEADER **/}
@@ -286,7 +223,7 @@ class Quotation extends Component {
               {/** WAREHOUSE INFO **/}
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
-                  {/** TODO 보관 상태에 따라 이미지 변경 **/ }
+                  {/** TODO Bug2-1 보관 상태에 따라 이미지 변경 */ }
                   <Image source={warehouse1} style={DefaultStyle._avatarHeader}/>
                 </View>
                 <View
