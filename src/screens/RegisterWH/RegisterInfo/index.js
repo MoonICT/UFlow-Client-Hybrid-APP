@@ -59,43 +59,43 @@ class RegisterInfo extends Component {
         props.dataInfo && props.dataInfo.keeps
           ? props.dataInfo.keeps
           : [
-            {
-              typeCode: '',
-              calUnitDvCode: '',
-              calStdDvCode: '',
-              mgmtChrgDvCode: '',
-              // exclusiveArea2: '',
-              commonArea: '',
-              usblValue: '',
-              // rentalArea: '',
-              // rentalArea2: '',
-              usblYmdFrom: '',
-              usblYmdTo: '',
-              splyAmount: '',
-              mgmtChrg: '',
-              remark: '',
-            },
+            // {
+            //   typeCode: '',
+            //   calUnitDvCode: '',
+            //   calStdDvCode: '',
+            //   mgmtChrgDvCode: '',
+            //   // exclusiveArea2: '',
+            //   commonArea: '',
+            //   usblValue: '',
+            //   // rentalArea: '',
+            //   // rentalArea2: '',
+            //   usblYmdFrom: '',
+            //   usblYmdTo: '',
+            //   splyAmount: '',
+            //   mgmtChrg: '',
+            //   remark: '',
+            // },
           ],
       trusts:
         props.dataInfo && props.dataInfo.trusts
           ? props.dataInfo.trusts
           : [
-            {
-              typeCode: '',
-              calUnitDvCode: '',
-              calStdDvCode: '',
-              usblYmdFrom: '',
-              usblYmdTo: '',
-              splyAmount: '',
-              usblValue: '',
-              whinChrg: '',
-              whoutChrg: '',
-              psnChrg: '',
-              mnfctChrg: '',
-              dlvyChrg: '',
-              shipChrg: '',
-              remark: '',
-            },
+            // {
+            //   typeCode: '',
+            //   calUnitDvCode: '',
+            //   calStdDvCode: '',
+            //   usblYmdFrom: '',
+            //   usblYmdTo: '',
+            //   splyAmount: '',
+            //   usblValue: '',
+            //   whinChrg: '',
+            //   whoutChrg: '',
+            //   psnChrg: '',
+            //   mnfctChrg: '',
+            //   dlvyChrg: '',
+            //   shipChrg: '',
+            //   remark: '',
+            // },
           ],
     };
 
@@ -151,6 +151,13 @@ class RegisterInfo extends Component {
         remark: '',
       });
     this.setState({keeps: listKeeps, trusts: listTrusts});
+    setTimeout(() => {
+      if (valueTab === 'keeps') {
+        this.goToSlider(listKeeps.length);
+      } else if (valueTab === 'trusts') {
+        this.goToSlider(listTrusts.length);
+      }
+    },500);
   };
   _removeForm = valueTab => {
     console.log('vaodaynao')
@@ -229,6 +236,11 @@ class RegisterInfo extends Component {
       />
     );
   };
+  goToSlider = (index) => {
+    console.log(index, 'goToSlider');
+    if(this.slider)
+    this.slider.goTo(index)
+  }
 
   render() {
     const {imageStore, route, dataInfo} = this.props;
@@ -243,7 +255,9 @@ class RegisterInfo extends Component {
     } = this.state;
     // console.log('dataInfo :>> ', dataInfo);
     // console.log('keeps :>> ', dataInfo.keeps);
+
     console.log('goToSlideKeep :>> ', goToSlideKeep);
+    // TODO 확인버튼은 수탁과 보관의 모든것의 필수값이 입력된 경우만 true
     let isSubmitUpdate = false;
     // console.log('keeps', keeps);
     // console.log('numberSlide', numberSlide);
@@ -333,8 +347,14 @@ class RegisterInfo extends Component {
               }]}>
                 <Text style={DefaultStyle._textTitleCard}>
                   {route && route.params && route.params.type === 'ModifyWH'
-                    ? '보관유형 상세정보'
-                    : '임대유형 상세정보'}
+                    ? `임대유형 상세정보`
+                    : `임대유형 상세정보`}
+                  { valueTab === 'keeps' && this.state.keeps.length > 0 &&
+                  <Text style={{color: '#777777'}}> ({this.state.numberSlide + 1}/{this.state.keeps.length})</Text>
+                  }
+                  { valueTab === 'trusts' && this.state.trusts.length >0 &&
+                  <Text style={{color: '#777777'}}> ({this.state.numberSlideTrusts + 1}/{this.state.trusts.length})</Text>
+                  }
                   <Text style={S.textNote}>*</Text>
                 </Text>
                 <View style={DefaultStyle._titleBody}>
@@ -375,7 +395,7 @@ class RegisterInfo extends Component {
                       marginTop: 100,
                     },
                   }}
-
+                  ref={(ref) => (this.slider = ref)}
                 />
               ) : (
                 <Carousel
@@ -401,7 +421,7 @@ class RegisterInfo extends Component {
                       marginTop: 100,
                     },
                   }}
-
+                  ref={(ref) => (this.slider = ref)}
                 />
               )}
             </View>
@@ -426,9 +446,9 @@ class RegisterInfo extends Component {
               </View>
 
               {
-                valueTab === 'keeps' && (keeps && keeps.length > 0)
+                (valueTab === 'keeps' && ((keeps && keeps.length > 0))
                 ||
-                valueTab === 'trusts' && (trusts && trusts.length > 0)
+                valueTab === 'trusts' && (trusts && trusts.length > 0))
                 &&
               <TouchableOpacity
                 disabled={isSubmitUpdate === true ? false : true}

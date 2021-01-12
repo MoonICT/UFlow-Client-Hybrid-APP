@@ -103,6 +103,9 @@ class RegisterInfoFloor extends Component {
     });
     console.log(list.length, 'list.length 1111');
     this.setState({floors: list});
+    setTimeout(() => {
+      this.goToSlider(list.length);
+    }, 500)
   };
   _removeForm = () => {
     console.log('valueTab')
@@ -117,8 +120,8 @@ class RegisterInfoFloor extends Component {
     let filterFloors =
       listFloors && listFloors.filter(item => item !== listFloors[slideStart]);
 
-    console.log(filterFloors,'filterFloors');
-    console.log(slideStart,'slideStart');
+    console.log(filterFloors, 'filterFloors');
+    console.log(slideStart, 'slideStart');
     this.setState({
       floors: filterFloors ? filterFloors : [],
       numberSlide: slideStart,
@@ -149,7 +152,7 @@ class RegisterInfoFloor extends Component {
     const {imageStore, dataInfoFloor} = this.props;
     const {floors} = this.state;
 
-    const { width: screenWidth } = Dimensions.get('window');
+    const {width: screenWidth} = Dimensions.get('window');
 
     console.log('dataInfoFloor', dataInfoFloor);
     console.log('floors', floors);
@@ -193,9 +196,13 @@ class RegisterInfoFloor extends Component {
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
-            <View style={[{paddingLeft:16,paddingRight:16, marginBottom: !floors || floors.length === 0 ? 60 : 0}]}>
+            <View style={[{paddingLeft: 16, paddingRight: 16, marginBottom: !floors || floors.length === 0 ? 60 : 0}]}>
               <View style={S.titleBody}>
-                <Text style={S.textTitleBody}>층별 상세 정보</Text>
+                <Text style={S.textTitleBody}>층별 상세 정보
+                  { this.state.floors.length > 0 &&
+                  <Text style={{color: '#777777'}}> ({this.state.numberSlide + 1}/{this.state.floors.length})</Text>
+                  }
+                </Text>
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnAdd}
@@ -213,7 +220,7 @@ class RegisterInfoFloor extends Component {
                 </View>
               </View>
             </View>
-            <Text>{screenWidth}</Text>
+
             <View style={[S.bodyCard, SS.bodyInfoFloor]}>
               <Carousel
                 // style={styles.carousel}

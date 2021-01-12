@@ -10,6 +10,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Card, Text } from 'react-native-paper';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Select from '@Components/organisms/Select';
@@ -65,7 +66,7 @@ class FormInfo extends Component {
     return true;
   }
 
-  onChangeFrom = (event, selectedDate) => {
+  onChangeFrom = (selectedDate) => {
     const currentDate = selectedDate || this.state.from;
     this.setState({ from: currentDate, showFrom: false });
     let d = selectedDate
@@ -83,7 +84,7 @@ class FormInfo extends Component {
   showDatepickerTo = () => {
     this.setState({ showTo: true });
   };
-  onChangeTo = (event, selectedDate) => {
+  onChangeTo = (selectedDate) => {
     const currentDate = selectedDate || this.state.to;
     this.setState({ to: currentDate, showTo: false });
     let d = selectedDate
@@ -296,7 +297,8 @@ class FormInfo extends Component {
                 labelTextField="가용수치"
                 textRight="m2"
                 defaultValue={
-                  formData.usblValue ? numberToStd(formData.usblValue) : '0'
+                  formData.usblValue
+                    ? numberToStd(formData.usblValue) : '0'
                 }
                 valueProps={e => {
                   let text = e.replace(/[^0-9]/g, '');
@@ -329,14 +331,25 @@ class FormInfo extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                수탁 기간
+                보관 시작일
               </Text>
-              <DatePicker
-                mode={mode}
-                show={showFrom}
-                onChange={this.onChangeFrom}
-                value={from}
-                testID="dateTimePicker"
+              {/*<DatePicker*/}
+              {/*  mode={mode}*/}
+              {/*  show={showFrom}*/}
+              {/*  onChange={this.onChangeFrom}*/}
+              {/*  value={from}*/}
+              {/*  testID="dateTimePicker"*/}
+              {/*/>*/}
+              <DateTimePickerModal
+                mode="date"
+                isVisible={showFrom}
+                date={from ? from : new Date()}
+                onConfirm={date => this.onChangeFrom(date)}
+                onCancel={() => {
+                  this.setState({
+                    showFrom: false,
+                  });
+                }}
               />
             </TouchableOpacity>
           </View>
@@ -352,14 +365,25 @@ class FormInfo extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                수탁 기간
+                보관 종료일
               </Text>
-              <DatePicker
-                mode={mode}
-                show={showTo}
-                onChange={this.onChangeTo}
-                value={to}
-                testID="dateTimePickerTo"
+              {/*<DatePicker*/}
+              {/*  mode={mode}*/}
+              {/*  show={showTo}*/}
+              {/*  onChange={this.onChangeTo}*/}
+              {/*  value={to}*/}
+              {/*  testID="dateTimePickerTo"*/}
+              {/*/>*/}
+              <DateTimePickerModal
+                mode="date"
+                isVisible={showTo}
+                date={to ? to : new Date()}
+                onConfirm={date => this.onChangeTo(date)}
+                onCancel={() => {
+                  this.setState({
+                    showTo: false,
+                  });
+                }}
               />
             </TouchableOpacity>
           </View>
