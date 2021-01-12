@@ -28,7 +28,6 @@ import illust11 from '@Assets/images/illust11.png';
 import { styles as SS } from './style';
 import { Warehouse, Contract } from '@Services/apis';
 import CardMypage from '@Components/organisms/CardMypage';
-import AsyncStorage from "@react-native-community/async-storage";
 
 class TermsContract extends Component {
   constructor (props) {
@@ -63,15 +62,6 @@ class TermsContract extends Component {
    * */
   useImperativeHandle = async () => {
     const { contractType, keepTrustContract, rentUserNo } = this.props;
-    // await AsyncStorage.getItem('TOKEN').then(res => {
-    //   console.log('토큰확인1:::::', res)
-    // });
-    console.log(this.props.type)
-    console.log('contractType', contractType.toLowerCase())
-    console.log('warehouseRegNo', keepTrustContract.id.warehouseRegNo)
-    console.log('rentUserNo', rentUserNo)
-    console.log('cntrYmdFrom', moment(keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD'))
-
     if (!this.state.isAgree) {
       alert('계약 약관에 동의해주세요.')
       return false;
@@ -223,8 +213,7 @@ class TermsContract extends Component {
         </View>
 
         {/** 추가 서류 업로드 */}
-        {type === 'owner' && ( // TODO 아래 구문으로 변경.
-          // {type === 'owner' && (keepTrustContract && !keepTrustContract.entrpByOwner?.file2) && (
+        {type === 'owner' && (keepTrustContract && !keepTrustContract.entrpByOwner?.file2) && (
           <View style={DefaultStyle._card}>
             <View style={DefaultStyle._headerCard}>
               <Text style={DefaultStyle._headerCardTitle}>추가 서류 등록</Text>
@@ -276,34 +265,6 @@ class TermsContract extends Component {
   /** when update state or props */
   componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
-    // if (prevState.isSubmit !== this.state.isSubmit) {
-    // let warehSeq = this.props.route.params.warehSeq;
-    // let warehouseRegNo = this.props.route.params.warehouseRegNo;
-    // let rentUserNo = this.props.route.params.rentUserNo;
-    // let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
-    // let typeWH =
-    //   this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
-    // let url = type + '/' + typeWH;
-
-    // Warehouse.termsContract({ url, data })
-    //   .then(res => {
-    //     console.log('res', res);
-    //     if (res.status === 200) {
-    //       console.log('resRequestContract', res);
-    //       this.navigation.navigate('RequestContract', {
-    //         type,
-    //         warehouseRegNo,
-    //         warehSeq,
-    //         typeWH: this.state.dataProps.typeWH,
-    //         rentUserNo,
-    //         status: '1100',
-    //       });
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log('err', err);
-    //   });
-    // }
   }
 }
 
