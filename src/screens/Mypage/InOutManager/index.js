@@ -203,44 +203,69 @@ export default class InOutManager extends Component {
 
   onChangeStart = (event, selectedDate) => {
     let { isOpenStart } = this.state;
-    if (event.type == 'dismissed') {
-      this.setState({
+    let filter = { ...this.state.filter };
+    filter.startDate = event;
+    this.setState(
+      {
+        filter: filter,
         isOpenStart: !isOpenStart,
-      });
-    } else {
-      let filter = { ...this.state.filter };
-      filter.startDate = event.nativeEvent.timestamp;
-      this.setState(
-        {
-          filter: filter,
-          isOpenStart: !isOpenStart,
-        },
-        () => {
-          this.getAllData();
-        },
-      );
-    }
+      },
+      () => {
+        this.getAllData();
+      },
+    );
+
+    // if (event.type == 'dismissed') {
+    //   this.setState({
+    //     isOpenStart: !isOpenStart,
+    //   });
+    // } else {
+    //   let filter = { ...this.state.filter };
+    //   filter.startDate = event.nativeEvent.timestamp;
+    //   this.setState(
+    //     {
+    //       filter: filter,
+    //       isOpenStart: !isOpenStart,
+    //     },
+    //     () => {
+    //       this.getAllData();
+    //     },
+    //   );
+    // }
   };
 
   onChangeEnd = (event, selectedDate) => {
     let { isOpenEnd } = this.state;
-    if (event.type == 'dismissed') {
-      this.setState({
+
+    let filter = { ...this.state.filter };
+    filter.endDate = event;
+    this.setState(
+      {
+        filter: filter,
         isOpenEnd: !isOpenEnd,
-      });
-    } else {
-      let filter = { ...this.state.filter };
-      filter.endDate = event.nativeEvent.timestamp;
-      this.setState(
-        {
-          filter: filter,
-          isOpenEnd: !isOpenEnd,
-        },
-        () => {
-          this.getAllData();
-        },
-      );
-    }
+      },
+      () => {
+        this.getAllData();
+      },
+    );
+
+    // if (event.type == 'dismissed') {
+    //   this.setState({
+    //     isOpenEnd: !isOpenEnd,
+    //   });
+    // } else {
+    //   let filter = { ...this.state.filter };
+    //   filter.endDate = event.nativeEvent.timestamp;
+    //   this.setState(
+    //     {
+    //       filter: filter,
+    //       isOpenEnd: !isOpenEnd,
+    //     },
+    //     () => {
+    //       this.getAllData();
+    //     },
+    //   );
+    // }
   };
 
   onChangeRangeDay = value => {
@@ -286,16 +311,16 @@ export default class InOutManager extends Component {
 
   onChangeTimeCreateImport = (event, selectedDate) => {
     let { isOpenTimeCreateImport } = this.state;
-    if (event.type == 'dismissed') {
-      this.setState({
-        isOpenTimeCreateImport: !isOpenTimeCreateImport,
-      });
-    } else {
-      this.setState({
-        timeCreateImport: event.nativeEvent.timestamp,
-        isOpenTimeCreateImport: !isOpenTimeCreateImport,
-      });
-    }
+    // if (event.type === 'dismissed') {
+    //   this.setState({
+    //     isOpenTimeCreateImport: !isOpenTimeCreateImport,
+    //   });
+    // } else {
+    this.setState({
+      timeCreateImport: event.nativeEvent.timestamp,
+      isOpenTimeCreateImport: !isOpenTimeCreateImport,
+    });
+    // }
   };
 
   showTimeCreateImport = () => {
@@ -654,7 +679,9 @@ export default class InOutManager extends Component {
                           mode="date"
                           isVisible={isOpenTimeCreateImport}
                           date={endDate ? endDate : new Date()}
-                          onConfirm={date => this.onChangeTimeCreateImport(date)}
+                          onConfirm={date =>
+                            this.onChangeTimeCreateImport(date)
+                          }
                           onCancel={() => {
                             this.setState({
                               isOpenTimeCreateImport: false,

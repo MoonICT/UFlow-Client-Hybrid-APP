@@ -85,6 +85,7 @@ import Consulting from '@Screeens/Consulting';
 import ConsultingComplete from '@Screeens/Consulting/complete.js';
 import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
+import Emergency from '@Screeens/Emergency';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 
 import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
@@ -562,6 +563,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="DetailRegisterTenant"
                     component={DetailRegisterTenant}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="Emergency"
+                    component={Emergency}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
