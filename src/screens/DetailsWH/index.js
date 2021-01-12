@@ -252,7 +252,7 @@ class DetailWH extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.goBack()}
+            onPress={() => this.navigation.pop(2)}
           />
           <Appbar.Content
             title=""
