@@ -16,7 +16,7 @@ import {TOKEN} from '@Constant';
 export const createKeep = async ({idWarehouse = '', mgmtKeepSeq = '', rentUserNo = 0}) => {
   const token = await AsyncStorage.getItem(TOKEN);
 
-  return Axios.postRequest(
+  return await mainAxios.post(
     `/api/v1/contract/keep`,
     {
       mgmtKeepSeq: mgmtKeepSeq, // 견적 보관 seq
