@@ -61,7 +61,8 @@ class Inquiry extends Component {
       userType: 'TENANT',
       typeQuestion: 'GENERAL',
       listQuestion: [],
-      query:''
+      query:'',
+      titleActive:'전체문의'
     };
     this.navigation = props.navigation;
   }
@@ -116,6 +117,7 @@ class Inquiry extends Component {
         inquiryCode: tabInquiry[index].id,
         userType: tabInquiry[index].id,
         typeQuestion: tabInquiry[index].typeQuestion,
+        titleActive: tabName
       },
       () => {
         this.getAllData();
@@ -196,6 +198,7 @@ class Inquiry extends Component {
       inquiryCode,
       userType,
       listQuestion,
+      titleActive
     } = this.state;
 
     return (
@@ -215,7 +218,7 @@ class Inquiry extends Component {
         </Appbars>
         <ScrollView>
           <View style={{ flex: 1 }}>
-            <AppGrid data={tabInquiry} titleProps={this.handleClickTab} />
+            <AppGrid data={tabInquiry} title={titleActive} titleProps={this.handleClickTab} />
           </View>
           <View style={S.filter}>
             <Searchbar
@@ -234,7 +237,7 @@ class Inquiry extends Component {
                   onPress={this.showDatepicker}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                    {from ? from.toLocaleDateString() : (new Date()).toLocaleDateString()}
+                    {from ? from.toLocaleDateString() : 'YYYY-MM-DD'}
                   </Text>
                   <Text
                     style={[
@@ -249,7 +252,7 @@ class Inquiry extends Component {
                     onChange={this.onChangeFrom}
                     // onChange={e => console.log(e)}
 
-                    value={from ? from : new Date()}
+                    value={from ? from : (new Date())}
                     testID="dateTimePicker"
                   />
                 </TouchableOpacity>
@@ -260,7 +263,7 @@ class Inquiry extends Component {
                   onPress={this.showDatepickerTo}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                  {to ? to.toLocaleDateString() : (new Date()).toLocaleDateString()}
+                  {to ? to.toLocaleDateString() : 'YYYY-MM-DD'}
                   </Text>
                   <Text
                     style={[
@@ -273,7 +276,7 @@ class Inquiry extends Component {
                     mode={mode}
                     show={showTo}
                     onChange={this.onChangeTo}
-                    value={to ? to : new Date()}
+                    value={to ? to :  (new Date())}
                     testID="dateTimePickerTo"
                   />
                 </TouchableOpacity>
