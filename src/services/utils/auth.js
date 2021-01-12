@@ -255,7 +255,7 @@ export const getToken = function (provider, responseQueryString, addtionalBody) 
         requestBody[item] = addtionalBody[item]
       })
     } else {
-      console.warn('vue-oauth2-code :: getToken :: additionalBody is undefined or not Object type. so, It is ignored.')
+      // console.warn('vue-oauth2-code :: getToken :: additionalBody is undefined or not Object type. so, It is ignored.')
     }
     axios.post(variables.baseUrl + variables.provider[provider].url, requestBody).then(function (resp) {
       if (resp.data.access_token) {
