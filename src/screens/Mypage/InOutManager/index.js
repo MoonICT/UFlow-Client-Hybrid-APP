@@ -24,6 +24,7 @@ import DefaultStyle from '@Styles/default';
 import CardMypage from '@Components/organisms/CardMypage';
 import TextField from '@Components/organisms/TextField';
 
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from 'react-native-vector-icons/Fontisto';
 import card from '@Assets/images/card-img.png';
 import {InOutManagerService} from '@Services/apis'
@@ -573,7 +574,7 @@ export default class InOutManager extends Component {
                         ]}>
                         수탁 기간
                       </Text>
-                      {isOpenTimeCreateImport && (
+                      {isOpenTimeCreateImport &&
                         // <DatePicker
                         //   mode={'date'}
                         //   show={isOpenTimeCreateImport}
