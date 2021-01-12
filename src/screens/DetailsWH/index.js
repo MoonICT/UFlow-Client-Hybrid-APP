@@ -18,11 +18,7 @@ import {
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
-import {
-  Appbar,
-  Text,
-  IconButton,
-} from 'react-native-paper';
+import { Appbar, Text, IconButton } from 'react-native-paper';
 
 // Local Imports
 import { Warehouse, WarehouseTenant } from '@Services/apis';
@@ -39,11 +35,11 @@ import mainBG from '@Assets/images/main-bg.png';
 import cardBG from '@Assets/images/card-img.png';
 import mapLink from '@Assets/images/mapLink.png';
 
-import WHType1 from "@Assets/images/icon-warehouse-1.png";
-import WHType2 from "@Assets/images/icon-warehouse-2.png";
-import WHType3 from "@Assets/images/icon-warehouse-3.png";
-import WHType4 from "@Assets/images/icon-warehouse-4.png";
-import WHType6 from "@Assets/images/icon-warehouse-6.png";
+import WHType1 from '@Assets/images/icon-warehouse-1.png';
+import WHType2 from '@Assets/images/icon-warehouse-2.png';
+import WHType3 from '@Assets/images/icon-warehouse-3.png';
+import WHType4 from '@Assets/images/icon-warehouse-4.png';
+import WHType6 from '@Assets/images/icon-warehouse-6.png';
 
 // import {ConvertUnits} from "@Service/utils";
 
@@ -52,7 +48,7 @@ class DetailWH extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
-    let { id } = props.route.params
+    let { id } = props.route.params;
     this.state = {
       id: id,
       active: 0,
@@ -63,51 +59,66 @@ class DetailWH extends Component {
       qnaParams: {},
       qnaList: [],
       pageInfo: {},
-      isLogin:false,
+      isLogin: false,
       showAll: false,
-      floors:'지하 1층',
+      floors: '지하 1층',
       whList: [],
-      favorite : false,
-      rentUserNo:'',
-      activeIndex: 0
+      favorite: false,
+      rentUserNo: '',
     };
     this.navigation = props.navigation;
   }
 
-  hiddenName = (name) => {
+  hiddenName = name => {
     if (name && name.length > 0) {
       let nameArr = name.split('');
       nameArr = nameArr.map((item, index) => {
-        return index > 0 ? '*' : item
-      })
-      return nameArr.join('')
+        return index > 0 ? '*' : item;
+      });
+      return nameArr.join('');
     }
-  }
+  };
 
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps?.route?.params?.id !== prevState.id) {
+      return { id: nextProps?.route?.params?.id };
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.route?.params?.id !== this.props?.route?.params?.id) {
+      this.setState({ id: this.props?.route?.params?.id });
+      this.getDataWH();
+    }
+  }
+
+
+
   /**
    * 관심창고 토글
    * */
   toggleFavoriteWH = () => {
-    const { isLogin, id} = this.state;
+    const { isLogin, id } = this.state;
 
     if (isLogin) {
       Warehouse.toggleFav(id)
-      .then(res => {
-        this.setState({
-          favorite: res.data.favorite
+        .then(res => {
+          this.setState({
+            favorite: res.data.favorite,
+          });
         })
-      })
-      .catch(error => {
-        alert(error.response.data.message);
-      });
+        .catch(error => {
+          alert(error.response.data.message);
+        });
     } else {
-      alert('로그인 후 이용해주세요.')
+      alert('로그인 후 이용해주세요.');
     }
-  }
+  };
 
   /**
    * 창고 견적요청 가능 유/무 확인.
@@ -115,136 +126,160 @@ class DetailWH extends Component {
    * @Params typeInfo: [Object] type info.
    * */
   checkContract = async (type, typeInfo) => {
-    const { isLogin, id} = this.state;
+    const { isLogin, id } = this.state;
     if (!type || !typeInfo) {
-      return false
+      return false;
     }
     if (!isLogin) {
       // TODO Change to dialog UI
-      alert('로그인 후 이용가능합니다.')
-      return false
+      alert('로그인 후 이용가능합니다.');
+      return false;
     }
     await WarehouseTenant.possibleContract({
       contractType: type,
       warehouseRegNo: typeInfo.id.warehouseRegNo,
       seq: typeInfo.id.seq,
-    }).then(res => {
-      // 견적 등록 가능.
-      console.log('possibleContract', res)
-      if (res.data.status === 'PSB_CNT') {
-        console.log('res.data.status', res.data.status)
-        this.handleRouteRequestQuotation(typeInfo.id.warehouseRegNo, type, typeInfo.id.seq)
-      }
-    }).catch(error => {
-      if (error.response) {
-        if (error.response.status === 401) {
-          // TODO Change to dialog UI
-          alert('로그인 세션이 만료되었습니다.\n다시 로그인해주세요.')
-        }
-      }
-      switch (error.response.data.status) {
-        case 'NONE': // 등록된 사업자가 없음, 최초 임차인 등록
-          // TODO Change to dialog UI
-          alert('사업자정보 등록 후 견적 요청이 가능합니다.');
-          this.navigation.navigate('DetailRegisterTenant', {
-            typeWH: type,
-            warehouseRegNo : typeInfo.id.warehouseRegNo,
-            warehSeq : typeInfo.id.seq,
-            rentUserNo: '',
-            status: 'RQ00',
-            type : 'TENANT',
-          }
-          );
-          break;
-        case 'IMP_CNT': // 견적등록 불가능, 창고가 공실상태가 아님.
-          // TODO Change to dialog UI
-          alert('견적요청이 불가능합니다.\n현재 공실 상태가 아닙니다.')
-          break;
-      }
     })
-  }
+      .then(res => {
+        // 견적 등록 가능.
+        console.log('possibleContract', res);
+        if (res.data.status === 'PSB_CNT') {
+          console.log('res.data.status', res.data.status);
+          this.handleRouteRequestQuotation(
+            typeInfo.id.warehouseRegNo,
+            type,
+            typeInfo.id.seq,
+          );
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            // TODO Change to dialog UI
+            alert('로그인 세션이 만료되었습니다.\n다시 로그인해주세요.');
+          }
+        }
+        switch (error.response.data.status) {
+          case 'NONE': // 등록된 사업자가 없음, 최초 임차인 등록
+            // TODO Change to dialog UI
+            alert('사업자정보 등록 후 견적 요청이 가능합니다.');
+            this.navigation.navigate('DetailRegisterTenant', {
+              typeWH: type,
+              warehouseRegNo: typeInfo.id.warehouseRegNo,
+              warehSeq: typeInfo.id.seq,
+              rentUserNo: '',
+              status: 'RQ00',
+              type: 'TENANT',
+            });
+            break;
+          case 'IMP_CNT': // 견적등록 불가능, 창고가 공실상태가 아님.
+            // TODO Change to dialog UI
+            alert('견적요청이 불가능합니다.\n현재 공실 상태가 아닙니다.');
+            break;
+        }
+      });
+  };
 
   handleRouteRequestQuotation = (idWarehouse, type, seq) => {
     this.navigation.navigate('ResponseQuotation', {
       typeWH: type,
-      warehouseRegNo : idWarehouse,
-      warehSeq : seq,
+      warehouseRegNo: idWarehouse,
+      warehSeq: seq,
       rentUserNo: '',
       status: 'RQ00',
-      type : 'TENANT',
+      type: 'TENANT',
     });
-  }
+  };
 
   _renderDialogBox = ({ item }) => {
     return <ProductCard data={{ ...item, img: cardBG }} />;
   };
 
   _renderProductItem = ({ item }) => {
-    const cardItem = [];   
-      cardItem.push(
-        <View>
-          {item?.thumbnail !== null ? (
-            <ProductCard navigation={this.navigation} data={item} />
-          ) : (
-             <ProductCard
-              navigation={this.navigation}
-              data={{ ...item, img: cardBG }}
-            />
-          )}
-        </View>,
-      );
+    const cardItem = [];
+    cardItem.push(
+      <View
+        onPress={() => this.navigation.replace('DetailsWH', { id: item.id })}>
+        {item?.thumbnail !== null ? (
+          <ProductCard navigation={this.navigation} data={item} />
+        ) : (
+          <ProductCard
+            navigation={this.navigation}
+            data={{ ...item, img: cardBG }}
+          />
+        )}
+      </View>,
+    );
 
     return cardItem;
   };
 
   render() {
-    const { active, whrgData, pageInfo ,qnaList, showAll, floors, whList, favorite, activeIndex, id} = this.state;
+    const {
+      active,
+      whrgData,
+      pageInfo,
+      qnaList,
+      showAll,
+      floors,
+      whList,
+      favorite,
+      activeIndex,
+      id,
+    } = this.state;
+
+    console.log('ID DEtails', id);
 
     const dataTab = [
       {
         title: '지하 1층',
-        content: ''
+        content: '',
       },
       {
         title: '지상 2층',
-        content: ''
+        content: '',
       },
       {
         title: '지상 3층',
-        content: ''
+        content: '',
       },
       {
         title: '지상 4층',
-        content: ''
+        content: '',
       },
     ];
 
-    const toSquareMeter = (value) => {
+    const toSquareMeter = value => {
       //return value ?  Math.ceil((Math.trunc(Number(value)*10)/10) * 3.305785) : ''
-      return value ? Number(Number(value) * 3.305785).toFixed(0) : ''
+      return value ? Number(Number(value) * 3.305785).toFixed(0) : '';
     };
 
-    const toPyeong = (value) => {
+    const toPyeong = value => {
       //return value ? Math.ceil((Math.trunc(Number(value)*10)/10) / 3.305785) : ''
-      return value ? Number(Number(value) / 3.305785).toFixed(0) : ''
+      return value ? Number(Number(value) / 3.305785).toFixed(0) : '';
     };
 
-    const displayAreaUnit = (value) => {
-      return `${value.toLocaleString()}㎡ (${toPyeong(value).toLocaleString()}평)`
+    const displayAreaUnit = value => {
+      return `${value.toLocaleString()}㎡ (${toPyeong(
+        value,
+      ).toLocaleString()}평)`;
     };
-
 
     const displayUsblValue = (usblValue, calUnitDvCode) => {
-      let resultStr = '-'
+      let resultStr = '-';
       if (usblValue) {
         if (calUnitDvCode && calUnitDvCode?.stdDetailCode === 'CU01') {
-          resultStr = displayAreaUnit(usblValue)
+          resultStr = displayAreaUnit(usblValue);
         } else {
-          resultStr = usblValue.toLocaleString() + (calUnitDvCode && calUnitDvCode?.stdDetailCodeName ? calUnitDvCode?.stdDetailCodeName : '')
+          resultStr =
+            usblValue.toLocaleString() +
+            (calUnitDvCode && calUnitDvCode?.stdDetailCodeName
+              ? calUnitDvCode?.stdDetailCodeName
+              : '');
         }
       }
       return resultStr;
-    }
+    };
 
     return (
       <SafeAreaView style={S.container}>
@@ -260,24 +295,23 @@ class DetailWH extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-          {favorite ?
+          {favorite ? (
             <Appbar.Action
-            icon="heart"
-            color="#f2453d"
-            onPress={() => {
-              this.toggleFavoriteWH();
-            }}
-          />
-            :
+              icon="heart"
+              color="#f2453d"
+              onPress={() => {
+                this.toggleFavoriteWH();
+              }}
+            />
+          ) : (
             <Appbar.Action
-            icon="heart-outline"
-            color="black"
-            onPress={() => {
-              this.toggleFavoriteWH();
-            }}
-          />
-          }
-          
+              icon="heart-outline"
+              color="black"
+              onPress={() => {
+                this.toggleFavoriteWH();
+              }}
+            />
+          )}
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
@@ -286,77 +320,101 @@ class DetailWH extends Component {
               {whrgData.typeCode && whrgData.typeCode}
             </Text>
             <Text style={S.describeTitle}>
-              {`${whrgData.hasKeep ? "보관창고" : ""}`}
-              {`${whrgData.hasKeep && whrgData.hasTrust ? ", " : ""}`}
-              {`${whrgData.hasTrust ? "수탁창고" : ""}`}
+              {`${whrgData.hasKeep ? '보관창고' : ''}`}
+              {`${whrgData.hasKeep && whrgData.hasTrust ? ', ' : ''}`}
+              {`${whrgData.hasTrust ? '수탁창고' : ''}`}
             </Text>
-            <Text style={S.header}>
-              {whrgData.name}
-            </Text>
+            <Text style={S.header}>{whrgData.name}</Text>
             <View style={S.labels}>
-              {
-                whrgData.keeps && whrgData.keeps.length > 0 && (
-                   whrgData.keeps.map((keep, index) => (
-                    <View key={index}>
-                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
-                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
-                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
-                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
-                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
-                      {(keep.typeCode && keep.typeCode?.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
-                   </View>
-                   )))
-              }
+              {whrgData.keeps &&
+                whrgData.keeps.length > 0 &&
+                whrgData.keeps.map((keep, index) => (
+                  <View key={index}>
+                    {keep.typeCode &&
+                      keep.typeCode?.stdDetailCodeName === '상온' && (
+                        <Text style={[S.textlabel, S.orange]}>상온</Text>
+                      )}
+                    {keep.typeCode &&
+                      keep.typeCode?.stdDetailCodeName === '냉동' && (
+                        <Text style={[S.textlabel, S.orange]}>냉동</Text>
+                      )}
+                    {keep.typeCode &&
+                      keep.typeCode?.stdDetailCodeName === '냉장' && (
+                        <Text style={[S.textlabel, S.orange]}>냉장</Text>
+                      )}
+                    {keep.typeCode &&
+                      keep.typeCode?.stdDetailCodeName === '야적' && (
+                        <Text style={[S.textlabel, S.orange]}>야적</Text>
+                      )}
+                    {keep.typeCode &&
+                      keep.typeCode?.stdDetailCodeName === '위험물' && (
+                        <Text style={[S.textlabel, S.orange]}>위험물</Text>
+                      )}
+                    {keep.typeCode &&
+                      keep.typeCode?.stdDetailCodeName === '기타' && (
+                        <Text style={[S.textlabel, S.orange]}>기타</Text>
+                      )}
+                  </View>
+                ))}
 
-              {
-                whrgData.trusts && whrgData.trusts.length > 0 && (
-                   whrgData.trusts.map((trust, index) => (
-                    <View key={index}>
-                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '상온') && <Text style={[S.textlabel, S.orange]}>상온</Text>}
-                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '냉동') && <Text style={[S.textlabel, S.orange]}>냉동</Text>}
-                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '냉장') && <Text style={[S.textlabel, S.orange]}>냉장</Text>}
-                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '야적') && <Text style={[S.textlabel, S.orange]}>야적</Text>}
-                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '위험물') && <Text style={[S.textlabel, S.orange]}>위험물</Text>}
-                      {(trust.typeCode && trust.typeCode?.stdDetailCodeName === '기타') && <Text style={[S.textlabel, S.orange]}>기타</Text>}
-                   </View>
-                   )))
-              }
-            
-              
+              {whrgData.trusts &&
+                whrgData.trusts.length > 0 &&
+                whrgData.trusts.map((trust, index) => (
+                  <View key={index}>
+                    {trust.typeCode &&
+                      trust.typeCode?.stdDetailCodeName === '상온' && (
+                        <Text style={[S.textlabel, S.orange]}>상온</Text>
+                      )}
+                    {trust.typeCode &&
+                      trust.typeCode?.stdDetailCodeName === '냉동' && (
+                        <Text style={[S.textlabel, S.orange]}>냉동</Text>
+                      )}
+                    {trust.typeCode &&
+                      trust.typeCode?.stdDetailCodeName === '냉장' && (
+                        <Text style={[S.textlabel, S.orange]}>냉장</Text>
+                      )}
+                    {trust.typeCode &&
+                      trust.typeCode?.stdDetailCodeName === '야적' && (
+                        <Text style={[S.textlabel, S.orange]}>야적</Text>
+                      )}
+                    {trust.typeCode &&
+                      trust.typeCode?.stdDetailCodeName === '위험물' && (
+                        <Text style={[S.textlabel, S.orange]}>위험물</Text>
+                      )}
+                    {trust.typeCode &&
+                      trust.typeCode?.stdDetailCodeName === '기타' && (
+                        <Text style={[S.textlabel, S.orange]}>기타</Text>
+                      )}
+                  </View>
+                ))}
+
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
             <View style={S.background}>
-              <Image style={S.backgroundImage} source={ whrgData.whImages && whrgData.whImages.length > 0 ? {uri:whrgData.whImages[0].url}  : ''} />
+              <Image
+                style={S.backgroundImage}
+                source={
+                  whrgData.whImages && whrgData.whImages.length > 0
+                    ? { uri: whrgData.whImages[0].url }
+                    : ''
+                }
+              />
               <Image style={S.iconBackground} source={circle} />
             </View>
             <View style={S.info}>
               <Text style={DefaultStyle._textTitleBody}>창고 정보</Text>
               <View style={DefaultStyle.row}>
                 <TouchableOpacity
-                  style={[
-                    S.btnTabBarLeft,
-                    active === 0 ? S.activeBtn : null,
-                  ]}
+                  style={[S.btnTabBarLeft, active === 0 ? S.activeBtn : null]}
                   onPress={() => this.setState({ active: 0 })}>
-                  <Text
-                    style={[
-                      S.textBtn,
-                      active === 0 ? S.activeText : null,
-                    ]}>
+                  <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
                     보관
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[
-                    S.btnTabBarRight,
-                    active === 1 ? S.activeBtn : null,
-                  ]}
+                  style={[S.btnTabBarRight, active === 1 ? S.activeBtn : null]}
                   onPress={() => this.setState({ active: 1 })}>
-                  <Text
-                    style={[
-                      S.textBtn,
-                      active === 1 ? S.activeText : null,
-                    ]}>
+                  <Text style={[S.textBtn, active === 1 ? S.activeText : null]}>
                     수탁
                   </Text>
                 </TouchableOpacity>
@@ -366,13 +424,28 @@ class DetailWH extends Component {
               {active === 0 &&
                 (whrgData.keeps && whrgData.keeps.length > 0 ? (
                   whrgData.keeps.map((keep, index) => (
-                    <View key={"listKeep" + index} style={DefaultStyle._card}>
+                    <View key={'listKeep' + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
-                        {keep.typeCode && keep.typeCode?.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
-                        {keep.typeCode && keep.typeCode?.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
-                        {keep.typeCode && keep.typeCode?.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
-                        {keep.typeCode && keep.typeCode?.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
-                        {keep.typeCode && keep.typeCode?.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
+                        {keep.typeCode &&
+                          keep.typeCode?.stdDetailCode === '0001' && (
+                            <Image style={S.imgWarehouse} source={WHType2} />
+                          )}
+                        {keep.typeCode &&
+                          keep.typeCode?.stdDetailCode === '0002' && (
+                            <Image style={S.imgWarehouse} source={WHType3} />
+                          )}
+                        {keep.typeCode &&
+                          keep.typeCode?.stdDetailCode === '0003' && (
+                            <Image style={S.imgWarehouse} source={WHType1} />
+                          )}
+                        {keep.typeCode &&
+                          keep.typeCode?.stdDetailCode === '0004' && (
+                            <Image style={S.imgWarehouse} source={WHType4} />
+                          )}
+                        {keep.typeCode &&
+                          keep.typeCode?.stdDetailCode === '9100' && (
+                            <Image style={S.imgWarehouse} source={WHType6} />
+                          )}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
                         checked={checked}
@@ -386,131 +459,174 @@ class DetailWH extends Component {
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               보관유형
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {keep.typeCode ? keep.typeCode?.stdDetailCodeName : "-"}
+                              {keep.typeCode
+                                ? keep.typeCode?.stdDetailCodeName
+                                : '-'}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               정산단위
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {keep.calUnitDvCode ? keep.calUnitDvCode?.stdDetailCodeName : "-"}
+                              {keep.calUnitDvCode
+                                ? keep.calUnitDvCode?.stdDetailCodeName
+                                : '-'}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               산정기준
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {keep.calStdDvCode ? keep.calStdDvCode?.stdDetailCodeName : "-"}
+                              {keep.calStdDvCode
+                                ? keep.calStdDvCode?.stdDetailCodeName
+                                : '-'}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               관리비구분
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {keep.mgmtChrgDvCode ? keep.mgmtChrgDvCode?.stdDetailCodeName : "-"}
+                              {keep.mgmtChrgDvCode
+                                ? keep.mgmtChrgDvCode?.stdDetailCodeName
+                                : '-'}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               가용일자
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {`${formatDateV1(keep.usblYmdFrom)}~${formatDateV1(keep.usblYmdTo)}`}
+                              {`${formatDateV1(
+                                keep.usblYmdFrom,
+                              )}~${formatDateV1(keep.usblYmdTo)}`}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               가용수치
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {displayUsblValue(keep.usblValue, keep.calUnitDvCode)}
+                              {displayUsblValue(
+                                keep.usblValue,
+                                keep.calUnitDvCode,
+                              )}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               공용면적
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {`${keep.cmnArea ? displayAreaUnit(keep.cmnArea) : '-'}`}
+                              {`${
+                                keep.cmnArea
+                                  ? displayAreaUnit(keep.cmnArea)
+                                  : '-'
+                              }`}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               보관단가
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {`${keep.splyAmount ? keep.splyAmount.toLocaleString() + '원' : '-'}`}
+                              {`${
+                                keep.splyAmount
+                                  ? keep.splyAmount.toLocaleString() + '원'
+                                  : '-'
+                              }`}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>관리단가</Text>
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              관리단가
+                            </Text>
                             <Text style={S.textTable}>
-                              {`${keep.mgmtChrg ? keep.mgmtChrg.toLocaleString() + '원' : '-'}`}
+                              {`${
+                                keep.mgmtChrg
+                                  ? keep.mgmtChrg.toLocaleString() + '원'
+                                  : '-'
+                              }`}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>비고</Text>
-                            <Text style={S.textTable}>
-                              {keep.remark}
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              비고
                             </Text>
+                            <Text style={S.textTable}>{keep.remark}</Text>
                           </View>
                           <View style={S.tableRow}>
-                            {keep.enable ?
+                            {keep.enable ? (
                               <View style={S.rowBtn}>
-                                {whrgData.userTypeCode === '1100' ?
+                                {whrgData.userTypeCode === '1100' ? (
                                   <View>
                                     <Text>
-                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.entrpName : ''}
+                                      {whrgData.relativeEntrp
+                                        ? whrgData.relativeEntrp.entrpName
+                                        : ''}
                                     </Text>
                                     <Text>
-                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.phone.no1 + whrgData.relativeEntrp.phone.no2 + whrgData.relativeEntrp.phone.no3 : ''}
+                                      {whrgData.relativeEntrp
+                                        ? whrgData.relativeEntrp.phone.no1 +
+                                          whrgData.relativeEntrp.phone.no2 +
+                                          whrgData.relativeEntrp.phone.no3
+                                        : ''}
                                     </Text>
                                   </View>
-                                  :
+                                ) : (
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
-                                    onPress={() => this.checkContract("KEEP", keep)}>
+                                    onPress={() =>
+                                      this.checkContract('KEEP', keep)
+                                    }>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
-                                  </Text>
+                                    </Text>
                                   </TouchableOpacity>
-                                }
+                                )}
                               </View>
-                              :
+                            ) : (
                               <Text style={[S.textBtnQuote]}>
                                 계약 완료된 정보입니다.
-                            </Text>
-                            }
+                              </Text>
+                            )}
                           </View>
                         </View>
                       </View>
                     </View>
-                  )))
-                  :
-                  (
-                    <View style={DefaultStyle._card} >
-                      <Text style={S.textTable}>등록된 창고정보가 없습니다.</Text>
-                    </View>
-                  )
-                )}
+                  ))
+                ) : (
+                  <View style={DefaultStyle._card}>
+                    <Text style={S.textTable}>등록된 창고정보가 없습니다.</Text>
+                  </View>
+                ))}
 
               {/***** Trust (수탁) *****/}
 
               {active === 1 &&
                 (whrgData.trusts && whrgData.trusts.length > 0 ? (
                   whrgData.trusts.map((trust, index) => (
-                    <View key={"listTrusts" + index} style={DefaultStyle._card}>
+                    <View key={'listTrusts' + index} style={DefaultStyle._card}>
                       <View style={DefaultStyle._headerCard}>
-                        {trust.typeCode?.stdDetailCode === "0001" && <Image style={S.imgWarehouse} source={WHType2} />}
-                        {trust.typeCode?.stdDetailCode === "0002" && <Image style={S.imgWarehouse} source={WHType3} />}
-                        {trust.typeCode?.stdDetailCode === "0003" && <Image style={S.imgWarehouse} source={WHType1} />}
-                        {trust.typeCode?.stdDetailCode === "0004" && <Image style={S.imgWarehouse} source={WHType4} />}
-                        {trust.typeCode?.stdDetailCode === "9100" && <Image style={S.imgWarehouse} source={WHType6} />}
+                        {trust.typeCode?.stdDetailCode === '0001' && (
+                          <Image style={S.imgWarehouse} source={WHType2} />
+                        )}
+                        {trust.typeCode?.stdDetailCode === '0002' && (
+                          <Image style={S.imgWarehouse} source={WHType3} />
+                        )}
+                        {trust.typeCode?.stdDetailCode === '0003' && (
+                          <Image style={S.imgWarehouse} source={WHType1} />
+                        )}
+                        {trust.typeCode?.stdDetailCode === '0004' && (
+                          <Image style={S.imgWarehouse} source={WHType4} />
+                        )}
+                        {trust.typeCode?.stdDetailCode === '9100' && (
+                          <Image style={S.imgWarehouse} source={WHType6} />
+                        )}
                         {/* <View style={S.imageHeader} /> */}
                         {/* <Checkbox
                         checked={checked}
@@ -524,119 +640,151 @@ class DetailWH extends Component {
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               보관유형
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {trust.typeCode ? trust.typeCode?.stdDetailCodeName : "-"}
+                              {trust.typeCode
+                                ? trust.typeCode?.stdDetailCodeName
+                                : '-'}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               정산단위
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {trust.calUnitDvCode ? trust.calUnitDvCode?.stdDetailCodeName : "-"}
+                              {trust.calUnitDvCode
+                                ? trust.calUnitDvCode?.stdDetailCodeName
+                                : '-'}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               산정기준
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {trust.calStdDvCode ? trust.calStdDvCode?.stdDetailCodeName : "-"}
+                              {trust.calStdDvCode
+                                ? trust.calStdDvCode?.stdDetailCodeName
+                                : '-'}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               관리비구분
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {trust.mgmtChrgDvCode ? trust.mgmtChrgDvCode?.stdDetailCodeName : "-"}
+                              {trust.mgmtChrgDvCode
+                                ? trust.mgmtChrgDvCode?.stdDetailCodeName
+                                : '-'}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               가용일자
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {`${formatDateV1(trust.usblYmdFrom)}~${formatDateV1(trust.usblYmdTo)}`}
+                              {`${formatDateV1(
+                                trust.usblYmdFrom,
+                              )}~${formatDateV1(trust.usblYmdTo)}`}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               가용수치
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {displayUsblValue(trust.usblValue, trust.calUnitDvCode)}
+                              {displayUsblValue(
+                                trust.usblValue,
+                                trust.calUnitDvCode,
+                              )}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               공용면적
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {`${trust.cmnArea ? displayAreaUnit(trust.cmnArea) : '-'}`}
+                              {`${
+                                trust.cmnArea
+                                  ? displayAreaUnit(trust.cmnArea)
+                                  : '-'
+                              }`}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
                             <Text style={[S.textTable, S.textLeftTable]}>
                               보관단가
-                          </Text>
+                            </Text>
                             <Text style={S.textTable}>
-                              {`${trust.splyAmount ? trust.splyAmount.toLocaleString() + '원' : '-'}`}
+                              {`${
+                                trust.splyAmount
+                                  ? trust.splyAmount.toLocaleString() + '원'
+                                  : '-'
+                              }`}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>관리단가</Text>
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              관리단가
+                            </Text>
                             <Text style={S.textTable}>
-                              {`${trust.mgmtChrg ? trust.mgmtChrg.toLocaleString() + '원' : '-'}`}
+                              {`${
+                                trust.mgmtChrg
+                                  ? trust.mgmtChrg.toLocaleString() + '원'
+                                  : '-'
+                              }`}
                             </Text>
                           </View>
                           <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>비고</Text>
-                            <Text style={S.textTable}>
-                              {trust.remark}
+                            <Text style={[S.textTable, S.textLeftTable]}>
+                              비고
                             </Text>
+                            <Text style={S.textTable}>{trust.remark}</Text>
                           </View>
                           <View style={S.tableRow}>
-                            {trust.enable ?
+                            {trust.enable ? (
                               <View style={S.rowBtn}>
-                                {whrgData.userTypeCode === '1100' ?
+                                {whrgData.userTypeCode === '1100' ? (
                                   <View>
                                     <Text>
-                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.entrpName : ''}
+                                      {whrgData.relativeEntrp
+                                        ? whrgData.relativeEntrp.entrpName
+                                        : ''}
                                     </Text>
                                     <Text>
-                                      {whrgData.relativeEntrp ? whrgData.relativeEntrp.phone.no1 + whrgData.relativeEntrp.phone.no2 + whrgData.relativeEntrp.phone.no3 : ''}
+                                      {whrgData.relativeEntrp
+                                        ? whrgData.relativeEntrp.phone.no1 +
+                                          whrgData.relativeEntrp.phone.no2 +
+                                          whrgData.relativeEntrp.phone.no3
+                                        : ''}
                                     </Text>
                                   </View>
-                                  :
+                                ) : (
                                   <TouchableOpacity
                                     style={[S.btnQuote]}
-                                    onPress={() => checkContract("TRUST", trust)}>
+                                    onPress={() =>
+                                      checkContract('TRUST', trust)
+                                    }>
                                     <Text style={[S.textBtnQuote]}>
                                       견적 요청하기
-                                  </Text>
+                                    </Text>
                                   </TouchableOpacity>
-                                }
+                                )}
                               </View>
-                              :
+                            ) : (
                               <Text style={[S.textBtnQuote]}>
                                 계약 완료된 정보입니다.
-                            </Text>
-                            }
+                              </Text>
+                            )}
                           </View>
                         </View>
                       </View>
                     </View>
                   ))
-                )
-                  :
-                  (
-                    <View style={DefaultStyle._card} >
-                      <Text style={S.textTable}>등록된 창고정보가 없습니다.</Text>
-                    </View>
-                  )
-                )}
+                ) : (
+                  <View style={DefaultStyle._card}>
+                    <Text style={S.textTable}>등록된 창고정보가 없습니다.</Text>
+                  </View>
+                ))}
             </View>
           </View>
           <View style={DefaultStyle._cards}>
@@ -687,7 +835,9 @@ class DetailWH extends Component {
                 <View style={S.bodyCard}>
                   <View style={S.table}>
                     <View style={S.tableRow}>
-                      <Text style={[S.textTable, S.textLeftTable]}>준공일자</Text>
+                      <Text style={[S.textTable, S.textLeftTable]}>
+                        준공일자
+                      </Text>
                       <Text style={S.textTable}>
                         {`${formatDateV1(whrgData.cmpltYmd)}`}
                       </Text>
@@ -697,7 +847,11 @@ class DetailWH extends Component {
                         전용면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.prvtArea ? whrgData.prvtArea.toLocaleString() : 0}㎡`}
+                        {`${
+                          whrgData.prvtArea
+                            ? whrgData.prvtArea.toLocaleString()
+                            : 0
+                        }㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -705,7 +859,11 @@ class DetailWH extends Component {
                         대지면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.siteArea ? whrgData.siteArea.toLocaleString() : 0}㎡`}
+                        {`${
+                          whrgData.siteArea
+                            ? whrgData.siteArea.toLocaleString()
+                            : 0
+                        }㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -713,7 +871,11 @@ class DetailWH extends Component {
                         공용면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.cmnArea ? whrgData.cmnArea.toLocaleString() : 0}㎡`}
+                        {`${
+                          whrgData.cmnArea
+                            ? whrgData.cmnArea.toLocaleString()
+                            : 0
+                        }㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -721,19 +883,29 @@ class DetailWH extends Component {
                         건축면적
                       </Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.bldgArea ? whrgData.bldgArea.toLocaleString() : 0}㎡`}
-                      </Text>
-                    </View>
-                    <View style={S.tableRow}>
-                      <Text style={[S.textTable, S.textLeftTable]}>추가옵션</Text>
-                      <Text style={S.textTable}>
-                        {`${whrgData.addOptDvCodes ? whrgData.addOptDvCodes.map(code => code?.stdDetailCodeName).join(",") : ""}`}
+                        {`${
+                          whrgData.bldgArea
+                            ? whrgData.bldgArea.toLocaleString()
+                            : 0
+                        }㎡`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
-                        연면적
+                        추가옵션
                       </Text>
+                      <Text style={S.textTable}>
+                        {`${
+                          whrgData.addOptDvCodes
+                            ? whrgData.addOptDvCodes
+                                .map(code => code?.stdDetailCodeName)
+                                .join(',')
+                            : ''
+                        }`}
+                      </Text>
+                    </View>
+                    <View style={S.tableRow}>
+                      <Text style={[S.textTable, S.textLeftTable]}>연면적</Text>
                       <Text style={S.textTable}>
                         {`${whrgData.totalArea}㎡`}
                       </Text>
@@ -743,7 +915,13 @@ class DetailWH extends Component {
                         보험가입
                       </Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.insrDvCodes ? whrgData.insrDvCodes.map(code => code?.stdDetailCodeName).join(",") : ""}`}
+                        {`${
+                          whrgData.insrDvCodes
+                            ? whrgData.insrDvCodes
+                                .map(code => code?.stdDetailCodeName)
+                                .join(',')
+                            : ''
+                        }`}
                       </Text>
                     </View>
                   </View>
@@ -756,115 +934,145 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
-                  <AppGrid data={dataTab} title={floors} titleProps={(e, index)=> this.setState({ floors: e, activeIndex: index  })} />
+                <AppGrid
+                  data={dataTab}
+                  title={floors}
+                  titleProps={(e, index) =>
+                    this.setState({ floors: e, activeIndex: index })
+                  }
+                />
               </View>
-              {whrgData.floors
-                ? whrgData.floors.map((floor, index) => {
+              {whrgData.floors ? (
+                whrgData.floors.map((floor, index) => {
                   return (
-                    activeIndex === index &&
-                      <View key={"floor" + index} style={DefaultStyle._card}>
-                      <View style={S.bodyCard}>
-                        <View style={S.table}>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              층 수
-                            </Text>
-                            <Text style={S.textTable}>
-                              {floor.flrDvCode ? floor.flrDvCode?.stdDetailCodeName : ""}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              층면적
-                            </Text>
-                            <Text style={S.textTable}>
-                              {`${floor.flrArea ? floor.flrArea.toLocaleString() : 0}㎡`}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              사무실면적
-                            </Text>
-                            <Text style={S.textTable}>
-                              {`${floor.opcArea ? floor.opcArea.toLocaleString() : 0}㎡`}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              주차장면적
-                            </Text>
-                            <Text style={S.textTable}>
-                              {`${floor.parkArea ? floor.parkArea.toLocaleString() : 0}㎡`}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>전용면적</Text>
-                            <Text style={S.textTable}>
-                              {`${floor.prvtArea ? floor.prvtArea.toLocaleString() : 0}㎡`}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              공용면적
-                            </Text>
-                            <Text style={S.textTable}>
-                              {`${floor.cmnArea ? floor.cmnArea.toLocaleString() : 0}㎡`}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              층고
-                            </Text>
-                            <Text style={S.textTable}>
-                              {floor.flrHi}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              유효고
-                            </Text>
-                            <Text style={S.textTable}>
-                              {floor.efctvHi}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              접안방식
-                            </Text>
-                            <Text style={S.textTable}>
-                              {floor.aprchMthdDvCode ? floor.aprchMthdDvCode?.stdDetailCodeName : ""}
-                            </Text>
-                          </View>
-                          <View style={S.tableRow}>
-                            <Text style={[S.textTable, S.textLeftTable]}>
-                              도크 수
-                            </Text>
-                            <Text style={S.textTable}>
-                              {floor.dockQty}
-                            </Text>
+                    activeIndex === index && (
+                      <View key={'floor' + index} style={DefaultStyle._card}>
+                        <View style={S.bodyCard}>
+                          <View style={S.table}>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                층 수
+                              </Text>
+                              <Text style={S.textTable}>
+                                {floor.flrDvCode
+                                  ? floor.flrDvCode?.stdDetailCodeName
+                                  : ''}
+                              </Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                층면적
+                              </Text>
+                              <Text style={S.textTable}>
+                                {`${
+                                  floor.flrArea
+                                    ? floor.flrArea.toLocaleString()
+                                    : 0
+                                }㎡`}
+                              </Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                사무실면적
+                              </Text>
+                              <Text style={S.textTable}>
+                                {`${
+                                  floor.opcArea
+                                    ? floor.opcArea.toLocaleString()
+                                    : 0
+                                }㎡`}
+                              </Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                주차장면적
+                              </Text>
+                              <Text style={S.textTable}>
+                                {`${
+                                  floor.parkArea
+                                    ? floor.parkArea.toLocaleString()
+                                    : 0
+                                }㎡`}
+                              </Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                전용면적
+                              </Text>
+                              <Text style={S.textTable}>
+                                {`${
+                                  floor.prvtArea
+                                    ? floor.prvtArea.toLocaleString()
+                                    : 0
+                                }㎡`}
+                              </Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                공용면적
+                              </Text>
+                              <Text style={S.textTable}>
+                                {`${
+                                  floor.cmnArea
+                                    ? floor.cmnArea.toLocaleString()
+                                    : 0
+                                }㎡`}
+                              </Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                층고
+                              </Text>
+                              <Text style={S.textTable}>{floor.flrHi}</Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                유효고
+                              </Text>
+                              <Text style={S.textTable}>{floor.efctvHi}</Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                접안방식
+                              </Text>
+                              <Text style={S.textTable}>
+                                {floor.aprchMthdDvCode
+                                  ? floor.aprchMthdDvCode?.stdDetailCodeName
+                                  : ''}
+                              </Text>
+                            </View>
+                            <View style={S.tableRow}>
+                              <Text style={[S.textTable, S.textLeftTable]}>
+                                도크 수
+                              </Text>
+                              <Text style={S.textTable}>{floor.dockQty}</Text>
+                            </View>
                           </View>
                         </View>
                       </View>
-                    </View>
-                   )
+                    )
+                  );
                 })
-                :
-                <Text style={S.textTable}></Text>
-              }
+              ) : (
+                <Text style={S.textTable} />
+              )}
             </View>
           </View>
 
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <View style={S.titleView}>
-                <Text style={S.title}>문의 ({pageInfo.totalElements ? pageInfo.totalElements : 0})</Text>
+                <Text style={S.title}>
+                  문의 ({pageInfo.totalElements ? pageInfo.totalElements : 0})
+                </Text>
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnInquiry}
-                    onPress={() => this.navigation.navigate('CreateInquiryWH', {
-                      idWH: id
-                    }
-                    )}>
+                    onPress={() =>
+                      this.navigation.navigate('CreateInquiryWH', {
+                        idWH: id,
+                      })
+                    }>
                     <Text style={S.textInquiry}>문의하기</Text>
                   </TouchableOpacity>
                 </View>
@@ -872,39 +1080,41 @@ class DetailWH extends Component {
 
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
-                  {(qnaList && qnaList.length === 0) &&
-                  <View style={[DefaultStyle.d_center, DefaultStyle.p_16]}>
-                    <Text key={'empty'} style={S.titleInquiry}>문의 내역이 없습니다.</Text>
-                  </View>
-                  }
+                  {qnaList && qnaList.length === 0 && (
+                    <View style={[DefaultStyle.d_center, DefaultStyle.p_16]}>
+                      <Text key={'empty'} style={S.titleInquiry}>
+                        문의 내역이 없습니다.
+                      </Text>
+                    </View>
+                  )}
                   {/* List */}
-                  {qnaList && qnaList.map((qnaItem, index) =>
-                    <View key={'qnaItem' + index} style={S.inquirys}>
-                      <View style={S.leftInquiry}>
-                        {qnaItem.status ?
-                          <Text style={S.titleCompleted}>답변완료</Text>
-                          :
-                          <Text style={S.titleInquiry}>미답변</Text>
-                        }
-                        <Text style={S.contentInquiry}>{qnaItem.title}</Text>
-                        <Text style={S.footerInquiry}>
-                        {qnaItem.name} | {qnaItem.date}
-                        </Text>
-                      </View>
-                      <View style={S.rightInquiry}>
-                        {
-                          (qnaItem.lock) ?
+                  {qnaList &&
+                    qnaList.map((qnaItem, index) => (
+                      <View key={'qnaItem' + index} style={S.inquirys}>
+                        <View style={S.leftInquiry}>
+                          {qnaItem.status ? (
+                            <Text style={S.titleCompleted}>답변완료</Text>
+                          ) : (
+                            <Text style={S.titleInquiry}>미답변</Text>
+                          )}
+                          <Text style={S.contentInquiry}>{qnaItem.title}</Text>
+                          <Text style={S.footerInquiry}>
+                            {qnaItem.name} | {qnaItem.date}
+                          </Text>
+                        </View>
+                        <View style={S.rightInquiry}>
+                          {qnaItem.lock ? (
                             <IconButton
                               style={S.btnIcon}
                               icon="lock"
                               onPress={() => console.log('remove')}
                             />
-                            :
-                            <Text></Text>
-                        }
+                          ) : (
+                            <Text />
+                          )}
+                        </View>
                       </View>
-                    </View>
-                  )}
+                    ))}
                   {/* <View style={S.inquirys}>
                     <View style={S.leftInquiry}>
                       <Text style={S.titleInquiry}>미답변</Text>
@@ -949,15 +1159,17 @@ class DetailWH extends Component {
                       />
                     </View>
                   </View> */}
-                  
-                  {
-                    (!showAll && pageInfo.totalElements > 4) &&
+
+                  {!showAll && pageInfo.totalElements > 4 && (
                     <TouchableOpacity
                       style={S.btnViewAll}
-                      onPress={() => {this.handleRequestQnaList(100), this.setState({showAll: true})}}>
+                      onPress={() => {
+                        this.handleRequestQnaList(100),
+                          this.setState({ showAll: true });
+                      }}>
                       <Text style={S.textViewAll}>전체보기</Text>
                     </TouchableOpacity>
-                  }
+                  )}
                 </View>
               </View>
             </View>
@@ -993,117 +1205,125 @@ class DetailWH extends Component {
             </TouchableOpacity> */}
           </View>
         </ScrollView>
-        
-      </SafeAreaView >
+      </SafeAreaView>
     );
   }
 
   /** when after render DOM */
   componentDidMount() {
     const { route } = this.props;
-    this.getDataWH()
-    this.handleRequestQnaList(4)
+    this.getDataWH();
+    this.handleRequestQnaList(4);
     this.hiddenName();
-    AsyncStorage.getItem(TOKEN).then(v => {
-      this.setState({ isLogin: v !== '' && v !== null });
-    }).catch(error => {
-      alert('DetailWH componentDidMount error:' + error);
-    });
+    AsyncStorage.getItem(TOKEN)
+      .then(v => {
+        this.setState({ isLogin: v !== '' && v !== null });
+      })
+      .catch(error => {
+        alert('DetailWH componentDidMount error:' + error);
+      });
   }
 
   async getDataWH() {
     const { id } = this.state;
 
     let params = {
-      id: id
+      id: id,
     };
     const warehouse = await Warehouse.getWhrg(params);
 
     this.setState({
       whrgData: warehouse.data,
-      favorite: warehouse.data.fav
+      favorite: warehouse.data.fav,
     });
-        // 유사창고 파라미터 조건
-        let typeCodeNames = []
-        let gdsKeepTypeCodeNames = []
-        if (warehouse.data.keeps && warehouse.data.keeps.length > 0) {
-          typeCodeNames.push('KEEP')
-          warehouse.data.keeps.map(item => {
-            if (gdsKeepTypeCodeNames.indexOf(item.typeCode?.stdDetailCode.toString()) < 0) {
-              gdsKeepTypeCodeNames.push(item.typeCode?.stdDetailCode.toString())
-            }
-          })
+    // 유사창고 파라미터 조건
+    let typeCodeNames = [];
+    let gdsKeepTypeCodeNames = [];
+    if (warehouse.data.keeps && warehouse.data.keeps.length > 0) {
+      typeCodeNames.push('KEEP');
+      warehouse.data.keeps.map(item => {
+        if (
+          gdsKeepTypeCodeNames.indexOf(
+            item.typeCode?.stdDetailCode.toString(),
+          ) < 0
+        ) {
+          gdsKeepTypeCodeNames.push(item.typeCode?.stdDetailCode.toString());
         }
-        if (warehouse.data.trusts && warehouse.data.trusts.length > 0) {
-          typeCodeNames.push('TRUST')
-          warehouse.data.trusts.map(item => {
-            console.debug(gdsKeepTypeCodeNames, item.typeCode?.stdDetailCode)
-            if (gdsKeepTypeCodeNames.indexOf(item.typeCode?.stdDetailCode.toString()) < 0) {
-              gdsKeepTypeCodeNames.push(item.typeCode?.stdDetailCode.toString())
-            }
-          })
+      });
+    }
+    if (warehouse.data.trusts && warehouse.data.trusts.length > 0) {
+      typeCodeNames.push('TRUST');
+      warehouse.data.trusts.map(item => {
+        console.debug(gdsKeepTypeCodeNames, item.typeCode?.stdDetailCode);
+        if (
+          gdsKeepTypeCodeNames.indexOf(
+            item.typeCode?.stdDetailCode.toString(),
+          ) < 0
+        ) {
+          gdsKeepTypeCodeNames.push(item.typeCode?.stdDetailCode.toString());
         }
+      });
+    }
 
-        await Warehouse.listRecommend(
-        {
-          typeCodes: typeCodeNames.join(','),
-          gdsKeepTypeCodes: gdsKeepTypeCodeNames.join(','),
-        }
-       ).then(res => {
-          let list =
+    await Warehouse.listRecommend({
+      typeCodes: typeCodeNames.join(','),
+      gdsKeepTypeCodes: gdsKeepTypeCodeNames.join(','),
+    })
+      .then(res => {
+        let list =
           res.data?._embedded && res.data?._embedded?.warehouses
-              ? res.data?._embedded?.warehouses
-              : [];
+            ? res.data?._embedded?.warehouses
+            : [];
 
-          this.setState({ whList: list });
-        }).catch(error => {
-          alert('DetailWH listRecommend error:' + error);
-        });
+        this.setState({ whList: list });
+      })
+      .catch(error => {
+        alert('DetailWH listRecommend error:' + error);
+      });
   }
 
-  handleRequestQnaList = (q_size) => {
+  handleRequestQnaList = q_size => {
     const { id } = this.state;
     let qnaParams = {
       id: id,
       size: q_size,
       page: 0,
-      requiresToken: false
-    }
-    Warehouse.pageWhrgQnA(qnaParams).then(res => {
-      if (res && res._embedded && res._embedded) {
-        let newFQAList = res._embedded.questions.map(item => {
-          console.log(item)
-          return {
-            status: item.complete,
-            title: item.content,
-            name: item.writer,
-            date: formatDateV1(item.date),
-            lock: item.secret,
-          }
-        })
+      requiresToken: false,
+    };
+    Warehouse.pageWhrgQnA(qnaParams)
+      .then(res => {
+        if (res && res._embedded && res._embedded) {
+          let newFQAList = res._embedded.questions.map(item => {
+            console.log(item);
+            return {
+              status: item.complete,
+              title: item.content,
+              name: item.writer,
+              date: formatDateV1(item.date),
+              lock: item.secret,
+            };
+          });
 
-        console.log('newFQAList', newFQAList)
-        this.setState({ qnaList: newFQAList })
-        this.setState({ pageInfo: res.page })
-      }
-    }).catch(error => {
-      alert('DetailWH pageWhrgQnA error:' + error);
-    });
-  }
-  
+          console.log('newFQAList', newFQAList);
+          this.setState({ qnaList: newFQAList });
+          this.setState({ pageInfo: res.page });
+        }
+      })
+      .catch(error => {
+        alert('DetailWH pageWhrgQnA error:' + error);
+      });
+  };
 }
 
 /** map state with store states redux store */
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
-  return {
-  };
+  return {};
 }
 
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
-  return {
-  };
+  return {};
 }
 
 export default connect(
