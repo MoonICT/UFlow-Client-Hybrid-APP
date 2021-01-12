@@ -1,6 +1,6 @@
 /**
  * @create
- * @modify
+ * @modify chonglye chang
  * @desc [description]
  */
 
@@ -61,8 +61,6 @@ export default class DetailsSettlement extends Component {
       id
     };
 
-    console.log(type, 'type')
-    console.log(type, 'id')
     let cntrTypeCode = {}
     SettlementManagementService.getDetail(params).then((res) => {
       console.log('data', res.data.data);
@@ -159,15 +157,15 @@ export default class DetailsSettlement extends Component {
             },
               // 비
             {
-              type: '입고단가',
+              type: '입고비',
               value: item.whinUprice ? moneyUnit(item.whinUprice) : '0 원'
             },
             {
-              type: '출고단가',
+              type: '출고비',
               value: item.whoutUprice ? moneyUnit(item.whoutUprice) : '0 원'
             },
             {
-              type: '재고단가',
+              type: '재고비',
               value: item.stckUprice ? moneyUnit(item.stckUprice) : '0 원'
             },
             {
@@ -224,7 +222,9 @@ export default class DetailsSettlement extends Component {
       this.setState({
         dataInfo, inOutSubtotal, headerDetailResBody, dataCost, dataTotal, dataFee, keepSubtotal, cntrTypeCode
       })
-    })
+    }).catch(error => {
+      alert('SettlementManagementService.getDetail error:' + error);
+    });
 
   }
 
@@ -364,7 +364,9 @@ export default class DetailsSettlement extends Component {
                         Linking.openURL(res);
                       } else {
                         console.log("Don't know how to open URI: " + res);
-                      }})
+                      }}).catch(error => {
+                        alert('canOpenURL error:' + error);
+                      });
                   })
 
                 }}>

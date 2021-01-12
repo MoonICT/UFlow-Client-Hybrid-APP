@@ -33,6 +33,13 @@ class FilterPeriod extends Component {
    *  필터 닫기.
    *  */
   _onClickCancel () {
+    // 취소 시, 값 초기화.
+    this.props.setSearchFilter({
+      keepFrom: '',
+      keepTo: '',
+      trustFrom: '',
+      trustTo: '',
+    });
     this.props.onClosed(); // Event emit
   }
 

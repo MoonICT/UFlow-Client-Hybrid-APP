@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, processColor, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  processColor,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import update from 'immutability-helper';
 import Appbars from '@Components/organisms/AppBar';
 
@@ -10,6 +16,7 @@ import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 class RadarChartScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -112,52 +119,53 @@ class RadarChartScreen extends React.Component {
             titleStyle={DefaultStyle.headerTitle}
           />
         </Appbars>
+        <ScrollView>
+          <View style={styles.container}>
+            <View pointerEvents="none">
+              <RadarChart
+                style={styles.chart}
+                data={this.state.data}
+                xAxis={this.state.xAxis}
+                yAxis={{ drawLabels: true }}
+                chartDescription={{ text: '' }}
+                legend={this.state.legend}
+                drawWeb={true}
+                // webLineWidth={5}
+                // webLineWidthInner={5}
+                // webAlpha={255}
 
-        <View style={styles.container}>
-          <View pointerEvents="none">
-            <RadarChart
-              style={styles.chart}
-              data={this.state.data}
-              xAxis={this.state.xAxis}
-              yAxis={{ drawLabels: true }}
-              chartDescription={{ text: '' }}
-              legend={this.state.legend}
-              drawWeb={true}
-              // webLineWidth={5}
-              // webLineWidthInner={5}
-              // webAlpha={255}
-
-              // webColor={processColor('red')}
-              // webColorInner={processColor('green')}
-              // skipWebLineCount={1}
-              // onSelect={this.handleSelect.bind(this)}
-              // onChange={event => console.log(event.nativeEvent)}
-            />
-            <View
-              style={{
-                width: 80,
-                height: 80,
-                backgroundColor: 'white',
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-              }}
-            />
-          </View>
-          <Text style={{ fontSize: 20 }}>물류 컨성팅이 완료되었습니다.</Text>
-          <Text style={{ fontSize: 16, lineHeight: 24, marginTop: 20 }}>
-            컨설팅 결과 설명{'\n'}컨설팅 결과 설명
-          </Text>
-
-          <Button
-            mode="contained"
-            style={[S.styleButton, { marginTop: 30 }]}
-            onPress={() => this.navigation.replace('Home')}>
-            <Text style={[S.textButton, { width: 175 }]}>
-              메인페이지로 이동
+                // webColor={processColor('red')}
+                // webColorInner={processColor('green')}
+                // skipWebLineCount={1}
+                // onSelect={this.handleSelect.bind(this)}
+                // onChange={event => console.log(event.nativeEvent)}
+              />
+              <View
+                style={{
+                  width: 80,
+                  height: 80,
+                  backgroundColor: 'white',
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                }}
+              />
+            </View>
+            <Text style={{ fontSize: 20 }}>물류 컨성팅이 완료되었습니다.</Text>
+            <Text style={{ fontSize: 16, lineHeight: 24, marginTop: 20 }}>
+              컨설팅 결과 설명{'\n'}컨설팅 결과 설명
             </Text>
-          </Button>
-        </View>
+
+            <Button
+              mode="contained"
+              style={[S.styleButton, { marginTop: 30 }]}
+              onPress={() => this.navigation.replace('Home')}>
+              <Text style={[S.textButton, { width: 175 }]}>
+                메인페이지로 이동
+              </Text>
+            </Button>
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -168,6 +176,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
+    paddingBottom:100,
+    minHeight:windowHeight +100,
   },
   chart: {
     flex: 1,

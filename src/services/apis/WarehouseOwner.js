@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Contants
 import { TOKEN } from '@Constant';
+
 /**
  * [warehouse-owner-0] 사업자 중복체크
  * @returns {Promise<unknown>}
@@ -155,11 +156,14 @@ export const regBusinessInfo = async businessInfo => {
         }
       }
  */
-export const myWarehouses = ({ config = '' } = {}) => {
+export const myWarehouses = async ({ config = '' } = {}) => {
+  const token = await AsyncStorage.getItem(TOKEN);
   return Axios.getRequest({
     url: `/api/v1/warehouse/owner`,
     requiresToken: true, // set access_token
-    config,
+    config: {
+      headers: { Authorization: 'Bearer ' + token }
+    },
   })
 };
 
@@ -169,8 +173,8 @@ export const myWarehouses = ({ config = '' } = {}) => {
  *
  */
 export const cnsltPossYn = ({
-  warehouseId: warehouseId
-}) => {
+                              warehouseId: warehouseId
+                            }) => {
   return Axios.postRequest({
     url: `/api/v1/warehouse/owner/cnslt-poss-toggle`,
     requiresToken: true, // set access_token

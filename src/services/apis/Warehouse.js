@@ -1,7 +1,7 @@
 import { Axios, parseQuery } from '@Services/http';
 import { mainAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import axios from "axios";
 //Contants
 import { TOKEN } from '@Constant';
 
@@ -41,7 +41,7 @@ export const updateWH = async value => {
 };
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
-  return await mainAxios.get('/api/v1/warehouse/owner', {
+  return mainAxios.get('/api/v1/warehouse/owner', {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
@@ -77,7 +77,7 @@ export const quotation = async type => {
 };
 export const responQuotation = async value => {
   const token = await AsyncStorage.getItem(TOKEN);
-  console.log('responQuotation', value);
+  console.log('value.data', value.data);
   return await mainAxios.post(`/api/v1/estimate/${value.type}`, value.data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -123,20 +123,42 @@ export const chatting = async value => {
   );
 };
 
-export const termsContract = async value => {
-  const token = await AsyncStorage.getItem('token');
-  // return await mainAxios.post(
-  //   `/api/v1/chat/contract/4100/${value.url}`,
-  //   value && value.data,
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       Accept: 'application/json',
-  //     },
-  //   },
-  // );
+/**
+ * [whrg-qna-1] 창고 Q&A 질문하기
+ * @param id 창고 ID
+ * @returns {Promise<unknown>}
+ */
+export const postWhrgQuestion = async (payload) => {
+
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.post(
+    `/api/v1/warehouse/question`,payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
 };
 
+export const  termsContract = async (body, typeWH) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  let typeWHStr = typeWH === 'TRUST' ? 'trust' : 'keep';
+  console.log('body', body)
+  return axios({
+      method: 'Post',
+      url: `/api/v1/contract/4100/owner/${typeWHStr}`,
+      data: body,
+      headers: {
+          // 'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+      }
+  }).catch(err => {
+      console.log(err)
+  })
+}
 export const searchAddressKakao = async ({
   query = '',
   page = 0,
@@ -499,7 +521,7 @@ export const registWhrg = whrgBody => {
  * @param context NextJS Context
  * @returns {Promise<unknown>}
  */
-export const getWhrg = ({ id = '', config = '' }) => {
+export const getWhrg = async ({ id = '', config = '' }) => {
   let configDefault = {
     headers: {
       contentType: 'application/json',
@@ -512,11 +534,21 @@ export const getWhrg = ({ id = '', config = '' }) => {
     };
   }
   console.log('API :::::', config);
-  return Axios.request({
-    methodType: 'GET',
-    url: `/api/v1/warehouse/${id}`,
-    requiresToken: true,
-    config: configDefault,
+  // return Axios.request({
+  //   methodType: 'GET',
+  //   url: `/api/v1/warehouse/${id}`,
+  //   requiresToken: true,
+  //   config: configDefault,
+  // });
+
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.get(`/api/v1/warehouse/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+    // config: configDefault
   });
 };
 
@@ -558,12 +590,17 @@ export const pageWhrg = ({
  * 추천 알고리즘 창고
  * @returns {Promise<unknown>}
  **/
-export const listRecommend = async () => {
-  const data = await mainAxios.request({
-    methodType: 'GET',
-    url: `/api/v1/warehouse/recommend`,
+export const listRecommend = async params => {
+
+  return await mainAxios.get(`/api/v1/warehouse/recommend`, {
+    params: {
+      ...params,
+    },
+    headers: {
+      // Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
   });
-  return data;
 };
 
 /**
@@ -587,7 +624,7 @@ export const pageWhrgQnA = ({
   query = '',
   startDate = '',
   endDate = '',
-  size = 5,
+  size = 15,
   page = 0,
   sort = 'createdDate,desc',
   requiresToken = false,

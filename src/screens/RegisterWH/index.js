@@ -24,7 +24,7 @@ import Appbars from '@Components/organisms/AppBar';
 import Dialogs from '@Components/organisms/Dialog';
 
 import ActionCreator from '@Actions';
-import ignore2 from '@Assets/images/ignore2x.png';
+import illust10 from '@Assets/images/illust10.png';
 import ignore1 from '@Assets/images/ignore.png';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from './style';
@@ -37,6 +37,8 @@ class RegisterWH extends Component {
     this.webView = null;
     this.state = { visible: false };
     this.navigation = props.navigation;
+
+    this.doubleSubmitFlag = false;
   }
 
   /** listener when change props */
@@ -47,7 +49,28 @@ class RegisterWH extends Component {
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
+
+  doubleSubmitCheck = () => {
+    if (this.doubleSubmitFlag) {
+      return this.doubleSubmitFlag;
+    } else {
+      this.doubleSubmitFlag = true;
+      return false;
+    }
+  };
+
   submit = () => {
+    // this.props.showPopup({
+    //   type: 'confirm',
+    //   title: '창고 등록 완료',
+    //   content: ` UFLOW 관리자가 입력하신 정보를 
+    //   확인하기 위해 연락을 드릴 예정입니다.
+    //   자세한 내용은 [마이페이지 > 내 창고]에서 
+    //   확인해주세요`,
+    //   image: illust10,
+    // });
+    if (this.doubleSubmitCheck()) return;
+
     let type = this.props.route.params && this.props.route.params.type;
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
@@ -56,21 +79,48 @@ class RegisterWH extends Component {
         .then(res => {
           const status = res.status;
           if (status === 200) {
-            this.navigation.navigate('Home');
+            // this.navigation.navigate('Home');
+            this.props.showPopup({
+              type: 'confirm',
+              title: '창고 등록 완료',
+              content: ` UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요`,
+              image: illust10,
+            });
+
+            this.doubleSubmitFlag = false;
+            this.navigation.navigate('Mypage', {
+              title: '내 창고',
+            });
           }
         })
         .catch(err => {
+          alert('Update err', err);
           console.log('err', err.response);
         });
     } else {
       Warehouse.registerWH(this.props.dataWH)
         .then(res => {
           const status = res.status;
+
           if (status === 200) {
-            this.navigation.navigate('Home');
+            console.log('res :>> ', res);
+            console.log('this.props.dataWH :>> ', this.props.dataWH);
+            // this.navigation.navigate('Home');
+            this.props.showPopup({
+              type: 'confirm',
+              title: '창고 등록 완료',
+              content: ` UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요`,
+              image: illust10,
+            });
+
+            this.doubleSubmitFlag = false;
+            this.navigation.navigate('Mypage', {
+              title: '내 창고',
+            });
           }
         })
         .catch(err => {
+          alert('Register err', err);
           console.log('err', err);
         });
     }
@@ -82,10 +132,16 @@ class RegisterWH extends Component {
     let completeFloor = route.params && route.params.completeFloor;
     let completeIntro = route.params && route.params.completeIntro;
     console.log('dataWHAll', dataWH);
-    console.log('routeWH', route);
+    console.log('imageStore', imageStore);
     let isSubmitUpdate = false;
 
-    if (dataWH.name !== '' && dataWH.description !== '') {
+    if (
+      dataWH.name !== '' &&
+      dataWH.description !== '' &&
+      route &&
+      route.params &&
+      route.params.type === 'ModifyWH'
+    ) {
       completeIntro = true;
     }
     if (dataWH.name !== '' && dataWH.description !== '') {
@@ -127,7 +183,7 @@ class RegisterWH extends Component {
             <TouchableOpacity
               style={S.imageRegister}
               onPress={() => this.navigation.navigate('RegisterImage')}>
-              {imageStore.length > 0 ? (
+              {imageStore && imageStore.length > 0 ? (
                 <Fragment>
                   <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
                     대표이미지
@@ -203,7 +259,7 @@ class RegisterWH extends Component {
                   type: route && route.params && route.params.type,
                 })
               }>
-              <Text style={S.textLeftBtn}>부가 정보</Text>
+              <Text style={S.textLeftBtn}>추가 정보</Text>
               <View style={S.rightBtn}>
                 {(route && route.params && route.params.type === 'ModifyWH') ||
                 (dataWH && dataWH.siteArea) ? (
@@ -268,7 +324,7 @@ class RegisterWH extends Component {
         </ScrollView>
         <View style={DefaultStyle.footerRegister}>
           <TouchableOpacity
-            disabled={isSubmitUpdate === true ? false : true}
+            // disabled={isSubmitUpdate === true ? false : true}
             style={[
               DefaultStyle.btnSubmit,
               isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
@@ -320,7 +376,9 @@ class RegisterWH extends Component {
   async componentDidMount() {
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
-    this.props.updateInfo();
+    let entrpNo = this.props.route.params && this.props.route.params.entrpNo;
+    this.props.removeData();
+    this.props.updateInfo({ entrpNo });
     console.log('warehouseRegNo :>> ', warehouseRegNo);
     if (warehouseRegNo) {
       await Warehouse.detailWH(warehouseRegNo)
@@ -330,50 +388,53 @@ class RegisterWH extends Component {
             let dataWH = res.data;
             let entrpNo = dataWH.relativeEntrp && dataWH.relativeEntrp.entrpNo;
             let floors =
-              dataWH.floors.length > 0 &&
-              dataWH.floors.map((item, index) => {
-                item.seq = dataWH.floors[index].id.seq;
-                item.flrDvCode =
-                  dataWH.floors[index].flrDvCode &&
-                  dataWH.floors[index].flrDvCode.stdDetailCode;
-                item.aprchMthdDvCode =
-                  dataWH.floors[index].aprchMthdDvCode &&
-                  dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
-                return item;
-              });
+              dataWH.floors.length > 0
+                ? dataWH.floors.map((item, index) => {
+                    item.seq = dataWH.floors[index].id.seq;
+                    item.flrDvCode =
+                      dataWH.floors[index].flrDvCode &&
+                      dataWH.floors[index].flrDvCode.stdDetailCode;
+                    item.aprchMthdDvCode =
+                      dataWH.floors[index].aprchMthdDvCode &&
+                      dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
+                    return item;
+                  })
+                : [];
             let keeps =
-              dataWH.keeps.length > 0 &&
-              dataWH.keeps.map((item, index) => {
-                item.seq = dataWH.keeps[index].id.seq;
-                item.typeCode =
-                  dataWH.keeps[index].typeCode &&
-                  dataWH.keeps[index].typeCode.stdDetailCode;
-                item.calUnitDvCode =
-                  dataWH.keeps[index].calUnitDvCode &&
-                  dataWH.keeps[index].calUnitDvCode.stdDetailCode;
-                item.calStdDvCode =
-                  dataWH.keeps[index].calStdDvCode &&
-                  dataWH.keeps[index].calStdDvCode.stdDetailCode;
-                item.mgmtChrgDvCode =
-                  dataWH.keeps[index].mgmtChrgDvCode &&
-                  dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
-                return item;
-              });
+              dataWH.keeps.length > 0
+                ? dataWH.keeps.map((item, index) => {
+                    item.seq = dataWH.keeps[index].id.seq;
+                    item.typeCode =
+                      dataWH.keeps[index].typeCode &&
+                      dataWH.keeps[index].typeCode.stdDetailCode;
+                    item.calUnitDvCode =
+                      dataWH.keeps[index].calUnitDvCode &&
+                      dataWH.keeps[index].calUnitDvCode.stdDetailCode;
+                    item.calStdDvCode =
+                      dataWH.keeps[index].calStdDvCode &&
+                      dataWH.keeps[index].calStdDvCode.stdDetailCode;
+                    item.mgmtChrgDvCode =
+                      dataWH.keeps[index].mgmtChrgDvCode &&
+                      dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
+                    return item;
+                  })
+                : [];
             let trusts =
-              dataWH.trusts.length > 0 &&
-              dataWH.trusts.map((item, index) => {
-                item.seq = dataWH.trusts[index].id.seq;
-                item.typeCode =
-                  dataWH.trusts[index].typeCode &&
-                  dataWH.trusts[index].typeCode.stdDetailCode;
-                item.calUnitDvCode =
-                  dataWH.trusts[index].calUnitDvCode &&
-                  dataWH.trusts[index].calUnitDvCode.stdDetailCode;
-                item.calStdDvCode =
-                  dataWH.trusts[index].calStdDvCode &&
-                  dataWH.trusts[index].calStdDvCode.stdDetailCode;
-                return item;
-              });
+              dataWH.trusts.length > 0
+                ? dataWH.trusts.map((item, index) => {
+                    item.seq = dataWH.trusts[index].id.seq;
+                    item.typeCode =
+                      dataWH.trusts[index].typeCode &&
+                      dataWH.trusts[index].typeCode.stdDetailCode;
+                    item.calUnitDvCode =
+                      dataWH.trusts[index].calUnitDvCode &&
+                      dataWH.trusts[index].calUnitDvCode.stdDetailCode;
+                    item.calStdDvCode =
+                      dataWH.trusts[index].calStdDvCode &&
+                      dataWH.trusts[index].calStdDvCode.stdDetailCode;
+                    return item;
+                  })
+                : [];
             let insrDvCodes =
               dataWH.insrDvCodes.length > 0
                 ? dataWH.insrDvCodes.map((item, index) => {
@@ -453,6 +514,12 @@ function mapDispatchToProps(dispatch) {
   return {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));
+    },
+    removeData: action => {
+      dispatch(ActionCreator.removeData(action));
+    },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
     },
   };
 }

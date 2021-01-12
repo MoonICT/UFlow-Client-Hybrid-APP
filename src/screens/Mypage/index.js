@@ -57,11 +57,11 @@ const data = [
     title: '정산관리',
   },
   {
-    title: '문의내역',
-  },
-  {
     title: '관심 창고',
   },
+  // {
+  //   title: '관심 창고',
+  // },
 ];
 const dataSteps = [
   {
@@ -96,9 +96,8 @@ const dataSteps = [
   },
 ];
 
-const listImage = [card, card, card];
 class Mypage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       isSwitchOn: true,
@@ -113,12 +112,12 @@ class Mypage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -158,10 +157,11 @@ class Mypage extends Component {
     }
   };
   render() {
-    const { imageStore, workComplete } = this.props;
+    const { route, workComplete } = this.props;
     const { title, isSwitchOn, dataWH } = this.state;
-    console.log('title :>> ', title);
-    console.log('dataWH :>> ', dataWH);
+    // console.log('title :>> ', title);
+    // console.log('dataWH :>> ', dataWH);
+    // console.log('route :>> ', route.params);
     let viewWH =
       dataWH &&
       dataWH.map((item, index) => {
@@ -268,14 +268,14 @@ class Mypage extends Component {
                   onPress={() => {
                     item.sttsDbCode.stdDetailCode === '0001'
                       ? this.props.showPopup({
-                          type: 'confirm',
-                          image: '',
-                          content: '공실이 검증되지 않은 창고입니다.',
-                        })
+                        type: 'confirm',
+                        image: '',
+                        content: '공실이 검증되지 않은 창고입니다.',
+                      })
                       : this.navigation.navigate('RegisterWH', {
-                          type: 'ModifyWH',
-                          warehouseRegNo: item.id,
-                        });
+                        type: 'ModifyWH',
+                        warehouseRegNo: item.id,
+                      });
                     // this.props.imageAction(listImage);
                   }}>
                   <Text
@@ -306,7 +306,7 @@ class Mypage extends Component {
         </TouchableOpacity>
       </View>
     );
-    switch (title) {
+    switch (this.state.title) {
       case '견적･계약 관리':
         viewComponent = (
           <ContractManager
@@ -329,8 +329,8 @@ class Mypage extends Component {
       case '관심 창고':
         viewComponent = <InterestWH navigation={this.navigation} />;
         break;
-      default:
-        viewComponent;
+      // default:
+      //   viewComponent;
       // code block
     }
 
@@ -352,8 +352,12 @@ class Mypage extends Component {
         <ScrollView>
           <AppGrid
             data={data}
-            title={title}
-            titleProps={e => this.setState({ title: e })}
+            title={this.state.title}
+            titleProps={(e) => {
+              this.setState({
+                title: e,
+              });
+            }}
           />
           {viewComponent}
         </ScrollView>
@@ -417,12 +421,15 @@ class Mypage extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
+    console.log('::componentDidMount:: MyPage', this.props.route.params.title);
+    this.setState({ title: this.props.route.params.title })
     // const getWH = await Warehouse.myWH();
     // if (getWH.status === 200) {
     //   const dataWH = getWH.data._embedded.warehouses;
     //   console.log('dataWH :>> ', dataWH);
     // }
+
     await Warehouse.myWH()
       .then(res => {
         console.log('res', res);
@@ -437,15 +444,20 @@ class Mypage extends Component {
 
     // SplashScreen.hide();
   }
-
+  componentWillReceiveProps(newProps) {
+    let titleProp =
+      newProps.route && newProps.route.params && newProps.route.params.title;
+    console.log('titleProp :>> ', titleProp);
+    this.setState({ title: titleProp });
+  }
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -454,7 +466,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     imageAction: action => {
       dispatch(ActionCreator.dataImage(action));

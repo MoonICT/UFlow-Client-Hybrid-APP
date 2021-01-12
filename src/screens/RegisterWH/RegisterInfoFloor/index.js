@@ -38,6 +38,8 @@ import CarouselSnap from '@Components/organisms/CarouselSnap';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Form from './form';
+import { MyPage } from '@Services/apis';
+
 class RegisterInfoFloor extends Component {
   constructor(props) {
     super(props);
@@ -50,7 +52,7 @@ class RegisterInfoFloor extends Component {
           ? props.dataInfoFloor.floors
           : [
               {
-                flrDvCode: 'F1',
+                flrDvCode: 'F2',
                 flrArea: '',
                 parkArea: '',
                 opcArea: '',
@@ -94,12 +96,24 @@ class RegisterInfoFloor extends Component {
 
     this.setState({ floors: list });
   };
-  _removeImage = () => console.log('_removeImage');
+  _removeForm = () => {
+    let listFloors = this.state.floors;
+    let numberSlide = this.state.numberSlide;
+    let slideStart = numberSlide > 0 ? numberSlide - 1 : 0;
+    let filterFloors =
+      listFloors && listFloors.filter(item => item !== listFloors[slideStart]);
+    this.setState({
+      floors: filterFloors,
+      numberSlide: slideStart,
+    });
+  };
 
   onToggleSwitch = () => this.setState({ isSwitchOn: !this.state.isSwitchOn });
   _renderItem = ({ item }) => {
     return (
       <Form
+        flrDvCodes={this.state.flrDvCodes}
+        aprchMthdDvCodes={this.state.aprchMthdDvCodes}
         valueTab={this.state.valueTab}
         number={this.state.numberSlide}
         key={item.key}
@@ -169,7 +183,7 @@ class RegisterInfoFloor extends Component {
                 <IconButton
                   style={S.btnIcon}
                   icon="delete"
-                  onPress={() => console.log('remove')}
+                  onPress={() => this._removeForm()}
                 />
               </View>
             </View>
@@ -231,7 +245,42 @@ class RegisterInfoFloor extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    await MyPage.getDetailCodes('WHRG0010')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let flrDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ flrDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errINFO', err);
+      });
+      await MyPage.getDetailCodes('WHRG0011')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let aprchMthdDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ aprchMthdDvCodes });
+        }
+      })
+      .catch(err => {
+        console.log('errINFO', err);
+      });
     SplashScreen.hide();
   }
 

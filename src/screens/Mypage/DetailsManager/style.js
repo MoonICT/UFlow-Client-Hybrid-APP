@@ -15,10 +15,9 @@ export const styles = StyleSheet.create({
     padding: 0
   },
   totalFees: {
-    flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginTop: 10,
+    alignItems: 'flex-end',
+    marginTop: 0,
   },
   textTotalFees: {
     color: color.text.secondary,
@@ -27,6 +26,7 @@ export const styles = StyleSheet.create({
   },
   textTotal: {
     color: color.text.primary,
+    fontWeight: 'bold',
     lineHeight: 21,
     fontSize: 16,
     marginLeft: 4,

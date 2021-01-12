@@ -18,18 +18,17 @@ import Checkbox from '@Components/atoms/Checkbox';
 class FilterWarehouse extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      listTypeCodes: [
-        { name: '보관', value: 'KEEP' },
-        { name: '수탁', value: 'TRUST' },
-      ],
-    };
+    this.state = {};
   }
 
   /**
    *  필터 닫기.
    *  */
   _onClickCancel () {
+    // 취소 시, 값 초기화.
+    this.props.setSearchFilter({
+      typeCodes: '',
+    });
     this.props.onClosed(); // Event emit
   }
 
@@ -65,7 +64,7 @@ class FilterWarehouse extends Component {
         </View>
 
         {/** Checkbox */}
-        {this.state.listTypeCodes.map((item, index) =>
+        {this.props.filterCodes.listTypeCodes.map((item, index) =>
           <View style={styles.filterCheckWrap} key={index}>
             <Checkbox
               checked={(this.props.whFilter.typeCodes ? this.props.whFilter.typeCodes.indexOf(item.value) > -1 : false)}
@@ -107,6 +106,7 @@ function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state.search.whFilter);
   return {
     whFilter: state.search.whFilter,
+    filterCodes: state.search.filterCodes,
   };
 }
 

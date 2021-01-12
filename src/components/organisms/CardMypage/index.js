@@ -1,4 +1,5 @@
 /**
+ * 견적 계약 썸네일 카드
  * @create
  * @modify
  * @desc [description]
@@ -7,9 +8,9 @@
 // Global Imports
 import React, { Component, Fragment } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, Card } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import card from '@Assets/images/card-img.png';
+import cardBG from '@Assets/images/card-img.png';
 import PropTypes from 'prop-types';
 
 // Local Imports
@@ -20,7 +21,6 @@ import { styles as S } from './style';
 class CardMypage extends Component {
   constructor(props) {
     super(props);
-    this.webView = null;
     this.state = { visible: false };
     this.navigation = props.navigation;
   }
@@ -43,6 +43,7 @@ class CardMypage extends Component {
     // item && item.highlight === true ? DefaultStyle._highlightInfoTable : null;
     return (
       <View style={DefaultStyle._card}>
+
         <TouchableOpacity
           style={DefaultStyle._headerCard}
           onPress={onPressHeader}>
@@ -65,9 +66,13 @@ class CardMypage extends Component {
           </View>
         </TouchableOpacity>
         <View style={[DefaultStyle._bodyCard, style]}>
-          {bgrImage === false ? null : (
-            <Image source={bgrImage ? bgrImage : card} style={S.imgAva} />
-          )}
+          <Text>{console.log(bgrImage)}</Text>
+          <Card.Cover
+            source={bgrImage ? {
+              uri: bgrImage.uri.replace(/\\/g, '')
+            } : cardBG}
+            style={S.imgAva}
+          />
           <View style={S.info}>
             <TableInfo
               data={data && data}
@@ -77,6 +82,7 @@ class CardMypage extends Component {
               borderBottom={borderBottom}
             />
           </View>
+
           {footer}
         </View>
       </View>

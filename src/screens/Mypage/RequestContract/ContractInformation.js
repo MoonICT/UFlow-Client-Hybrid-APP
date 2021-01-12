@@ -7,44 +7,75 @@
 // Global Imports
 import React, { Component, Fragment } from 'react';
 import {
-  SafeAreaView,
   View,
-  ScrollView,
   TouchableOpacity,
-  Image,
+  Platform, Linking,
 } from 'react-native';
-import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
-import Appbars from '@Components/organisms/AppBar';
-import AppGrid from '@Components/organisms/AppGrid';
-import Select from '@Components/organisms/Select';
 import CardMypage from '@Components/organisms/CardMypage';
 import TermsContract from './TermsContract';
-
-import warehouse1 from '@Assets/images/warehouse-1.png';
-
-import ActionCreator from '@Actions';
-
-import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Warehouse } from '@Services/apis';
+import { Warehouse, Contract } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 
 class ContractInformation extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
-    this.state = { visible: false, visibleConfirm: false };
+    this.state = {
+      visible: false,
+      visibleConfirm: false,
+      isOnLineDialog: false,
+      isOffLineDialog: false
+    };
+
+    console.debug('견적 약관 detailContract : ', props.detailContract)
+    console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
+
     this.navigation = props.navigation;
   }
 
-  render() {
+  /**
+   * 보관/수탁 정보 추출.
+   * */
+  getContract = () => {
+    if (this.props.detailEstimate) {
+      if (this.props.detailEstimate.keep) {
+        return this.props.detailEstimate.keep;
+      }
+      if (this.props.detailEstimate.trust) {
+        return this.props.detailEstimate.trust;
+      }
+    }
+  };
+
+  /**
+   * 오프라인 견적 요청하기
+   * */
+  requestOffLineContract = () => {
+    Contract.ozContractURl({
+      type: this.props.contractType.toLowerCase(),
+      warehouseRegNo: this.getContract().id.warehouseRegNo,
+      cntrDvCd: this.getContract().id.cntrDvCode,
+      cntrYmdFrom: moment(this.getContract().id.cntrYmdFrom).format('YYYYMMDD')
+    }).then(res => {
+      Linking.openURL(res.url);
+    }).catch(error => {
+      alert('requestOffLineContract:' + error);
+    });
+    this.setState({ isOffLineDialog: false });
+  };
+
+  render () {
     const {
+      contractType, // KEEP || TRUST
+
+      dataContract,
       status,
       warehouseRegNo,
       rentUserNo,
@@ -55,6 +86,7 @@ class ContractInformation extends Component {
       cntrYmdFrom,
       cntrYmdTo,
       mediaFile,
+      typeWH
     } = this.props;
     let dataTable = [
       {
@@ -67,9 +99,9 @@ class ContractInformation extends Component {
       },
       {
         type: '첨부 서류',
-        isImageLink: true,
-        fileName: mediaFile?.file2,
-        value: `${configURL.FILE_SERVER_ADDRESS}/${mediaFile?.file2}`,
+        isImageLink: dataContract?.entrpByOwner?.file2,
+        fileName: dataContract?.entrpByOwner?.file2 ? '통장 사본.jpg' : '-',
+        value: dataContract?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${dataContract?.entrpByOwner?.file2}` : '',
       },
     ];
 
@@ -105,10 +137,12 @@ class ContractInformation extends Component {
           </TouchableOpacity>
         );
         break;
-
       case '2100':
         viewComponent = (
           <TermsContract
+            dataContract={dataContract}
+            contractType={contractType}
+            dataTable={dataTable}
             status={status}
             warehouseRegNo={warehouseRegNo}
             rentUserNo={rentUserNo}
@@ -116,37 +150,42 @@ class ContractInformation extends Component {
             type={type}
             warehouse={warehouse}
             rentUser={rentUser}
+            navigation={this.navigation}
+            cntrYmdFrom={cntrYmdFrom}	
+            typeWH={typeWH}
           />
         );
         break;
-
       case '4100':
         viewComponent = (
           <Fragment>
             <CardMypage
-              onPressHeader={() => {}}
+              onPressHeader={() => {
+              }}
               headerTitle={'계약 정보'}
               data={dataTable}
               borderRow={false}
               styleLeft={DefaultStyle._leftTableCard}
               styleRight={DefaultStyle._rightTableCard}
               bgrImage={false}
+              rightHeader={<></>}
             />
             <View
               style={[
                 DefaultStyle._listBtn,
-                { marginTop: 12, marginBottom: 8 },
+                { marginTop: 12, marginBottom: Platform.OS === 'ios' ? 90 : 12 },
               ]}>
+
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnLeft]}
-                onPress={() => console.log('계약 요청 취소')}>
+                onPress={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
                   전자계약
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
-                onPress={() => this.navigation.navigate('StorageAgreement')}>
+                onPress={() => this.setState({ isOffLineDialog: !this.state.isOffLineDialog })}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
                   오프라인 계약
                 </Text>
@@ -156,10 +195,104 @@ class ContractInformation extends Component {
         );
         break;
       case '5100':
-        // code block
+        viewComponent = (
+          <Fragment>
+            <CardMypage
+              onPressHeader={() => {
+              }}
+              headerTitle={'계약 정보'}
+              data={dataTable}
+              borderRow={false}
+              styleLeft={DefaultStyle._leftTableCard}
+              styleRight={DefaultStyle._rightTableCard}
+              bgrImage={false}
+              rightHeader={
+                <TouchableOpacity onPress={() => this.requestOffLineContract()}
+                                  style={[DefaultStyle._btnOutlineMuted,]}>
+                  <Text>계약서 확인</Text>
+                </TouchableOpacity>
+              }
+            />
+            <View
+              style={[
+                DefaultStyle._listBtn,
+                { marginTop: 12, marginBottom: Platform.OS === 'ios' ? 90 : 12 },
+              ]}>
+              {contractType === 'TRUST' &&
+              <TouchableOpacity
+                style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
+                onPress={() => {
+                  this.navigation.goBack();
+                  // this.navigation.navigate('More', { to: '입･출고 관리', })
+                }}>
+                <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
+                  {/*입･출고 관리*/}
+                  목록으로
+                </Text>
+              </TouchableOpacity>}
+            </View>
+          </Fragment>
+        );
         break;
     }
-    return <Fragment>{viewComponent}</Fragment>;
+    return (
+      <>
+        {/* Body */}
+        {viewComponent && <Fragment>{viewComponent}</Fragment>}
+
+        {/** 전자 결제 확인 모달 */}
+        <Dialog style={DefaultStyle.popup}
+                visible={this.state.isOnLineDialog}
+                onDismiss={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>
+          <Dialog.Title style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            전자 계약 요청
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              선택하신 계약 방식으로{'\n'}계약을 요청하시겠습니까?
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={[DefaultStyle._buttonElement]}
+              onPress={() => this.setState({ isOnLineDialog: false })}>
+              <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>취소</Text>
+            </Button>
+            <Button
+              style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
+              onPress={() => {
+                this.setState({ isOnLineDialog: false })
+                alert('준비중입니다.');
+              }}>확인</Button>
+          </Dialog.Actions>
+        </Dialog>
+
+        {/** 오프라인 결제 확인 모달 */}
+        <Dialog style={DefaultStyle.popup}
+                visible={this.state.isOffLineDialog}
+                onDismiss={() => this.setState({ isOffLineDialog: !this.state.isOffLineDialog })}>
+          <Dialog.Title style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            오프라인 계약 요청
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              선택하신 계약 방식으로{'\n'}계약을 요청하시겠습니까?
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={[DefaultStyle._buttonElement]}
+              onPress={() => this.setState({ isOffLineDialog: false })}>
+              <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>취소</Text>
+            </Button>
+            <Button
+              style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
+              onPress={this.requestOffLineContract}>확인</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </>
+    );
+
   }
 }
 

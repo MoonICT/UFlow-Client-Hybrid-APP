@@ -1,14 +1,16 @@
 /**
  * 정산 관리
  * @create
- * @modify
+ * @modify chonglye chang
  * @desc [description]
  */
 
 // Global Imports
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
+import {styles as S} from '../style';
+
 import Moment from 'moment';
-import { moneyUnit , dateStr, toStdCd } from '@Utils/StringUtils';
+import {moneyUnit, dateStr, toStdCd} from '@Utils/StringUtils';
 import Select from '@Components/organisms/SelectFilter';
 
 import {
@@ -16,24 +18,19 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-import { Text } from 'react-native-paper';
+import {Text} from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import CardMypage from '@Components/organisms/CardMypage';
-import { SettlementManagementService, Calculate } from '@Services/apis'
+import {SettlementManagementService, Calculate} from '@Services/apis'
 import Icon from 'react-native-vector-icons/Fontisto';
-import {formatDateV1, formatDateV2 } from '@Utils/dateFormat';
-import { styles as S } from '../style';
-import DatePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 var searchTimerQuery;
 
 export default class SettlementManagement extends Component {
-
-
-
 
   constructor(props) {
     super(props);
@@ -79,14 +76,13 @@ export default class SettlementManagement extends Component {
     this.navigation = props.navigation;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     console.log("::: 정산 관리 페이지 :::");
     this.getAllData()
   }
 
 
-
-  async getAllData () {
+  async getAllData() {
     let {startDate, endDate, query, contractType, rangeDate} = this.state.filter;
     let {valueTab} = this.state
     let params = {
@@ -98,8 +94,6 @@ export default class SettlementManagement extends Component {
       contractType
     };
 
-    // params {"contractType": 2100, "endDate": 2021-01-08T11:44:47.122Z, "query": "", "rangeDate": "", "startDate": 2021-01-08T11:44:47.122Z, "type": undefined}
-
     SettlementManagementService.getAll(params).then((res) => {
       console.debug(params, '정산데이터 Params');
       console.debug(res, '정산데이터');
@@ -107,42 +101,41 @@ export default class SettlementManagement extends Component {
         return
       }
 
-      // const money = (value, unitStr = '원') => {
-      //   // return value ? (value.toLocaleString() + ' ' + unitStr) : 0 + ' ' + unitStr;
-      //   return value ? (value.toLocaleString() + ' ' + unitStr) : 0 + ' ' + unitStr;
-      // }
-
       let newRows = res.data.data.content.map((item, index) => {
-        return {
-          id: item.id,
-          warehouseName: item.warehouseName,
-          urlTransaction: item.urlTransaction,
-          dataRedwood: [
-            {
-              type: '정산 기간',
-              value: `${dateStr(item.cntrYmdFrom)} ~ ${dateStr(item.cntrYmdTo)}`,
-            },
-            {
-              type: '계약 유형',
-              value: item.cntrTypeCode ? item.cntrTypeCode.stdDetailCodeName : '',
-            },
-            {
-              type: '정산 합계\n(VAT포함)',
-              value: `${(item.amount && item.vat) ?  moneyUnit(item.amount + item.vat) : ''}`,
-            },
-          ]
-        }
-      },
-          (error) => { console.log(error); })
+          return {
+            id: item.id,
+            warehouseName: item.warehouseName,
+            urlTransaction: item.urlTransaction,
+            dataRedwood: [
+              {
+                type: '정산 기간',
+                value: `${dateStr(item.cntrYmdFrom)} ~ ${dateStr(item.cntrYmdTo)}`,
+              },
+              {
+                type: '계약 유형',
+                value: item.cntrTypeCode ? item.cntrTypeCode.stdDetailCodeName : '',
+              },
+              {
+                type: '정산 합계\n(VAT포함)',
+                value: `${(item.amount && item.vat) ? moneyUnit(item.amount + item.vat) : ''}`,
+              },
+            ]
+          }
+        },
+        (error) => {
+          console.log(error);
+        })
 
       this.setState({
         rows: newRows
       })
-    })
+    }).catch(error => {
+      alert('SettlementManagementService:' + error);
+    });
   }
 
 
-  onChangeTab (value) {
+  onChangeTab(value) {
     console.log("onChangeTab", value);
 
     this.setState({
@@ -167,40 +160,30 @@ export default class SettlementManagement extends Component {
   }
 
 
-  onChangeStart = (event, selectedDate) => {
+  onChangeStart = (selectedDate) => {
     let {isOpenStart} = this.state
-    if(event.type == 'dismissed') {
-      this.setState({
-        isOpenStart: !isOpenStart
-      })
-    } else {
-      let filter =  {...this.state.filter}
-      filter.startDate = event.nativeEvent.timestamp
-      this.setState({
-        filter: filter,
-        isOpenStart: !isOpenStart
-      }, () => {
-        this.getAllData()
-      })
-    }
+
+    let filter = {...this.state.filter}
+    filter.startDate = selectedDate
+    this.setState({
+      filter: filter,
+      isOpenStart: !isOpenStart
+    }, () => {
+      this.getAllData()
+    })
   }
 
-  onChangeEnd = (event, selectedDate) => {
+  onChangeEnd = (selectedDate) => {
     let {isOpenEnd} = this.state
-    if(event.type == 'dismissed') {
-      this.setState({
-        isOpenEnd: !isOpenEnd
-      })
-    } else {
-      let filter =  {...this.state.filter}
-      filter.endDate = event.nativeEvent.timestamp
-      this.setState({
-        filter: filter,
-        isOpenEnd: !isOpenEnd
-      },() => {
-        this.getAllData()
-      })
-    }
+
+    let filter = {...this.state.filter}
+    filter.endDate = selectedDate
+    this.setState({
+      filter: filter,
+      isOpenEnd: !isOpenEnd
+    }, () => {
+      this.getAllData()
+    })
 
   };
 
@@ -220,17 +203,18 @@ export default class SettlementManagement extends Component {
     }
     this.setState({
       filter: filter
-    },() => {
+    }, () => {
       this.getAllData()
     })
   };
 
   onChangeKeyWord = () => {
+
     if (searchTimerQuery) {
       clearTimeout(searchTimerQuery);
     }
     searchTimerQuery = setTimeout(async () => {
-      let filter =  {...this.state.filter}
+      let filter = {...this.state.filter}
       filter.query = this.inputKeyWord.state.value
       this.setState({
         filter
@@ -240,14 +224,11 @@ export default class SettlementManagement extends Component {
     }, 500);
   }
 
-
-
-
   render() {
-    const {valueTab, rows,  isOpenStart, isOpenEnd, rangeDay, dataCard} = this.state
+    const {valueTab, rows, isOpenStart, isOpenEnd, rangeDay, dataCard} = this.state
     let {startDate, endDate} = this.state.filter;
     return (
-      <View style={DefaultStyle._cards}>
+      <View style={[DefaultStyle._cards, {marginBottom: 180}]}>
 
         <View style={DefaultStyle._tabBar}>
           <TouchableOpacity
@@ -284,7 +265,7 @@ export default class SettlementManagement extends Component {
             style={[
               DefaultStyle._textTitleCard,
               S.textTitleTenant,
-              { paddingBottom: 0 },
+              {paddingBottom: 0},
             ]}>
             정산 관리
           </Text>
@@ -292,64 +273,85 @@ export default class SettlementManagement extends Component {
 
         <View style={S.filter}>
           <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
-            <View style={[S.optionSelect, S.optionSelectLeft , { marginBottom: 25, height:36}]}>
+            <View style={[S.optionSelect, S.optionSelectLeft, {marginBottom: 25, height: 36}]}>
 
-              <View style={{ flex: 1}}>
+              <View style={{flex: 1}}>
                 <TouchableOpacity
-                  onPress={()=>this.showDateStart()}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={[DefaultStyle._textDate, {fontSize:12,paddingTop:7,textAlign:'center'}]}>
-                    {formatDateV1(startDate) || 'YYYY-MM-DD'}
+                  onPress={() => this.showDateStart()}
+                  style={DefaultStyle._btnDateFilter}>
+                  <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 5, textAlign: 'center'}]}>
+                    {dateStr(startDate) || 'YYYY-MM-DD'}
                   </Text>
                   <Text
                     style={[
                       DefaultStyle._labelTextField,
-                      { color: '#000000', fontSize: 12 },
+                      {color: '#000000', fontSize: 12},
                     ]}>
                     시작일
                   </Text>
                   {
                     isOpenStart &&
-                    <DatePicker
-                    mode={'date'}
-                    show={isOpenStart}
-                    onChange={(e) =>this.onChangeStart(e)}
-                    value={startDate || new Date()}
-                    testID="dateTimePicker"
-                  />
+                    //   <DatePicker
+                    //   mode={'date'}
+                    //   show={isOpenStart}
+                    //   onChange={(e) =>this.onChangeStart(e)}
+                    //   value={startDate || new Date()}
+                    //   testID="dateTimePicker"
+                    // />
+                    <DateTimePickerModal
+                      mode="date"
+                      isVisible={isOpenStart}
+                      date={startDate ? startDate : new Date()}
+                      onConfirm={(date) => this.onChangeStart(date)}
+                      onCancel={() => {
+                        this.setState({
+                          isOpenStart: false
+                        });
+                      }}
+                    />
                   }
                 </TouchableOpacity>
               </View>
-
 
 
             </View>
             <Text style={[S.hyphen, {height: 36, lineHeight: 36}]}>-</Text>
             <View style={[S.optionSelect, S.optionSelectLeft, {height: 36}]}>
 
-              <View style={{ flex: 1 }}>
+              <View style={{flex: 1}}>
                 <TouchableOpacity
-                  onPress={()=>this.showDateEnd()}
-                  style={DefaultStyle._btnDate}>
-                  <Text style={[DefaultStyle._textDate, {fontSize:12,paddingTop:7,textAlign:'center'}]}>
-                    {formatDateV1(endDate) || 'YYYY-MM-DD'}
+                  onPress={() => this.showDateEnd()}
+                  style={DefaultStyle._btnDateFilter}>
+                  <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 5, textAlign: 'center'}]}>
+                    {dateStr(endDate) || 'YYYY-MM-DD'}
                   </Text>
                   <Text
                     style={[
                       DefaultStyle._labelTextField,
-                      { color: '#000000', fontSize: 12},
+                      {color: '#000000', fontSize: 12},
                     ]}>
                     종료일
                   </Text>
                   {
                     isOpenEnd &&
-                      <DatePicker
-                        mode={'date'}
-                        show={isOpenEnd}
-                        onChange={(e)=>this.onChangeEnd(e)}
-                        value={endDate || new Date()}
-                        testID="dateTimePicker"
-                      />
+                    // <DatePicker
+                    //   mode={'date'}
+                    //   show={isOpenEnd}
+                    //   onChange={(e)=>this.onChangeEnd(e)}
+                    //   value={endDate || new Date()}
+                    //   testID="dateTimePicker"
+                    // />
+                    <DateTimePickerModal
+                      mode="date"
+                      isVisible={isOpenEnd}
+                      date={endDate ? endDate : new Date()}
+                      onConfirm={(date) => this.onChangeEnd(date)}
+                      onCancel={() => {
+                        this.setState({
+                          isOpenEnd: false
+                        });
+                      }}
+                    />
                   }
 
                 </TouchableOpacity>
@@ -357,19 +359,18 @@ export default class SettlementManagement extends Component {
 
 
             </View>
-            <View style={[S.optionSelect, S.optionSelectLeft, {height:36}]}>
+            <View style={[S.optionSelect, S.optionSelectLeft, {height: 36}]}>
               <Select data={rangeDay}
-                      valueProps = {this.onChangeRangeDay}
-                      style={[S.select,{height:36}]}
+                      valueProps={this.onChangeRangeDay}
+                      style={[S.select, {height: 36}]}
               />
             </View>
           </View>
           <TextField
             styleProps={[DefaultStyle._inputSearch, {paddingRight: 50}]}
-            placeholder="창고명 검색"
-            valueProps={text => console.log('text', text)}
+            placeholder="검색어를 입력해 주세요."
             ref={el => this.inputKeyWord = el}
-            // onChange={this.onChangeKeyWord}
+            onChange={this.onChangeKeyWord}
             rightComponent={
               <Icon
                 name="search"
@@ -386,7 +387,7 @@ export default class SettlementManagement extends Component {
 
             return (
               <CardMypage
-                key = {index}
+                key={index}
                 onPressHeader={() => this.navigation.navigate('DetailsSettlement', {
                   id: item.id,
                   type: valueTab,
@@ -396,32 +397,35 @@ export default class SettlementManagement extends Component {
                 data={item.dataRedwood}
                 borderBottom={true}
                 borderRow={false}
-                style={{ padding: 0 }}
+                style={{padding: 0}}
                 bgrImage={false}
                 footer={
-                <View
-                  style={[
-                    DefaultStyle._listBtn,
-                    { marginTop: 17, marginBottom: 0, padding: 16, paddingTop: 0 },
-                  ]}>
-                  <TouchableOpacity
-                    style={[DefaultStyle._btnOutline]}
-                    onPress={() => {
-                      Calculate.getOzUrl({calKey: item.id}).then(res => {
-                        Linking.canOpenURL(res).then(supported => {
-                          if (supported) {
-                            Linking.openURL(res);
-                          } else {
-                            console.log("Don't know how to open URI: " + res);
-                          }})
-                      })
+                  <View
+                    style={[
+                      DefaultStyle._listBtn,
+                      {marginTop: 17, marginBottom: 0, padding: 16, paddingTop: 0},
+                    ]}>
+                    <TouchableOpacity
+                      style={[DefaultStyle._btnOutline]}
+                      onPress={() => {
+                        Calculate.getOzUrl({calKey: item.id}).then(res => {
+                          Linking.canOpenURL(res).then(supported => {
+                            if (supported) {
+                              Linking.openURL(res);
+                            } else {
+                              console.log("Don't know how to open URI: " + res);
+                            }
+                          })
+                        }).catch(error => {
+                          alert('getOzUrl:' + error);
+                        });
 
-                    }}>
-                    <Text style={[DefaultStyle._textButton]}> 거래명세서</Text>
-                  </TouchableOpacity>
-                </View>
-              }
-            />
+                      }}>
+                      <Text style={[DefaultStyle._textButton]}> 거래명세서</Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+              />
             )
           })
         }

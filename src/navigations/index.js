@@ -9,7 +9,7 @@
 
 // Global Imports
 import React, { useMemo, useState, useEffect } from 'react';
-// import { Text, Platform } from 'react-native';
+import { Text, Platform, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -65,12 +65,13 @@ import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
 import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
 import Chatting from '@Screeens/Mypage/Chat';
 import DetailsManager from '@Screeens/Mypage/DetailsManager';
-import DetailsSettlement from '@Screeens/TenantMypage/DetailsSettlement';
+import DetailsSettlement from '@Screeens/Mypage/DetailsSettlement';
 
 import ProprietorMypage from '@Screeens/ProprietorMypage';
 
 import Quotation from '@Screeens/Mypage/Quotation';
 import ResponseQuotation from '@Screeens/Mypage/ResponseQuotation';
+import RequestQuotation from '@Screeens/Mypage/RequestQuotation';
 import StorageAgreement from '@Screeens/Mypage/StorageAgreement';
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
@@ -78,6 +79,7 @@ import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
 import MypageInfo from '@Screeens/MypageInfo';
 import Information from '@Screeens/Mypage/Information';
 import RequestContract from '@Screeens/Mypage/RequestContract';
+import InterestWH from '@Screeens/Mypage/InterestWH';
 import More from '@Screeens/More';
 import Consulting from '@Screeens/Consulting';
 import ConsultingComplete from '@Screeens/Consulting/complete.js';
@@ -88,6 +90,15 @@ import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
 import RegisterBusinessInfo from '@Screeens/RegisterWH/RegisterBusinessInfo';
 import DetailRegisterTenant from '@Screeens/DetailsWH/DetailRegisterTenant';
+
+import IconHomeDefault from '@Assets/images/menu/menu_home_default.png';
+import IconSearchDefault from '@Assets/images/menu/menu_search_default.png';
+import IconHeartDefault from '@Assets/images/menu/menu_heart_default.png';
+import IconMoreDefault from '@Assets/images/menu/menu_more_default.png';
+import IconHomeActive from '@Assets/images/menu/menu_home_active.png';
+import IconSearchActive from '@Assets/images/menu/menu_search_active.png';
+import IconHeartActive from '@Assets/images/menu/menu_heart_active.png';
+import IconMoreActive from '@Assets/images/menu/menu_more_active.png';
 
 import { color } from '@Themes/colors';
 
@@ -103,27 +114,35 @@ const store = initStore();
 const TabScreenOptions = ({ route = { name: 'Home' } }) => ({
   tabBarIcon: ({ focused, tColor, tSize }) => {
     const routeName = route.name;
-    let icon = '';
+    // let icon = '';
+    const iconStyle = {
+      width: 24,
+      height: 24
+    }
     switch (routeName) {
       case 'Home':
-        icon = 'home';
-        break;
+        // icon = 'home';
+        return focused ? <Image style={iconStyle} source={IconHomeActive} /> :
+          <Image style={iconStyle} source={IconHomeDefault} />
       case 'Search':
-        icon = 'magnify';
-        break;
+        // icon = 'magnify';
+        return focused ? <Image style={iconStyle} source={IconSearchActive} /> :
+          <Image style={iconStyle} source={IconSearchDefault} />
       // TODO change route
-      case 'Mypage':
-        icon = 'forum';
-        break;
+      case 'InterestWH':
+        // icon = 'forum';
+        return focused ? <Image style={iconStyle} source={IconHeartActive} /> :
+          <Image style={iconStyle} source={IconHeartDefault} />
       case 'More':
-        icon = 'dots-horizontal';
-        break;
+        // icon = 'dots-horizontal';
+        return focused ? <Image style={iconStyle} source={IconMoreActive} /> :
+          <Image style={iconStyle} source={IconMoreDefault} />
     }
-    return focused ? (
-      <IconButton size={24} color={color.primary.main} icon={icon} />
-    ) : (
-      <IconButton size={24} icon={icon} color={'rgba(0, 0, 0, 0.54)'} />
-    );
+    // return focused ? (
+    //   <IconButton size={24} color={color.primary.main} icon={icon} />
+    // ) : (
+    //   <IconButton size={24} icon={icon} color={'rgba(0, 0, 0, 0.54)'} />
+    // );
   },
 });
 const TabBarOptions = {
@@ -149,7 +168,7 @@ const TabScreen = () => {
         options={{ headerShown: false }}
       />
       {/* TODO Change route */}
-      <Tab.Screen name="Mypage" component={Mypage} />
+      <Tab.Screen name="InterestWH" component={InterestWH} />
       <Tab.Screen
         name="More"
         component={More}
@@ -171,6 +190,8 @@ const App = () => {
     AsyncStorage.getItem(TOKEN).then(v => {
       // console.log('v==>', v);
       setIsLogin(v !== '' && v !== null);
+    }).catch(error => {
+      alert('TabScreenOptions error:' + error);
     });
   }, []);
 
@@ -189,6 +210,8 @@ const App = () => {
         AsyncStorage.setItem(TOKEN, loginData).then(() => {
           setIsLoading(false);
           setIsLogin(true);
+        }).catch(error => {
+          alert('TabScreenOptions loginData error:' + error);
         });
       },
       signUp: () => {
@@ -199,6 +222,8 @@ const App = () => {
         AsyncStorage.removeItem(TOKEN).then(() => {
           setIsLoading(false);
           setIsLogin(false);
+        }).catch(error => {
+          alert('TabScreenOptions signOut error:' + error);
         });
       },
     };
@@ -216,12 +241,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="Home"
                     component={TabScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false, }}
                   />
                   <AuthStack.Screen
                     name="Register"
                     component={Register}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, }}
                   />
                   <AuthStack.Screen
                     name="Terms"
@@ -439,6 +464,12 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
+                    name="RequestQuotation"
+                    component={RequestQuotation}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
                     name="TenantMypage"
                     component={TenantMypage}
                     headerMode={false}
@@ -488,6 +519,12 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
+                    name="InterestWH"
+                    component={InterestWH}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
                     name="Information"
                     component={Information}
                     headerMode={false}
@@ -508,13 +545,13 @@ const App = () => {
                   <AuthStack.Screen
                     name="FindPassWord"
                     component={FindPassWordScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false, }}
                   />
                   <AuthStack.Screen
                     name="Login"
                     component={LoginScreen}
                     headerMode={false}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false, }}
                   />
                   <AuthStack.Screen
                     name="RegisterBusinessInfo"
@@ -547,32 +584,38 @@ const App = () => {
                     name="More"
                     component={More}
                     headerMode={false}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false }}
                   />
                   <RootStack.Screen
                     name="Home"
                     component={TabScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false }}
                   />
                   <RootStack.Screen
                     name="FindID"
                     component={FindIDScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false }}
                   />
                   <RootStack.Screen
                     name="FindPassWord"
                     component={FindPassWordScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false }}
                   />
                   <RootStack.Screen
                     name="Login"
                     component={LoginScreen}
                     headerMode={false}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false, gestureEnabled: false, }}
                   />
                   <RootStack.Screen
                     name="Register"
                     component={Register}
+                    headerMode={false}
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
+                  <AuthStack.Screen
+                    name="DetailsWH"
+                    component={DetailsWH}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />

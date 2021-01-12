@@ -205,7 +205,7 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.props.listFlrDvCode.map((item, index) =>
+            {this.props.filterCodes.listFlrDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
                 <Checkbox
                   checked={(this.props.whFilter.flrDvCodes ? this.props.whFilter.flrDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
@@ -257,7 +257,7 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.props.listCmpltTypes.map((item, index) =>
+            {this.props.filterCodes.listCmpltTypes.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
                 <Checkbox
                   checked={(this.props.whFilter.cmpltYmds ? this.props.whFilter.cmpltYmds.indexOf(Object.keys(item)[1]) > -1 : false)}
@@ -279,7 +279,7 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.props.listAprchMthdDvCode.map((item, index) =>
+            {this.props.filterCodes.listAprchMthdDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
                 <Checkbox
                   checked={(this.props.whFilter.aprchMthdDvCodes ? this.props.whFilter.aprchMthdDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
@@ -301,7 +301,7 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.props.listInsrDvCode.map((item, index) =>
+            {this.props.filterCodes.listInsrDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
                 <Checkbox
                   checked={(this.props.whFilter.insrDvCodes ? this.props.whFilter.insrDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
@@ -323,7 +323,7 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.props.listCalUnitDvCode.map((item, index) =>
+            {this.props.filterCodes.listCalUnitDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
                 <Checkbox
                   checked={(this.props.whFilter.calUnitDvCodes ? this.props.whFilter.calUnitDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
@@ -345,7 +345,7 @@ class FilterOther extends Component {
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.props.listCalStdDvCode.map((item, index) =>
+            {this.props.filterCodes.listCalStdDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
                 <Checkbox
                   checked={(this.props.whFilter.calStdDvCodes ? this.props.whFilter.calStdDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
@@ -382,6 +382,7 @@ function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     whFilter: state.search.whFilter,
+    filterCodes: state.search.filterCodes,
   };
 }
 
@@ -397,12 +398,6 @@ function mapDispatchToProps (dispatch) {
 // Check Props Type.
 RangeSlider.protoType = {
   onClosed: PropTypes.func,
-  listCalUnitDvCode: PropTypes.array, // 정산단위
-  listCalStdDvCode: PropTypes.array, // 산정기준
-  listFlrDvCode: PropTypes.array, // 층수
-  listAprchMthdDvCode: PropTypes.array, // 접안방식
-  listInsrDvCode: PropTypes.array, // 보험 가입
-  listCmpltTypes: PropTypes.array, // 준공연차
 };
 
 export default compose(connect(

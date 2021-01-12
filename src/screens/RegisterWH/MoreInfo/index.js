@@ -38,6 +38,7 @@ import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
+import { MyPage } from '@Services/apis';
 
 // import Form from './form';
 class RegisterMoreInfo extends Component {
@@ -45,13 +46,13 @@ class RegisterMoreInfo extends Component {
     super(props);
     this.webView = null;
     this.state = {
-      addOptDvCode:
-        props.dataMoreInfo && props.dataMoreInfo.addOptDvCode
-          ? props.dataMoreInfo.addOptDvCode
+      addOptDvCodes:
+        props.dataMoreInfo && props.dataMoreInfo.addOptDvCodes
+          ? props.dataMoreInfo.addOptDvCodes
           : ['', '', ''],
-      insrDvCode:
-        props.dataMoreInfo && props.dataMoreInfo.insrDvCode
-          ? props.dataMoreInfo.insrDvCode
+      insrDvCodes:
+        props.dataMoreInfo && props.dataMoreInfo.insrDvCodes
+          ? props.dataMoreInfo.insrDvCodes
           : ['', '', ''],
       cmpltYmd:
         props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
@@ -77,9 +78,10 @@ class RegisterMoreInfo extends Component {
         props.dataMoreInfo && props.dataMoreInfo.cmnArea
           ? props.dataMoreInfo.cmnArea
           : '',
-      from: props.dataMoreInfo
-        ? new Date(props.dataMoreInfo.cmpltYmd)
-        : new Date(),
+      from:
+        props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
+          ? new Date(props.dataMoreInfo.cmpltYmd)
+          : new Date(),
       showFrom: false,
       mode: 'date',
     };
@@ -101,8 +103,8 @@ class RegisterMoreInfo extends Component {
   render() {
     const { imageStore, route, dataMoreInfo } = this.props;
     const {
-      addOptDvCode,
-      insrDvCode,
+      addOptDvCodes,
+      insrDvCodes,
       cmpltYmd,
       siteArea,
       bldgArea,
@@ -112,20 +114,79 @@ class RegisterMoreInfo extends Component {
       from,
       mode,
       showFrom,
+      addOptDvCodesData,
+      insrDvCodeData,
     } = this.state;
     console.log('dataMoreInfo :>> ', dataMoreInfo);
-    let isSubmitUpdate = false;
-    if (
-      addOptDvCode.length > 0 &&
-      insrDvCode.length > 0 &&
-      siteArea !== '' &&
-      bldgArea !== '' &&
-      totalArea !== '' &&
-      prvtArea !== '' &&
-      cmnArea !== ''
-    ) {
-      isSubmitUpdate = true;
+
+    let checkbox0001 = [-1, -1, -1, -1, -1, -1];
+
+    if (addOptDvCodes.length > 0) {
+      checkbox0001[0] = addOptDvCodes.indexOf('0001');
+      checkbox0001[1] = addOptDvCodes.indexOf('0002');
+      checkbox0001[2] = addOptDvCodes.indexOf('0003');
     }
+
+    if (insrDvCodes.length > 0) {
+      checkbox0001[3] = insrDvCodes.indexOf('0001');
+      checkbox0001[4] = insrDvCodes.indexOf('0002');
+      checkbox0001[5] = insrDvCodes.indexOf('0003');
+    }
+    console.log('checkbox0001 :>> ', checkbox0001);
+
+    let isSubmitUpdate = true;
+    // if (
+    //   addOptDvCodes.length > 0 &&
+    //   insrDvCodes.length > 0 &&
+    //   siteArea !== '' &&
+    //   bldgArea !== '' &&
+    //   totalArea !== '' &&
+    //   prvtArea !== '' &&
+    //   cmnArea !== ''
+    // ) {
+    //   isSubmitUpdate = true;
+    // }
+    console.log('addOptDvCodes :>> ', addOptDvCodes);
+    let viewOptionMore =
+      addOptDvCodesData &&
+      addOptDvCodesData.map((item, index) => {
+        let checkItem = addOptDvCodes.find(el => el === item.value);
+
+        return (
+          <View style={S.optionCheck}>
+            <Checkbox
+              status={checkItem ? 'checked' : 'unchecked'}
+              onPress={() => {
+                let indexItem = addOptDvCodes.indexOf(item.value);
+                indexItem > -1
+                  ? this.setState({ ...addOptDvCodes.splice(indexItem, 1) })
+                  : this.setState({ ...addOptDvCodes.push(item.value) });
+              }}
+            />
+            <Text style={S.labelCheck}>{item.label}</Text>
+          </View>
+        );
+      });
+    let viewInsrDvCodes =
+      insrDvCodeData &&
+      insrDvCodeData.map((item, index) => {
+        let checkItem = insrDvCodes.find(el => el === item.value);
+
+        return (
+          <View style={S.optionCheck}>
+            <Checkbox
+              status={checkItem ? 'checked' : 'unchecked'}
+              onPress={() => {
+                let indexItem = insrDvCodes.indexOf(item.value);
+                indexItem > -1
+                  ? this.setState({ ...insrDvCodes.splice(indexItem, 1) })
+                  : this.setState({ ...insrDvCodes.push(item.value) });
+              }}
+            />
+            <Text style={S.labelCheck}>{item.label}</Text>
+          </View>
+        );
+      });
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -137,8 +198,8 @@ class RegisterMoreInfo extends Component {
           <Appbar.Content
             title={
               route && route.params && route.params.type === 'ModifyWH'
-                ? '부가 정보 수정'
-                : '부가 정보'
+                ? '추가 정보 수정'
+                : '추가 정보'
             }
             color="black"
             fontSize="12"
@@ -148,7 +209,7 @@ class RegisterMoreInfo extends Component {
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleBody}>
-              <Text style={DefaultStyle._textTitleBody}>부가 정보</Text>
+              <Text style={DefaultStyle._textTitleBody}>추가 정보</Text>
             </View>
             <View style>
               {/**
@@ -163,6 +224,11 @@ class RegisterMoreInfo extends Component {
                   onPress={this.showDatepicker}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
+                    {console.log(
+                      '======> toLocaleDateString: ',
+                      from.toLocaleDateString(),
+                    )}
+
                     {from.toLocaleDateString()}
                   </Text>
                   <Text
@@ -187,9 +253,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={bldgArea ? numberToStd(bldgArea) : ''}
                 colorLabel="#000000"
-                value={bldgArea}
+                keyboardType="numeric"
+                value={numberToStd(bldgArea)}
                 valueProps={e => {
-                  this.setState({ bldgArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ bldgArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
               <TextField
@@ -198,9 +266,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={siteArea ? numberToStd(siteArea) : ''}
                 colorLabel="#000000"
-                value={siteArea}
+                keyboardType="numeric"
+                value={numberToStd(siteArea)}
                 valueProps={e => {
-                  this.setState({ siteArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ siteArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
               <TextField
@@ -209,9 +279,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={totalArea ? numberToStd(totalArea) : ''}
                 colorLabel="#000000"
-                value={totalArea}
+                keyboardType="numeric"
+                value={numberToStd(totalArea)}
                 valueProps={e => {
-                  this.setState({ totalArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ totalArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
               <TextField
@@ -220,9 +292,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={prvtArea ? numberToStd(prvtArea) : ''}
                 colorLabel="#000000"
-                value={prvtArea}
+                keyboardType="numeric"
+                value={numberToStd(prvtArea)}
                 valueProps={e => {
-                  this.setState({ prvtArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ prvtArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
               <TextField
@@ -231,9 +305,11 @@ class RegisterMoreInfo extends Component {
                 placeholder="0"
                 defaultValue={cmnArea ? numberToStd(cmnArea) : ''}
                 colorLabel="#000000"
-                value={cmnArea}
+                keyboardType="numeric"
+                value={numberToStd(cmnArea)}
                 valueProps={e => {
-                  this.setState({ cmnArea: stdToNumber(e) });
+                  let text = e.replace(/[^0-9]/g, '');
+                  this.setState({ cmnArea: text !== '' ? stdToNumber(text) : '' });
                 }}
               />
             </View>
@@ -241,93 +317,16 @@ class RegisterMoreInfo extends Component {
 
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleBody}>
-              <Text style={[DefaultStyle._textTitleBody]}>
-                추가옵션<Text style={DefaultStyle._textNote}>*</Text>
-              </Text>
+              <Text style={[DefaultStyle._textTitleBody]}>추가옵션</Text>
             </View>
-            <View style={S.options}>
-              <View style={S.optionCheck}>
-                <Checkbox
-                  status={addOptDvCode[0] === '0001' ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    addOptDvCode[0] === '0001'
-                      ? this.setState({ ...(addOptDvCode[0] = '') })
-                      : this.setState({ ...(addOptDvCode[0] = '0001') });
-                  }}
-                />
-                <Text style={S.labelCheck}>보세</Text>
-              </View>
-              <View style={S.optionCheck}>
-                <Checkbox
-                  status={addOptDvCode[1] === '0002' ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    // this.setState({ checkMedicine: !checkMedicine });
-                    addOptDvCode[1] === '0002'
-                      ? this.setState({ ...(addOptDvCode[1] = '') })
-                      : this.setState({ ...(addOptDvCode[1] = '0002') });
-                  }}
-                />
-                <Text style={S.labelCheck}>의약품</Text>
-              </View>
-              <View style={S.optionCheck}>
-                <Checkbox
-                  status={addOptDvCode[2] === '0003' ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    // this.setState({ checkDanger: !checkDanger });
-                    addOptDvCode[2] === '0003'
-                      ? this.setState({ ...(addOptDvCode[2] = '') })
-                      : this.setState({ ...(addOptDvCode[2] = '0003') });
-                  }}
-                />
-                <Text style={S.labelCheck}>위험물</Text>
-              </View>
-            </View>
+            <View style={S.options}>{viewOptionMore}</View>
           </View>
 
           <View style={DefaultStyle._body}>
             <View style={DefaultStyle._titleBody}>
-              <Text style={DefaultStyle._textTitleBody}>
-                가격 협의 가능<Text style={DefaultStyle._textNote}>*</Text>
-              </Text>
+              <Text style={DefaultStyle._textTitleBody}>보험 가입 여부</Text>
             </View>
-            <View style={[S.options, S.optionsFooter]}>
-              <View style={S.optionCheck}>
-                <Checkbox
-                  status={insrDvCode[0] === '0001' ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    // this.setState({ checkBuilding: !checkBuilding });
-                    insrDvCode[0] === '0001'
-                      ? this.setState({ ...(insrDvCode[0] = '') })
-                      : this.setState({ ...(insrDvCode[0] = '0001') });
-                  }}
-                />
-                <Text style={S.labelCheck}>건물보험</Text>
-              </View>
-              <View style={S.optionCheck}>
-                <Checkbox
-                  status={insrDvCode[1] === '0002' ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    // this.setState({ checkInventory: !checkInventory });
-                    insrDvCode[1] === '0002'
-                      ? this.setState({ ...(insrDvCode[1] = '') })
-                      : this.setState({ ...(insrDvCode[1] = '0002') });
-                  }}
-                />
-                <Text style={S.labelCheck}>재고보험</Text>
-              </View>
-              <View style={S.optionCheck}>
-                <Checkbox
-                  status={insrDvCode[2] === '0003' ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    // this.setState({ checkCompensation: !checkCompensation });
-                    insrDvCode[2] === '0003'
-                      ? this.setState({ ...(insrDvCode[2] = '') })
-                      : this.setState({ ...(insrDvCode[2] = '0003') });
-                  }}
-                />
-                <Text style={S.labelCheck}>영업배상보험</Text>
-              </View>
-            </View>
+            <View style={[S.options, S.optionsFooter]}>{viewInsrDvCodes}</View>
             <TouchableOpacity
               disabled={isSubmitUpdate === true ? false : true}
               onPress={() => {
@@ -335,8 +334,8 @@ class RegisterMoreInfo extends Component {
                   completeMoreInfo: true,
                 });
                 this.props.updateInfo({
-                  addOptDvCode,
-                  insrDvCode,
+                  addOptDvCodes,
+                  insrDvCodes,
                   cmpltYmd,
                   siteArea,
                   bldgArea,
@@ -369,7 +368,43 @@ class RegisterMoreInfo extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    await MyPage.getDetailCodes('WHRG0008')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          let addOptDvCodesData =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ addOptDvCodesData });
+        }
+      })
+      .catch(err => {
+        console.log('errAddOptDvCodesData', err);
+      });
+    await MyPage.getDetailCodes('WHRG0009')
+      .then(res => {
+        if (res.status === 200) {
+          let data = res.data._embedded.detailCodes;
+          console.log('datasssssssssssssss :>> ', data);
+          let insrDvCodeData =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          this.setState({ insrDvCodeData });
+        }
+      })
+      .catch(err => {
+        console.log('errInsrDvCodeData', err);
+      });
     SplashScreen.hide();
   }
 

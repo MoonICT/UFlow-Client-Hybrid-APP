@@ -34,14 +34,28 @@ export const getUserInfo = async params => {
 };
 
 //select Detail Code
-export const getDetailCode = async params => {
+export const getDetailCodes = async params => {
   const token = await AsyncStorage.getItem(TOKEN);
-
+console.log('params :>> ', params);
   let url = `/api/v1/mang/codes/${params}`;
   return await mainAxios.get(`${url}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       contentType: 'application/json',
+      "accept-language" : 'ko-kr' // TODO 창고에 Accept-Language 가 아닌 의존 해야함
+    },
+  });
+};
+
+
+//select Detail Code
+export const getDetailCodeName = async (code, detail) => {
+
+  let url = `/api/v1/mang/${code}/d/${detail}`;
+  return await mainAxios.get(`${url}`, {
+    headers: {
+      contentType: 'application/json',
+      "accept-language" : 'ko-kr' // TODO 창고에 Accept-Language 가 아닌 의존 해야함
     },
   });
 };

@@ -85,6 +85,16 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#757575',
   },
+  brown: {
+    color: 'brown',
+    borderWidth: 1,
+    borderColor: 'brown',
+  },
+  red: {
+    color: 'red',
+    borderWidth: 1,
+    borderColor: 'red',
+  },
   background: {
     marginLeft: -16,
     marginTop: 24,
