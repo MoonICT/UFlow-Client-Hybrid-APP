@@ -102,18 +102,6 @@ class Quotation extends Component {
           type: '전용면적',
           value: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
         },
-        // {
-        //   type: '정산단위',
-        //   value: dataApi.whrgMgmtKeep.calUnitDvCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '산정기준',
-        //   value: dataApi.whrgMgmtKeep.calStdDvCode.stdDetailCodeName,
-        // },
-        // {
-        //   type: '가용면적',
-        //   value: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.usblValue),
-        // },
         {
           type: '임대 가능 기간',
           value: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
@@ -196,8 +184,6 @@ class Quotation extends Component {
         },
       ];
 
-    console.log(this.state.calUnitDvCodes, 'this.state.calUnitDvCodes');
-    console.log("###3")
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -237,7 +223,7 @@ class Quotation extends Component {
               {/** WAREHOUSE INFO **/}
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
-                  {/** TODO 보관 상태에 따라 이미지 변경 **/ }
+                  {/** TODO Bug2-1 보관 상태에 따라 이미지 변경 */ }
                   <Image source={warehouse1} style={DefaultStyle._avatarHeader}/>
                 </View>
                 <View

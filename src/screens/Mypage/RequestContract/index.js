@@ -113,6 +113,7 @@ class RequestContract extends Component {
 
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>
+                {/** TODO Bug2-1 보관 상태에 따라 이미지 변경 */ }
                 <Image source={warehouse1} style={DefaultStyle._avatarHeader} />
               </View>
               <View>
