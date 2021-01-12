@@ -66,7 +66,6 @@ class DetailWH extends Component {
       whList: [],
       favorite : false,
       rentUserNo:'',
-      activeIndex: 0,
       dataTab:[]
     };
     this.navigation = props.navigation;
