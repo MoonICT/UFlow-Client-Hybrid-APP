@@ -199,9 +199,10 @@ class Chatting extends Component {
           <View style={styles.inner}>
             <ScrollView>
               <View style={SS.header}>
+                {/**TODO 창고명 바인딩 안되어있음**/}
                 <List.Section>
                   <List.Accordion
-                    title="에이씨티앤코아물류"
+                    title="창고명"
                     titleStyle={SS.name}
                     style={SS.headerChat}
                     left={() => (

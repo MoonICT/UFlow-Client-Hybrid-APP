@@ -61,9 +61,15 @@ class Quotation extends Component {
     return changeTime;
   };
 
-  onClickContract = () => {
+  onClickContractTrust = () => {
     this.setState({
       visibleContractTrust: !this.state.visibleContractTrust
+    })
+  }
+
+  onClickContractKeep = () => {
+    this.setState({
+      visibleContractKeep: !this.state.visibleContractKeep
     })
   }
 
@@ -178,7 +184,7 @@ class Quotation extends Component {
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
                   {this.state.imgType &&
-                    <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                  <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
                   }
                 </View>
                 <View
@@ -263,7 +269,7 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtTrustGroups={this.state.estmtTrustGroups}
               groupOrders={this.state.groupOrders}
-              onClickContract={this.onClickContract}
+              onClickContract={this.onClickContractTrust}
             />
             }
             {(type === 'TENANT' && status === 'RS00' && typeWH === 'KEEP')
@@ -281,7 +287,7 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtKeepGroups={this.state.estmtKeepGroups}
               groupOrders={this.state.groupOrders}
-              onClickContract={this.onClickContract}
+              onClickContract={this.onClickContractKeep}
             />
             }
 
@@ -506,9 +512,9 @@ class Quotation extends Component {
         {/** 임대(보관) 계약협의 요청 **/}
         <Dialog
           style={DefaultStyle.popup}
-          visible={this.state.visibleContractTrust}
+          visible={this.state.visibleContractKeep}
           onDismiss={() => {
-            this.setState({visibleContractTrust: false});
+            this.setState({visibleContractKeep: false});
           }}>
           <Dialog.Title style={DefaultStyle._titleDialog}>
             임대(보관) 계약협의 요청
@@ -519,7 +525,7 @@ class Quotation extends Component {
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
-              onPress={() => this.setState({visibleContractTrust: false})}>
+              onPress={() => this.setState({visibleContractKeep: false})}>
               아니오
             </Button>
             <Button
@@ -689,14 +695,18 @@ class Quotation extends Component {
           break;
         case 'CT':
           /** 견적 신청 얼럿 **/
-          this.setState({visibleContractTrust: true});
+          if (this.props.route.params.typeWH === 'KEEP') {
+            this.setState({visibleContractKeep: true});
+          } else if (this.props.route.params.typeWH === 'TRUST') {
+            this.setState({visibleContractTrust: true});
+          }
           break;
       }
     }
 
     console.log(typeWH, 'typeWH')
-    if(dataApi.whrgMgmtTrust.typeCode)
-    console.log(dataApi.whrgMgmtTrust.typeCode.stdDetailCode, 'dataApi.whrgMgmtKeep.typeCode')
+    if (dataApi.whrgMgmtTrust.typeCode)
+      console.log(dataApi.whrgMgmtTrust.typeCode.stdDetailCode, 'dataApi.whrgMgmtKeep.typeCode')
 
     if (typeWH.toLocaleLowerCase() === 'trust') {
 
