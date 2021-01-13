@@ -6,6 +6,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { SafeAreaView, View, ScrollView } from 'react-native';
 import {
   Checkbox,
@@ -21,9 +22,10 @@ import {
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
-import { styles as S } from '../style';
-
+import ActionCreator from '@Actions';
 import { Account } from '@Services/apis';
+import editInfo from '@Assets/images/editInfo.png';
+import { styles as S } from '../style';
 
 const tabSelect = [
   {
@@ -106,6 +108,12 @@ class MypageInfo extends Component {
       emailRcv: isAgreeSNS.email,
       smsRcv: isAgreeSNS.sms
     }).then(res => {
+      this.props.showPopup({
+        type: 'confirm',
+        title: '회원정보 수정 완료',
+        content: '회원정보가 수정되었습니다.',
+        image: editInfo
+      });
       console.log('editMyInfo', res);
     }).catch(err => {
       console.log(err);
@@ -144,6 +152,7 @@ class MypageInfo extends Component {
             />
             <TextField
               type={'password'}
+              secureTextEntry={true}
               labelTextField="현재 비밀번호"
               colorLabel="#000000"
               value={data.passwordOld ? data.passwordOld : ''}
@@ -155,6 +164,7 @@ class MypageInfo extends Component {
             />
             <TextField
               type={'password'}
+              secureTextEntry={true}
               value={data.password ? data.password : ''}
               valueProps={e => this.setState({
                 data:{
@@ -164,6 +174,7 @@ class MypageInfo extends Component {
               labelTextField="새 비밀번호" colorLabel="#000000" />
             <TextField
               type={'password'}
+              secureTextEntry={true}
               value={data.ConfirmPassword ? data.ConfirmPassword : ''}
               valueProps={e => this.setState({
                 data:{
@@ -233,4 +244,31 @@ class MypageInfo extends Component {
   }
 }
 
-export default MypageInfo;
+/** map state with store states redux store */
+function mapStateToProps(state) {
+  // console.log('++++++mapStateToProps: ', state);
+  return {
+    // count: state.home.count,
+    imageStore: state.registerWH.pimages,
+  };
+}
+
+/** dispatch action to redux */
+function mapDispatchToProps(dispatch) {
+  return {
+    dataAction: action => {
+      dispatch(ActionCreator.ContractConditions(action));
+    },
+    hidePopup: status => {
+      dispatch(ActionCreator.hide(status));
+    },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MypageInfo);

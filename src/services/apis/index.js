@@ -24,6 +24,7 @@ import * as FindPassword from './FindPassword';
 import * as MediaFileContract from './MediaFileContract';
 import * as Fav from './Fav';
 import * as Emergency from './Emergency';
+import * as FCM from './FCM';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {

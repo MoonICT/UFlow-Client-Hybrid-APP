@@ -6,27 +6,33 @@ import React, { Component, Fragment } from 'react';
 import { ScrollView, Text, View, Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
-import { debounce } from "lodash";
+import { debounce } from 'lodash';
 
 class AppGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active:'',
+      active: '',
       content: '',
     };
   }
 
-  setDebounce = debounce((callback) => {
+  setDebounce = debounce(callback => {
     callback();
   });
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.title !== this.props.title) {
       this.setDebounce(() => {
         this.setState({
-          active: this.props && this.props.title ? this.props.title : this.props.data && this.props.data[0].title,
-          content: this.props.data && this.props.data.length > 0 && this.props.data[0].content,
+          active:
+            this.props && this.props.title
+              ? this.props.title
+              : this.props.data && this.props.data[0].title,
+          content:
+            this.props.data &&
+            this.props.data.length > 0 &&
+            this.props.data[0].content,
         });
       });
     }
@@ -36,15 +42,15 @@ class AppGrid extends Component {
   //   const {title} = this.props;
   //   title
   //     ? this.setState({ active: this.props.title })
-  //     : this.setState({ 
+  //     : this.setState({
   //       active: this.props.data && this.props.data[0].title,
   //       content:  this.props.data && this.props.data[0].content
-      
+
   //     });
   // }
 
   handlePress = item => {
-    this.setState({ active: item.title, content: item.content});
+    this.setState({ active: item.title, content: item.content });
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -60,10 +66,15 @@ class AppGrid extends Component {
     }
   }
   render() {
-    
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-    const { data, titleProps, titleCenter, valueActive, titleActive } = this.props;
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+    const {
+      data,
+      titleProps,
+      titleCenter,
+      valueActive,
+      titleActive,
+    } = this.props;
     const { active } = this.state;
 
     if (this.props.type === 'controlTitleActive') {
@@ -75,9 +86,7 @@ const windowHeight = Dimensions.get('window').height;
             <Button
               key={index}
               color={
-                titleActive === item.title
-                  ? '#000000'
-                  : 'rgba(0, 0, 0, 0.54)'
+                titleActive === item.title ? '#000000' : 'rgba(0, 0, 0, 0.54)'
               }
               onPress={() => {
                 this.handlePress(item);
@@ -85,9 +94,7 @@ const windowHeight = Dimensions.get('window').height;
               }}
               style={[
                 DefaultStyle._tabItem,
-                titleActive === item.title
-                  ? DefaultStyle._tabItemActive
-                  : '',
+                titleActive === item.title ? DefaultStyle._tabItemActive : '',
               ]}>
               {item.title}
             </Button>
@@ -121,20 +128,14 @@ const windowHeight = Dimensions.get('window').height;
         return (
           <Button
             key={index}
-            color={
-              active === item.title
-                ? '#000000'
-                : 'rgba(0, 0, 0, 0.54)'
-            }
+            color={active === item.title ? '#000000' : 'rgba(0, 0, 0, 0.54)'}
             onPress={() => {
               this.handlePress(item);
               titleProps && titleProps(item.title, index);
             }}
             style={[
               DefaultStyle._tabItem,
-              active === item.title
-                ? DefaultStyle._tabItemActive
-                : '',
+              active === item.title ? DefaultStyle._tabItemActive : '',
             ]}>
             {item.title}
           </Button>
