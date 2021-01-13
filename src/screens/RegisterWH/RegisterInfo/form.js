@@ -10,7 +10,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Card, Text } from 'react-native-paper';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Select from '@Components/organisms/Select';
@@ -29,13 +29,15 @@ class FormInfo extends Component {
       title: 'Profile Photo',
       confirm: false,
       value: 1,
-      from: props.formData.usblYmdFrom
-        ? new Date(props.formData.usblYmdFrom)
-        : new Date(),
+      from:
+        props.formData.usblYmdFrom && props.formData.usblYmdFrom !== null
+          ? new Date(props.formData.usblYmdFrom)
+          : new Date(),
       showFrom: false,
-      to: props.formData.usblYmdTo
-        ? new Date(props.formData.usblYmdTo)
-        : new Date(),
+      to:
+        props.formData.usblYmdTo && props.formData.usblYmdTo !== null
+          ? new Date(props.formData.usblYmdTo)
+          : new Date(),
       showTo: false,
       dataForm: [
         {
@@ -66,7 +68,7 @@ class FormInfo extends Component {
     return true;
   }
 
-  onChangeFrom = (selectedDate) => {
+  onChangeFrom = selectedDate => {
     const currentDate = selectedDate || this.state.from;
     this.setState({ from: currentDate, showFrom: false });
     let d = selectedDate
@@ -84,7 +86,7 @@ class FormInfo extends Component {
   showDatepickerTo = () => {
     this.setState({ showTo: true });
   };
-  onChangeTo = (selectedDate) => {
+  onChangeTo = selectedDate => {
     const currentDate = selectedDate || this.state.to;
     this.setState({ to: currentDate, showTo: false });
     let d = selectedDate
@@ -95,24 +97,32 @@ class FormInfo extends Component {
     this.props.valueForm && this.props.valueForm(dataF);
   };
   UNSAFE_componentWillReceiveProps(newProps) {
-    // let selectedValue = newProps.selectedValue;
-    let newUsblYmdFrom = newProps.formData.usblYmdFrom;
-    let newUsblYmdTo = newProps.formData.usblYmdTo;
+    // console.log('newProps :>> ', newProps);
+    let selectedValue = newProps.selectedValue;
+    let formData = newProps.formData;
+    let newUsblYmdFrom = formData.usblYmdFrom;
+    let newUsblYmdTo = formData.usblYmdTo;
     if (
-      newProps.formData &&
+      formData &&
       newUsblYmdFrom !== undefined &&
+      newUsblYmdFrom !== null &&
       newUsblYmdFrom !== ''
     ) {
-      this.setState({ from: new Date(newProps.formData.usblYmdFrom) });
+      this.setState({ from: new Date(formData.usblYmdFrom) });
+    } else if (newUsblYmdFrom === null) {
+      this.setState({ from: 'YYYY-MM-DD' });
     }
     if (
-      newProps.formData &&
+      formData &&
       newUsblYmdTo !== undefined &&
+      newUsblYmdTo !== null &&
       newUsblYmdTo !== ''
     ) {
-      this.setState({ to: new Date(newProps.formData.usblYmdTo) });
+      this.setState({ to: new Date(formData.usblYmdTo) });
+    } else if (newUsblYmdTo === null) {
+      this.setState({ to: 'YYYY-MM-DD' });
     }
-    // this.setState({ selectedValue: selectedValue });
+    this.setState({ selectedValue: selectedValue });
   }
   render() {
     const {
@@ -143,8 +153,9 @@ class FormInfo extends Component {
     } = this.state;
     // console.log('formDataKeep :>> ', formData);
     let timeCheck = false;
-
     if (
+      typeof from !== 'string' &&
+      typeof to !== 'string' &&
       to.toLocaleDateString() >= from.toLocaleDateString() &&
       from.toLocaleDateString() >= new Date().toLocaleDateString()
     ) {
@@ -167,13 +178,14 @@ class FormInfo extends Component {
       mgmtChrgDvCodes &&
       mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
 
-      console.log('defaultTypeCode', defaultTypeCode)
     return (
       <Card style={S.cards}>
         <View style>
           <Select
             data={typeCodes}
-            valueSelected={defaultTypeCode !== undefined ? defaultTypeCode.label : ''}
+            valueSelected={
+              defaultTypeCode !== undefined ? defaultTypeCode.label : ''
+            }
             dataDefault={defaultTypeCode !== undefined ? defaultTypeCode : ''}
             valueProps={e => {
               // let index = dataForm.findIndex(el => el.id === number);
@@ -189,7 +201,9 @@ class FormInfo extends Component {
           />
           <Select
             data={calUnitDvCodes}
-            valueSelected={defaultcalUnit !== undefined ? defaultcalUnit.label : ''}
+            valueSelected={
+              defaultcalUnit !== undefined ? defaultcalUnit.label : ''
+            }
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             selectedValue={formData.calUnitDvCode}
             labelSelected="정산단위"
@@ -203,7 +217,9 @@ class FormInfo extends Component {
           <Select
             data={calStdDvCodes}
             // selectedValue={formData.calStdDvCode}
-            valueSelected={defaultcalStd !== undefined ? defaultcalStd.label : ''}
+            valueSelected={
+              defaultcalStd !== undefined ? defaultcalStd.label : ''
+            }
             dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
             labelSelected="산정기준"
             valueProps={e => {
@@ -216,7 +232,9 @@ class FormInfo extends Component {
           <Select
             data={mgmtChrgDvCodes && mgmtChrgDvCodes}
             // selectedValue={formData.mgmtChrgDvCode}
-            valueSelected={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg.label : ''}
+            valueSelected={
+              defaulcmgmtChrg !== undefined ? defaulcmgmtChrg.label : ''
+            }
             dataDefault={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
             labelSelected="관리비구분"
             valueProps={e => {
@@ -297,8 +315,7 @@ class FormInfo extends Component {
                 labelTextField="가용수치"
                 textRight="m2"
                 defaultValue={
-                  formData.usblValue
-                    ? numberToStd(formData.usblValue) : '0'
+                  formData.usblValue ? numberToStd(formData.usblValue) : '0'
                 }
                 valueProps={e => {
                   let text = e.replace(/[^0-9]/g, '');
@@ -325,9 +342,7 @@ class FormInfo extends Component {
                 timeCheck === false ? DefaultStyle._errorText : '',
               ]}>
               <Text style={DefaultStyle._textDate}>
-                {from
-                  ? from.toLocaleDateString()
-                  : new Date().toLocaleDateString()}
+                {typeof from === 'string' ? from : from.toLocaleDateString()}
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
@@ -361,7 +376,7 @@ class FormInfo extends Component {
                 timeCheck === false ? DefaultStyle._errorText : '',
               ]}>
               <Text style={DefaultStyle._textDate}>
-                {to.toLocaleDateString()}
+                {typeof to === 'string' ? to : to.toLocaleDateString()}
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
@@ -440,15 +455,35 @@ class FormInfo extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    // let formData = this.props.formData;
+    // let newUsblYmdFrom = formData.usblYmdFrom;
+    // let newUsblYmdTo = formData.usblYmdTo;
+    // if (
+    //   formData &&
+    //   newUsblYmdFrom !== undefined &&
+    //   newUsblYmdFrom !== null &&
+    //   newUsblYmdFrom !== ''
+    // ) {
+    //   this.setState({ from: new Date(formData.usblYmdFrom) });
+    // } else if (newUsblYmdFrom === null) {
+    //   this.setState({ from: 'YYYY-MM-DD' });
+    // }
+    // if (
+    //   formData &&
+    //   newUsblYmdTo !== undefined &&
+    //   newUsblYmdTo !== null &&
+    //   newUsblYmdTo !== ''
+    // ) {
+    //   this.setState({ to: new Date(formData.usblYmdTo) });
+    // }
     SplashScreen.hide();
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    // console.log('::prevPropsFormKeep::',prevProps);
-    // console.log('::propsFormKeep::',this.props);
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log('::prevPropsFormKeep::',prevState);
+  //   console.log('::propsFormKeep::',this.state);
+  // }
 }
 
 /** map state with store states redux store */
