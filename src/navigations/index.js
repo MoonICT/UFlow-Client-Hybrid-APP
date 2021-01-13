@@ -59,15 +59,15 @@ import Annoucement from '@Screeens/Annoucement';
 import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
 import FAQ from '@Screeens/FAQ';
 
-import TenantMypage from '@Screeens/TenantMypage';
-import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
-import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
-import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
+// import TenantMypage from '@Screeens/TenantMypage';
+// import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
+// import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
+// import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
 import Chatting from '@Screeens/Mypage/Chat';
 import DetailsManager from '@Screeens/Mypage/DetailsManager';
 import DetailsSettlement from '@Screeens/Mypage/DetailsSettlement';
 
-import ProprietorMypage from '@Screeens/ProprietorMypage';
+// import ProprietorMypage from '@Screeens/ProprietorMypage';
 
 import Quotation from '@Screeens/Mypage/Quotation';
 import ResponseQuotation from '@Screeens/Mypage/ResponseQuotation';
@@ -380,24 +380,26 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <AuthStack.Screen
-                    name="QuotationTrust"
-                    component={QuotationTrust}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
-                  <AuthStack.Screen
-                    name="AvaliableChate"
-                    component={AvaliableChate}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
-                  <AuthStack.Screen
-                    name="ContractDetails"
-                    component={ContractDetails}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
+{
+                  // <AuthStack.Screen
+                  //   name="QuotationTrust"
+                  //   component={QuotationTrust}
+                  //   headerMode={false}
+                  //   options={{ headerShown: false }}
+                  // />
+                  // <AuthStack.Screen
+                  //   name="AvaliableChate"
+                  //   component={AvaliableChate}
+                  //   headerMode={false}
+                  //   options={{ headerShown: false }}
+                  // />
+                  // <AuthStack.Screen
+                  //   name="ContractDetails"
+                  //   component={ContractDetails}
+                  //   headerMode={false}
+                  //   options={{ headerShown: false }}
+                  // />
+                  }
                   <AuthStack.Screen
                     name="MypageInfo"
                     component={MypageInfo}
@@ -452,12 +454,14 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <AuthStack.Screen
-                    name="ProprietorMypage"
-                    component={ProprietorMypage}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
+{
+                  // <AuthStack.Screen
+                  //   name="ProprietorMypage"
+                  //   component={ProprietorMypage}
+                  //   headerMode={false}
+                  //   options={{ headerShown: false }}
+                  // />
+                  }
                   <AuthStack.Screen
                     name="ResponseQuotation"
                     component={ResponseQuotation}
@@ -470,12 +474,14 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  <AuthStack.Screen
-                    name="TenantMypage"
-                    component={TenantMypage}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
+{
+                  // <AuthStack.Screen
+                  //   name="TenantMypage"
+                  //   component={TenantMypage}
+                  //   headerMode={false}
+                  //   options={{ headerShown: false }}
+                  // />
+                  }
                   <AuthStack.Screen
                     name="More"
                     component={More}
