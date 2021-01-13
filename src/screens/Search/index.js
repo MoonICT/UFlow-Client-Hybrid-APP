@@ -64,6 +64,12 @@ class Search extends Component {
     props.searchToggle(params && params.searchQuery ? true : !props.isSearchToggle);
   }
 
+  UNSAFE_componentWillMount() {
+    if (this.searchQuery !== this.state.searchQuery) {
+      this._onChangeSearchQuery(this.state.searchQuery);
+    }
+  }
+
   /**
    * Debounce Utils
    * */
