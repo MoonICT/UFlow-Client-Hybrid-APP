@@ -75,10 +75,6 @@ class More extends Component {
     // const { route, isLogin } = this.props;
     const { signOut } = this.context;
 
-    // console.log('routeMore :>> ', route);
-    // const isLogin = getLoginStatus();
-    console.log('isLogin More==>', isLogin);
-
     return (
       <SafeAreaView style={S.container}>
         <ScrollView style={DefaultStyle.backgroundGray}>

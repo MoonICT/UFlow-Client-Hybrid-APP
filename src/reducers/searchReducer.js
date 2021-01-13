@@ -85,7 +85,7 @@ export default (state = defaultState, action) => {
         }
       }
     case types.SEARCH_SET_FILTER_CODES:
-      console.log('Redxt $$$$', action.payload)
+      // console.log('Redxt $$$$', action.payload)
       return {
         ...state,
         filterCodes: {

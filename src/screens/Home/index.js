@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-08 16:42:21
+ * @modify date 2021-01-13 15:30:28
  * @desc [description]
  */
 
@@ -496,7 +496,7 @@ class Home extends Component {
                   textAlignVertical="center"
                   numberOfLines={1}
                   ellipsizeMode="start"
-                  onChange={e => this.setState({ textSearch: e.target.value })}
+                  onChangeText={text => this.setState({ textSearch: text })}
                 />
                 {
                   <Icon
@@ -506,7 +506,7 @@ class Home extends Component {
                     style={{ marginLeft: 10 }}
                     onPress={() =>
                       this.navigation.navigate('Search', {
-                        searchValue: textSearch,
+                        searchQuery: textSearch,
                       })
                     }
                   />

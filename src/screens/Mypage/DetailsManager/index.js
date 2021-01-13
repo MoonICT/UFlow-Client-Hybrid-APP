@@ -52,7 +52,7 @@ import {styles as S} from '../style';
 import {styles as SS} from './style';
 import {InOutManagerService} from '@Services/apis';
 import DatePicker from "@react-native-community/datetimepicker";
-
+import DocumentPicker from 'react-native-document-picker';
 const selectRequest = [
   {
     label: '모두',
@@ -110,6 +110,7 @@ export default class DetailsManager extends Component {
       isTypeCancel: 'IMPORT',
       isToggle: false,
       isEmpty: true,
+      singleFile: null,
       resBody: {},
       receiptCancel: false,
       ExpctCurrent: -1,
@@ -594,101 +595,124 @@ export default class DetailsManager extends Component {
 
     // 창고주
     if (type === 'OWNER') {
-      if (typeCreate === 'export') {
-        // 출고 확정
-        if (!ExpctYmd) {
-          alert('일자 정보가 없습니다.');
-          return;
-        } if (!createDateStr) {
-          alert('일자 정보가 없습니다.');
-          return;
-        } else if (!createValue) {
-          alert('수량 정보가 없습니다.');
-          return;
-        } else if (!rentWarehNo || !ExpctSeq) {
-          alert('공유창고 정보가 없습니다.');
-          return;
-        }
-        let data = {
-          rentWarehNo: rentWarehNo,
-          whoutExpct: Moment(ExpctYmd).valueOf(),
-          decisQty: Number(createValue),
-          decis: Moment(createDateStr).valueOf(),
-          whoutExpctSeq: ExpctSeq,
-          reason: "",
-          filename: ImageFilename,
-        }
-        console.log(data, "출고 확정");
-        InOutManagerService.postExportOwner(data)
-          .then((res) => {
-            console.log(res, 'res');
-            if (res.status === 200) {
-              this.setState({
-                ExpctYmd: '',
-                createValue: 0,
-                createDate: new Date(),
-                createDateStr: dateStr(new Date()),
-                ExpctSeq: -1,
-                ImageFilename: '',
-                visible: false,
-                confirmRequestExport: true
-              });
-              this.getAllData()
-            } else {
-              ToastShow("출고 확정을 실패하였습니다. " + res);
-              console.error(res)
+      let { singleFile } = this.state;
+      if (singleFile !== null) {
+        // If file selected then create FormData
+        const data = new FormData();
+        data.append('name', singleFile.name);
+        data.append('file', singleFile);
+        // Please change file upload URL
+        InOutManagerService.uploadFile(data).then(respon => {
+          if (respon.status === 200) {
+            const {filename} = respon.data
+             if (typeCreate === 'export') {
+            // 출고 확정
+            if (!ExpctYmd) {
+              alert('일자 정보가 없습니다.');
+              return;
+            } if (!createDateStr) {
+              alert('일자 정보가 없습니다.');
+              return;
+            } else if (!createValue) {
+              alert('수량 정보가 없습니다.');
+              return;
+            } else if (!rentWarehNo || !ExpctSeq) {
+              alert('공유창고 정보가 없습니다.');
+              return;
             }
-          }).catch(error => {
-          alert('postExportOwner error:' + error);
-        });
-      } else if (typeCreate === 'import') {
-        // 입고 확정
-        if (!ExpctYmd) {
-          alert('일자 정보가 없습니다.');
-          return;
-        } if (!createDateStr) {
-          alert('일자 정보가 없습니다.');
-          return;
-        } else if (!createValue) {
-          alert('수량 정보가 없습니다.');
-          return;
-        } else if (!rentWarehNo || !ExpctSeq) {
-          alert('공유창고 정보가 없습니다.');
-          return;
-        }
-        let data = {
-          rentWarehNo: rentWarehNo,
-          whinExpct: Moment(ExpctYmd).valueOf(),
-          whinDecisQty: Number(createValue),
-          whinDecis: Moment(createDateStr).valueOf(),
-          expctSeq: ExpctSeq,
-          reason: "",
-          filename: ImageFilename,
-        }
-        console.log(data, "입고 확정");
-        InOutManagerService.postImportOwner(data)
-          .then((res) => {
-            console.log(res, 'res');
-            if (res.status === 200) {
-              this.setState({
-                ExpctYmd: '',
-                createValue: 0,
-                createDate: new Date(),
-                createDateStr: dateStr(new Date()),
-                ExpctSeq: -1,
-                ImageFilename: '',
-                visible: false,
-                confirmRequestImport: true
-              });
-              this.getAllData()
-            } else {
-              ToastShow("입고 확정을 실패하였습니다. " + res);
-              console.error(res)
+            let data = {
+              filename,
+              rentWarehNo: rentWarehNo,
+              whoutExpct: Moment(ExpctYmd).valueOf(),
+              decisQty: Number(createValue),
+              decis: Moment(createDateStr).valueOf(),
+              whoutExpctSeq: ExpctSeq,
+              reason: "",
+              filename: ImageFilename,
             }
-          }).catch(error => {
-          alert('postExportOwner error:' + error);
+            console.log(data, "출고 확정");
+            InOutManagerService.postExportOwner(data)
+              .then((res) => {
+                console.log(res, 'res');
+                if (res.status === 200) {
+                  this.setState({
+                    ExpctYmd: '',
+                    createValue: 0,
+                    createDate: new Date(),
+                    createDateStr: dateStr(new Date()),
+                    ExpctSeq: -1,
+                    ImageFilename: '',
+                    visible: false,
+                    confirmRequestExport: true
+                  });
+                  this.getAllData()
+                } else {
+                  ToastShow("출고 확정을 실패하였습니다. " + res);
+                  console.error(res)
+                }
+              }).catch(error => {
+              alert('postExportOwner error:' + error);
+            });
+          } else if (typeCreate === 'import') {
+            // 입고 확정
+            if (!ExpctYmd) {
+              alert('일자 정보가 없습니다.');
+              return;
+            } if (!createDateStr) {
+              alert('일자 정보가 없습니다.');
+              return;
+            } else if (!createValue) {
+              alert('수량 정보가 없습니다.');
+              return;
+            } else if (!rentWarehNo || !ExpctSeq) {
+              alert('공유창고 정보가 없습니다.');
+              return;
+            }
+            let data = {
+              filename,
+              rentWarehNo: rentWarehNo,
+              whinExpct: Moment(ExpctYmd).valueOf(),
+              whinDecisQty: Number(createValue),
+              whinDecis: Moment(createDateStr).valueOf(),
+              expctSeq: ExpctSeq,
+              reason: "",
+              filename: ImageFilename,
+            }
+            console.log(data, "입고 확정");
+            InOutManagerService.postImportOwner(data)
+              .then((res) => {
+                console.log(res, 'res');
+                if (res.status === 200) {
+                  this.setState({
+                    ExpctYmd: '',
+                    createValue: 0,
+                    createDate: new Date(),
+                    createDateStr: dateStr(new Date()),
+                    ExpctSeq: -1,
+                    ImageFilename: '',
+                    visible: false,
+                    confirmRequestImport: true
+                  });
+                  this.getAllData()
+                } else {
+                  ToastShow("입고 확정을 실패하였습니다. " + res);
+                  console.error(res)
+                }
+              }).catch(error => {
+              alert('postExportOwner error:' + error);
+            });
+          }
+          }
+        }).catch(error => {
+          alert('DetailRegisterTenant MediaUpload error:' + error);
         });
+      } else {
+        // If no file selected the show alert
+        alert('Please Select File first');
       }
+
+
+     
 
     } else if (type === 'TENANT') {
       // 임차인
@@ -822,13 +846,31 @@ export default class DetailsManager extends Component {
 
   }
 
+    // upload image
+    handlePicker = async () => {
+  
+      try {
+        const res = await DocumentPicker.pick({
+          type: [DocumentPicker.types.images],
+        });
+        this.setState({ singleFile: res })
+
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          // User cancelled the picker, exit any dialogs or menus and move on
+        } else {
+          throw err;
+        }
+      }
+    };
+
   render() {
     const {isProgress, isToggle, isEmpty, dataInfo, responseFilter, totalMoney, isExpired, type} = this.state;
     const {isOpenStart, isOpenEnd, rangeDay, limitRow, isOpenTimeCreateImport, timeCreateImport} = this.state;
     const {ExpctSeq, ExpctYmd, IOType, IOStatus} = this.state;
 
     let {startDate, endDate} = this.state.filter;
-
+    console.log('type', type)
     const processing =
       isProgress === true ? (
         <View style={DefaultStyle._bodyCard}>
@@ -1366,77 +1408,7 @@ export default class DetailsManager extends Component {
                 paddingRight: 0
               }]}>
                 <TouchableOpacity
-                  onPress={() => {
-                    console.log('송장 업로드')
-                    try {
-
-                      var options = {
-                        title: 'Select Image',
-                        customButtons: [
-                          {
-                            name: 'customOptionKey',
-                            title: 'Choose Photo from Custom Option'
-                          },
-                        ],
-                        storageOptions: {
-                          skipBackup: true,
-                          path: 'images',
-                        },
-                      };
-
-                      // TODO file 권한 가져올수 없음.
-                      launchImageLibrary(options, response => {
-                        console.log('Response = ', response);
-                        console.log('image url', response.uri);
-                        console.log('data', response.data);
-
-                        let formData = new FormData();
-
-                        formData.append('file', {
-                          uri: response.uri,
-                          type: response.type,
-                          name: response.fileName,
-                        });
-
-                        InOutManagerService.uploadImage(formData).then(data => {
-                          this.setState({
-                            ImageFilename: data.filename
-                          })
-                        });
-                      })
-
-
-                      // const res = DocumentPicker.pick({
-                      //   type: [DocumentPicker.types.images],
-                      // });
-                      // this.setState({ singleFile: res }, async () => {
-                      //   if (res != null) {
-                      //     // If file selected then create FormData
-                      //     let { singleFile } = this.state;
-                      //     const data = new FormData();
-                      //     data.append('name', singleFile.name);
-                      //     data.append('file', singleFile);
-                      //     // Please change file upload URL
-                      //     InOutManagerService.uploadImage(data).then(res => {
-                      //       if (res.status === 200) {
-                      //         let { url } = res.data;
-                      //         console.log('url', url);
-                      //       }
-                      //     });
-                      //   } else {
-                      //     // If no file selected the show alert
-                      //     alert('Please Select File first');
-                      //   }
-                      // });
-                    } catch (err) {
-                      console.error(err)
-                      // if (DocumentPicker.isCancel(err)) {
-                      //   // User cancelled the picker, exit any dialogs or menus and move on
-                      // } else {
-                      throw err;
-                      // }
-                    }
-                  }}
+                  onPress={() => this.handlePicker()}
                   style={[
                     DefaultStyle._btnOutline,
                     DefaultStyle._btnLeft,
