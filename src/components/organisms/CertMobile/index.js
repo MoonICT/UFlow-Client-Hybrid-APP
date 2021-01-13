@@ -147,7 +147,7 @@ export default class CertMobile extends Component {
               DefaultStyle._textButton,
               DefaultStyle._colorMuted
             ]}>
-            {'인증번호 발송'}
+            {'인증번호확인'}
             {isSendCode ?
             <Text style={[DefaultStyle._textErrorInput]}>({moment(timer).format('mm:ss')})</Text>
             :
@@ -166,7 +166,7 @@ export default class CertMobile extends Component {
               DefaultStyle._textButton,
               DefaultStyle._colorMuted
             ]}>
-            {isTimeOver || isSendCode ? '재발송' : '인증번호 확인'}
+            {isTimeOver || isSendCode ? '재발송' : '인증번호발송'}
           </Text>
         </TouchableOpacity>
       </View>

@@ -73,7 +73,6 @@ class DetailWH extends Component {
     };
     this.navigation = props.navigation;
   }
-
   hiddenName = name => {
     if (name && name.length > 0) {
       let nameArr = name.split('');
@@ -98,6 +97,7 @@ class DetailWH extends Component {
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.route?.params?.id !== this.props?.route?.params?.id) {
       this.setState({ id: this.props?.route?.params?.id });
+      this.refs.scrollView.scrollTo(0);
       this.getDataWH();
     }
   }
@@ -331,7 +331,7 @@ class DetailWH extends Component {
             />
           )}
         </Appbars>
-        <ScrollView style={DefaultStyle.backgroundGray}>
+        <ScrollView style={DefaultStyle.backgroundGray} ref="scrollView">
           <View style={DefaultStyle._cards}>
             <Text
               style={[DefaultStyle._titleWH, { backgroundColor: '#4caf50' }]}>
