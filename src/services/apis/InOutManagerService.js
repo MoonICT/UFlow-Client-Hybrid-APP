@@ -310,3 +310,14 @@ export const uploadImage = (formData) => {
     }
   });
 };
+
+export const uploadFile = async (body) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.post(`/api/v1/rtwh/upload`, body,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      contentType: 'multipart/form-data'
+    }
+  });
+};
