@@ -1,6 +1,6 @@
 /**
  * @author [Deokin]
- * @modify date 2021-01-13 16:25:46
+ * @modify date 2021-01-13 16:47:20
  */
 
 import React, { Component } from 'react';
@@ -29,7 +29,12 @@ class SearchOverlay extends Component {
       searchAddress: [], // 검색결과(지역)
       searchWarehouse: [], // 검색결과(창고)
     };
-    this.query = query;
+  }
+
+  UNSAFE_componentWillMount() {
+    if (this.state.query !== '') {
+      this._onChangeSearchQuery(this.state.query);
+    }
   }
 
   /**
@@ -43,7 +48,6 @@ class SearchOverlay extends Component {
    * On change search query.
    * */
   _onChangeSearchQuery(keyword) {
-    console.log('keyword==>', keyword);
     if (keyword.length > 0) {
       this.setState({
         isProgress: true,
@@ -85,23 +89,6 @@ class SearchOverlay extends Component {
     this.props.searchToggle(false);
     this.props.onSelect(resultItem);
   };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.query !== prevState.query) {
-      return { query: nextProps.query };
-    }
-    return null;
-  }
-
-  // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.query !== this.props.query) {
-      let { query } = this.props;
-      this.query = query;
-      this._onChangeSearchQuery(query);
-      this.props.searchToggle(!this.props.isFilterToggle);
-    }
-  }
 
   renderSearchWarehouse = () => {
     const { searchAddress, searchWarehouse, isProgress, query } = this.state;
