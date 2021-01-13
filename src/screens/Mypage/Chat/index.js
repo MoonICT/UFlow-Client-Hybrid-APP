@@ -8,10 +8,10 @@
 // Global Imports
 import React, { Component, Fragment } from 'react';
 import {
-  SafeAreaView,
+  // SafeAreaView,
   View,
   ScrollView,
-  TouchableOpacity,
+  // TouchableOpacity,
   Image,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -20,7 +20,7 @@ import {
   Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
+// import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, List, IconButton } from 'react-native-paper';
 
 // Local Imports
@@ -30,8 +30,8 @@ import TextField from '@Components/organisms/TextField';
 
 import ActionCreator from '@Actions';
 
-import card from '@Assets/images/card-img.png';
-import { styles as S } from '../style';
+// import card from '@Assets/images/card-img.png';
+// import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
@@ -39,6 +39,7 @@ import { Warehouse } from '@Services/apis';
 class Chatting extends Component {
   constructor(props) {
     super(props);
+    this.scrollRef = React.createRef();
     this.webView = null;
     this.state = {
       visible: false,
@@ -68,10 +69,10 @@ class Chatting extends Component {
 
   hideConfirm = () => this.setState({ visibleConfirm: false });
   getDataChat = () => {
-    let warehSeq = this.props.route.params.warehSeq;
+    // let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let rentUserNo = this.props.route.params.rentUserNo;
-    let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
+    // let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
     let url = warehouseRegNo + '-' + rentUserNo;
     Warehouse.listChat(url)
       .then(res => {
@@ -90,13 +91,14 @@ class Chatting extends Component {
       });
   };
   sendMessage = () => {
+    console.log('this.props.route.params.type',this.props.route.params.type);
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let rentUserNo = this.props.route.params.rentUserNo;
     let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
     // let url = warehouseRegNo + '-' + rentUserNo;
     let url =
-      this.props.route.params.type === 'OWNER'
+      this.props.route.params.type.toUpperCase() === 'OWNER'
         ? 'owner/' + rentUserNo
         : 'tenant';
     let data = {
@@ -125,30 +127,31 @@ class Chatting extends Component {
       });
   };
   render() {
-    const { route, workComplete } = this.props;
+    const { route } = this.props;
     const { dataChat, chatting, isSendMessage } = this.state;
     let type = route && route.params && route.params.type;
     let warehouse = route && route.params && route.params.warehouse;
     let rentUser = route && route.params && route.params.rentUser;
     console.log('warehouse', warehouse);
     console.log('rentUser', rentUser);
+    console.log('type', type);
     let listChat =
       dataChat &&
       dataChat.map((item, index) => {
         return (
           <View
-            style={[SS.user, type === item.type ? SS.userMe : '']}
+            style={[SS.user, type.toUpperCase() === item.type ? SS.userMe : '']}
             key={index}>
             {index === 0 ||
             (index !== 0 &&
               dataChat[index - 1].type !== dataChat[index].type) ? (
               <View style={SS.info}>
-                {type === item.type ? null : (
+                {type.toUpperCase() === item.type ? null : (
                   <Fragment>
                     <View>
                       <Image
                         source={
-                          item.type === 'OWNER'
+                          item.type.toUpperCase() === 'OWNER'
                             ? { uri: warehouse?.thumbnail }
                             : null
                         }
@@ -164,7 +167,7 @@ class Chatting extends Component {
                 <Text style={SS.time}>{item.createTime}</Text>
               </View>
             ) : null}
-            {type === item.type ? (
+            {type.toUpperCase() === item.type ? (
               <View style={[SS.body, SS.bodyMe]}>
                 <Text style={[SS.content, SS.contentMe]}>{item.chatCount}</Text>
               </View>
@@ -197,7 +200,12 @@ class Chatting extends Component {
         </Appbars>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
-            <ScrollView>
+            <ScrollView
+            ref={ref => (this.scrollRef = ref)}
+            onContentSizeChange={() => {
+            this.scrollRef.scrollToEnd();
+            }}
+            >
               <View style={SS.header}>
                 {/**TODO 창고명 바인딩 안되어있음**/}
                 <List.Section>
@@ -208,7 +216,7 @@ class Chatting extends Component {
                     left={() => (
                       <Image
                         source={
-                          type === 'OWNER'
+                          type.toUpperCase() === 'OWNER'
                             ? null
                             : { uri: warehouse?.thumbnail }
                         }
@@ -218,7 +226,7 @@ class Chatting extends Component {
                   />
                 </List.Section>
               </View>
-              <View style={SS.chatting}>
+              <View style={SS.chatting} >
                 <View style={SS.dateTop}>
                   <Text style={SS.textDateTop}>2020년 10월 30일</Text>
                 </View>
