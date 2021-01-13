@@ -19,7 +19,6 @@ import TextField from '@Components/organisms/TextField';
 import { Warehouse } from '@Services/apis';
 
 import ActionCreator from '@Actions';
-import { styles as S } from '../style';
 import { styles as SS } from './style';
 class CreateInquiryWH extends Component {
   constructor(props) {
@@ -54,7 +53,7 @@ class CreateInquiryWH extends Component {
     const { questionContent } = this.state;
 
     return (
-      <SafeAreaView style={S.container}>
+      <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -74,7 +73,7 @@ class CreateInquiryWH extends Component {
             titleStyle={DefaultStyle._textHeaderRight}
           />
         </Appbars>
-        <ScrollView style={DefaultStyle.backgroundGray}>
+        <ScrollView>
           <View style={SS.bodyCard}>
             <View style={SS.titleBody}>
               <Text style={SS.textTitleBody}>창고 문의 작성</Text>
@@ -88,12 +87,11 @@ class CreateInquiryWH extends Component {
               labelTextField="내용"
               placeholder="문의하실 내용을 입랙해 주세요."
               colorLabel="#000000"
-              styleProps={{height:120}}
+              numberOfLines={5}
+              multiline={true}
               valueProps={text => this.setState({
                 questionContent: text
               })}
-              multiline={true}
-              numberOfLines={4}
             />
           </View>
           {/* <View style={SS.bodyCard}>

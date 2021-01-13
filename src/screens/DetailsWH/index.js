@@ -51,6 +51,7 @@ class DetailWH extends Component {
   constructor (props) {
     super(props);
     this.webView = null;
+    this.myRef = React.createRef();
     let { id } = props.route.params;
     this.state = {
       isImageViewVisible: false,
@@ -97,7 +98,10 @@ class DetailWH extends Component {
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.route?.params?.id !== this.props?.route?.params?.id) {
       this.setState({ id: this.props?.route?.params?.id });
-      this.refs.scrollView.scrollTo(0);
+      this.myRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
       this.getDataWH();
     }
   }
@@ -305,7 +309,7 @@ class DetailWH extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.pop(2)}
+            onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
             title="창고 상세"
@@ -331,7 +335,7 @@ class DetailWH extends Component {
             />
           )}
         </Appbars>
-        <ScrollView style={DefaultStyle.backgroundGray} ref="scrollView">
+        <ScrollView style={DefaultStyle.backgroundGray} ref={this.myRef}>
           <View style={DefaultStyle._cards}>
             <Text
               style={[DefaultStyle._titleWH, { backgroundColor: '#4caf50' }]}>
@@ -1276,7 +1280,7 @@ class DetailWH extends Component {
                 {whList && whList.length > 0 &&
                 <>
                   {whList.slice(0, 4).map((item, index) =>
-                    <View style={S.mainProductItem}>
+                    <View style={S.mainProductItem} key={index}>
                       <TouchableOpacity onPress={() => this.navigation.replace('DetailsWH', { id: item.id })}>
                         {item.thumbnail !== null ? (
                           <ProductCard navigation={this.navigation} data={item} />
