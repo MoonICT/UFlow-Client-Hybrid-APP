@@ -42,7 +42,7 @@ import Progress from '@Components/organisms/Progress';
 class Search extends Component {
   constructor(props) {
     super(props);
-    let { searchQuery } = this.props?.route?.params;
+    let { params } = this.props?.route;
     this.webView = null;
     // Webview initialize options.
     this.option = {
@@ -53,14 +53,15 @@ class Search extends Component {
     this.state = {
       url: this.option.defaultURL,
       progress: 0,
-      searchQuery: searchQuery || '',
+      searchQuery:params && params.searchQuery ? params.searchQuery : '',
     };
     // Ref
     this.refSearchFilter = React.createRef();
     this.navigation = props.navigation;
-    this.searchQuery = searchQuery;
 
-    props.searchToggle(!props.isSearchToggle);
+    // this.searchQuery = params && params.searchQuery ? params.searchQuery : '';
+
+    props.searchToggle(params && params.searchQuery ? true : !props.isSearchToggle);
   }
 
   UNSAFE_componentWillMount() {
@@ -146,7 +147,7 @@ class Search extends Component {
     };
     `;
 
-    let { searchQuery } = this.state;
+    const {searchQuery} = this.state;
 
     return (
       <SafeAreaView style={[styles.container]}>
@@ -169,7 +170,7 @@ class Search extends Component {
 
         {/** 지역/주소 검색하기 패널. */}
         {/** 검색 결과 클릭 시 좌표 이동하기. */}
-        {this.props.isSearchToggle && (
+        {(this.props.isSearchToggle) && (
           <SearchOverlay
             query={searchQuery}
             onSelect={result => this.handleSelectResult(result)}
