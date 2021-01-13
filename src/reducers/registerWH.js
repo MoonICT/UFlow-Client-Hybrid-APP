@@ -109,8 +109,8 @@ let ContractConditions = (state, data) => {
 };
 
 let updateInfo = (state, data) => {
-  console.log('stateRedux', state);
-  console.log('dataRedux', data);
+  // console.log('stateRedux', state);
+  // console.log('dataRedux', data);
 
   try {
     let result = {
@@ -126,7 +126,7 @@ let updateInfo = (state, data) => {
 };
 
 let removeData = (state, data) => {
-  console.log('stateREdex :>> ', state);
+  // console.log('stateREdex :>> ', state);
   try {
     let result = {
       pnImages: [],
