@@ -23,8 +23,8 @@ export default class CertMobile extends Component {
       isCompleteCert: false,
       errorMsg:'',
       isTimeOver:false,
-      timer: 180,
-      duration : moment.duration(180 * 1000, 'milliseconds')
+      timer: 20,
+      duration : moment.duration(20 * 1000, 'milliseconds')
     };
   }
 
@@ -33,7 +33,7 @@ export default class CertMobile extends Component {
     const {duration } = this.state;
     clearInterval(this.interval);
     this.setState({
-      duration : moment.duration(180 * 1000, 'milliseconds')
+      duration : moment.duration(20 * 1000, 'milliseconds')
     })
     this.interval = setInterval(()=>{
       duration.subtract(1000, "milliseconds");
@@ -147,7 +147,7 @@ export default class CertMobile extends Component {
               DefaultStyle._textButton,
               DefaultStyle._colorMuted
             ]}>
-            {'인증번호 발송'}
+            {'인증번호확인'}
             {isSendCode ?
             <Text style={[DefaultStyle._textErrorInput]}>({moment(timer).format('mm:ss')})</Text>
             :
@@ -166,7 +166,7 @@ export default class CertMobile extends Component {
               DefaultStyle._textButton,
               DefaultStyle._colorMuted
             ]}>
-            {isTimeOver || isSendCode ? '재발송' : '인증번호 확인'}
+            {isTimeOver || isSendCode ? '재발송' : '인증번호발송'}
           </Text>
         </TouchableOpacity>
       </View>

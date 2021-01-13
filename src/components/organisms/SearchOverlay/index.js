@@ -1,6 +1,6 @@
 /**
  * @author [Deokin]
- * @modify date 2020-11-24 18:37:45
+ * @modify date 2021-01-13 16:47:20
  */
 
 import React, { Component } from 'react';
@@ -9,63 +9,73 @@ import { Searchbar, List, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Highlighter from 'react-native-highlight-words';
-import { WhrgSearch } from "@Services/apis";
+import { WhrgSearch } from '@Services/apis';
 import DefaultStyle from '@Styles/default';
 import Progress from '@Components/organisms/Progress';
-import { debounce } from "lodash";
+import { debounce } from 'lodash';
 
 // Local Imports
 import { styles } from './style';
-import ActionCreator from "@Actions";
-import PropTypes from "prop-types";
+import ActionCreator from '@Actions';
+import PropTypes from 'prop-types';
 
 class SearchOverlay extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
+    let { query } = props;
     this.state = {
-      query: '', // 검색 쿼리
-      isProgress: false,  // 검색 로딩
+      query: query || '', // 검색 쿼리
+      isProgress: false, // 검색 로딩
       searchAddress: [], // 검색결과(지역)
       searchWarehouse: [], // 검색결과(창고)
     };
   }
 
+  UNSAFE_componentWillMount() {
+    if (this.state.query !== '') {
+      this._onChangeSearchQuery(this.state.query);
+    }
+  }
+
   /**
    * Debounce Utils
    * */
-  setDebounce = debounce((callback) => {
+  setDebounce = debounce(callback => {
     callback();
   }, 500);
 
   /**
    * On change search query.
    * */
-  _onChangeSearchQuery (keyword) {
+  _onChangeSearchQuery(keyword) {
     if (keyword.length > 0) {
       this.setState({
         isProgress: true,
-        query: keyword
+        query: keyword,
       });
 
       this.setDebounce(() => {
-        WhrgSearch.searchKeywords({ query: keyword }).then(res => {
-
-          if (res) {
-            this.setState({
-              searchAddress: res.addresses,
-              searchWarehouse: res.warehouses
-            });
-          }
-
-          setTimeout(
-            function () {
+        WhrgSearch.searchKeywords({ query: keyword })
+          .then(res => {
+            if (res) {
               this.setState({
-                isProgress: false
+                searchAddress: res.addresses,
+                searchWarehouse: res.warehouses,
               });
-            }.bind(this), 300);
-        }).catch(err => {
-          alert('서버에러:', err.response.message);
-        });
+            }
+
+            setTimeout(
+              function() {
+                this.setState({
+                  isProgress: false,
+                });
+              }.bind(this),
+              300,
+            );
+          })
+          .catch(err => {
+            alert('서버에러:', err.response.message);
+          });
       });
     } else {
       this.props.searchToggle(false);
@@ -75,64 +85,84 @@ class SearchOverlay extends Component {
   /**
    * 검색 결과 클릭 하면 중심좌표 변경하기.
    * */
-  handleClickSearchResult = (resultItem) => {
+  handleClickSearchResult = resultItem => {
     this.props.searchToggle(false);
     this.props.onSelect(resultItem);
-  }
-
+  };
 
   renderSearchWarehouse = () => {
     const { searchAddress, searchWarehouse, isProgress, query } = this.state;
 
-    return (
-      (searchWarehouse.length > 0 || searchAddress.length > 0) ?
-        <View style={{ paddingBottom: 30 }}>
-          {/* 주소 */}
-          {searchAddress && searchAddress.map((addr, index) =>
-            <TouchableOpacity onPress={() => this.handleClickSearchResult(addr)}>
+    return searchWarehouse.length > 0 || searchAddress.length > 0 ? (
+      <View style={{ paddingBottom: 30 }}>
+        {/* 주소 */}
+        {searchAddress &&
+          searchAddress.map((addr, index) => (
+            <TouchableOpacity
+              onPress={() => this.handleClickSearchResult(addr)}>
               <List.Item
                 key={'addr' + index}
-                title={<Highlighter
-                  highlightStyle={{ color: this.props.theme.colors.primary }}
-                  searchWords={[query]}
-                  textToHighlight={addr.address}
-                />}
+                title={
+                  <Highlighter
+                    highlightStyle={{ color: this.props.theme.colors.primary }}
+                    searchWords={[query]}
+                    textToHighlight={addr.address}
+                  />
+                }
                 style={styles.listItem}
                 titleStyle={styles.listItemTitle}
                 descriptionStyle={styles.listItemDescription}
-                left={props => <List.Icon {...props} icon={'map-marker'} color={'rgba(0, 0, 0, 0.54)'}
-                                          style={styles.listItemIcon} />}
+                left={props => (
+                  <List.Icon
+                    {...props}
+                    icon={'map-marker'}
+                    color={'rgba(0, 0, 0, 0.54)'}
+                    style={styles.listItemIcon}
+                  />
+                )}
               />
             </TouchableOpacity>
-          )}
-          {/* 창고 */}
-          {searchWarehouse && searchWarehouse.map((wh, index) =>
+          ))}
+        {/* 창고 */}
+        {searchWarehouse &&
+          searchWarehouse.map((wh, index) => (
             <TouchableOpacity onPress={() => this.handleClickSearchResult(wh)}>
               <List.Item
                 key={'wh' + index}
-                title={<Highlighter
-                  highlightStyle={{ color: this.props.theme.colors.primary }}
-                  searchWords={[query]}
-                  textToHighlight={wh.name}
-                />}
+                title={
+                  <Highlighter
+                    highlightStyle={{ color: this.props.theme.colors.primary }}
+                    searchWords={[query]}
+                    textToHighlight={wh.name}
+                  />
+                }
                 description={wh.address}
                 style={styles.listItem}
                 titleStyle={styles.listItemTitle}
                 descriptionStyle={styles.listItemDescription}
-                left={props => <List.Icon {...props} icon={'city'} color={'rgba(0, 0, 0, 0.54)'}
-                                          style={styles.listItemIcon} />}
+                left={props => (
+                  <List.Icon
+                    {...props}
+                    icon={'city'}
+                    color={'rgba(0, 0, 0, 0.54)'}
+                    style={styles.listItemIcon}
+                  />
+                )}
               />
-            </TouchableOpacity>)}
-        </View>
-
-        :
-        <View style={[DefaultStyle.d_center, DefaultStyle.w_100, DefaultStyle.h_150]}>
-          <Text style={DefaultStyle._textDF}>{isProgress ? '창고 검색 중입니다.' : '검색 결과가 없습니다.'}</Text>
-        </View>
+            </TouchableOpacity>
+          ))}
+      </View>
+    ) : (
+      <View
+        style={[DefaultStyle.d_center, DefaultStyle.w_100, DefaultStyle.h_150]}>
+        <Text style={DefaultStyle._textDF}>
+          {isProgress ? '창고 검색 중입니다.' : '검색 결과가 없습니다.'}
+        </Text>
+      </View>
     );
-  }
+  };
 
-  render () {
+  render() {
     const { isProgress } = this.state;
 
     return (
@@ -148,7 +178,10 @@ class SearchOverlay extends Component {
             style={[styles.searchBar]}
             inputStyle={styles.searchInput}
             onKeyPress={({ nativeEvent }) => {
-              if (nativeEvent.key === 'Backspace' && this.state.query.length < 2) {
+              if (
+                nativeEvent.key === 'Backspace' &&
+                this.state.query.length < 2
+              ) {
                 this.setState({ query: '' });
               }
             }}
@@ -167,24 +200,26 @@ class SearchOverlay extends Component {
             </TouchableOpacity> */}
           </View>
 
-          {
-            isProgress ?
-              <View style={[DefaultStyle.d_center, DefaultStyle.w_100, DefaultStyle.h_200]}>
-                <Progress />
-              </View>
-              :
-              this.renderSearchWarehouse()
-          }
+          {isProgress ? (
+            <View
+              style={[
+                DefaultStyle.d_center,
+                DefaultStyle.w_100,
+                DefaultStyle.h_200,
+              ]}>
+              <Progress />
+            </View>
+          ) : (
+            this.renderSearchWarehouse()
+          )}
         </ScrollView>
       </View>
-    )
-      ;
+    );
   }
 }
 
-
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     isSearchToggle: state.search.isSearchToggle,
@@ -192,7 +227,7 @@ function mapStateToProps (state) {
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     searchToggle: status => {
       dispatch(ActionCreator.searchToggle(status));
@@ -205,7 +240,10 @@ SearchOverlay.protoType = {
   onSelect: PropTypes.func,
 };
 
-export default compose(connect(
-  mapStateToProps,
-  mapDispatchToProps
-), withTheme)(SearchOverlay);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withTheme,
+)(SearchOverlay);
