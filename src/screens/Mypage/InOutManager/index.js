@@ -634,11 +634,11 @@ export default class InOutManager extends Component {
           visible={this.state.visible}
           onDismiss={this.hideDialog}>
           <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
-            입고정보 등록
+            출고정보 등록
           </Dialog.Title>
           <Dialog.Content>
             <View style={SS.bodyPopup}>
-              <Text style={DefaultStyle._textTitleCard}>입고 예정일</Text>
+              <Text style={DefaultStyle._textTitleCard}>출고 예정일</Text>
 
               <View
                 style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
@@ -665,7 +665,7 @@ export default class InOutManager extends Component {
                           DefaultStyle._labelTextField,
                           { color: '#000000' },
                         ]}>
-                        입고 예정일
+                        출고 예정일
                       </Text>
                       {isOpenTimeCreateImport &&
                         // <DatePicker
@@ -695,7 +695,7 @@ export default class InOutManager extends Component {
                 </View>
               </View>
 
-              <Text style={DefaultStyle._textTitleCard}>입고 예정 수량</Text>
+              <Text style={DefaultStyle._textTitleCard}>출고 예정 수량</Text>
               <TextField
                 ref={el => (this.inputValueCreateImport = el)}
                 textRight="P"
