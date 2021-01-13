@@ -23,8 +23,8 @@ export default class CertMobile extends Component {
       isCompleteCert: false,
       errorMsg:'',
       isTimeOver:false,
-      timer: 20,
-      duration : moment.duration(20 * 1000, 'milliseconds')
+      timer: 180,
+      duration : moment.duration(180 * 1000, 'milliseconds')
     };
   }
 
@@ -33,7 +33,7 @@ export default class CertMobile extends Component {
     const {duration } = this.state;
     clearInterval(this.interval);
     this.setState({
-      duration : moment.duration(20 * 1000, 'milliseconds')
+      duration : moment.duration(180 * 1000, 'milliseconds')
     })
     this.interval = setInterval(()=>{
       duration.subtract(1000, "milliseconds");
@@ -125,11 +125,12 @@ export default class CertMobile extends Component {
 
     return (
       !isCompleteCert ?
-      <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex]}>
-        <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
+      <View style={{flexDirection: 'row',flexWrap: 'wrap'}}>
+        <View style={[DefaultStyle.mr_10, DefaultStyle.inputCert, isSendCode && !isTimeOver ? DefaultStyle.w_100 : DefaultStyle.w_47]}>
           <TextField
             colorLabel="#000000"
             placeholder="인증번호를 입력하세요."
+            styleProps={[isSendCode && !isTimeOver ? DefaultStyle.w_100 : '']}
             valueProps={(e) => {
               this.setState({
                 certCode: e
@@ -140,7 +141,7 @@ export default class CertMobile extends Component {
 
         {isSendCode && !isTimeOver ?
           <TouchableOpacity
-          style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mb_20, DefaultStyle.w_50]}
+          style={[DefaultStyle._btnOutlineMuted,DefaultStyle.mr_10, DefaultStyle.mb_20, DefaultStyle.w_47]}
           onPress={() => this.confirmCert()}>
           <Text
             style={[
@@ -159,7 +160,7 @@ export default class CertMobile extends Component {
         }
 
         <TouchableOpacity
-          style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mb_20, DefaultStyle.w_50]}
+          style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mb_20, DefaultStyle.w_47]}
           onPress={() => this.sendCert()}>
           <Text
             style={[

@@ -22,14 +22,13 @@ import PropTypes from 'prop-types';
 class SearchOverlay extends Component {
   constructor(props) {
     super(props);
-    let { query } = props;
+    let { query } = this.props;
     this.state = {
       query: query || '', // 검색 쿼리
       isProgress: false, // 검색 로딩
       searchAddress: [], // 검색결과(지역)
       searchWarehouse: [], // 검색결과(창고)
     };
-    this.query = query;
   }
 
   /**
@@ -44,7 +43,7 @@ class SearchOverlay extends Component {
    * */
   _onChangeSearchQuery(keyword) {
     console.log('keyword==>', keyword);
-    if (keyword.length > 0) {
+    if (keyword) {
       this.setState({
         isProgress: true,
         query: keyword,
@@ -86,17 +85,24 @@ class SearchOverlay extends Component {
     this.props.onSelect(resultItem);
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.query !== prevState.query) {
-      return { query: nextProps.query };
-    }
-    return null;
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.query !== prevState.query) {
+  //     return { query: nextProps.query };
+  //   }
+  //   return null;
+  // }
+
+  componentDidMount() {
+    let { query } = this.props;
+    this._onChangeSearchQuery(query);
+    this.props.searchToggle(!this.props.isFilterToggle);
   }
 
   // 컴포넌트 업데이트 직후 호출.
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.query !== this.props.query) {
       let { query } = this.props;
+      console.log('vaoday')
       this.query = query;
       this._onChangeSearchQuery(query);
       this.props.searchToggle(!this.props.isFilterToggle);
@@ -176,7 +182,8 @@ class SearchOverlay extends Component {
   };
 
   render() {
-    const { isProgress } = this.state;
+    const { isProgress, query} = this.state;
+    const { onClose } = this.props;
 
     return (
       <View style={styles.container}>
@@ -186,14 +193,14 @@ class SearchOverlay extends Component {
             placeholder="지역명이나 창고명을 검색하세요."
             icon={'arrow-left'}
             onChangeText={query => this._onChangeSearchQuery(query)}
-            onIconPress={() => this.props.searchToggle(false)}
-            value={this.state.query}
+            onIconPress={() => {this.props.searchToggle(false)}}
+            value={query}
             style={[styles.searchBar]}
             inputStyle={styles.searchInput}
             onKeyPress={({ nativeEvent }) => {
               if (
                 nativeEvent.key === 'Backspace' &&
-                this.state.query.length < 2
+                query.length < 2
               ) {
                 this.setState({ query: '' });
               }

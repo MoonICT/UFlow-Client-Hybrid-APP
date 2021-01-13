@@ -54,6 +54,9 @@ export default StyleSheet.create({
   mr_20: {
     marginRight: 20,
   },
+  mr_10: {
+    marginRight: 10,
+  },
   mb_0: {
     marginBottom: 0,
   },
@@ -78,8 +81,15 @@ export default StyleSheet.create({
   w_50: {
     width: '50%',
   },
+  w_45: {
+    width: '45%',
+  },
+  w_47: {
+    width: '47%',
+  },
   w_100: {
     width: '100%',
+    minWidth:'100%'
   },
   h_150: {
     height: 150,
@@ -87,6 +97,7 @@ export default StyleSheet.create({
   d_flex: {
     display: 'flex',
   },
+ 
   d_flex_between: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -1148,8 +1159,11 @@ export default StyleSheet.create({
     borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
     paddingHorizontal: 8,
+  },
+  inputCert: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   _btnInline: {
     alignItems: 'center',
@@ -1166,6 +1180,11 @@ export default StyleSheet.create({
     padding: 5,
     paddingRight: 16,
     paddingLeft: 16,
+  },
+  no_padding:{
+    padding:0,
+    paddingRight: 0,
+    paddingLeft: 0,
   },
   _textInline: {
     color: '#ffffff',
