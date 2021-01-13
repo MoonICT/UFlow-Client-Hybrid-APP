@@ -23,8 +23,8 @@ export default class CertMobile extends Component {
       isCompleteCert: false,
       errorMsg:'',
       isTimeOver:false,
-      timer: 180,
-      duration : moment.duration(180 * 1000, 'milliseconds')
+      timer: 20,
+      duration : moment.duration(20 * 1000, 'milliseconds')
     };
   }
 
@@ -33,7 +33,7 @@ export default class CertMobile extends Component {
     const {duration } = this.state;
     clearInterval(this.interval);
     this.setState({
-      duration : moment.duration(180 * 1000, 'milliseconds')
+      duration : moment.duration(20 * 1000, 'milliseconds')
     })
     this.interval = setInterval(()=>{
       duration.subtract(1000, "milliseconds");
