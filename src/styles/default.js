@@ -1278,12 +1278,12 @@ export default StyleSheet.create({
   },
   _postCode: {
     width: windowWidth,
-    height: 300,
+    height: 500,
     marginLeft: 0,
   },
   _postCodeContent: {
     width: windowWidth,
-    height: 300,
+    height: 500,
   },
 
   /** MyPage **/
