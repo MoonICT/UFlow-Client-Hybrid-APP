@@ -23,6 +23,7 @@ import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import CertMobile from '@Components/organisms/CertMobile';
+import Appbars from '@Components/organisms/AppBar';
 import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
 import { WarehouseOwner, Warehouse , MediaUpload} from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
@@ -315,6 +316,20 @@ class RegisterBusinessInfo extends Component {
     const { businessMode,businessInfo, photo,businessList, defautSelect } = this.state;
 
     return (
+      <SafeAreaView style={DefaultStyle.container}>
+        <Appbars>
+          <Appbar.Action
+            icon="arrow-left"
+            color="black"
+            onPress={() => this.navigation.goBack()}
+          />
+          <Appbar.Content
+            title="창고주 정보 등록"
+            color="black"
+            fontSize="12"
+            style={DefaultStyle.headerTitle}
+          />
+        </Appbars>
       <ScrollView style={[DefaultStyle._container]}>
         <View style={[DefaultStyle.p_16]}>
           <View style={[DefaultStyle._titleCardCol]}>
@@ -595,6 +610,7 @@ class RegisterBusinessInfo extends Component {
           </Dialog>
         </Portal>
       </ScrollView>
+    </SafeAreaView>
     );
   }
 }
