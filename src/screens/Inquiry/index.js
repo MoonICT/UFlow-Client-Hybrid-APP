@@ -13,8 +13,9 @@ import { Appbar, Text, Searchbar } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import DatePicker from '@Components/organisms/DatePicker';
-// import DatePicker from '@react-native-community/datetimepicker';
+// import DatePicker from '@Components/organisms/DatePicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 import Select from '@Components/organisms/Select';
 import AppGrid from '@Components/organisms/AppGrid';
 import { getAllInquiry } from '@Services/apis/InquiryAPI';
@@ -54,16 +55,16 @@ class Inquiry extends Component {
     this.webView = null;
     this.state = {
       showFrom: false,
+      showTo: false,
       mode: 'date',
       from: '',
       to: '',
-      showTo: false,
       inquiryCode: 'TENANT',
       userType: 'TENANT',
       typeQuestion: 'GENERAL',
       listQuestion: [],
-      query:'',
-      titleActive:'전체문의'
+      query: '',
+      titleActive: '전체문의'
     };
     this.navigation = props.navigation;
   }
@@ -126,7 +127,7 @@ class Inquiry extends Component {
     );
   };
 
-  showDatepicker = () => {
+  showDatepickerFrom = () => {
     this.setState({ showFrom: true });
   };
   formatDate(date, string = true) {
@@ -144,11 +145,12 @@ class Inquiry extends Component {
     }
   }
   onChangeFrom = (event, selectedDate) => {
-    const startDate = selectedDate || this.state.from;
-    let dateObjStart = new Date(startDate);
-    let dateObjEnd = new Date(this.state.to);
-    let timeStartConvert = this.formatDate(dateObjStart);
-    let timeEndConvert = this.formatDate(dateObjEnd);
+    // console.log('e', e)
+    const startDate = event || this.state.from;
+    // let dateObjStart = new Date(startDate);
+    // let dateObjEnd = new Date(this.state.to);
+    // let timeStartConvert = this.formatDate(dateObjStart);
+    // let timeEndConvert = this.formatDate(dateObjEnd);
     this.setState({ from: startDate, showFrom: false }, () => {
       this.getAllData();
     });
@@ -159,11 +161,11 @@ class Inquiry extends Component {
   };
 
   onChangeTo = (event, selectedDate) => {
-    const endDate = selectedDate || this.state.to;
-    let dateObjEnd = new Date(endDate);
-    let dateObjStart = new Date(this.state.from);
-    let timeStartConvert = this.formatDate(dateObjStart);
-    let timeEndConvert = this.formatDate(dateObjEnd);
+    const endDate = event || this.state.to;
+    // let dateObjEnd = new Date(endDate);
+    // let dateObjStart = new Date(this.state.from);
+    // let timeStartConvert = this.formatDate(dateObjStart);
+    // let timeEndConvert = this.formatDate(dateObjEnd);
     this.setState({ to: endDate, showTo: false }, () => {
       this.getAllData();
     });
@@ -183,7 +185,7 @@ class Inquiry extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   handleQueryChange = (query) => {
-    this.setState({ query: query}, () => {
+    this.setState({ query: query }, () => {
       this.getAllData();
     });
   };
@@ -235,7 +237,7 @@ class Inquiry extends Component {
               ]}>
               <View style={{ flex: 1 }}>
                 <TouchableOpacity
-                  onPress={this.showDatepicker}
+                  onPress={this.showDatepickerFrom}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
                     {from ? from.toLocaleDateString() : 'YYYY-MM-DD'}
@@ -243,18 +245,20 @@ class Inquiry extends Component {
                   <Text
                     style={[
                       DefaultStyle._labelTextField,
-                      { color: '#000000' },
+                      { color: '#000000', fontSize: 12 },
                     ]}>
                     수탁 기간
                   </Text>
-                  <DatePicker
+                  <DateTimePickerModal
                     mode={mode}
-                    show={showFrom}
-                    onChange={this.onChangeFrom}
-                    // onChange={e => console.log(e)}
-
-                    value={from ? from : (new Date())}
-                    testID="dateTimePicker"
+                    isVisible={showFrom}
+                    onCancel={() => {
+                      this.setState({
+                        showFrom: false,
+                      });
+                    }}
+                    onConfirm={(e) => this.onChangeFrom(e)}
+                    date={from ? from : (new Date())}
                   />
                 </TouchableOpacity>
               </View>
@@ -264,21 +268,25 @@ class Inquiry extends Component {
                   onPress={this.showDatepickerTo}
                   style={DefaultStyle._btnDate}>
                   <Text style={DefaultStyle._textDate}>
-                  {to ? to.toLocaleDateString() : 'YYYY-MM-DD'}
+                    {to ? to.toLocaleDateString() : 'YYYY-MM-DD'}
                   </Text>
                   <Text
                     style={[
                       DefaultStyle._labelTextField,
-                      { color: '#000000' },
+                      { color: '#000000', fontSize: 12 },
                     ]}>
                     보관 기간
                   </Text>
-                  <DatePicker
+                  <DateTimePickerModal
                     mode={mode}
-                    show={showTo}
-                    onChange={this.onChangeTo}
-                    value={to ? to :  (new Date())}
-                    testID="dateTimePickerTo"
+                    isVisible={showTo}
+                    onCancel={() => {
+                      this.setState({
+                        showTo: false,
+                      });
+                    }}
+                    onConfirm={(e) => this.onChangeTo(e)}
+                    date={to ? to : (new Date())}
                   />
                 </TouchableOpacity>
               </View>
@@ -325,21 +333,21 @@ class Inquiry extends Component {
                         });
                       }
                     }}
-                    // onPress={() => {
-                    //   if ((item.complete === true && userType === 'OWNER') || (item.complete === true && userType === 'TENANT')) {
-                    //    (this.navigation.navigate('DetailInquiry', { inquiryDetails: _item }))
-                    //   }
-                    // }}
+                  // onPress={() => {
+                  //   if ((item.complete === true && userType === 'OWNER') || (item.complete === true && userType === 'TENANT')) {
+                  //    (this.navigation.navigate('DetailInquiry', { inquiryDetails: _item }))
+                  //   }
+                  // }}
                   >
                     <View style={DefaultStyle.leftItem}>
                       <Text>123123</Text>
                       {item.complete === false ? (
                         <Text style={[S.status]}>답변 대기 중123</Text>
                       ) : (
-                        <Text style={[S.status, S.statusComplete]}>
-                          답변 완료
-                        </Text>
-                      )}
+                          <Text style={[S.status, S.statusComplete]}>
+                            답변 완료
+                          </Text>
+                        )}
                       {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}
                       <Text style={DefaultStyle.titleItem}>{item.content}</Text>
                       <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
@@ -364,9 +372,6 @@ class Inquiry extends Component {
             <View>
               {listQuestion && listQuestion.length > 0 && listQuestion.map((item, index) => {
                 let dateTime = new Date(item.date);
-                {
-                  /* let dateStr = dateTime.getFullYear() + '.' + dateTime.getMonth() + '.' + dateTime.getDate(); */
-                }
                 let dateStr = this.formatDate(dateTime, false);
                 let _item = { ...item, userType: userType };
                 console.log('_item  ', _item);
@@ -393,10 +398,10 @@ class Inquiry extends Component {
                       {item.complete === false ? (
                         <Text style={[S.status]}>답변 대기 중</Text>
                       ) : (
-                        <Text style={[S.status, S.statusComplete]}>
-                          답변 완료
-                        </Text>
-                      )}
+                          <Text style={[S.status, S.statusComplete]}>
+                            답변 완료
+                          </Text>
+                        )}
                       {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}
                       <Text style={DefaultStyle.titleItem}>{item.content}</Text>
                       <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
