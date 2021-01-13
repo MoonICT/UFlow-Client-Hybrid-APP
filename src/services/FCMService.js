@@ -74,23 +74,24 @@ class FCMService {
   /**
    * @private
    * 디비아스 토큰을 가져옴.
+   * 토큰 : 앱 최초 설치시 토큰값 생성.(재설치는 갱신)
    * */
   async _getToken () {
     let fcmToken = await AsyncStorage.getItem('fcmToken');
     if (!fcmToken) {
-      // Get device token
+      // Get device token(현재 등록된 디바이스 토큰.)
       await messaging().getToken().then(async token => {
         await this._saveTokenToDatabase(token);
       }).catch(error => {
         console.log(' messaging().getToken(): ' + error);
       });
-      // Listen to whether the token changes
+      // Listen to whether the token changes(등록된 토큰이 없는 경우 재생성.)
       await messaging().onTokenRefresh(async token => {
         await this._saveTokenToDatabase(token);
       });
     }
     this.token = fcmToken;
-    // console.log('::::: FCM Device Token | ' + Platform.OS + ' :::::', fcmToken);
+    console.log('::::: FCM Device Token | ' + Platform.OS + ' :::::', fcmToken);
   }
 
   /**
@@ -103,10 +104,10 @@ class FCMService {
     messaging().onMessage(async remoteMessage => {
       console.log('+++ Message handled in the foreground!', remoteMessage);
       Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body, [
-        {
-          text: '닫기',
-          style: 'cancel',
-        },
+        // {
+        //   text: '닫기',
+        //   style: 'cancel',
+        // },
         {
           text: '확인',
           onPress: () => {

@@ -64,6 +64,10 @@ class Login extends Component {
   };
 
   /** Login Handle */
+  /**
+   * TODO FCM TOKEN 등록
+   * - 로그인 시 마다
+   * */
   handleOnClickLogin(data) {
     const { showPopup } = this.props;
     const { login } = this.context;
