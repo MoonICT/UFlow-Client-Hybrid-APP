@@ -10,7 +10,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-16 15:12:23
- * @modify date 2021-01-13 11:09:26
+ * @modify date 2021-01-13 15:30:28
  * @desc [description]
  */
 
@@ -506,7 +506,7 @@ class Home extends Component {
                     style={{ marginLeft: 10 }}
                     onPress={() =>
                       this.navigation.navigate('Search', {
-                        searchValue: textSearch,
+                        searchQuery: textSearch,
                       })
                     }
                   />

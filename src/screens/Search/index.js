@@ -42,8 +42,7 @@ import Progress from '@Components/organisms/Progress';
 class Search extends Component {
   constructor(props) {
     super(props);
-    let { searchValue } = this.props?.route?.params;
-    console.log('searchValue==>', searchValue);
+    let { searchQuery } = this.props?.route?.params;
     this.webView = null;
     // Webview initialize options.
     this.option = {
@@ -54,11 +53,14 @@ class Search extends Component {
     this.state = {
       url: this.option.defaultURL,
       progress: 0,
-      searchQuery: '',
+      searchQuery: searchQuery || '',
     };
     // Ref
     this.refSearchFilter = React.createRef();
     this.navigation = props.navigation;
+    this.searchQuery = searchQuery;
+
+    props.searchToggle(!props.isSearchToggle);
   }
 
   /**
@@ -137,6 +139,11 @@ class Search extends Component {
       types: ${strMsgType},
     };
     `;
+
+    // let { searchQuery = this.searchQuery } = this.state;
+
+    console.log('searchQuery==>', this.searchQuery);
+
     return (
       <SafeAreaView style={[styles.container]}>
         {/** Header */}
@@ -159,7 +166,10 @@ class Search extends Component {
         {/** 지역/주소 검색하기 패널. */}
         {/** 검색 결과 클릭 시 좌표 이동하기. */}
         {this.props.isSearchToggle && (
-          <SearchOverlay onSelect={result => this.handleSelectResult(result)} />
+          <SearchOverlay
+            query={this.searchQuery}
+            onSelect={result => this.handleSelectResult(result)}
+          />
         )}
 
         {/** 필터 패널. */}
@@ -265,6 +275,13 @@ class Search extends Component {
     });
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.route?.params?.searchQuery !== prevState.searchQuery) {
+      return { searchQuery: nextProps?.route?.params?.searchQuery };
+    }
+    return null;
+  }
+
   // 컴포넌트 업데이트 직후 호출.
   componentDidUpdate(prevProps, prevState) {
     // console.log('::componentDidUpdate::');
@@ -277,6 +294,13 @@ class Search extends Component {
         });
         // console.log('::::: 필터 변경에 의 지도 갱신 시점 :::::', this.props.whFilter);
       });
+    }
+
+    if (prevProps.searchQuery !== this.props?.route?.params?.searchQuery) {
+      if (this.props?.route?.params?.searchQuery !== '') {
+        // console.log('Hello');
+        this.searchQuery = this.props?.route?.params?.searchQuery;
+      }
     }
   }
 }
