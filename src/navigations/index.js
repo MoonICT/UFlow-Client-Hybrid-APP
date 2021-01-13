@@ -118,26 +118,38 @@ const TabScreenOptions = ({ route = { name: 'Home' } }) => ({
     // let icon = '';
     const iconStyle = {
       width: 24,
-      height: 24
-    }
+      height: 24,
+    };
     switch (routeName) {
       case 'Home':
         // icon = 'home';
-        return focused ? <Image style={iconStyle} source={IconHomeActive} /> :
+        return focused ? (
+          <Image style={iconStyle} source={IconHomeActive} />
+        ) : (
           <Image style={iconStyle} source={IconHomeDefault} />
+        );
       case 'Search':
         // icon = 'magnify';
-        return focused ? <Image style={iconStyle} source={IconSearchActive} /> :
+        return focused ? (
+          <Image style={iconStyle} source={IconSearchActive} />
+        ) : (
           <Image style={iconStyle} source={IconSearchDefault} />
+        );
       // TODO change route
       case 'InterestWH':
         // icon = 'forum';
-        return focused ? <Image style={iconStyle} source={IconHeartActive} /> :
+        return focused ? (
+          <Image style={iconStyle} source={IconHeartActive} />
+        ) : (
           <Image style={iconStyle} source={IconHeartDefault} />
+        );
       case 'More':
         // icon = 'dots-horizontal';
-        return focused ? <Image style={iconStyle} source={IconMoreActive} /> :
+        return focused ? (
+          <Image style={iconStyle} source={IconMoreActive} />
+        ) : (
           <Image style={iconStyle} source={IconMoreDefault} />
+        );
     }
     // return focused ? (
     //   <IconButton size={24} color={color.primary.main} icon={icon} />
@@ -188,12 +200,14 @@ const App = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem(TOKEN).then(v => {
-      // console.log('v==>', v);
-      setIsLogin(v !== '' && v !== null);
-    }).catch(error => {
-      alert('TabScreenOptions error:' + error);
-    });
+    AsyncStorage.getItem(TOKEN)
+      .then(v => {
+        // console.log('v==>', v);
+        setIsLogin(v !== '' && v !== null);
+      })
+      .catch(error => {
+        alert('TabScreenOptions error:' + error);
+      });
   }, []);
 
   // console.log('isLogin==>', isLogin);
@@ -208,24 +222,28 @@ const App = () => {
       },
       login: loginData => {
         // console.log("loginData", loginData);
-        AsyncStorage.setItem(TOKEN, loginData).then(() => {
-          setIsLoading(false);
-          setIsLogin(true);
-        }).catch(error => {
-          alert('TabScreenOptions loginData error:' + error);
-        });
+        AsyncStorage.setItem(TOKEN, loginData)
+          .then(() => {
+            setIsLoading(false);
+            setIsLogin(true);
+          })
+          .catch(error => {
+            alert('TabScreenOptions loginData error:' + error);
+          });
       },
       signUp: () => {
         setIsLoading(false);
         setIsLogin(false);
       },
       signOut: () => {
-        AsyncStorage.removeItem(TOKEN).then(() => {
-          setIsLoading(false);
-          setIsLogin(false);
-        }).catch(error => {
-          alert('TabScreenOptions signOut error:' + error);
-        });
+        AsyncStorage.removeItem(TOKEN)
+          .then(() => {
+            setIsLoading(false);
+            setIsLogin(false);
+          })
+          .catch(error => {
+            alert('TabScreenOptions signOut error:' + error);
+          });
       },
     };
   }, []);
@@ -242,12 +260,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="Home"
                     component={TabScreen}
-                    options={{ headerShown: false, gestureEnabled: false, }}
+                    options={{ headerShown: false, gestureEnabled: false }}
                   />
                   <AuthStack.Screen
                     name="Register"
                     component={Register}
-                    options={{ headerShown: false, }}
+                    options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
                     name="Terms"
@@ -546,13 +564,13 @@ const App = () => {
                   <AuthStack.Screen
                     name="FindPassWord"
                     component={FindPassWordScreen}
-                    options={{ headerShown: false, gestureEnabled: false, }}
+                    options={{ headerShown: false, gestureEnabled: false }}
                   />
                   <AuthStack.Screen
                     name="Login"
                     component={LoginScreen}
                     headerMode={false}
-                    options={{ headerShown: false, gestureEnabled: false, }}
+                    options={{ headerShown: false, gestureEnabled: false }}
                   />
                   <AuthStack.Screen
                     name="RegisterBusinessInfo"
@@ -612,7 +630,7 @@ const App = () => {
                     name="Login"
                     component={LoginScreen}
                     headerMode={false}
-                    options={{ headerShown: false, gestureEnabled: false, }}
+                    options={{ headerShown: false, gestureEnabled: false }}
                   />
                   <RootStack.Screen
                     name="Register"

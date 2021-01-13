@@ -63,6 +63,12 @@ class Search extends Component {
     props.searchToggle(!props.isSearchToggle);
   }
 
+  UNSAFE_componentWillMount() {
+    if (this.searchQuery !== this.state.searchQuery) {
+      this._onChangeSearchQuery(this.state.searchQuery);
+    }
+  }
+
   /**
    * Debounce Utils
    * */
@@ -140,9 +146,7 @@ class Search extends Component {
     };
     `;
 
-    // let { searchQuery = this.searchQuery } = this.state;
-
-    console.log('searchQuery==>', this.searchQuery);
+    let { searchQuery } = this.state;
 
     return (
       <SafeAreaView style={[styles.container]}>
@@ -167,7 +171,7 @@ class Search extends Component {
         {/** 검색 결과 클릭 시 좌표 이동하기. */}
         {this.props.isSearchToggle && (
           <SearchOverlay
-            query={this.searchQuery}
+            query={searchQuery}
             onSelect={result => this.handleSelectResult(result)}
           />
         )}
