@@ -19,61 +19,60 @@ import Accordion from '@Components/organisms/Accordion';
 import { styles as S } from './style';
 import { FAQ } from '@Services/apis';
 
-import { debounce } from 'lodash'
+import { debounce } from 'lodash';
 
-const tabDutyDvCode = [
-  {
-    id: '',
-    title: '전체'
-  },
-  {
-    id: 'WHRG',
-    title: '창고등록'
-  },
-  {
-    id: 'RTWH',
-    title: '공유창고'
-  },
-  {
-    id: 'WHSR',
-    title: '창고조회'
-  },
-  {
-    id: 'WHMC',
-    title: '창고매칭'
-  },
-  {
-    id: 'PRMM',
-    title: '프리미엄'
-  },
-  {
-    id: 'FFMT',
-    title: '풀필먼트'
-  },
-  {
-    id: 'CSSP',
-    title: '고객지원'
-  },
-  {
-    id: 'CNTR',
-    title: '계약'
-  },
-  {
-    id: 'MBSP',
-    title: '회원가입'
-  },
-  {
-    id: 'MANG',
-    title: '관리자'
-  },
-  {
-    id: 'SRVY',
-    title: '설문'
-  },
-];
+// const tabDutyDvCode = [
+//   {
+//     id: '',
+//     title: '전체',
+//   },
+//   {
+//     id: 'WHRG',
+//     title: '창고등록',
+//   },
+//   {
+//     id: 'RTWH',
+//     title: '공유창고',
+//   },
+//   {
+//     id: 'WHSR',
+//     title: '창고조회',
+//   },
+//   {
+//     id: 'WHMC',
+//     title: '창고매칭',
+//   },
+//   {
+//     id: 'PRMM',
+//     title: '프리미엄',
+//   },
+//   {
+//     id: 'FFMT',
+//     title: '풀필먼트',
+//   },
+//   {
+//     id: 'CSSP',
+//     title: '고객지원',
+//   },
+//   {
+//     id: 'CNTR',
+//     title: '계약',
+//   },
+//   {
+//     id: 'MBSP',
+//     title: '회원가입',
+//   },
+//   {
+//     id: 'MANG',
+//     title: '관리자',
+//   },
+//   {
+//     id: 'SRVY',
+//     title: '설문',
+//   },
+// ];
 
 class RegisterWH extends Component {
-
   constructor(props) {
     super(props);
     this.webView = null;
@@ -84,16 +83,44 @@ class RegisterWH extends Component {
       activeIndex: 0,
       dutyDvCode: '',
       faqList: [],
-      title:'전체'
+      title: 'All',
+      listCategory: [],
     };
     this.navigation = props.navigation;
   }
 
   /** when after render DOM */
   async componentDidMount() {
-    this.fetchData()
+    this.fetchData();
+    this.getListCategory();
   }
-
+  getListCategory() {
+    FAQ.getNameCate('CSSP0001')
+      .then(res => {
+        let dataArray = res._embedded.detailCodes.map(item => {
+          return {
+            remark1: item.remark1,
+            stdCode: item.stdCode,
+            stdCodeName: item.stdCodeName,
+            stdDetailCode: item.stdDetailCode,
+            title: item.stdDetailCodeName,
+            value1: item.value1,
+          };
+        });
+        this.setState({
+          listCategory: [
+            {
+              title: 'All',
+              stdDetailCode: '',
+            },
+            ...dataArray,
+          ],
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   fetchData(params) {
     const { dutyDvCode } = this.state;
 
@@ -117,32 +144,35 @@ class RegisterWH extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   render() {
-    const { faqList, title } = this.state;
+    const { faqList, listCategory, title } = this.state;
     console.log('faqList -> ', faqList);
+    console.log('listCategory -> ', listCategory);
 
     const Divider = () => {
-      return (
-        <View style={S.divider}></View>
-      )
-    }
+      return <View style={S.divider} />;
+    };
 
-    const handleQueryChange = (query) => {
-      this.fetchData({ query: query })
-    }
+    const handleQueryChange = query => {
+      this.fetchData({ query: query });
+    };
 
     const handleClickTab = (tabName, index) => {
       // console.log('tabName -> ', tabName);
       // console.log('index -> ', index);
-      this.setState({ 
-        dutyDvCode: tabDutyDvCode[index].id,
-        title:tabName
-      }, function () {
-        this.fetchData()
-      });
-    }
+      this.setState(
+        {
+          dutyDvCode: listCategory[index].stdDetailCode,
+          title: tabName,
+        },
+        function() {
+          this.fetchData();
+        },
+      );
+    };
 
     const items =
-      faqList && faqList.length > 0 &&
+      faqList &&
+      faqList.length > 0 &&
       faqList.map((item, index) => {
         return (
           <View key={index}>
@@ -187,18 +217,20 @@ class RegisterWH extends Component {
               // onChangeText={query => {
               //   this.setState({ firstQuery: query });
               // }}
-              onChangeText={(query) => handleQueryChange(query)}
+              onChangeText={query => handleQueryChange(query)}
               value={this.state.firstQuery}
             />
           </View>
-          <AppGrid data={tabDutyDvCode} title={title} titleProps={handleClickTab} />
+          <AppGrid
+            data={listCategory}
+            title={title}
+            titleProps={handleClickTab}
+          />
           <Accordion type="group">{items}</Accordion>
         </ScrollView>
       </ScrollView>
     );
   }
-
-
 }
 
 /** map state with store states redux store */
