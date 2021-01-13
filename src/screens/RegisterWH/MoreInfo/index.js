@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -17,7 +17,7 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
   Card,
@@ -28,17 +28,18 @@ import {
   IconButton,
 } from 'react-native-paper';
 import DatePicker from '@Components/organisms/DatePicker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
-import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
-import {styles as S} from '../style';
-import {styles as SS} from './style';
-import {stdToNumber, numberToStd} from '@Services/utils/StringUtils';
-import {MyPage} from '@Services/apis';
+import { styles as S } from '../style';
+import { styles as SS } from './style';
+import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
+import { MyPage } from '@Services/apis';
+import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 
 // import Form from './form';
 class RegisterMoreInfo extends Component {
@@ -57,7 +58,7 @@ class RegisterMoreInfo extends Component {
       cmpltYmd:
         props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
           ? props.dataMoreInfo.cmpltYmd
-          : '',
+          : new Date().getTime(),
       siteArea:
         props.dataMoreInfo && props.dataMoreInfo.siteArea
           ? props.dataMoreInfo.siteArea
@@ -90,34 +91,38 @@ class RegisterMoreInfo extends Component {
   }
 
   showDatepicker = () => {
-    this.setState({showFrom: true});
+    this.setState({ showFrom: true });
   };
 
-  onChangeFrom = (event, selectedDate) => {
+  onChangeFrom = (selectedDate) => {
     const currentDate = selectedDate || this.state.from;
     let d = new Date(selectedDate).getTime();
 
-    this.setState({from: currentDate, showFrom: false, cmpltYmd: d});
+    this.setState({ from: currentDate, showFrom: false, cmpltYmd: d });
   };
 
   render() {
-    const {imageStore, route, dataMoreInfo} = this.props;
+    const { imageStore, route, dataMoreInfo } = this.props;
     const {
       addOptDvCodes,
       insrDvCodes,
       cmpltYmd,
       siteArea,
+      siteArea2,
       bldgArea,
+      bldgArea2,
       totalArea,
+      totalArea2,
       prvtArea,
+      prvtArea2,
       cmnArea,
+      cmnArea2,
       from,
-      mode,
       showFrom,
       addOptDvCodesData,
       insrDvCodeData,
     } = this.state;
-    console.log('dataMoreInfo :>> ', dataMoreInfo);
+    // console.log('dataMoreInfo :>> ', dataMoreInfo);
 
     let checkbox0001 = [-1, -1, -1, -1, -1, -1];
 
@@ -132,7 +137,7 @@ class RegisterMoreInfo extends Component {
       checkbox0001[4] = insrDvCodes.indexOf('0002');
       checkbox0001[5] = insrDvCodes.indexOf('0003');
     }
-    console.log('checkbox0001 :>> ', checkbox0001);
+    // console.log('checkbox0001 :>> ', checkbox0001);
 
     let isSubmitUpdate = true;
     // if (
@@ -146,7 +151,6 @@ class RegisterMoreInfo extends Component {
     // ) {
     //   isSubmitUpdate = true;
     // }
-    console.log('addOptDvCodes :>> ', addOptDvCodes);
     let viewOptionMore =
       addOptDvCodesData &&
       addOptDvCodesData.map((item, index) => {
@@ -159,8 +163,8 @@ class RegisterMoreInfo extends Component {
               onPress={() => {
                 let indexItem = addOptDvCodes.indexOf(item.value);
                 indexItem > -1
-                  ? this.setState({...addOptDvCodes.splice(indexItem, 1)})
-                  : this.setState({...addOptDvCodes.push(item.value)});
+                  ? this.setState({ ...addOptDvCodes.splice(indexItem, 1) })
+                  : this.setState({ ...addOptDvCodes.push(item.value) });
               }}
             />
             <Text style={S.labelCheck}>{item.label}</Text>
@@ -179,8 +183,8 @@ class RegisterMoreInfo extends Component {
               onPress={() => {
                 let indexItem = insrDvCodes.indexOf(item.value);
                 indexItem > -1
-                  ? this.setState({...insrDvCodes.splice(indexItem, 1)})
-                  : this.setState({...insrDvCodes.push(item.value)});
+                  ? this.setState({ ...insrDvCodes.splice(indexItem, 1) })
+                  : this.setState({ ...insrDvCodes.push(item.value) });
               }}
             />
             <Text style={S.labelCheck}>{item.label}</Text>
@@ -207,7 +211,7 @@ class RegisterMoreInfo extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
+          <View>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
                 <Text style={DefaultStyle._textTitleBody}>추가 정보</Text>
@@ -220,99 +224,267 @@ class RegisterMoreInfo extends Component {
                  colorLabel="#000000"
                  />
                  */}
-                <View style={{flex: 1, marginBottom: 18}}>
+                <View style={{ flex: 1, marginBottom: 18 }}>
                   <TouchableOpacity
                     onPress={this.showDatepicker}
                     style={DefaultStyle._btnDate}>
                     <Text style={DefaultStyle._textDate}>
-                      {console.log(
-                        '======> toLocaleDateString: ',
-                        from.toLocaleDateString(),
-                      )}
-
                       {from.toLocaleDateString()}
                     </Text>
                     <Text
                       style={[
                         DefaultStyle._labelTextField,
-                        {color: '#000000'},
+                        { color: '#000000' },
                       ]}>
                       준공일
                     </Text>
-                    <DatePicker
-                      mode={mode}
-                      show={showFrom}
-                      onChange={this.onChangeFrom}
-                      value={from}
-                      testID="dateTimePicker"
-                    />
+                    <DateTimePickerModal
+                    mode="date"
+                    isVisible={showFrom}
+                    date={from ? from : new Date()}
+                    onConfirm={date => this.onChangeFrom(date)}
+                    onCancel={() => {
+                      this.setState({
+                        showFrom: false,
+                      });
+                    }}
+                  />
                   </TouchableOpacity>
                 </View>
-                <TextField
-                  labelTextField="건축면적"
-                  textRight="평"
-                  placeholder="0"
-                  defaultValue={bldgArea ? numberToStd(bldgArea) : ''}
-                  colorLabel="#000000"
-                  keyboardType="numeric"
-                  value={numberToStd(bldgArea)}
-                  valueProps={e => {
-                    let text = e.replace(/[^0-9]/g, '');
-                    this.setState({bldgArea: text !== '' ? stdToNumber(text) : ''});
-                  }}
-                />
-                <TextField
-                  labelTextField="대지면적"
-                  textRight="평"
-                  placeholder="0"
-                  defaultValue={siteArea ? numberToStd(siteArea) : ''}
-                  colorLabel="#000000"
-                  keyboardType="numeric"
-                  value={numberToStd(siteArea)}
-                  valueProps={e => {
-                    let text = e.replace(/[^0-9]/g, '');
-                    this.setState({siteArea: text !== '' ? stdToNumber(text) : ''});
-                  }}
-                />
-                <TextField
-                  labelTextField="연면적"
-                  textRight="평"
-                  placeholder="0"
-                  defaultValue={totalArea ? numberToStd(totalArea) : ''}
-                  colorLabel="#000000"
-                  keyboardType="numeric"
-                  value={numberToStd(totalArea)}
-                  valueProps={e => {
-                    let text = e.replace(/[^0-9]/g, '');
-                    this.setState({totalArea: text !== '' ? stdToNumber(text) : ''});
-                  }}
-                />
-                <TextField
-                  labelTextField="전용면적"
-                  textRight="평"
-                  placeholder="0"
-                  defaultValue={prvtArea ? numberToStd(prvtArea) : ''}
-                  colorLabel="#000000"
-                  keyboardType="numeric"
-                  value={numberToStd(prvtArea)}
-                  valueProps={e => {
-                    let text = e.replace(/[^0-9]/g, '');
-                    this.setState({prvtArea: text !== '' ? stdToNumber(text) : ''});
-                  }}
-                />
-                <TextField
-                  labelTextField="공용면적"
-                  textRight="평"
-                  placeholder="0"
-                  defaultValue={cmnArea ? numberToStd(cmnArea) : ''}
-                  colorLabel="#000000"
-                  keyboardType="numeric"
-                  value={numberToStd(cmnArea)}
-                  valueProps={e => {
-                    let text = e.replace(/[^0-9]/g, '');
-                    this.setState({cmnArea: text !== '' ? stdToNumber(text) : ''});
-                  }}
-                />
+                <View style={DefaultStyle._listElement}>
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                    <TextField
+                      labelTextField="건축면적"
+                      textRight="m2"
+                      defaultValue={bldgArea ? numberToStd(bldgArea) : '0'}
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let text = e.replace(/[^0-9]/g, '');
+                        let value = stdToNumber(text);
+                        let valueCover = toPyeong(value);
+                        this.setState({
+                          bldgArea2: stdToNumber(valueCover),
+                          bldgArea: stdToNumber(text),
+                        });
+                        // let dataF = bldgArea;
+                        // dataF.flrArea = ;
+                        // valueForm && valueForm(dataF);
+                      }}
+                      value={bldgArea && numberToStd(bldgArea)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                  <View style={DefaultStyle._element}>
+                    <TextField
+                      labelTextField="건축면적"
+                      textRight="평"
+                      defaultValue={
+                        bldgArea ? numberToStd(toPyeong(bldgArea)) : ''
+                      }
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let value = e.replace(/[^0-9]/g, '');
+                        let valueCover = toSquareMeter(value);
+                        this.setState({
+                          bldgArea2: stdToNumber(value),
+                          bldgArea: stdToNumber(valueCover),
+                        });
+                      }}
+                      value={bldgArea2 && numberToStd(bldgArea2)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                </View>
+
+                <View style={DefaultStyle._listElement}>
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                    <TextField
+                      labelTextField="대지면적"
+                      textRight="m2"
+                      defaultValue={siteArea ? numberToStd(siteArea) : '0'}
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let text = e.replace(/[^0-9]/g, '');
+                        let value = stdToNumber(text);
+                        let valueCover = toPyeong(value);
+                        this.setState({
+                          siteArea2: stdToNumber(valueCover),
+                          siteArea: stdToNumber(text),
+                        });
+                        // let dataF = siteArea;
+                        // dataF.flrArea = ;
+                        // valueForm && valueForm(dataF);
+                      }}
+                      value={siteArea && numberToStd(siteArea)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                  <View style={DefaultStyle._element}>
+                    <TextField
+                      labelTextField="대지면적"
+                      textRight="평"
+                      defaultValue={
+                        siteArea ? numberToStd(toPyeong(siteArea)) : ''
+                      }
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let value = e.replace(/[^0-9]/g, '');
+                        let valueCover = toSquareMeter(value);
+                        this.setState({
+                          siteArea2: stdToNumber(value),
+                          siteArea: stdToNumber(valueCover),
+                        });
+                      }}
+                      value={siteArea2 && numberToStd(siteArea2)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                </View>
+
+                <View style={DefaultStyle._listElement}>
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                    <TextField
+                      labelTextField="연면적"
+                      textRight="m2"
+                      defaultValue={totalArea ? numberToStd(totalArea) : '0'}
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let text = e.replace(/[^0-9]/g, '');
+                        let value = stdToNumber(text);
+                        let valueCover = toPyeong(value);
+                        this.setState({
+                          totalArea2: stdToNumber(valueCover),
+                          totalArea: stdToNumber(text),
+                        });
+                        // let dataF = totalArea;
+                        // dataF.flrArea = ;
+                        // valueForm && valueForm(dataF);
+                      }}
+                      value={totalArea && numberToStd(totalArea)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                  <View style={DefaultStyle._element}>
+                    <TextField
+                      labelTextField="연면적"
+                      textRight="평"
+                      defaultValue={
+                        totalArea ? numberToStd(toPyeong(totalArea)) : ''
+                      }
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let value = e.replace(/[^0-9]/g, '');
+                        let valueCover = toSquareMeter(value);
+                        this.setState({
+                          totalArea2: stdToNumber(value),
+                          totalArea: stdToNumber(valueCover),
+                        });
+                      }}
+                      value={totalArea2 && numberToStd(totalArea2)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                </View>
+
+                <View style={DefaultStyle._listElement}>
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                    <TextField
+                      labelTextField="전용면적"
+                      textRight="m2"
+                      defaultValue={prvtArea ? numberToStd(prvtArea) : '0'}
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let text = e.replace(/[^0-9]/g, '');
+                        let value = stdToNumber(text);
+                        let valueCover = toPyeong(value);
+                        this.setState({
+                          prvtArea2: stdToNumber(valueCover),
+                          prvtArea: stdToNumber(text),
+                        });
+                        // let dataF = prvtArea;
+                        // dataF.flrArea = ;
+                        // valueForm && valueForm(dataF);
+                      }}
+                      value={prvtArea && numberToStd(prvtArea)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                  <View style={DefaultStyle._element}>
+                    <TextField
+                      labelTextField="전용면적"
+                      textRight="평"
+                      defaultValue={
+                        prvtArea ? numberToStd(toPyeong(prvtArea)) : ''
+                      }
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let value = e.replace(/[^0-9]/g, '');
+                        let valueCover = toSquareMeter(value);
+                        this.setState({
+                          prvtArea2: stdToNumber(value),
+                          prvtArea: stdToNumber(valueCover),
+                        });
+                      }}
+                      value={prvtArea2 && numberToStd(prvtArea2)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                </View>
+
+                <View style={DefaultStyle._listElement}>
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                    <TextField
+                      labelTextField="공용면적"
+                      textRight="m2"
+                      defaultValue={cmnArea ? numberToStd(cmnArea) : '0'}
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let text = e.replace(/[^0-9]/g, '');
+                        let value = stdToNumber(text);
+                        let valueCover = toPyeong(value);
+                        this.setState({
+                          cmnArea2: stdToNumber(valueCover),
+                          cmnArea: stdToNumber(text),
+                        });
+                        // let dataF = cmnArea;
+                        // dataF.flrArea = ;
+                        // valueForm && valueForm(dataF);
+                      }}
+                      value={cmnArea && numberToStd(cmnArea)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                  <View style={DefaultStyle._element}>
+                    <TextField
+                      labelTextField="공용면적"
+                      textRight="평"
+                      defaultValue={
+                        cmnArea ? numberToStd(toPyeong(cmnArea)) : ''
+                      }
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let value = e.replace(/[^0-9]/g, '');
+                        let valueCover = toSquareMeter(value);
+                        this.setState({
+                          cmnArea2: stdToNumber(value),
+                          cmnArea: stdToNumber(valueCover),
+                        });
+                      }}
+                      value={cmnArea2 && numberToStd(cmnArea2)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                </View>
               </View>
             </View>
 
@@ -327,7 +499,9 @@ class RegisterMoreInfo extends Component {
               <View style={DefaultStyle._titleBody}>
                 <Text style={DefaultStyle._textTitleBody}>보험 가입 여부</Text>
               </View>
-              <View style={[S.options, S.optionsFooter]}>{viewInsrDvCodes}</View>
+              <View style={[S.options, S.optionsFooter]}>
+                {viewInsrDvCodes}
+              </View>
               <TouchableOpacity
                 disabled={isSubmitUpdate === true ? false : true}
                 onPress={() => {
@@ -382,7 +556,7 @@ class RegisterMoreInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({addOptDvCodesData});
+          this.setState({ addOptDvCodesData });
         }
       })
       .catch(err => {
@@ -392,7 +566,7 @@ class RegisterMoreInfo extends Component {
       .then(res => {
         if (res.status === 200) {
           let data = res.data._embedded.detailCodes;
-          console.log('datasssssssssssssss :>> ', data);
+          // console.log('datasssssssssssssss :>> ', data);
           let insrDvCodeData =
             data &&
             data.map((item, index) => {
@@ -401,7 +575,7 @@ class RegisterMoreInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({insrDvCodeData});
+          this.setState({ insrDvCodeData });
         }
       })
       .catch(err => {

@@ -273,26 +273,43 @@ class RegisterInfo extends Component {
       goToSlideKeep,
     } = this.state;
     // console.log('dataInfo :>> ', dataInfo);
-    // console.log('keeps :>> ', dataInfo.keeps);
+    console.log('keeps :>> ', keeps);
 
     // TODO 확인버튼은 수탁과 보관의 모든것의 필수값이 입력된 경우만 true
     let isSubmitUpdate = false;
     // console.log('keeps', keeps);
     // console.log('numberSlide', numberSlide);
-    let filterArea = keeps && keeps.filter(item => item.cmnArea === '');
+    // let filterArea = keeps && keeps.filter(item => item.cmnArea === '');
     let filterusblValue = keeps && keeps.filter(item => item.usblValue === '');
     let filtersplyAmount =
-      keeps && keeps.filter(item => item.splyAmount === '');
-    let filtermgmtChrg = keeps && keeps.filter(item => item.mgmtChrg === '');
+      keeps &&
+      keeps.filter(
+        item => item.splyAmount === '' || item.splyAmount === undefined,
+      );
+    let filtermgmtChrg =
+      keeps &&
+      keeps.filter(item => item.mgmtChrg === '' || item.mgmtChrg === undefined);
 
     let filterusblValueTrust =
-      trusts && trusts.filter(item => item.usblValue === '');
+      trusts &&
+      trusts.filter(
+        item => item.usblValue === '' || item.usblValue === undefined,
+      );
     let filtersplyAmountTrust =
-      trusts && trusts.filter(item => item.splyAmount === '');
+      trusts &&
+      trusts.filter(
+        item => item.splyAmount === '' || item.splyAmount === undefined,
+      );
     let filterwhinChrgTrust =
-      trusts && trusts.filter(item => item.whinChrg === '');
+      trusts &&
+      trusts.filter(
+        item => item.whinChrg === '' || item.whinChrg === undefined,
+      );
     let filterwhoutChrgTrust =
-      trusts && trusts.filter(item => item.whoutChrg === '');
+      trusts &&
+      trusts.filter(
+        item => item.whoutChrg === '' || item.whoutChrg === undefined,
+      );
     // let filterpsnChrgTrust =
     //   trusts && trusts.filter(item => item.psnChrg === '');
     // let filtermnfctChrgTrust =
@@ -301,28 +318,22 @@ class RegisterInfo extends Component {
     //   trusts && trusts.filter(item => item.dlvyChrg === '');
     // let filtershipChrgTrust =
     //   trusts && trusts.filter(item => item.shipChrg === '');
-
+    console.log('filtersplyAmount :>> ', filtersplyAmount);
     if (
-      filterArea.length === 0 &&
-      filterusblValue.length === 0 &&
-      filtersplyAmount.length === 0 &&
-      filtermgmtChrg.length === 0
+      // filterArea.length === 0 &&
+      // filterusblValue.length === 0 &&
+      (keeps.length > 0 &&
+        filtersplyAmount.length === 0 &&
+        filtermgmtChrg.length === 0) ||
+      (trusts.length > 0 &&
+        filterusblValueTrust.length === 0 &&
+        filtersplyAmountTrust.length === 0 &&
+        filterwhinChrgTrust.length === 0 &&
+        filterwhoutChrgTrust.length === 0)
     ) {
       isSubmitUpdate = true;
     }
 
-    if (
-      filterusblValueTrust.length === 0 &&
-      filtersplyAmountTrust.length === 0 &&
-      filterwhinChrgTrust.length === 0 &&
-      filterwhoutChrgTrust.length === 0
-      // filterpsnChrgTrust.length === 0 &&
-      // filtermnfctChrgTrust.length === 0 &&
-      // filterdlvyChrgTrust.length === 0 &&
-      // filtershipChrgTrust.length === 0
-    ) {
-      isSubmitUpdate = true;
-    }
     console.log('isSubmitUpdate', isSubmitUpdate);
     return (
       <SafeAreaView style={DefaultStyle._container}>
@@ -481,7 +492,7 @@ class RegisterInfo extends Component {
               {((valueTab === 'keeps' && (keeps && keeps.length > 0)) ||
                 (valueTab === 'trusts' && (trusts && trusts.length > 0))) && (
                 <TouchableOpacity
-                  disabled={isSubmitUpdate === true ? false : true}
+                  // disabled={isSubmitUpdate === true ? false : true}
                   onPress={() =>
                     isSubmitUpdate === true
                       ? (this.navigation.navigate('RegisterWH', {
@@ -492,12 +503,12 @@ class RegisterInfo extends Component {
                           keeps: this.state.keeps,
                           trusts: this.state.trusts,
                         }))
-                      :  this.props.showPopup({
-                        type: 'confirm',
-                        title: 'ERROR',
-                        content: '필수정보를 입력해야 합니다.',
-                        image: illust10,
-                      })
+                      : this.props.showPopup({
+                          type: 'confirm',
+                          title: '에러',
+                          content: '필수정보를 입력해야 합니다.',
+                          image: illust10,
+                        })
                   }
                   style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
                   // disabled={imageStore.length > 2 ? false : true}

@@ -161,6 +161,23 @@ class FormInfo extends Component {
     ) {
       timeCheck = true;
     }
+
+    let checkSplyAmount = false;
+    let checkMgmtChrg = false;
+
+    if (
+      splyAmount === undefined ||
+      (splyAmount !== undefined && splyAmount.length > 0)
+    ) {
+      checkSplyAmount = true;
+    }
+    if (
+      mgmtChrg === undefined ||
+      (mgmtChrg !== undefined && mgmtChrg.length > 0)
+    ) {
+      checkMgmtChrg = true;
+    }
+
     let defaultTypeCode =
       formData &&
       typeCodes &&
@@ -262,7 +279,7 @@ class FormInfo extends Component {
                   dataF.cmnArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.cmnArea === '' ? '0' : commonAreaState2}
+                value={formData.cmnArea === '' ? '' : commonAreaState2}
                 keyboardType="numeric"
               />
             </View>
@@ -270,7 +287,7 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="공용면적"
                 defaultValue={
-                  formData.cmnArea ? numberToStd(formData.cmnArea) : '0'
+                  formData.cmnArea ? numberToStd(formData.cmnArea) : ''
                 }
                 textRight="m2"
                 valueProps={e => {
@@ -284,7 +301,7 @@ class FormInfo extends Component {
                   dataF.cmnArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
-                value={commonAreaState2 === '' ? '0' : formData.cmnArea}
+                value={commonAreaState2 === '' ? '' : formData.cmnArea}
               />
             </View>
           </View>
@@ -296,7 +313,7 @@ class FormInfo extends Component {
                 defaultValue={
                   formData.usblValue
                     ? numberToStd(toPyeong(formData.usblValue))
-                    : '0'
+                    : ''
                 }
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
@@ -306,7 +323,7 @@ class FormInfo extends Component {
                   dataF.usblValue = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.usblValue === '' ? '0' : usblValueState2}
+                value={formData.usblValue === '' ? '' : usblValueState2}
                 keyboardType="numeric"
               />
             </View>
@@ -315,7 +332,7 @@ class FormInfo extends Component {
                 labelTextField="가용수치"
                 textRight="m2"
                 defaultValue={
-                  formData.usblValue ? numberToStd(formData.usblValue) : '0'
+                  formData.usblValue ? numberToStd(formData.usblValue) : ''
                 }
                 valueProps={e => {
                   let text = e.replace(/[^0-9]/g, '');
@@ -328,7 +345,7 @@ class FormInfo extends Component {
                   dataF.usblValue = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
-                value={usblValueState2 === '' ? '0' : formData.usblValue}
+                value={usblValueState2 === '' ? '' : formData.usblValue}
                 keyboardType="numeric"
               />
             </View>
@@ -417,7 +434,9 @@ class FormInfo extends Component {
               dataF.splyAmount = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
+            isRequired={true}
             keyboardType="numeric"
+            textError={checkSplyAmount === true ? null : '정보를 입력해주세요.'}
           />
           <TextField
             labelTextField="관리단가"
@@ -434,7 +453,10 @@ class FormInfo extends Component {
               dataF.mgmtChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
+            isRequired={true}
             keyboardType="numeric"
+            textError={checkMgmtChrg === true ? null : '정보를 입력해주세요.'}
+
           />
 
           <TextField
