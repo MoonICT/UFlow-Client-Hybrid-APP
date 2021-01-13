@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Card, Checkbox, Text, Button, IconButton } from 'react-native-paper';
 import DatePicker from '@Components/organisms/DatePicker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -45,13 +46,15 @@ class FormTrusts extends Component {
       title: 'Profile Photo',
       confirm: false,
       value: 1,
-      from: props.formData.usblYmdFrom
-        ? new Date(props.formData.usblYmdFrom)
-        : new Date(),
+      from:
+        props.formData.usblYmdFrom && props.formData.usblYmdFrom !== null
+          ? new Date(props.formData.usblYmdFrom)
+          : new Date(),
       showFrom: false,
-      to: props.formData.usblYmdTo
-        ? new Date(props.formData.usblYmdTo)
-        : new Date(),
+      to:
+        props.formData.usblYmdTo && props.formData.usblYmdTo !== null
+          ? new Date(props.formData.usblYmdTo)
+          : new Date(),
       showTo: false,
       dataForm: [
         {
@@ -82,7 +85,7 @@ class FormTrusts extends Component {
     return true;
   }
 
-  onChangeFrom = (event, selectedDate) => {
+  onChangeFrom = selectedDate => {
     const currentDate = selectedDate || this.state.from;
     this.setState({ from: currentDate, showFrom: false });
     let d = selectedDate
@@ -100,7 +103,7 @@ class FormTrusts extends Component {
   showDatepickerTo = () => {
     this.setState({ showTo: true });
   };
-  onChangeTo = (event, selectedDate) => {
+  onChangeTo = selectedDate => {
     const currentDate = selectedDate || this.state.to;
     this.setState({ to: currentDate, showTo: false });
     let d = selectedDate
@@ -112,21 +115,33 @@ class FormTrusts extends Component {
   };
 
   UNSAFE_componentWillReceiveProps(newProps) {
-    let newUsblYmdFrom = newProps.formData.usblYmdFrom;
-    let newUsblYmdTo = newProps.formData.usblYmdTo;
+    console.log('newProps :>> ', newProps);
+    let formData = newProps.formData;
+    let newUsblYmdFrom = formData.usblYmdFrom;
+    let newUsblYmdTo = formData.usblYmdTo;
     if (
-      newProps.formData &&
+      formData &&
       newUsblYmdFrom !== undefined &&
+      newUsblYmdFrom !== null &&
       newUsblYmdFrom !== ''
     ) {
-      this.setState({ from: new Date(newProps.formData.usblYmdFrom) });
+      this.setState({ from: new Date(formData.usblYmdFrom) });
+    } else if (newUsblYmdFrom === null) {
+      this.setState({ from: 'YYYY-MM-DD' });
+    } else {
+      this.setState({ from: new Date() });
     }
     if (
-      newProps.formData &&
+      formData &&
       newUsblYmdTo !== undefined &&
+      newUsblYmdTo !== null &&
       newUsblYmdTo !== ''
     ) {
-      this.setState({ to: new Date(newProps.formData.usblYmdTo) });
+      this.setState({ to: new Date(formData.usblYmdTo) });
+    } else if (newUsblYmdTo === null) {
+      this.setState({ to: 'YYYY-MM-DD' });
+    } else {
+      this.setState({ from: new Date() });
     }
   }
   render() {
@@ -157,14 +172,47 @@ class FormTrusts extends Component {
     } = this.state;
 
     let timeCheck = false;
+    console.log('usblValue :>> ', usblValue);
+    console.log('formDataTrust :>> ', formData);
 
     if (
+      typeof from !== 'string' &&
+      typeof to !== 'string' &&
       to.toLocaleDateString() >= from.toLocaleDateString() &&
       from.toLocaleDateString() >= new Date().toLocaleDateString()
     ) {
       timeCheck = true;
     }
-    console.log('formDataTrust :>> ', formData);
+    
+    //check validate
+    let checkUsblValue = false;
+    let checkSplyAmount = false;
+    let checkWhinChrg = false;
+    let checkWhoutChrg = false;
+    if (
+      usblValue === undefined ||
+      (usblValue !== undefined && usblValue.length > 0)
+    ) {
+      checkUsblValue = true;
+    }
+    if (
+      splyAmount === undefined ||
+      (splyAmount !== undefined && splyAmount.length > 0)
+    ) {
+      checkSplyAmount = true;
+    }
+    if (
+      whinChrg === undefined ||
+      (whinChrg !== undefined && whinChrg.length > 0)
+    ) {
+      checkWhinChrg = true;
+    }
+    if (
+      whoutChrg  === undefined ||
+      (whoutChrg !== undefined && whoutChrg.length > 0)
+    ) {
+      checkWhoutChrg = true;
+    }
     let defaultTypeCodeT =
       formData &&
       typeCodes &&
@@ -183,9 +231,9 @@ class FormTrusts extends Component {
           <Select
             data={typeCodes}
             labelSelected="보관유형"
-            valueSelected={defaultTypeCodeT !== undefined ? defaultTypeCodeT.label : ''}
+            // valueSelected={defaultTypeCodeT !== undefined ? defaultTypeCodeT.label : ''}
             dataDefault={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
-            selectedValue={formData.typeCode}
+            // selectedValue={formData.typeCode}
             valueProps={e => {
               let dataF = formData;
               dataF.typeCode = e;
@@ -195,9 +243,11 @@ class FormTrusts extends Component {
           <Select
             data={calUnitDvCodes}
             labelSelected="정산단위"
-            valueSelected={defaultcalUnit !== undefined ? defaultcalUnit.label : ''}
+            valueSelected={
+              defaultcalUnit !== undefined ? defaultcalUnit.label : ''
+            }
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
-            selectedValue={formData.calUnitDvCode}
+            // selectedValue={formData.calUnitDvCode}
             valueProps={e => {
               // this.setState({ calUnitDvCode: e })
               let dataF = formData;
@@ -208,9 +258,11 @@ class FormTrusts extends Component {
           <Select
             data={calStdDvCodes}
             labelSelected="산정기준"
-            valueSelected={defaultcalStd !== undefined ? defaultcalStd.label : ''}
+            valueSelected={
+              defaultcalStd !== undefined ? defaultcalStd.label : ''
+            }
             dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
-            selectedValue={formData.calStdDvCode}
+            // selectedValue={formData.calStdDvCode}
             valueProps={e => {
               let dataF = formData;
               dataF.calStdDvCode = e;
@@ -219,7 +271,9 @@ class FormTrusts extends Component {
           />
           <TextField
             labelTextField="가용수량"
+            placeholder="0"
             keyboardType="numeric"
+            isRequired={true}
             defaultValue={
               formData.usblValue ? numberToStd(formData.usblValue) : ''
             }
@@ -231,6 +285,9 @@ class FormTrusts extends Component {
               dataF.usblValue = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
+            textError={
+              checkUsblValue === true ? null : '정보를 입력해주세요.'
+            }
           />
 
           <View style={{ flex: 1, marginBottom: 18 }}>
@@ -241,18 +298,26 @@ class FormTrusts extends Component {
                 timeCheck === false ? DefaultStyle._errorText : '',
               ]}>
               <Text style={DefaultStyle._textDate}>
-                {from.toLocaleDateString()}
+                {typeof from === 'string' ? from : from.toLocaleDateString()}
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
                 수탁 기간
               </Text>
-              <DatePicker
-                mode={mode}
-                show={showFrom}
-                onChange={this.onChangeFrom}
-                value={from}
-                testID="dateTimePicker"
+              <DateTimePickerModal
+                mode="date"
+                isVisible={showFrom}
+                date={from ? from : new Date()}
+                onConfirm={date => this.onChangeFrom(date)}
+                onCancel={() => {
+                  this.setState({
+                    showFrom: false,
+                  });
+                }}
+                // show={showFrom}
+                // onChange={this.onChangeFrom}
+                // value={from}
+                // testID="dateTimePicker"
               />
             </TouchableOpacity>
           </View>
@@ -264,25 +329,39 @@ class FormTrusts extends Component {
                 timeCheck === false ? DefaultStyle._errorText : '',
               ]}>
               <Text style={DefaultStyle._textDate}>
-                {to.toLocaleDateString()}
+                {typeof to === 'string' ? to : to.toLocaleDateString()}
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
                 수탁 기간
               </Text>
-              <DatePicker
-                mode={mode}
-                show={showTo}
-                onChange={this.onChangeTo}
-                value={to}
-                testID="dateTimePickerTo"
+              <DateTimePickerModal
+                mode="date"
+                isVisible={showTo}
+                date={to ? to : new Date()}
+                onConfirm={date => this.onChangeTo(date)}
+                onCancel={() => {
+                  this.setState({
+                    showFrom: false,
+                  });
+                }}
+                // onChange={this.onChangeTo}
+                // value={to}
+                // testID="dateTimePickerTo"
               />
             </TouchableOpacity>
           </View>
 
           <TextField
             labelTextField="보관단가"
-            textRight="개"
+            placeholder="0"
+            isRequired={true}
+            textError={
+              checkSplyAmount === true
+                ? null
+                : '정보를 입력해주세요.'
+            }
+            textRight="원"
             keyboardType="numeric"
             value={splyAmount}
             defaultValue={
@@ -298,6 +377,13 @@ class FormTrusts extends Component {
           />
           <TextField
             labelTextField="입고단가"
+            placeholder="0"
+            textError={
+              checkWhinChrg === true
+                ? null
+                : '정보를 입력해주세요.'
+            }
+            isRequired={true}
             keyboardType="numeric"
             textRight="원"
             defaultValue={
@@ -314,6 +400,13 @@ class FormTrusts extends Component {
           />
           <TextField
             labelTextField="출고단가"
+            isRequired={true}
+            placeholder="0"    
+            textError={
+              checkWhoutChrg === true
+                ? null
+                : '정보를 입력해주세요.'
+            }
             keyboardType="numeric"
             textRight="원"
             defaultValue={
@@ -330,6 +423,7 @@ class FormTrusts extends Component {
           />
           <TextField
             labelTextField="인건단가 (선택)"
+            placeholder="0"
             keyboardType="numeric"
             textRight="원"
             value={psnChrg}
@@ -345,6 +439,7 @@ class FormTrusts extends Component {
           <TextField
             labelTextField="가공단가 (선택)"
             value={mnfctChrg}
+            placeholder="0"
             keyboardType="numeric"
             textRight="원"
             defaultValue={
@@ -360,6 +455,7 @@ class FormTrusts extends Component {
           />
           <TextField
             labelTextField="택배단가 (선택)"
+            placeholder="0"
             keyboardType="numeric"
             textRight="원"
             defaultValue={
@@ -376,6 +472,7 @@ class FormTrusts extends Component {
           />
           <TextField
             labelTextField="운송단가 (선택)"
+            placeholder="0"
             keyboardType="numeric"
             textRight="원"
             value={shipChrg}

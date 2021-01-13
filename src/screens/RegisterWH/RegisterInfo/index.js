@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -17,7 +17,7 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
   TextInput,
@@ -35,11 +35,12 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
-import {styles as S} from '../style';
-import {styles as SS} from './style';
+import illust10 from '@Assets/images/illust10.png';
+import { styles as S } from '../style';
+import { styles as SS } from './style';
 import Form from './form';
 import FormTrusts from './formTrusts';
-import {MyPage} from '@Services/apis';
+import { MyPage } from '@Services/apis';
 
 class RegisterInfo extends Component {
   constructor(props) {
@@ -59,44 +60,44 @@ class RegisterInfo extends Component {
         props.dataInfo && props.dataInfo.keeps
           ? props.dataInfo.keeps
           : [
-            // {
-            //   typeCode: '',
-            //   calUnitDvCode: '',
-            //   calStdDvCode: '',
-            //   mgmtChrgDvCode: '',
-            //   // exclusiveArea2: '',
-            //   commonArea: '',
-            //   usblValue: '',
-            //   // rentalArea: '',
-            //   // rentalArea2: '',
-            //   usblYmdFrom: '',
-            //   usblYmdTo: '',
-            //   splyAmount: '',
-            //   mgmtChrg: '',
-            //   remark: '',
-            // },
-          ],
+              // {
+              //   typeCode: '',
+              //   calUnitDvCode: '',
+              //   calStdDvCode: '',
+              //   mgmtChrgDvCode: '',
+              //   // exclusiveArea2: '',
+              //   commonArea: '',
+              //   usblValue: '',
+              //   // rentalArea: '',
+              //   // rentalArea2: '',
+              //   usblYmdFrom: '',
+              //   usblYmdTo: '',
+              //   splyAmount: '',
+              //   mgmtChrg: '',
+              //   remark: '',
+              // },
+            ],
       trusts:
         props.dataInfo && props.dataInfo.trusts
           ? props.dataInfo.trusts
           : [
-            // {
-            //   typeCode: '',
-            //   calUnitDvCode: '',
-            //   calStdDvCode: '',
-            //   usblYmdFrom: '',
-            //   usblYmdTo: '',
-            //   splyAmount: '',
-            //   usblValue: '',
-            //   whinChrg: '',
-            //   whoutChrg: '',
-            //   psnChrg: '',
-            //   mnfctChrg: '',
-            //   dlvyChrg: '',
-            //   shipChrg: '',
-            //   remark: '',
-            // },
-          ],
+              // {
+              //   typeCode: '',
+              //   calUnitDvCode: '',
+              //   calStdDvCode: '',
+              //   usblYmdFrom: '',
+              //   usblYmdTo: '',
+              //   splyAmount: '',
+              //   usblValue: '',
+              //   whinChrg: '',
+              //   whoutChrg: '',
+              //   psnChrg: '',
+              //   mnfctChrg: '',
+              //   dlvyChrg: '',
+              //   shipChrg: '',
+              //   remark: '',
+              // },
+            ],
     };
 
     this.navigation = props.navigation;
@@ -121,46 +122,51 @@ class RegisterInfo extends Component {
     let listTrusts = this.state.trusts;
     valueTab === 'trusts'
       ? listTrusts.push({
-        // key: lengths,
-        typeCode: '',
-        calUnitDvCode: '',
-        calStdDvCode: '',
-        usblYmdFrom: '',
-        usblYmdTo: '',
-        splyAmount: '',
-        usblValue: '',
-        whinChrg: '',
-        whoutChrg: '',
-        psnChrg: '',
-        mnfctChrg: '',
-        dlvyChrg: '',
-        shipChrg: '',
-        remark: '',
-      })
+          // key: lengths,
+          // typeCode: '',
+          // calUnitDvCode: '',
+          // calStdDvCode: '',
+          usblYmdFrom: new Date().getTime(),
+          usblYmdTo: new Date().getTime(),
+          // splyAmount: '',
+          // usblValue: '',
+          // whinChrg: '',
+          // whoutChrg: '',
+          // psnChrg: '',
+          // mnfctChrg: '',
+          // dlvyChrg: '',
+          // shipChrg: '',
+          // remark: '',
+        })
       : listKeeps.push({
-        typeCode: '',
-        calUnitDvCode: '',
-        calStdDvCode: '',
-        mgmtChrgDvCode: '',
-        commonArea: '',
-        usblValue: '',
-        usblYmdFrom: '',
-        usblYmdTo: '',
-        splyAmount: '',
-        mgmtChrg: '',
-        remark: '',
-      });
-    this.setState({keeps: listKeeps, trusts: listTrusts});
+          // typeCode: '',
+          // calUnitDvCode: '',
+          // calStdDvCode: '',
+          // mgmtChrgDvCode: '',
+          // commonArea: '',
+          // usblValue: '',
+          usblYmdFrom: new Date().getTime(),
+          usblYmdTo: new Date().getTime(),
+          // splyAmount: '',
+          // mgmtChrg: '',
+          // remark: '',
+        });
+    this.setState({
+      keeps: listKeeps,
+      trusts: listTrusts,
+    });
     setTimeout(() => {
       if (valueTab === 'keeps') {
-        this.goToSlider(listKeeps.length);
+        this.goToSlider(listKeeps.length - 1);
+        this.setState({ numberSlide: listKeeps.length - 1 });
       } else if (valueTab === 'trusts') {
-        this.goToSlider(listTrusts.length);
+        this.goToSlider(listTrusts.length - 1);
+        this.setState({ numberSlideTrusts: listTrusts.length - 1 });
       }
-    },500);
+    }, 500);
   };
   _removeForm = valueTab => {
-    console.log('vaodaynao')
+    console.log('vaodaynao');
     let listKeeps = this.state.keeps;
     let listTrusts = this.state.trusts;
     let numberSlideKeep = this.state.numberSlide;
@@ -168,7 +174,7 @@ class RegisterInfo extends Component {
       this.state.numberSlide > 0 ? this.state.numberSlide - 1 : 0;
     let slideTrustStart =
       this.state.numberSlideTrusts > 0 ? this.state.numberSlideTrusts - 1 : 0;
-    console.log('slideKeepStart :>> ', slideKeepStart);
+    // console.log('slideKeepStart :>> ', slideKeepStart);
     let numberSlideTrusts = this.state.numberSlideTrusts;
     let filterKeep =
       listKeeps &&
@@ -177,24 +183,38 @@ class RegisterInfo extends Component {
       listTrusts &&
       listTrusts.filter(item => item !== listTrusts[numberSlideTrusts]);
     // console.log('filterkEepppppppppppppp', filterKeep);
-    valueTab === 'trusts'
-      ? this.setState({
-        trusts: filterTrust,
-        numberSlideTrusts: slideTrustStart,
-      })
-      : this.setState({
-        keeps: filterKeep,
-        numberSlide: slideKeepStart,
-        goToSlideKeep: slideKeepStart,
-      });
+    // valueTab === 'trusts'
+    //   ? this.setState({
+    //       trusts: filterTrust,
+    //       numberSlideTrusts: slideTrustStart,
+    //     })
+    //   : this.setState({
+    //       keeps: filterKeep,
+    //       numberSlide: slideKeepStart,
+    //     });
+    setTimeout(() => {
+      if (valueTab === 'keeps') {
+        this.goToSlider(slideKeepStart);
+        this.setState({
+          keeps: filterKeep,
+          numberSlide: slideKeepStart,
+        });
+      } else if (valueTab === 'trusts') {
+        this.goToSlider(slideTrustStart);
+        this.setState({
+          trusts: filterTrust,
+          numberSlideTrusts: slideTrustStart,
+        });
+      }
+    }, 500);
     // console.log('valueTab :>> ', valueTab);
     // console.log('listKeeps', listKeeps);
   };
   onToggleSwitch = () =>
-    this.setState({cnsltPossYn: !this.state.cnsltPossYn});
-  _renderPagination
-  _renderItem = ({item}) => {
-    console.log('item :>> ', item);
+    this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
+  _renderPagination;
+  _renderItem = ({ item }) => {
+    // console.log('item :>> ', item);
     let dataKeep = this.state.keeps;
     return (
       <Form
@@ -217,7 +237,7 @@ class RegisterInfo extends Component {
       />
     );
   };
-  _renderItemTrusts = ({item}) => {
+  _renderItemTrusts = ({ item }) => {
     return (
       <FormTrusts
         typeCodes={this.state.typeCodes}
@@ -236,14 +256,13 @@ class RegisterInfo extends Component {
       />
     );
   };
-  goToSlider = (index) => {
-    console.log(index, 'goToSlider');
-    if(this.slider)
-    this.slider.goTo(index)
-  }
+  goToSlider = index => {
+    // console.log(index, 'goToSlider');
+    if (this.slider) this.slider.goTo(index);
+  };
 
   render() {
-    const {imageStore, route, dataInfo} = this.props;
+    const { imageStore, route, dataInfo } = this.props;
     const {
       valueTab,
       numberSlide,
@@ -256,7 +275,6 @@ class RegisterInfo extends Component {
     // console.log('dataInfo :>> ', dataInfo);
     // console.log('keeps :>> ', dataInfo.keeps);
 
-    console.log('goToSlideKeep :>> ', goToSlideKeep);
     // TODO 확인버튼은 수탁과 보관의 모든것의 필수값이 입력된 경우만 true
     let isSubmitUpdate = false;
     // console.log('keeps', keeps);
@@ -275,14 +293,14 @@ class RegisterInfo extends Component {
       trusts && trusts.filter(item => item.whinChrg === '');
     let filterwhoutChrgTrust =
       trusts && trusts.filter(item => item.whoutChrg === '');
-    let filterpsnChrgTrust =
-      trusts && trusts.filter(item => item.psnChrg === '');
-    let filtermnfctChrgTrust =
-      trusts && trusts.filter(item => item.mnfctChrg === '');
-    let filterdlvyChrgTrust =
-      trusts && trusts.filter(item => item.dlvyChrg === '');
-    let filtershipChrgTrust =
-      trusts && trusts.filter(item => item.shipChrg === '');
+    // let filterpsnChrgTrust =
+    //   trusts && trusts.filter(item => item.psnChrg === '');
+    // let filtermnfctChrgTrust =
+    //   trusts && trusts.filter(item => item.mnfctChrg === '');
+    // let filterdlvyChrgTrust =
+    //   trusts && trusts.filter(item => item.dlvyChrg === '');
+    // let filtershipChrgTrust =
+    //   trusts && trusts.filter(item => item.shipChrg === '');
 
     if (
       filterArea.length === 0 &&
@@ -297,15 +315,15 @@ class RegisterInfo extends Component {
       filterusblValueTrust.length === 0 &&
       filtersplyAmountTrust.length === 0 &&
       filterwhinChrgTrust.length === 0 &&
-      filterwhoutChrgTrust.length === 0 &&
-      filterpsnChrgTrust.length === 0 &&
-      filtermnfctChrgTrust.length === 0 &&
-      filterdlvyChrgTrust.length === 0 &&
-      filtershipChrgTrust.length === 0
+      filterwhoutChrgTrust.length === 0
+      // filterpsnChrgTrust.length === 0 &&
+      // filtermnfctChrgTrust.length === 0 &&
+      // filterdlvyChrgTrust.length === 0 &&
+      // filtershipChrgTrust.length === 0
     ) {
       isSubmitUpdate = true;
     }
-    // console.log('isSubmitUpdate', isSubmitUpdate);
+    console.log('isSubmitUpdate', isSubmitUpdate);
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -326,35 +344,50 @@ class RegisterInfo extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
+          <View style={{ backgroundColor: '#ffffff' }}>
             <View style={SS.tabBar}>
               <TouchableOpacity
                 style={this.state.valueTab === 'keeps' ? SS.btnTabBar : null}
-                onPress={() => this.setState({valueTab: 'keeps'})}>
+                onPress={() => this.setState({ valueTab: 'keeps' })}>
                 <Text style={SS.textTabBar}>보관</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={this.state.valueTab === 'trusts' ? SS.btnTabBar : null}
-                onPress={() => this.setState({valueTab: 'trusts'})}>
+                onPress={() => this.setState({ valueTab: 'trusts' })}>
                 <Text style={SS.textTabBar}>수탁</Text>
               </TouchableOpacity>
             </View>
             <View style={DefaultStyle._cards}>
-              <View style={[DefaultStyle._titleCard, {
-                marginBottom:
-                  (valueTab === 'keeps' && (!keeps || keeps.length === 0)) ? 60 :
-                    ((valueTab === 'trusts' && (!trusts || trusts.length === 0)) ? 60 : 16)
-              }]}>
+              <View
+                style={[
+                  DefaultStyle._titleCard,
+                  {
+                    marginBottom:
+                      valueTab === 'keeps' && (!keeps || keeps.length === 0)
+                        ? 60
+                        : valueTab === 'trusts' &&
+                          (!trusts || trusts.length === 0)
+                        ? 60
+                        : 16,
+                  },
+                ]}>
                 <Text style={DefaultStyle._textTitleCard}>
                   {route && route.params && route.params.type === 'ModifyWH'
                     ? `임대유형 상세정보`
                     : `임대유형 상세정보`}
-                  { valueTab === 'keeps' && this.state.keeps.length > 0 &&
-                  <Text style={{color: '#777777'}}> ({this.state.numberSlide + 1}/{this.state.keeps.length})</Text>
-                  }
-                  { valueTab === 'trusts' && this.state.trusts.length >0 &&
-                  <Text style={{color: '#777777'}}> ({this.state.numberSlideTrusts + 1}/{this.state.trusts.length})</Text>
-                  }
+                  {valueTab === 'keeps' && this.state.keeps.length > 0 && (
+                    <Text style={{ color: '#777777' }}>
+                      {' '}
+                      ({this.state.numberSlide + 1}/{this.state.keeps.length})
+                    </Text>
+                  )}
+                  {valueTab === 'trusts' && this.state.trusts.length > 0 && (
+                    <Text style={{ color: '#777777' }}>
+                      {' '}
+                      ({this.state.numberSlideTrusts + 1}/
+                      {this.state.trusts.length})
+                    </Text>
+                  )}
                   <Text style={S.textNote}>*</Text>
                 </Text>
                 <View style={DefaultStyle._titleBody}>
@@ -380,7 +413,7 @@ class RegisterInfo extends Component {
                     showNextButton: false,
                     showDoneButton: false,
                     onSlideChange: e => {
-                      this.setState({numberSlide: e});
+                      this.setState({ numberSlide: e });
                     },
                     dotStyle: {
                       backgroundColor: 'rgba(0, 0, 0, 0.12)',
@@ -395,7 +428,7 @@ class RegisterInfo extends Component {
                       marginTop: 100,
                     },
                   }}
-                  ref={(ref) => (this.slider = ref)}
+                  ref={ref => (this.slider = ref)}
                 />
               ) : (
                 <Carousel
@@ -406,7 +439,7 @@ class RegisterInfo extends Component {
                     showNextButton: false,
                     showDoneButton: false,
                     onSlideChange: e => {
-                      this.setState({numberSlideTrusts: e});
+                      this.setState({ numberSlideTrusts: e });
                     },
                     dotStyle: {
                       backgroundColor: 'rgba(0, 0, 0, 0.12)',
@@ -421,7 +454,7 @@ class RegisterInfo extends Component {
                       marginTop: 100,
                     },
                   }}
-                  ref={(ref) => (this.slider = ref)}
+                  ref={ref => (this.slider = ref)}
                 />
               )}
             </View>
@@ -445,39 +478,39 @@ class RegisterInfo extends Component {
                 <Text style={SS.textFooter}>할 때 가격 협의가 가능합니다.</Text>
               </View>
 
-              {
-                (valueTab === 'keeps' && ((keeps && keeps.length > 0))
-                ||
-                valueTab === 'trusts' && (trusts && trusts.length > 0))
-                &&
-              <TouchableOpacity
-                disabled={isSubmitUpdate === true ? false : true}
-                onPress={() => {
-                  this.navigation.navigate('RegisterWH', {
-                    completeInfo: true,
-                  });
-                  this.props.updateInfo({
-                    cnsltPossYn: this.state.cnsltPossYn,
-                    keeps: this.state.keeps,
-                    trusts: this.state.trusts,
-                  });
-                }}
-                style={[
-                  DefaultStyle.btnSubmit,
-                  isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
-                ]}
-                // disabled={imageStore.length > 2 ? false : true}
-              >
-                <Text
-                  style={[
-                    DefaultStyle.textSubmit,
+              {((valueTab === 'keeps' && (keeps && keeps.length > 0)) ||
+                (valueTab === 'trusts' && (trusts && trusts.length > 0))) && (
+                <TouchableOpacity
+                  disabled={isSubmitUpdate === true ? false : true}
+                  onPress={() =>
                     isSubmitUpdate === true
-                      ? DefaultStyle.textActiveSubmit
-                      : null,
-                  ]}>
-                  확인
-                </Text>
-              </TouchableOpacity>}
+                      ? (this.navigation.navigate('RegisterWH', {
+                          completeInfo: true,
+                        }),
+                        this.props.updateInfo({
+                          cnsltPossYn: this.state.cnsltPossYn,
+                          keeps: this.state.keeps,
+                          trusts: this.state.trusts,
+                        }))
+                      :  this.props.showPopup({
+                        type: 'confirm',
+                        title: 'ERROR',
+                        content: '필수정보를 입력해야 합니다.',
+                        image: illust10,
+                      })
+                  }
+                  style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
+                  // disabled={imageStore.length > 2 ? false : true}
+                >
+                  <Text
+                    style={[
+                      DefaultStyle.textSubmit,
+                      DefaultStyle.textActiveSubmit,
+                    ]}>
+                    확인
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </ScrollView>
@@ -499,7 +532,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({typeCodes});
+          this.setState({ typeCodes });
         }
       })
       .catch(err => {
@@ -518,7 +551,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({calUnitDvCodes});
+          this.setState({ calUnitDvCodes });
         }
       })
       .catch(err => {
@@ -537,7 +570,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({calStdDvCodes});
+          this.setState({ calStdDvCodes });
         }
       })
       .catch(err => {
@@ -555,7 +588,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({mgmtChrgDvCodes});
+          this.setState({ mgmtChrgDvCodes });
         }
       })
       .catch(err => {
@@ -565,8 +598,8 @@ class RegisterInfo extends Component {
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
-    // console.log('::prevPropsFormKeep::', prevState);
-    // console.log('::propsFormKeep::', this.state);
+    // console.log('::prevState::', prevState);
+    // console.log('::state::', this.state);
   }
 }
 
@@ -590,9 +623,9 @@ function mapDispatchToProps(dispatch) {
       dispatch(ActionCreator.removeImage(action));
     },
 
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
+    },
   };
 }
 

@@ -17,6 +17,7 @@ import {
 import { connect } from 'react-redux';
 import { Text } from 'react-native-paper';
 import { Fav, Warehouse } from '@Services/apis';
+import { debounce } from "lodash";
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -24,6 +25,7 @@ import DefaultStyle from '@Styles/default';
 import CardMypage from '@Components/organisms/CardMypage';
 import ActionCreator from '@Actions';
 import box from '@Assets/images/box.png';
+import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
 
 class InterestWarehouse extends Component {
@@ -31,7 +33,8 @@ class InterestWarehouse extends Component {
     super(props);
     this.webView = null;
     this.state = {
-      listItem: []
+      listItem: [],
+      isLoading:false
     };
 
     this.navigation = props.navigation;
@@ -40,6 +43,23 @@ class InterestWarehouse extends Component {
   /** when after render DOM */
   componentDidMount () {
     this.getDataFavorite();
+  }
+
+  // setDebounce = debounce((callback) => {
+  //   callback();
+  // },100);
+
+  // componentDidUpdate (prevProps, prevState) {
+  //   if (prevState.isLoading !== this.state.isLoading) {
+  //     console.log('vaodya')
+  //     this.setDebounce(() => {
+  //       this.setState({ isLoading: !this.state.isLoading })
+  //     });
+  //   }
+  // }
+
+  UNSAFE_componentWillReceiveProps(newProps) {
+      this.setState({ isLoading: !this.state.isLoading });
   }
 
   getDataFavorite = () => {
@@ -116,7 +136,7 @@ class InterestWarehouse extends Component {
   removeFavorite = (id) => {
     Warehouse.toggleFav(id)
       .then(res => {
-        alert('warehouse favorite remove success');
+        alert('삭제가 완료되었습니다.');
         this.getDataFavorite();
       })
       .catch(error => {
@@ -133,9 +153,9 @@ class InterestWarehouse extends Component {
           <CardMypage
             key={index}
             onPressHeader={() => this.navigation.navigate('DetailsWH', { id: item.id })}
-            bgrImage={{ uri: item.image }}
+            bgrImage={item.image ? { uri: item.image } : card}
             headerComponent={
-              <View style>
+              <View>
                 <Text
                   style={[
                     DefaultStyle._titleWH,
@@ -192,7 +212,7 @@ class InterestWarehouse extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-              <Image style={{ flex: 1 }} source={box} />
+              <Image style={{ flex: 1 }} source={box ? box : {url:'null'}} />
             </View>
             <Text style={[DefaultStyle._textDF3, { marginTop: 40, textAlign: 'center', marginBottom: 24, }]}>
               관심 창고로 등록한 창고가 없습니다.
