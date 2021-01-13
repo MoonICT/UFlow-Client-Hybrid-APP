@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 import { WebView } from 'react-native-webview';
 import { Appbar, Text } from 'react-native-paper';
 import SplashScreen from 'react-native-splash-screen';
-import { debounce } from "lodash";
+import { debounce } from 'lodash';
 
 // Local Imports
 import WVMsgService from '@Services/WebViewMessageService';
@@ -40,8 +40,10 @@ import { Warehouse, WhrgSearch } from '@Services/apis';
 import Progress from '@Components/organisms/Progress';
 
 class Search extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
+    let { searchValue } = this.props?.route?.params;
+    console.log('searchValue==>', searchValue);
     this.webView = null;
     // Webview initialize options.
     this.option = {
@@ -62,44 +64,45 @@ class Search extends Component {
   /**
    * Debounce Utils
    * */
-  setDebounce = debounce((callback) => {
+  setDebounce = debounce(callback => {
     callback();
   }, 500);
-
 
   /**************************
    * START : Webview Event.
    * */
 
   // When the WebView has finished loading.
-  async _WVOnLoad (e) {
+  async _WVOnLoad(e) {
     console.log('::: Web View Loaded ::: ');
   }
 
   // When the webview calls window.postMessage.
-  async _WVOnMessage (e) {
+  async _WVOnMessage(e) {
     // console.log(':::: onReceiveWebViewMessage');
     let msgData = WVMsgService.parseMessageData(e);
     switch (msgData.type) {
       case WVMsgService.types.CONSOLE_LOG:
-        console.log('[WEBVIEW]' + msgData.data)
+        console.log('[WEBVIEW]' + msgData.data);
         break;
       case WVMsgService.types.CHANGE_MAP_CENTER_POSITION:
         // console.log('[RN] CHANGE_MAP_CENTER_POSITION 수신', msgData.data)
         this.props.setSearchFilter({
           latitude: msgData.data.latitude ? Number(msgData.data.latitude) : '',
-          longitude: msgData.data.longitude ? Number(msgData.data.longitude) : '',
+          longitude: msgData.data.longitude
+            ? Number(msgData.data.longitude)
+            : '',
           distance: msgData.data.distance ? Number(msgData.data.distance) : 10,
-        })
+        });
         break;
       case WVMsgService.types.GO_WH_DETAIL:
         // console.log('[RN] GO_WH_DETAIL 수신', msgData.data)
-        this.navigation.navigate('DetailsWH', { id: msgData.data })
+        this.navigation.navigate('DetailsWH', { id: msgData.data });
         break;
     }
   }
 
-  _WVSendMessage (msgObj) {
+  _WVSendMessage(msgObj) {
     const resultMsg = JSON.stringify(msgObj);
     this.webView.postMessage(resultMsg);
     // console.log(':::: Send Message ::::', resultMsg);
@@ -109,18 +112,18 @@ class Search extends Component {
    * 주소/창고 검색 결과 클릭 핸들러.
    * 웹뷰로 좌표 전달.
    * */
-  handleSelectResult = (result) => {
+  handleSelectResult = result => {
     this._WVSendMessage({
       type: WVMsgService.types.CHANGE_SEARCH_CENTER_POSITION,
       data: result,
     });
-  }
+  };
 
   /**
    * END : Webview Event.
    ***************************/
   // 컴포넌트 랜더링.
-  render () {
+  render() {
     const strMsgType = JSON.stringify(WVMsgService.types);
     let injectJSCode = `
     window.consoleLog = function(...args){
@@ -155,7 +158,9 @@ class Search extends Component {
 
         {/** 지역/주소 검색하기 패널. */}
         {/** 검색 결과 클릭 시 좌표 이동하기. */}
-        {this.props.isSearchToggle && <SearchOverlay onSelect={(result) => this.handleSelectResult(result)} />}
+        {this.props.isSearchToggle && (
+          <SearchOverlay onSelect={result => this.handleSelectResult(result)} />
+        )}
 
         {/** 필터 패널. */}
         <SearchFilterPanel
@@ -172,13 +177,13 @@ class Search extends Component {
           style={{
             flex: 1,
           }}>
-
-          {this.state.progress < 1 &&
-          <View style={styles.loadingWrap}>
-            <View style={styles.loadingInner}>
-              <Progress />
+          {this.state.progress < 1 && (
+            <View style={styles.loadingWrap}>
+              <View style={styles.loadingInner}>
+                <Progress />
+              </View>
             </View>
-          </View>}
+          )}
 
           {/** Webview */}
           <WebView
@@ -214,7 +219,7 @@ class Search extends Component {
 
   // 컴포넌트가 만들어지고 render가 호출된 이후에 호출.
   // 비동기 요청을 처리하는 부분.
-  async componentDidMount () {
+  async componentDidMount() {
     // console.log('::componentDidMount::search main');
     /** Complete Initialize. */
     SplashScreen.hide();
@@ -229,18 +234,39 @@ class Search extends Component {
     const listCmpltTypes = await WhrgSearch.getCmpltTypes(); // 준공 연차
 
     this.props.setSearchFilterCode({
-      listGdsTypeCode: listGdsTypeCode && listGdsTypeCode._embedded ? listGdsTypeCode._embedded.detailCodes : [], // 보관유형
-      listCalUnitDvCode: listCalUnitDvCode && listCalUnitDvCode._embedded ? listCalUnitDvCode._embedded.detailCodes : [], // 정산단위
-      listCalStdDvCode: listCalStdDvCode && listCalStdDvCode._embedded ? listCalStdDvCode._embedded.detailCodes : [], // 산정기준
-      listFlrDvCode: listFlrDvCode && listFlrDvCode._embedded ? listFlrDvCode._embedded.detailCodes : [], // 층수
-      listAprchMthdDvCode: listAprchMthdDvCode && listAprchMthdDvCode._embedded ? listAprchMthdDvCode._embedded.detailCodes : [], // 접안방식
-      listInsrDvCode: listInsrDvCode && listInsrDvCode._embedded ? listInsrDvCode._embedded.detailCodes : [], // 보험 가입
-      listCmpltTypes: listCmpltTypes && listCmpltTypes._embedded ? listCmpltTypes._embedded.hashMaps : [], // 준공연차
+      listGdsTypeCode:
+        listGdsTypeCode && listGdsTypeCode._embedded
+          ? listGdsTypeCode._embedded.detailCodes
+          : [], // 보관유형
+      listCalUnitDvCode:
+        listCalUnitDvCode && listCalUnitDvCode._embedded
+          ? listCalUnitDvCode._embedded.detailCodes
+          : [], // 정산단위
+      listCalStdDvCode:
+        listCalStdDvCode && listCalStdDvCode._embedded
+          ? listCalStdDvCode._embedded.detailCodes
+          : [], // 산정기준
+      listFlrDvCode:
+        listFlrDvCode && listFlrDvCode._embedded
+          ? listFlrDvCode._embedded.detailCodes
+          : [], // 층수
+      listAprchMthdDvCode:
+        listAprchMthdDvCode && listAprchMthdDvCode._embedded
+          ? listAprchMthdDvCode._embedded.detailCodes
+          : [], // 접안방식
+      listInsrDvCode:
+        listInsrDvCode && listInsrDvCode._embedded
+          ? listInsrDvCode._embedded.detailCodes
+          : [], // 보험 가입
+      listCmpltTypes:
+        listCmpltTypes && listCmpltTypes._embedded
+          ? listCmpltTypes._embedded.hashMaps
+          : [], // 준공연차
     });
   }
 
   // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     // console.log('::componentDidUpdate::');
     if (prevProps.whFilter !== this.props.whFilter) {
       this.setDebounce(() => {
@@ -256,7 +282,7 @@ class Search extends Component {
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps :', state);
   return {
     isSearchToggle: state.search.isSearchToggle,
@@ -266,7 +292,7 @@ function mapStateToProps (state) {
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     searchToggle: status => {
       dispatch(ActionCreator.searchToggle(status));
