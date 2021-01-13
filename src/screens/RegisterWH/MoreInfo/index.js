@@ -566,7 +566,7 @@ class RegisterMoreInfo extends Component {
       .then(res => {
         if (res.status === 200) {
           let data = res.data._embedded.detailCodes;
-          console.log('datasssssssssssssss :>> ', data);
+          // console.log('datasssssssssssssss :>> ', data);
           let insrDvCodeData =
             data &&
             data.map((item, index) => {
