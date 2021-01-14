@@ -61,4 +61,13 @@ export const numberToStd = value => {
   return value.toString();
 };
 
+const toPyeong = value => {
+  //return value ? Math.ceil((Math.trunc(Number(value)*10)/10) / 3.305785) : ''
+  return value ? Number(Number(value) / 3.305785).toFixed(0) : '';
+};
 
+const displayAreaUnit = value => {
+  return `${value.toLocaleString()}㎡ (${toPyeong(
+    value,
+  ).toLocaleString()}평)`;
+};

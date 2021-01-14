@@ -8,6 +8,8 @@ import {Button, Dialog, Text} from "react-native-paper";
 import {Contract} from '@Services/apis';
 import {styles as S} from "../style";
 import {styles as SS} from "./style";
+
+
 class TenantRs00Keep extends Component {
 
   constructor(props) {
