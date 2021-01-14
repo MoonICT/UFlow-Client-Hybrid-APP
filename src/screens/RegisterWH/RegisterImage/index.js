@@ -7,27 +7,20 @@
 // Global Imports
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   SafeAreaView,
   View,
   ScrollView,
   TouchableOpacity,
   Image,
-  ActivityIndicator,
-  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, IconButton } from 'react-native-paper';
-// import {useNavigation} from '@react-navigation/native';
-import { TextInput } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
+import ImagePanoram from './imagePanoram';
+import UpImage from './image';
 import ActionCreator from '@Actions';
-// import ignore2 from '@Assets/images/ignore2x.png';
-// import ignore1 from '@Assets/images/ignore.png';
-import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
 import { MediaUpload } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
@@ -38,9 +31,9 @@ class RegisterImage extends Component {
     super(props);
     this.webView = null;
     this.state = {
-      title: 'Profile Photo',
-      confirm: false,
       singleFile: null,
+      valueTab: 0,
+      isRemove: false,
     };
     this.navigation = props.navigation;
   }
@@ -50,13 +43,7 @@ class RegisterImage extends Component {
     return true;
   }
 
-  /** when exits screen */
-  componentWillUnmount() {
-    console.log('::componentWillUnmount::');
-  }
-
-  _addImage = () => console.log('_addImage');
-  _removeImage = () => this.props.removeAction(0);
+  _removeImage = () => this.setState({ isRemove: !this.state.isRemove });
 
   changeContent = e => {
     console.log('e', e);
@@ -127,7 +114,11 @@ class RegisterImage extends Component {
               // pimages.push();
               // this.setState({ pimages });
               console.log('url', url);
-              this.props.registerAction({ url: url, name: filename });
+              this.props.uploadImage({
+                url: url,
+                name: filename,
+                value: valueTab,
+              });
             }
           });
         } else {
@@ -145,26 +136,9 @@ class RegisterImage extends Component {
   };
   render() {
     const { imageStore } = this.props;
-    const { pimages } = this.state;
-    console.log('imageStore', imageStore);
-    const listImg =
-      imageStore &&
-      imageStore.map((item, index) => {
-        console.log('item.url :>> ', item.url);
-        // console.log('index', index);
-        if (index !== 0) {
-          return (
-            <View key={index}>
-              <Image style={S.itemImage} source={{ uri: item.url }} />
-              <IconButton
-                style={S.btnRemove}
-                icon="close-circle"
-                onPress={() => this.props.removeAction(index)}
-              />
-            </View>
-          );
-        }
-      });
+    const { valueTab, isRemove } = this.state;
+    // console.log('imageStore', imageStore);
+
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -187,40 +161,44 @@ class RegisterImage extends Component {
               // this.props.registerAction('44444');
             }}
           />
-
           <Appbar.Action
             icon="delete"
-            color="black"
+            color={isRemove === true ? '#ff6d00' : 'black'}
             onPress={this._removeImage}
           />
         </Appbars>
         <ScrollView>
-          {imageStore && imageStore.length === 0 ? (
-            <View style={S.bgrRegister}>
-              <Image source={ignore3} style={S.ImageStyle} />
-              <Text style={S.textBgr}>최소 3장 이상 등록하세요.</Text>
-            </View>
+          <View style={DefaultStyle._tabBar}>
+            <TouchableOpacity
+              style={valueTab === 0 ? DefaultStyle._btnTabBar : null}
+              onPress={() => this.setState({ valueTab: 0 })}>
+              <Text style={DefaultStyle._textTabBar}>일반 사진</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={valueTab === 1 ? DefaultStyle._btnTabBar : null}
+              onPress={() => this.setState({ valueTab: 1 })}>
+              <Text style={DefaultStyle._textTabBar}>파노라마 사진</Text>
+            </TouchableOpacity>
+          </View>
+          {valueTab === 0 ? (
+            <UpImage
+              valueTab={valueTab}
+              isRemove={isRemove}
+              handldeProps={() => this.handlePicker(valueTab)}
+            />
           ) : (
-            <View style={styles.imageContainer}>
-              <Image
-                style={S.ImageUpload}
-                source={{ uri: imageStore && imageStore[0].url }}
-                PlaceholderContent={<ActivityIndicator />}
-              />
-
-              <View
-                style={[
-                  S.listImage,
-                  (imageStore && imageStore.length - 1) % 3 === 0
-                    ? S.threeImage
-                    : null,
-                ]}>
-                {listImg}
-              </View>
-            </View>
+            <ImagePanoram
+              valueTab={valueTab}
+              isRemove={isRemove}
+              handldeProps={() => this.handlePicker(valueTab)}
+            />
           )}
 
-          <View style={DefaultStyle.footerRegister}>
+          <View
+            style={[
+              DefaultStyle.footerRegister,
+              { marginTop: 24, marginBottom: 18 },
+            ]}>
             <TouchableOpacity
               onPress={() => this.navigation.navigate('RegisterWH')}
               style={[
@@ -251,8 +229,6 @@ class RegisterImage extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    // count: state.home.count,
-    // imageStore: state.registerWH.pimages,
     imageStore: state.registerWH.whImages,
   };
 }
@@ -260,15 +236,12 @@ function mapStateToProps(state) {
 /** dispatch action to redux */
 function mapDispatchToProps(dispatch) {
   return {
-    registerAction: action => {
+    uploadImage: action => {
       dispatch(ActionCreator.uploadImage(action));
     },
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 
@@ -276,22 +249,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(RegisterImage);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-  },
-  imageContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerText: {
-    color: '#fff',
-    fontSize: 20,
-  },
-  body: { flex: 1 },
-});

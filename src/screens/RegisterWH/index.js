@@ -21,8 +21,6 @@ import { Dialog, Appbar, Paragraph, Text, Button } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-import Dialogs from '@Components/organisms/Dialog';
-
 import ActionCreator from '@Actions';
 import illust10 from '@Assets/images/illust10.png';
 import ignore1 from '@Assets/images/ignore.png';

@@ -1,29 +1,26 @@
-import {Axios, parseQuery} from '@Services/http';
-import {mainAxios} from '../libs/axios';
-import AsyncStorage from '@react-native-community/async-storage';
-
-import {TOKEN} from '@Constant';
+import { Axios, parseQuery } from '@Services/http';
 
 /**
  *
  * @param token FCM 토큰
  * @param code AND,IOS
  */
-export const sendEmail = async ({
-                                  token = '',
-                                  code = ''
-                                }) => {
-
-  const _token = await AsyncStorage.getItem(TOKEN);
-
-  return await mainAxios.post(`/api/v1/fcm`,
-    {
+export const registFCMToken = async ({
+                                       token = '',
+                                       code = '',
+                                       acToken = ''
+                                     }) => {
+  return Axios.postRequest({
+    url: `/api/v1/fcm`,
+    payload: {
       token: token,
       code: code
     },
-    {
+    config: {
       headers: {
-        Authorization: `Bearer ${_token}`
+        Authorization: `Bearer ${acToken}`
       }
-    });
+    }
+  });
 };
+

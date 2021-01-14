@@ -159,7 +159,7 @@ class RegisterIntro extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
+          <View style={{ backgroundColor: '#ffffff'}}>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
                 <Text style={DefaultStyle._textTitleBody}>

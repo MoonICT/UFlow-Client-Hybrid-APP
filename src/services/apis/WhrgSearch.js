@@ -2,8 +2,6 @@
  * /warehouse 참고 지도 검색 API
  */
 import { Axios, parseQuery } from '@Services/http';
-import { mainAxios } from '../libs/axios';
-import AsyncStorage from '@react-native-community/async-storage';
 
 //Contants
 import { TOKEN } from '@Constant';
