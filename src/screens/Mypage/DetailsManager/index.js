@@ -29,13 +29,13 @@ import imgType0003 from '@Assets/images/type-0003.png';
 import imgType0004 from '@Assets/images/type-0004.png';
 import imgType9100 from '@Assets/images/type-9100.png';
 import illust15 from '@Assets/images/illust15.png';
-
 import {
   Appbar,
   Dialog,
   Text,
   Button,
   Paragraph,
+  IconButton
 } from 'react-native-paper';
 import Select from '@Components/organisms/SelectFilter';
 import FilterButton from '@Components/atoms/FilterButton';
@@ -111,6 +111,7 @@ export default class DetailsManager extends Component {
       isToggle: false,
       isEmpty: true,
       singleFile: null,
+      uirDoneImport: '',
       resBody: {},
       receiptCancel: false,
       ExpctCurrent: -1,
@@ -213,9 +214,6 @@ export default class DetailsManager extends Component {
     };
     await InOutManagerService.getDetail(params).then((res) => {
 
-      console.log(res, 'res')
-
-
       let header = res.data.header;
       let cntrTrustResBody = res.data.header.cntrTrustResBody;
       let isExpired = header.expired
@@ -259,7 +257,6 @@ export default class DetailsManager extends Component {
         },
       ];
 
-      console.log(dataInfo, 'dataInfo');
       let responseFilter = res.data.data.content.map((item, index) => {
         let status = ''
         let dateStr = ''
@@ -392,7 +389,6 @@ export default class DetailsManager extends Component {
         }
       })
 
-      console.log('responseFilter.length', responseFilter.length);
       let isEmpty = responseFilter && responseFilter.length === 0;
       this.setState({
         dataInfo, responseFilter, cntrTrustResBody, isExpired, totalMoney, isEmpty
@@ -488,7 +484,6 @@ export default class DetailsManager extends Component {
   };
 
   onChangeTimeCreateImport = (selectedDate) => {
-    console.log(selectedDate, 'selectedDate');
     this.setState({
       createDate: selectedDate,
       createDateStr: dateStr(selectedDate),
@@ -567,15 +562,6 @@ export default class DetailsManager extends Component {
       ImageFilename
     } = this.state
 
-    console.log('-------');
-    console.log('rentWarehNo', rentWarehNo);
-    console.log('createValue', createValue);
-    console.log('createDate', createDate);
-    console.log('createDateStr', createDateStr);
-    console.log('typeCreate', typeCreate);
-    console.log('ExpctSeq', ExpctSeq);
-    console.log('type', type);
-    console.log('Moment(createDate).isAfter(Moment())', Moment(createDate).isBefore(Moment()));
 
     let errorMessage = ''
 
@@ -604,111 +590,115 @@ export default class DetailsManager extends Component {
         // Please change file upload URL
         InOutManagerService.uploadFile(data).then(respon => {
           if (respon.status === 200) {
-            const {filename} = respon.data
-             if (typeCreate === 'export') {
-            // 출고 확정
-            if (!ExpctYmd) {
-              alert('일자 정보가 없습니다.');
-              return;
-            } if (!createDateStr) {
-              alert('일자 정보가 없습니다.');
-              return;
-            } else if (!createValue) {
-              alert('수량 정보가 없습니다.');
-              return;
-            } else if (!rentWarehNo || !ExpctSeq) {
-              alert('공유창고 정보가 없습니다.');
-              return;
-            }
-            let data = {
-              filename,
-              rentWarehNo: rentWarehNo,
-              whoutExpct: Moment(ExpctYmd).valueOf(),
-              decisQty: Number(createValue),
-              decis: Moment(createDateStr).valueOf(),
-              whoutExpctSeq: ExpctSeq,
-              reason: "",
-              filename: ImageFilename,
-            }
-            console.log(data, "출고 확정");
-            InOutManagerService.postExportOwner(data)
-              .then((res) => {
-                console.log(res, 'res');
-                if (res.status === 200) {
-                  this.setState({
-                    ExpctYmd: '',
-                    createValue: 0,
-                    createDate: new Date(),
-                    createDateStr: dateStr(new Date()),
-                    ExpctSeq: -1,
-                    ImageFilename: '',
-                    visible: false,
-                    confirmRequestExport: true
-                  });
-                  this.getAllData()
-                } else {
-                  ToastShow("출고 확정을 실패하였습니다. " + res);
-                  console.error(res)
+            const {filename, url} = respon.data
+            this.setState({
+              uirDoneImport: url
+            }, () => {
+
+              if (typeCreate === 'export') {
+                // 출고 확정
+                if (!ExpctYmd) {
+                  alert('일자 정보가 없습니다.');
+                  return;
+                } if (!createDateStr) {
+                  alert('일자 정보가 없습니다.');
+                  return;
+                } else if (!createValue) {
+                  alert('수량 정보가 없습니다.');
+                  return;
+                } else if (!rentWarehNo || !ExpctSeq) {
+                  alert('공유창고 정보가 없습니다.');
+                  return;
                 }
-              }).catch(error => {
-              alert('postExportOwner error:' + error);
-            });
-          } else if (typeCreate === 'import') {
-            // 입고 확정
-            if (!ExpctYmd) {
-              alert('일자 정보가 없습니다.');
-              return;
-            } if (!createDateStr) {
-              alert('일자 정보가 없습니다.');
-              return;
-            } else if (!createValue) {
-              alert('수량 정보가 없습니다.');
-              return;
-            } else if (!rentWarehNo || !ExpctSeq) {
-              alert('공유창고 정보가 없습니다.');
-              return;
-            }
-            let data = {
-              filename,
-              rentWarehNo: rentWarehNo,
-              whinExpct: Moment(ExpctYmd).valueOf(),
-              whinDecisQty: Number(createValue),
-              whinDecis: Moment(createDateStr).valueOf(),
-              expctSeq: ExpctSeq,
-              reason: "",
-              filename: ImageFilename,
-            }
-            console.log(data, "입고 확정");
-            InOutManagerService.postImportOwner(data)
-              .then((res) => {
-                console.log(res, 'res');
-                if (res.status === 200) {
-                  this.setState({
-                    ExpctYmd: '',
-                    createValue: 0,
-                    createDate: new Date(),
-                    createDateStr: dateStr(new Date()),
-                    ExpctSeq: -1,
-                    ImageFilename: '',
-                    visible: false,
-                    confirmRequestImport: true
-                  });
-                  this.getAllData()
-                } else {
-                  ToastShow("입고 확정을 실패하였습니다. " + res);
-                  console.error(res)
+                let data = {
+                  filename,
+                  rentWarehNo: rentWarehNo,
+                  whoutExpct: Moment(ExpctYmd).valueOf(),
+                  decisQty: Number(createValue),
+                  decis: Moment(createDateStr).valueOf(),
+                  whoutExpctSeq: ExpctSeq,
+                  reason: "",
+                  filename: ImageFilename,
                 }
-              }).catch(error => {
-              alert('postExportOwner error:' + error);
-            });
-          }
+                InOutManagerService.postExportOwner(data)
+                  .then((res) => {
+                    if (res.status === 200) {
+                      this.setState({
+                        ExpctYmd: '',
+                        createValue: 0,
+                        createDate: new Date(),
+                        createDateStr: dateStr(new Date()),
+                        ExpctSeq: -1,
+                        ImageFilename: '',
+                        visible: false,
+                        confirmRequestExport: true,
+                        uirDoneImport: url
+                      });
+                      this.getAllData()
+                    } else {
+                      ToastShow("출고 확정을 실패하였습니다. " + res);
+                    }
+                  }).catch(error => {
+                  alert('postExportOwner error:' + error);
+                });
+              } else if (typeCreate === 'import') {
+                // 입고 확정
+                if (!ExpctYmd) {
+                  alert('일자 정보가 없습니다.');
+                  return;
+                } if (!createDateStr) {
+                  alert('일자 정보가 없습니다.');
+                  return;
+                } else if (!createValue) {
+                  alert('수량 정보가 없습니다.');
+                  return;
+                } else if (!rentWarehNo || !ExpctSeq) {
+                  alert('공유창고 정보가 없습니다.');
+                  return;
+                }
+                let data = {
+                  filename,
+                  rentWarehNo: rentWarehNo,
+                  whinExpct: Moment(ExpctYmd).valueOf(),
+                  whinDecisQty: Number(createValue),
+                  whinDecis: Moment(createDateStr).valueOf(),
+                  expctSeq: ExpctSeq,
+                  reason: "",
+                  filename: ImageFilename,
+                }
+                InOutManagerService.postImportOwner(data)
+                  .then((res) => {
+                    if (res.status === 200) {
+                      this.setState({
+                        ExpctYmd: '',
+                        createValue: 0,
+                        createDate: new Date(),
+                        createDateStr: dateStr(new Date()),
+                        ExpctSeq: -1,
+                        ImageFilename: '',
+                        visible: false,
+                        confirmRequestImport: true,
+                        uirDoneImport: url
+                      });
+                      this.getAllData()
+                    } else {
+                      ToastShow("입고 확정을 실패하였습니다. " + res);
+                    }
+                  }).catch(error => {
+                  alert('postExportOwner error:' + error);
+                });
+              }
+
+              
+            })
+
           }
         }).catch(error => {
           alert('DetailRegisterTenant MediaUpload error:' + error);
         });
       } else {
         // If no file selected the show alert
-        alert('Please Select File first');
+        alert('사진을 업로드하세요');
       }
 
 
@@ -734,10 +724,8 @@ export default class DetailsManager extends Component {
           whinExpct: Moment(createDateStr).valueOf(),
           whinExpctQty: Number(createValue)
         }
-        console.log(data, "입고 요청");
         InOutManagerService.postImportTenant(data)
           .then((res) => {
-            console.log(res, 'res');
             if (res.status === 200) {
               this.setState({
                 ExpctYmd: '',
@@ -752,7 +740,6 @@ export default class DetailsManager extends Component {
               this.getAllData()
             } else {
               ToastShow("입고 요청이 실패하였습니다. " + res);
-              console.error(res)
             }
           }).catch(error => {
           alert('postImportTenant error:' + error);
@@ -774,10 +761,8 @@ export default class DetailsManager extends Component {
           whoutExpct: Moment(createDateStr).valueOf(),
           expctQty: Number(createValue)
         }
-        console.log(data, "출고 요청");
         InOutManagerService.postExportTenant(data)
           .then((res) => {
-            console.log(res, 'res');
             if (res.status === 200) {
               this.setState({
                 ExpctYmd: '',
@@ -792,7 +777,6 @@ export default class DetailsManager extends Component {
               this.getAllData()
             } else {
               ToastShow("출고 요청이 실패하였습니다. " + res);
-              console.error(res)
             }
           }).catch(error => {
           alert('postExportTenant error:' + error);
@@ -804,10 +788,6 @@ export default class DetailsManager extends Component {
   async onCancelRequest() {
     let {rentWarehNo, ExpctYmd, ExpctSeq, typeCreate} = this.state
 
-    console.log('rentWarehNo', rentWarehNo);
-    console.log('ExpctYmd', ExpctYmd);
-    console.log('ExpctSeq', ExpctSeq);
-    console.log('typeCreate', typeCreate);
 
     if (typeCreate === 'import') {
       await InOutManagerService.postCancelImport({
@@ -870,7 +850,6 @@ export default class DetailsManager extends Component {
     const {ExpctSeq, ExpctYmd, IOType, IOStatus} = this.state;
 
     let {startDate, endDate} = this.state.filter;
-    console.log('type', type)
     const processing =
       isProgress === true ? (
         <View style={DefaultStyle._bodyCard}>
@@ -881,9 +860,6 @@ export default class DetailsManager extends Component {
           {
             responseFilter.length > 0 && responseFilter.map((item, index) => {
 
-              console.log(item, 'item');
-              console.log(item.whoutValue, 'item.whoutValue');
-              console.log(item.whinValue, 'item.whinValue');
               return (
                 <Fragment key={index}>
                   <View style={{
@@ -1014,7 +990,6 @@ export default class DetailsManager extends Component {
                       {item.type === 'IMPORT' && item.status === '1200' &&
                       <TouchableOpacity
                         onPress={() => {
-                          console.log('item.imageUrl', item);
                           // Linking.canOpenURL(item.imageUrl).then(supported => {
                           //   if (supported) {
                           //     Linking.openURL(item.imageUrl);
@@ -1399,6 +1374,26 @@ export default class DetailsManager extends Component {
               />
 
               {type === 'OWNER' &&
+              <View>
+                {
+                  this.state.singleFile && 
+                  <View style={SS.infoAttach}>
+                    <Text style={SS.textAttach}>{this.state.singleFile.name}</Text>
+                    <IconButton
+                      style={SS.btnRemove}
+                      icon="close-circle"
+                      size={16}
+                      color="rgba(0, 0, 0, 0.54)"
+                      onPress={() => {
+                        this.setState({
+                          singleFile: null
+                        })
+                      }}
+                    />
+                  </View>
+                }
+
+
               <View style={[DefaultStyle._listBtn, SS.listBtnProcess, {
                 marginTop: 11,
                 marginBottom: 0,
@@ -1407,6 +1402,8 @@ export default class DetailsManager extends Component {
                 paddingLeft: 0,
                 paddingRight: 0
               }]}>
+
+
                 <TouchableOpacity
                   onPress={() => this.handlePicker()}
                   style={[
@@ -1419,7 +1416,11 @@ export default class DetailsManager extends Component {
                     파일 첨부
                   </Text>
                 </TouchableOpacity>
-              </View>}
+              </View>
+
+
+              </View>
+              }
 
             </View>
           </Dialog.Content>
@@ -1505,9 +1506,9 @@ export default class DetailsManager extends Component {
           style={DefaultStyle.popup}
           visible={this.state.completeRequestImport}
           onDismiss={() => this.setState({completeRequestImport: false})}>
-          <Dialog.Content>
+          <Dialog.Content  style ={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             {/*<View style={DefaultStyle.imagePopup}/>*/}
-            <Image source={illust15} style={DefaultStyle._avatarHeader}/>
+            <Image source={imgType0001}/>
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1563,8 +1564,10 @@ export default class DetailsManager extends Component {
           style={DefaultStyle.popup}
           visible={this.state.confirmRequestImport}
           onDismiss={() => this.setState({confirmRequestImport: false})}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup}/>
+          <Dialog.Content style ={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            {/* <View style={DefaultStyle.imagePopup}/> */}
+            {/* <Image source={illust15} style={DefaultStyle._avatarHeader}/> */}
+            <Image source = { {uri: this.state.uirDoneImport} } style = {{width: 150, height: 150}} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1590,9 +1593,10 @@ export default class DetailsManager extends Component {
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.confirmRequestExport}
+          // visible={true}
           onDismiss={() => this.setState({confirmRequestExport: false})}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup}/>
+          <Dialog.Content style ={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Image source = { {uri: this.state.uirDoneImport} } style = {{width: 150, height: 150}} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>

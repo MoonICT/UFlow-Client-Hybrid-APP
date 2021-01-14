@@ -183,7 +183,6 @@ class SearchOverlay extends Component {
 
   render() {
     const { isProgress, query} = this.state;
-    const { onClose } = this.props;
 
     return (
       <View style={styles.container}>
@@ -193,7 +192,7 @@ class SearchOverlay extends Component {
             placeholder="지역명이나 창고명을 검색하세요."
             icon={'arrow-left'}
             onChangeText={query => this._onChangeSearchQuery(query)}
-            onIconPress={() => {this.props.searchToggle(false)}}
+            onIconPress={() => {this.props.searchToggle(false), this.props.onClose()}}
             value={query}
             style={[styles.searchBar]}
             inputStyle={styles.searchInput}
@@ -203,6 +202,7 @@ class SearchOverlay extends Component {
                 query.length < 2
               ) {
                 this.setState({ query: '' });
+                this.props.onClose()
               }
             }}
           />
@@ -258,6 +258,7 @@ function mapDispatchToProps(dispatch) {
 // Check Props Type.
 SearchOverlay.protoType = {
   onSelect: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 export default compose(

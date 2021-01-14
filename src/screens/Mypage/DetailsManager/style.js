@@ -75,11 +75,11 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   textAttach: {
-    color: color.text.secondary,
+    color: '#2196f3',
     lineHeight: 20,
     // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
-    textDecorationLine: 'underline',
+    // width: '98%', 
   },
   btnRemove: {
     margin: 0,
