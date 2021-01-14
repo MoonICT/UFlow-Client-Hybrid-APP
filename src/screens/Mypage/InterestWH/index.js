@@ -121,10 +121,10 @@ class InterestWarehouse extends Component {
           resultArr.push(`최대 ${WHItem.keep.subTitle}`)
         }
         if (WHItem.keep && WHItem.keep.splyAmount) {
-          resultArr.push(`보관단가 ${StringUtils.numberComma(WHItem.keep.splyAmount)}원 ~/${WHItem.keep.unit}`)
+          resultArr.push(`보관단가 ${StringUtils.money(WHItem.keep.splyAmount)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
         }
         if (WHItem.keep && WHItem.keep.mgmtChrg) {
-          resultArr.push(`관리단가 ${StringUtils.numberComma(WHItem.keep.mgmtChrg)}원 ~/${WHItem.keep.unit}`)
+          resultArr.push(`관리단가 ${StringUtils.money(WHItem.keep.mgmtChrg)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
         }
         return resultArr.join(', ')
       case 'TRUST':
@@ -132,10 +132,10 @@ class InterestWarehouse extends Component {
           resultArr.push(`최대 ${StringUtils.numberComma(WHItem.trust.subTitle)}`)
         }
         if (WHItem.trust && WHItem.trust.whinChrg) {
-          resultArr.push(`보관단가 ${StringUtils.numberComma(WHItem.trust.whinChrg)}원 ~/${WHItem.trust.unit}`)
+          resultArr.push(`보관단가 ${StringUtils.money(WHItem.trust.whinChrg)} ~/${WHItem.trust ? WHItem.trust.unit : ''}`)
         }
         if (WHItem.trust && WHItem.trust.whoutChrg) {
-          resultArr.push(`관리단가 ${StringUtils.numberComma(WHItem.trust.whoutChrg)}원 ~/${WHItem.trust.unit}`)
+          resultArr.push(`관리단가 ${StringUtils.money(WHItem.trust.whoutChrg)} ~/${WHItem.trust ? WHItem.trust.unit : ''}`)
         }
         return resultArr.join(', ')
     }
