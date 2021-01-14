@@ -42,7 +42,7 @@ import Progress from '@Components/organisms/Progress';
 class Search extends Component {
   constructor(props) {
     super(props);
-    let { searchQuery } = this.props?.route?.params;
+    let { params } = this.props?.route;
     this.webView = null;
     // Webview initialize options.
     this.option = {
@@ -53,18 +53,19 @@ class Search extends Component {
     this.state = {
       url: this.option.defaultURL,
       progress: 0,
-      searchQuery: searchQuery || '',
+      searchQuery:params && params.searchQuery ? params.searchQuery : '',
     };
     // Ref
     this.refSearchFilter = React.createRef();
     this.navigation = props.navigation;
-    this.searchQuery = searchQuery;
 
-    props.searchToggle(!props.isSearchToggle);
+    // this.searchQuery = params && params.searchQuery ? params.searchQuery : '';
+
+    props.searchToggle(params && params.searchQuery ? true : !props.isSearchToggle);
   }
 
   UNSAFE_componentWillMount() {
-    if (this.searchQuery !== this.state.searchQuery) {
+    if (this.props.params.searchQuery !== this.state.searchQuery) {
       this._onChangeSearchQuery(this.state.searchQuery);
     }
   }
@@ -146,7 +147,8 @@ class Search extends Component {
     };
     `;
 
-    let { searchQuery } = this.state;
+    const {searchQuery} = this.state;
+    console.log('searchQuery', searchQuery)
 
     return (
       <SafeAreaView style={[styles.container]}>
@@ -169,10 +171,13 @@ class Search extends Component {
 
         {/** 지역/주소 검색하기 패널. */}
         {/** 검색 결과 클릭 시 좌표 이동하기. */}
-        {this.props.isSearchToggle && (
+        {(this.props.isSearchToggle) && (
           <SearchOverlay
             query={searchQuery}
             onSelect={result => this.handleSelectResult(result)}
+            onClose={()=> this.setState({
+              searchQuery:''
+            })}
           />
         )}
 
@@ -288,6 +293,8 @@ class Search extends Component {
 
   // 컴포넌트 업데이트 직후 호출.
   componentDidUpdate(prevProps, prevState) {
+    const {params} = this.props?.route;
+
     // console.log('::componentDidUpdate::');
     if (prevProps.whFilter !== this.props.whFilter) {
       this.setDebounce(() => {
@@ -300,10 +307,11 @@ class Search extends Component {
       });
     }
 
-    if (prevProps.searchQuery !== this.props?.route?.params?.searchQuery) {
-      if (this.props?.route?.params?.searchQuery !== '') {
-        // console.log('Hello');
-        this.searchQuery = this.props?.route?.params?.searchQuery;
+    if (prevState.searchQuery !== this.state.searchQuery) {
+      if (this.state.searchQuery) {
+        this.props.searchToggle(true);
+      }else{
+        this.props.searchToggle(false);
       }
     }
   }

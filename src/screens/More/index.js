@@ -16,6 +16,7 @@ import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
 import DefaultStyle from '../../styles/default';
 // import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
+import { getMsg } from '@Utils/langUtils';
 import { styles as S } from './style';
 // import DoneRegister from './done';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -81,6 +82,8 @@ class More extends Component {
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             <Text style={[DefaultStyle._textTitleCard, { marginBottom: 18 }]}>
               더보기
+              {'\n'}
+              {getMsg(this.props.lang, 'CERT0001', 'Empty')}
             </Text>
             <TouchableOpacity
               style={[DefaultStyle.btnItem, S.infoUser]}
@@ -433,20 +436,14 @@ class More extends Component {
 function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    count: state.home.count,
     isLogin: state.home.isLogin,
+    lang: state.language.lang, // TODO Require Lang
   };
 }
 
 /** dispatch action to redux */
 function mapDispatchToProps (dispatch) {
   return {
-    countUp: diff => {
-      dispatch(ActionCreator.countUp(diff));
-    },
-    countDown: diff => {
-      dispatch(ActionCreator.countDown(diff));
-    },
   };
 }
 

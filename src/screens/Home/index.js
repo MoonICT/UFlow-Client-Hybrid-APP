@@ -84,6 +84,7 @@ import { Warehouse } from '@Services/apis'; //Account,
 // const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
 import { AuthContext } from '@Store/context';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 import AsyncStorage from '@react-native-community/async-storage';
 //Contants
@@ -321,7 +322,7 @@ import { TOKEN } from '@Constant';
 class Home extends Component {
   static contextType = AuthContext;
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -336,11 +337,11 @@ class Home extends Component {
     this.fcm = new FCMService();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount () {
     AsyncStorage.getItem(TOKEN)
       .then(v => {
         this.setState({ isLogin: v !== '' && v !== null });
@@ -350,7 +351,7 @@ class Home extends Component {
       });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -412,7 +413,7 @@ class Home extends Component {
     this.setState({ showRealApp: true });
   };
 
-  render() {
+  render () {
     // const { showPopup, route, isLogin } = this.props;
     // console.log('isLoginHome :>> ', isLogin);
     const { getLoginStatus } = this.context;
@@ -573,7 +574,9 @@ class Home extends Component {
             {/**___MoreSee__*/}
             <View style={styles.mainProductMore}>
               <TouchableOpacity
-                onPress={() => this.navigation.navigate('Search')}
+                onPress={() => this.navigation.navigate('Search', {
+                  searchQuery: textSearch,
+                })}
                 style={[styles.mainProductSeeMoreBTN]}>
                 <Text
                   style={[
@@ -609,75 +612,75 @@ class Home extends Component {
 
           {/**____MainCallForBinding___*/}
           {/**
-          <View style={styles.mainCallForBinding}>
-            <Text
-              style={[
+           <View style={styles.mainCallForBinding}>
+           <Text
+           style={[
                 styles.mainCallForBindingTitle,
                 styles.font16,
                 styles.bold,
               ]}>
-              유플로우의{' '}
-              <Text style={styles.mainCallForBindingTitleSub}>
-                B2B 물류 서비스
-              </Text>
-              를 시작해보세요.
-            </Text>
-            <Text
-              style={[
+           유플로우의{' '}
+           <Text style={styles.mainCallForBindingTitleSub}>
+           B2B 물류 서비스
+           </Text>
+           를 시작해보세요.
+           </Text>
+           <Text
+           style={[
                 styles.font14,
                 styles.regular,
                 styles.mainCallForBindingContent,
               ]}>
-              {'비즈니스에 맞춤 창고가 필요하시다고요?\n' +
+           {'비즈니스에 맞춤 창고가 필요하시다고요?\n' +
                 '국내 최대 규모의 온라인 창고 중계 플랫폼, 유플로우에서\n' +
                 '편리하고 안전하게 창고를 임대 & 매매하세요.'}
-            </Text>
-            <View style={styles.mainCallForBindingSearch}>
-              <TextInputNormal
-                placeholder="이메일을 입력해주세요."
-                style={styles.mainCallForBindingSearchInput}
-                placeholderTextColor="rgba(0, 0, 0, 0.54)"
-              />
-              <TouchableOpacity
-                mode="contained"
-                onPress={() => console.log('Pressed')}
-                style={styles.mainCallForBindingSearchBTN}>
-                <Text
-                  style={[
+           </Text>
+           <View style={styles.mainCallForBindingSearch}>
+           <TextInputNormal
+           placeholder="이메일을 입력해주세요."
+           style={styles.mainCallForBindingSearchInput}
+           placeholderTextColor="rgba(0, 0, 0, 0.54)"
+           />
+           <TouchableOpacity
+           mode="contained"
+           onPress={() => console.log('Pressed')}
+           style={styles.mainCallForBindingSearchBTN}>
+           <Text
+           style={[
                     styles.mainCallForBindingSearchTextBTN,
                     styles.medium,
                   ]}>
-                  임대문의
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          */}
+           임대문의
+           </Text>
+           </TouchableOpacity>
+           </View>
+           </View>
+           */}
           {/**___MainStep__*/}
           {/**
-          <View style={styles.mainStep}>
-            <View style={[styles.mainStepViewTitle]}>
-              <Text style={[styles.mainStepTitle, styles.bold, styles.font24]}>
-                남는 공간을
-                <Text style={[styles.bold, styles.font24, styles.blueColor]}>
-                  등록
-                </Text>
-                <Text
-                  style={[styles.mainStepTitle, styles.bold, styles.font24]}>
-                  해서 수익 창출, 필요한 창고는
-                </Text>
-                <Text style={[styles.bold, styles.font24, styles.blueColor]}>
-                  찾기
-                </Text>
-                <Text
-                  style={[styles.mainStepTitle, styles.bold, styles.font24]}>
-                  편리하게
-                </Text>
-              </Text>
-            </View>
-            <Carousel
-              style={[styles.carouselStep]}
-              custom={{
+           <View style={styles.mainStep}>
+           <View style={[styles.mainStepViewTitle]}>
+           <Text style={[styles.mainStepTitle, styles.bold, styles.font24]}>
+           남는 공간을
+           <Text style={[styles.bold, styles.font24, styles.blueColor]}>
+           등록
+           </Text>
+           <Text
+           style={[styles.mainStepTitle, styles.bold, styles.font24]}>
+           해서 수익 창출, 필요한 창고는
+           </Text>
+           <Text style={[styles.bold, styles.font24, styles.blueColor]}>
+           찾기
+           </Text>
+           <Text
+           style={[styles.mainStepTitle, styles.bold, styles.font24]}>
+           편리하게
+           </Text>
+           </Text>
+           </View>
+           <Carousel
+           style={[styles.carouselStep]}
+           custom={{
                 data: slidesSteps,
                 renderItem: this._renderStepItem,
                 showNextButton: false,
@@ -696,22 +699,22 @@ class Home extends Component {
                   marginTop: 150,
                 },
               }}
-            />
-          </View>
-          */}
+           />
+           </View>
+           */}
           {/**___Slogan__*/}
           {/**
-          <View style={styles.mainSlogan}>
-            <Text style={[styles.mainSloganTitle, styles.bold, styles.font24]}>
-              {'빠르고 편리하고 안전한\n' + '좋은 창고, 유플로우'}
-            </Text>
-            <View style={styles.mainSloganContent}>
-              {slidesSlogans.map((v, i) => {
+           <View style={styles.mainSlogan}>
+           <Text style={[styles.mainSloganTitle, styles.bold, styles.font24]}>
+           {'빠르고 편리하고 안전한\n' + '좋은 창고, 유플로우'}
+           </Text>
+           <View style={styles.mainSloganContent}>
+           {slidesSlogans.map((v, i) => {
                 return <SloganCard data={v} index={i} key={'slogan' + i} />;
               })}
-            </View>
-          </View>
-          */}
+           </View>
+           </View>
+           */}
           {/**___Video Intro__*/}
           {/*  <View style={styles.mainVideo}>
              <Video
@@ -722,7 +725,7 @@ class Home extends Component {
               onBuffer={this.onBuffer}
               onError={this.videoError}
               style={styles.backgroundVideo}
-            /> 
+            />
             {
               // <VideoPlayer
               //   video={{
@@ -744,9 +747,9 @@ class Home extends Component {
             </Text>
             <View
               style={[styles.introRow, styles.mainCallRow, styles.introBottom]}>
-              {/** 
-              <View style={styles.introColum}>
-                {
+              {/**
+               <View style={styles.introColum}>
+               {
                   <Icon
                     name="check"
                     size={12}
@@ -754,12 +757,12 @@ class Home extends Component {
                     style={{ marginLeft: 14 }}
                   />
                 }
-                <Text style={[styles.font9, styles.introColumText]}>
-                  빠르고 편리하게
-                </Text>
-              </View>
-              <View style={styles.introColum}>
-                {
+               <Text style={[styles.font9, styles.introColumText]}>
+               빠르고 편리하게
+               </Text>
+               </View>
+               <View style={styles.introColum}>
+               {
                   <Icon
                     name="check"
                     size={12}
@@ -767,12 +770,12 @@ class Home extends Component {
                     style={{ marginLeft: 14 }}
                   />
                 }
-                <Text style={[styles.font9, styles.introColumText]}>
-                  신뢰할 수 있는
-                </Text>
-              </View>
-              <View style={styles.introColum}>
-                {
+               <Text style={[styles.font9, styles.introColumText]}>
+               신뢰할 수 있는
+               </Text>
+               </View>
+               <View style={styles.introColum}>
+               {
                   <Icon
                     name="check"
                     size={12}
@@ -780,11 +783,11 @@ class Home extends Component {
                     style={{ marginLeft: 14 }}
                   />
                 }
-                <Text style={[styles.font9, styles.introColumText]}>
-                  안전한 보험, 계약 시스템
-                </Text>
-              </View>
-            */}
+               <Text style={[styles.font9, styles.introColumText]}>
+               안전한 보험, 계약 시스템
+               </Text>
+               </View>
+               */}
 
               <Text
                 style={[
@@ -818,36 +821,36 @@ class Home extends Component {
 
           {/**___Help__*/}
           {/**
-          <ScrollView style={[styles.mainHelp]} horizontal={true}>
-            <Text style={[styles.mainHelpText, styles.bold, styles.font34]}>
-              1588.1333. HELP@UFLOW.CO.KR
-            </Text>
-          </ScrollView>
-          */}
+           <ScrollView style={[styles.mainHelp]} horizontal={true}>
+           <Text style={[styles.mainHelpText, styles.bold, styles.font34]}>
+           1588.1333. HELP@UFLOW.CO.KR
+           </Text>
+           </ScrollView>
+           */}
           {/**___App Download__*/}
           {/**
-          <View style={[styles.mainAppDowload]}>
-            <Image source={logoWhite} />
-            <Text
-              style={[styles.bold, styles.white, styles.mainAppDowloadTitle]}>
-              <Text style={[styles.yellowColor, styles.bold]}>U</Text>it load
-              {' & '}
-              <Text style={[styles.yellowColor, styles.bold]}>F</Text>ulfillment
-              by{'\n'} <Text style={[styles.yellowColor, styles.bold]}>L</Text>
-              ogisAll <Text style={[styles.yellowColor, styles.bold]}>O</Text>
-              penable <Text style={[styles.yellowColor, styles.bold]}>W</Text>
-              arehouse
-            </Text>
-            <View style={styles.appSupport}>
-              <Image source={appstore1} style={styles.appSupportBTN} />
-              <Image source={appstore2} style={styles.appSupportBTN} />
-            </View>
-          </View>
-          */}
+           <View style={[styles.mainAppDowload]}>
+           <Image source={logoWhite} />
+           <Text
+           style={[styles.bold, styles.white, styles.mainAppDowloadTitle]}>
+           <Text style={[styles.yellowColor, styles.bold]}>U</Text>it load
+           {' & '}
+           <Text style={[styles.yellowColor, styles.bold]}>F</Text>ulfillment
+           by{'\n'} <Text style={[styles.yellowColor, styles.bold]}>L</Text>
+           ogisAll <Text style={[styles.yellowColor, styles.bold]}>O</Text>
+           penable <Text style={[styles.yellowColor, styles.bold]}>W</Text>
+           arehouse
+           </Text>
+           <View style={styles.appSupport}>
+           <Image source={appstore1} style={styles.appSupportBTN} />
+           <Image source={appstore2} style={styles.appSupportBTN} />
+           </View>
+           </View>
+           */}
           {/**__Footer___ */}
           {/**
-          <Footer data={data} />
-          */}
+           <Footer data={data} />
+           */}
           <View style={styles.copyRight}>
             <Text style={[styles.textCopyRight, styles.font9]}>
               Copyright © 2020 Uflow Inc. 모든 권리 보유.{'\n'}v 1(20201112)
@@ -858,7 +861,7 @@ class Home extends Component {
     );
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     // console.log('::componentDidMount::');
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
@@ -872,19 +875,23 @@ class Home extends Component {
     this.setState({ whList: list });
     SplashScreen.hide();
   }
+
+  componentDidUpdate (prevProps) {
+  }
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
     isLogin: state.login,
+    lang: state.language.lang,  // TODO Require Lang
   };
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     showPopup: status => {
       dispatch(

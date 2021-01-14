@@ -107,7 +107,7 @@ import { color } from '@Themes/colors';
 import { theme } from '../themes';
 
 //Contants
-import { TOKEN } from '@Constant';
+import { TOKEN, LANG_STATUS_KEY } from '@Constant';
 
 const store = initStore();
 
@@ -196,6 +196,7 @@ const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 const App = () => {
+  // State
   const [isLoading, setIsLoading] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
 
@@ -398,25 +399,25 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-{
-                  // <AuthStack.Screen
-                  //   name="QuotationTrust"
-                  //   component={QuotationTrust}
-                  //   headerMode={false}
-                  //   options={{ headerShown: false }}
-                  // />
-                  // <AuthStack.Screen
-                  //   name="AvaliableChate"
-                  //   component={AvaliableChate}
-                  //   headerMode={false}
-                  //   options={{ headerShown: false }}
-                  // />
-                  // <AuthStack.Screen
-                  //   name="ContractDetails"
-                  //   component={ContractDetails}
-                  //   headerMode={false}
-                  //   options={{ headerShown: false }}
-                  // />
+                  {
+                    // <AuthStack.Screen
+                    //   name="QuotationTrust"
+                    //   component={QuotationTrust}
+                    //   headerMode={false}
+                    //   options={{ headerShown: false }}
+                    // />
+                    // <AuthStack.Screen
+                    //   name="AvaliableChate"
+                    //   component={AvaliableChate}
+                    //   headerMode={false}
+                    //   options={{ headerShown: false }}
+                    // />
+                    // <AuthStack.Screen
+                    //   name="ContractDetails"
+                    //   component={ContractDetails}
+                    //   headerMode={false}
+                    //   options={{ headerShown: false }}
+                    // />
                   }
                   <AuthStack.Screen
                     name="MypageInfo"
@@ -472,13 +473,13 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-{
-                  // <AuthStack.Screen
-                  //   name="ProprietorMypage"
-                  //   component={ProprietorMypage}
-                  //   headerMode={false}
-                  //   options={{ headerShown: false }}
-                  // />
+                  {
+                    // <AuthStack.Screen
+                    //   name="ProprietorMypage"
+                    //   component={ProprietorMypage}
+                    //   headerMode={false}
+                    //   options={{ headerShown: false }}
+                    // />
                   }
                   <AuthStack.Screen
                     name="ResponseQuotation"
@@ -492,13 +493,13 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-{
-                  // <AuthStack.Screen
-                  //   name="TenantMypage"
-                  //   component={TenantMypage}
-                  //   headerMode={false}
-                  //   options={{ headerShown: false }}
-                  // />
+                  {
+                    // <AuthStack.Screen
+                    //   name="TenantMypage"
+                    //   component={TenantMypage}
+                    //   headerMode={false}
+                    //   options={{ headerShown: false }}
+                    // />
                   }
                   <AuthStack.Screen
                     name="More"

@@ -6,10 +6,11 @@
  * @format
  * @flow strict-local
  * */
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Platform } from 'react-native';
+import { FCM_TOKEN_KEY } from '@Constant';
+
 
 class FCMService {
   constructor () {
@@ -68,29 +69,30 @@ class FCMService {
    * @param {String} token
    * */
   async _saveTokenToDatabase (token) {
-    await AsyncStorage.setItem('fcmToken', token);
+    await AsyncStorage.setItem(FCM_TOKEN_KEY, token);
   }
 
   /**
    * @private
    * 디비아스 토큰을 가져옴.
+   * 토큰 : 앱 최초 설치시 토큰값 생성.(재설치는 갱신)
    * */
   async _getToken () {
-    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    let fcmToken = await AsyncStorage.getItem(FCM_TOKEN_KEY);
     if (!fcmToken) {
-      // Get device token
+      // Get device token(현재 등록된 디바이스 토큰.)
       await messaging().getToken().then(async token => {
         await this._saveTokenToDatabase(token);
       }).catch(error => {
         console.log(' messaging().getToken(): ' + error);
       });
-      // Listen to whether the token changes
+      // Listen to whether the token changes(등록된 토큰이 없는 경우 재생성.)
       await messaging().onTokenRefresh(async token => {
         await this._saveTokenToDatabase(token);
       });
     }
     this.token = fcmToken;
-    // console.log('::::: FCM Device Token | ' + Platform.OS + ' :::::', fcmToken);
+    console.log('::::: FCM Device Token | ' + Platform.OS + ' :::::', fcmToken);
   }
 
   /**
@@ -101,12 +103,12 @@ class FCMService {
 
     // Foreground 상태일때 메시지 수신.
     messaging().onMessage(async remoteMessage => {
-      console.log('+++ Message handled in the foreground!', remoteMessage);
+      console.log(`[${Platform.OS}]+++ Message handled in the foreground!`, remoteMessage);
       Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body, [
-        {
-          text: '닫기',
-          style: 'cancel',
-        },
+        // {
+        //   text: '닫기',
+        //   style: 'cancel',
+        // },
         {
           text: '확인',
           onPress: () => {
@@ -118,19 +120,19 @@ class FCMService {
 
     // Background & Quit 상태일 때 메시지 수신.
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('+++ Message handled in the background!', remoteMessage);
+      console.log(`[${Platform.OS}]+++ Message handled in the background!`, remoteMessage);
     });
 
     // Background 상태일 때 앱이 열린경우.(알림을 탭헀을 때.)
     messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log('+++ Notification caused app to open from background state:', remoteMessage.notification);
+      console.log(`[${Platform.OS}]+++ Notification caused app to open from background state:`, remoteMessage.notification);
       // TODO 확인 클릭 시 원하는 동작.(ex. 딥링크 처리, 스크린 이동 등.)
     });
 
     // Quite 상태일 때 앱이 열린경우.(알림을 탭했을 때.)
     messaging().getInitialNotification().then(remoteMessage => {
       if (remoteMessage) {
-        console.log('+++ Notification caused app to open from quit state:', remoteMessage.notification);
+        console.log(`[${Platform.OS}]+++ Notification caused app to open from quit state:`, remoteMessage.notification);
         // TODO 확인 클릭 시 원하는 동작.(ex. 딥링크 처리, 스크린 이동 등.)
       }
     }).catch(error => {

@@ -313,7 +313,7 @@ class RegisterBusinessInfo extends Component {
 
 
   render() {
-    const { businessMode,businessInfo, photo,businessList, defautSelect } = this.state;
+    const { businessMode,businessInfo, photo,businessList, defautSelect, isPossible } = this.state;
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -572,24 +572,35 @@ class RegisterBusinessInfo extends Component {
             </View>
         </View>
         <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0]}>
-          {
-            businessMode > -1 ?
-            <Button
-              mode="contained"
-              style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
-              color="red"
-              onPress={this.onClickSelectBusinessComplete}>
-              선택완료
-            </Button>
-            :
-            <Button
-              mode="contained"
-              style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
-              color="red"
-              onPress={this.handleOnSubmit}>
-              등록
-            </Button>
-          }
+         
+
+        {isPossible ?
+               (
+                businessMode > -1 ?
+                <Button
+                  mode="contained"
+                  style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
+                  color="red"
+                  onPress={this.onClickSelectBusinessComplete}>
+                  선택완료
+                </Button>
+                :
+                <Button
+                  mode="contained"
+                  style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._primary,]}
+                  color="red"
+                  onPress={this.handleOnSubmit}>
+                  등록
+                </Button>
+               )
+              :
+              <Button
+                mode="contained"
+                disabled={true}
+                style={[{ width: '100%', borderRadius: 24, height: 40}, DefaultStyle._oulineDisabled]}
+                >
+                등록불가
+              </Button>}
         </View>
 
         <Portal>

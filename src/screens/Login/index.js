@@ -8,7 +8,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView, Image } from 'react-native';
+import { SafeAreaView, View, ScrollView, Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
@@ -19,19 +19,20 @@ import DefaultStyle from '../../styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
-import { Account } from '@Services/apis';
+import { Account, FCM } from '@Services/apis';
 import { AuthContext } from '@Store/context';
 
 //Contants
-import { TOKEN } from '@Constant';
+import { TOKEN, FCM_TOKEN_KEY } from '@Constant';
 
 import AsyncStorage from '@react-native-community/async-storage';
 //---> Assets
 const Logo = require('@Assets/images/logo.png');
+
 class Login extends Component {
   static contextType = AuthContext;
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -44,12 +45,12 @@ class Login extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -64,7 +65,11 @@ class Login extends Component {
   };
 
   /** Login Handle */
-  handleOnClickLogin(data) {
+  /**
+   * TODO FCM TOKEN 등록
+   * - 로그인 시 마다
+   * */
+  handleOnClickLogin (data) {
     const { showPopup } = this.props;
     const { login } = this.context;
 
@@ -80,12 +85,24 @@ class Login extends Component {
         email: data.email,
         password: data.password,
       })
-        .then(loginData => {
+        .then(async (loginData) => {
           if (loginData.status === 200) {
             const access_token = loginData.data.access_token;
             // this.setLoginLocal(access_token);
             login(access_token);
             this.navigation.replace('Home');
+
+            // 서버에 FCM Token 등록
+            let fcmToken = await AsyncStorage.getItem(FCM_TOKEN_KEY);
+            if (fcmToken) {
+              FCM.registFCMToken({
+                token: fcmToken,
+                code: Platform.OS === 'android' ? 'AND' : 'IOS',
+                acToken: access_token,
+              }).then(res => {
+                // console.log('FCM 등록 결과 : ', res);
+              });
+            }
           }
         })
         .catch(error => {
@@ -95,7 +112,7 @@ class Login extends Component {
     // console.log('loginData==>', loginData);
   }
 
-  render() {
+  render () {
     const { email, password, isRemember, isLogin } = this.state;
 
     return (
@@ -194,7 +211,7 @@ class Login extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount::');
     AsyncStorage.getItem(TOKEN).then(v => {
       // console.log('v==>', v);
@@ -204,13 +221,13 @@ class Login extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
@@ -219,7 +236,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     countUp: diff => {
       dispatch(ActionCreator.countUp(diff));
