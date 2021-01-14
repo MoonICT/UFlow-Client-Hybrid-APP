@@ -24,6 +24,8 @@ import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { MediaUpload } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+
 class RegisterImage extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +45,55 @@ class RegisterImage extends Component {
 
   _removeImage = () => this.setState({ isRemove: !this.state.isRemove });
 
-  handlePicker = async valueTab => {
+  changeContent = e => {
+    console.log('e', e);
+  };
+
+  chooseFile = (type) => {
+
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      let file = {
+        fileCopyUri: response.uri,
+        name: response.fileName,
+        size: response.fileSize,
+        type: response.type,
+        uri: response.uri
+      }
+
+      this.setState({ singleFile: file }, async () => {
+        if (response != null) {
+          // If file selected then create FormData
+          let { singleFile } = this.state;
+          const data = new FormData();
+          data.append('name', singleFile.name);
+          data.append('file', singleFile);
+          // Please change file upload URL
+          MediaUpload.uploadFile(data).then(respon => {
+            if (respon.status === 200) {
+              let { url } = respon.data;
+              let { filename } = respon.data;
+              // let pimages = [{ uri: url }];
+              // pimages.push();
+              // this.setState({ pimages });
+              console.log('url', url);
+              this.props.registerAction({ url: url, name: filename });
+            }
+          });
+        } else {
+          // If no file selected the show alert
+          alert('Please Select File first');
+        }
+      });
+    });
+  };
+
+  handlePicker = async () => {
     try {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
@@ -107,7 +157,8 @@ class RegisterImage extends Component {
             icon="image-plus"
             color="black"
             onPress={() => {
-              this.handlePicker(valueTab);
+              this.chooseFile('photo');
+              // this.props.registerAction('44444');
             }}
           />
           <Appbar.Action

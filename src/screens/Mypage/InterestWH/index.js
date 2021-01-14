@@ -12,11 +12,12 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  TextInput,
+  TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Text } from 'react-native-paper';
 import { Fav, Warehouse } from '@Services/apis';
+import Loading from '@Components/atoms/Loading';
 import { debounce } from "lodash";
 
 // Local Imports
@@ -34,7 +35,7 @@ class InterestWarehouse extends Component {
     this.webView = null;
     this.state = {
       listItem: [],
-      isLoading:false
+      loading:false
     };
 
     this.navigation = props.navigation;
@@ -42,7 +43,10 @@ class InterestWarehouse extends Component {
 
   /** when after render DOM */
   componentDidMount () {
-    this.getDataFavorite();
+    this.reRenderSomething= this.props.navigation.addListener('focus', () => {
+      this.getDataFavorite();
+    });
+    // this.getDataFavorite();
   }
 
   // setDebounce = debounce((callback) => {
@@ -57,9 +61,12 @@ class InterestWarehouse extends Component {
   //     });
   //   }
   // }
+  componentWillUnmount() {
+    this.reRenderSomething;
+  }
 
   UNSAFE_componentWillReceiveProps(newProps) {
-      this.setState({ isLoading: !this.state.isLoading });
+      this.setState({ loading: !this.state.loading });
   }
 
   getDataFavorite = () => {
@@ -145,7 +152,7 @@ class InterestWarehouse extends Component {
   }
 
   render () {
-    const { listItem } = this.state;
+    const { listItem, loading } = this.state;
     let view =
       listItem &&
       listItem.map((item, index) => {
@@ -228,6 +235,7 @@ class InterestWarehouse extends Component {
             </TouchableOpacity>
           </View>
         )}
+        <Loading loading={loading}/>
       </ScrollView>
     );
   }

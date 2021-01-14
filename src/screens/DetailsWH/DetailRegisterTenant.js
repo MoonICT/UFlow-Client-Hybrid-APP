@@ -24,6 +24,7 @@ import Appbars from '@Components/organisms/AppBar';
 import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
 import { WarehouseTenant, Warehouse , MediaUpload} from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
+import Loading from '@Components/atoms/Loading';
 import {launchImageLibrary} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 import Postcode from 'react-native-daum-postcode';
@@ -63,6 +64,7 @@ class DetailRegisterTenant extends Component {
       selectedInfoIndex: 0,
       isCert: false,
       photo: null,
+      loading:false,
       businessList:[{
         label: '사업자정보 신규 등록',
         value: -1,
@@ -114,17 +116,35 @@ class DetailRegisterTenant extends Component {
   }
 
   handleChoosePhoto = () => {
-    const options={
-      title:'select a photo',
-      takePhotoButtonTitle:'Take a Photo',
-      chooseFrmoLibraryButtonTitle:'Choose from Gallery',
-      quality:1
-  };
-    launchImageLibrary(options, response => {
-      if (response.uri) {
-        this.setState({ photo: response });
+    var options = {
+      title: 'Select Image',
+      customButtons: [
+        {
+          name: 'customOptionKey',
+          title: 'Choose Photo from Custom Option'
+        },
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+   };
+   ImagePicker.showImagePicker(options, response => {
+      console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log(
+          'User tapped custom button: ',
+          response.customButton
+        );
+        alert(response.customButton);
+      } else {
+        setFilePath(response);
       }
-    });
+   });
   };
 
   /**
@@ -174,6 +194,57 @@ class DetailRegisterTenant extends Component {
       });
     }
   }
+
+  chooseFile = (type) => {
+    const { businessInfo } = this.state;
+
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      let file = {
+        fileCopyUri: response.uri,
+        name: response.fileName,
+        size: response.fileSize,
+        type: response.type,
+        uri: response.uri
+      }
+
+      this.setState({ singleFile: file }, async () => {
+        if (response != null) {
+          // If file selected then create FormData
+          let { singleFile } = this.state;
+          const data = new FormData();
+          data.append('name', singleFile.name);
+          data.append('file', singleFile);
+          // Please change file upload URL
+          MediaUpload.uploadFile(data).then(respon => {
+            if (respon.status === 200) {
+              let { url } = respon.data;
+              var pathArray = url.split( '/' );
+              var host = pathArray[pathArray.length-1];
+              
+              this.setState({
+                photo: url,
+                businessInfo: {
+                  ...businessInfo,
+                  regFile: host
+                }
+              });
+            }
+          }).catch(error => {
+            alert('DetailRegisterTenant MediaUpload error:' + error);
+          });
+        } else {
+          // If no file selected the show alert
+          alert('Please Select File first');
+        }
+      });
+    });
+  };
 
   // upload image
   handlePicker = async () => {
@@ -231,10 +302,12 @@ class DetailRegisterTenant extends Component {
       return false
     }
 
-    console.log('dataWE', businessInfo)
+    console.log('dataWE', businessInfo);
+    this.setState({loading: true});
     // 창고주 정보 등록
     WarehouseTenant.regBusinessInfoByTenant(businessInfo).then(res => {
-      alert('창고 사업자 등록이 완료되었습니다.')
+      alert('창고 사업자 등록이 완료되었습니다.');
+      this.setState({loading: false});
       this.navigation.navigate('ResponseQuotation', {
         typeWH,
         warehouseRegNo,
@@ -244,7 +317,8 @@ class DetailRegisterTenant extends Component {
         type,
       });
     }).catch(error => {
-      alert('서버에러:' + error.response.data.message)
+      alert('서버에러:' + error.response.data.message);
+      this.setState({loading: false});
     });
   };
 
@@ -264,7 +338,7 @@ class DetailRegisterTenant extends Component {
 
 
   render() {
-    const { businessMode,businessInfo, photo,businessList } = this.state;
+    const { businessMode,businessInfo, photo,loading } = this.state;
     
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -346,7 +420,7 @@ class DetailRegisterTenant extends Component {
               )}
               <TouchableOpacity
                 style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                onPress={this.handlePicker}>
+                onPress={()=>this.chooseFile('photo')}>
                 <Text
                   style={[
                     DefaultStyle._textButton,
@@ -515,6 +589,7 @@ class DetailRegisterTenant extends Component {
           </Dialog>
         </Portal>
       </ScrollView>
+      <Loading loading={loading}/>
     </SafeAreaView>
     );
   }
