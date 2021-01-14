@@ -337,7 +337,7 @@ class RequestContract extends Component {
           /*보관유형*/
           keepType: warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
           /*전용면적*/
-          prvtArea: warehouseInfoData.warehouse.prvtArea ? warehouseInfoData.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
+          prvtArea: warehouseInfoData.warehouse.prvtArea ? StringUtils.displayAreaUnit(warehouseInfoData.warehouse.prvtArea) : "0 ㎡",
           /*임대 가능기간*/
           usblYmd: StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdTo),
           /*보관단가*/
@@ -402,7 +402,7 @@ class RequestContract extends Component {
             /*보관유형*/
             keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
             /*공용면적*/
-            prvtArea: keepTrustEstimate.cmnArea ? StringUtils.numberComma(keepTrustEstimate.cmnArea) + " ㎡" : "-",
+            prvtArea: keepTrustEstimate.cmnArea ? StringUtils.displayAreaUnit(keepTrustEstimate.cmnArea) : "-",
             /*임대 가능기간*/
             // usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
             usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
@@ -477,7 +477,7 @@ class RequestContract extends Component {
             /*보관유형*/
             keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
             /*공용면적*/
-            prvtArea: keepTrustEstimate.cmnArea ? keepTrustEstimate.cmnArea.toLocaleString() + " ㎡" : "0 ㎡",
+            prvtArea: keepTrustEstimate.cmnArea ? StringUtils.displayAreaUnit(keepTrustEstimate.cmnArea) : "0 ㎡",
             /*임대 가능기간*/
             usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
             /*보관단가*/

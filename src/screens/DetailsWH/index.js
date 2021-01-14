@@ -7,6 +7,7 @@
 // Global Imports
 import React, { Component } from 'react';
 import { formatDateV1 } from '@Utils/dateFormat';
+import { StringUtils, ContractUtils } from '@Services/utils';
 
 import {
   SafeAreaView,
@@ -167,6 +168,7 @@ class DetailWH extends Component {
             // TODO Change to dialog UI
             alert('사업자정보 등록 후 견적 요청이 가능합니다.');
             this.navigation.navigate('DetailRegisterTenant', {
+              typeInfo: typeInfo,
               typeWH: type,
               warehouseRegNo: typeInfo.id.warehouseRegNo,
               warehSeq: typeInfo.id.seq,
@@ -274,25 +276,15 @@ class DetailWH extends Component {
       return value ? Number(Number(value) * 3.305785).toFixed(0) : '';
     };
 
-    const toPyeong = value => {
-      //return value ? Math.ceil((Math.trunc(Number(value)*10)/10) / 3.305785) : ''
-      return value ? Number(Number(value) / 3.305785).toFixed(0) : '';
-    };
-
-    const displayAreaUnit = value => {
-      return `${value.toLocaleString()}㎡ (${toPyeong(
-        value,
-      ).toLocaleString()}평)`;
-    };
 
     const displayUsblValue = (usblValue, calUnitDvCode) => {
       let resultStr = '-';
       if (usblValue) {
         if (calUnitDvCode && calUnitDvCode?.stdDetailCode === 'CU01') {
-          resultStr = displayAreaUnit(usblValue);
+          resultStr = StringUtils.displayAreaUnit(usblValue);
         } else {
           resultStr =
-            usblValue.toLocaleString() +
+            StringUtils.numberComma(usblValue) +
             (calUnitDvCode && calUnitDvCode?.stdDetailCodeName
               ? calUnitDvCode?.stdDetailCodeName
               : '');
@@ -584,7 +576,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 keep.cmnArea
-                                  ? displayAreaUnit(keep.cmnArea)
+                                  ? StringUtils.displayAreaUnit(keep.cmnArea)
                                   : '-'
                               }`}
                             </Text>
@@ -596,7 +588,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 keep.splyAmount
-                                  ? keep.splyAmount.toLocaleString() + '원'
+                                  ? StringUtils.money(keep.splyAmount)
                                   : '-'
                               }`}
                             </Text>
@@ -608,7 +600,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 keep.mgmtChrg
-                                  ? keep.mgmtChrg.toLocaleString() + '원'
+                                  ? StringUtils.money(keep.mgmtChrg)
                                   : '-'
                               }`}
                             </Text>
@@ -770,7 +762,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 trust.cmnArea
-                                  ? displayAreaUnit(trust.cmnArea)
+                                  ? StringUtils.displayAreaUnit(trust.cmnArea)
                                   : '-'
                               }`}
                             </Text>
@@ -782,7 +774,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 trust.splyAmount
-                                  ? trust.splyAmount.toLocaleString() + '원'
+                                  ? StringUtils.money(trust.splyAmount)
                                   : '-'
                               }`}
                             </Text>
@@ -796,7 +788,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 trust.whinChrg
-                                  ? trust.whinChrg.toLocaleString() + '원'
+                                  ? StringUtils.money(trust.whinChrg)
                                   : '-'
                               }`}
                             </Text>
@@ -808,7 +800,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 trust.whoutChrg
-                                  ? trust.whoutChrg.toLocaleString() + '원'
+                                  ? StringUtils.money(trust.whoutChrg)
                                   : '-'
                               }`}
                             </Text>
@@ -820,7 +812,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 trust.psnChrg
-                                  ? trust.psnChrg.toLocaleString() + '원'
+                                  ? StringUtils.money(trust.psnChrg)
                                   : '-'
                               }`}
                             </Text>
@@ -832,7 +824,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 trust.mnfctChrg
-                                  ? trust.mnfctChrg.toLocaleString() + '원'
+                                  ? StringUtils.money(trust.mnfctChrg)
                                   : '-'
                               }`}
                             </Text>
@@ -844,7 +836,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 trust.dlvyChrg
-                                  ? trust.dlvyChrg.toLocaleString() + '원'
+                                  ? StringUtils.money(trust.dlvyChrg)
                                   : '-'
                               }`}
                             </Text>
@@ -856,7 +848,7 @@ class DetailWH extends Component {
                             <Text style={S.textTable}>
                               {`${
                                 trust.shipChrg
-                                  ? trust.shipChrg.toLocaleString() + '원'
+                                  ? StringUtils.money(trust.shipChrg)
                                   : '-'
                               }`}
                             </Text>
@@ -901,13 +893,13 @@ class DetailWH extends Component {
                                 )}
                               </View>
                             ) : (
-                              <Text
+                              <Text청
                                 style={[
                                   S.textBtnQuote,
                                   { color: '#ff0000', padding: 16 },
                                 ]}>
                                 계약 완료된 정보입니다.
-                              </Text>
+                              </Text청>
                             )}
                           </View>
                         </View>
@@ -1001,7 +993,7 @@ class DetailWH extends Component {
                       </Text>
                       <Text style={S.textTable}>
                         {whrgData.prvtArea
-                          ? displayAreaUnit(whrgData.prvtArea)
+                          ? StringUtils.displayAreaUnit(whrgData.prvtArea)
                           : '-'}
                       </Text>
                     </View>
@@ -1012,7 +1004,7 @@ class DetailWH extends Component {
                       </Text>
                       <Text style={S.textTable}>
                         {whrgData.siteArea
-                          ? displayAreaUnit(whrgData.siteArea)
+                          ? StringUtils.displayAreaUnit(whrgData.siteArea)
                           : '-'}
                       </Text>
                     </View>
@@ -1023,7 +1015,7 @@ class DetailWH extends Component {
                       </Text>
                       <Text style={S.textTable}>
                         {whrgData.cmnArea
-                          ? displayAreaUnit(whrgData.cmnArea)
+                          ? StringUtils.displayAreaUnit(whrgData.cmnArea)
                           : '-'}
                       </Text>
                     </View>
@@ -1034,7 +1026,7 @@ class DetailWH extends Component {
                       </Text>
                       <Text style={S.textTable}>
                         {whrgData.bldgArea
-                          ? displayAreaUnit(whrgData.bldgArea)
+                          ? StringUtils.displayAreaUnit(whrgData.bldgArea)
                           : '-'}
                       </Text>
                     </View>
@@ -1058,7 +1050,7 @@ class DetailWH extends Component {
                       <Text style={[S.textTable, S.textLeftTable]}>연면적</Text>
                       <Text style={S.textTable}>
                         {whrgData.totalArea
-                          ? displayAreaUnit(whrgData.totalArea)
+                          ? StringUtils.displayAreaUnit(whrgData.totalArea)
                           : '-'}
                       </Text>
                     </View>
@@ -1118,7 +1110,7 @@ class DetailWH extends Component {
                               </Text>
                               <Text style={S.textTable}>
                                 {floor.flrArea
-                                  ? displayAreaUnit(floor.flrArea)
+                                  ? StringUtils.displayAreaUnit(floor.flrArea)
                                   : '-'}
                               </Text>
                             </View>
@@ -1128,7 +1120,7 @@ class DetailWH extends Component {
                               </Text>
                               <Text style={S.textTable}>
                                 {floor.opcArea
-                                  ? displayAreaUnit(floor.opcArea)
+                                  ? StringUtils.displayAreaUnit(floor.opcArea)
                                   : '-'}
                               </Text>
                             </View>
@@ -1138,7 +1130,7 @@ class DetailWH extends Component {
                               </Text>
                               <Text style={S.textTable}>
                                 {floor.parkArea
-                                  ? displayAreaUnit(floor.parkArea)
+                                  ? StringUtils.displayAreaUnit(floor.parkArea)
                                   : '-'}
                               </Text>
                             </View>
@@ -1148,7 +1140,7 @@ class DetailWH extends Component {
                               </Text>
                               <Text style={S.textTable}>
                                 {floor.prvtArea
-                                  ? displayAreaUnit(floor.prvtArea)
+                                  ? StringUtils.displayAreaUnit(floor.prvtArea)
                                   : '-'}
                               </Text>
                             </View>
@@ -1158,7 +1150,7 @@ class DetailWH extends Component {
                               </Text>
                               <Text style={S.textTable}>
                                 {floor.cmnArea
-                                  ? displayAreaUnit(floor.cmnArea)
+                                  ? StringUtils.displayAreaUnit(floor.cmnArea)
                                   : '-'}
                               </Text>
                             </View>

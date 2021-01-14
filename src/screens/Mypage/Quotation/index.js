@@ -100,7 +100,7 @@ class Quotation extends Component {
         /*보관유형*/
         keepType: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         /*전용면적*/
-        prvtArea: dataApi.warehouse.prvtArea ? StringUtils.numberComma(dataApi.warehouse.prvtArea) + " ㎡" : "-",
+        prvtArea: dataApi.warehouse.prvtArea ? StringUtils.displayAreaUnit(dataApi.warehouse.prvtArea) : "-",
         /*임대 가능기간*/
         usblYmd: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
         /*보관단가*/

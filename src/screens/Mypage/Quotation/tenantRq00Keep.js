@@ -60,7 +60,7 @@ class TenantRq00Keep extends Component {
             },
             {
               type: '요청 가용 면적',
-              value: item.rntlValue ? StringUtils.numberComma(item.rntlValue) : '-',
+              value: item.rntlValue ? StringUtils.displayAreaUnit(item.rntlValue) : '-',
             },
             {
               type: '정산단위',
