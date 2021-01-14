@@ -65,7 +65,7 @@ class Search extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    if (this.searchQuery !== this.state.searchQuery) {
+    if (this.props.params.searchQuery !== this.state.searchQuery) {
       this._onChangeSearchQuery(this.state.searchQuery);
     }
   }
@@ -148,6 +148,7 @@ class Search extends Component {
     `;
 
     const {searchQuery} = this.state;
+    console.log('searchQuery', searchQuery)
 
     return (
       <SafeAreaView style={[styles.container]}>
@@ -174,6 +175,9 @@ class Search extends Component {
           <SearchOverlay
             query={searchQuery}
             onSelect={result => this.handleSelectResult(result)}
+            onClose={()=> this.setState({
+              searchQuery:''
+            })}
           />
         )}
 
@@ -289,6 +293,8 @@ class Search extends Component {
 
   // 컴포넌트 업데이트 직후 호출.
   componentDidUpdate(prevProps, prevState) {
+    const {params} = this.props?.route;
+
     // console.log('::componentDidUpdate::');
     if (prevProps.whFilter !== this.props.whFilter) {
       this.setDebounce(() => {
@@ -301,10 +307,11 @@ class Search extends Component {
       });
     }
 
-    if (prevProps.searchQuery !== this.props?.route?.params?.searchQuery) {
-      if (this.props?.route?.params?.searchQuery !== '') {
-        // console.log('Hello');
-        this.searchQuery = this.props?.route?.params?.searchQuery;
+    if (prevState.searchQuery !== this.state.searchQuery) {
+      if (this.state.searchQuery) {
+        this.props.searchToggle(true);
+      }else{
+        this.props.searchToggle(false);
       }
     }
   }

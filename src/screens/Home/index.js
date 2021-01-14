@@ -574,7 +574,7 @@ class Home extends Component {
             <View style={styles.mainProductMore}>
               <TouchableOpacity
                 onPress={() =>  this.navigation.navigate('Search', {
-                  searchQuery: textSearch,
+                  searchQuery: '',
                 })}
                 style={[styles.mainProductSeeMoreBTN]}>
                 <Text
