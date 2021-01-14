@@ -14,10 +14,10 @@ export function uploadImage(image) {
   };
 }
 
-export function removeImage(id) {
+export function removeImage(data) {
   return {
     type: types.REMOVE_IMAGE_REGISTER,
-    id: id,
+    data: data,
   };
 }
 // TODO 위 형식과 같이 Action 함수 작성.

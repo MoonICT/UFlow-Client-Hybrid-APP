@@ -3,45 +3,21 @@
  * @modify
  * @desc [description]
  */
-
 // Global Imports
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  TouchableHighlight,
-  Image,
-  TextInput,
-  Platform,
-} from 'react-native';
-import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
-import { Card, Checkbox, Text, Button, IconButton } from 'react-native-paper';
-// import {useNavigation} from '@react-navigation/native';
-
-// Local Imports
+import { View } from 'react-native';
+import { Card } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
+// Local Imports
 import Select from '@Components/organisms/Select';
 import TextField from '@Components/organisms/TextField';
-
-import ActionCreator from '@Actions';
-import ignore2 from '@Assets/images/ignore2x.png';
-import ignore1 from '@Assets/images/ignore.png';
-import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
-import { styles as SS } from './style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import ImagePicker from 'react-native-image-picker';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 
 class FormInfo extends Component {
   constructor(props) {
     super(props);
-    this.webView = null;
     this.state = { title: 'Profile Photo', confirm: false, value: 1 };
     this.navigation = props.navigation;
   }
@@ -51,23 +27,9 @@ class FormInfo extends Component {
     return true;
   }
 
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
-  }
-
-  onChangeText = () => console.log('_addImage');
-  _removeImage = () => console.log('_removeImage');
-
   render() {
-    const {
-      data,
-      formData,
-      valueForm,
-      flrDvCodes,
-      aprchMthdDvCodes,
-    } = this.props;
-    console.log('formData :>> ', formData);
+    const { formData, valueForm, flrDvCodes, aprchMthdDvCodes } = this.props;
+    // console.log('formData :>> ', formData);
     const {
       flrAreaValue2,
       parkAreaValue2,
@@ -78,36 +40,21 @@ class FormInfo extends Component {
       efctvHi,
       dockQty,
     } = this.state;
-    const dataSelect = [
-      {
-        label: '1층',
-        value: 'F1',
-      },
-      {
-        label: '2층',
-        value: 'F2',
-      },
-      {
-        label: '3층',
-        value: 'F3',
-      },
-      {
-        label: '지하1층',
-        value: 'B1',
-      },
-    ];
+
     let defaultFlrDvCode =
       flrDvCodes && flrDvCodes.find(item => item.value === formData.flrDvCode);
     let defaultAprchMthdDvCodes =
       aprchMthdDvCodes &&
       aprchMthdDvCodes.find(item => item.value === formData.aprchMthdDvCode);
-    console.log(defaultFlrDvCode, 'defaultFlrDvCode')
+    // console.log(defaultFlrDvCode, 'defaultFlrDvCode');
     return (
       <Card style={[S.cards]}>
         <View style>
           <Select
             data={flrDvCodes}
-            valueSelected={defaultFlrDvCode !== undefined ? defaultFlrDvCode.label : ''}
+            valueSelected={
+              defaultFlrDvCode !== undefined ? defaultFlrDvCode.label : ''
+            }
             dataDefault={defaultFlrDvCode !== undefined ? defaultFlrDvCode : ''}
             selectedValue={formData.flrDvCode}
             labelSelected="층 수"
@@ -123,8 +70,9 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="층면적"
                 textRight="m2"
+                placeholder="0"
                 defaultValue={
-                  formData.flrArea ? numberToStd(formData.flrArea) : '0'
+                  formData.flrArea ? numberToStd(formData.flrArea) : ''
                 }
                 colorLabel="#000000"
                 valueProps={e => {
@@ -138,18 +86,19 @@ class FormInfo extends Component {
                   dataF.flrArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
-                value={flrAreaValue2 === '' ? '0' : formData.flrArea}
+                value={flrAreaValue2 === '' ? '' : formData.flrArea}
                 keyboardType="numeric"
               />
             </View>
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="층면적"
+                placeholder="0"
                 textRight="평"
                 defaultValue={
                   formData.flrArea
                     ? numberToStd(toPyeong(formData.flrArea))
-                    : '0'
+                    : ''
                 }
                 colorLabel="#000000"
                 valueProps={e => {
@@ -160,7 +109,7 @@ class FormInfo extends Component {
                   dataF.flrArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.flrArea === '' ? '0' : flrAreaValue2}
+                value={formData.flrArea === '' ? '' : flrAreaValue2}
                 keyboardType="numeric"
               />
             </View>
@@ -171,7 +120,7 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="주차면적"
                 defaultValue={
-                  formData.parkArea ? numberToStd(formData.parkArea) : '0'
+                  formData.parkArea ? numberToStd(formData.parkArea) : ''
                 }
                 textRight="m2"
                 colorLabel="#000000"
@@ -187,7 +136,8 @@ class FormInfo extends Component {
                   dataF.parkArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
-                value={flrAreaValue2 === '' ? '0' : formData.parkArea}
+                value={flrAreaValue2 === '' ? '' : formData.parkArea}
+                placeholder="0"
                 keyboardType="numeric"
               />
             </View>
@@ -197,7 +147,7 @@ class FormInfo extends Component {
                 defaultValue={
                   formData.parkArea
                     ? numberToStd(toPyeong(formData.parkArea))
-                    : '0'
+                    : ''
                 }
                 textRight="평"
                 colorLabel="#000000"
@@ -209,7 +159,8 @@ class FormInfo extends Component {
                   dataF.parkArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.parkArea === '' ? '0' : parkAreaValue2}
+                value={formData.parkArea === '' ? '' : parkAreaValue2}
+                placeholder="0"
                 keyboardType="numeric"
               />
             </View>
@@ -220,7 +171,7 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="사무실면적"
                 defaultValue={
-                  formData.opcArea ? numberToStd(formData.opcArea) : '0'
+                  formData.opcArea ? numberToStd(formData.opcArea) : ''
                 }
                 textRight="m2"
                 colorLabel="#000000"
@@ -235,7 +186,8 @@ class FormInfo extends Component {
                   dataF.opcArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
-                value={opcAreaValue2 === '' ? '0' : formData.opcArea}
+                value={opcAreaValue2 === '' ? '' : formData.opcArea}
+                placeholder="0"
                 keyboardType="numeric"
               />
             </View>
@@ -245,7 +197,7 @@ class FormInfo extends Component {
                 defaultValue={
                   formData.opcArea
                     ? numberToStd(toPyeong(formData.opcArea))
-                    : '0'
+                    : ''
                 }
                 textRight="평"
                 colorLabel="#000000"
@@ -257,7 +209,8 @@ class FormInfo extends Component {
                   dataF.opcArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.opcArea === '' ? '0' : opcAreaValue2}
+                value={formData.opcArea === '' ? '' : opcAreaValue2}
+                placeholder="0"
                 keyboardType="numeric"
               />
             </View>
@@ -268,7 +221,7 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="전용면적"
                 defaultValue={
-                  formData.prvtArea ? numberToStd(formData.prvtArea) : '0'
+                  formData.prvtArea ? numberToStd(formData.prvtArea) : ''
                 }
                 textRight="m2"
                 colorLabel="#000000"
@@ -283,7 +236,8 @@ class FormInfo extends Component {
                   dataF.prvtArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
-                value={prvtAreaValue2 === '' ? '0' : formData.prvtArea}
+                value={prvtAreaValue2 === '' ? '' : formData.prvtArea}
+                placeholder="0"
                 keyboardType="numeric"
               />
             </View>
@@ -293,7 +247,7 @@ class FormInfo extends Component {
                 defaultValue={
                   formData.prvtArea
                     ? numberToStd(toPyeong(formData.prvtArea))
-                    : '0'
+                    : ''
                 }
                 textRight="평"
                 colorLabel="#000000"
@@ -305,7 +259,8 @@ class FormInfo extends Component {
                   dataF.prvtArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.prvtArea === '' ? '0' : prvtAreaValue2}
+                value={formData.prvtArea === '' ? '' : prvtAreaValue2}
+                placeholder="0"
                 keyboardType="numeric"
               />
             </View>
@@ -316,7 +271,7 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="공용면적"
                 defaultValue={
-                  formData.cmnArea ? numberToStd(formData.cmnArea) : '0'
+                  formData.cmnArea ? numberToStd(formData.cmnArea) : ''
                 }
                 textRight="m2"
                 colorLabel="#000000"
@@ -331,7 +286,8 @@ class FormInfo extends Component {
                   dataF.cmnArea = stdToNumber(text);
                   valueForm && valueForm(dataF);
                 }}
-                value={cmnAreaValue2 === '' ? '0' : formData.cmnArea}
+                value={cmnAreaValue2 === '' ? '' : formData.cmnArea}
+                placeholder="0"
                 keyboardType="numeric"
               />
             </View>
@@ -341,7 +297,7 @@ class FormInfo extends Component {
                 defaultValue={
                   formData.cmnArea
                     ? numberToStd(toPyeong(formData.cmnArea))
-                    : '0'
+                    : ''
                 }
                 textRight="평"
                 colorLabel="#000000"
@@ -353,7 +309,8 @@ class FormInfo extends Component {
                   dataF.cmnArea = stdToNumber(valueCover);
                   valueForm && valueForm(dataF);
                 }}
-                value={formData.cmnArea === '' ? '0' : cmnAreaValue2}
+                value={formData.cmnArea === '' ? '' : cmnAreaValue2}
+                placeholder="0"
                 keyboardType="numeric"
               />
             </View>
@@ -363,6 +320,7 @@ class FormInfo extends Component {
             labelTextField="층고"
             defaultValue={formData.flrHi ? numberToStd(formData.flrHi) : ''}
             value={flrHi}
+            placeholder="0"
             keyboardType="numeric"
             colorLabel="#000000"
             valueProps={e => {
@@ -377,6 +335,7 @@ class FormInfo extends Component {
             labelTextField="유효고"
             defaultValue={formData.efctvHi ? numberToStd(formData.efctvHi) : ''}
             value={efctvHi}
+            placeholder="0"
             keyboardType="numeric"
             colorLabel="#000000"
             valueProps={e => {
@@ -400,14 +359,17 @@ class FormInfo extends Component {
           /> */}
           <Select
             data={aprchMthdDvCodes}
+            colorLabel="#000000"
             dataDefault={
               defaultAprchMthdDvCodes !== undefined
                 ? defaultAprchMthdDvCodes
                 : ''
             }
-            valueSelected={defaultAprchMthdDvCodes !== undefined
-              ? defaultAprchMthdDvCodes.label
-              : ''}
+            valueSelected={
+              defaultAprchMthdDvCodes !== undefined
+                ? defaultAprchMthdDvCodes.label
+                : ''
+            }
             selectedValue={formData.aprchMthdDvCode}
             labelSelected="접안방식"
             valueProps={e => {
@@ -434,44 +396,6 @@ class FormInfo extends Component {
       </Card>
     );
   }
-
-  /** when after render DOM */
-  async componentDidMount() {
-    console.log('::componentDidMount::');
-    SplashScreen.hide();
-  }
-
-  /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
-    console.log('::componentDidUpdate::');
-  }
 }
 
-/** map state with store states redux store */
-function mapStateToProps(state) {
-  // console.log('++++++mapStateToProps: ', state);
-  return {
-    // count: state.home.count,
-    imageStore: state.registerWH.pimages,
-  };
-}
-
-/** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
-  return {
-    registerAction: action => {
-      dispatch(ActionCreator.uploadImage(action));
-    },
-    removeAction: action => {
-      dispatch(ActionCreator.removeImage(action));
-    },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(FormInfo);
+export default FormInfo;
