@@ -18,6 +18,7 @@ import { Menu } from '@Services/apis';
 
 //---> Components
 import Popup from '@Components/organisms/Popup';
+import Loading from '@Components/atoms/Loading';
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import { LANG_STATUS_KEY } from '@Constant';
@@ -34,6 +35,7 @@ class Global extends Component {
       <SafeAreaView style={[DefaultStyle.container, S.container]}>
         <Popup />
         {children}
+        {/*<Loading loading={true} />*/}
       </SafeAreaView>
     );
   }
