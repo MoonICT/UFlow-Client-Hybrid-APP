@@ -19,6 +19,8 @@ import { Menu } from '@Services/apis';
 //---> Components
 import Popup from '@Components/organisms/Popup';
 import { connect } from "react-redux";
+import AsyncStorage from "@react-native-community/async-storage";
+import { LANG_STATUS_KEY } from '@Constant';
 
 class Global extends Component {
   constructor (props) {
@@ -38,7 +40,11 @@ class Global extends Component {
 
   async componentDidMount () {
     // 번역 로드.
-    const data = await Menu.localization({ language: 'ko-KR', });
+    const langData = await AsyncStorage.getItem(LANG_STATUS_KEY);
+    if (!langData) {
+      AsyncStorage.setItem(LANG_STATUS_KEY, 'ko-KR');
+    }
+    const data = await Menu.localization({ language: langData ? langData : 'ko-KR', });
     let resultObj = {}
     if (data && data.length > 0) {
       data.map(item => {
@@ -52,8 +58,7 @@ class Global extends Component {
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
   // console.log('++++++mapStateToProps :', state);
-  return {
-  };
+  return {};
 }
 
 // store에 action을 dispatch 하는 역할.

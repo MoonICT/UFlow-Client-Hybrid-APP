@@ -9,11 +9,11 @@ export const moneyConvert = (value = 0, unitStr = '원') => {
 };
 
 export const money = (value, unitStr = '원') => {
-  return value ? value.toLocaleString() + ' ' + unitStr : 0 + ' ' + unitStr;
+  return value ? value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' ' + unitStr : 0 + ' ' + unitStr;
 };
 
 export const numberComma = value => {
-  return value ? value.toLocaleString() : 0;
+  return value ? value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : '';
 };
 
 export const dateStr = (date, format = 'YYYY.MM.DD') => {

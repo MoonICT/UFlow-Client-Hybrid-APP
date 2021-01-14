@@ -245,7 +245,7 @@ export default class DetailsManager extends Component {
         },
         {
           type: '물동량',
-          value: cntrTrustResBody && cntrTrustResBody.cntrValue && (cntrTrustResBody.cntrValue.toLocaleString() + " " + (cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName)),
+          value: cntrTrustResBody && cntrTrustResBody.cntrValue && (cntrTrustResBody.cntrValue.량() + " " + (cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName)),
         },
         {
           type: '수탁 기간',
@@ -689,7 +689,7 @@ export default class DetailsManager extends Component {
                 });
               }
 
-              
+
             })
 
           }
@@ -702,7 +702,7 @@ export default class DetailsManager extends Component {
       }
 
 
-     
+
 
     } else if (type === 'TENANT') {
       // 임차인
@@ -828,7 +828,7 @@ export default class DetailsManager extends Component {
 
     // upload image
     handlePicker = async () => {
-  
+
       try {
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.images],
@@ -1376,7 +1376,7 @@ export default class DetailsManager extends Component {
               {type === 'OWNER' &&
               <View>
                 {
-                  this.state.singleFile && 
+                  this.state.singleFile &&
                   <View style={SS.infoAttach}>
                     <Text style={SS.textAttach}>{this.state.singleFile.name}</Text>
                     <IconButton

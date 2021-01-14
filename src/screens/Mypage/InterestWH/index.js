@@ -27,6 +27,7 @@ import ActionCreator from '@Actions';
 import box from '@Assets/images/box.png';
 import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
+import {StringUtils} from '@Services/utils';
 
 class InterestWarehouse extends Component {
   constructor (props) {
@@ -113,21 +114,21 @@ class InterestWarehouse extends Component {
           resultArr.push(`최대 ${WHItem.keep.subTitle}`)
         }
         if (WHItem.keep && WHItem.keep.splyAmount) {
-          resultArr.push(`보관단가 ${WHItem.keep.splyAmount.toLocaleString()}원 ~/${WHItem.keep.unit}`)
+          resultArr.push(`보관단가 ${StringUtils.numberComma(WHItem.keep.splyAmount)}원 ~/${WHItem.keep.unit}`)
         }
         if (WHItem.keep && WHItem.keep.mgmtChrg) {
-          resultArr.push(`관리단가 ${WHItem.keep.mgmtChrg.toLocaleString()}원 ~/${WHItem.keep.unit}`)
+          resultArr.push(`관리단가 ${StringUtils.numberComma(WHItem.keep.mgmtChrg)}원 ~/${WHItem.keep.unit}`)
         }
         return resultArr.join(', ')
       case 'TRUST':
         if (WHItem.trust && WHItem.trust.subTitle) {
-          resultArr.push(`최대 ${WHItem.trust.subTitle.toLocaleString()}`)
+          resultArr.push(`최대 ${StringUtils.numberComma(WHItem.trust.subTitle)}`)
         }
         if (WHItem.trust && WHItem.trust.whinChrg) {
-          resultArr.push(`보관단가 ${WHItem.trust.whinChrg.toLocaleString()}원 ~/${WHItem.trust.unit}`)
+          resultArr.push(`보관단가 ${StringUtils.numberComma(WHItem.trust.whinChrg)}원 ~/${WHItem.trust.unit}`)
         }
         if (WHItem.trust && WHItem.trust.whoutChrg) {
-          resultArr.push(`관리단가 ${WHItem.trust.whoutChrg.toLocaleString()}원 ~/${WHItem.trust.unit}`)
+          resultArr.push(`관리단가 ${StringUtils.numberComma(WHItem.trust.whoutChrg)}원 ~/${WHItem.trust.unit}`)
         }
         return resultArr.join(', ')
     }

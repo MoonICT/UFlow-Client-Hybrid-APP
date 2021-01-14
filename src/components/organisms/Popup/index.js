@@ -16,7 +16,7 @@ import { styles } from './style';
 import illust11 from '@Assets/images/illust11.png';
 
 class Popup extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
@@ -30,7 +30,7 @@ class Popup extends Component {
     }
   };
 
-  render() {
+  render () {
     const { popup, title, content, hidePopup, type, image } = this.props;
     // console.log('type :>> ', type);
     return (
@@ -41,9 +41,10 @@ class Popup extends Component {
               style={DefaultStyle.popup}
               visible={popup}
               onDismiss={hidePopup}>
-              <Dialog.Content>
-                <Image style={[DefaultStyle._imageDialog]} source={image} />
-              </Dialog.Content>
+              {image ?
+                <Dialog.Content>
+                  <Image style={[DefaultStyle._imageDialog]} source={image} />
+                </Dialog.Content> : null}
               <Dialog.Title
                 style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
                 {title}
@@ -88,7 +89,7 @@ class Popup extends Component {
 }
 
 // map state from store to  props of component
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     popup: state.popup.show,
     content: state.popup.content,
@@ -100,7 +101,7 @@ function mapStateToProps(state) {
 }
 
 // map and dispatch action
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     hidePopup: status => {
       dispatch(ActionCreator.hide(status));

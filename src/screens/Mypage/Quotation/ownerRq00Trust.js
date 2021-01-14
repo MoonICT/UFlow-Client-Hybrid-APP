@@ -57,7 +57,7 @@ class OwnerRq00Trust extends Component {
             },
             {
               type: '요청 가용수량',
-              value: item.rntlValue ? item.rntlValue.toLocaleString() : '-',
+              value: item.rntlValue ? StringUtils.numberComma(item.rntlValue) : '-',
             },
             {
               type: '요청 보관단가',

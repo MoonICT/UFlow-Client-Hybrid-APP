@@ -81,6 +81,7 @@ import Information from '@Screeens/Mypage/Information';
 import RequestContract from '@Screeens/Mypage/RequestContract';
 import InterestWH from '@Screeens/Mypage/InterestWH';
 import More from '@Screeens/More';
+import Language from '@Screeens/More/Language';
 import Consulting from '@Screeens/Consulting';
 import ConsultingComplete from '@Screeens/Consulting/complete.js';
 import Question from '@Screeens/Question';
@@ -507,7 +508,12 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-
+                  <RootStack.Screen
+                    name="Language"
+                    component={Language}
+                    headerMode={false}
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
                   <AuthStack.Screen
                     name="Consulting"
                     component={Consulting}
@@ -615,6 +621,12 @@ const App = () => {
                   <RootStack.Screen
                     name="More"
                     component={More}
+                    headerMode={false}
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
+                  <RootStack.Screen
+                    name="Language"
+                    component={Language}
                     headerMode={false}
                     options={{ headerShown: false, gestureEnabled: false }}
                   />
