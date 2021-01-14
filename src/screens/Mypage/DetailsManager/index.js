@@ -14,6 +14,7 @@ import {ToastShow} from '@Utils/Toast';
 import ImageModal from 'react-native-image-modal';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 import {
   SafeAreaView,
   View,
@@ -825,6 +826,26 @@ export default class DetailsManager extends Component {
     }
 
   }
+
+  chooseFile = (type) => {
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      let file = {
+        fileCopyUri: response.uri,
+        name: response.fileName,
+        size: response.fileSize,
+        type: response.type,
+        uri: response.uri
+      }
+
+      this.setState({ singleFile: file });
+    });
+  };
 
     // upload image
     handlePicker = async () => {

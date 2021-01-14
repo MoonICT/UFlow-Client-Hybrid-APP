@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
   },
   bgrRegister: {
     backgroundColor: '#fafafa',
-    height: 622,
+    height: 600,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -107,7 +107,23 @@ export const styles = StyleSheet.create({
     paddingBottom: 3,
   },
 
+  imageContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
   ImageUpload: {
+    width: '100%',
+    height: 180,
+    marginTop: 12,
+    marginBottom: 16,
+  },
+  ImageDetail: {
+    width: '100%',
+    height: '100%',
+  },
+  ImagePanaUpload: {
     width: '100%',
     height: 238,
   },
@@ -115,7 +131,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
-    padding: 16,
+    // padding: 16,
   },
   itemImage: {
     height: 90,

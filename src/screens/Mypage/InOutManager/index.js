@@ -12,7 +12,7 @@ import { styles as SS } from './style';
 
 import Moment from 'moment';
 import { moneyUnit, dateStr, toStdCd } from '@Utils/StringUtils';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity} from 'react-native';
 import { Text, Dialog, Button, Paragraph } from 'react-native-paper';
 import Select from '@Components/organisms/SelectFilter';
 
@@ -383,6 +383,7 @@ export default class InOutManager extends Component {
     } = this.state;
     let { startDate, endDate } = this.state.filter;
     return (
+      <>
       <View style={[DefaultStyle._cards, { marginBottom: 180 }]}>
         <View style={DefaultStyle._tabBar}>
           <TouchableOpacity
@@ -628,132 +629,133 @@ export default class InOutManager extends Component {
               />
             );
           })}
-
-        <Dialog
-          style={[DefaultStyle.popup, SS.popup]}
-          visible={this.state.visible}
-          onDismiss={this.hideDialog}>
-          <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
-            출고정보 등록
-          </Dialog.Title>
-          <Dialog.Content>
-            <View style={SS.bodyPopup}>
-              <Text style={DefaultStyle._textTitleCard}>출고 예정일</Text>
-
-              <View
-                style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
-                <View
-                  style={[
-                    S.optionSelect,
-                    S.optionSelectLeft,
-                    {
-                      height: 40,
-                      marginBottom: 45,
-                      marginTop: 15,
-                      width: '100%',
-                    },
-                  ]}>
-                  <View style={{ flex: 1 }}>
-                    <TouchableOpacity
-                      onPress={() => this.showTimeCreateImport()}
-                      style={DefaultStyle._btnDate}>
-                      <Text style={DefaultStyle._textDate}>
-                        {dateStr(timeCreateImport)}
-                      </Text>
-                      <Text
-                        style={[
-                          DefaultStyle._labelTextField,
-                          { color: '#000000' },
-                        ]}>
-                        출고 예정일
-                      </Text>
-                      {isOpenTimeCreateImport &&
-                        // <DatePicker
-                        //   mode={'date'}
-                        //   show={isOpenTimeCreateImport}
-                        //   onChange={e => this.onChangeTimeCreateImport(e)}
-                        //   value={timeCreateImport}
-                        //   testID="dateTimePicker"
-                        // />
-
-                        <DateTimePickerModal
-                          mode="date"
-                          isVisible={isOpenTimeCreateImport}
-                          date={endDate ? endDate : new Date()}
-                          onConfirm={date =>
-                            this.onChangeTimeCreateImport(date)
-                          }
-                          onCancel={() => {
-                            this.setState({
-                              isOpenTimeCreateImport: false,
-                            });
-                          }}
-                        />
-                      }
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-
-              <Text style={DefaultStyle._textTitleCard}>출고 예정 수량</Text>
-              <TextField
-                ref={el => (this.inputValueCreateImport = el)}
-                textRight="P"
-                styleRight={{ top: 5 }}
-                styleProps={SS.inputStyle}
-                onChange={e => this.onChangeValueImport(e)}
-              />
-            </View>
-          </Dialog.Content>
-          <Dialog.Actions style={SS.footerPopup}>
-            <Button
-              style={[SS.btnPopup]}
-              color={'rgba(0, 0, 0, 0.54)'}
-              onPress={this.hideDialog}>
-              취소
-            </Button>
-
-            <Button
-              style={SS.btnPopup}
-              onPress={() => {
-                this.createImport();
-              }}>
-              확인
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-
-        <Dialog
-          style={DefaultStyle.popup}
-          visible={this.state.confirm}
-          onDismiss={this.hideConfirm}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup} />
-          </Dialog.Content>
-          <Dialog.Title
-            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            입고 요청 완료
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={DefaultStyle.contentDialog}>
-              입고요청을 완료했습니다. 입출고내역에서 요청하신 내역을 확인해
-              주세요.
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={() => {
-                this.hideConfirm();
-                this.setState({ isProgress: true }, () => {
-                  this.getAllData();
-                });
-              }}>
-              확인
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
+        
       </View>
+      <Dialog
+      style={[DefaultStyle.popup, SS.popup]}
+      visible={this.state.visible}
+      onDismiss={this.hideDialog}>
+      <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
+        출고정보 등록
+      </Dialog.Title>
+      <Dialog.Content>
+        <View style={SS.bodyPopup}>
+          <Text style={DefaultStyle._textTitleCard}>출고 예정일</Text>
+
+          <View
+            style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
+            <View
+              style={[
+                S.optionSelect,
+                S.optionSelectLeft,
+                {
+                  height: 40,
+                  marginBottom: 45,
+                  marginTop: 15,
+                  width: '100%',
+                },
+              ]}>
+              <View style={{ flex: 1 }}>
+                <TouchableOpacity
+                  onPress={() => this.showTimeCreateImport()}
+                  style={DefaultStyle._btnDate}>
+                  <Text style={DefaultStyle._textDate}>
+                    {dateStr(timeCreateImport)}
+                  </Text>
+                  <Text
+                    style={[
+                      DefaultStyle._labelTextField,
+                      { color: '#000000' },
+                    ]}>
+                    출고 예정일
+                  </Text>
+                  {isOpenTimeCreateImport &&
+                    // <DatePicker
+                    //   mode={'date'}
+                    //   show={isOpenTimeCreateImport}
+                    //   onChange={e => this.onChangeTimeCreateImport(e)}
+                    //   value={timeCreateImport}
+                    //   testID="dateTimePicker"
+                    // />
+
+                    <DateTimePickerModal
+                      mode="date"
+                      isVisible={isOpenTimeCreateImport}
+                      date={endDate ? endDate : new Date()}
+                      onConfirm={date =>
+                        this.onChangeTimeCreateImport(date)
+                      }
+                      onCancel={() => {
+                        this.setState({
+                          isOpenTimeCreateImport: false,
+                        });
+                      }}
+                    />
+                  }
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          <Text style={DefaultStyle._textTitleCard}>출고 예정 수량</Text>
+          <TextField
+            ref={el => (this.inputValueCreateImport = el)}
+            textRight="P"
+            styleRight={{ top: 5 }}
+            styleProps={SS.inputStyle}
+            onChange={e => this.onChangeValueImport(e)}
+          />
+        </View>
+      </Dialog.Content>
+      <Dialog.Actions style={SS.footerPopup}>
+        <Button
+          style={[SS.btnPopup]}
+          color={'rgba(0, 0, 0, 0.54)'}
+          onPress={this.hideDialog}>
+          취소
+        </Button>
+
+        <Button
+          style={SS.btnPopup}
+          onPress={() => {
+            this.createImport();
+          }}>
+          확인
+        </Button>
+      </Dialog.Actions>
+    </Dialog>
+
+    <Dialog
+      style={DefaultStyle.popup}
+      visible={this.state.confirm}
+      onDismiss={this.hideConfirm}>
+      <Dialog.Content>
+        <View style={DefaultStyle.imagePopup} />
+      </Dialog.Content>
+      <Dialog.Title
+        style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+        입고 요청 완료
+      </Dialog.Title>
+      <Dialog.Content>
+        <Paragraph style={DefaultStyle.contentDialog}>
+          입고요청을 완료했습니다. 입출고내역에서 요청하신 내역을 확인해
+          주세요.
+        </Paragraph>
+      </Dialog.Content>
+      <Dialog.Actions style={DefaultStyle._buttonPopup}>
+        <Button
+          style={DefaultStyle._buttonElement}
+          onPress={() => {
+            this.hideConfirm();
+            this.setState({ isProgress: true }, () => {
+              this.getAllData();
+            });
+          }}>
+          확인
+        </Button>
+      </Dialog.Actions>
+    </Dialog>
+    </>
     );
   }
 }

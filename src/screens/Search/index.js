@@ -148,7 +148,6 @@ class Search extends Component {
     `;
 
     const {searchQuery} = this.state;
-    console.log('searchQuery', searchQuery)
 
     return (
       <SafeAreaView style={[styles.container]}>
