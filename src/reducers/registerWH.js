@@ -20,7 +20,7 @@ export default (state = defaultState, action) => {
     case types.UPLOAD_IMAGE_REGISTER:
       return upImage(state, action.image);
     case types.REMOVE_IMAGE_REGISTER:
-      return removeImg(state, action.id);
+      return removeImg(state, action.data);
     case types.CONTRACT_CONDITIONS:
       return ContractConditions(state, action.data);
     case types.UPDATE_INFO_WH:
@@ -57,14 +57,20 @@ let upImage = (state, image) => {
   try {
     let imageUpload = [...state.whImages];
     let imageTh = [...state.whImages];
+    let imagePn = [...state.pnImages];
 
-    imageUpload.push(image);
-    imageTh.length > 0 ? imageTh : imageTh.push(image);
+    if (image.value === 0) {
+      imageUpload.push({ name: image.name, url: image.url });
+    }
+    if (image.value === 1 && imagePn.length < 1) {
+      imagePn.push({ name: image.name, url: image.url });
+    }
+    // imageTh.length > 0 ? imageTh : imageTh.push(image);
     let result = {
       ...state,
-      pnImages: imageUpload,
+      thImages: imageUpload,
       whImages: imageUpload,
-      thImages: imageTh,
+      pnImages: imagePn,
     };
     return result;
   } catch (e) {
@@ -73,19 +79,25 @@ let upImage = (state, image) => {
   }
 };
 
-let removeImg = (state, id) => {
+let removeImg = (state, data) => {
+  console.log('data :>> ', data);
   try {
-    let imageList = [...state.whImages];
-    imageList.slice(id);
+    let imageList = [];
+    if (data.value === 0) {
+      imageList = [...state.whImages];
+    }
+    if (data.value === 1) {
+      imageList = [...state.pnImages];
+    }
+    // imageList.slice(data.id);
     let imageL = imageList.filter((item, index) => {
-      return index !== id;
+      return index !== data.id;
     });
     let result = {
       ...state,
-      whImages: imageL,
-      pnImages: imageL,
-      thImages: imageL.length === 0 ? [] : state.thImages,
-      // thImages: [state.whImages[0]],
+      whImages: data.value === 0 ? imageL : [...state.whImages],
+      thImages: data.value === 0 ? imageL : [...state.whImages],
+      pnImages: data.value === 1 ? imageL : [...state.pnImages],
     };
     return result;
   } catch (e) {

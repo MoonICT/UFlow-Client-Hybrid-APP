@@ -41,13 +41,17 @@ class Popup extends Component {
               style={DefaultStyle.popup}
               visible={popup}
               onDismiss={hidePopup}>
-              <Dialog.Content>
-                <Image style={[DefaultStyle._imageDialog]} source={image} />
-              </Dialog.Content>
-              <Dialog.Title
-                style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-                {title}
-              </Dialog.Title>
+              {image ? (
+                <Dialog.Content>
+                  <Image style={[DefaultStyle._imageDialog]} source={image} />
+                </Dialog.Content>
+              ) : null}
+              {title ? (
+                <Dialog.Title
+                  style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+                  {title}
+                </Dialog.Title>
+              ) : null}
               <Dialog.Content>
                 <Paragraph style={DefaultStyle.contentDialog}>
                   {content}
@@ -95,7 +99,7 @@ function mapStateToProps(state) {
     title: state.popup.title,
     type: state.popup.type,
     image: state.popup.image,
-    navigation: state.popup.navigation
+    navigation: state.popup.navigation,
   };
 }
 
