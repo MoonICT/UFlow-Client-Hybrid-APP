@@ -698,7 +698,7 @@ export default class DetailsManager extends Component {
         });
       } else {
         // If no file selected the show alert
-        alert('Please Select File first');
+        alert('사진을 업로드하세요');
       }
 
 
