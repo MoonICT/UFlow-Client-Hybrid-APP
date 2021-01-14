@@ -167,6 +167,7 @@ class DetailWH extends Component {
             // TODO Change to dialog UI
             alert('사업자정보 등록 후 견적 요청이 가능합니다.');
             this.navigation.navigate('DetailRegisterTenant', {
+              typeInfo: typeInfo,
               typeWH: type,
               warehouseRegNo: typeInfo.id.warehouseRegNo,
               warehSeq: typeInfo.id.seq,
@@ -901,13 +902,13 @@ class DetailWH extends Component {
                                 )}
                               </View>
                             ) : (
-                              <Text
+                              <Text청
                                 style={[
                                   S.textBtnQuote,
                                   { color: '#ff0000', padding: 16 },
                                 ]}>
                                 계약 완료된 정보입니다.
-                              </Text>
+                              </Text청>
                             )}
                           </View>
                         </View>
