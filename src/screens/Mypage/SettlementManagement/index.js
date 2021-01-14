@@ -43,7 +43,7 @@ export default class SettlementManagement extends Component {
       rows: [],
       filter: {
         query: '',
-        contractType: 2100,
+        contractType: '',
         rangeTime: '',
         startDate: '',
         endDate: ''
