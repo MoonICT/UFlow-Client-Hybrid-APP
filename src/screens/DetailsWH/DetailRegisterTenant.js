@@ -186,7 +186,7 @@ class DetailRegisterTenant extends Component {
       this.setState({
         businessMode: i
       });
-  
+
       // this.setBusinessData(listBusinessInfo[i]);
     } else {
       this.setState({
@@ -226,7 +226,7 @@ class DetailRegisterTenant extends Component {
               let { url } = respon.data;
               var pathArray = url.split( '/' );
               var host = pathArray[pathArray.length-1];
-              
+
               this.setState({
                 photo: url,
                 businessInfo: {
@@ -267,7 +267,7 @@ class DetailRegisterTenant extends Component {
               let { url } = respon.data;
               var pathArray = url.split( '/' );
               var host = pathArray[pathArray.length-1];
-              
+
               this.setState({
                 photo: url,
                 businessInfo: {
@@ -308,7 +308,7 @@ class DetailRegisterTenant extends Component {
     WarehouseTenant.regBusinessInfoByTenant(businessInfo).then(res => {
       alert('창고 사업자 등록이 완료되었습니다.');
       this.setState({loading: false});
-      this.navigation.navigate('ResponseQuotation', {
+      this.navigation.navigate('RequestQuotation', {
         typeWH,
         warehouseRegNo,
         warehSeq,
@@ -339,7 +339,7 @@ class DetailRegisterTenant extends Component {
 
   render() {
     const { businessMode,businessInfo, photo,loading } = this.state;
-    
+
     return (
       <SafeAreaView style={DefaultStyle.container}>
         <Appbars>
@@ -391,7 +391,7 @@ class DetailRegisterTenant extends Component {
                 value={businessInfo.corpNumber ? businessInfo.corpNumber : ''}
                 colorLabel="#000000"
               />
-              <TextField 
+              <TextField
                 labelTextField="사업자번호"
                 placeholder="'-'없이 입력해주세요."
                 colorLabel="#000000"
