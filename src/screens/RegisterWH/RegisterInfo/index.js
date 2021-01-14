@@ -40,7 +40,7 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Form from './form';
 import FormTrusts from './formTrusts';
-import { MyPage } from '@Services/apis';
+import { MyPage, Warehouse } from '@Services/apis';
 
 class RegisterInfo extends Component {
   constructor(props) {
@@ -182,16 +182,7 @@ class RegisterInfo extends Component {
     let filterTrust =
       listTrusts &&
       listTrusts.filter(item => item !== listTrusts[numberSlideTrusts]);
-    // console.log('filterkEepppppppppppppp', filterKeep);
-    // valueTab === 'trusts'
-    //   ? this.setState({
-    //       trusts: filterTrust,
-    //       numberSlideTrusts: slideTrustStart,
-    //     })
-    //   : this.setState({
-    //       keeps: filterKeep,
-    //       numberSlide: slideKeepStart,
-    //     });
+
     setTimeout(() => {
       if (valueTab === 'keeps') {
         this.goToSlider(slideKeepStart);
@@ -207,8 +198,7 @@ class RegisterInfo extends Component {
         });
       }
     }, 500);
-    // console.log('valueTab :>> ', valueTab);
-    // console.log('listKeeps', listKeeps);
+
   };
   onToggleSwitch = () =>
     this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
@@ -220,8 +210,8 @@ class RegisterInfo extends Component {
       <Form
         mgmtChrgDvCodes={this.state.mgmtChrgDvCodes}
         typeCodes={this.state.typeCodes}
-        calUnitDvCodes={this.state.calUnitDvCodes}
-        calStdDvCodes={this.state.calStdDvCodes}
+        calUnitDvCodes={this.state.calUnitDvCodeKeeps}
+        calStdDvCodes={this.state.calStdDvCodeKeeps}
         valueTab={this.state.valueTab}
         number={this.state.numberSlide}
         key={item.key}
@@ -241,8 +231,8 @@ class RegisterInfo extends Component {
     return (
       <FormTrusts
         typeCodes={this.state.typeCodes}
-        calUnitDvCodes={this.state.calUnitDvCodes}
-        calStdDvCodes={this.state.calStdDvCodes}
+        calUnitDvCodes={this.state.calUnitDvCodeTrusts}
+        calStdDvCodes={this.state.calStdDvCodeTrusts}
         valueTab={this.state.valueTab}
         number={this.state.numberSlideTrusts}
         key={item.key}
@@ -550,10 +540,29 @@ class RegisterInfo extends Component {
         console.log('errINFO', err);
       });
 
-    await MyPage.getDetailCodes('WHRG0013')
+    // await MyPage.getDetailCodes('WHRG0013')
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       let data = res.data._embedded.detailCodes;
+    //       let calUnitDvCodes =
+    //         data &&
+    //         data.map((item, index) => {
+    //           return {
+    //             label: item.stdDetailCodeName,
+    //             value: item.stdDetailCode,
+    //           };
+    //         });
+    //       this.setState({ calUnitDvCodes });
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log('errCalUnitDvCode', err);
+    //   });
+
+    await Warehouse.listCalUnitDvCodeKeep()
       .then(res => {
-        if (res.status === 200) {
-          let data = res.data._embedded.detailCodes;
+
+          let data = res._embedded.detailCodes;
           let calUnitDvCodes =
             data &&
             data.map((item, index) => {
@@ -562,17 +571,77 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ calUnitDvCodes });
-        }
+          console.log(calUnitDvCodes, 'calUnitDvCodes Keep')
+          this.setState({ calUnitDvCodeKeeps: calUnitDvCodes });
+
       })
       .catch(err => {
         console.log('errCalUnitDvCode', err);
       });
 
-    await MyPage.getDetailCodes('WHRG0014')
+    await Warehouse.listCalUnitDvCodeTrust()
       .then(res => {
-        if (res.status === 200) {
-          let data = res.data._embedded.detailCodes;
+
+          let data = res._embedded.detailCodes;
+          let calUnitDvCodes =
+            data &&
+            data.map((item, index) => {
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          console.log(calUnitDvCodes, 'calUnitDvCodes Trust')
+          this.setState({ calUnitDvCodeTrusts: calUnitDvCodes });
+
+      })
+      .catch(err => {
+        console.log('errCalUnitDvCode', err);
+      });
+
+    // await MyPage.getDetailCodes('WHRG0014')
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       let data = res.data._embedded.detailCodes;
+    //       let calStdDvCodes =
+    //         data &&
+    //         data.map((item, index) => {
+    //           return {
+    //             label: item.stdDetailCodeName,
+    //             value: item.stdDetailCode,
+    //           };
+    //         });
+    //       this.setState({ calStdDvCodes });
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log('errCalStdDvCode', err);
+    //   });
+
+    await Warehouse.listCalStdDvCodeKeep()
+      .then(res => {
+
+          let data = res._embedded.detailCodes;
+          let calStdDvCodes =
+            data &&
+            data.map((item, index) => {
+              console.log(item, 'items')
+              return {
+                label: item.stdDetailCodeName,
+                value: item.stdDetailCode,
+              };
+            });
+          console.log(calStdDvCodes, 'calStdDvCodes Keep')
+          this.setState({ calStdDvCodeKeeps: calStdDvCodes });
+
+      })
+      .catch(err => {
+        console.log('errCalUnitDvCode', err);
+      });
+    await Warehouse.listCalStdDvCodeTrust()
+      .then(res => {
+
+          let data = res._embedded.detailCodes;
           let calStdDvCodes =
             data &&
             data.map((item, index) => {
@@ -581,11 +650,12 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ calStdDvCodes });
-        }
+          console.log(calStdDvCodes, 'calStdDvCodes Trust')
+          this.setState({ calStdDvCodeTrusts: calStdDvCodes });
+
       })
       .catch(err => {
-        console.log('errCalStdDvCode', err);
+        console.log('errCalUnitDvCode', err);
       });
     await MyPage.getDetailCodes('WHRG0012')
       .then(res => {

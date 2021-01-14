@@ -612,7 +612,6 @@ export default class DetailsManager extends Component {
                   return;
                 }
                 let data = {
-                  filename,
                   rentWarehNo: rentWarehNo,
                   whoutExpct: Moment(ExpctYmd).valueOf(),
                   decisQty: Number(createValue),
@@ -658,7 +657,6 @@ export default class DetailsManager extends Component {
                   return;
                 }
                 let data = {
-                  filename,
                   rentWarehNo: rentWarehNo,
                   whinExpct: Moment(ExpctYmd).valueOf(),
                   whinDecisQty: Number(createValue),
