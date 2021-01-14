@@ -76,7 +76,7 @@ class MypageBusinessInfo extends Component {
         })
       })
 
-      console.log('dataConvert', dataConvert);
+      // console.log('dataConvert', dataConvert);
 
       this.setState({
         listBusinessInfo: dataConvert
@@ -100,7 +100,7 @@ class MypageBusinessInfo extends Component {
   getKakaoAddress = (data) => {
     const { businessInfo } = this.state;
 
-    console.log('dataAddress', data);
+    // console.log('dataAddress', data);
 
     Warehouse.searchAddressKakao({ query: data.address })
       .then(res => {
@@ -155,14 +155,14 @@ class MypageBusinessInfo extends Component {
           const data = new FormData();
           data.append('name', singleFile.name);
           data.append('file', singleFile);
-          console.log('append', singleFile)
-          console.log('data', data)
+          // console.log('append', singleFile)
+          // console.log('data', data)
           // Please change file upload URL
           MediaUpload.uploadFile(data).then(respon => {
-            console.log('respon', respon)
+            // console.log('respon', respon)
             if (respon.status === 200) {
               let { url } = respon.data;
-            
+
               var pathArray = url.split( '/' );
               var host = pathArray[pathArray.length-1];
 
@@ -206,7 +206,7 @@ class MypageBusinessInfo extends Component {
   //         MediaUpload.uploadFile(data).then(respon => {
   //           if (respon.status === 200) {
   //             let { url } = respon.data;
-            
+
   //             var pathArray = url.split( '/' );
   //             var host = pathArray[pathArray.length-1];
 
@@ -254,9 +254,11 @@ class MypageBusinessInfo extends Component {
       jibunAddr: data.jibunAddr,
       roadAddr: data.roadAddr,
       gps: data.gps,
+      // etcFileName1: 'uflow_aebfe582aa2441b98aab42ded5e876ab.jpg',
+      etcFileName1: data.etcFileName1,
     }
 
-    console.log('setData ', setData)
+    // console.log('setData ', setData)
     this.setState({
       imageList: [{
         data_url: `${configURL.API_SERVER_ADDRESS}/${data.regFile}`,
@@ -289,14 +291,14 @@ class MypageBusinessInfo extends Component {
       alert('휴대폰 인증을 완료해주세요.')
       return false
     }
-    console.log('businessInfo123',businessInfo);
+    // console.log('최종 저장 사업자 정보 : ',businessInfo);
 
     this.setState({loading: true});
 
     Entrp.update(businessInfo).then(res => {
       alert('Edit Bussiness Success')
       this.setState({loading: false});
-      console.log('::::: API Add Business Info  :::::', res)
+      // console.log('::::: API Add Business Info  :::::', res)
       // setIsComplete(true)
     }).catch(error => {
       alert('서버에러:' + error.response.data.message);
@@ -308,7 +310,7 @@ class MypageBusinessInfo extends Component {
   render() {
     const { listBusinessInfo,businessInfo, photo, loading } = this.state;
 
-    console.log(`${configURL.FILE_SERVER_ADDRESS}/${businessInfo.regFile}`)
+    // console.log(`${configURL.FILE_SERVER_ADDRESS}/${businessInfo.regFile}`)
     return (
       <ScrollView>
         <View style={[DefaultStyle._cards]}>
@@ -353,7 +355,7 @@ class MypageBusinessInfo extends Component {
               value={businessInfo.corpNumber ? businessInfo.corpNumber : ''}
               colorLabel="#000000"
             />
-            <TextField 
+            <TextField
               labelTextField="사업자번호"
               colorLabel="#000000"
               valueProps={(e) => {
