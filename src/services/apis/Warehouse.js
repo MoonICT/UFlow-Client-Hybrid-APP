@@ -372,6 +372,30 @@ export const listCalUnitDvCode = () => {
     },
   });
 };
+export const listCalUnitDvCodeKeep = () => {
+  return Axios.request({
+    methodType: 'GET',
+    url: `/api/v1/warehouse/cal-unit-dv-code/keep`,
+    // requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
+};
+export const listCalUnitDvCodeTrust = () => {
+  return Axios.request({
+    methodType: 'GET',
+    url: `/api/v1/warehouse/cal-unit-dv-code/trust`,
+    // requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
+};
 
 /**
  * 상태구분코드 WHRG0014 정산기준구분코드 (CS03:일, CS04:월, CS05:분기, CD06:반기, CD07:연)"
@@ -381,6 +405,30 @@ export const listCalStdDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/cal-std-dv-code`,
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
+};
+export const listCalStdDvCodeKeep = () => {
+  return Axios.request({
+    methodType: 'GET',
+    url: `/api/v1/warehouse/cal-std-dv-code/keep`,
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
+};
+export const listCalStdDvCodeTrust = () => {
+  return Axios.request({
+    methodType: 'GET',
+    url: `/api/v1/warehouse/cal-std-dv-code/trust`,
     requiresToken: true, // set access_token
     config: {
       headers: {
