@@ -42,10 +42,24 @@ const toStdName = (array:[], stdCd:string) => {
     return stdCd;
 }
 
+const toPyeong = (value:any) => {
+    //return value ? Math.ceil((Math.trunc(Number(value)*10)/10) / 3.305785) : ''
+    return value ? Number(Number(value) / 3.305785).toFixed(0) : '';
+};
+
+const displayAreaUnit = (value:any) => {
+    return `${numberComma(value)}㎡ (${numberComma(toPyeong(
+        value,
+    ))}평)`;
+};
+
+
 export  {
     moneyUnit,
     numberComma,
     dateStr,
     toStdCd,
-    toStdName
+    toStdName,
+    displayAreaUnit,
+    toPyeong
 }

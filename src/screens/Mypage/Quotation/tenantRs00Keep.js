@@ -8,6 +8,8 @@ import {Button, Dialog, Text} from "react-native-paper";
 import {Contract} from '@Services/apis';
 import {styles as S} from "../style";
 import {styles as SS} from "./style";
+
+
 class TenantRs00Keep extends Component {
 
   constructor(props) {
@@ -60,7 +62,7 @@ class TenantRs00Keep extends Component {
             },
             {
               type: '요청 가용 면적',
-              value: item.rntlValue ? StringUtils.numberComma(item.rntlValue) : '-',
+              value: item.rntlValue ? StringUtils.displayAreaUnit(item.rntlValue) : '-',
             },
             {
               type: '정산단위',
