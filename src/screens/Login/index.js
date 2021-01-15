@@ -20,6 +20,7 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import { Account, FCM } from '@Services/apis';
+import Loading from '@Components/atoms/Loading';
 import { AuthContext } from '@Store/context';
 
 //Contants
@@ -32,7 +33,7 @@ const Logo = require('@Assets/images/logo.png');
 class Login extends Component {
   static contextType = AuthContext;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -40,17 +41,18 @@ class Login extends Component {
       password: '',
       isRemember: true,
       isLogin: false,
+      loading: false,
     };
     this.navigation = props.navigation;
   }
 
   /** listener when change props */
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount () {
+  componentWillUnmount() {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -69,7 +71,7 @@ class Login extends Component {
    * TODO FCM TOKEN 등록
    * - 로그인 시 마다
    * */
-  handleOnClickLogin (data) {
+  handleOnClickLogin(data) {
     const { showPopup } = this.props;
     const { login } = this.context;
 
@@ -80,13 +82,15 @@ class Login extends Component {
     if (data.email === '' || data.password === '') {
       showPopup({ title: 'UFLOW', content: '충분한 정보를 입력하십시오 !' });
     } else {
+      this.setState({ loading: true });
       // Sign in
       Account.signIn({
         email: data.email,
         password: data.password,
       })
-        .then(async (loginData) => {
+        .then(async loginData => {
           if (loginData.status === 200) {
+            this.setState({ loading: false });
             const access_token = loginData.data.access_token;
             // this.setLoginLocal(access_token);
             login(access_token);
@@ -106,28 +110,31 @@ class Login extends Component {
           }
         })
         .catch(error => {
+          this.setState({ loading: false });
           showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
         });
     }
     // console.log('loginData==>', loginData);
   }
 
-  render () {
+  render() {
     const { email, password, isRemember, isLogin } = this.state;
 
     return (
       <SafeAreaView style={S.container}>
-        {isLogin &&
-        <Appbars>
-          <Appbar.Action
-            icon="close"
-            color="black"
-            onPress={() => {
-              isLogin ? this.navigation.navigate('Home') : alert('로그인을 해주세요.');
-            }}
-          />
-        </Appbars>
-        }
+        {isLogin && (
+          <Appbars>
+            <Appbar.Action
+              icon="close"
+              color="black"
+              onPress={() => {
+                isLogin
+                  ? this.navigation.navigate('Home')
+                  : alert('로그인을 해주세요.');
+              }}
+            />
+          </Appbars>
+        )}
         <ScrollView>
           {/* <Text style={[S.titleLogin, DefaultStyle._warning]}>UFLOW</Text> */}
           <Image source={Logo} alt="logo" style={[S.titleLogin]} />
@@ -206,12 +213,13 @@ class Login extends Component {
             </View>
           </View>
         </ScrollView>
+        <Loading loading={this.state.loading} />
       </SafeAreaView>
     );
   }
 
   /** when after render DOM */
-  async componentDidMount () {
+  async componentDidMount() {
     console.log('::componentDidMount::');
     AsyncStorage.getItem(TOKEN).then(v => {
       // console.log('v==>', v);
@@ -221,13 +229,13 @@ class Login extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
@@ -236,7 +244,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     countUp: diff => {
       dispatch(ActionCreator.countUp(diff));

@@ -26,6 +26,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import initStore from '@Store/index';
 import { AuthContext } from '@Store/context';
 
+import Loading from '@Components/atoms/Loading';
+
 import Global from '@Screeens/Global';
 import LoginScreen from '@Screeens/Login';
 import FindIDScreen from '@Screeens/FindID';
@@ -198,7 +200,7 @@ const AuthStack = createStackNavigator();
 
 const App = () => {
   // State
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
@@ -247,10 +249,14 @@ const App = () => {
             alert('TabScreenOptions signOut error:' + error);
           });
       },
+      loading: status => {
+        setIsLoading(status);
+      },
     };
   }, []);
 
-  // if (isLoading) return <Splash />;
+  if (isLoading) return <Loading loading={isLoading} />;
+
   if (isLogin === true) {
     return (
       <AuthContext.Provider value={authContext}>

@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
     marginTop: 72,
     // backgroundColor: 'rgba(0, 0, 0, 0.06)',
     // // height: windowHeight
-    marginBottom: 50,
+    marginBottom: 70,
   },
   dateTop: {
     marginTop: 26,
@@ -150,15 +150,15 @@ export const styles = StyleSheet.create({
   footerItem: {
     flexDirection: 'row',
     padding: 16,
-    paddingTop: 13,
-    paddingBottom: 13,
+    paddingTop: 15,
+    paddingBottom: 8,
   },
   inputChat: {
     flex: 1,
   },
   inputType: {
-    minHeight: 34,
-    padding: 2,
+    minHeight: 50,
+    padding: 5,
     paddingLeft: 8,
     paddingRight: 24,
     fontSize: 14,
@@ -167,7 +167,7 @@ export const styles = StyleSheet.create({
   iconRight: {
     position: 'absolute',
     right: 7,
-    top: 5,
+    top: 15,
   },
   btnAdd: {
     margin: 0,
