@@ -61,15 +61,9 @@ import Annoucement from '@Screeens/Annoucement';
 import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
 import FAQ from '@Screeens/FAQ';
 
-// import TenantMypage from '@Screeens/TenantMypage';
-// import QuotationTrust from '@Screeens/TenantMypage/QuotationTrust';
-// import AvaliableChate from '@Screeens/TenantMypage/AvaliableChate';
-// import ContractDetails from '@Screeens/TenantMypage/ContractDetails';
 import Chatting from '@Screeens/Mypage/Chat';
 import DetailsManager from '@Screeens/Mypage/DetailsManager';
 import DetailsSettlement from '@Screeens/Mypage/DetailsSettlement';
-
-// import ProprietorMypage from '@Screeens/ProprietorMypage';
 
 import Quotation from '@Screeens/Mypage/Quotation';
 import ResponseQuotation from '@Screeens/Mypage/ResponseQuotation';
@@ -78,7 +72,6 @@ import StorageAgreement from '@Screeens/Mypage/StorageAgreement';
 import Mypage from '@Screeens/Mypage';
 import WithdrawalInformation from '@Screeens/Mypage/WithdrawalInformation';
 import ConfirmPass from '@Screeens/Mypage/ConfirmPass';
-import MypageInfo from '@Screeens/MypageInfo';
 import Information from '@Screeens/Mypage/Information';
 import RequestContract from '@Screeens/Mypage/RequestContract';
 import InterestWH from '@Screeens/Mypage/InterestWH';
@@ -419,19 +412,8 @@ const App = () => {
                     //   headerMode={false}
                     //   options={{ headerShown: false }}
                     // />
-                    // <AuthStack.Screen
-                    //   name="ContractDetails"
-                    //   component={ContractDetails}
-                    //   headerMode={false}
-                    //   options={{ headerShown: false }}
-                    // />
+                  
                   }
-                  <AuthStack.Screen
-                    name="MypageInfo"
-                    component={MypageInfo}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
                   <AuthStack.Screen
                     name="WithdrawalInformation"
                     component={WithdrawalInformation}
@@ -480,14 +462,6 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  {
-                    // <AuthStack.Screen
-                    //   name="ProprietorMypage"
-                    //   component={ProprietorMypage}
-                    //   headerMode={false}
-                    //   options={{ headerShown: false }}
-                    // />
-                  }
                   <AuthStack.Screen
                     name="ResponseQuotation"
                     component={ResponseQuotation}
@@ -500,14 +474,6 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
-                  {
-                    // <AuthStack.Screen
-                    //   name="TenantMypage"
-                    //   component={TenantMypage}
-                    //   headerMode={false}
-                    //   options={{ headerShown: false }}
-                    // />
-                  }
                   <AuthStack.Screen
                     name="More"
                     component={More}
@@ -838,18 +804,7 @@ const App = () => {
   //                   headerMode={false}
   //                   options={{ headerShown: false }}
   //                 />
-  //                 <AuthStack.Screen
-  //                   name="ContractDetails"
-  //                   component={ContractDetails}
-  //                   headerMode={false}
-  //                   options={{ headerShown: false }}
-  //                 />
-  //                 <AuthStack.Screen
-  //                   name="MypageInfo"
-  //                   component={MypageInfo}
-  //                   headerMode={false}
-  //                   options={{ headerShown: false }}
-  //                 />
+  //          
   //                 <AuthStack.Screen
   //                   name="WithdrawalInformation"
   //                   component={WithdrawalInformation}
@@ -898,24 +853,14 @@ const App = () => {
   //                   headerMode={false}
   //                   options={{ headerShown: false }}
   //                 />
-  //                 <AuthStack.Screen
-  //                   name="ProprietorMypage"
-  //                   component={ProprietorMypage}
-  //                   headerMode={false}
-  //                   options={{ headerShown: false }}
-  //                 />
+  //          
   //                 <AuthStack.Screen
   //                   name="ResponseQuotation"
   //                   component={ResponseQuotation}
   //                   headerMode={false}
   //                   options={{ headerShown: false }}
   //                 />
-  //                 <AuthStack.Screen
-  //                   name="TenantMypage"
-  //                   component={TenantMypage}
-  //                   headerMode={false}
-  //                   options={{ headerShown: false }}
-  //                 />
+  //             
   //                 <AuthStack.Screen
   //                   name="More"
   //                   component={More}

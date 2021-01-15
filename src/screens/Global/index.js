@@ -16,6 +16,7 @@ import DefaultStyle from '../../styles/default';
 import { styles as S } from './style';
 import ActionCreator from '@Actions';
 import { Menu } from '@Services/apis';
+import VersionCheckService from '@Services/VersionCheckService';
 
 //---> Components
 import Popup from '@Components/organisms/Popup';
@@ -68,6 +69,9 @@ class Global extends Component {
       });
     }
     this.props.setLangData(resultObj);
+
+    /** App Version Check (배포시 활성.) */
+    await VersionCheckService.init();
   }
 }
 
