@@ -497,6 +497,7 @@ class Home extends Component {
                   textAlignVertical="center"
                   numberOfLines={1}
                   ellipsizeMode="start"
+                  value={textSearch}
                   onChangeText={text => this.setState({ textSearch: text })}
                 />
                 {
@@ -505,11 +506,12 @@ class Home extends Component {
                     size={24}
                     color="white"
                     style={{ marginLeft: 10 }}
-                    onPress={() =>
-                      this.navigation.navigate('Search', {
-                        searchQuery: textSearch,
-                      })
-                    }
+                    onPress={() => {
+                      console.log('검색어 ::: ', textSearch)
+                      this.setState({ textSearch: '' })
+                      this.props.setSearchQuery(textSearch)
+                      this.navigation.navigate('Search')
+                    }}
                   />
                 }
               </View>
@@ -575,7 +577,7 @@ class Home extends Component {
             <View style={styles.mainProductMore}>
               <TouchableOpacity
                 onPress={() => this.navigation.navigate('Search', {
-                  searchQuery: textSearch,
+                  searchQuery: '',
                 })}
                 style={[styles.mainProductSeeMoreBTN]}>
                 <Text
@@ -904,6 +906,9 @@ function mapDispatchToProps (dispatch) {
     },
     hidePopup: status => {
       dispatch(ActionCreator.hide(status));
+    },
+    setSearchQuery: status => {
+      dispatch(ActionCreator.setSearchQuery(status));
     },
   };
 }

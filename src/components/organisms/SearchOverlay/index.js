@@ -20,7 +20,7 @@ import ActionCreator from '@Actions';
 import PropTypes from 'prop-types';
 
 class SearchOverlay extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     let { query } = this.props;
     this.state = {
@@ -41,13 +41,14 @@ class SearchOverlay extends Component {
   /**
    * On change search query.
    * */
-  _onChangeSearchQuery(keyword) {
+  _onChangeSearchQuery (keyword) {
     console.log('keyword==>', keyword);
     if (keyword) {
       this.setState({
         isProgress: true,
-        query: keyword,
+        // query: keyword,
       });
+      this.props.setSearchQuery(keyword)
 
       this.setDebounce(() => {
         WhrgSearch.searchKeywords({ query: keyword })
@@ -60,7 +61,7 @@ class SearchOverlay extends Component {
             }
 
             setTimeout(
-              function() {
+              function () {
                 this.setState({
                   isProgress: false,
                 });
@@ -74,6 +75,7 @@ class SearchOverlay extends Component {
       });
     } else {
       this.props.searchToggle(false);
+      this.props.setSearchQuery('');
     }
   }
 
@@ -85,27 +87,13 @@ class SearchOverlay extends Component {
     this.props.onSelect(resultItem);
   };
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.query !== prevState.query) {
-  //     return { query: nextProps.query };
-  //   }
-  //   return null;
-  // }
-
-  componentDidMount() {
-    let { query } = this.props;
-    this._onChangeSearchQuery(query);
-    this.props.searchToggle(!this.props.isFilterToggle);
+  componentDidMount () {
   }
 
   // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.query !== this.props.query) {
-      let { query } = this.props;
-      console.log('vaoday')
-      this.query = query;
-      this._onChangeSearchQuery(query);
-      this.props.searchToggle(!this.props.isFilterToggle);
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.searchQuery !== this.props.searchQuery) {
+      this.props.setSearchQuery(this.props.searchQuery);
     }
   }
 
@@ -116,60 +104,60 @@ class SearchOverlay extends Component {
       <View style={{ paddingBottom: 30 }}>
         {/* 주소 */}
         {searchAddress &&
-          searchAddress.map((addr, index) => (
-            <TouchableOpacity
-              onPress={() => this.handleClickSearchResult(addr)}>
-              <List.Item
-                key={'addr' + index}
-                title={
-                  <Highlighter
-                    highlightStyle={{ color: this.props.theme.colors.primary }}
-                    searchWords={[query]}
-                    textToHighlight={addr.address}
-                  />
-                }
-                style={styles.listItem}
-                titleStyle={styles.listItemTitle}
-                descriptionStyle={styles.listItemDescription}
-                left={props => (
-                  <List.Icon
-                    {...props}
-                    icon={'map-marker'}
-                    color={'rgba(0, 0, 0, 0.54)'}
-                    style={styles.listItemIcon}
-                  />
-                )}
-              />
-            </TouchableOpacity>
-          ))}
+        searchAddress.map((addr, index) => (
+          <TouchableOpacity
+            onPress={() => this.handleClickSearchResult(addr)}>
+            <List.Item
+              key={'addr' + index}
+              title={this.props.searchQuery ?
+                <Highlighter
+                  highlightStyle={{ color: this.props.theme.colors.primary }}
+                  searchWords={[this.props.searchQuery]}
+                  textToHighlight={addr.address}
+                /> : ''
+              }
+              style={styles.listItem}
+              titleStyle={styles.listItemTitle}
+              descriptionStyle={styles.listItemDescription}
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon={'map-marker'}
+                  color={'rgba(0, 0, 0, 0.54)'}
+                  style={styles.listItemIcon}
+                />
+              )}
+            />
+          </TouchableOpacity>
+        ))}
         {/* 창고 */}
         {searchWarehouse &&
-          searchWarehouse.map((wh, index) => (
-            <TouchableOpacity onPress={() => this.handleClickSearchResult(wh)}>
-              <List.Item
-                key={'wh' + index}
-                title={
-                  <Highlighter
-                    highlightStyle={{ color: this.props.theme.colors.primary }}
-                    searchWords={[query]}
-                    textToHighlight={wh.name}
-                  />
-                }
-                description={wh.address}
-                style={styles.listItem}
-                titleStyle={styles.listItemTitle}
-                descriptionStyle={styles.listItemDescription}
-                left={props => (
-                  <List.Icon
-                    {...props}
-                    icon={'city'}
-                    color={'rgba(0, 0, 0, 0.54)'}
-                    style={styles.listItemIcon}
-                  />
-                )}
-              />
-            </TouchableOpacity>
-          ))}
+        searchWarehouse.map((wh, index) => (
+          <TouchableOpacity onPress={() => this.handleClickSearchResult(wh)}>
+            <List.Item
+              key={'wh' + index}
+              title={
+                <Highlighter
+                  highlightStyle={{ color: this.props.theme.colors.primary }}
+                  searchWords={[this.props.searchQuery]}
+                  textToHighlight={wh.name}
+                />
+              }
+              description={wh.address}
+              style={styles.listItem}
+              titleStyle={styles.listItemTitle}
+              descriptionStyle={styles.listItemDescription}
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon={'city'}
+                  color={'rgba(0, 0, 0, 0.54)'}
+                  style={styles.listItemIcon}
+                />
+              )}
+            />
+          </TouchableOpacity>
+        ))}
       </View>
     ) : (
       <View
@@ -181,8 +169,8 @@ class SearchOverlay extends Component {
     );
   };
 
-  render() {
-    const { isProgress, query} = this.state;
+  render () {
+    const { isProgress, query } = this.state;
 
     return (
       <View style={styles.container}>
@@ -192,17 +180,17 @@ class SearchOverlay extends Component {
             placeholder="지역명이나 창고명을 검색하세요."
             icon={'arrow-left'}
             onChangeText={query => this._onChangeSearchQuery(query)}
-            onIconPress={() => {this.props.searchToggle(false), this.props.onClose()}}
-            value={query}
+            onIconPress={() => {
+              this.props.setSearchQuery('');
+              this.props.onClose();
+            }}
+            value={this.props.searchQuery ? this.props.searchQuery : ''}
             style={[styles.searchBar]}
             inputStyle={styles.searchInput}
             onKeyPress={({ nativeEvent }) => {
-              if (
-                nativeEvent.key === 'Backspace' &&
-                query.length < 2
-              ) {
-                this.setState({ query: '' });
-                this.props.onClose()
+              if (nativeEvent.key === 'Backspace' &&
+                this.props.searchQuery.length < 2) {
+                this.props.setSearchQuery('');
               }
             }}
           />
@@ -239,18 +227,22 @@ class SearchOverlay extends Component {
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     isSearchToggle: state.search.isSearchToggle,
+    searchQuery: state.search.searchQuery,
   };
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     searchToggle: status => {
       dispatch(ActionCreator.searchToggle(status));
+    },
+    setSearchQuery: status => {
+      dispatch(ActionCreator.setSearchQuery(status));
     },
   };
 }

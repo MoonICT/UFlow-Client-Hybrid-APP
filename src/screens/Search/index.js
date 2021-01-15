@@ -40,9 +40,8 @@ import { Warehouse, WhrgSearch } from '@Services/apis';
 import Progress from '@Components/organisms/Progress';
 
 class Search extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
-    let { params } = this.props?.route;
     this.webView = null;
     // Webview initialize options.
     this.option = {
@@ -53,22 +52,19 @@ class Search extends Component {
     this.state = {
       url: this.option.defaultURL,
       progress: 0,
-      searchQuery:params && params.searchQuery ? params.searchQuery : '',
+      searchQuery: '',
     };
     // Ref
     this.refSearchFilter = React.createRef();
     this.navigation = props.navigation;
-
-    // this.searchQuery = params && params.searchQuery ? params.searchQuery : '';
-
-    props.searchToggle(params && params.searchQuery ? true : !props.isSearchToggle);
   }
 
-  UNSAFE_componentWillMount() {
-    if (this.props.params.searchQuery !== this.state.searchQuery) {
-      this._onChangeSearchQuery(this.state.searchQuery);
-    }
-  }
+  // UNSAFE_componentWillMount () {
+  // console.log('111')
+  // if (this.props.params.searchQuery !== this.state.searchQuery) {
+  //   this._onChangeSearchQuery(this.state.searchQuery);
+  // }
+  // }
 
   /**
    * Debounce Utils
@@ -82,12 +78,12 @@ class Search extends Component {
    * */
 
   // When the WebView has finished loading.
-  async _WVOnLoad(e) {
+  async _WVOnLoad (e) {
     console.log('::: Web View Loaded ::: ');
   }
 
   // When the webview calls window.postMessage.
-  async _WVOnMessage(e) {
+  async _WVOnMessage (e) {
     // console.log(':::: onReceiveWebViewMessage');
     let msgData = WVMsgService.parseMessageData(e);
     switch (msgData.type) {
@@ -111,7 +107,7 @@ class Search extends Component {
     }
   }
 
-  _WVSendMessage(msgObj) {
+  _WVSendMessage (msgObj) {
     const resultMsg = JSON.stringify(msgObj);
     this.webView.postMessage(resultMsg);
     // console.log(':::: Send Message ::::', resultMsg);
@@ -132,7 +128,7 @@ class Search extends Component {
    * END : Webview Event.
    ***************************/
   // 컴포넌트 랜더링.
-  render() {
+  render () {
     const strMsgType = JSON.stringify(WVMsgService.types);
     let injectJSCode = `
     window.consoleLog = function(...args){
@@ -147,7 +143,7 @@ class Search extends Component {
     };
     `;
 
-    const {searchQuery} = this.state;
+    // const { searchQuery } = this.state;
 
     return (
       <SafeAreaView style={[styles.container]}>
@@ -172,13 +168,16 @@ class Search extends Component {
         {/** 검색 결과 클릭 시 좌표 이동하기. */}
         {(this.props.isSearchToggle) && (
           <SearchOverlay
-            query={searchQuery}
+            query={this.state.searchQuery}
             onSelect={result => this.handleSelectResult(result)}
-            onClose={()=> this.setState({
-              searchQuery:''
-            })}
+            onClose={() => {
+              console.log(':::::::::::::::::::::::::')
+              this.props.searchToggle(false)
+            }}
           />
         )}
+
+        <Text>{this.props.searchQuery}</Text>
 
         {/** 필터 패널. */}
         <SearchFilterPanel
@@ -237,10 +236,11 @@ class Search extends Component {
 
   // 컴포넌트가 만들어지고 render가 호출된 이후에 호출.
   // 비동기 요청을 처리하는 부분.
-  async componentDidMount() {
-    // console.log('::componentDidMount::search main');
-    /** Complete Initialize. */
-    SplashScreen.hide();
+  async componentDidMount () {
+    const { route } = this.props
+    // 쿠리 검색 초기값.
+    console.log('Search Query ::: ', route.params)
+    // searchToggle(route.params && route.params.searchQuery);
 
     // 필터 코드값.
     const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 보관유형
@@ -283,16 +283,16 @@ class Search extends Component {
     });
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.route?.params?.searchQuery !== prevState.searchQuery) {
-      return { searchQuery: nextProps?.route?.params?.searchQuery };
-    }
-    return null;
-  }
+  // static getDerivedStateFromProps (nextProps, prevState) {
+  //   if (nextProps.route?.params?.searchQuery !== prevState.searchQuery) {
+  //     return { searchQuery: nextProps?.route?.params?.searchQuery };
+  //   }
+  //   return null;
+  // }
 
   // 컴포넌트 업데이트 직후 호출.
-  componentDidUpdate(prevProps, prevState) {
-    const {params} = this.props?.route;
+  componentDidUpdate (prevProps, prevState) {
+    const { params } = this.props?.route;
 
     // console.log('::componentDidUpdate::');
     if (prevProps.whFilter !== this.props.whFilter) {
@@ -306,10 +306,22 @@ class Search extends Component {
       });
     }
 
-    if (prevState.searchQuery !== this.state.searchQuery) {
-      if (this.state.searchQuery) {
+    // if (params && params.searchQuery && prevState.searchQuery !== params.searchQuery) {
+    //   console.log('1111111, params')
+    //   if (params.searchQuery) {
+    //     this.setState({
+    //       searchQuery: params.searchQuery,
+    //     })
+    //     this.props.searchToggle(true);
+    //   } else {
+    //     this.props.searchToggle(false);
+    //   }
+    // }
+    console.log('componentDidUpdate 1 ::::: ', this.props.searchQuery)
+    if (prevProps.searchQuery !== this.props.searchQuery) {
+      if (this.props.searchQuery) {
         this.props.searchToggle(true);
-      }else{
+      } else {
         this.props.searchToggle(false);
       }
     }
@@ -317,17 +329,18 @@ class Search extends Component {
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps :', state);
   return {
     isSearchToggle: state.search.isSearchToggle,
     isFilterToggle: state.search.isFilterToggle,
     whFilter: state.search.whFilter,
+    searchQuery: state.search.searchQuery,
   };
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     searchToggle: status => {
       dispatch(ActionCreator.searchToggle(status));
@@ -337,6 +350,9 @@ function mapDispatchToProps(dispatch) {
     },
     setSearchFilter: status => {
       dispatch(ActionCreator.setSearchFilter(status));
+    },
+    setSearchQuery: status => {
+      dispatch(ActionCreator.setSearchQuery(status));
     },
   };
 }
