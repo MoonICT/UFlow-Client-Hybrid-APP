@@ -1369,10 +1369,7 @@ class DetailWH extends Component {
   /** when after render DOM */
   componentDidMount () {
     // Progress
-    this.props.setProgress({
-      is: true,
-      type: 'BAR'
-    })
+    this.props.setProgress({ is: true, });
 
     const { route } = this.props;
     this.getDataWH();
@@ -1406,9 +1403,7 @@ class DetailWH extends Component {
 
         // Progress
         setTimeout(() => {
-          this.props.setProgress({
-            is: false
-          });
+          this.props.setProgress({ is: false });
         }, 300);
       })
       .catch(error => {

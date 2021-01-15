@@ -20,7 +20,7 @@ export default (state = defaultState, action) => {
         ...state,
         progress: {
           is: action.payload.is,
-          type: action.payload.type ? action.payload.type : 'CIRCLE',
+          type: action.payload.type ? action.payload.type : 'BAR',
         }
       };
     default:

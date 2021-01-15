@@ -46,7 +46,7 @@ class VersionCheckService {
       }).then(res => {
         // console.log(`::: 업데이트 유무-${Platform.OS} : `, res.isNeeded);  // false
         if (res.isNeeded) {
-          Alert.alert('"뉴틴" 앱이 업데이트 되었습니다.', '최신 버전으로 업데이트 후\n 이용하시기 바랍니다.', [
+          Alert.alert('"UFLOW" 앱이 업데이트 되었습니다.', '최신 버전으로 업데이트 후\n 이용하시기 바랍니다.', [
             {
               text: '확인',
               onPress: () => {
