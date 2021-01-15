@@ -92,7 +92,10 @@ class SearchOverlay extends Component {
 
   // 컴포넌트 업데이트 직후 호출.
   componentDidUpdate (prevProps, prevState) {
+    
+    console.log('componentDidUpdate 검색창 ::: ')
     if (prevProps.searchQuery !== this.props.searchQuery) {
+      console.log('1111')
       this.props.setSearchQuery(this.props.searchQuery);
     }
   }
