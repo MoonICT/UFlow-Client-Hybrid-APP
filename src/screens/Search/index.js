@@ -153,9 +153,11 @@ class Search extends Component {
           <Appbar.Content
             title="지역명이나 창고명을 검색하세요."
             color="rgba(0, 0, 0, 0.47)"
-            onPress={() =>
-              !this.props.isFilterToggle && this.props.searchToggle(true)
-            }
+            onPress={() => {
+              if (!this.props.isFilterToggle) {
+                this.props.searchToggle(true)
+              }
+            }}
             titleStyle={styles.headerTitle}
             style={[DefaultStyle.headerTitle, styles.headerContainer]}
           />
@@ -171,7 +173,6 @@ class Search extends Component {
             query={this.state.searchQuery}
             onSelect={result => this.handleSelectResult(result)}
             onClose={() => {
-              console.log(':::::::::::::::::::::::::')
               this.props.searchToggle(false)
             }}
           />
@@ -304,26 +305,6 @@ class Search extends Component {
         });
         // console.log('::::: 필터 변경에 의 지도 갱신 시점 :::::', this.props.whFilter);
       });
-    }
-
-    // if (params && params.searchQuery && prevState.searchQuery !== params.searchQuery) {
-    //   console.log('1111111, params')
-    //   if (params.searchQuery) {
-    //     this.setState({
-    //       searchQuery: params.searchQuery,
-    //     })
-    //     this.props.searchToggle(true);
-    //   } else {
-    //     this.props.searchToggle(false);
-    //   }
-    // }
-    console.log('componentDidUpdate 1 ::::: ', this.props.searchQuery)
-    if (prevProps.searchQuery !== this.props.searchQuery) {
-      if (this.props.searchQuery) {
-        this.props.searchToggle(true);
-      } else {
-        this.props.searchToggle(false);
-      }
     }
   }
 }

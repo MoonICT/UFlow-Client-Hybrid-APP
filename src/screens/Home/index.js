@@ -507,9 +507,9 @@ class Home extends Component {
                     color="white"
                     style={{ marginLeft: 10 }}
                     onPress={() => {
-                      console.log('검색어 ::: ', textSearch)
                       this.setState({ textSearch: '' })
                       this.props.setSearchQuery(textSearch)
+                      this.props.searchToggle(true)
                       this.navigation.navigate('Search')
                     }}
                   />
@@ -909,6 +909,9 @@ function mapDispatchToProps (dispatch) {
     },
     setSearchQuery: status => {
       dispatch(ActionCreator.setSearchQuery(status));
+    },
+    searchToggle: status => {
+      dispatch(ActionCreator.searchToggle(status));
     },
   };
 }

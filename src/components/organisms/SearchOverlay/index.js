@@ -74,7 +74,7 @@ class SearchOverlay extends Component {
           });
       });
     } else {
-      this.props.searchToggle(false);
+      // this.props.searchToggle(false);
       this.props.setSearchQuery('');
     }
   }
@@ -88,16 +88,16 @@ class SearchOverlay extends Component {
   };
 
   componentDidMount () {
+    console.log('디드마운')
+    this._onChangeSearchQuery(this.props.searchQuery)
   }
 
   // 컴포넌트 업데이트 직후 호출.
   componentDidUpdate (prevProps, prevState) {
-    
     console.log('componentDidUpdate 검색창 ::: ')
-    if (prevProps.searchQuery !== this.props.searchQuery) {
-      console.log('1111')
-      this.props.setSearchQuery(this.props.searchQuery);
-    }
+    // if (prevProps.searchQuery !== this.props.searchQuery) {
+    //   this.props.setSearchQuery(this.props.searchQuery);
+    // }
   }
 
   renderSearchWarehouse = () => {
