@@ -189,12 +189,14 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('Mypage', {
-                    title: '관심 창고',
-                  })}>
+                  onPress={() =>
+                    this.navigation.navigate('Mypage', {
+                      title: '내 창고',
+                    })
+                  }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={save} />
-                    <Text style={DefaultStyle.titleItem}>관심창고</Text>
+                    <Image style={S.iconItem} source={warehouse} />
+                    <Text style={DefaultStyle.titleItem}>내 창고</Text>
                   </View>
                   <View style={DefaultStyle.rightItem}>
                     <Icon
@@ -206,14 +208,12 @@ class More extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
-                  onPress={() =>
-                    this.navigation.navigate('Mypage', {
-                      title: '내 창고',
-                    })
-                  }>
+                  onPress={() => this.navigation.navigate('Mypage', {
+                    title: '관심 창고',
+                  })}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={warehouse} />
-                    <Text style={DefaultStyle.titleItem}>내 창고</Text>
+                    <Image style={S.iconItem} source={save} />
+                    <Text style={DefaultStyle.titleItem}>관심창고</Text>
                   </View>
                   <View style={DefaultStyle.rightItem}>
                     <Icon
