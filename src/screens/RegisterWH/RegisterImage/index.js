@@ -54,10 +54,10 @@ class RegisterImage extends Component {
   chooseFile = (type) => {
 
     let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
     };
     launchImageLibrary(options, (response) => {
       let file = {

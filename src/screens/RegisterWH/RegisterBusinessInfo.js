@@ -225,10 +225,10 @@ class RegisterBusinessInfo extends Component {
     const { businessInfo } = this.state;
 
     let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
     };
     launchImageLibrary(options, (response) => {
       let file = {
@@ -238,7 +238,7 @@ class RegisterBusinessInfo extends Component {
         type: response.type,
         uri: response.uri
       }
-
+     
       this.setState({ singleFile: file }, async () => {
         if (response != null) {
           // If file selected then create FormData
@@ -246,24 +246,25 @@ class RegisterBusinessInfo extends Component {
           const data = new FormData();
           data.append('name', singleFile.name);
           data.append('file', singleFile);
+
+
+          console.log('size', singleFile.size / Math.pow(1024,2))
           // Please change file upload URL
           MediaUpload.uploadFile(data).then(respon => {
-            if (respon.status === 200) {
-              let { url } = respon.data;
+            let { url } = respon.data;
+            console.log('respon', respon)
+            var pathArray = url.split( '/' );
+            var host = pathArray[pathArray.length-1];
 
-              var pathArray = url.split( '/' );
-              var host = pathArray[pathArray.length-1];
-
-              this.setState({
-                photo: url,
-                businessInfo: {
-                  ...businessInfo,
-                  regFile: host
-                }
-              });
-            }
+            this.setState({
+              photo: url,
+              businessInfo: {
+                ...businessInfo,
+                regFile: host
+              }
+            });
           }).catch(error => {
-            alert(' MediaUpload.uploadFile:' + error);
+            alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
           });
         } else {
           // If no file selected the show alert
