@@ -179,7 +179,7 @@ class MypageBusinessInfo extends Component {
           });
         } else {
           // If no file selected the show alert
-          alert('Please Select File first');
+          alert('등록하신 파일이 없습니다. 파일을 등록해주세요.');
         }
       });
     });
@@ -296,7 +296,7 @@ class MypageBusinessInfo extends Component {
     this.setState({loading: true});
 
     Entrp.update(businessInfo).then(res => {
-      alert('Edit Bussiness Success')
+      alert('사업자 정보가 수정되었습니다.')
       this.setState({loading: false});
       // console.log('::::: API Add Business Info  :::::', res)
       // setIsComplete(true)

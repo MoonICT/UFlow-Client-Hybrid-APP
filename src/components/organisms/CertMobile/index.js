@@ -69,7 +69,7 @@ export default class CertMobile extends Component {
     WarehouseMobileAuth.certMobile({ mobile: mobile }).then(res => {
       // TODO Change to dialog ui.
       alert('인증번호가 발송되었습니다.')
-      
+
       this.setState({
         isSendCode: true,
         isTimeOver: false,
@@ -114,7 +114,7 @@ export default class CertMobile extends Component {
       if (err.response.status >= 400 && err.response.status < 500) {
         // TODO Change to dialog ui.
         alert('만료되었거나 유효하지 않은 인증번호입니다.\n다시 확인해주세요.')
-      } else {n
+      } else {
         alert('서버에러:' + err.respose.message)
       }
     })

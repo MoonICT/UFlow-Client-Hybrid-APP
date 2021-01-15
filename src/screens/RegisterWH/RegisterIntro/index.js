@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   View,
@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
   Appbar,
@@ -29,9 +29,9 @@ import {
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
-import {styles as S} from '../style';
-import {styles as SS} from './style';
-import {Warehouse} from '@Services/apis';
+import { styles as S } from '../style';
+import { styles as SS } from './style';
+import { Warehouse } from '@Services/apis';
 import Postcode from 'react-native-daum-postcode';
 
 class RegisterIntro extends Component {
@@ -48,33 +48,33 @@ class RegisterIntro extends Component {
         props.dataIntro && props.dataIntro.address
           ? props.dataIntro.address
           : {
-            zipNo: '',
-            sidoName: '',
-            skkCd: '',
-            skkName: '',
-            bjdongCd: '',
-            bjdongName: '',
-            hjdongCd: '',
-            hjdongName: '',
-            roadNmCd: '',
-            address: '',
-            detail: '',
-          },
+              zipNo: '',
+              sidoName: '',
+              skkCd: '',
+              skkName: '',
+              bjdongCd: '',
+              bjdongName: '',
+              hjdongCd: '',
+              hjdongName: '',
+              roadNmCd: '',
+              address: '',
+              detail: '',
+            },
       roadAddr:
         props.dataIntro && props.dataIntro.roadAddr
           ? props.dataIntro.roadAddr
           : {
-            zipNo: '',
-            address: '',
-            detail: '',
-          },
+              zipNo: '',
+              address: '',
+              detail: '',
+            },
       gps:
         props.dataIntro && props.dataIntro.gps
           ? props.dataIntro.gps
           : {
-            latitude: 0,
-            longitude: 0,
-          },
+              latitude: 0,
+              longitude: 0,
+            },
       isActive: false,
       visible: false,
     };
@@ -92,16 +92,16 @@ class RegisterIntro extends Component {
     //console.log('//::componentWillUnmount::');
   }
 
-  _showDialog = () => this.setState({visible: true});
+  _showDialog = () => this.setState({ visible: true });
 
-  _hideDialog = () => this.setState({visible: false});
+  _hideDialog = () => this.setState({ visible: false });
 
   onChangeLocation = e => {
     let addressUpdate = this.state.address;
     let roadUpdate = this.state.roadAddr;
     addressUpdate.detail = e;
     roadUpdate.detail = e;
-    this.setState({address: addressUpdate, roadAddr: roadUpdate});
+    this.setState({ address: addressUpdate, roadAddr: roadUpdate });
   };
   searchAddress = data => {
     let firstQuery = data.address;
@@ -129,7 +129,7 @@ class RegisterIntro extends Component {
   };
 
   render() {
-    const {route, dataIntro} = this.props;
+    const { route, dataIntro } = this.props;
     const {
       name,
       description,
@@ -159,11 +159,13 @@ class RegisterIntro extends Component {
           />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray}>
-          <View style={{ backgroundColor: '#ffffff'}}>
+          <View style={{ backgroundColor: '#ffffff' }}>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
                 <Text style={DefaultStyle._textTitleBody}>
-                  {route && route.params.type === 'ModifyWH' ? '제목' : '창고명'}
+                  {route && route.params.type === 'ModifyWH'
+                    ? '제목'
+                    : '창고명'}
                   <Text style={S.textNote}>*</Text>
                 </Text>
               </View>
@@ -171,7 +173,7 @@ class RegisterIntro extends Component {
                 style={SS.inputIntro}
                 multiline={true}
                 numberOfLines={2}
-                onChangeText={e => this.setState({name: e})}
+                onChangeText={e => this.setState({ name: e })}
                 value={name}
                 placeholder={'예)신논혁역 도보 5분 거리, 깨끗한 창고입니다.'}
               />
@@ -184,12 +186,12 @@ class RegisterIntro extends Component {
                 </Text>
               </View>
               <TextInput
-                style={[SS.inputIntro, {height:300}]}
+                style={[SS.inputIntro, { height: 300 }]}
                 multiline={true}
                 numberOfLines={4}
                 // onChangeText={text => this.onChangeIntro(text)}
                 value={this.state.description}
-                onChangeText={e => this.setState({description: e})}
+                onChangeText={e => this.setState({ description: e })}
                 placeholder={`상세 설명 작성 주의사항
 
   - 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)
@@ -213,14 +215,14 @@ class RegisterIntro extends Component {
                   editable={false}
                   selectTextOnFocus={false}
                   onChangeText={query => {
-                    this.setState({firstQuery: query});
+                    this.setState({ firstQuery: query });
                   }}
                   value={address && address.zipNo}
                 />
               </TouchableOpacity>
 
               <TextInput
-                disabled={true}
+                editable={false}
                 style={[SS.inputIntro, SS.inputLoction]}
                 // onChangeText={text => this.onChangeLocation(text)}
                 value={address && address.address}
@@ -229,7 +231,7 @@ class RegisterIntro extends Component {
               <TextInput
                 style={[SS.inputIntro, SS.inputLoction]}
                 onChangeText={text => this.onChangeLocation(text)}
-                value={address && address.address && address.detail}
+                value={address.detail}
                 placeholder={'에이씨티앤코아물류'}
               />
             </View>
@@ -238,7 +240,9 @@ class RegisterIntro extends Component {
               <TouchableOpacity
                 disabled={isActive === true ? false : true}
                 onPress={() => {
-                  this.navigation.navigate('RegisterWH', {completeIntro: true});
+                  this.navigation.navigate('RegisterWH', {
+                    completeIntro: true,
+                  });
                   this.props.updateInfo({
                     name,
                     description,
@@ -269,7 +273,7 @@ class RegisterIntro extends Component {
                 <Dialog.Content style={DefaultStyle._postCodeContent}>
                   <Postcode
                     style={DefaultStyle._postCodeContent}
-                    jsOptions={{animated: true}}
+                    jsOptions={{ animated: true }}
                     onSelected={data => {
                       this.searchAddress(data);
 
@@ -294,7 +298,7 @@ class RegisterIntro extends Component {
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     if (prevState.firstQuery !== this.state.firstQuery) {
-      Warehouse.searchAddressKakao({query: this.state.firstQuery})
+      Warehouse.searchAddressKakao({ query: this.state.firstQuery })
         .then(res => {
           console.log('resIntroWH', res);
           if (res.status === 200) {
@@ -303,7 +307,7 @@ class RegisterIntro extends Component {
               latitude: data.y,
               longitude: data.x,
             };
-            this.setState({gps});
+            this.setState({ gps });
             // this.props.quotationData(res.data);
           }
         })

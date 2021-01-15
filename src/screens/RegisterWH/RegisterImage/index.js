@@ -24,10 +24,10 @@ import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { MediaUpload } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 class RegisterImage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -39,7 +39,7 @@ class RegisterImage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
@@ -49,6 +49,8 @@ class RegisterImage extends Component {
     console.log('e', e);
   };
 
+
+  // TODO @Deprecated handlePicker() 중복되는 함수 같음.
   chooseFile = (type) => {
 
     let options = {
@@ -87,7 +89,7 @@ class RegisterImage extends Component {
           });
         } else {
           // If no file selected the show alert
-          alert('Please Select File first');
+          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
         }
       });
     });
@@ -95,18 +97,19 @@ class RegisterImage extends Component {
 
   handlePicker = async () => {
     try {
+      // TODO 이미지 피커 교체 필요 (ios에서 갤러리 선택 안됨.)
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
       });
       this.setState({ singleFile: res }, async () => {
         if (res != null) {
           // If file selected then create FormData
-          let { singleFile } = this.state;
+          let { singleFile, valueTab } = this.state;
           const data = new FormData();
           data.append('name', singleFile.name);
           data.append('file', singleFile);
           // Please change file upload URL
-          MediaUpload.uploadFile(data).then(respon => {
+          await MediaUpload.uploadFile(data).then(respon => {
             if (respon.status === 200) {
               let { url } = respon.data;
               let { filename } = respon.data;
@@ -123,7 +126,7 @@ class RegisterImage extends Component {
           });
         } else {
           // If no file selected the show alert
-          alert('Please Select File first');
+          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
         }
       });
     } catch (err) {
@@ -134,8 +137,9 @@ class RegisterImage extends Component {
       }
     }
   };
-  render() {
-    const { imageStore } = this.props;
+
+  render () {
+    const { imageStore, pnImages } = this.props;
     const { valueTab, isRemove } = this.state;
     // console.log('imageStore', imageStore);
 
@@ -157,15 +161,27 @@ class RegisterImage extends Component {
             icon="image-plus"
             color="black"
             onPress={() => {
-              this.chooseFile('photo');
+              console.log('tab: ', valueTab)
+              if (valueTab === 0) {
+                this.handlePicker('photo');
+              } else if (valueTab === 1) {
+                console.log('imageStore.pnImages', pnImages)
+                if (pnImages && pnImages.length > 0) {
+                  alert('파노라마 사진은 1장만 등록 가능합니다.');
+                } else {
+                  this.handlePicker('photo');
+                }
+              }
+              // this.chooseFile('photo');
               // this.props.registerAction('44444');
             }}
           />
-          <Appbar.Action
-            icon="delete"
-            color={isRemove === true ? '#ff6d00' : 'black'}
-            onPress={this._removeImage}
-          />
+          {/* TODO 이미지 개별 삭제 가능해야함. */}
+          {/*<Appbar.Action*/}
+          {/*icon="delete"*/}
+          {/*color={isRemove === true ? '#ff6d00' : 'black'}*/}
+          {/*onPress={this._removeImage}*/}
+          {/*/>*/}
         </Appbars>
         <ScrollView>
           <View style={DefaultStyle._tabBar}>
@@ -226,15 +242,16 @@ class RegisterImage extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.whImages,
+    pnImages: state.registerWH.pnImages,
   };
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     uploadImage: action => {
       dispatch(ActionCreator.uploadImage(action));

@@ -2,6 +2,10 @@ import types from '../actions/types';
 
 const defaultState = {
   lang: null,
+  progress: {
+    is: false,
+    type: 'CIRCLE', // CIRCLE|BAR
+  },
 };
 
 export default (state = defaultState, action) => {
@@ -10,6 +14,14 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         lang: action.payload
+      };
+    case types.SET_PROGRESS:
+      return {
+        ...state,
+        progress: {
+          is: action.payload.is,
+          type: action.payload.type ? action.payload.type : 'CIRCLE',
+        }
       };
     default:
       return state;

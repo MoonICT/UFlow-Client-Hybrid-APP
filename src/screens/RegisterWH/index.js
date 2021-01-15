@@ -30,7 +30,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
 
 class RegisterWH extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = { visible: false };
@@ -40,7 +40,7 @@ class RegisterWH extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
@@ -90,7 +90,7 @@ class RegisterWH extends Component {
         });
     } else {
 
-      const {dataWH} = this.props;
+      const { dataWH } = this.props;
 
       if (!dataWH) {
         alert('창고등록 정보값이 없습니다.');
@@ -216,12 +216,13 @@ class RegisterWH extends Component {
           }
         })
         .catch(err => {
-          alert('Register err', err);
+          // alert('Register err', err);
           console.log('err', err);
         });
     }
   };
-  render() {
+
+  render () {
     const { imageStore, workComplete, route, dataWH } = this.props;
     let completeMoreInfo = route.params && route.params.completeMoreInfo;
     let completeInfo = route.params && route.params.completeInfo;
@@ -245,9 +246,9 @@ class RegisterWH extends Component {
     }
     if (
       // imageStore.length > 0 &&
-      // completeMoreInfo === true &&
-      // completeInfo === true &&
-      // completeFloor === true &&
+    // completeMoreInfo === true &&
+    // completeInfo === true &&
+    // completeFloor === true &&
       completeIntro === true
     ) {
       isSubmitUpdate = true;
@@ -307,12 +308,12 @@ class RegisterWH extends Component {
               <Text style={S.textLeftBtn}>창고 소개</Text>
               <View style={S.rightBtn}>
                 {//   (route && route.params && route.params.type === 'ModifyWH') ||
-                // (dataWH && dataWH.name)
-                completeIntro === true ? (
-                  <Text style={S.completeText}>작업완료</Text>
-                ) : (
-                  <Text style={S.textRightBtn}>입력하세요</Text>
-                )}
+                  // (dataWH && dataWH.name)
+                  completeIntro === true ? (
+                    <Text style={S.completeText}>작업완료</Text>
+                  ) : (
+                    <Text style={S.textRightBtn}>입력하세요</Text>
+                  )}
                 <Icon
                   name="arrow-forward-ios"
                   size={12}
@@ -472,7 +473,7 @@ class RegisterWH extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
     let entrpNo = this.props.route.params && this.props.route.params.entrpNo;
@@ -489,68 +490,68 @@ class RegisterWH extends Component {
             let floors =
               dataWH.floors.length > 0
                 ? dataWH.floors.map((item, index) => {
-                    item.seq = dataWH.floors[index].id.seq;
-                    item.flrDvCode =
-                      dataWH.floors[index].flrDvCode &&
-                      dataWH.floors[index].flrDvCode.stdDetailCode;
-                    item.aprchMthdDvCode =
-                      dataWH.floors[index].aprchMthdDvCode &&
-                      dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
-                    return item;
-                  })
+                  item.seq = dataWH.floors[index].id.seq;
+                  item.flrDvCode =
+                    dataWH.floors[index].flrDvCode &&
+                    dataWH.floors[index].flrDvCode.stdDetailCode;
+                  item.aprchMthdDvCode =
+                    dataWH.floors[index].aprchMthdDvCode &&
+                    dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
+                  return item;
+                })
                 : [];
             let keeps =
               dataWH.keeps.length > 0
                 ? dataWH.keeps.map((item, index) => {
-                    item.seq = dataWH.keeps[index].id.seq;
-                    item.typeCode =
-                      dataWH.keeps[index].typeCode &&
-                      dataWH.keeps[index].typeCode.stdDetailCode;
-                    item.calUnitDvCode =
-                      dataWH.keeps[index].calUnitDvCode &&
-                      dataWH.keeps[index].calUnitDvCode.stdDetailCode;
-                    item.calStdDvCode =
-                      dataWH.keeps[index].calStdDvCode &&
-                      dataWH.keeps[index].calStdDvCode.stdDetailCode;
-                    item.mgmtChrgDvCode =
-                      dataWH.keeps[index].mgmtChrgDvCode &&
-                      dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
-                    return item;
-                  })
+                  item.seq = dataWH.keeps[index].id.seq;
+                  item.typeCode =
+                    dataWH.keeps[index].typeCode &&
+                    dataWH.keeps[index].typeCode.stdDetailCode;
+                  item.calUnitDvCode =
+                    dataWH.keeps[index].calUnitDvCode &&
+                    dataWH.keeps[index].calUnitDvCode.stdDetailCode;
+                  item.calStdDvCode =
+                    dataWH.keeps[index].calStdDvCode &&
+                    dataWH.keeps[index].calStdDvCode.stdDetailCode;
+                  item.mgmtChrgDvCode =
+                    dataWH.keeps[index].mgmtChrgDvCode &&
+                    dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
+                  return item;
+                })
                 : [];
             let trusts =
               dataWH.trusts.length > 0
                 ? dataWH.trusts.map((item, index) => {
-                    item.seq = dataWH.trusts[index].id.seq;
-                    item.typeCode =
-                      dataWH.trusts[index].typeCode &&
-                      dataWH.trusts[index].typeCode.stdDetailCode;
-                    item.calUnitDvCode =
-                      dataWH.trusts[index].calUnitDvCode &&
-                      dataWH.trusts[index].calUnitDvCode.stdDetailCode;
-                    item.calStdDvCode =
-                      dataWH.trusts[index].calStdDvCode &&
-                      dataWH.trusts[index].calStdDvCode.stdDetailCode;
-                    return item;
-                  })
+                  item.seq = dataWH.trusts[index].id.seq;
+                  item.typeCode =
+                    dataWH.trusts[index].typeCode &&
+                    dataWH.trusts[index].typeCode.stdDetailCode;
+                  item.calUnitDvCode =
+                    dataWH.trusts[index].calUnitDvCode &&
+                    dataWH.trusts[index].calUnitDvCode.stdDetailCode;
+                  item.calStdDvCode =
+                    dataWH.trusts[index].calStdDvCode &&
+                    dataWH.trusts[index].calStdDvCode.stdDetailCode;
+                  return item;
+                })
                 : [];
             let insrDvCodes =
               dataWH.insrDvCodes.length > 0
                 ? dataWH.insrDvCodes.map((item, index) => {
-                    item = dataWH.insrDvCodes[index].stdDetailCode
-                      ? dataWH.insrDvCodes[index].stdDetailCode
-                      : '';
-                    return item;
-                  })
+                  item = dataWH.insrDvCodes[index].stdDetailCode
+                    ? dataWH.insrDvCodes[index].stdDetailCode
+                    : '';
+                  return item;
+                })
                 : [];
             let addOptDvCodes =
               dataWH.addOptDvCodes.length > 0
                 ? dataWH.addOptDvCodes.map((item, index) => {
-                    item = dataWH.addOptDvCodes[index].stdDetailCode
-                      ? dataWH.addOptDvCodes[index].stdDetailCode
-                      : '';
-                    return item;
-                  })
+                  item = dataWH.addOptDvCodes[index].stdDetailCode
+                    ? dataWH.addOptDvCodes[index].stdDetailCode
+                    : '';
+                  return item;
+                })
                 : [];
             // this.setState({ dataWH });
 
@@ -593,13 +594,13 @@ class RegisterWH extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.whImages,
@@ -609,7 +610,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));
@@ -620,6 +621,7 @@ function mapDispatchToProps(dispatch) {
     showPopup: status => {
       dispatch(ActionCreator.show(status));
     },
+
   };
 }
 
