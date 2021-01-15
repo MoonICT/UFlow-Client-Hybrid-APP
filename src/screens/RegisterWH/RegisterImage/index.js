@@ -87,7 +87,7 @@ class RegisterImage extends Component {
           });
         } else {
           // If no file selected the show alert
-          alert('Please Select File first');
+          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
         }
       });
     });
@@ -123,7 +123,7 @@ class RegisterImage extends Component {
           });
         } else {
           // If no file selected the show alert
-          alert('Please Select File first');
+          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
         }
       });
     } catch (err) {

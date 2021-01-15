@@ -211,7 +211,7 @@ class RegisterBusinessInfo extends Component {
       this.setState({
         businessMode: i
       });
-  
+
       // this.setBusinessData(listBusinessInfo[i]);
     } else {
       this.setState({
@@ -249,7 +249,7 @@ class RegisterBusinessInfo extends Component {
           MediaUpload.uploadFile(data).then(respon => {
             if (respon.status === 200) {
               let { url } = respon.data;
-            
+
               var pathArray = url.split( '/' );
               var host = pathArray[pathArray.length-1];
 
@@ -291,7 +291,7 @@ class RegisterBusinessInfo extends Component {
           MediaUpload.uploadFile(data).then(respon => {
             if (respon.status === 200) {
               let { url } = respon.data;
-            
+
               var pathArray = url.split( '/' );
               var host = pathArray[pathArray.length-1];
 
@@ -308,7 +308,7 @@ class RegisterBusinessInfo extends Component {
           });
         } else {
           // If no file selected the show alert
-          alert('Please Select File first');
+          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
         }
       });
     } catch (err) {
@@ -414,7 +414,7 @@ class RegisterBusinessInfo extends Component {
                     value={businessList[businessMode].entrpNo}
                     colorLabel="#000000"
                   />
-                  <TextField 
+                  <TextField
                     labelTextField="주소"
                     colorLabel="#000000"
                     value={businessList[businessMode].address}
@@ -450,7 +450,7 @@ class RegisterBusinessInfo extends Component {
                     value={businessInfo.corpNumber ? businessInfo.corpNumber : ''}
                     colorLabel="#000000"
                   />
-                  <TextField 
+                  <TextField
                     labelTextField="사업자번호"
                     placeholder="'-'없이 입력해주세요."
                     colorLabel="#000000"
@@ -615,7 +615,7 @@ class RegisterBusinessInfo extends Component {
             </View>
         </View>
         <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0]}>
-         
+
 
         {isPossible ?
                (
