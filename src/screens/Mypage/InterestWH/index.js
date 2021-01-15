@@ -29,8 +29,6 @@ import box from '@Assets/images/box.png';
 import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
 import { StringUtils } from '@Services/utils';
-import AsyncStorage from "@react-native-community/async-storage";
-import { Account } from '@Services/apis';
 
 class InterestWarehouse extends Component {
   constructor (props) {
@@ -44,33 +42,8 @@ class InterestWarehouse extends Component {
     this.navigation = props.navigation;
   }
 
-  async UNSAFE_componentWillMount () {
-    const value = await AsyncStorage.getItem(TOKEN);
-    // console.log('More Token ==>', value);
-    Account.getMe()
-      .then(res => {
-        // console.log('::::: Get Me :::::', res);
-        const status = res.status;
-        if (status === 200) {
-          this.setState({
-            isLogin: true,
-            email: res.data.email,
-            fullName: res.data.fullName,
-          });
-        }
-      })
-      .catch(err => {
-        console.log('errHome', err);
-      });
-    if (value) {
-      this.setState({ token: value });
-    }
-  }
-
   /** when after render DOM */
   componentDidMount () {
-
-    if (this.state.isLogin)
     this.reRenderSomething = this.props.navigation.addListener('focus', () => {
       this.getDataFavorite();
     });
@@ -98,7 +71,8 @@ class InterestWarehouse extends Component {
   }
 
   getDataFavorite = () => {
-    // this.props.setProgress({ is: true, })
+    this.props.setProgress({ is: true, });
+
     Fav.page().then(res => {
       let resultData = res.data && res.data._embedded && res.data._embedded.mbspUserFavResBodies ? res.data._embedded.mbspUserFavResBodies : [];
       let dataConvert = [];
@@ -135,15 +109,9 @@ class InterestWarehouse extends Component {
         listItem: dataConvert
       });
 
-      // setTimeout(() => {
-      //   this.props.setProgress({ is: false });
-      // }, 300);
+      this.props.setProgress({ is: false, });
     }).catch(error => {
       alert(error.response.data.message);
-      console.log(error);
-      // setTimeout(() => {
-      //   this.props.setProgress({ is: false });
-      // }, 300);
     });
   }
 
@@ -183,7 +151,6 @@ class InterestWarehouse extends Component {
         this.getDataFavorite();
       })
       .catch(error => {
-        alert(error.response.data.message);
         alert(error.response.data.message);
       });
   }
@@ -278,22 +245,31 @@ class InterestWarehouse extends Component {
     );
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // Progress
-    console.log('is Progress !!!')
-    // this.props.setProgress({ is: true, });
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // Progress
+  //   console.log('is Progress !!!')
+  //   this.props.setProgress({ is: true, });
+  //   return true;
+  // }
 }
+
+/** map state with store states redux store */
+function mapStateToProps (state) {
+  // console.log('++++++mapStateToProps: ', state);
+  return {
+  };
+}
+
 /** dispatch action to redux */
-// function mapDispatchToProps (dispatch) {
-//   return {
-//
-//     setProgress: status => {
-//       dispatch(ActionCreator.setProgress(status));
-//     },
-//   };
-// }
+function mapDispatchToProps (dispatch) {
+  return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
+  };
+}
 
 export default connect(
-  // mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps,
 )(InterestWarehouse);

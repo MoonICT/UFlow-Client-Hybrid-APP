@@ -409,6 +409,7 @@ class ContractManager extends Component {
     const goDetail = (item, mode) => {
 
       console.log(mode, 'mode');
+      console.log(item, 'item');
       if (item) {
         console.log('상세보기 클릭')
         this.navigation.navigate(
@@ -426,7 +427,8 @@ class ContractManager extends Component {
             status: item.status,
             rentUserID: item.rentUser?.id || item.rentUserNo,
             regUserDate: item.cntrYmdFrom,
-            mode: mode
+            mode: mode,
+            thumbnail:item.thumbnail
           },
         )
       }

@@ -16,6 +16,7 @@ import TextField from '@Components/organisms/TextField';
 import DialogScreen from '@Components/organisms/Dialog';
 import illust3 from '@Assets/images/illust3.png';
 import illust13 from '@Assets/images/illust13.png';
+import Loading from '@Components/atoms/Loading';
 import { FindPassword } from '@Services/apis';
 
 // Local Imports
@@ -35,6 +36,7 @@ class ForgotPass extends Component {
       visiblePass: false,
       isConfirmPass: false,
       isConfirmEmail: false,
+      loading: false,
     };
     this.navigation = props.navigation;
   }
@@ -55,11 +57,14 @@ class ForgotPass extends Component {
 
   sendEmail = () => {
     const {email} = this.state;
+    this.setState({ loading: true });
     FindPassword.sendEmail({ email: email })
       .then(res => {
+        this.setState({ loading: false });
         this.showDialog()
       })
       .catch(error => {
+        this.setState({ loading: false });
         alert(error.response.data.message);
       });
   }
@@ -212,6 +217,7 @@ class ForgotPass extends Component {
             </Button>
           </Dialog.Actions>
         </Dialog>
+        <Loading loading={this.state.loading} />
       </SafeAreaView>
     );
   }
