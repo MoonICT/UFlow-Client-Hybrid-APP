@@ -468,6 +468,9 @@ class Mypage extends Component {
       })
       .catch(err => {
         console.log('err', err);
+        setTimeout(() => {
+          this.props.setProgress({ is: false });
+        }, 300);
       });
 
     // SplashScreen.hide();
