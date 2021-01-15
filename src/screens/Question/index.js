@@ -27,6 +27,7 @@ import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
+import Loading from '@Components/atoms/Loading';
 import { styles as S } from './style';
 
 import { Question } from '@Services/apis';
@@ -38,6 +39,7 @@ class QuestionScreen extends Component {
     this.webView = null;
     this.state = {
       visible: false,
+      loading: false,
       email: '',
       content: '',
     };
@@ -48,6 +50,7 @@ class QuestionScreen extends Component {
   async componentDidMount() {}
 
   fetchData(params) {
+    this.setState({ loading: true });
     Question.createQuestion({
       ...params,
       email: this.state.email,
@@ -55,12 +58,14 @@ class QuestionScreen extends Component {
     })
       .then(res => {
         console.log('::::: Question :::::', res);
+        this.setState({ loading: false });
         if (res.status === 200) {
           this.showDialog();
         }
       })
       .catch(err => {
         console.log('err', err);
+        this.setState({ loading: false });
       });
     SplashScreen.hide();
   }
@@ -181,6 +186,7 @@ class QuestionScreen extends Component {
             </Dialog>
           </View>
         </TouchableWithoutFeedback>
+        <Loading loading={this.state.loading} />
       </KeyboardAvoidingView>
     );
   }
