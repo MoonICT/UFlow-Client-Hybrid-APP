@@ -7,27 +7,19 @@
 // Global Imports
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   SafeAreaView,
   View,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
-  Image,
-  ActivityIndicator,
-  Platform,
 } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
-  Card,
   Appbar,
   Checkbox,
   Text,
-  Switch,
-  IconButton,
 } from 'react-native-paper';
-import DatePicker from '@Components/organisms/DatePicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 // Local Imports
@@ -36,17 +28,17 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';
-import { styles as SS } from './style';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 import { MyPage } from '@Services/apis';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 
-// import Form from './form';
 class RegisterMoreInfo extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
+      isSelected: false,
+      toggleCheckBox: false,
       addOptDvCodes:
         props.dataMoreInfo && props.dataMoreInfo.addOptDvCodes
           ? props.dataMoreInfo.addOptDvCodes
@@ -94,7 +86,7 @@ class RegisterMoreInfo extends Component {
     this.setState({ showFrom: true });
   };
 
-  onChangeFrom = (selectedDate) => {
+  onChangeFrom = selectedDate => {
     const currentDate = selectedDate || this.state.from;
     let d = new Date(selectedDate).getTime();
 
@@ -122,7 +114,6 @@ class RegisterMoreInfo extends Component {
       addOptDvCodesData,
       insrDvCodeData,
     } = this.state;
-    // console.log('dataMoreInfo :>> ', dataMoreInfo);
 
     let checkbox0001 = [-1, -1, -1, -1, -1, -1];
 
@@ -155,18 +146,32 @@ class RegisterMoreInfo extends Component {
       addOptDvCodesData &&
       addOptDvCodesData.map((item, index) => {
         let checkItem = addOptDvCodes.find(el => el === item.value);
-
         return (
           <View style={S.optionCheck}>
-            <Checkbox
-              status={checkItem ? 'checked' : 'unchecked'}
-              onPress={() => {
+            <CheckBox
+              tintColors={{ true: '#ff6d00' }}
+              onCheckColor="#ff6d00"
+              onTintColor="#ff6d00"
+              boxType="square"
+              value={checkItem ? true : false}
+              onValueChange={() => {
                 let indexItem = addOptDvCodes.indexOf(item.value);
                 indexItem > -1
                   ? this.setState({ ...addOptDvCodes.splice(indexItem, 1) })
                   : this.setState({ ...addOptDvCodes.push(item.value) });
               }}
             />
+            {
+              // <Checkbox
+              //   status={checkItem ? 'checked' : 'unchecked'}
+              //   onPress={() => {
+              //     let indexItem = addOptDvCodes.indexOf(item.value);
+              //     indexItem > -1
+              //       ? this.setState({ ...addOptDvCodes.splice(indexItem, 1) })
+              //       : this.setState({ ...addOptDvCodes.push(item.value) });
+              //   }}
+              // />
+            }
             <Text style={S.labelCheck}>{item.label}</Text>
           </View>
         );
@@ -178,15 +183,31 @@ class RegisterMoreInfo extends Component {
 
         return (
           <View style={S.optionCheck}>
-            <Checkbox
-              status={checkItem ? 'checked' : 'unchecked'}
-              onPress={() => {
+            <CheckBox
+              tintColors={{ true: '#ff6d00' }}
+              onCheckColor="#ff6d00"
+              onTintColor="#ff6d00"
+              boxType="square"
+              value={checkItem ? true : false}
+              onValueChange={() => {
                 let indexItem = insrDvCodes.indexOf(item.value);
                 indexItem > -1
                   ? this.setState({ ...insrDvCodes.splice(indexItem, 1) })
                   : this.setState({ ...insrDvCodes.push(item.value) });
               }}
             />
+            {
+              // <Checkbox
+              //   style={{ border: 'red', width: 50 }}
+              //   status={checkItem ? 'checked' : 'unchecked'}
+              //   onPress={() => {
+              //     let indexItem = insrDvCodes.indexOf(item.value);
+              //     indexItem > -1
+              //       ? this.setState({ ...insrDvCodes.splice(indexItem, 1) })
+              //       : this.setState({ ...insrDvCodes.push(item.value) });
+              //   }}
+              // />
+            }
             <Text style={S.labelCheck}>{item.label}</Text>
           </View>
         );
@@ -239,16 +260,16 @@ class RegisterMoreInfo extends Component {
                       준공일
                     </Text>
                     <DateTimePickerModal
-                    mode="date"
-                    isVisible={showFrom}
-                    date={from ? from : new Date()}
-                    onConfirm={date => this.onChangeFrom(date)}
-                    onCancel={() => {
-                      this.setState({
-                        showFrom: false,
-                      });
-                    }}
-                  />
+                      mode="date"
+                      isVisible={showFrom}
+                      date={from ? from : new Date()}
+                      onConfirm={date => this.onChangeFrom(date)}
+                      onCancel={() => {
+                        this.setState({
+                          showFrom: false,
+                        });
+                      }}
+                    />
                   </TouchableOpacity>
                 </View>
                 <View style={DefaultStyle._listElement}>
@@ -566,7 +587,6 @@ class RegisterMoreInfo extends Component {
       .then(res => {
         if (res.status === 200) {
           let data = res.data._embedded.detailCodes;
-          // console.log('datasssssssssssssss :>> ', data);
           let insrDvCodeData =
             data &&
             data.map((item, index) => {
@@ -594,7 +614,6 @@ class RegisterMoreInfo extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    // count: state.home.count,
     imageStore: state.registerWH.pimages,
     dataMoreInfo: state.registerWH,
   };
@@ -609,9 +628,6 @@ function mapDispatchToProps(dispatch) {
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 
