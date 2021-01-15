@@ -147,9 +147,7 @@ class Chatting extends Component {
     let warehouse = route && route.params && route.params.warehouse;
     let rentUser = route && route.params && route.params.rentUser;
     let thumbnail = route && route.params && route.params.thumbnail;
-    console.log('warehouse', warehouse);
-    console.log('rentUser', rentUser);
-    console.log('type', type);
+    console.log('dataChat', dataChat);
     let listChat =
       dataChat &&
       dataChat.map((item, index) => {
