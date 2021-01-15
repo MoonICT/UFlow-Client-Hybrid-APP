@@ -113,11 +113,6 @@ class Mypage extends Component {
     this.navigation = props.navigation;
   }
 
-  /** listener when change props */
-  shouldComponentUpdate (nextProps, nextState) {
-    return true;
-  }
-
   /** when exits screen */
   componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
@@ -447,6 +442,9 @@ class Mypage extends Component {
 
   /** when after render DOM */
   async componentDidMount () {
+    // Progress
+    this.props.setProgress({ is: true, })
+
     console.log('::componentDidMount:: MyPage', this.props.route.params.title);
     this.setState({ title: this.props.route.params.title });
     // const getWH = await Warehouse.myWH();
@@ -462,6 +460,11 @@ class Mypage extends Component {
           let dataWH = res.data._embedded.warehouses;
           this.setState({ dataWH });
         }
+
+        // Progress
+        setTimeout(() => {
+          this.props.setProgress({ is: false });
+        }, 300);
       })
       .catch(err => {
         console.log('err', err);
@@ -499,6 +502,9 @@ function mapDispatchToProps (dispatch) {
     },
     showPopup: status => {
       dispatch(ActionCreator.show(status));
+    },
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
     },
   };
 }

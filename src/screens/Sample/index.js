@@ -94,16 +94,6 @@ export default class Sample extends Component {
             <Text>{'AvaliableChate Sample'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ProprietorMypage')}
-            style={DefaultStyle.btn}>
-            <Text>{'ProprietorMypage Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('TenantMypage')}
-            style={DefaultStyle.btn}>
-            <Text>{'TenantMypage Sample'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Mypage')}
             style={DefaultStyle.btn}>
             <Text>{'Mypage Sample'}</Text>
