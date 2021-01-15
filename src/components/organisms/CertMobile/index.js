@@ -40,11 +40,12 @@ export default class CertMobile extends Component {
       if(duration.asMilliseconds() !== 0){
         this.setState(()=> ({ timer: duration.asMilliseconds() }))
       }else{
-        alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.')
+        alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.');
         clearInterval(this.interval);
         this.setState({
           isTimeOver:true,
-          isSendCode:false
+          isSendCode:false,
+          timer: null
         })
       }
     }
@@ -105,7 +106,11 @@ export default class CertMobile extends Component {
       if (res.data.code === 'RESULT_SUCCESS') {
         // TODO Change to dialog ui.
         alert('인증이 완료되었습니다.');
-        this.setState({isCompleteCert:true})
+        clearInterval(this.interval);
+        this.setState({
+          isCompleteCert:true,
+          timer: null
+        })
         if (onComplete && typeof onComplete === 'function') {
           onComplete()
         }
