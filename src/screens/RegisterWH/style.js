@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
   },
   bgrRegister: {
     backgroundColor: '#fafafa',
-    height: 600,
+    height: 300,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

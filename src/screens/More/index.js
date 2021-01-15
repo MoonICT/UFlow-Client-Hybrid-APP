@@ -365,18 +365,18 @@ class More extends Component {
               </TouchableOpacity>
 
               {/*<TouchableOpacity*/}
-                {/*style={DefaultStyle.btnItem}*/}
-                {/*onPress={() => this.navigation.navigate('SampleScreen')}>*/}
-                {/*<View style={[DefaultStyle.leftItem, S.item]}>*/}
-                  {/*<Text style={DefaultStyle.titleItem}>Screen Test</Text>*/}
-                {/*</View>*/}
-                {/*<View style={DefaultStyle.rightItem}>*/}
-                  {/*<Icon*/}
-                    {/*name="arrow-forward-ios"*/}
-                    {/*size={12}*/}
-                    {/*color="rgba(0, 0, 0, 0.54)"*/}
-                  {/*/>*/}
-                {/*</View>*/}
+              {/*style={DefaultStyle.btnItem}*/}
+              {/*onPress={() => this.navigation.navigate('SampleScreen')}>*/}
+              {/*<View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*<Text style={DefaultStyle.titleItem}>Screen Test</Text>*/}
+              {/*</View>*/}
+              {/*<View style={DefaultStyle.rightItem}>*/}
+              {/*<Icon*/}
+              {/*name="arrow-forward-ios"*/}
+              {/*size={12}*/}
+              {/*color="rgba(0, 0, 0, 0.54)"*/}
+              {/*/>*/}
+              {/*</View>*/}
               {/*</TouchableOpacity>*/}
             </View>
           )}
@@ -451,13 +451,16 @@ function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     isLogin: state.home.isLogin,
-    lang: state.language.lang,
+    lang: state.global.lang,
   };
 }
 
 /** dispatch action to redux */
 function mapDispatchToProps (dispatch) {
   return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
   };
 }
 

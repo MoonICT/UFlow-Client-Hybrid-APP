@@ -60,7 +60,8 @@ class UpImage extends Component {
             onPress={() =>
               // this.handlePicker(valueTab)
               handldeProps && handldeProps()
-            }>
+            }
+          >
             <Image source={ignore3} style={S.ImageStyle} />
             <Text style={S.textBgr}>최소 3장 이상 등록하세요.</Text>
           </TouchableOpacity>

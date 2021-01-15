@@ -8,7 +8,8 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
+import * as Progress from 'react-native-progress';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
@@ -29,13 +30,26 @@ class Global extends Component {
   }
 
   render () {
-    const { children } = this.props;
+    const { children, progress } = this.props;
 
     return (
       <SafeAreaView style={[DefaultStyle.container, S.container]}>
-        <Popup />
-        {children}
-        {/*<Loading loading={true} />*/}
+        <View style={[DefaultStyle.container, S.container, { position: 'relative', }]}>
+          <Popup />
+          {children}
+
+          {progress.type === 'CIRCLE' && <Loading loading={progress.is} />}
+
+          {progress.type === 'BAR' && progress.is &&
+          <View style={[S.progressBarWrap]}>
+            <Progress.Bar indeterminate={true}
+                          indeterminateAnimationDuration={700}
+                          color={'#ff6d00'}
+                          borderRadius={0}
+                          borderWidth={0}
+                          width={null}
+                          style={[S.progressBar]} /></View>}
+        </View>
       </SafeAreaView>
     );
   }
@@ -60,7 +74,9 @@ class Global extends Component {
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
 function mapStateToProps (state) {
   // console.log('++++++mapStateToProps :', state);
-  return {};
+  return {
+    progress: state.global.progress,
+  };
 }
 
 // store에 action을 dispatch 하는 역할.

@@ -145,7 +145,7 @@ class Language extends Component {
 function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    lang: state.language.lang, // TODO Require Lang
+    lang: state.global.lang, // TODO Require Lang
   };
 }
 
