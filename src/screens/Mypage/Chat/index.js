@@ -131,6 +131,7 @@ class Chatting extends Component {
     const { dataChat, chatting, isSendMessage } = this.state;
     let type = route && route.params && route.params.type;
     let warehouse = route && route.params && route.params.warehouse;
+    console.log('route=>>>>>>>',route);
     let rentUser = route && route.params && route.params.rentUser;
     console.log('warehouse', warehouse);
     console.log('rentUser', rentUser);
@@ -254,11 +255,11 @@ class Chatting extends Component {
                     valueProps={e => this.setState({ chatting: e })}
                   />
                 </View>
-                <IconButton
+                {/* <IconButton
                   style={SS.btnAdd}
                   icon="plus"
                   onPress={() => console.log('remove')}
-                />
+                /> */}
               </View>
             </View>
           </View>

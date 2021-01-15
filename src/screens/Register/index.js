@@ -19,6 +19,7 @@ import DefaultStyle from '../../styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
+import Loading from '@Components/atoms/Loading';
 import DoneRegister from './done';
 import TextField from '@Components/organisms/TextField';
 //---> Assets
@@ -44,6 +45,7 @@ class Register extends Component {
       checkMarketing: false,
       isDone: false,
       serviceTerms: false,
+      loading: false,
       terms: {
         privacy: false,
         location: false,
@@ -69,6 +71,7 @@ class Register extends Component {
     //console.log('//::componentWillUnmount::');
   }
   handleOnClickSubmit = () => {
+    this.setState({ loading: true });
     let signUpTemp = {};
     signUpTemp.email = this.state.email;
     signUpTemp.password = this.state.password;
@@ -83,6 +86,7 @@ class Register extends Component {
     Account.signUp(signUpTemp)
       .then(res => {
         // console.log('::::: API Sign Up Ok :::::', res);
+        this.setState({ loading: false });
         this.setState({ isDone: true });
         // go to the home after 5sec
         const access_token = res?.data?.access_token;
@@ -91,6 +95,7 @@ class Register extends Component {
       })
       .catch(err => {
         // console.log('::::: API Sign Up Error :::::', err);
+        this.setState({ loading: false });
 
         if (err?.response) {
           if (err?.response?.status >= 400 && err?.response?.status < 500) {
@@ -494,6 +499,7 @@ class Register extends Component {
                 </Button>
               </View>
             </ScrollView>
+            <Loading loading={this.state.loading} />
           </SafeAreaView>
         )}
       </>

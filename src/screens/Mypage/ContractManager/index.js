@@ -81,11 +81,6 @@ class ContractManager extends Component {
     this.navigation = props.navigation;
   }
 
-  /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
   /** when exits screen */
   componentWillUnmount() {
     //console.log('//::componentWillUnmount::');
@@ -604,10 +599,12 @@ class ContractManager extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
+    // Progress
+    this.props.setProgress({ is: true, });
+
     const type = this.state.valueTab;
     await Warehouse.contractManager(type)
       .then(res => {
-
         const status = res.status;
         if (status === 200) {
 
@@ -653,6 +650,8 @@ class ContractManager extends Component {
           ];
 
           this.setState({dataSteps});
+          // Progress
+          this.props.setProgress({ is: false, });
         }
       })
       .catch(err => {
@@ -662,6 +661,9 @@ class ContractManager extends Component {
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
+    // Progress
+    this.props.setProgress({ is: true, });
+
     let valueState = this.state.valueTab;
     let valuePrev = prevState.valueTab;
     if (valueState !== valuePrev) {
@@ -714,6 +716,8 @@ class ContractManager extends Component {
             ];
 
             this.setState({dataSteps});
+            // Progress
+            this.props.setProgress({ is: false, });
           }
         })
         .catch(err => {
@@ -757,6 +761,13 @@ class ContractManager extends Component {
         });
     }
   }
+
+  /** listener when change props */
+  shouldComponentUpdate(nextProps, nextState) {
+    // Progress
+    this.props.setProgress({ is: true, });
+    return true;
+  }
 }
 
 /** map state with store states redux store */
@@ -776,6 +787,9 @@ function mapDispatchToProps(dispatch) {
     },
     filterTypeContractData: action => {
       dispatch(ActionCreator.filterContractData(action));
+    },
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
     },
   };
 }
