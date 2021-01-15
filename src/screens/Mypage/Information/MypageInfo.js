@@ -22,6 +22,7 @@ import {
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
+import Loading from '@Components/atoms/Loading';
 import ActionCreator from '@Actions';
 import { Account } from '@Services/apis';
 import editInfo from '@Assets/images/editInfo.png';
@@ -50,6 +51,7 @@ class MypageInfo extends Component {
       tabInfo: '',
       userInfo: {},
       data:{},
+      loading:false,
       isAgreeSNS:{
         sms: false,
         email: false
@@ -100,7 +102,7 @@ class MypageInfo extends Component {
 
   onSubmit = () => {
     const { data,isAgreeSNS } = this.state;
-
+    this.setState({loading: true});
     Account.editMyInfo({
       fullName: data.fullName,
       passwordOld: data.passwordOld,
@@ -108,6 +110,7 @@ class MypageInfo extends Component {
       emailRcv: isAgreeSNS.email,
       smsRcv: isAgreeSNS.sms
     }).then(res => {
+      this.setState({loading: false});
       this.props.showPopup({
         type: 'confirm',
         title: '회원정보 수정 완료',
@@ -115,14 +118,15 @@ class MypageInfo extends Component {
         image: editInfo
       });
       console.log('editMyInfo', res);
-    }).catch(err => {
-      console.log(err);
+    }).catch(error => {
+      this.setState({loading: false});
+      alert(error.response.data.message);
     })
   };
 
   render() {
 
-    const { checkAll, checkSMS, checkMail, tabInfo, userInfo, data, isAgreeSNS } = this.state;
+    const { checkAll, checkSMS, checkMail, tabInfo, loading, data, isAgreeSNS } = this.state;
 
     return (
       <>
@@ -239,6 +243,7 @@ class MypageInfo extends Component {
             확인
           </Button>
         </View>
+        <Loading loading={loading}/>
       </>
     );
   }

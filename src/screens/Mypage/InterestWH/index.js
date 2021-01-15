@@ -12,11 +12,12 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  TextInput,
+  TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Text } from 'react-native-paper';
 import { Fav, Warehouse } from '@Services/apis';
+import Loading from '@Components/atoms/Loading';
 import { debounce } from "lodash";
 
 // Local Imports
@@ -27,6 +28,7 @@ import ActionCreator from '@Actions';
 import box from '@Assets/images/box.png';
 import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
+import {StringUtils} from '@Services/utils';
 
 class InterestWarehouse extends Component {
   constructor (props) {
@@ -34,7 +36,7 @@ class InterestWarehouse extends Component {
     this.webView = null;
     this.state = {
       listItem: [],
-      isLoading:false
+      loading:false
     };
 
     this.navigation = props.navigation;
@@ -42,7 +44,10 @@ class InterestWarehouse extends Component {
 
   /** when after render DOM */
   componentDidMount () {
-    this.getDataFavorite();
+    this.reRenderSomething= this.props.navigation.addListener('focus', () => {
+      this.getDataFavorite();
+    });
+    // this.getDataFavorite();
   }
 
   // setDebounce = debounce((callback) => {
@@ -57,9 +62,12 @@ class InterestWarehouse extends Component {
   //     });
   //   }
   // }
+  componentWillUnmount() {
+    this.reRenderSomething;
+  }
 
   UNSAFE_componentWillReceiveProps(newProps) {
-      this.setState({ isLoading: !this.state.isLoading });
+      this.setState({ loading: !this.state.loading });
   }
 
   getDataFavorite = () => {
@@ -113,21 +121,21 @@ class InterestWarehouse extends Component {
           resultArr.push(`최대 ${WHItem.keep.subTitle}`)
         }
         if (WHItem.keep && WHItem.keep.splyAmount) {
-          resultArr.push(`보관단가 ${WHItem.keep.splyAmount.toLocaleString()}원 ~/${WHItem.keep.unit}`)
+          resultArr.push(`보관단가 ${StringUtils.money(WHItem.keep.splyAmount)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
         }
         if (WHItem.keep && WHItem.keep.mgmtChrg) {
-          resultArr.push(`관리단가 ${WHItem.keep.mgmtChrg.toLocaleString()}원 ~/${WHItem.keep.unit}`)
+          resultArr.push(`관리단가 ${StringUtils.money(WHItem.keep.mgmtChrg)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
         }
         return resultArr.join(', ')
       case 'TRUST':
         if (WHItem.trust && WHItem.trust.subTitle) {
-          resultArr.push(`최대 ${WHItem.trust.subTitle.toLocaleString()}`)
+          resultArr.push(`최대 ${StringUtils.numberComma(WHItem.trust.subTitle)}`)
         }
         if (WHItem.trust && WHItem.trust.whinChrg) {
-          resultArr.push(`보관단가 ${WHItem.trust.whinChrg.toLocaleString()}원 ~/${WHItem.trust.unit}`)
+          resultArr.push(`보관단가 ${StringUtils.money(WHItem.trust.whinChrg)} ~/${WHItem.trust ? WHItem.trust.unit : ''}`)
         }
         if (WHItem.trust && WHItem.trust.whoutChrg) {
-          resultArr.push(`관리단가 ${WHItem.trust.whoutChrg.toLocaleString()}원 ~/${WHItem.trust.unit}`)
+          resultArr.push(`관리단가 ${StringUtils.money(WHItem.trust.whoutChrg)} ~/${WHItem.trust ? WHItem.trust.unit : ''}`)
         }
         return resultArr.join(', ')
     }
@@ -145,7 +153,7 @@ class InterestWarehouse extends Component {
   }
 
   render () {
-    const { listItem } = this.state;
+    const { listItem, loading } = this.state;
     let view =
       listItem &&
       listItem.map((item, index) => {
@@ -228,6 +236,7 @@ class InterestWarehouse extends Component {
             </TouchableOpacity>
           </View>
         )}
+        <Loading loading={loading}/>
       </ScrollView>
     );
   }

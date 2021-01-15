@@ -24,6 +24,7 @@ import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import CertMobile from '@Components/organisms/CertMobile';
 import Appbars from '@Components/organisms/AppBar';
+import Loading from '@Components/atoms/Loading';
 import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
 import { WarehouseOwner, Warehouse , MediaUpload} from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
@@ -66,6 +67,7 @@ class RegisterBusinessInfo extends Component {
       selectedInfoIndex: 0,
       isCert: false,
       photo: null,
+      loading:false,
       businessList:[
         {
           label: '사업자정보 신규 등록',
@@ -100,7 +102,7 @@ class RegisterBusinessInfo extends Component {
 
       }
     }).catch(error => {
-      alert('statusWhrgByOwner:' + error.response.data.message);
+      // alert('statusWhrgByOwner:' + error.response.data.message);
     });
 
     WarehouseOwner.possibleEntrp().then(res => {
@@ -123,6 +125,7 @@ class RegisterBusinessInfo extends Component {
         ]
       });
     }).catch(error => {
+      // TODO 비 로그인 시 체크 필요.
       alert('possibleEntrp:' + error);
     });
   }
@@ -169,20 +172,6 @@ class RegisterBusinessInfo extends Component {
       });
   }
 
-  handleChoosePhoto = () => {
-    const options={
-      title:'select a photo',
-      takePhotoButtonTitle:'Take a Photo',
-      chooseFrmoLibraryButtonTitle:'Choose from Gallery',
-      quality:1
-  };
-    launchImageLibrary(options, response => {
-      if (response.uri) {
-        this.setState({ photo: response });
-      }
-    });
-  };
-
   /**
      * Set business data
      * */
@@ -223,7 +212,7 @@ class RegisterBusinessInfo extends Component {
       this.setState({
         businessMode: i
       });
-  
+
       // this.setBusinessData(listBusinessInfo[i]);
     } else {
       this.setState({
@@ -231,6 +220,58 @@ class RegisterBusinessInfo extends Component {
       });
     }
   }
+
+  chooseFile = (type) => {
+    const { businessInfo } = this.state;
+
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      let file = {
+        fileCopyUri: response.uri,
+        name: response.fileName,
+        size: response.fileSize,
+        type: response.type,
+        uri: response.uri
+      }
+
+      this.setState({ singleFile: file }, async () => {
+        if (response != null) {
+          // If file selected then create FormData
+          let { singleFile } = this.state;
+          const data = new FormData();
+          data.append('name', singleFile.name);
+          data.append('file', singleFile);
+          // Please change file upload URL
+          MediaUpload.uploadFile(data).then(respon => {
+            if (respon.status === 200) {
+              let { url } = respon.data;
+
+              var pathArray = url.split( '/' );
+              var host = pathArray[pathArray.length-1];
+
+              this.setState({
+                photo: url,
+                businessInfo: {
+                  ...businessInfo,
+                  regFile: host
+                }
+              });
+            }
+          }).catch(error => {
+            alert(' MediaUpload.uploadFile:' + error);
+          });
+        } else {
+          // If no file selected the show alert
+          alert('Please Select File first');
+        }
+      });
+    });
+  };
 
   // upload image
   handlePicker = async () => {
@@ -251,7 +292,7 @@ class RegisterBusinessInfo extends Component {
           MediaUpload.uploadFile(data).then(respon => {
             if (respon.status === 200) {
               let { url } = respon.data;
-            
+
               var pathArray = url.split( '/' );
               var host = pathArray[pathArray.length-1];
 
@@ -268,7 +309,7 @@ class RegisterBusinessInfo extends Component {
           });
         } else {
           // If no file selected the show alert
-          alert('Please Select File first');
+          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
         }
       });
     } catch (err) {
@@ -287,13 +328,16 @@ class RegisterBusinessInfo extends Component {
       return false
     }
 
-    console.log('dataWE', businessInfo)
+    console.log('dataWE', businessInfo);
+    this.setState({loading: true});
     // 창고주 정보 등록
     WarehouseOwner.regBusinessInfo(businessInfo).then(res => {
-      alert('창고 사업자 등록이 완료되었습니다.')
+      alert('창고 사업자 등록이 완료되었습니다.');
+      this.setState({loading: false});
       this.navigation.navigate('RegisterWH', res.data);
     }).catch(error => {
       alert('서버에러:' + error.response.data.message);
+      this.setState({loading: false});
     });
   };
 
@@ -313,7 +357,7 @@ class RegisterBusinessInfo extends Component {
 
 
   render() {
-    const { businessMode,businessInfo, photo,businessList, defautSelect, isPossible } = this.state;
+    const { businessMode,businessInfo, photo,businessList, defautSelect, isPossible , loading} = this.state;
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
@@ -371,7 +415,7 @@ class RegisterBusinessInfo extends Component {
                     value={businessList[businessMode].entrpNo}
                     colorLabel="#000000"
                   />
-                  <TextField 
+                  <TextField
                     labelTextField="주소"
                     colorLabel="#000000"
                     value={businessList[businessMode].address}
@@ -407,7 +451,7 @@ class RegisterBusinessInfo extends Component {
                     value={businessInfo.corpNumber ? businessInfo.corpNumber : ''}
                     colorLabel="#000000"
                   />
-                  <TextField 
+                  <TextField
                     labelTextField="사업자번호"
                     placeholder="'-'없이 입력해주세요."
                     colorLabel="#000000"
@@ -436,7 +480,7 @@ class RegisterBusinessInfo extends Component {
                   )}
                   <TouchableOpacity
                     style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                    onPress={this.handlePicker}>
+                    onPress={()=>this.chooseFile('photo')}>
                     <Text
                       style={[
                         DefaultStyle._textButton,
@@ -572,7 +616,7 @@ class RegisterBusinessInfo extends Component {
             </View>
         </View>
         <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0]}>
-         
+
 
         {isPossible ?
                (
@@ -621,6 +665,7 @@ class RegisterBusinessInfo extends Component {
           </Dialog>
         </Portal>
       </ScrollView>
+      <Loading loading={loading}/>
     </SafeAreaView>
     );
   }

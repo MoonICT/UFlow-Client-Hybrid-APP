@@ -886,7 +886,7 @@ function mapStateToProps (state) {
   return {
     count: state.home.count,
     isLogin: state.login,
-    lang: state.language.lang,  // TODO Require Lang
+    lang: state.global.lang,  // TODO Require Lang
   };
 }
 

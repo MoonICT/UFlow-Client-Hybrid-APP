@@ -23,9 +23,13 @@ import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
 import { Entrp, MediaUpload, Warehouse } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import CertMobile from '@Components/organisms/CertMobile';
+import Loading from '@Components/atoms/Loading';
 import DocumentPicker from 'react-native-document-picker';
 import Postcode from 'react-native-daum-postcode';
-
+import {
+  launchCamera,
+  launchImageLibrary
+} from 'react-native-image-picker';
 const tabSelect = [
   {
     id: 'tab1',
@@ -53,7 +57,8 @@ class MypageBusinessInfo extends Component {
       businessInfo: WarehouseProprietorInfo,
       selectedInfoIndex: 0,
       isCert: false,
-      photo: null
+      photo: null,
+      loading:false
     };
     this.navigation = props.navigation;
   }
@@ -71,7 +76,7 @@ class MypageBusinessInfo extends Component {
         })
       })
 
-      console.log('dataConvert', dataConvert);
+      // console.log('dataConvert', dataConvert);
 
       this.setState({
         listBusinessInfo: dataConvert
@@ -95,7 +100,7 @@ class MypageBusinessInfo extends Component {
   getKakaoAddress = (data) => {
     const { businessInfo } = this.state;
 
-    console.log('dataAddress', data);
+    // console.log('dataAddress', data);
 
     Warehouse.searchAddressKakao({ query: data.address })
       .then(res => {
@@ -125,26 +130,39 @@ class MypageBusinessInfo extends Component {
       });
   }
 
-  // upload image
-  handlePicker = async () => {
+  chooseFile = (type) => {
     const { businessInfo } = this.state;
 
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images],
-      });
-      this.setState({ singleFile: res }, async () => {
-        if (res != null) {
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      let file = {
+        fileCopyUri: response.uri,
+        name: response.fileName,
+        size: response.fileSize,
+        type: response.type,
+        uri: response.uri
+      }
+
+      this.setState({ singleFile: file }, async () => {
+        if (response != null) {
           // If file selected then create FormData
           let { singleFile } = this.state;
           const data = new FormData();
           data.append('name', singleFile.name);
           data.append('file', singleFile);
+          // console.log('append', singleFile)
+          // console.log('data', data)
           // Please change file upload URL
           MediaUpload.uploadFile(data).then(respon => {
+            // console.log('respon', respon)
             if (respon.status === 200) {
               let { url } = respon.data;
-            
+
               var pathArray = url.split( '/' );
               var host = pathArray[pathArray.length-1];
 
@@ -157,21 +175,65 @@ class MypageBusinessInfo extends Component {
               });
             }
           }).catch(error => {
-            alert('MediaUpload.uploadFile error:' + error);
+            alert('MediaUpload.uploadFile error:' + error.response.data.message);
           });
         } else {
           // If no file selected the show alert
-          alert('Please Select File first');
+          alert('등록하신 파일이 없습니다. 파일을 등록해주세요.');
         }
       });
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
-      } else {
-        throw err;
-      }
-    }
+    });
   };
+
+  // upload image
+  // handlePicker = async () => {
+  //   const { businessInfo } = this.state;
+
+  //   try {
+  //     const res = await DocumentPicker.pick({
+  //       type: [DocumentPicker.types.images],
+  //     });
+  //     this.setState({ singleFile: res }, async () => {
+  //       if (res != null) {
+  //         // If file selected then create FormData
+  //         let { singleFile } = this.state;
+  //         const data = new FormData();
+  //         data.append('name', singleFile.name);
+  //         data.append('file', singleFile);
+  //         console.log('append', singleFile)
+  //         console.log('data', data)
+  //         // Please change file upload URL
+  //         MediaUpload.uploadFile(data).then(respon => {
+  //           if (respon.status === 200) {
+  //             let { url } = respon.data;
+
+  //             var pathArray = url.split( '/' );
+  //             var host = pathArray[pathArray.length-1];
+
+  //             this.setState({
+  //               photo: url,
+  //               businessInfo: {
+  //                 ...businessInfo,
+  //                 regFile: host
+  //               }
+  //             });
+  //           }
+  //         }).catch(error => {
+  //           alert('MediaUpload.uploadFile error:' + error);
+  //         });
+  //       } else {
+  //         // If no file selected the show alert
+  //         alert('Please Select File first');
+  //       }
+  //     });
+  //   } catch (err) {
+  //     if (DocumentPicker.isCancel(err)) {
+  //       // User cancelled the picker, exit any dialogs or menus and move on
+  //     } else {
+  //       throw err;
+  //     }
+  //   }
+  // };
 
   /**
      * Set business data
@@ -192,9 +254,11 @@ class MypageBusinessInfo extends Component {
       jibunAddr: data.jibunAddr,
       roadAddr: data.roadAddr,
       gps: data.gps,
+      // etcFileName1: 'uflow_aebfe582aa2441b98aab42ded5e876ab.jpg',
+      etcFileName1: data.etcFileName1,
     }
 
-    console.log('setData ', setData)
+    // console.log('setData ', setData)
     this.setState({
       imageList: [{
         data_url: `${configURL.API_SERVER_ADDRESS}/${data.regFile}`,
@@ -227,22 +291,26 @@ class MypageBusinessInfo extends Component {
       alert('휴대폰 인증을 완료해주세요.')
       return false
     }
-    console.log('businessInfo123',businessInfo);
+    // console.log('최종 저장 사업자 정보 : ',businessInfo);
+
+    this.setState({loading: true});
 
     Entrp.update(businessInfo).then(res => {
-      alert('Edit Bussiness Success')
-      console.log('::::: API Add Business Info  :::::', res)
+      alert('사업자 정보가 수정되었습니다.')
+      this.setState({loading: false});
+      // console.log('::::: API Add Business Info  :::::', res)
       // setIsComplete(true)
     }).catch(error => {
-      alert('서버에러:' + error.response.data.message)
+      alert('서버에러:' + error.response.data.message);
+      this.setState({loading: false});
     });
   };
 
 
   render() {
-    const { listBusinessInfo,businessInfo, photo } = this.state;
+    const { listBusinessInfo,businessInfo, photo, loading } = this.state;
 
-    console.log(`${configURL.FILE_SERVER_ADDRESS}/${businessInfo.regFile}`)
+    // console.log(`${configURL.FILE_SERVER_ADDRESS}/${businessInfo.regFile}`)
     return (
       <ScrollView>
         <View style={[DefaultStyle._cards]}>
@@ -287,7 +355,7 @@ class MypageBusinessInfo extends Component {
               value={businessInfo.corpNumber ? businessInfo.corpNumber : ''}
               colorLabel="#000000"
             />
-            <TextField 
+            <TextField
               labelTextField="사업자번호"
               colorLabel="#000000"
               valueProps={(e) => {
@@ -315,7 +383,7 @@ class MypageBusinessInfo extends Component {
             )}
             <TouchableOpacity
               style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-              onPress={this.handlePicker}>
+              onPress={()=>this.chooseFile('photo')}>
               <Text
                 style={[
                   DefaultStyle._textButton,
@@ -468,6 +536,7 @@ class MypageBusinessInfo extends Component {
             </Dialog.Content>
           </Dialog>
         </Portal>
+        <Loading loading={loading}/>
       </ScrollView>
     );
   }

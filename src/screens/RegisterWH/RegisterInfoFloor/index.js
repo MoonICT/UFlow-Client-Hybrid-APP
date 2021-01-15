@@ -81,14 +81,14 @@ class RegisterInfoFloor extends Component {
   }
 
   goToSlider = index => {
-    console.log(index, 'goToSlider');
+
     this.slider.goTo(index);
   };
 
   _addForm = () => {
     let list = this.state.floors;
     list.push({});
-    console.log(list.length, 'list.length 1111');
+
     this.setState({ floors: list, numberSlide: list.length - 1 });
     setTimeout(() => {
       this.goToSlider(list.length - 1);

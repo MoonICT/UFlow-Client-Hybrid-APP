@@ -1320,5 +1320,5 @@ export default StyleSheet.create({
   },
   _errorText: {
     borderColor: 'red',
-  },
+  }
 });

@@ -229,7 +229,7 @@ class RegisterIntro extends Component {
               <TextInput
                 style={[SS.inputIntro, SS.inputLoction]}
                 onChangeText={text => this.onChangeLocation(text)}
-                value={address && address.address && address.address.detail}
+                value={address && address.address && address.detail}
                 placeholder={'에이씨티앤코아물류'}
               />
             </View>

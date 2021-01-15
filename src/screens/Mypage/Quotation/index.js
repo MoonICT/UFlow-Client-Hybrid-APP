@@ -100,7 +100,7 @@ class Quotation extends Component {
         /*보관유형*/
         keepType: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         /*전용면적*/
-        prvtArea: dataApi.warehouse.prvtArea ? dataApi.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
+        prvtArea: dataApi.warehouse.prvtArea ? StringUtils.displayAreaUnit(dataApi.warehouse.prvtArea) : "-",
         /*임대 가능기간*/
         usblYmd: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
         /*보관단가*/
@@ -127,7 +127,7 @@ class Quotation extends Component {
         /*수탁 가능기간*/
         usblYmd: StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtTrust.usblYmdTo),
         /*수탁 가용수량*/
-        usblValue: dataApi.whrgMgmtTrust.usblValue ? dataApi.whrgMgmtTrust.usblValue.toLocaleString() + ' ' + (dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName) : '-',
+        usblValue: dataApi.whrgMgmtTrust.usblValue ? StringUtils.numberComma(dataApi.whrgMgmtTrust.usblValue) + ' ' + (dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName) : '-',
         /*보관단가*/
         splyAmount: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount),
         /*가공단가*/

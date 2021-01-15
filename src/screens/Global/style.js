@@ -6,7 +6,7 @@
  * @desc [description]
  */
 
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,4 +15,17 @@ export const styles = StyleSheet.create({
     // paddingLeft: 16,
     // paddingRight: 16,
   },
+  progressBarWrap: {
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  progressBar: {
+    width: '100%',
+    height: 5,
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.1)'
+  }
 });

@@ -82,8 +82,6 @@ class More extends Component {
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             <Text style={[DefaultStyle._textTitleCard, { marginBottom: 18 }]}>
               더보기
-              {'\n'}
-              {getMsg(this.props.lang, 'CERT0001', 'Empty')}
             </Text>
             <TouchableOpacity
               style={[DefaultStyle.btnItem, S.infoUser]}
@@ -366,24 +364,40 @@ class More extends Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('SampleScreen')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>Screen Test</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
+              {/*<TouchableOpacity*/}
+              {/*style={DefaultStyle.btnItem}*/}
+              {/*onPress={() => this.navigation.navigate('SampleScreen')}>*/}
+              {/*<View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*<Text style={DefaultStyle.titleItem}>Screen Test</Text>*/}
+              {/*</View>*/}
+              {/*<View style={DefaultStyle.rightItem}>*/}
+              {/*<Icon*/}
+              {/*name="arrow-forward-ios"*/}
+              {/*size={12}*/}
+              {/*color="rgba(0, 0, 0, 0.54)"*/}
+              {/*/>*/}
+              {/*</View>*/}
+              {/*</TouchableOpacity>*/}
             </View>
           )}
 
+
           <View style={S.footerMore}>
+            <TouchableOpacity
+              style={DefaultStyle.btnItem}
+              onPress={() => this.navigation.navigate('Language')}>
+              <View style={[DefaultStyle.leftItem, S.item]}>
+                <Text style={DefaultStyle.titleItem}>언어 설정</Text>
+              </View>
+              <View style={DefaultStyle.rightItem}>
+                <Icon
+                  name="arrow-forward-ios"
+                  size={12}
+                  color="rgba(0, 0, 0, 0.54)"
+                />
+              </View>
+            </TouchableOpacity>
+
             <TouchableOpacity
               onPress={() => {
                 signOut();
@@ -437,13 +451,16 @@ function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     isLogin: state.home.isLogin,
-    lang: state.language.lang, // TODO Require Lang
+    lang: state.global.lang,
   };
 }
 
 /** dispatch action to redux */
 function mapDispatchToProps (dispatch) {
   return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
   };
 }
 

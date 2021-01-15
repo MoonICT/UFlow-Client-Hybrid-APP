@@ -8,7 +8,8 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
+import * as Progress from 'react-native-progress';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
@@ -18,7 +19,10 @@ import { Menu } from '@Services/apis';
 
 //---> Components
 import Popup from '@Components/organisms/Popup';
+import Loading from '@Components/atoms/Loading';
 import { connect } from "react-redux";
+import AsyncStorage from "@react-native-community/async-storage";
+import { LANG_STATUS_KEY } from '@Constant';
 
 class Global extends Component {
   constructor (props) {
@@ -26,19 +30,37 @@ class Global extends Component {
   }
 
   render () {
-    const { children } = this.props;
+    const { children, progress } = this.props;
 
     return (
       <SafeAreaView style={[DefaultStyle.container, S.container]}>
-        <Popup />
-        {children}
+        <View style={[DefaultStyle.container, S.container, { position: 'relative', }]}>
+          <Popup />
+          {children}
+
+          {progress.type === 'CIRCLE' && <Loading loading={progress.is} />}
+
+          {progress.type === 'BAR' && progress.is &&
+          <View style={[S.progressBarWrap]}>
+            <Progress.Bar indeterminate={true}
+                          indeterminateAnimationDuration={700}
+                          color={'#ff6d00'}
+                          borderRadius={0}
+                          borderWidth={0}
+                          width={null}
+                          style={[S.progressBar]} /></View>}
+        </View>
       </SafeAreaView>
     );
   }
 
   async componentDidMount () {
     // 번역 로드.
-    const data = await Menu.localization({ language: 'ko-KR', });
+    const langData = await AsyncStorage.getItem(LANG_STATUS_KEY);
+    if (!langData) {
+      AsyncStorage.setItem(LANG_STATUS_KEY, 'ko-KR');
+    }
+    const data = await Menu.localization({ language: langData ? langData : 'ko-KR', });
     let resultObj = {}
     if (data && data.length > 0) {
       data.map(item => {
@@ -53,6 +75,7 @@ class Global extends Component {
 function mapStateToProps (state) {
   // console.log('++++++mapStateToProps :', state);
   return {
+    progress: state.global.progress,
   };
 }
 

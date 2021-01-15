@@ -14,6 +14,7 @@ import {ToastShow} from '@Utils/Toast';
 import ImageModal from 'react-native-image-modal';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 import {
   SafeAreaView,
   View,
@@ -245,7 +246,7 @@ export default class DetailsManager extends Component {
         },
         {
           type: '물동량',
-          value: cntrTrustResBody && cntrTrustResBody.cntrValue && (cntrTrustResBody.cntrValue.toLocaleString() + " " + (cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName)),
+          value: cntrTrustResBody && cntrTrustResBody.cntrValue && (cntrTrustResBody.cntrValue.량() + " " + (cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName)),
         },
         {
           type: '수탁 기간',
@@ -611,7 +612,6 @@ export default class DetailsManager extends Component {
                   return;
                 }
                 let data = {
-                  filename,
                   rentWarehNo: rentWarehNo,
                   whoutExpct: Moment(ExpctYmd).valueOf(),
                   decisQty: Number(createValue),
@@ -657,7 +657,6 @@ export default class DetailsManager extends Component {
                   return;
                 }
                 let data = {
-                  filename,
                   rentWarehNo: rentWarehNo,
                   whinExpct: Moment(ExpctYmd).valueOf(),
                   whinDecisQty: Number(createValue),
@@ -689,7 +688,7 @@ export default class DetailsManager extends Component {
                 });
               }
 
-              
+
             })
 
           }
@@ -702,7 +701,7 @@ export default class DetailsManager extends Component {
       }
 
 
-     
+
 
     } else if (type === 'TENANT') {
       // 임차인
@@ -826,9 +825,29 @@ export default class DetailsManager extends Component {
 
   }
 
+  chooseFile = (type) => {
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      let file = {
+        fileCopyUri: response.uri,
+        name: response.fileName,
+        size: response.fileSize,
+        type: response.type,
+        uri: response.uri
+      }
+
+      this.setState({ singleFile: file });
+    });
+  };
+
     // upload image
     handlePicker = async () => {
-  
+
       try {
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.images],
@@ -1376,7 +1395,7 @@ export default class DetailsManager extends Component {
               {type === 'OWNER' &&
               <View>
                 {
-                  this.state.singleFile && 
+                  this.state.singleFile &&
                   <View style={SS.infoAttach}>
                     <Text style={SS.textAttach}>{this.state.singleFile.name}</Text>
                     <IconButton

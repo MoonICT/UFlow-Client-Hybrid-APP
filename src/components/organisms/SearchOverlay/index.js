@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Searchbar, List, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -36,7 +36,7 @@ class SearchOverlay extends Component {
    * */
   setDebounce = debounce(callback => {
     callback();
-  }, 500);
+  }, 300);
 
   /**
    * On change search query.
@@ -65,7 +65,7 @@ class SearchOverlay extends Component {
                   isProgress: false,
                 });
               }.bind(this),
-              300,
+              100,
             );
           })
           .catch(err => {
@@ -227,7 +227,7 @@ class SearchOverlay extends Component {
                 DefaultStyle.w_100,
                 DefaultStyle.h_200,
               ]}>
-              <Progress />
+              <ActivityIndicator size="large" color="#ff6d00" />
             </View>
           ) : (
             this.renderSearchWarehouse()

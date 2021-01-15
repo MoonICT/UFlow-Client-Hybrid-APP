@@ -141,17 +141,17 @@ class RequestContract extends Component {
             </View>
             {/** END:CONTRACT INFO **/}
 
-            {contractType === 'keep' ? (
-              <View style={[DefaultStyle._body, DefaultStyle._margin0]}>
-                <View style={DefaultStyle._footerCards}>
-                  <Text style={S.amount}>예상 견적 금액</Text>
-                  <Text style={S.total}>
-                    {(keepTrustContract) ?
-                      StringUtils.moneyConvert(Number(keepTrustContract.splyAmount) + Number(keepTrustContract.mgmtChrg)) : '-'}
-                  </Text>
-                </View>
-              </View>
-            ) : null}
+            {/*{contractType === 'keep' ? (*/}
+              {/*<View style={[DefaultStyle._body, DefaultStyle._margin0]}>*/}
+                {/*<View style={DefaultStyle._footerCards}>*/}
+                  {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
+                  {/*<Text style={S.total}>*/}
+                    {/*{(keepTrustContract) ?*/}
+                      {/*StringUtils.moneyConvert(Number(keepTrustContract.splyAmount) + Number(keepTrustContract.mgmtChrg)) : '-'}*/}
+                  {/*</Text>*/}
+                {/*</View>*/}
+              {/*</View>*/}
+            {/*) : null}*/}
 
             {keepTrustContract ?
               <ContractInformation
@@ -337,7 +337,7 @@ class RequestContract extends Component {
           /*보관유형*/
           keepType: warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
           /*전용면적*/
-          prvtArea: warehouseInfoData.warehouse.prvtArea ? warehouseInfoData.warehouse.prvtArea.toLocaleString() + " ㎡" : "0 ㎡",
+          prvtArea: warehouseInfoData.warehouse.prvtArea ? StringUtils.displayAreaUnit(warehouseInfoData.warehouse.prvtArea) : "0 ㎡",
           /*임대 가능기간*/
           usblYmd: StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdTo),
           /*보관단가*/
@@ -363,7 +363,7 @@ class RequestContract extends Component {
           /*수탁 가능기간*/
           usblYmd: StringUtils.dateStr(warehouseInfoData.whrgMgmtTrust.usblYmdFrom) + '~' + StringUtils.dateStr(warehouseInfoData.whrgMgmtTrust.usblYmdTo),
           /*수탁 가용수량*/
-          usblValue: warehouseInfoData.whrgMgmtTrust.usblValue ? warehouseInfoData.whrgMgmtTrust.usblValue.toLocaleString() + ' ' + (warehouseInfoData.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName) : '-',
+          usblValue: warehouseInfoData.whrgMgmtTrust.usblValue ? StringUtils.numberComma(warehouseInfoData.whrgMgmtTrust.usblValue) + ' ' + (warehouseInfoData.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName) : '-',
           /*보관단가*/
           splyAmount: StringUtils.moneyConvert(warehouseInfoData.whrgMgmtTrust.splyAmount),
           /*가공단가*/
@@ -402,7 +402,7 @@ class RequestContract extends Component {
             /*보관유형*/
             keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
             /*공용면적*/
-            prvtArea: keepTrustEstimate.cmnArea ? keepTrustEstimate.cmnArea.toLocaleString() + " ㎡" : "0 ㎡",
+            prvtArea: keepTrustEstimate.cmnArea ? StringUtils.displayAreaUnit(keepTrustEstimate.cmnArea) : "-",
             /*임대 가능기간*/
             // usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
             usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
@@ -435,7 +435,7 @@ class RequestContract extends Component {
               // usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
               usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
               /*수탁 가용수량*/
-              usblValue: keepTrustContract.cntrValue ? keepTrustContract.cntrValue.toLocaleString() + ' ' + (keepTrustContract.calUnitDvCode.stdDetailCodeName) : '-',
+              usblValue: keepTrustContract.cntrValue ? StringUtils.numberComma(keepTrustContract.cntrValue) + ' ' + (keepTrustContract.calUnitDvCode.stdDetailCodeName) : '-',
               /*보관단가*/
               splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
               /*가공단가*/
@@ -477,7 +477,7 @@ class RequestContract extends Component {
             /*보관유형*/
             keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
             /*공용면적*/
-            prvtArea: keepTrustEstimate.cmnArea ? keepTrustEstimate.cmnArea.toLocaleString() + " ㎡" : "0 ㎡",
+            prvtArea: keepTrustEstimate.cmnArea ? StringUtils.displayAreaUnit(keepTrustEstimate.cmnArea) : "0 ㎡",
             /*임대 가능기간*/
             usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
             /*보관단가*/
@@ -515,7 +515,7 @@ class RequestContract extends Component {
               /*수탁 가용일자*/
               usblYmd: StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) + '~' + StringUtils.dateStr(keepTrustContract.cntrYmdTo),
               /*수탁 가용수량*/
-              usblValue: keepTrustContract.cntrValue ? keepTrustContract.cntrValue.toLocaleString() + ' ' + (keepTrustContract.calUnitDvCode.stdDetailCodeName) : '-',
+              usblValue: keepTrustContract.cntrValue ? StringUtils.moneyConvert(keepTrustContract.cntrValue) + ' ' + (keepTrustContract.calUnitDvCode.stdDetailCodeName) : '-',
               /*보관단가*/
               splyAmount: StringUtils.moneyConvert(keepTrustContract.splyAmount),
               /*가공단가*/
