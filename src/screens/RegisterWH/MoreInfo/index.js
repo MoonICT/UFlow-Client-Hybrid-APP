@@ -7,27 +7,19 @@
 // Global Imports
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   SafeAreaView,
   View,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
-  Image,
-  Platform,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
-  Card,
   Appbar,
   Checkbox,
   Text,
-  Switch,
-  IconButton,
 } from 'react-native-paper';
-import DatePicker from '@Components/organisms/DatePicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 // Local Imports
@@ -36,13 +28,10 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';
-import { styles as SS } from './style';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 import { MyPage } from '@Services/apis';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 
-const checkIos = Platform.OS === 'ios' ? true : false;
-// import Form from './form';
 class RegisterMoreInfo extends Component {
   constructor(props) {
     super(props);
@@ -160,8 +149,10 @@ class RegisterMoreInfo extends Component {
         return (
           <View style={S.optionCheck}>
             <CheckBox
-              tintColors={checkIos === true ? '#ff6d00' : { true: '#ff6d00' }}
+              tintColors={{ true: '#ff6d00' }}
               onCheckColor="#ff6d00"
+              onTintColor="#ff6d00"
+              boxType="square"
               value={checkItem ? true : false}
               onValueChange={() => {
                 let indexItem = addOptDvCodes.indexOf(item.value);
@@ -193,8 +184,10 @@ class RegisterMoreInfo extends Component {
         return (
           <View style={S.optionCheck}>
             <CheckBox
-              tintColors={checkIos === true ? '#ff6d00' : { true: '#ff6d00' }}
+              tintColors={{ true: '#ff6d00' }}
               onCheckColor="#ff6d00"
+              onTintColor="#ff6d00"
+              boxType="square"
               value={checkItem ? true : false}
               onValueChange={() => {
                 let indexItem = insrDvCodes.indexOf(item.value);
@@ -594,7 +587,6 @@ class RegisterMoreInfo extends Component {
       .then(res => {
         if (res.status === 200) {
           let data = res.data._embedded.detailCodes;
-          // console.log('datasssssssssssssss :>> ', data);
           let insrDvCodeData =
             data &&
             data.map((item, index) => {
@@ -622,7 +614,6 @@ class RegisterMoreInfo extends Component {
 function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
-    // count: state.home.count,
     imageStore: state.registerWH.pimages,
     dataMoreInfo: state.registerWH,
   };
@@ -637,9 +628,6 @@ function mapDispatchToProps(dispatch) {
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
   };
 }
 
