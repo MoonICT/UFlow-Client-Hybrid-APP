@@ -71,6 +71,8 @@ class InterestWarehouse extends Component {
   }
 
   getDataFavorite = () => {
+    this.props.setProgress({ is: true, });
+
     Fav.page().then(res => {
       let resultData = res.data && res.data._embedded && res.data._embedded.mbspUserFavResBodies ? res.data._embedded.mbspUserFavResBodies : [];
       let dataConvert = [];
@@ -107,6 +109,7 @@ class InterestWarehouse extends Component {
         listItem: dataConvert
       });
 
+      this.props.setProgress({ is: false, });
     }).catch(error => {
       alert(error.response.data.message);
     });
@@ -241,11 +244,31 @@ class InterestWarehouse extends Component {
     );
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // Progress
-    console.log('is Progress !!!')
-    this.props.setProgress({ is: true, });
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // Progress
+  //   console.log('is Progress !!!')
+  //   this.props.setProgress({ is: true, });
+  //   return true;
+  // }
 }
 
-export default InterestWarehouse;
+/** map state with store states redux store */
+function mapStateToProps (state) {
+  // console.log('++++++mapStateToProps: ', state);
+  return {
+  };
+}
+
+/** dispatch action to redux */
+function mapDispatchToProps (dispatch) {
+  return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(InterestWarehouse);

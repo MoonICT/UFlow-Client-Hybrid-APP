@@ -69,8 +69,8 @@ class ContractInformation extends Component {
       status,
       rentUserNo,
       warehSeq,
+      thumbnail,
     } = this.props;
-
     let dataTable = [
       {
         type: '계약 요청일자',
@@ -106,6 +106,7 @@ class ContractInformation extends Component {
                 rentUserNo,
                 warehSeq,
                 type,
+                thumbnail,
                 warehouse: keepTrustContract.warehouse,
               })
             }>
@@ -133,6 +134,7 @@ class ContractInformation extends Component {
             contractType={contractType} // KEEP || TRUST
             rentUserNo={rentUserNo}
             warehSeq={warehSeq}
+            thumbnail={thumbnail}
           />
         );
         break;

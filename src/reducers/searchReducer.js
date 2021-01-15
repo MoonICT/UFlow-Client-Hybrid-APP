@@ -4,6 +4,7 @@ import { WarehouseSearchFilterModel } from '@Services/apis/models/warehouse';
 const defaultState = {
   isSearchToggle: false,
   isFilterToggle: false,
+  searchQuery: '',
   whFilter: JSON.parse(JSON.stringify(WarehouseSearchFilterModel)),
   filterList: [
     {
@@ -92,6 +93,11 @@ export default (state = defaultState, action) => {
           ...state.filterCodes,
           ...action.payload,
         }
+      };
+    case types.SEARCH_SET_SEARCH_QUERY:
+      return {
+        ...state,
+        searchQuery: action.payload
       }
     // TODO Action 추가 시 아래에 정의.
     default:
