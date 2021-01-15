@@ -32,7 +32,7 @@ class Popup extends Component {
 
   render () {
     const { popup, title, content, hidePopup, type, image } = this.props;
-    // console.log('type :>> ', type);
+    console.log('type :>> ', type);
     return (
       <Fragment>
         {type === 'confirm' ? (

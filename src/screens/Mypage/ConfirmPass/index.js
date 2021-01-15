@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
 import TextField from '@Components/organisms/TextField';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -73,19 +74,13 @@ class WithdrawalInformation extends Component {
     const { params } = this.props.route;
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="회원탈퇴"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+
+        <HistoryBackActionBar
+          title={'회원탈퇴'}
+          navigation={this.navigation}
+        />
+
+
         <ScrollView>
           <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
             <View style={[DefaultStyle._titleCard, { marginBottom: 24 }]}>

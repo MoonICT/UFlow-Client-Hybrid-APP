@@ -7,7 +7,7 @@
 // Global Imports
 import React, { Component } from 'react';
 import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { Appbar, Text, Searchbar } from 'react-native-paper';
 
 // Local Imports
@@ -206,19 +206,22 @@ class Inquiry extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="문의내역"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+        <HistoryBackActionBar
+          title={'문의내역'}
+          navigation={this.navigation}/>
+        {/*<Appbars>*/}
+        {/*  <Appbar.Action*/}
+        {/*    icon="arrow-left"*/}
+        {/*    color="black"*/}
+        {/*    onPress={() => this.navigation.goBack()}*/}
+        {/*  />*/}
+        {/*  <Appbar.Content*/}
+        {/*    title="문의내역"*/}
+        {/*    color="black"*/}
+        {/*    fontSize="12"*/}
+        {/*    style={DefaultStyle.headerTitle}*/}
+        {/*  />*/}
+        {/*</Appbars>*/}
         <ScrollView>
           <View style={{ flex: 1 }}>
             <AppGrid data={tabInquiry} title={titleActive} titleProps={this.handleClickTab} />

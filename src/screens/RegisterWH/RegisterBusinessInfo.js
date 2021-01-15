@@ -238,7 +238,7 @@ class RegisterBusinessInfo extends Component {
         type: response.type,
         uri: response.uri
       }
-     
+
       this.setState({ singleFile: file }, async () => {
         if (response != null) {
           // If file selected then create FormData
@@ -362,6 +362,7 @@ class RegisterBusinessInfo extends Component {
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
+
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -375,12 +376,15 @@ class RegisterBusinessInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
+
       <ScrollView style={[DefaultStyle._container]}>
         <View style={[DefaultStyle.p_16]}>
+
           <View style={[DefaultStyle._titleCardCol]}>
             <Text style={[DefaultStyle._textTitleCard]}>창고주 정보 등록</Text>
             <Text style={[DefaultStyle._textDesCard]}>창고 등록을 위해서 회사 정보를 입력해 주세요.</Text>
           </View>
+
           <View>
             <Select
               data={businessList}

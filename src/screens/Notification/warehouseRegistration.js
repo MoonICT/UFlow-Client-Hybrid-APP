@@ -17,7 +17,7 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import AppGrid from '@Components/organisms/AppGrid';
@@ -364,19 +364,10 @@ export default class Notification extends Component {
     return (
       <SafeAreaView style={{ backgroundColor: 'white' }}>
         {/* <View style={{ backgroundColor: 'white' }}> */}
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.props.nav.goBack()}
-          />
-          <Appbar.Content
-            title="마이페이지"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+        <HistoryBackActionBar
+          title={'서비스 이용안내'}
+          navigation={this.props.nav}/>
+
         <View style={[S.line, { width: windowWidth }]}>
           <Text />
         </View>

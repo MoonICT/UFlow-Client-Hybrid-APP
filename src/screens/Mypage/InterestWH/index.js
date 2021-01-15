@@ -29,6 +29,9 @@ import box from '@Assets/images/box.png';
 import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
 import { StringUtils } from '@Services/utils';
+import AsyncStorage from "@react-native-community/async-storage";
+import { Account } from '@Services/apis';
+import { TOKEN } from '@Constant';
 
 class InterestWarehouse extends Component {
   constructor (props) {
@@ -42,11 +45,38 @@ class InterestWarehouse extends Component {
     this.navigation = props.navigation;
   }
 
+  async UNSAFE_componentWillMount () {
+
+  }
+
+
   /** when after render DOM */
-  componentDidMount () {
-    this.reRenderSomething = this.props.navigation.addListener('focus', () => {
-      this.getDataFavorite();
-    });
+  async componentDidMount () {
+    const value = await AsyncStorage.getItem(TOKEN);
+    // console.log('More Token ==>', value);
+    Account.getMe()
+      .then(res => {
+        // console.log('::::: Get Me :::::', res);
+        const status = res.status;
+        if (status === 200) {
+          this.setState({
+            isLogin: true,
+            email: res.data.email,
+            fullName: res.data.fullName,
+          });
+        }
+
+        this.reRenderSomething = this.props.navigation.addListener('focus', () => {
+          this.getDataFavorite();
+        });
+      })
+      .catch(err => {
+        console.log('errHome', err);
+      });
+    if (value) {
+      this.setState({ token: value });
+    }
+
     // this.getDataFavorite();
   }
 
