@@ -84,8 +84,10 @@ class RequestContract extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView>
-          <View style={[DefaultStyle._body, { paddingBottom: 300 }]}>
+        <View>
+          
+        <ScrollView  >
+          <View style={[DefaultStyle._body,{paddingBottom:300}]}>
             {/** HEADER **/}
             <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
               <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
@@ -165,25 +167,25 @@ class RequestContract extends Component {
             {/*</View>*/}
             {/*</View>*/}
             {/*) : null}*/}
-
-            {keepTrustContract ? (
-              <ContractInformation
-                navigation={this.navigation}
-                route={this.props.route}
-                detailEstimate={detailEstimate} // 계약 기본 정보
-                keepTrustContract={keepTrustContract} // keep|trust
-                type={type}
-                contractType={contractType}
-                status={status}
-                rentUserNo={rentUserNo}
-                warehSeq={warehSeq}
-                thumbnail={thumbnail}
-              />
-            ) : (
-              <></>
-            )}
+        {keepTrustContract ? (
+          <ContractInformation
+            navigation={this.navigation}
+            route={this.props.route}
+            detailEstimate={detailEstimate} // 계약 기본 정보
+            keepTrustContract={keepTrustContract} // keep|trust
+            type={type}
+            contractType={contractType}
+            status={status}
+            rentUserNo={rentUserNo}
+            warehSeq={warehSeq}
+            thumbnail={thumbnail}
+          />
+        ) : (
+          <></>
+        )}
           </View>
         </ScrollView>
+        </View>
       </SafeAreaView>
     );
   }
