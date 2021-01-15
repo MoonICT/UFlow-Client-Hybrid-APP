@@ -75,7 +75,7 @@ class Chatting extends Component {
           <View style={SS.header}>
             <List.Section>
               <List.Accordion
-                title="에이씨티앤코아물류"
+                title=""
                 titleStyle={SS.name}
                 style={SS.headerChat}
                 left={() => <Image source={card} style={SS.avatar} />}>
@@ -132,15 +132,15 @@ class Chatting extends Component {
                   <Image source={card} style={SS.avatar} />
                   <View style={SS.status} />
                 </View>
-                <Text style={SS.name}>에이씨티앤코아물류</Text>
+                <Text style={SS.name}></Text>
                 <Text style={SS.time}>4분 전</Text>
               </View>
               <View style={SS.body}>
                 <Text style={SS.content}>안녕하세요!</Text>
                 <Text style={SS.content}>
-                  에이씨티앤코아물류입니다. 계약 요청을 해주셔서 감사합니다.
-                  계약 진행 전, 창고 및 계약 관련 문의사항을 채팅으로 문의해
-                  주세요.
+                  {/*에이씨티앤코아물류입니다. 계약 요청을 해주셔서 감사합니다.*/}
+                  {/*계약 진행 전, 창고 및 계약 관련 문의사항을 채팅으로 문의해*/}
+                  {/*주세요.*/}
                 </Text>
               </View>
             </View>

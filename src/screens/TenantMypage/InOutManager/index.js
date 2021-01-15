@@ -174,7 +174,7 @@ class InOutManager extends Component {
 
         <CardMypage
           onPressHeader={() => this.navigation.navigate('DetailsManager')}
-          headerTitle={'에이씨티앤코아물류'}
+          headerTitle={''}
           data={dataInfo}
           borderRow={false}
           styleLeft={S.styleLeftTable}
@@ -212,7 +212,7 @@ class InOutManager extends Component {
 
         <CardMypage
           onPressHeader={() => this.navigation.navigate('DetailsManager')}
-          headerTitle={'에이씨티앤코아물류3'}
+          headerTitle={''}
           data={dataCompletion}
           borderRow={false}
           styleLeft={S.styleLeftTable}
