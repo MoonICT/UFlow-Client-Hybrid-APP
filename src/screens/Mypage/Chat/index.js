@@ -24,6 +24,7 @@ import { connect } from 'react-redux';
 import { Appbar, Text, List, IconButton } from 'react-native-paper';
 
 // Local Imports
+import AvatarAdmin from '@Assets/images/avatar-admin.png';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import moment from 'moment';
@@ -148,6 +149,7 @@ class Chatting extends Component {
     let rentUser = route && route.params && route.params.rentUser;
     let thumbnail = route && route.params && route.params.thumbnail;
     console.log('dataChat', dataChat);
+    console.log('type', type);
     let listChat =
       dataChat &&
       dataChat.map((item, index) => {
@@ -157,7 +159,7 @@ class Chatting extends Component {
             key={index}>
             {type.toUpperCase() === item.type ? (
               <View>
-                <Text style={{marginBottom:5,marginTop:5}}>{this.calcDateTime(item.createTime)}</Text>
+                <Text style={{ marginBottom: 5, marginTop: 5 }}>{this.calcDateTime(item.createTime)}</Text>
                 <View style={[SS.body, SS.bodyMe]}>
                   <Text style={[SS.content, SS.contentMe]}>
                     {item.chatCount}
@@ -165,36 +167,26 @@ class Chatting extends Component {
                 </View>
               </View>
             ) : (
-              <View>
-                <View style={SS.info}>
-                  {type.toUpperCase() === item.type ? null : (
-                    <Fragment>
-                      <View>
-                        {/* <Image
-                      source={
-                        item.type.toUpperCase() === 'OWNER'
-                          ? { uri: thumbnail }
-                          : null
-                      }
-                      style={SS.avatar}
-                    /> */}
+                <View>
+                  <View style={SS.info}>
+                    {type.toUpperCase() === item.type ? null : (
+                      <Fragment>
+                        <View>
+                          {item.type === 'MANAGER' ? <Image source={AvatarAdmin} style={SS.avatar} /> : <Image source={{ uri: thumbnail }} style={SS.avatar} />}
+                          <View style={SS.status} />
+                        </View>
+                        {<Text style={SS.name}>{item.type === 'MANAGER' ? '관리자' : item.userName}</Text>}
+                      </Fragment>
+                    )}
 
-                        <Image source={{ uri: thumbnail }} style={SS.avatar} />
-                        <View style={SS.status} />
-                      </View>
+                    <Text style={{ marginLeft: 10 }}>{this.calcDateTime(item.createTime)}</Text>
+                  </View>
 
-                      <Text style={SS.name}>{item.userName}</Text>
-                    </Fragment>
-                  )}
-
-                  <Text style={{marginLeft:10}}>{this.calcDateTime(item.createTime)}</Text>
+                  <View style={SS.body}>
+                    <Text style={SS.content}>{item.chatCount}</Text>
+                  </View>
                 </View>
-
-                <View style={SS.body}>
-                  <Text style={SS.content}>{item.chatCount}</Text>
-                </View>
-              </View>
-            )}
+              )}
           </View>
         );
       });
@@ -219,7 +211,7 @@ class Chatting extends Component {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
             <ScrollView>
-            {/* <ScrollView
+              {/* <ScrollView
               ref={ref => (this.scrollRef = ref)}
               onContentSizeChange={() => {
                 this.scrollRef.scrollToEnd();
