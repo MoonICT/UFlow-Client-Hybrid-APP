@@ -28,7 +28,7 @@ import ActionCreator from '@Actions';
 import box from '@Assets/images/box.png';
 import card from '@Assets/images/card-img.png';
 import { styles as S } from '../style';
-import {StringUtils} from '@Services/utils';
+import { StringUtils } from '@Services/utils';
 
 class InterestWarehouse extends Component {
   constructor (props) {
@@ -36,7 +36,7 @@ class InterestWarehouse extends Component {
     this.webView = null;
     this.state = {
       listItem: [],
-      loading:false
+      loading: false
     };
 
     this.navigation = props.navigation;
@@ -44,7 +44,7 @@ class InterestWarehouse extends Component {
 
   /** when after render DOM */
   componentDidMount () {
-    this.reRenderSomething= this.props.navigation.addListener('focus', () => {
+    this.reRenderSomething = this.props.navigation.addListener('focus', () => {
       this.getDataFavorite();
     });
     // this.getDataFavorite();
@@ -62,15 +62,17 @@ class InterestWarehouse extends Component {
   //     });
   //   }
   // }
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.reRenderSomething;
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-      this.setState({ loading: !this.state.loading });
+  UNSAFE_componentWillReceiveProps (newProps) {
+    this.setState({ loading: !this.state.loading });
   }
 
   getDataFavorite = () => {
+    this.props.setProgress({ is: true, });
+
     Fav.page().then(res => {
       let resultData = res.data && res.data._embedded && res.data._embedded.mbspUserFavResBodies ? res.data._embedded.mbspUserFavResBodies : [];
       let dataConvert = [];
@@ -107,6 +109,7 @@ class InterestWarehouse extends Component {
         listItem: dataConvert
       });
 
+      this.props.setProgress({ is: false, });
     }).catch(error => {
       alert(error.response.data.message);
     });
@@ -220,7 +223,7 @@ class InterestWarehouse extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-              <Image style={{ flex: 1 }} source={box ? box : {url:'null'}} />
+              <Image style={{ flex: 1 }} source={box ? box : { url: 'null' }} />
             </View>
             <Text style={[DefaultStyle._textDF3, { marginTop: 40, textAlign: 'center', marginBottom: 24, }]}>
               관심 창고로 등록한 창고가 없습니다.
@@ -236,10 +239,36 @@ class InterestWarehouse extends Component {
             </TouchableOpacity>
           </View>
         )}
-        <Loading loading={loading}/>
+        <Loading loading={loading} />
       </ScrollView>
     );
   }
+
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // Progress
+  //   console.log('is Progress !!!')
+  //   this.props.setProgress({ is: true, });
+  //   return true;
+  // }
 }
 
-export default InterestWarehouse;
+/** map state with store states redux store */
+function mapStateToProps (state) {
+  // console.log('++++++mapStateToProps: ', state);
+  return {
+  };
+}
+
+/** dispatch action to redux */
+function mapDispatchToProps (dispatch) {
+  return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(InterestWarehouse);

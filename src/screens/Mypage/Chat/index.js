@@ -26,6 +26,7 @@ import { Appbar, Text, List, IconButton } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
+import moment from 'moment';
 import TextField from '@Components/organisms/TextField';
 
 import ActionCreator from '@Actions';
@@ -39,7 +40,7 @@ import { Warehouse } from '@Services/apis';
 class Chatting extends Component {
   constructor(props) {
     super(props);
-    this.scrollRef = React.createRef();
+    // this.scrollRef = React.createRef();
     this.webView = null;
     this.state = {
       visible: false,
@@ -91,8 +92,6 @@ class Chatting extends Component {
       });
   };
   sendMessage = () => {
-    console.log('this.props.route.params.type',this.props.route.params.type);
-    let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let rentUserNo = this.props.route.params.rentUserNo;
     let type = this.props.route.params.type === 'OWNER' ? 'owner' : 'tenant';
@@ -126,12 +125,28 @@ class Chatting extends Component {
         console.log('errChatting', err);
       });
   };
+  calcDateTime = date => {
+    let result = moment(date).format('YYYY.MM.DD HH:MM');
+    let createdDate = moment(date);
+    let today = moment();
+    let beforeOwnMinutes = today.subtract(1, 'minutes');
+    // 현재보다 이후이고 현재 1분뒤 보다 전인
+    if (createdDate.isAfter(beforeOwnMinutes)) {
+      result = getMsg('WHRG0169', '방금 전');
+    } else if (createdDate.isSame(today, 'day')) {
+      result = moment(date).format('HH:MM');
+    } else if (createdDate.isSame(today, 'year')) {
+      result = moment(date).format('MM월 DD일 HH:MM');
+    }
+    return result;
+  };
   render() {
     const { route } = this.props;
     const { dataChat, chatting, isSendMessage } = this.state;
     let type = route && route.params && route.params.type;
     let warehouse = route && route.params && route.params.warehouse;
     let rentUser = route && route.params && route.params.rentUser;
+    let thumbnail = route && route.params && route.params.thumbnail;
     console.log('warehouse', warehouse);
     console.log('rentUser', rentUser);
     console.log('type', type);
@@ -142,45 +157,50 @@ class Chatting extends Component {
           <View
             style={[SS.user, type.toUpperCase() === item.type ? SS.userMe : '']}
             key={index}>
-            {index === 0 ||
-            (index !== 0 &&
-              dataChat[index - 1].type !== dataChat[index].type) ? (
-              <View style={SS.info}>
-                {type.toUpperCase() === item.type ? null : (
-                  <Fragment>
-                    <View>
-                      <Image
-                        source={
-                          item.type.toUpperCase() === 'OWNER'
-                            ? { uri: warehouse?.thumbnail }
-                            : null
-                        }
-                        style={SS.avatar}
-                      />
-                      <View style={SS.status} />
-                    </View>
-
-                    <Text style={SS.name}>{item.userName}</Text>
-                  </Fragment>
-                )}
-
-                <Text style={SS.time}>{item.createTime}</Text>
-              </View>
-            ) : null}
             {type.toUpperCase() === item.type ? (
-              <View style={[SS.body, SS.bodyMe]}>
-                <Text style={[SS.content, SS.contentMe]}>{item.chatCount}</Text>
+              <View>
+                <Text style={{marginBottom:5,marginTop:5}}>{this.calcDateTime(item.createTime)}</Text>
+                <View style={[SS.body, SS.bodyMe]}>
+                  <Text style={[SS.content, SS.contentMe]}>
+                    {item.chatCount}
+                  </Text>
+                </View>
               </View>
             ) : (
-              <View style={SS.body}>
-                <Text style={SS.content}>{item.chatCount}</Text>
+              <View>
+                <View style={SS.info}>
+                  {type.toUpperCase() === item.type ? null : (
+                    <Fragment>
+                      <View>
+                        {/* <Image
+                      source={
+                        item.type.toUpperCase() === 'OWNER'
+                          ? { uri: thumbnail }
+                          : null
+                      }
+                      style={SS.avatar}
+                    /> */}
+
+                        <Image source={{ uri: thumbnail }} style={SS.avatar} />
+                        <View style={SS.status} />
+                      </View>
+
+                      <Text style={SS.name}>{item.userName}</Text>
+                    </Fragment>
+                  )}
+
+                  <Text style={{marginLeft:10}}>{this.calcDateTime(item.createTime)}</Text>
+                </View>
+
+                <View style={SS.body}>
+                  <Text style={SS.content}>{item.chatCount}</Text>
+                </View>
               </View>
             )}
           </View>
         );
       });
 
-    console.log(warehouse);
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -200,12 +220,12 @@ class Chatting extends Component {
         </Appbars>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
-            <ScrollView
-            ref={ref => (this.scrollRef = ref)}
-            onContentSizeChange={() => {
-            this.scrollRef.scrollToEnd();
-            }}
-            >
+            <ScrollView>
+            {/* <ScrollView
+              ref={ref => (this.scrollRef = ref)}
+              onContentSizeChange={() => {
+                this.scrollRef.scrollToEnd();
+              }}> */}
               <View style={SS.header}>
                 {/**TODO 창고명 바인딩 안되어있음**/}
                 <List.Section>
@@ -226,10 +246,10 @@ class Chatting extends Component {
                   />
                 </List.Section>
               </View>
-              <View style={SS.chatting} >
-                <View style={SS.dateTop}>
+              <View style={SS.chatting}>
+                {/* <View style={SS.dateTop}>
                   <Text style={SS.textDateTop}>2020년 10월 30일</Text>
-                </View>
+                </View> */}
                 {listChat}
               </View>
             </ScrollView>
@@ -254,11 +274,11 @@ class Chatting extends Component {
                     valueProps={e => this.setState({ chatting: e })}
                   />
                 </View>
-                <IconButton
+                {/* <IconButton
                   style={SS.btnAdd}
                   icon="plus"
                   onPress={() => console.log('remove')}
-                />
+                /> */}
               </View>
             </View>
           </View>

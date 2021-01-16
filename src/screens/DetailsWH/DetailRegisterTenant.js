@@ -199,10 +199,10 @@ class DetailRegisterTenant extends Component {
     const { businessInfo } = this.state;
 
     let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
     };
     launchImageLibrary(options, (response) => {
       let file = {

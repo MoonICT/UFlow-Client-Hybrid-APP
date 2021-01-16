@@ -57,9 +57,6 @@ const data = [
   {
     title: '정산관리',
   },
-  {
-    title: '관심 창고',
-  },
   // {
   //   title: '관심 창고',
   // },
@@ -459,7 +456,10 @@ class Mypage extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
+    // Progress
+    this.props.setProgress({ is: true, })
+
     console.log('::componentDidMount:: MyPage', this.props.route.params.title);
     this.setState({ title: this.props.route.params.title });
     // const getWH = await Warehouse.myWH();
@@ -475,6 +475,11 @@ class Mypage extends Component {
           let dataWH = res.data._embedded.warehouses;
           this.setState({ dataWH });
         }
+
+        // Progress
+        setTimeout(() => {
+          this.props.setProgress({ is: false });
+        }, 300);
       })
       .catch(err => {
         console.log('err', err);
@@ -511,6 +516,9 @@ function mapDispatchToProps(dispatch) {
     },
     showPopup: status => {
       dispatch(ActionCreator.show(status));
+    },
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
     },
   };
 }
