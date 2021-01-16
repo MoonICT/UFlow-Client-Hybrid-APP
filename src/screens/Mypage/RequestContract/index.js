@@ -85,106 +85,106 @@ class RequestContract extends Component {
           />
         </Appbars>
         <View>
-          
-        <ScrollView  >
-          <View style={[DefaultStyle._body,{paddingBottom:300}]}>
-            {/** HEADER **/}
-            <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
-              <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
-              <Text
-                style={[
-                  DefaultStyle._statusProcessing,
-                  status === '5100' ? { backgroundColor: '#4caf50' } : '',
-                ]}>
-                {ContractUtils.coverStatus(status) &&
-                ContractUtils.coverStatus(status).processingTrust &&
-                contractType === 'trust'
-                  ? ContractUtils.coverStatus(status).processingTrust
-                  : ContractUtils.coverStatus(status).processing}
-              </Text>
-            </View>
-            {/** END:HEADER **/}
 
-            {/** WAREHOUSE INFO 청고 정보 **/}
-            {status === '1100' && (
-              <View style={DefaultStyle._card}>
-                <View style={DefaultStyle._headerCard}>
-                  {this.state.imgType && (
-                    <Image
-                      source={this.state.imgType}
-                      style={DefaultStyle._avatarHeader}
-                    />
-                  )}
+          <ScrollView  nestedScrollEnabled = {true}>
+            <View style={[DefaultStyle._body, { paddingBottom: 300 }]}>
+              {/** HEADER **/}
+              <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
+                <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
+                <Text
+                  style={[
+                    DefaultStyle._statusProcessing,
+                    status === '5100' ? { backgroundColor: '#4caf50' } : '',
+                  ]}>
+                  {ContractUtils.coverStatus(status) &&
+                    ContractUtils.coverStatus(status).processingTrust &&
+                    contractType === 'trust'
+                    ? ContractUtils.coverStatus(status).processingTrust
+                    : ContractUtils.coverStatus(status).processing}
+                </Text>
+              </View>
+              {/** END:HEADER **/}
+
+              {/** WAREHOUSE INFO 청고 정보 **/}
+              {status === '1100' && (
+                <View style={DefaultStyle._card}>
+                  <View style={DefaultStyle._headerCard}>
+                    {this.state.imgType && (
+                      <Image
+                        source={this.state.imgType}
+                        style={DefaultStyle._avatarHeader}
+                      />
+                    )}
+                  </View>
+                  <View>
+                    <View style={DefaultStyle._infoTable}>
+                      {contractType === 'keep' && warehouseInfo.dataKeep && (
+                        <TableInfo data={warehouseInfo.dataKeep} />
+                      )}
+                      {contractType === 'trust' && warehouseInfo.dataTrust && (
+                        <TableInfo data={warehouseInfo.dataTrust} />
+                      )}
+                    </View>
+                  </View>
                 </View>
+              )}
+              {/** END:ESTIMATE INFO **/}
+
+              {/** CONTRACT INFO **/}
+              <View style={DefaultStyle._card}>
+                {(status === '2100' ||
+                  status === '4100' ||
+                  status === '5100') && (
+                    <View style={DefaultStyle._headerCard}>
+                      {this.state.imgType && (
+                        <Image
+                          source={this.state.imgType}
+                          style={DefaultStyle._avatarHeader}
+                        />
+                      )}
+                    </View>
+                  )}
                 <View>
                   <View style={DefaultStyle._infoTable}>
-                    {contractType === 'keep' && warehouseInfo.dataKeep && (
-                      <TableInfo data={warehouseInfo.dataKeep} />
-                    )}
-                    {contractType === 'trust' && warehouseInfo.dataTrust && (
-                      <TableInfo data={warehouseInfo.dataTrust} />
-                    )}
+                    {contractType === 'keep' && dataKeep ? (
+                      <TableInfo data={dataKeep} />
+                    ) : (
+                        <TableInfo data={dataTrust} />
+                      )}
                   </View>
                 </View>
               </View>
-            )}
-            {/** END:ESTIMATE INFO **/}
+              {/** END:CONTRACT INFO **/}
 
-            {/** CONTRACT INFO **/}
-            <View style={DefaultStyle._card}>
-              {(status === '2100' ||
-                status === '4100' ||
-                status === '5100') && (
-                <View style={DefaultStyle._headerCard}>
-                  {this.state.imgType && (
-                    <Image
-                      source={this.state.imgType}
-                      style={DefaultStyle._avatarHeader}
-                    />
-                  )}
-                </View>
-              )}
-              <View>
-                <View style={DefaultStyle._infoTable}>
-                  {contractType === 'keep' && dataKeep ? (
-                    <TableInfo data={dataKeep} />
-                  ) : (
-                    <TableInfo data={dataTrust} />
-                  )}
-                </View>
-              </View>
+              {/*{contractType === 'keep' ? (*/}
+              {/*<View style={[DefaultStyle._body, DefaultStyle._margin0]}>*/}
+              {/*<View style={DefaultStyle._footerCards}>*/}
+              {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
+              {/*<Text style={S.total}>*/}
+              {/*{(keepTrustContract) ?*/}
+              {/*StringUtils.moneyConvert(Number(keepTrustContract.splyAmount) + Number(keepTrustContract.mgmtChrg)) : '-'}*/}
+              {/*</Text>*/}
+              {/*</View>*/}
+              {/*</View>*/}
+              {/*) : null}*/}
+              {keepTrustContract ? (
+                <ContractInformation
+                  navigation={this.navigation}
+                  route={this.props.route}
+                  detailEstimate={detailEstimate} // 계약 기본 정보
+                  keepTrustContract={keepTrustContract} // keep|trust
+                  type={type}
+                  contractType={contractType}
+                  status={status}
+                  rentUserNo={rentUserNo}
+                  warehSeq={warehSeq}
+                  thumbnail={thumbnail}
+                />
+              ) : (
+                  <></>
+                )}
             </View>
-            {/** END:CONTRACT INFO **/}
-
-            {/*{contractType === 'keep' ? (*/}
-            {/*<View style={[DefaultStyle._body, DefaultStyle._margin0]}>*/}
-            {/*<View style={DefaultStyle._footerCards}>*/}
-            {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
-            {/*<Text style={S.total}>*/}
-            {/*{(keepTrustContract) ?*/}
-            {/*StringUtils.moneyConvert(Number(keepTrustContract.splyAmount) + Number(keepTrustContract.mgmtChrg)) : '-'}*/}
-            {/*</Text>*/}
-            {/*</View>*/}
-            {/*</View>*/}
-            {/*) : null}*/}
-        {keepTrustContract ? (
-          <ContractInformation
-            navigation={this.navigation}
-            route={this.props.route}
-            detailEstimate={detailEstimate} // 계약 기본 정보
-            keepTrustContract={keepTrustContract} // keep|trust
-            type={type}
-            contractType={contractType}
-            status={status}
-            rentUserNo={rentUserNo}
-            warehSeq={warehSeq}
-            thumbnail={thumbnail}
-          />
-        ) : (
-          <></>
-        )}
-          </View>
-        </ScrollView>
+          </ScrollView>
         </View>
       </SafeAreaView>
     );
@@ -358,120 +358,120 @@ class RequestContract extends Component {
       warehouseInfo: {
         dataKeep: warehouseInfoData.whrgMgmtKeep
           ? ContractUtils.keepTableDatas(
-              1,
-              {
-                /**한국어 기본**/
-              },
-              {
-                /*창고명*/
-                warehouseName: warehouseInfoData.warehouse.warehouse,
-                /*창고주*/
-                ownerName: warehouseInfoData.warehouse.owner,
-                /*위치*/
-                address: warehouseInfoData.warehouse.address,
-                /*계약유형*/
-                type: '임대(보관)',
-                /*보관유형*/
-                keepType:
-                  warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
-                /*전용면적*/
-                prvtArea: warehouseInfoData.warehouse.prvtArea
-                  ? StringUtils.displayAreaUnit(
-                      warehouseInfoData.warehouse.prvtArea,
-                    )
-                  : '0 ㎡',
-                /*임대 가능기간*/
-                usblYmd:
-                  StringUtils.dateStr(
-                    warehouseInfoData.whrgMgmtKeep.usblYmdFrom,
-                  ) +
-                  '~' +
-                  StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdTo),
-                /*보관단가*/
-                splyAmount: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtKeep.splyAmount,
-                ),
-                /*관리단가*/
-                mgmtChrg: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtKeep.mgmtChrg,
-                ),
-              },
-            )
+            1,
+            {
+              /**한국어 기본**/
+            },
+            {
+              /*창고명*/
+              warehouseName: warehouseInfoData.warehouse.warehouse,
+              /*창고주*/
+              ownerName: warehouseInfoData.warehouse.owner,
+              /*위치*/
+              address: warehouseInfoData.warehouse.address,
+              /*계약유형*/
+              type: '임대(보관)',
+              /*보관유형*/
+              keepType:
+                warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
+              /*전용면적*/
+              prvtArea: warehouseInfoData.warehouse.prvtArea
+                ? StringUtils.displayAreaUnit(
+                  warehouseInfoData.warehouse.prvtArea,
+                )
+                : '0 ㎡',
+              /*임대 가능기간*/
+              usblYmd:
+                StringUtils.dateStr(
+                  warehouseInfoData.whrgMgmtKeep.usblYmdFrom,
+                ) +
+                '~' +
+                StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdTo),
+              /*보관단가*/
+              splyAmount: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtKeep.splyAmount,
+              ),
+              /*관리단가*/
+              mgmtChrg: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtKeep.mgmtChrg,
+              ),
+            },
+          )
           : '',
         dataTrust: warehouseInfoData.whrgMgmtTrust
           ? ContractUtils.trustTableDatas(
-              1,
-              {
-                /**한국어 기본**/
-              },
-              {
-                /*창고명*/
-                warehouseName: warehouseInfoData.warehouse.warehouse,
-                /*창고주*/
-                ownerName: warehouseInfoData.warehouse.owner,
-                /*위치*/
-                address: warehouseInfoData.warehouse.address,
-                /*계약유형*/
-                type: '수탁',
-                /*보관유형*/
-                keepType:
-                  warehouseInfoData.whrgMgmtTrust.typeCode.stdDetailCodeName,
-                /*정산단위*/
-                calUnitDvCode:
-                  warehouseInfoData.whrgMgmtTrust.calUnitDvCode
-                    .stdDetailCodeName,
-                /*산정기준*/
-                calStdDvCode:
-                  warehouseInfoData.whrgMgmtTrust.calStdDvCode
-                    .stdDetailCodeName,
-                /*수탁 가능기간*/
-                usblYmd:
-                  StringUtils.dateStr(
-                    warehouseInfoData.whrgMgmtTrust.usblYmdFrom,
-                  ) +
-                  '~' +
-                  StringUtils.dateStr(
-                    warehouseInfoData.whrgMgmtTrust.usblYmdTo,
-                  ),
-                /*수탁 가용수량*/
-                usblValue: warehouseInfoData.whrgMgmtTrust.usblValue
-                  ? StringUtils.numberComma(
-                      warehouseInfoData.whrgMgmtTrust.usblValue,
-                    ) +
-                    ' ' +
-                    warehouseInfoData.whrgMgmtTrust.calUnitDvCode
-                      .stdDetailCodeName
-                  : '-',
-                /*보관단가*/
-                splyAmount: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtTrust.splyAmount,
+            1,
+            {
+              /**한국어 기본**/
+            },
+            {
+              /*창고명*/
+              warehouseName: warehouseInfoData.warehouse.warehouse,
+              /*창고주*/
+              ownerName: warehouseInfoData.warehouse.owner,
+              /*위치*/
+              address: warehouseInfoData.warehouse.address,
+              /*계약유형*/
+              type: '수탁',
+              /*보관유형*/
+              keepType:
+                warehouseInfoData.whrgMgmtTrust.typeCode.stdDetailCodeName,
+              /*정산단위*/
+              calUnitDvCode:
+                warehouseInfoData.whrgMgmtTrust.calUnitDvCode
+                  .stdDetailCodeName,
+              /*산정기준*/
+              calStdDvCode:
+                warehouseInfoData.whrgMgmtTrust.calStdDvCode
+                  .stdDetailCodeName,
+              /*수탁 가능기간*/
+              usblYmd:
+                StringUtils.dateStr(
+                  warehouseInfoData.whrgMgmtTrust.usblYmdFrom,
+                ) +
+                '~' +
+                StringUtils.dateStr(
+                  warehouseInfoData.whrgMgmtTrust.usblYmdTo,
                 ),
-                /*가공단가*/
-                mnfctChrg: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtTrust.mnfctChrg,
-                ),
-                /*인건단가*/
-                psnChrg: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtTrust.psnChrg,
-                ),
-                /*입고단가*/
-                whinChrg: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtTrust.whinChrg,
-                ),
-                /*출고단가*/
-                whoutChrg: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtTrust.whoutChrg,
-                ),
-                /*택배단가*/
-                dlvyChrg: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtTrust.dlvyChrg,
-                ),
-                /*운송단가*/
-                shipChrg: StringUtils.moneyConvert(
-                  warehouseInfoData.whrgMgmtTrust.shipChrg,
-                ),
-              },
-            )
+              /*수탁 가용수량*/
+              usblValue: warehouseInfoData.whrgMgmtTrust.usblValue
+                ? StringUtils.numberComma(
+                  warehouseInfoData.whrgMgmtTrust.usblValue,
+                ) +
+                ' ' +
+                warehouseInfoData.whrgMgmtTrust.calUnitDvCode
+                  .stdDetailCodeName
+                : '-',
+              /*보관단가*/
+              splyAmount: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtTrust.splyAmount,
+              ),
+              /*가공단가*/
+              mnfctChrg: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtTrust.mnfctChrg,
+              ),
+              /*인건단가*/
+              psnChrg: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtTrust.psnChrg,
+              ),
+              /*입고단가*/
+              whinChrg: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtTrust.whinChrg,
+              ),
+              /*출고단가*/
+              whoutChrg: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtTrust.whoutChrg,
+              ),
+              /*택배단가*/
+              dlvyChrg: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtTrust.dlvyChrg,
+              ),
+              /*운송단가*/
+              shipChrg: StringUtils.moneyConvert(
+                warehouseInfoData.whrgMgmtTrust.shipChrg,
+              ),
+            },
+          )
           : '',
       },
     });
@@ -550,8 +550,8 @@ class RequestContract extends Component {
               /*수탁 가용수량*/
               usblValue: keepTrustContract.cntrValue
                 ? StringUtils.numberComma(keepTrustContract.cntrValue) +
-                  ' ' +
-                  keepTrustContract.calUnitDvCode.stdDetailCodeName
+                ' ' +
+                keepTrustContract.calUnitDvCode.stdDetailCodeName
                 : '-',
               /*보관단가*/
               splyAmount: StringUtils.moneyConvert(
@@ -655,8 +655,8 @@ class RequestContract extends Component {
               /*수탁 가용수량*/
               usblValue: keepTrustContract.cntrValue
                 ? StringUtils.moneyConvert(keepTrustContract.cntrValue) +
-                  ' ' +
-                  keepTrustContract.calUnitDvCode.stdDetailCodeName
+                ' ' +
+                keepTrustContract.calUnitDvCode.stdDetailCodeName
                 : '-',
               /*보관단가*/
               splyAmount: StringUtils.moneyConvert(

@@ -153,7 +153,7 @@ class TermsContract extends Component {
 
         {/** 약관 */}
         <View style={DefaultStyle._card}>
-          <ScrollView style={SS.bodyAgreement}  >
+          <ScrollView nestedScrollEnabled = {true} style={SS.bodyAgreement}  >
             <Text style={[DefaultStyle._textDF, { marginBottom: 20 }]}>
               제01조 (정의)
             </Text>
