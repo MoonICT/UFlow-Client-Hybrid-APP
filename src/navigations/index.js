@@ -175,6 +175,7 @@ const TabScreen = () => {
         name="Search"
         component={SearchScreen}
         options={{ headerShown: false }}
+        initialParams={{ searchQuery: '' }}
       />
       {/* TODO Change route */}
       <Tab.Screen name="InterestWH" component={InterestWH} />
@@ -412,7 +413,7 @@ const App = () => {
                     //   headerMode={false}
                     //   options={{ headerShown: false }}
                     // />
-                  
+
                   }
                   <AuthStack.Screen
                     name="WithdrawalInformation"
@@ -804,7 +805,7 @@ const App = () => {
   //                   headerMode={false}
   //                   options={{ headerShown: false }}
   //                 />
-  //          
+  //
   //                 <AuthStack.Screen
   //                   name="WithdrawalInformation"
   //                   component={WithdrawalInformation}
@@ -853,14 +854,14 @@ const App = () => {
   //                   headerMode={false}
   //                   options={{ headerShown: false }}
   //                 />
-  //          
+  //
   //                 <AuthStack.Screen
   //                   name="ResponseQuotation"
   //                   component={ResponseQuotation}
   //                   headerMode={false}
   //                   options={{ headerShown: false }}
   //                 />
-  //             
+  //
   //                 <AuthStack.Screen
   //                   name="More"
   //                   component={More}

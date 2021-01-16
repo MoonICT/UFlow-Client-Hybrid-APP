@@ -30,4 +30,10 @@ export function setSearchFilterCode (payload) {
     payload: payload, // Object
   };
 }
+export function setSearchQuery (payload) {
+  return {
+    type: types.SEARCH_SET_SEARCH_QUERY,
+    payload: payload, // Object
+  };
+}
 // TODO 위 형식과 같이 Action 함수 작성.

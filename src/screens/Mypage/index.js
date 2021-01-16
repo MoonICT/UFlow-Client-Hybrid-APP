@@ -57,9 +57,6 @@ const data = [
   {
     title: '정산관리',
   },
-  {
-    title: '관심 창고',
-  },
   // {
   //   title: '관심 창고',
   // },
@@ -341,9 +338,9 @@ class Mypage extends Component {
       case '정산관리':
         viewComponent = <SettlementManagement navigation={this.navigation} doRefresh={this.doRefreshTab} />;
         break;
-      case '관심 창고':
-        viewComponent = <InterestWH navigation={this.navigation} doRefresh={this.doRefreshTab} />;
-        break;
+      // case '관심 창고':
+      //   viewComponent = <InterestWH navigation={this.navigation} doRefresh={this.doRefreshTab} />;
+      //   break;
       // default:
       //   viewComponent;
       // code block

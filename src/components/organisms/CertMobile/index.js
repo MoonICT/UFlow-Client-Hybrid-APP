@@ -5,50 +5,51 @@
  * */
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View , TouchableOpacity} from 'react-native';
+import { SafeAreaView, View, TouchableOpacity } from 'react-native';
 import TextField from '@Components/organisms/TextField';
-import {Text} from 'react-native-paper';
-import { WarehouseMobileAuth} from '@Services/apis';
+import { Text } from 'react-native-paper';
+import { WarehouseMobileAuth } from '@Services/apis';
 import moment from 'moment';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 
 export default class CertMobile extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
       certCode: '',
       isSendCode: false,
       isCompleteCert: false,
-      errorMsg:'',
-      isTimeOver:false,
+      errorMsg: '',
+      isTimeOver: false,
       timer: 180,
-      duration : moment.duration(180 * 1000, 'milliseconds')
+      duration: moment.duration(180 * 1000, 'milliseconds')
     };
   }
 
   //countdown overtime
   startTimer = () => {
-    const {duration } = this.state;
+    const { duration } = this.state;
     clearInterval(this.interval);
     this.setState({
-      duration : moment.duration(180 * 1000, 'milliseconds')
+      duration: moment.duration(180 * 1000, 'milliseconds')
     })
-    this.interval = setInterval(()=>{
-      duration.subtract(1000, "milliseconds");
-      if(duration.asMilliseconds() !== 0){
-        this.setState(()=> ({ timer: duration.asMilliseconds() }))
-      }else{
-        alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.')
-        clearInterval(this.interval);
-        this.setState({
-          isTimeOver:true,
-          isSendCode:false
-        })
+    this.interval = setInterval(() => {
+        duration.subtract(1000, "milliseconds");
+        if (duration.asMilliseconds() !== 0) {
+          this.setState(() => ({ timer: duration.asMilliseconds() }))
+        } else {
+          // alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.');
+          clearInterval(this.interval);
+          this.setState({
+            isTimeOver: true,
+            isSendCode: false,
+            timer: null
+          })
+        }
       }
-    }
-    , 1000 );
+      , 1000);
   }
 
   /**
@@ -57,13 +58,13 @@ export default class CertMobile extends Component {
   sendCert = () => {
     const { mobile } = this.props;
 
-    this.setState({errorMsg:''})
+    this.setState({ errorMsg: '' })
     if (!mobile) {
-      this.setState({errorMsg:'휴대폰번호를 입력하세요.'})
+      this.setState({ errorMsg: '휴대폰번호를 입력하세요.' })
       return false
     }
     if (!/^\d{2,3}\d{3,4}\d{4}$/.test(mobile)) {
-      this.setState({errorMsg:'전화번호 형식이 아닙니다.'})
+      this.setState({ errorMsg: '전화번호 형식이 아닙니다.' })
       return false
     }
     WarehouseMobileAuth.certMobile({ mobile: mobile }).then(res => {
@@ -79,7 +80,7 @@ export default class CertMobile extends Component {
 
     }).catch(err => {
       this.setState({
-        isSendCode:false
+        isSendCode: false
       });
 
       alert('서버에러:' + err.message)
@@ -90,12 +91,17 @@ export default class CertMobile extends Component {
    * 인증번호 확인.
    * */
   confirmCert = () => {
-    const { mobile,onComplete } = this.props;
+    const { mobile, onComplete } = this.props;
     const { certCode } = this.state;
 
-    this.setState({errorMsg:''})
+    if (this.state.isTimeOver) {
+      alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.');
+      return true;
+    }
+
+    this.setState({ errorMsg: '' })
     if (!certCode) {
-      this.setState({errorMsg:'인증번호를 입력하세요.'})
+      this.setState({ errorMsg: '인증번호를 입력하세요.' })
       return false
     }
     WarehouseMobileAuth.certMobileConfirm({
@@ -105,7 +111,11 @@ export default class CertMobile extends Component {
       if (res.data.code === 'RESULT_SUCCESS') {
         // TODO Change to dialog ui.
         alert('인증이 완료되었습니다.');
-        this.setState({isCompleteCert:true})
+        clearInterval(this.interval);
+        this.setState({
+          isCompleteCert: true,
+          timer: null
+        })
         if (onComplete && typeof onComplete === 'function') {
           onComplete()
         }
@@ -120,59 +130,60 @@ export default class CertMobile extends Component {
     })
   }
 
-  render() {
-    const { isTimeOver, isSendCode,timer,isCompleteCert } = this.state;
+  render () {
+    const { isTimeOver, isSendCode, timer, isCompleteCert } = this.state;
 
     return (
       !isCompleteCert ?
-      <View style={{flexDirection: 'row',flexWrap: 'wrap'}}>
-        <View style={[DefaultStyle.mr_10, DefaultStyle.inputCert, isSendCode && !isTimeOver ? DefaultStyle.w_100 : DefaultStyle.w_47]}>
-          <TextField
-            colorLabel="#000000"
-            placeholder="인증번호를 입력하세요."
-            styleProps={[isSendCode && !isTimeOver ? DefaultStyle.w_100 : '']}
-            valueProps={(e) => {
-              this.setState({
-                certCode: e
-              })
-            }}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          <View
+            style={[DefaultStyle.mr_10, DefaultStyle.inputCert, isSendCode && !isTimeOver ? DefaultStyle.w_100 : DefaultStyle.w_47]}>
+            <TextField
+              colorLabel="#000000"
+              placeholder="인증번호를 입력하세요."
+              styleProps={[isSendCode && !isTimeOver ? DefaultStyle.w_100 : '']}
+              valueProps={(e) => {
+                this.setState({
+                  certCode: e
+                })
+              }}
             />
-        </View>
+          </View>
 
-        {isSendCode && !isTimeOver ?
+          {isSendCode && !isTimeOver ?
+            <TouchableOpacity
+              style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mr_10, DefaultStyle.mb_20, DefaultStyle.w_47]}
+              onPress={() => this.confirmCert()}>
+              <Text
+                style={[
+                  DefaultStyle._textButton,
+                  DefaultStyle._colorMuted
+                ]}>
+                {'인증번호확인'}
+                {isSendCode ?
+                  <Text style={[DefaultStyle._textErrorInput]}>({moment(timer).format('mm:ss')})</Text>
+                  :
+                  <Text></Text>
+                }
+              </Text>
+            </TouchableOpacity>
+            : <Text></Text>
+          }
+
           <TouchableOpacity
-          style={[DefaultStyle._btnOutlineMuted,DefaultStyle.mr_10, DefaultStyle.mb_20, DefaultStyle.w_47]}
-          onPress={() => this.confirmCert()}>
-          <Text
-            style={[
-              DefaultStyle._textButton,
-              DefaultStyle._colorMuted
-            ]}>
-            {'인증번호확인'}
-            {isSendCode ?
-            <Text style={[DefaultStyle._textErrorInput]}>({moment(timer).format('mm:ss')})</Text>
-            :
-            <Text></Text>
-        }
-          </Text>
-        </TouchableOpacity>
-        : <Text></Text>
-        }
-
-        <TouchableOpacity
-          style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mb_20, DefaultStyle.w_47]}
-          onPress={() => this.sendCert()}>
-          <Text
-            style={[
-              DefaultStyle._textButton,
-              DefaultStyle._colorMuted
-            ]}>
-            {isTimeOver || isSendCode ? '재발송' : '인증번호발송'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      :
-      <View></View>
-      );
+            style={[DefaultStyle._btnOutlineMuted, DefaultStyle.mb_20, DefaultStyle.w_47]}
+            onPress={() => this.sendCert()}>
+            <Text
+              style={[
+                DefaultStyle._textButton,
+                DefaultStyle._colorMuted
+              ]}>
+              {isTimeOver || isSendCode ? '재발송' : '인증번호발송'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        :
+        <View></View>
+    );
   }
 }
