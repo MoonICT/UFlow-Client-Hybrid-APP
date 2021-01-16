@@ -503,7 +503,8 @@ export default StyleSheet.create({
   _errorTextField: {
     color: 'red',
     // fontFamily: 'NotoSansCJKkr',
-    fontSize: 13,
+    fontSize: 12,
+    left: 10,
   },
 
   /** Notifi Input*/
