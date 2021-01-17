@@ -96,7 +96,7 @@ const dataSteps = [
 ];
 
 class Mypage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       isSwitchOn: true,
@@ -111,15 +111,20 @@ class Mypage extends Component {
     this.navigation = props.navigation;
   }
 
+  /** listener when change props */
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
+
   /** when exits screen */
-  componentWillUnmount () {
+  componentWillUnmount() {
     //console.log('//::componentWillUnmount::');
   }
 
   /**
    * 탭 리로드를 위한 함수.
    * */
-  doRefreshTab = (title) => {
+  doRefreshTab = title => {
     this.setState({ title: '' });
     setTimeout(() => {
       this.setState({ title: title ? title : '내 창고' });
@@ -162,9 +167,9 @@ class Mypage extends Component {
     }
   };
 
-  render () {
+  render() {
     const { route, workComplete } = this.props;
-    const { title, isSwitchOn, dataWH } = this.state;
+    const { title, refreshKey, dataWH } = this.state;
     // console.log('title :>> ', title);
     // console.log('dataWH :>> ', dataWH);
     // console.log('route :>> ', route.params);
@@ -274,14 +279,14 @@ class Mypage extends Component {
                   onPress={() => {
                     item.sttsDbCode.stdDetailCode === '0001'
                       ? this.props.showPopup({
-                        type: 'confirm',
-                        image: '',
-                        content: '공실이 검증되지 않은 창고입니다.',
-                      })
+                          type: 'confirm',
+                          image: '',
+                          content: '공실이 검증되지 않은 창고입니다.',
+                        })
                       : this.navigation.navigate('RegisterWH', {
-                        type: 'ModifyWH',
-                        warehouseRegNo: item.id,
-                      });
+                          type: 'ModifyWH',
+                          warehouseRegNo: item.id,
+                        });
                     // this.props.imageAction(listImage);
                   }}>
                   <Text
@@ -294,30 +299,33 @@ class Mypage extends Component {
           />
         );
       });
-    let viewComponent = (<View>
-      <Progress />
-    </View>);
+    let viewComponent = (
+      <View>
+        <Progress />
+      </View>
+    );
     switch (this.state.title) {
       // TODO 라우트 갱신할 합수 전달.
       case '내 창고':
         viewComponent = (
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-            <View style={DefaultStyle._titleCard}>
+            <View style={DefaultStyle._titleBody}>
               <Text style={[DefaultStyle._textTitleCard]}>내 창고</Text>
             </View>
             {viewWH}
             <TouchableOpacity
               style={DefaultStyle._btnInline}
               onPress={() => {
-                this.navigation.navigate('RegisterWH');
-                this.props.imageAction([]);
+                this.navigation.navigate('RegisterBusinessInfo');
+                // this.props.imageAction([]);
               }}>
-              <Text style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
+              <Text
+                style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
                 신규 등록
               </Text>
             </TouchableOpacity>
           </View>
-        )
+        );
         break;
       case '견적･계약 관리':
         viewComponent = (
@@ -325,23 +333,33 @@ class Mypage extends Component {
             doRefresh={this.doRefreshTab}
             dataSteps={dataSteps}
             navigation={this.navigation}
-            // type="ProprietorMypage"
-            // typeWH="Trust"
-            // dataEstimate={dataEstimate}
-            // dataRequest={dataRequest}
-            // dataReply={dataReply}
           />
         );
         break;
       case '입･출고 관리':
-        viewComponent = <InOutManager navigation={this.navigation} doRefresh={this.doRefreshTab} />;
+        viewComponent = (
+          <InOutManager
+            navigation={this.navigation}
+            doRefresh={this.doRefreshTab}
+          />
+        );
         break;
       case '정산관리':
-        viewComponent = <SettlementManagement navigation={this.navigation} doRefresh={this.doRefreshTab} />;
+        viewComponent = (
+          <SettlementManagement
+            navigation={this.navigation}
+            doRefresh={this.doRefreshTab}
+          />
+        );
         break;
-      // case '관심 창고':
-      //   viewComponent = <InterestWH navigation={this.navigation} doRefresh={this.doRefreshTab} />;
-      //   break;
+      case '관심 창고':
+        viewComponent = (
+          <InterestWH
+            navigation={this.navigation}
+            doRefresh={this.doRefreshTab}
+          />
+        );
+        break;
       // default:
       //   viewComponent;
       // code block
@@ -376,7 +394,7 @@ class Mypage extends Component {
               });
             }}
           />
-          <Text>{this.state.refreshKey}</Text>
+          {refreshKey ? <Text>{refreshKey}</Text> : null}
           {viewComponent}
         </ScrollView>
 
@@ -474,7 +492,7 @@ class Mypage extends Component {
     // SplashScreen.hide();
   }
 
-  UNSAFE_componentWillReceiveProps (newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     let titleProp =
       newProps.route && newProps.route.params && newProps.route.params.title;
     console.log('titleProp :>> ', titleProp);
@@ -482,12 +500,11 @@ class Mypage extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
-  }
+  componentDidUpdate(prevProps, prevState) {}
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -496,7 +513,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     imageAction: action => {
       dispatch(ActionCreator.dataImage(action));
