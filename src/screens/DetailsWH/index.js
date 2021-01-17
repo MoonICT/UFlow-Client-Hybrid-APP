@@ -239,6 +239,19 @@ class DetailWH extends Component {
     return cardItem;
   };
 
+  /**
+   * 이름 비공개 처리
+   * */
+  hiddenName = (name) => {
+    if (name && name.length > 0) {
+      let nameArr = name.split('');
+      nameArr = nameArr.map((item, index) => {
+        return index > 0 ? '*' : item
+      })
+      return nameArr.join('')
+    }
+  }
+
   render () {
     const {
       active,
@@ -1226,31 +1239,32 @@ class DetailWH extends Component {
                     </View>
                   )}
                   {/* List */}
-                  {qnaList &&
-                  qnaList.map((qnaItem, index) => (
+                  {qnaList && qnaList.map((qnaItem, index) => (
                     <View key={'qnaItem' + index} style={S.inquirys}>
-                      <View style={S.leftInquiry}>
-                        {qnaItem.status ? (
-                          <Text style={S.titleCompleted}>답변완료</Text>
-                        ) : (
-                          <Text style={S.titleInquiry}>미답변</Text>
-                        )}
-                        <Text style={S.contentInquiry}>{qnaItem.title}</Text>
-                        <Text style={S.footerInquiry}>
-                          {qnaItem.name} | {qnaItem.date}
-                        </Text>
-                      </View>
-                      <View style={S.rightInquiry}>
-                        {qnaItem.lock ? (
-                          <IconButton
-                            style={S.btnIcon}
-                            icon="lock"
-                            onPress={() => console.log('remove')}
-                          />
-                        ) : (
-                          <Text />
-                        )}
-                      </View>
+                      <TouchableOpacity onPress={() => {
+                        // TODO 기본 비밀글로 처리. 추후 변경.
+                        if (qnaItem.me || !(qnaItem.secret || true)) {
+                          this.navigation.navigate('DetailInquiry', {
+                            inquiryDetails: qnaItem,
+                            answerMode: false, // 답변 가능 모드
+                          });
+                        }
+                      }}>
+                        <View style={S.leftInquiry}>
+                          {qnaItem.answer ?
+                            <Text style={S.titleCompleted}>답변완료</Text> :
+                            <Text style={S.titleInquiry}>미답변</Text>}
+                          <Text style={S.contentInquiry}>
+                            <IconButton style={S.btnIcon} size={16} icon="lock" />
+                            {/** TODO 기본 비밀글로 처리. 추후 변경.*/}
+                            {qnaItem.me || !(qnaItem.secret || true) ? qnaItem.content : '비밀글 입니다.'}
+                          </Text>
+                          <Text style={S.footerInquiry}>
+                            {/** TODO 기본 비밀글로 처리. 추후 변경.*/}
+                            {qnaItem.me || !(qnaItem.secret || true) ? qnaItem.writer : this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
                   ))}
                   {/* <View style={S.inquirys}>
@@ -1495,7 +1509,6 @@ class DetailWH extends Component {
       .then(res => {
         if (res && res._embedded && res._embedded) {
           let newFQAList = res._embedded.questions.map(item => {
-            console.log(item);
             return {
               status: item.complete,
               title: item.content,
@@ -1505,8 +1518,9 @@ class DetailWH extends Component {
             };
           });
 
-          console.log('newFQAList', newFQAList);
-          this.setState({ qnaList: newFQAList });
+          console.log('newFQAList', res._embedded.questions);
+          this.setState({ qnaList: res && res._embedded && res._embedded.questions ? res._embedded.questions : [] });
+          // this.setState({ qnaList: newFQAList });
           this.setState({ pageInfo: res.page });
         }
       })

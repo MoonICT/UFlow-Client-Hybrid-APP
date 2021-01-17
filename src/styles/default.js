@@ -97,7 +97,7 @@ export default StyleSheet.create({
   d_flex: {
     display: 'flex',
   },
- 
+
   d_flex_between: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -505,6 +505,14 @@ export default StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr',
     fontSize: 12,
     left: 10,
+  },
+  _textAreaStyle:{
+    textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1)',
+    padding: 13,
+    paddingTop: 20,
+    height: 350,
   },
 
   /** Notifi Input*/

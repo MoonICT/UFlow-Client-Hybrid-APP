@@ -5,22 +5,24 @@
  */
 
 // Global Imports
-import React, {Component, Fragment} from 'react';
-import {View, TouchableOpacity} from 'react-native';
-import {connect} from 'react-redux';
+import React, { Component, Fragment } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {Text} from 'react-native-paper';
+import { Text } from 'react-native-paper';
+import AsyncStorage from "@react-native-community/async-storage";
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Select from '@Components/organisms/SelectFilter';
 import CardMypage from '@Components/organisms/CardMypage';
 
-import {styles as S} from '../style';
+import { styles as S } from '../style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Warehouse} from '@Services/apis';
+import { Warehouse } from '@Services/apis';
 import ActionCreator from '@Actions';
-import {StringUtils} from '@Services/utils';
+import { StringUtils } from '@Services/utils';
+import { MY_PAGE_TAB_STATUS_KEY } from '@Constant';
 
 const dataSelect = [
   {
@@ -68,7 +70,7 @@ const dataSelect2 = [
 ];
 
 class ContractManager extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -82,17 +84,17 @@ class ContractManager extends Component {
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
 
-  showDialog = () => this.setState({visible: true});
+  showDialog = () => this.setState({ visible: true });
 
-  hideDialog = () => this.setState({visible: false});
+  hideDialog = () => this.setState({ visible: false });
 
-  showConfirm = () => this.setState({visibleConfirm: true});
+  showConfirm = () => this.setState({ visibleConfirm: true });
 
-  hideConfirm = () => this.setState({visibleConfirm: false});
+  hideConfirm = () => this.setState({ visibleConfirm: false });
   cover = value => {
 
     const debugStatus = ''; //(' ' + value.status);
@@ -339,8 +341,17 @@ class ContractManager extends Component {
     }
   };
 
-  render() {
-    const {dataContractWH} = this.props;
+  /**
+   * 탭 상태 저장을 위해 로컬 저장소에 상태 저장.
+   * @Param type : 탭 상태
+   * */
+  onChangeTabStatus = (type) => {
+    this.setState({ valueTab: type });
+    AsyncStorage.setItem(MY_PAGE_TAB_STATUS_KEY, type);
+  };
+
+  render () {
+    const { dataContractWH } = this.props;
     /** type, typeWH,  */
     let {
       valueTab,
@@ -379,32 +390,30 @@ class ContractManager extends Component {
 
     let checkStep = dataFilter.length === 0;
 
-    const viewStep =
-      dataSteps &&
-      dataSteps.map((item, index) => {
-        return (
-          <View style={S.step} key={index}>
-            <View style={S.stepLeft}>
-              <Text style={S.textStep}>{item.title}</Text>
-              <TouchableOpacity
-                style={[S.textNumber, item.status === true && !checkStep ? S.textNumberActive : null]}>
-                <Text
-                  style={[S.textNumber2, item.status === true && !checkStep ? S.textNumber2Active : null]}>{checkStep ? 0 : item.number}</Text>
-              </TouchableOpacity>
-            </View>
-            {(index + 1) % 3 === 0 ? null : (
-              <View style={S.rightStep}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  style={[]}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            )}
+    const viewStep = dataSteps && dataSteps.map((item, index) => {
+      return (
+        <View style={S.step} key={index}>
+          <View style={S.stepLeft}>
+            <Text style={S.textStep}>{item.title}</Text>
+            <TouchableOpacity
+              style={[S.textNumber, item.status === true && !checkStep ? S.textNumberActive : null]}>
+              <Text
+                style={[S.textNumber2, item.status === true && !checkStep ? S.textNumber2Active : null]}>{checkStep ? 0 : item.number}</Text>
+            </TouchableOpacity>
           </View>
-        );
-      });
+          {(index + 1) % 3 === 0 ? null : (
+            <View style={S.rightStep}>
+              <Icon
+                name="arrow-forward-ios"
+                size={12}
+                style={[]}
+                color="rgba(0, 0, 0, 0.54)"
+              />
+            </View>
+          )}
+        </View>
+      );
+    });
 
     const goDetail = (item, mode) => {
 
@@ -428,100 +437,98 @@ class ContractManager extends Component {
             rentUserID: item.rentUser?.id || item.rentUserNo,
             regUserDate: item.cntrYmdFrom,
             mode: mode,
-            thumbnail:item.thumbnail
+            thumbnail: item.thumbnail
           },
         )
       }
     }
 
-    const viewProprietor =
-      dataFilter &&
-      dataFilter.map((item, index) => {
-        let dataTable = this.cover(item) && this.cover(item).data;
-        let listBtnTenant = this.cover(item) && this.cover(item).listBtnTenant;
-        let titleButton = this.cover(item) && this.cover(item).footerTitle;
-        let status = this.cover(item) && this.cover(item).status;
-        let contractType = this.cover(item) && this.cover(item).contractType;
-        let userType = this.cover(item) && this.cover(item).userType;
+    const viewProprietor = dataFilter && dataFilter.map((item, index) => {
+      let dataTable = this.cover(item) && this.cover(item).data;
+      let listBtnTenant = this.cover(item) && this.cover(item).listBtnTenant;
+      let titleButton = this.cover(item) && this.cover(item).footerTitle;
+      let status = this.cover(item) && this.cover(item).status;
+      let contractType = this.cover(item) && this.cover(item).contractType;
+      let userType = this.cover(item) && this.cover(item).userType;
 
-        return (
-          <Fragment key={index}>
-            <CardMypage
-              key={index}
-              item={item}
-              onPressHeader={() => goDetail(item, null)}
-              headerTitle={item.info.warehouse}
-              data={dataTable}
-              borderRow={false}
-              styleLeft={DefaultStyle._leftTableCard}
-              styleRight={DefaultStyle._rightTableCard}
-              bgrImage={
-                item.thumbnail
-                  ? {
-                    uri: item.thumbnail,
-                  }
-                  : null
-              }
-              footer={<Fragment>
-                  {item &&
-                  (listBtnTenant === true && valueTab === 'TENANT' ? (
-                      <View style={[DefaultStyle.row, {marginTop: 20}]}>
+      return (
+        <Fragment key={index}>
+          <CardMypage
+            key={index}
+            item={item}
+            onPressHeader={() => goDetail(item, null)}
+            headerTitle={item.info.warehouse}
+            data={dataTable}
+            borderRow={false}
+            styleLeft={DefaultStyle._leftTableCard}
+            styleRight={DefaultStyle._rightTableCard}
+            bgrImage={
+              item.thumbnail
+                ? {
+                  uri: item.thumbnail,
+                }
+                : null
+            }
+            footer={<Fragment>
+              {item &&
+              (listBtnTenant === true && valueTab === 'TENANT' ? (
+                <View style={[DefaultStyle.row, { marginTop: 20 }]}>
 
-                        <TouchableOpacity
-                          style={[
-                            DefaultStyle._btnOutline,
-                            DefaultStyle._btnLeft,
-                          ]}
-                          // 계약 재요청
-                          onPress={() => {
-                            console.log(item, 'footer item');
-                            goDetail(item, 'RE');
-                          }}>
+                  <TouchableOpacity
+                    style={[
+                      DefaultStyle._btnOutline,
+                      DefaultStyle._btnLeft,
+                    ]}
+                    // 계약 재요청
+                    onPress={() => {
+                      console.log(item, 'footer item');
+                      goDetail(item, 'RE');
+                    }}>
 
-                          <Text style={DefaultStyle._textButton}>
-                            견적 재요청
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={[
-                            DefaultStyle._btnInline,
-                            DefaultStyle._btnRight,
-                          ]}
-                          // 계약요청
-                          onPress={() => goDetail(item, 'CT')}>
-                          <Text
-                            style={[
-                              DefaultStyle._textButton,
-                              DefaultStyle._textInline,
-                            ]}>
-                            계약 요청
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    ) : titleButton ? (
-                      <View style={[DefaultStyle.row, {marginTop: 20}]}>
-                        <TouchableOpacity
-                          style={DefaultStyle._btnOutline}
-                          onPress={() => goDetail(item,userType === 'OWNER' ? "RS" : "RE")}>
-                          <Text
-                            style={[
-                              DefaultStyle._textButton,
-                              // DefaultStyle._textInline,
-                            ]}>
-                            {titleButton}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    ) : null)}
-                </Fragment>
-              }
-            />
-          </Fragment>
-        );
-      });
+                    <Text style={DefaultStyle._textButton}>
+                      견적 재요청
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      DefaultStyle._btnInline,
+                      DefaultStyle._btnRight,
+                    ]}
+                    // 계약요청
+                    onPress={() => goDetail(item, 'CT')}>
+                    <Text
+                      style={[
+                        DefaultStyle._textButton,
+                        DefaultStyle._textInline,
+                      ]}>
+                      계약 요청
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : titleButton ? (
+                <View style={[DefaultStyle.row, { marginTop: 20 }]}>
+                  <TouchableOpacity
+                    style={DefaultStyle._btnOutline}
+                    onPress={() => goDetail(item, userType === 'OWNER' ? "RS" : "RE")}>
+                    <Text
+                      style={[
+                        DefaultStyle._textButton,
+                        // DefaultStyle._textInline,
+                      ]}>
+                      {titleButton}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null)}
+            </Fragment>
+            }
+          />
+        </Fragment>
+      );
+    });
 
     return (
-      <View style={[DefaultStyle._body, {paddingBottom: 180}]}>
+      <View style={[DefaultStyle._body, { paddingBottom: 180 }]}>
         <View style={DefaultStyle._titleBody}>
           <Text style={[DefaultStyle._textTitleCard]}>견적･계약 관리</Text>
         </View>
@@ -530,7 +537,7 @@ class ContractManager extends Component {
         <View style={DefaultStyle._tabBar}>
           <TouchableOpacity
             style={valueTab === 'OWNER' ? DefaultStyle._btnTabBar : null}
-            onPress={() => this.setState({valueTab: 'OWNER'})}>
+            onPress={() => this.onChangeTabStatus('OWNER')}>
             <Text
               style={
                 valueTab === 'OWNER'
@@ -542,7 +549,7 @@ class ContractManager extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={valueTab === 'TENANT' ? DefaultStyle._btnTabBar : null}
-            onPress={() => this.setState({valueTab: 'TENANT'})}>
+            onPress={() => this.onChangeTabStatus('TENANT')}>
             <Text
               style={
                 valueTab === 'TENANT'
@@ -555,7 +562,7 @@ class ContractManager extends Component {
         </View>
 
         {/** Contract Process **/}
-        <View style={[DefaultStyle._card, {marginBottom: 0}]}>
+        <View style={[DefaultStyle._card, { marginBottom: 0 }]}>
           <View style={S.steps}>{viewStep}</View>
         </View>
         <View
@@ -563,15 +570,15 @@ class ContractManager extends Component {
             DefaultStyle._listElement,
             DefaultStyle._flexEnd,
             DefaultStyle._optionList,
-            {marginTop: 16},
+            { marginTop: 16 },
           ]}>
           <View style={[S.optionSelect, S.selectLong]}>
             <Select
               data={dataSelect}
               style={S.select}
               valueProps={e => {
-                this.setState({contractType: e});
-                this.props.filterTypeContractData({type: e});
+                this.setState({ contractType: e });
+                this.props.filterTypeContractData({ type: e });
               }}
             />
           </View>
@@ -580,8 +587,8 @@ class ContractManager extends Component {
               data={dataSelect2}
               style={S.select}
               valueProps={e => {
-                this.setState({contractStatus: e});
-                this.props.filterTypeContractData({status: e});
+                this.setState({ contractStatus: e });
+                this.props.filterTypeContractData({ status: e });
               }}
             />
           </View>
@@ -600,7 +607,7 @@ class ContractManager extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     // Progress
     this.props.setProgress({ is: true, });
 
@@ -610,7 +617,7 @@ class ContractManager extends Component {
         const status = res.status;
         if (status === 200) {
 
-          this.props.contractData({dataApi: res.data.data.content});
+          this.props.contractData({ dataApi: res.data.data.content });
           let data = res.data;
           let dataSteps = [
             {
@@ -651,7 +658,7 @@ class ContractManager extends Component {
             },
           ];
 
-          this.setState({dataSteps});
+          this.setState({ dataSteps });
           // Progress
           this.props.setProgress({ is: false, });
         }
@@ -659,10 +666,17 @@ class ContractManager extends Component {
       .catch(err => {
         console.log('err', err);
       });
+
+
+    // 탭 초기화.
+    const tabStatus = await AsyncStorage.getItem(MY_PAGE_TAB_STATUS_KEY);
+    if (tabStatus) {
+      this.setState({ valueTab: tabStatus === 'OWNER' ? 'OWNER' : 'TENANT' });
+    }
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     // Progress
     this.props.setProgress({ is: true, });
 
@@ -675,7 +689,7 @@ class ContractManager extends Component {
           const status = res.status;
           if (status === 200) {
             // this.setState({ dataApi: res.data.data.content });
-            this.props.contractData({dataApi: res.data.data.content});
+            this.props.contractData({ dataApi: res.data.data.content });
             let data = res.data;
 
             let dataSteps = [
@@ -717,7 +731,7 @@ class ContractManager extends Component {
               },
             ];
 
-            this.setState({dataSteps});
+            this.setState({ dataSteps });
             // Progress
             this.props.setProgress({ is: false, });
           }
@@ -739,10 +753,10 @@ class ContractManager extends Component {
       let typeWH = this.state.dataProps.typeWH === 'TRUST' ? 'trust' : 'keep';
       let data =
         this.state.dataProps.typeWH === 'TRUST'
-          ? {warehouseRegNo, mgmtTrustSeq: warehSeq}
-          : {warehouseRegNo, mgmtKeepSeq: warehSeq};
+          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
+          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
 
-      Warehouse.requestContract({typeWH, data})
+      Warehouse.requestContract({ typeWH, data })
         .then(res => {
 
           if (res.status === 200) {
@@ -765,7 +779,7 @@ class ContractManager extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     // Progress
     this.props.setProgress({ is: true, });
     return true;
@@ -773,7 +787,7 @@ class ContractManager extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     dataContractWH: state.warehouse.dataContractWH,
@@ -782,7 +796,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     contractData: action => {
       dispatch(ActionCreator.contractData(action));

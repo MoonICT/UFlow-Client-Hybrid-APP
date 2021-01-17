@@ -77,11 +77,11 @@ class Popup extends Component {
                 <Text style={styles.textContent}>{content}</Text>
               </View>
               <View style={styles.action}>
-                <Button onPress={() => hidePopup()} style={styles.actionButton}>
-                  취소
-                </Button>
+                {/*<Button onPress={() => hidePopup()} style={styles.actionButton}>*/}
+                  {/*취소*/}
+                {/*</Button>*/}
                 <View style={styles.borderHave} />
-                <Button style={styles.actionButton}>확인</Button>
+                <Button onPress={() => hidePopup()} style={styles.actionButton}>확인</Button>
               </View>
             </Modal>
           </Portal>

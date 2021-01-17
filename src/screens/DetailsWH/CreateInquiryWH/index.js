@@ -87,7 +87,8 @@ class CreateInquiryWH extends Component {
               labelTextField="내용"
               placeholder="문의하실 내용을 입랙해 주세요."
               colorLabel="#000000"
-              numberOfLines={5}
+              numberOfLines={15}
+              style={DefaultStyle._textAreaStyle}
               multiline={true}
               valueProps={text => this.setState({
                 questionContent: text

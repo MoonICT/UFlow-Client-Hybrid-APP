@@ -47,7 +47,8 @@ class Search extends Component {
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
       defaultURL: 'http://www.uflow.voltpage.net/webview/search',
-      // defaultURL: 'http://localhost:13000/webview/search',
+      // defaultURL: 'http://localhost:13000/webview/search'
+      // w/search',
     };
     this.state = {
       url: this.option.defaultURL,

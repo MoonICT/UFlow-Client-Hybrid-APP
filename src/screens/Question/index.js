@@ -31,10 +31,11 @@ import Loading from '@Components/atoms/Loading';
 import { styles as S } from './style';
 
 import { Question } from '@Services/apis';
+
 const windowHeight = Dimensions.get('window').height;
 
 class QuestionScreen extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -47,9 +48,10 @@ class QuestionScreen extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {}
+  async componentDidMount () {
+  }
 
-  fetchData(params) {
+  fetchData (params) {
     this.setState({ loading: true });
     Question.createQuestion({
       ...params,
@@ -71,7 +73,7 @@ class QuestionScreen extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 
@@ -91,7 +93,7 @@ class QuestionScreen extends Component {
     }
   };
 
-  render() {
+  render () {
     // const windowHeight = Dimensions.get('window').height;
 
     return (
@@ -112,15 +114,10 @@ class QuestionScreen extends Component {
               style={DefaultStyle.headerTitle}
             />
             <Appbar.Content
-              // color={((this.state.email.length >0) && (this.state.content.length >0)) ? '#ff6d00' : 'rgba(0, 0, 0, 0.47)'}
               color="#ff6d00"
               title="등록"
               style={S.headerButon}
               onPress={this.onSubmit}
-              // onPress={
-              //  ( if ((this.state.email !== 0) && (this.state.content !== 0)){
-              //   this.onSubmit
-              //   })}
               titleStyle={DefaultStyle._textHeaderRight}
             />
           </Appbars>
@@ -137,15 +134,17 @@ class QuestionScreen extends Component {
                 </View>
                 <TextField
                   labelTextField="이메일"
-                  placeholder="Please enter email"
+                  placeholder=""
                   colorLabel="#000000"
                   onChangeText={this.handleChangeEmail}
                 />
                 <TextField
                   labelTextField="내용"
+                  placeholder="문의하실 내용을 입랙해 주세요."
                   colorLabel="#000000"
-                  numberOfLines={5}
+                  numberOfLines={15}
                   multiline={true}
+                  style={DefaultStyle._textAreaStyle}
                   onChangeText={this.handleChangeContent}
                 />
               </View>
@@ -193,7 +192,7 @@ class QuestionScreen extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -202,12 +201,14 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {};
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   inner: {
     flex: 1,
