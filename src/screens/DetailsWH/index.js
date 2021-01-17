@@ -895,13 +895,13 @@ class DetailWH extends Component {
                               )}
                             </View>
                           ) : (
-                            <Text청
+                            <Text
                               style={[
                                 S.textBtnQuote,
                                 { color: '#ff0000', padding: 16 },
                               ]}>
                               계약 완료된 정보입니다.
-                            </Text청>
+                            </Text>
                           )}
                         </View>
                       </View>

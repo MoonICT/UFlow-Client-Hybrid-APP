@@ -1,18 +1,18 @@
-import React, {Component, Fragment} from 'react';
-import {TouchableOpacity, View} from "react-native";
+import React, { Component, Fragment } from 'react';
+import { TouchableOpacity, View } from "react-native";
 import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
-import {Text} from "react-native-paper";
-import {styles as S} from "../style";
-import {styles as SS} from "./style";
+import { Text } from "react-native-paper";
+import { styles as S } from "../style";
+import { styles as SS } from "./style";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Moment from 'moment';
-import {Warehouse} from '@Services/apis';
-import {StringUtils, DeepLogs} from '@Services/utils';
+import { Warehouse } from '@Services/apis';
+import { StringUtils, DeepLogs } from '@Services/utils';
 
 class ReqeustQKeep extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.navigation = props.navigation;
 
@@ -34,11 +34,11 @@ class ReqeustQKeep extends Component {
   }
 
   showDatepicker = () => {
-    this.setState({showFrom: true});
+    this.setState({ showFrom: true });
   };
 
   showDatepickerTo = () => {
-    this.setState({showTo: true});
+    this.setState({ showTo: true });
   };
 
   onChangeFrom = (selectedDate) => {
@@ -63,7 +63,7 @@ class ReqeustQKeep extends Component {
     });
   };
 
-  render() {
+  render () {
 
     const {
       showFrom,
@@ -99,9 +99,9 @@ class ReqeustQKeep extends Component {
       <View
         style={[
           S.row,
-          {justifyContent: 'center', marginBottom: 18},
+          { justifyContent: 'center', marginBottom: 18 },
         ]}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <TouchableOpacity
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
@@ -111,11 +111,11 @@ class ReqeustQKeep extends Component {
             <Text
               style={[
                 DefaultStyle._labelTextField,
-                {color: '#000000'},
+                { color: '#000000' },
               ]}>
               보관기간 시작일
               <Text style={[
-                {color: 'red'}
+                { color: 'red' }
               ]}> *</Text>
             </Text>
             <DateTimePickerModal
@@ -125,11 +125,11 @@ class ReqeustQKeep extends Component {
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
-                console.log(date,'date');
+                console.log(date, 'date');
                 this.onChangeFrom(date);
               }}
               onCancel={() => {
-                this.setState({showFrom: false});
+                this.setState({ showFrom: false });
               }}
             />
           </TouchableOpacity>
@@ -137,7 +137,7 @@ class ReqeustQKeep extends Component {
 
         <Text style={SS.hyphen}>-</Text>
 
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <TouchableOpacity
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
@@ -147,11 +147,11 @@ class ReqeustQKeep extends Component {
             <Text
               style={[
                 DefaultStyle._labelTextField,
-                {color: '#000000'},
+                { color: '#000000' },
               ]}>
               보관기간 종료일
               <Text style={[
-                {color: 'red'}
+                { color: 'red' }
               ]}> *</Text>
             </Text>
             <DateTimePickerModal
@@ -166,7 +166,7 @@ class ReqeustQKeep extends Component {
                   this.onChangeTo(date);
               }}
               onCancel={() => {
-                this.setState({showTo: false});
+                this.setState({ showTo: false });
               }}
             />
           </TouchableOpacity>
@@ -175,25 +175,51 @@ class ReqeustQKeep extends Component {
       {/** END:보관기간 (필수) **/}
 
       {/** 요청 면적 (필수) **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="보관 요청 수량"
-        keyboardType="numeric"
-        placeholder={"0"}
-        defaultValue={
-          rntlValue ? String(rntlValue) : '0'
-        }
-
-        isRequired={true}
-        onChangeText={e => {
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              rntlValue: Number(e.replace(/[^0-9]/g), '')
+      <View style={DefaultStyle._listElement}>
+        <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+          <TextField
+            colorLabel="#000000"
+            labelTextField="보관 요청 면적"
+            textRight={'m2'}
+            keyboardType="numeric"
+            placeholder={"0"}
+            defaultValue={
+              rntlValue ? String(rntlValue) : '0'
             }
-          });
-        }}
-      />
+            isRequired={true}
+            onChangeText={e => {
+              this.setState({
+                formData: {
+                  ...this.state.formData,
+                  rntlValue: Number(e.replace(/[^0-9]/g), '')
+                }
+              });
+            }}
+          />
+        </View>
+        {/*<View style={[DefaultStyle._element,]}>*/}
+          {/*<TextField*/}
+            {/*colorLabel="#000000"*/}
+            {/*labelTextField="보관 요청 면적"*/}
+            {/*textRight={'평'}*/}
+            {/*keyboardType="numeric"*/}
+            {/*placeholder={"0"}*/}
+            {/*defaultValue={*/}
+              {/*rntlValue ? String(rntlValue) : '0'*/}
+            {/*}*/}
+
+            {/*isRequired={true}*/}
+            {/*onChangeText={e => {*/}
+              {/*this.setState({*/}
+                {/*formData: {*/}
+                  {/*...this.state.formData,*/}
+                  {/*rntlValue: Number(e.replace(/[^0-9]/g), '')*/}
+                {/*}*/}
+              {/*});*/}
+            {/*}}*/}
+          {/*/>*/}
+        {/*</View>*/}
+      </View>
 
       {/** 보관 단가 (필수) **/}
       <TextField
@@ -226,6 +252,7 @@ class ReqeustQKeep extends Component {
           mgmtChrg ? String(mgmtChrg) : '0'
         }
         placeholder="0"
+        isRequired={true}
         onChangeText={e =>
           this.setState({
             formData: {
@@ -243,7 +270,7 @@ class ReqeustQKeep extends Component {
         numberOfLines={5}
         textAlignVertical="top"
         multiline={true}
-        styleProps={{height: 100}}
+        styleProps={{ height: 100 }}
         valueProps={value =>
           this.setState({
             formData: {
@@ -253,10 +280,10 @@ class ReqeustQKeep extends Component {
           })
         }
       />
-      <View style={[DefaultStyle._footerCards, {marginBottom: 30}]}>
-        <Text style={S.amount}>예상 견적 금액</Text>
-        <Text style={S.total}>{StringUtils.money((this.state.formData.mgmtChrg ? Number(this.state.formData.mgmtChrg) : 0) + (this.state.formData.splyAmount ? Number(this.state.formData.splyAmount) : 0))}</Text>
-      </View>
+      {/*<View style={[DefaultStyle._footerCards, {marginBottom: 30}]}>*/}
+      {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
+      {/*<Text style={S.total}>{StringUtils.money((this.state.formData.mgmtChrg ? Number(this.state.formData.mgmtChrg) : 0) + (this.state.formData.splyAmount ? Number(this.state.formData.splyAmount) : 0))}</Text>*/}
+      {/*</View>*/}
 
 
       <TouchableOpacity
@@ -344,11 +371,11 @@ class ReqeustQKeep extends Component {
     </Fragment>;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 
-  componentDidMount() {
+  componentDidMount () {
     console.log('::componentDidMount::');
   }
 }
