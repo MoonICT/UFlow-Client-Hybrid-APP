@@ -14,6 +14,7 @@ import {ToastShow} from '@Utils/Toast';
 import ImageModal from 'react-native-image-modal';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
 import {
   SafeAreaView,
@@ -92,6 +93,7 @@ export default class DetailsManager extends Component {
     this.webView = null;
     let {rentWarehNo, type} = props.route.params
     this.state = {
+      warehouseName: '',
       rentWarehNo,
       type,
       isExpired: false,
@@ -1063,19 +1065,11 @@ export default class DetailsManager extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="입･출고 관리"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+
+        <HistoryBackActionBar
+          title={this.state.warehouseName}
+          navigation={this.navigation}
+        />
         <ScrollView>
           <View style={[DefaultStyle._cards, {marginTop: 0, marginBottom: 180}]}>
             <View style={DefaultStyle._titleCard}>

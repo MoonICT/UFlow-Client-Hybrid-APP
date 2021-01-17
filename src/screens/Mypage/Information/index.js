@@ -6,7 +6,8 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import {View, ScrollView, SafeAreaView} from 'react-native';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import {
   Appbar,
   Button,
@@ -77,7 +78,7 @@ class Information extends Component {
   }
 
   handleClickTab = (tabName, index) => {
-    this.setState({ 
+    this.setState({
       tabInfo: tabName
     });
   }
@@ -92,19 +93,12 @@ class Information extends Component {
 
     return (
       <ScrollView style={S.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="내 정보 수정"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+
+        <HistoryBackActionBar
+          title={'내 정보 수정'}
+          navigation={this.navigation}
+        />
+
         <ScrollView>
           <View style={{ flex: 1 }}>
             <AppGrid data={tabSelect} title={tabInfo} titleProps={this.handleClickTab} />

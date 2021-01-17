@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
@@ -373,16 +374,16 @@ class Mypage extends Component {
             onPress={() =>
               route.params && route.params.prevView === 'PrevView'
                 ? this.navigation.navigate('Home')
-                : this.navigation.goBack()
-            }
+                : this.navigation.goBack()}
           />
           <Appbar.Content
-            title="마이페이지"
+            title={this.state.title}
             color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
+            fontSize="16"
+            titleStyle={DefaultStyle.headerTitle}
           />
         </Appbars>
+
         <ScrollView>
           <AppGrid
             data={data}
@@ -483,6 +484,9 @@ class Mypage extends Component {
       })
       .catch(err => {
         console.log('err', err);
+        setTimeout(() => {
+          this.props.setProgress({ is: false });
+        }, 300);
       });
 
     // SplashScreen.hide();

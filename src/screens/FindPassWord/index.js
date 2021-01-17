@@ -12,6 +12,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { Paragraph, Appbar, Dialog, Text, Button } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 import Appbars from '@Components/organisms/AppBar';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import TextField from '@Components/organisms/TextField';
 import DialogScreen from '@Components/organisms/Dialog';
 import illust3 from '@Assets/images/illust3.png';
@@ -23,6 +24,7 @@ import { FindPassword } from '@Services/apis';
 import DefaultStyle from '../../styles/default';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
+import {styles as SS} from "../Mypage/RequestQuotation/style";
 
 class ForgotPass extends Component {
   constructor(props) {
@@ -37,6 +39,7 @@ class ForgotPass extends Component {
       isConfirmPass: false,
       isConfirmEmail: false,
       loading: false,
+      isSubmit: false
     };
     this.navigation = props.navigation;
   }
@@ -56,16 +59,20 @@ class ForgotPass extends Component {
   hideConfirmPass = () => this.setState({ visiblePass: false });
 
   sendEmail = () => {
+    const { showPopup } = this.props;
     const {email} = this.state;
+
+    if (this.state.isSubmit) return;
     this.setState({ loading: true });
     FindPassword.sendEmail({ email: email })
       .then(res => {
-        this.setState({ loading: false });
+        this.setState({ loading: false, isSubmit: true });
         this.showDialog()
       })
       .catch(error => {
         this.setState({ loading: false });
-        alert(error.response.data.message);
+        showPopup({ title: 'UFLOW', content: error.response.data.message, type: 'confirm' });
+        // alert(error.response.data.message);
       });
   }
   render() {
@@ -79,21 +86,27 @@ class ForgotPass extends Component {
     } = this.state;
     return (
       <SafeAreaView style={DefaultStyle._container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title={
-              isConfirmEmail === false ? '비밀번호 찾기' : '비밀번호 재설정'
-            }
-            color="black"
-            fontSize="16"
-            titleStyle={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+
+        {/*<Appbars>*/}
+        {/*  <Appbar.Action*/}
+        {/*    icon="arrow-left"*/}
+        {/*    color="black"*/}
+        {/*    onPress={() => this.navigation.goBack()}*/}
+        {/*  />*/}
+        {/*  <Appbar.Content*/}
+        {/*    title={*/}
+        {/*      isConfirmEmail === false ? '비밀번호 찾기' : '비밀번호 재설정'*/}
+        {/*    }*/}
+        {/*    color="black"*/}
+        {/*    fontSize="16"*/}
+        {/*    titleStyle={DefaultStyle.headerTitle}*/}
+        {/*  />*/}
+        {/*</Appbars>*/}
+        <HistoryBackActionBar
+          title={isConfirmEmail === false ? '비밀번호 찾기' : '비밀번호 재설정'}
+          navigation={this.navigation}
+        />
+
         <ScrollView>
           {isConfirmEmail === false ? (
             <Fragment>
@@ -110,7 +123,8 @@ class ForgotPass extends Component {
                   valueProps={e => this.setState({ email: e })}
                 />
                 <TouchableOpacity
-                  style={[DefaultStyle._btnInline]}
+                  disabled={this.state.isSubmit}
+                  style={[DefaultStyle._btnInline, this.state.isSubmit ? SS.btnDisabled : null]}
                   onPress={() => {
                     email !== '' ? this.sendEmail() : null;
                   }}>
@@ -144,6 +158,7 @@ class ForgotPass extends Component {
               />
               <TouchableOpacity
                 style={[DefaultStyle._btnInline]}
+                ref={(ref)=>this.submit = ref}
                 onPress={() => {
                   newPass !== '' && confirmNewPass !== ''
                     ? this.showConfirmPass()
@@ -250,6 +265,17 @@ function mapDispatchToProps(dispatch) {
     },
     countDown: diff => {
       dispatch(ActionCreator.countDown(diff));
+    },
+    showPopup: data => {
+      dispatch(
+        ActionCreator.show({
+          title: data?.title || '문의 완료',
+          content:
+            data?.content ||
+            '답변 내용은 [마이페이지 > 문의내역[ 혹은 등록하신 이메일에서 확인해 주세요.',
+          type: data?.type || ''
+        }),
+      );
     },
   };
 }
