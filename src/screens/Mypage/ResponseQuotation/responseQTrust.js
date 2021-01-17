@@ -108,10 +108,21 @@ class ResponseQTrust extends Component {
 
     // console.log(psnChrg, 'psnChrg');
     let checkRntlValue = false;
+    let checkSplyAmount = false;
+    let checkWhinChrg = false;
+    let checkWhoutChrg = false;
     if (( this.props.rntlValue >= rntlValue)&&(rntlValue>0)){
       checkRntlValue = true;
     }
-    console.log('checkRntlValue :>> ', checkRntlValue);
+    if (( this.props.splyAmount >= splyAmount)&&(splyAmount>0)){
+      checkSplyAmount = true;
+    }
+    if (( this.props.whinChrg >= whinChrg)&&(whinChrg>0)){
+      checkWhinChrg = true;
+    }
+    if (( this.props.whoutChrg >= whoutChrg)&&(whoutChrg>0)){
+      checkWhoutChrg = true;
+    }
     return <Fragment>
 
       {/** 수탁기간 (필수) **/}
@@ -219,6 +230,7 @@ class ResponseQTrust extends Component {
         colorLabel="#000000"
         labelTextField="보관단가"
         textRight="원"
+        textError={ checkSplyAmount === true ? null : '단가가 허용범위를 초과했습니다.'}
         keyboardType="numeric"
         defaultValue={
           splyAmount ? String(splyAmount) : '0'
@@ -244,6 +256,7 @@ class ResponseQTrust extends Component {
           whinChrg ? String(whinChrg) : '0'
         }
         placeholder="0"
+        textError={ checkWhinChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
         isRequired={true}
         onChangeText={e =>
           this.setState({
@@ -259,6 +272,7 @@ class ResponseQTrust extends Component {
         colorLabel="#000000"
         labelTextField="출고단가"
         textRight="원"
+        textError={ checkWhoutChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
         keyboardType="numeric"
         defaultValue={
           whoutChrg ? String(whoutChrg) : '0'
