@@ -1,8 +1,9 @@
+import { FILE_SERVER_ADDRESS, API_SERVER_ADDRESS } from '@Constant';
+
 const config = {
   // API_SERVER_ADDRESS: 'http://192.168.1.101:3001/',
-  API_SERVER_ADDRESS: 'http://api.uflow.voltpage.net',
-  
-  FILE_SERVER_ADDRESS: 'http://files.uflow.voltpage.net'
+  API_SERVER_ADDRESS: API_SERVER_ADDRESS,
+  FILE_SERVER_ADDRESS: FILE_SERVER_ADDRESS
 };
 
 export default config;

@@ -310,7 +310,7 @@ class Mypage extends Component {
       // TODO 라우트 갱신할 합수 전달.
       case '내 창고':
         viewComponent = (
-          <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+          <View style={[DefaultStyle._cards, DefaultStyle._margin0, {paddingBottom: 100,}]}>
             <View style={DefaultStyle._titleBody}>
               <Text style={[DefaultStyle._textTitleCard]}>내 창고</Text>
             </View>
@@ -367,7 +367,7 @@ class Mypage extends Component {
     }
 
     return (
-      <SafeAreaView style={S.container}>
+      <SafeAreaView style={[S.container,]}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -385,7 +385,7 @@ class Mypage extends Component {
           />
         </Appbars>
 
-        <ScrollView>
+        <ScrollView style={{ }}>
           <AppGrid
             data={data}
             title={this.state.title}

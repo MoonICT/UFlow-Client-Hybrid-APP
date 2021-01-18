@@ -35,7 +35,7 @@ import { Warehouse } from '@Services/apis';
 import Postcode from 'react-native-daum-postcode';
 
 class RegisterIntro extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -48,33 +48,33 @@ class RegisterIntro extends Component {
         props.dataIntro && props.dataIntro.address
           ? props.dataIntro.address
           : {
-              zipNo: '',
-              sidoName: '',
-              skkCd: '',
-              skkName: '',
-              bjdongCd: '',
-              bjdongName: '',
-              hjdongCd: '',
-              hjdongName: '',
-              roadNmCd: '',
-              address: '',
-              detail: '',
-            },
+            zipNo: '',
+            sidoName: '',
+            skkCd: '',
+            skkName: '',
+            bjdongCd: '',
+            bjdongName: '',
+            hjdongCd: '',
+            hjdongName: '',
+            roadNmCd: '',
+            address: '',
+            detail: '',
+          },
       roadAddr:
         props.dataIntro && props.dataIntro.roadAddr
           ? props.dataIntro.roadAddr
           : {
-              zipNo: '',
-              address: '',
-              detail: '',
-            },
+            zipNo: '',
+            address: '',
+            detail: '',
+          },
       gps:
         props.dataIntro && props.dataIntro.gps
           ? props.dataIntro.gps
           : {
-              latitude: 0,
-              longitude: 0,
-            },
+            latitude: 0,
+            longitude: 0,
+          },
       isActive: false,
       visible: false,
     };
@@ -83,12 +83,12 @@ class RegisterIntro extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -128,7 +128,7 @@ class RegisterIntro extends Component {
     });
   };
 
-  render() {
+  render () {
     const { route, dataIntro } = this.props;
     const {
       name,
@@ -158,7 +158,7 @@ class RegisterIntro extends Component {
             titleStyle={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={DefaultStyle.backgroundGray}>
+        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 100, }]}>
           <View style={{ backgroundColor: '#ffffff' }}>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
@@ -290,13 +290,13 @@ class RegisterIntro extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount::');
     SplashScreen.hide();
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     if (prevState.firstQuery !== this.state.firstQuery) {
       Warehouse.searchAddressKakao({ query: this.state.firstQuery })
         .then(res => {
@@ -319,7 +319,7 @@ class RegisterIntro extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
@@ -328,7 +328,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));

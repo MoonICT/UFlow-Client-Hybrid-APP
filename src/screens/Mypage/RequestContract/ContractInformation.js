@@ -107,7 +107,7 @@ class ContractInformation extends Component {
                 warehSeq,
                 type,
                 thumbnail,
-                warehouse: keepTrustContract.warehouse,
+                warehouse: detailEstimate.warehouse,
               })
             }>
             <Icon name="wechat" size={20} color="#fff" />

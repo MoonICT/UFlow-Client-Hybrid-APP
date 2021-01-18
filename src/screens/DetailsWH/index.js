@@ -451,14 +451,14 @@ class DetailWH extends Component {
                       />
                     </TouchableOpacity>}
                   {/* 이미지 타입 토글 */}
-                  {whrgData.pnImages && whrgData.pnImages.length > 0 ?
+                  {whrgData.pnImages && whrgData.pnImages.length > 0 &&
                     <TouchableOpacity style={S.btnImageToggle}
                                       onPress={() => this.setState({ toggleImage: !this.state.toggleImage })}>
                       {this.state.toggleImage ?
                         <IconButton size={20} icon="image-multiple" />
                         :
                         <Image style={{ width: 25, height: 25, }} source={panoIcon} />}
-                    </TouchableOpacity> : ''}
+                    </TouchableOpacity>}
                 </View>
                 {/* 이미지 슬라이드 팝업 */}
                 <ImageView

@@ -33,7 +33,7 @@ import { MyPage } from '@Services/apis';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 
 class RegisterMoreInfo extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -93,7 +93,7 @@ class RegisterMoreInfo extends Component {
     this.setState({ from: currentDate, showFrom: false, cmpltYmd: d });
   };
 
-  render() {
+  render () {
     const { imageStore, route, dataMoreInfo } = this.props;
     const {
       addOptDvCodes,
@@ -231,7 +231,7 @@ class RegisterMoreInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={DefaultStyle.backgroundGray}>
+        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 100, }]}>
           <View>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
@@ -564,7 +564,7 @@ class RegisterMoreInfo extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     await MyPage.getDetailCodes('WHRG0008')
       .then(res => {
         if (res.status === 200) {
@@ -605,13 +605,13 @@ class RegisterMoreInfo extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -620,7 +620,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));

@@ -665,6 +665,8 @@ class ContractManager extends Component {
       })
       .catch(err => {
         console.log('err', err);
+        // Progress
+        this.props.setProgress({ is: false, });
       });
 
 
@@ -677,12 +679,11 @@ class ContractManager extends Component {
 
   /** when update state or props */
   componentDidUpdate (prevProps, prevState) {
-    // Progress
-    this.props.setProgress({ is: true, });
-
     let valueState = this.state.valueTab;
     let valuePrev = prevState.valueTab;
     if (valueState !== valuePrev) {
+      // Progress
+      this.props.setProgress({ is: true, });
       Warehouse.contractManager(valueState)
         .then(res => {
           // console.log('resContractUpdate', res);
@@ -780,8 +781,6 @@ class ContractManager extends Component {
 
   /** listener when change props */
   shouldComponentUpdate (nextProps, nextState) {
-    // Progress
-    this.props.setProgress({ is: true, });
     return true;
   }
 }

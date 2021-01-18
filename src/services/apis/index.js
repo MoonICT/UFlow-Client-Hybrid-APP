@@ -26,6 +26,7 @@ import * as Fav from './Fav';
 import * as Emergency from './Emergency';
 import * as FCM from './FCM';
 import * as Menu from './Menu';
+import * as Chat from './Chat';
 
 import * as SettlementManagementService from './SettlementManagement';
 export {
@@ -58,4 +59,5 @@ export {
   Emergency,
   FCM,
   Menu,
+  Chat,
 };
