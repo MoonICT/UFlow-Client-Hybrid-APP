@@ -1,6 +1,6 @@
 import types from './types';
 
-export function dataImage(listImage) {
+export function setWHImages(listImage) {
   return {
     type: types.DATA_IMAGE_REGISTER,
     listImage: listImage, // Array

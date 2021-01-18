@@ -12,13 +12,13 @@ import {styles as S} from '../style';
 import Moment from 'moment';
 import {moneyUnit, dateStr, toStdCd} from '@Utils/StringUtils';
 import Select from '@Components/organisms/SelectFilter';
-
 import {
   Linking,
   View,
   TouchableOpacity
 } from 'react-native';
 import {Text} from 'react-native-paper';
+import AsyncStorage from "@react-native-community/async-storage";
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -27,6 +27,7 @@ import CardMypage from '@Components/organisms/CardMypage';
 import {SettlementManagementService, Calculate} from '@Services/apis'
 import Icon from 'react-native-vector-icons/Fontisto';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { MY_PAGE_TAB_STATUS_KEY } from '@Constant';
 
 var searchTimerQuery;
 
@@ -76,11 +77,18 @@ export default class SettlementManagement extends Component {
     this.navigation = props.navigation;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("::: 정산 관리 페이지 :::");
-    this.getAllData()
+    const tabStatus = await AsyncStorage.getItem(MY_PAGE_TAB_STATUS_KEY);
+    this.setState(
+      {
+        valueTab: tabStatus && tabStatus === 'TENANT' ? 'TENANT' : 'OWNER',
+      },
+      () => {
+        this.getAllData();
+      },
+    );
   }
-
 
   async getAllData() {
     let {startDate, endDate, query, contractType, rangeDate} = this.state.filter;
@@ -143,6 +151,7 @@ export default class SettlementManagement extends Component {
     }, () => {
       this.getAllData()
     })
+    AsyncStorage.setItem(MY_PAGE_TAB_STATUS_KEY, value);
   }
 
   showDateStart = () => {

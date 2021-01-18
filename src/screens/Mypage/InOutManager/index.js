@@ -15,6 +15,7 @@ import { moneyUnit, dateStr, toStdCd } from '@Utils/StringUtils';
 import { View, TouchableOpacity} from 'react-native';
 import { Text, Dialog, Button, Paragraph } from 'react-native-paper';
 import Select from '@Components/organisms/SelectFilter';
+import AsyncStorage from "@react-native-community/async-storage";
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -25,7 +26,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from 'react-native-vector-icons/Fontisto';
 import card from '@Assets/images/card-img.png';
 import { InOutManagerService } from '@Services/apis';
-
+import { MY_PAGE_TAB_STATUS_KEY } from '@Constant';
 // import DatePicker from '@react-native-community/datetimepicker';
 
 var searchTimerQuery;
@@ -88,9 +89,18 @@ export default class InOutManager extends Component {
   }
 
   /** when after render DOM */
-  componentDidMount() {
+  async componentDidMount() {
     console.log('::: 입출고 관리 페이지 :::');
-    this.getAllData();
+    // 탭 초기화.
+    const tabStatus = await AsyncStorage.getItem(MY_PAGE_TAB_STATUS_KEY);
+    this.setState(
+      {
+        valueTab: tabStatus && tabStatus === 'TENANT' ? 'TENANT' : 'OWNER',
+      },
+      () => {
+        this.getAllData();
+      },
+    );
   }
 
   async getAllData() {
@@ -170,7 +180,7 @@ export default class InOutManager extends Component {
         });
       })
       .catch(error => {
-        alert('InOutManagerService:' + error);
+        alert(error.response.data.message);
       });
   }
 
@@ -183,6 +193,7 @@ export default class InOutManager extends Component {
         this.getAllData();
       },
     );
+    AsyncStorage.setItem(MY_PAGE_TAB_STATUS_KEY, value);
   }
 
   showDateStart = () => {
@@ -361,7 +372,7 @@ export default class InOutManager extends Component {
         this.hideDialog();
       })
       .catch(error => {
-        alert('InOutManagerService:' + error);
+        alert(error.response.data.message);
       });
   }
 
@@ -629,7 +640,7 @@ export default class InOutManager extends Component {
               />
             );
           })}
-        
+
       </View>
       <Dialog
       style={[DefaultStyle.popup, SS.popup]}

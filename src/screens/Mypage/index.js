@@ -96,7 +96,7 @@ const dataSteps = [
 ];
 
 class Mypage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       isSwitchOn: true,
@@ -112,12 +112,12 @@ class Mypage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -167,7 +167,7 @@ class Mypage extends Component {
     }
   };
 
-  render() {
+  render () {
     const { route, workComplete } = this.props;
     const { title, refreshKey, dataWH } = this.state;
     // console.log('title :>> ', title);
@@ -184,13 +184,12 @@ class Mypage extends Component {
         let subTitleTrust = item.trust && item.trust.subTitle;
         let whoutChrgTrustTrust = item.trust && money(item.trust.whoutChrg);
         let whinChrgTrust = item.trust && money(item.trust.whinChrg);
+        let splyAmountTrust = item.trust && money(item.trust.splyAmount);
         let unitTrust = item.trust && item.trust.unit;
         let typeCover = this.coverType(item);
 
         let dataKeep =
-          '최대' +
-          (subTitle ? subTitle : '') +
-          ',\n보관단가 ' +
+          '보관단가 ' +
           (splyAmount ? splyAmount : '') +
           '~/' +
           (unit ? unit : '') +
@@ -200,16 +199,12 @@ class Mypage extends Component {
           (unit ? unit : '');
 
         let dataTrust =
-          '최대' +
-          (subTitleTrust ? subTitleTrust : '') +
-          ',\n보관단가 ' +
+          '입고단가 ' +
           (whinChrgTrust ? whinChrgTrust : '') +
-          '~/' +
-          (unitTrust ? unitTrust : '') +
-          ',\n관리단가 ' +
+          ',\n출고단가 ' +
           (whoutChrgTrustTrust ? whoutChrgTrustTrust : '') +
-          '~/' +
-          (unitTrust ? unitTrust : '');
+          ',\n보관단가 ' +
+          (splyAmountTrust ? splyAmountTrust : '');
 
         let dataTable = [
           {
@@ -218,8 +213,8 @@ class Mypage extends Component {
               item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001'
                 ? '미검증 공실'
                 : item.sttsDbCode.stdDetailCodeName,
-            colorValue: this.coverColor(
-              item.sttsDbCode && item.sttsDbCode.stdDetailCode,
+                colorValue: this.coverColor(
+                  item.sttsDbCode && item.sttsDbCode.stdDetailCode,
             ),
           },
           {
@@ -231,12 +226,12 @@ class Mypage extends Component {
             value: item.address && item.address,
           },
           {
-            type: '보관 요약',
-            value: dataKeep,
+            type: item.keep && '임대 요약',
+            value: item.keep && dataKeep,
           },
           {
-            type: '수탁 요약',
-            value: dataTrust,
+            type: item.trust && '수탁 요약',
+            value: item.trust && dataTrust,
           },
         ];
 
@@ -275,19 +270,21 @@ class Mypage extends Component {
             footer={
               item.modify === true ? (
                 <TouchableOpacity
-                  style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
+                  style={[DefaultStyle._btnOutline,DefaultStyle.mt_16, { borderColor: '#000000' }]}
                   onPress={() => {
                     item.sttsDbCode.stdDetailCode === '0001'
                       ? this.props.showPopup({
-                          type: 'confirm',
-                          image: '',
-                          content: '공실이 검증되지 않은 창고입니다.',
-                        })
+                        type: 'confirm',
+                        image: '',
+                        content: '공실이 검증되지 않은 창고입니다.',
+                      })
                       : this.navigation.navigate('RegisterWH', {
-                          type: 'ModifyWH',
-                          warehouseRegNo: item.id,
-                        });
-                    // this.props.imageAction(listImage);
+                        type: 'ModifyWH',
+                        warehouseRegNo: item.id,
+                        doRefresh: () => {
+                          this.getWHList();
+                        }
+                      });
                   }}>
                   <Text
                     style={[DefaultStyle._textButton, { color: '#000000' }]}>
@@ -308,7 +305,7 @@ class Mypage extends Component {
       // TODO 라우트 갱신할 합수 전달.
       case '내 창고':
         viewComponent = (
-          <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
+          <View style={[DefaultStyle._cards, DefaultStyle._margin0, {paddingBottom: 100,}]}>
             <View style={DefaultStyle._titleBody}>
               <Text style={[DefaultStyle._textTitleCard]}>내 창고</Text>
             </View>
@@ -317,7 +314,6 @@ class Mypage extends Component {
               style={DefaultStyle._btnInline}
               onPress={() => {
                 this.navigation.navigate('RegisterBusinessInfo');
-                // this.props.imageAction([]);
               }}>
               <Text
                 style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
@@ -366,7 +362,7 @@ class Mypage extends Component {
     }
 
     return (
-      <SafeAreaView style={S.container}>
+      <SafeAreaView style={[S.container,]}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -384,7 +380,7 @@ class Mypage extends Component {
           />
         </Appbars>
 
-        <ScrollView>
+        <ScrollView style={{ }}>
           <AppGrid
             data={data}
             title={this.state.title}
@@ -456,19 +452,12 @@ class Mypage extends Component {
     );
   }
 
-  /** when after render DOM */
-  async componentDidMount () {
+  /**
+   * 내 창고 목록 정보 조회.
+   * */
+  getWHList = async () => {
     // Progress
     this.props.setProgress({ is: true, })
-
-    console.log('::componentDidMount:: MyPage', this.props.route.params.title);
-    this.setState({ title: this.props.route.params.title });
-    // const getWH = await Warehouse.myWH();
-    // if (getWH.status === 200) {
-    //   const dataWH = getWH.data._embedded.warehouses;
-    //   console.log('dataWH :>> ', dataWH);
-    // }
-
     await Warehouse.myWH()
       .then(res => {
         console.log('res', res);
@@ -488,11 +477,22 @@ class Mypage extends Component {
           this.props.setProgress({ is: false });
         }, 300);
       });
-
-    // SplashScreen.hide();
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
+  /** when after render DOM */
+  async componentDidMount () {
+    console.log('::componentDidMount:: MyPage', this.props.route.params.title);
+    this.setState({ title: this.props.route.params.title });
+    // const getWH = await Warehouse.myWH();
+    // if (getWH.status === 200) {
+    //   const dataWH = getWH.data._embedded.warehouses;
+    //   console.log('dataWH :>> ', dataWH);
+    // }
+
+    await this.getWHList();
+  }
+
+  UNSAFE_componentWillReceiveProps (newProps) {
     let titleProp =
       newProps.route && newProps.route.params && newProps.route.params.title;
     console.log('titleProp :>> ', titleProp);
@@ -500,11 +500,12 @@ class Mypage extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate (prevProps, prevState) {
+  }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -513,11 +514,8 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
-    imageAction: action => {
-      dispatch(ActionCreator.dataImage(action));
-    },
     showPopup: status => {
       dispatch(ActionCreator.show(status));
     },

@@ -56,6 +56,8 @@ import DetailsLocationWH from '@Screeens/DetailsWH/DetailsLocation';
 import InquiryWH from '@Screeens/DetailsWH/InquiryWH';
 import DetailsInquiryWH from '@Screeens/DetailsWH/DetailsInquiryWH';
 import CreateInquiryWH from '@Screeens/DetailsWH/CreateInquiryWH';
+import ViewPanoramaImage from '../screens/DetailsWH/ViewPanoramImage';
+// import ViewPanoramaImage from '@Screeens/DetailsWH/ViewPanoramaImage';
 
 import Annoucement from '@Screeens/Annoucement';
 import DetailAnnoucement from '@Screeens/Annoucement/DetailAnnoucement';
@@ -377,6 +379,12 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
+                    name="ViewPanoramaImage"
+                    component={ViewPanoramaImage}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
                     name="Annoucement"
                     component={Annoucement}
                     headerMode={false}
@@ -633,6 +641,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="DetailsWH"
                     component={DetailsWH}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="ViewPanoramaImage"
+                    component={ViewPanoramaImage}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />

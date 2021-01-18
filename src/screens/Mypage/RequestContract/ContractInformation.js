@@ -89,7 +89,6 @@ class ContractInformation extends Component {
         value: keepTrustContract?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${keepTrustContract?.entrpByOwner?.file2}` : '',
       });
     }
-
     let viewComponent;
     switch (status) {
       case '1100':
@@ -107,7 +106,7 @@ class ContractInformation extends Component {
                 warehSeq,
                 type,
                 thumbnail,
-                warehouse: keepTrustContract.warehouse,
+                warehouse: detailEstimate.warehouse,
               })
             }>
             <Icon name="wechat" size={20} color="#fff" />

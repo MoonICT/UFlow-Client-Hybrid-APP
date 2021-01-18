@@ -17,7 +17,7 @@ import DefaultStyle from '@Styles/default';
 import { styles as S } from '../style';
 
 class UpImage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {};
@@ -25,11 +25,24 @@ class UpImage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
-  render() {
+  /**
+   * 메인이미지 변경.
+   **/
+  changeMainImage = (index) => {
+    let originArr = this.props.whImageStore;
+    let targetItem = originArr.splice(index, 1);
+
+    console.log('ori1', originArr)
+    console.log('ori2', targetItem)
+    console.log('result', targetItem.concat(originArr));
+    this.props.setWHImages(targetItem.concat(originArr));
+  };
+
+  render () {
     const { whImageStore, handldeProps, isRemove, valueTab } = this.props;
     const listImg =
       whImageStore &&
@@ -38,7 +51,9 @@ class UpImage extends Component {
         if (index !== 0) {
           return (
             <View key={index}>
-              <Image style={S.itemImage} source={{ uri: item.url }} />
+              <TouchableOpacity onPress={() => this.changeMainImage(index)}>
+                <Image style={S.itemImage} source={{ uri: item.url }} />
+              </TouchableOpacity>
               {isRemove === true ? (
                 <IconButton
                   style={S.btnRemove}
@@ -104,20 +119,23 @@ class UpImage extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     whImageStore: state.registerWH.whImages,
   };
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     uploadImage: action => {
       dispatch(ActionCreator.uploadImage(action));
     },
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));
+    },
+    setWHImages: action => {
+      dispatch(ActionCreator.setWHImages(action));
     },
   };
 }

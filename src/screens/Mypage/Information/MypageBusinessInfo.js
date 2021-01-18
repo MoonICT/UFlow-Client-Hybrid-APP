@@ -30,6 +30,9 @@ import {
   launchCamera,
   launchImageLibrary
 } from 'react-native-image-picker';
+import { connect } from "react-redux";
+import ActionCreator from '@Actions';
+
 const tabSelect = [
   {
     id: 'tab1',
@@ -42,7 +45,7 @@ const tabSelect = [
 ]
 
 class MypageBusinessInfo extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       checkAll: false,
@@ -58,20 +61,31 @@ class MypageBusinessInfo extends Component {
       selectedInfoIndex: 0,
       isCert: false,
       photo: null,
-      loading:false
     };
     this.navigation = props.navigation;
   }
 
   /** when after render DOM */
-  componentDidMount() {
+  componentDidMount () {
+    // Progress
+    this.props.setProgress({ is: true, });
+
     Entrp.list().then(res => {
       let resultData = res.data && res.data._embedded && res.data._embedded.businessInfoes ? res.data._embedded.businessInfoes : [];
       let dataConvert = [];
+      // console.log('사업자 리스트 ', resultData)
       resultData.forEach(element => {
+        let label = ''
+        if (element.regDvCode) {
+          if (element.regDvCode === '1100') {
+            label = '[창고주 정보]';
+          } else if (element.regDvCode === '2100') {
+            label = '[임차인 정보]';
+          }
+        }
         dataConvert.push({
           ...element,
-          label: element.name,
+          label: `${label ? label + ' ' : ''}${element.name}`,
           value: element.id
         })
       })
@@ -83,8 +97,14 @@ class MypageBusinessInfo extends Component {
       });
 
       this.setBusinessData(dataConvert[0])
+
+      // Progress
+      this.props.setProgress({ is: false, });
     }).catch(error => {
       alert('MypageBusinessInfo error:' + error);
+
+      // Progress
+      this.props.setProgress({ is: false, });
     });
   }
 
@@ -92,7 +112,7 @@ class MypageBusinessInfo extends Component {
     this.setState({ tabInfo: tabSelect[index].title });
   }
 
-   _showDialog = () => this.setState({ visible: true });
+  _showDialog = () => this.setState({ visible: true });
 
   _hideDialog = () => this.setState({ visible: false });
 
@@ -158,13 +178,15 @@ class MypageBusinessInfo extends Component {
           // console.log('append', singleFile)
           // console.log('data', data)
           // Please change file upload URL
+          // Progress
+          this.props.setProgress({ is: true, type: 'CIRCLE' });
           MediaUpload.uploadFile(data).then(respon => {
             // console.log('respon', respon)
             if (respon.status === 200) {
               let { url } = respon.data;
 
-              var pathArray = url.split( '/' );
-              var host = pathArray[pathArray.length-1];
+              var pathArray = url.split('/');
+              var host = pathArray[pathArray.length - 1];
 
               this.setState({
                 photo: url,
@@ -174,8 +196,11 @@ class MypageBusinessInfo extends Component {
                 }
               });
             }
+            // Progress
+            this.props.setProgress({ is: false, });
           }).catch(error => {
             alert('MediaUpload.uploadFile error:' + error.response.data.message);
+            this.props.setProgress({ is: false, });
           });
         } else {
           // If no file selected the show alert
@@ -236,8 +261,8 @@ class MypageBusinessInfo extends Component {
   // };
 
   /**
-     * Set business data
-     * */
+   * Set business data
+   * */
   setBusinessData = (data) => {
     let setData = {
       id: data.id,
@@ -276,7 +301,7 @@ class MypageBusinessInfo extends Component {
     const { listBusinessInfo } = this.state;
 
     this.setState({
-      selectedInfoIndex:i,
+      selectedInfoIndex: i,
       isCert: false,
       imageList: []
     });
@@ -293,22 +318,29 @@ class MypageBusinessInfo extends Component {
     }
     // console.log('최종 저장 사업자 정보 : ',businessInfo);
 
-    this.setState({loading: true});
+    // Progress
+    this.props.setProgress({ is: true, type: 'CIRCLE' });
 
     Entrp.update(businessInfo).then(res => {
-      alert('사업자 정보가 수정되었습니다.')
-      this.setState({loading: false});
+      // Progress
+      setTimeout(() => {
+        this.props.setProgress({ is: false, });
+      }, 300)
+      setTimeout(() => {
+        alert('사업자 정보가 수정되었습니다.')
+      }, 400)
       // console.log('::::: API Add Business Info  :::::', res)
       // setIsComplete(true)
     }).catch(error => {
       alert('서버에러:' + error.response.data.message);
-      this.setState({loading: false});
+      // Progress
+      this.props.setProgress({ is: false, });
     });
   };
 
 
-  render() {
-    const { listBusinessInfo,businessInfo, photo, loading } = this.state;
+  render () {
+    const { listBusinessInfo, businessInfo, photo } = this.state;
 
     // console.log(`${configURL.FILE_SERVER_ADDRESS}/${businessInfo.regFile}`)
     return (
@@ -332,7 +364,7 @@ class MypageBusinessInfo extends Component {
               placeholder=""
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     name: e
                   }
@@ -346,7 +378,7 @@ class MypageBusinessInfo extends Component {
               placeholder=""
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     corpNumber: e
                   }
@@ -360,30 +392,32 @@ class MypageBusinessInfo extends Component {
               colorLabel="#000000"
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     number: e
                   }
                 })
               }}
               value={businessInfo.number ? businessInfo.number : ''}
-             />
+            />
 
             <Text style={DefaultStyle._textDF}>- 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.</Text>
             <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>- 사진은 한 파일에 10MB 까지 등록이 가능합니다.</Text>
 
             {photo && (
-            <Image
-                source={{ uri: photo,
+              <Image
+                source={{
+                  uri: photo,
                   type: "image/jpeg",
-                  name: 'photo'  }}
-                style={{ width: 125, height: 125,marginBottom:20}}
+                  name: 'photo'
+                }}
+                style={{ width: 125, height: 125, marginBottom: 20 }}
 
               />
             )}
             <TouchableOpacity
               style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-              onPress={()=>this.chooseFile('photo')}>
+              onPress={() => this.chooseFile('photo')}>
               <Text
                 style={[
                   DefaultStyle._textButton,
@@ -394,7 +428,7 @@ class MypageBusinessInfo extends Component {
             </TouchableOpacity>
             <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex, DefaultStyle.mb_20]}>
               <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
-                <TextField colorLabel="#000000" styleProps={DefaultStyle.mb_0} value={businessInfo.roadAddr.zipNo}/>
+                <TextField colorLabel="#000000" styleProps={DefaultStyle.mb_0} value={businessInfo.roadAddr.zipNo} />
               </View>
               <TouchableOpacity
                 style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
@@ -419,7 +453,7 @@ class MypageBusinessInfo extends Component {
               value={businessInfo.jibunAddr.detail}
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     jibunAddr: {
                       ...businessInfo.jibunAddr,
@@ -438,7 +472,7 @@ class MypageBusinessInfo extends Component {
               colorLabel="#000000"
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     repreNm: e
                   }
@@ -452,7 +486,7 @@ class MypageBusinessInfo extends Component {
               colorLabel="#000000"
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     phone: e
                   }
@@ -474,7 +508,7 @@ class MypageBusinessInfo extends Component {
               colorLabel="#000000"
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     inchgNm: e
                   }
@@ -487,7 +521,7 @@ class MypageBusinessInfo extends Component {
               colorLabel="#000000"
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     email: e
                   }
@@ -500,7 +534,7 @@ class MypageBusinessInfo extends Component {
               colorLabel="#000000"
               valueProps={(e) => {
                 this.setState({
-                  businessInfo:{
+                  businessInfo: {
                     ...businessInfo,
                     taxBillEmail: e
                   }
@@ -513,7 +547,13 @@ class MypageBusinessInfo extends Component {
         <View style={S.btn}>
           <Button
             mode="contained"
-            style={[{ width: '95%', margin: 12, borderRadius: 24, height: 40, marginBottom: 24 }, DefaultStyle._primary,]}
+            style={[{
+              width: '95%',
+              margin: 12,
+              borderRadius: 24,
+              height: 40,
+              marginBottom: 24
+            }, DefaultStyle._primary,]}
             color="red"
             onPress={this.handleOnSubmit}>
             확인
@@ -536,10 +576,27 @@ class MypageBusinessInfo extends Component {
             </Dialog.Content>
           </Dialog>
         </Portal>
-        <Loading loading={loading}/>
       </ScrollView>
     );
   }
 }
 
-export default MypageBusinessInfo;
+/** map state with store states redux store */
+function mapStateToProps (state) {
+  // console.log('++++++mapStateToProps: ', state);
+  return {};
+}
+
+/** dispatch action to redux */
+function mapDispatchToProps (dispatch) {
+  return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MypageBusinessInfo);

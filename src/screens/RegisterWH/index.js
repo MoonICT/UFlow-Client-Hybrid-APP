@@ -64,6 +64,7 @@ class RegisterWH extends Component {
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
     if (type === 'ModifyWH') {
+      console.log('수정 데이터 ::: ', this.props.dataWH)
       Warehouse.updateWH({ data: this.props.dataWH, url: warehouseRegNo })
         .then(res => {
           const status = res.status;
@@ -74,11 +75,15 @@ class RegisterWH extends Component {
               title: '수정 완료',
               content: '창고정보 수정을 완료했습니다.',
               image: illust10,
-              navigation: () =>
+              navigation: () => {
+                if (this.props.route.params && this.props.route.params.doRefresh) {
+                  this.props.route.params.doRefresh()
+                }
                 this.navigation.navigate('Mypage', {
                   title: '내 창고',
                   prevView: 'PrevView',
-                }),
+                })
+              }
             });
 
             this.doubleSubmitFlag = false;

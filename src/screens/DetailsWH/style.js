@@ -6,6 +6,7 @@
 
 import { StyleSheet, Dimensions } from 'react-native';
 import { color } from '../../themes/colors';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -104,10 +105,26 @@ export const styles = StyleSheet.create({
     width: windowWidth,
     height: 240,
   },
-  iconBackground: {
+  // 파노라마 오버레이
+  panoOverlayWrap: {
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  panoOverlayInner: {
+    width: windowWidth,
+  },
+  btnImageToggle: {
     position: 'absolute',
     right: 12,
     top: 12,
+    backgroundColor: '#fff',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     lineHeight: 21,
@@ -315,7 +332,7 @@ export const styles = StyleSheet.create({
     paddingRight: 4,
     marginBottom: 8,
   },
-  rowBtn:{
+  rowBtn: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -337,8 +354,14 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
-  imgWarehouse:{
+  imgWarehouse: {
     width: 50,
     height: 50,
   },
+  btnIcon: {
+    width: 14,
+    height: 14,
+    margin: 0,
+    marginRight: 8,
+  }
 });

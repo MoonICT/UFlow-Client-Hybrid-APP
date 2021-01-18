@@ -30,11 +30,24 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40,
+    backgroundColor: '#eee'
+  },
+  avatarSM: {
+    width: 32,
+    height: 32,
+    borderRadius: 40,
   },
   name: {
     lineHeight: 21,
     // fontFamily: 'NotoSansCJKkr-Medium',
     fontSize: 15,
+    fontWeight: '500',
+    color: color.text.primary,
+    paddingLeft: 6,
+  },
+  nameSM: {
+    lineHeight: 21,
+    fontSize: 12,
     fontWeight: '500',
     color: color.text.primary,
     paddingLeft: 6,
@@ -61,7 +74,7 @@ export const styles = StyleSheet.create({
     marginTop: 72,
     // backgroundColor: 'rgba(0, 0, 0, 0.06)',
     // // height: windowHeight
-    marginBottom: 70,
+    marginBottom: 80,
   },
   dateTop: {
     marginTop: 26,
@@ -93,6 +106,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
+  },
+  infoSM: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   time: {
     lineHeight: 19,
@@ -158,11 +177,13 @@ export const styles = StyleSheet.create({
   },
   inputType: {
     minHeight: 50,
-    padding: 5,
+    paddingVertical: 10,
     paddingLeft: 8,
     paddingRight: 24,
+    lineHeight: 28,
     fontSize: 14,
     maxWidth: '100%',
+    justifyContent: 'center',
   },
   iconRight: {
     position: 'absolute',

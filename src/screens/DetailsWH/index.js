@@ -6,9 +6,6 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { formatDateV1 } from '@Utils/dateFormat';
-import { StringUtils, ContractUtils } from '@Services/utils';
-
 import {
   SafeAreaView,
   View,
@@ -17,7 +14,6 @@ import {
   Image,
 } from 'react-native';
 import { connect } from 'react-redux';
-// import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Appbar, Text, IconButton } from 'react-native-paper';
 import ImageView from 'react-native-image-view';
@@ -27,27 +23,21 @@ import { Warehouse, WarehouseTenant, MyPage } from '@Services/apis';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
-// import CarouselSnap from '@Components/organisms/CarouselSnap';
+import { formatDateV1 } from '@Utils/dateFormat';
+import { StringUtils, ContractUtils } from '@Services/utils';
 import ProductCard from '@Components/organisms/ProductCard';
 import { TOKEN } from '@Constant';
 import WebviewMap from '@Components/organisms/WebviewMap';
 import ActionCreator from '@Actions';
-
-// import ActionCreator from '@Actions';
-// import circle from '@Assets/images/avatars-circle-icon.png';
-// import mainBG from '@Assets/images/main-bg.png';
+import { styles as S } from './style';
+// Image
+import panoIcon from '@Assets/images/iconback.png';
 import cardBG from '@Assets/images/card-img.png';
-// import mapLink from '@Assets/images/mapLink.png';
-
 import WHType1 from '@Assets/images/icon-warehouse-1.png';
 import WHType2 from '@Assets/images/icon-warehouse-2.png';
 import WHType3 from '@Assets/images/icon-warehouse-3.png';
 import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
-
-// import {ConvertUnits} from "@Service/utils";
-
-import { styles as S } from './style';
 
 class DetailWH extends Component {
   constructor (props) {
@@ -56,7 +46,8 @@ class DetailWH extends Component {
     this.myRef = React.createRef();
     let { id } = props.route.params;
     this.state = {
-      isImageViewVisible: false,
+      toggleImage: false, // 창고이미지 || 파노라마이미지 토클.
+      isImageViewVisible: false, // 창고이미지 자세히 보기.
       id: id,
       active: 0,
       checked: true,
@@ -239,6 +230,19 @@ class DetailWH extends Component {
     return cardItem;
   };
 
+  /**
+   * 이름 비공개 처리
+   * */
+  hiddenName = (name) => {
+    if (name && name.length > 0) {
+      let nameArr = name.split('');
+      nameArr = nameArr.map((item, index) => {
+        return index > 0 ? '*' : item
+      })
+      return nameArr.join('')
+    }
+  }
+
   render () {
     const {
       active,
@@ -416,26 +420,47 @@ class DetailWH extends Component {
 
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
+
             {/** 창고 이미지 */}
             {whrgData.whImages && whrgData.whImages.length > 0 && (
               <>
-                <TouchableOpacity
-                  onPress={() => this.setState({ isImageViewVisible: true })}>
-                  <View style={S.background}>
-                    {console.log('이미지 목', whrgData.whImages)}
-                    <Image
-                      style={S.backgroundImage}
-                      source={
-                        whrgData.whImages && whrgData.whImages.length > 0
-                          ? { uri: whrgData.whImages[0].url }
-                          : cardBG
-                      }
-                    />
-                    {/** TODO 파노라마 이미지 */}
-                    {/*<Image style={S.iconBackground} source={circle} />*/}
-                  </View>
-                </TouchableOpacity>
 
+                <View style={S.background}>
+
+                  {this.state.toggleImage ?
+                    <TouchableOpacity onPress={() =>
+                      this.navigation.navigate('ViewPanoramaImage', {
+                        image: whrgData.pnImages && whrgData.pnImages.length > 0 ? whrgData.pnImages[0].url : '' })}>
+                      <Image
+                        style={S.backgroundImage}
+                        source={whrgData.pnImages && whrgData.pnImages.length > 0
+                          ? { uri: whrgData.pnImages[0].url }
+                          : ''
+                        }
+                      />
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>
+                      <Image
+                        style={S.backgroundImage}
+                        source={
+                          whrgData.whImages && whrgData.whImages.length > 0
+                            ? { uri: whrgData.whImages[0].url }
+                            : ''
+                        }
+                      />
+                    </TouchableOpacity>}
+                  {/* 이미지 타입 토글 */}
+                  {whrgData.pnImages && whrgData.pnImages.length > 0 &&
+                    <TouchableOpacity style={S.btnImageToggle}
+                                      onPress={() => this.setState({ toggleImage: !this.state.toggleImage })}>
+                      {this.state.toggleImage ?
+                        <IconButton size={20} icon="image-multiple" />
+                        :
+                        <Image style={{ width: 25, height: 25, }} source={panoIcon} />}
+                    </TouchableOpacity>}
+                </View>
+                {/* 이미지 슬라이드 팝업 */}
                 <ImageView
                   images={whrgData.whImages.map(item => {
                     return {
@@ -455,6 +480,8 @@ class DetailWH extends Component {
                 />
               </>
             )}
+
+            {/** 창고 정보 */}
             <View style={S.info}>
               <Text style={DefaultStyle._textTitleBody}>창고 정보</Text>
               <View style={DefaultStyle.row}>
@@ -1226,31 +1253,32 @@ class DetailWH extends Component {
                     </View>
                   )}
                   {/* List */}
-                  {qnaList &&
-                  qnaList.map((qnaItem, index) => (
+                  {qnaList && qnaList.map((qnaItem, index) => (
                     <View key={'qnaItem' + index} style={S.inquirys}>
-                      <View style={S.leftInquiry}>
-                        {qnaItem.status ? (
-                          <Text style={S.titleCompleted}>답변완료</Text>
-                        ) : (
-                          <Text style={S.titleInquiry}>미답변</Text>
-                        )}
-                        <Text style={S.contentInquiry}>{qnaItem.title}</Text>
-                        <Text style={S.footerInquiry}>
-                          {qnaItem.name} | {qnaItem.date}
-                        </Text>
-                      </View>
-                      <View style={S.rightInquiry}>
-                        {qnaItem.lock ? (
-                          <IconButton
-                            style={S.btnIcon}
-                            icon="lock"
-                            onPress={() => console.log('remove')}
-                          />
-                        ) : (
-                          <Text />
-                        )}
-                      </View>
+                      <TouchableOpacity onPress={() => {
+                        // TODO 기본 비밀글로 처리. 추후 변경.
+                        if (qnaItem.me || !(qnaItem.secret || true)) {
+                          this.navigation.navigate('DetailInquiry', {
+                            inquiryDetails: qnaItem,
+                            answerMode: false, // 답변 가능 모드
+                          });
+                        }
+                      }}>
+                        <View style={S.leftInquiry}>
+                          {qnaItem.answer ?
+                            <Text style={S.titleCompleted}>답변완료</Text> :
+                            <Text style={S.titleInquiry}>미답변</Text>}
+                          <Text style={S.contentInquiry}>
+                            <IconButton style={S.btnIcon} size={16} icon="lock" />
+                            {/** TODO 기본 비밀글로 처리. 추후 변경.*/}
+                            {qnaItem.me || !(qnaItem.secret || true) ? qnaItem.content : '비밀글 입니다.'}
+                          </Text>
+                          <Text style={S.footerInquiry}>
+                            {/** TODO 기본 비밀글로 처리. 추후 변경.*/}
+                            {qnaItem.me || !(qnaItem.secret || true) ? qnaItem.writer : this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
                   ))}
                   {/* <View style={S.inquirys}>
@@ -1408,6 +1436,7 @@ class DetailWH extends Component {
       })
       .catch(error => {
         alert('WHRG0010:' + error);
+        this.props.setProgress({ is: false });
       });
   }
 
@@ -1418,7 +1447,7 @@ class DetailWH extends Component {
       id: id,
     };
     const warehouse = await Warehouse.getWhrg(params);
-    console.log('warehouse :>> ', warehouse);
+    // console.log('warehouse :>> ', warehouse);
     this.setState({
       whrgData: warehouse.data,
       favorite: warehouse.data.fav,
@@ -1454,7 +1483,6 @@ class DetailWH extends Component {
     if (warehouse.data.trusts && warehouse.data.trusts.length > 0) {
       typeCodeNames.push('TRUST');
       warehouse.data.trusts.map(item => {
-        console.debug(gdsKeepTypeCodeNames, item.typeCode?.stdDetailCode);
         if (
           gdsKeepTypeCodeNames.indexOf(
             item.typeCode?.stdDetailCode.toString(),
@@ -1495,7 +1523,6 @@ class DetailWH extends Component {
       .then(res => {
         if (res && res._embedded && res._embedded) {
           let newFQAList = res._embedded.questions.map(item => {
-            console.log(item);
             return {
               status: item.complete,
               title: item.content,
@@ -1505,8 +1532,9 @@ class DetailWH extends Component {
             };
           });
 
-          console.log('newFQAList', newFQAList);
-          this.setState({ qnaList: newFQAList });
+          console.log('newFQAList', res._embedded.questions);
+          this.setState({ qnaList: res && res._embedded && res._embedded.questions ? res._embedded.questions : [] });
+          // this.setState({ qnaList: newFQAList });
           this.setState({ pageInfo: res.page });
         }
       })

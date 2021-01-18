@@ -38,6 +38,7 @@ import SearchFilterPanel from '@Components/organisms/SearchFilterPanel';
 import ActionCreator from '@Actions';
 import { Warehouse, WhrgSearch } from '@Services/apis';
 import Progress from '@Components/organisms/Progress';
+import { API_CLIENT_ADDRESS } from '@Constant';
 
 class Search extends Component {
   constructor (props) {
@@ -46,8 +47,8 @@ class Search extends Component {
     // Webview initialize options.
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
-      defaultURL: 'http://www.uflow.voltpage.net/webview/search',
-      // defaultURL: 'http://localhost:13000/webview/search',
+      defaultURL: `${API_CLIENT_ADDRESS}/webview/search`,
+      // defaultURL: 'http://localhost:13000/webview/search'
     };
     this.state = {
       url: this.option.defaultURL,
