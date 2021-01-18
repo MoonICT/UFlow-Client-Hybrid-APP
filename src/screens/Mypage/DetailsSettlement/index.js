@@ -6,6 +6,7 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import {SafeAreaView, View, ScrollView, TouchableOpacity, Linking} from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 import FilterButton from '@Components/atoms/FilterButton';
@@ -29,6 +30,7 @@ export default class DetailsSettlement extends Component {
       id,
       type,
       urlTransaction,
+      warehouseName: '',
       toggleFee: true,
       toggleCosts: false,
       feeState: [],
@@ -72,6 +74,10 @@ export default class DetailsSettlement extends Component {
       let settlementHeaderResBody = res.data.data.settlementHeaderResBody
       let headerDetailResBody = res.data.data.headerDetailResBody
       let headerDetail1ResBody = res.data.data.headerDetail1ResBody
+
+      this.setState({
+        warehouseName: settlementHeaderResBody ? settlementHeaderResBody.warehouse + ' 정산관리' : '정산관리'
+      })
       let dataInfo = [
         {
           type: '창고명',
@@ -305,19 +311,12 @@ export default class DetailsSettlement extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
+
+          <HistoryBackActionBar
+            title={this.state.warehouseName}
+            navigation={this.navigation}
           />
-          <Appbar.Content
-            title="정산관리"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+
         <ScrollView>
           <View style={[DefaultStyle._cards, {marginTop: 10 , marginBottom: 120}]}>
             <View style={DefaultStyle._titleCard}>

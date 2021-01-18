@@ -7,7 +7,7 @@
 // Global Imports
 import React, { Component } from 'react';
 import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { Appbar, Text, Searchbar } from 'react-native-paper';
 
 // Local Imports
@@ -15,7 +15,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 // import DatePicker from '@Components/organisms/DatePicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
+import ActionCreator from '@Actions';
 import Select from '@Components/organisms/Select';
 import AppGrid from '@Components/organisms/AppGrid';
 import { getAllInquiry } from '@Services/apis/InquiryAPI';
@@ -24,6 +24,7 @@ import { debounce } from 'lodash';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { log } from 'react-native-reanimated';
+import { connect } from "react-redux";
 
 const selectOptions = [
   {
@@ -50,7 +51,7 @@ const tabInquiry = [
 ];
 
 class Inquiry extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -70,7 +71,7 @@ class Inquiry extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount::');
     this.getAllData();
     // SplashScreen.hide();
@@ -91,7 +92,7 @@ class Inquiry extends Component {
   //   return true;
   // }
 
-  async getAllData() {
+  async getAllData () {
     let { userType, typeQuestion, from, to, query } = this.state;
     const startDate = from ? this.formatDate(from) : '';
     const endDate = to ? this.formatDate(to) : '';
@@ -104,12 +105,16 @@ class Inquiry extends Component {
     };
 
     console.log('defaultParams', defaultParams);
-
+    this.props.setProgress({ is: true, });
     await getAllInquiry(defaultParams).then(res => {
       console.log('data', res.data._embedded);
       this.setState({ listQuestion: res.data._embedded && res.data._embedded.questions });
+      setTimeout(() => {
+        this.props.setProgress({ is: false, });
+      }, 300)
     }).catch(error => {
       alert('Inquiry getAllInquiry error:' + error);
+      this.props.setProgress({ is: false, });
     });
   }
 
@@ -130,7 +135,8 @@ class Inquiry extends Component {
   showDatepickerFrom = () => {
     this.setState({ showFrom: true });
   };
-  formatDate(date, string = true) {
+
+  formatDate (date, string = true) {
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
@@ -144,6 +150,7 @@ class Inquiry extends Component {
       return [year, month, day].join('.');
     }
   }
+
   onChangeFrom = (event, selectedDate) => {
     // console.log('e', e)
     const startDate = event || this.state.from;
@@ -190,7 +197,7 @@ class Inquiry extends Component {
     });
   };
 
-  render() {
+  render () {
     const {
       from,
       showFrom,
@@ -206,19 +213,22 @@ class Inquiry extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="문의내역"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+        <HistoryBackActionBar
+          title={'문의내역'}
+          navigation={this.navigation}/>
+        {/*<Appbars>*/}
+        {/*  <Appbar.Action*/}
+        {/*    icon="arrow-left"*/}
+        {/*    color="black"*/}
+        {/*    onPress={() => this.navigation.goBack()}*/}
+        {/*  />*/}
+        {/*  <Appbar.Content*/}
+        {/*    title="문의내역"*/}
+        {/*    color="black"*/}
+        {/*    fontSize="12"*/}
+        {/*    style={DefaultStyle.headerTitle}*/}
+        {/*  />*/}
+        {/*</Appbars>*/}
         <ScrollView>
           <View style={{ flex: 1 }}>
             <AppGrid data={tabInquiry} title={titleActive} titleProps={this.handleClickTab} />
@@ -330,24 +340,28 @@ class Inquiry extends Component {
                       if (item.complete === true) {
                         this.navigation.navigate('DetailInquiry', {
                           inquiryDetails: _item,
+                          answerMode: true,  // 답변 가능 모드
+                          doRefresh: () => {
+                            this.getAllData();
+                          },
                         });
                       }
                     }}
-                  // onPress={() => {
-                  //   if ((item.complete === true && userType === 'OWNER') || (item.complete === true && userType === 'TENANT')) {
-                  //    (this.navigation.navigate('DetailInquiry', { inquiryDetails: _item }))
-                  //   }
-                  // }}
+                    // onPress={() => {
+                    //   if ((item.complete === true && userType === 'OWNER') || (item.complete === true && userType === 'TENANT')) {
+                    //    (this.navigation.navigate('DetailInquiry', { inquiryDetails: _item }))
+                    //   }
+                    // }}
                   >
                     <View style={DefaultStyle.leftItem}>
                       <Text>123123</Text>
                       {item.complete === false ? (
-                        <Text style={[S.status]}>답변 대기 중123</Text>
+                        <Text style={[S.status]}>답변 대기 중</Text>
                       ) : (
-                          <Text style={[S.status, S.statusComplete]}>
-                            답변 완료
-                          </Text>
-                        )}
+                        <Text style={[S.status, S.statusComplete]}>
+                          답변 완료
+                        </Text>
+                      )}
                       {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}
                       <Text style={DefaultStyle.titleItem}>{item.content}</Text>
                       <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
@@ -391,6 +405,10 @@ class Inquiry extends Component {
                       ) {
                         this.navigation.navigate('DetailInquiry', {
                           inquiryDetails: _item,
+                          answerMode: true,  // 답변 가능 모드
+                          doRefresh: () => {
+                            this.getAllData();
+                          },
                         });
                       }
                     }}>
@@ -398,10 +416,10 @@ class Inquiry extends Component {
                       {item.complete === false ? (
                         <Text style={[S.status]}>답변 대기 중</Text>
                       ) : (
-                          <Text style={[S.status, S.statusComplete]}>
-                            답변 완료
-                          </Text>
-                        )}
+                        <Text style={[S.status, S.statusComplete]}>
+                          답변 완료
+                        </Text>
+                      )}
                       {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}
                       <Text style={DefaultStyle.titleItem}>{item.content}</Text>
                       <Text style={DefaultStyle.contentItem}>{dateStr}</Text>
@@ -426,4 +444,23 @@ class Inquiry extends Component {
   }
 }
 
-export default Inquiry;
+
+/** map state with store states redux store */
+function mapStateToProps (state) {
+  // console.log('++++++mapStateToProps: ', state);
+  return {};
+}
+
+/** dispatch action to redux */
+function mapDispatchToProps (dispatch) {
+  return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Inquiry);

@@ -80,7 +80,7 @@ class Login extends Component {
     // data.password = 'wotkd123';
 
     if (data.email === '' || data.password === '') {
-      showPopup({ title: 'UFLOW', content: '충분한 정보를 입력하십시오 !' });
+      showPopup({ title: 'UFLOW', content: '로그인 정보를 입력하세요.', type: 'confirm' });
     } else {
       this.setState({ loading: true });
       // Sign in
@@ -111,7 +111,7 @@ class Login extends Component {
         })
         .catch(error => {
           this.setState({ loading: false });
-          showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보 !' });
+          showPopup({ title: 'UFLOW', content: '잘못된 로그인 정보입니다.', type: 'confirm' });
         });
     }
     // console.log('loginData==>', loginData);
@@ -262,6 +262,7 @@ function mapDispatchToProps(dispatch) {
           content:
             data?.content ||
             '답변 내용은 [마이페이지 > 문의내역[ 혹은 등록하신 이메일에서 확인해 주세요.',
+          type: data?.type || ''
         }),
       );
     },

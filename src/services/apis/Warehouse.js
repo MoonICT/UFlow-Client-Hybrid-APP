@@ -171,6 +171,10 @@ export const searchAddressKakao = async ({
   });
   return await mainAxios.get(`/api/v1/kakao-map/address${url}`);
 };
+
+
+/**  TODO 아래 API가 웹에서 사용하던 것. (아래 API로 사용 권장. 왜 그대로 안쓰고 다시 만들어 쓰는지 확인필요.)*/
+
 /**
  * 회원 계정에 창고 사업자 정보가 등록되어있는지 확인
  * @returns {Promise<unknown>}

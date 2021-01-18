@@ -47,7 +47,8 @@ class Search extends Component {
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
       defaultURL: 'http://www.uflow.voltpage.net/webview/search',
-      // defaultURL: 'http://localhost:13000/webview/search',
+      // defaultURL: 'http://localhost:13000/webview/search'
+      // w/search',
     };
     this.state = {
       url: this.option.defaultURL,
@@ -91,7 +92,7 @@ class Search extends Component {
         console.log('[WEBVIEW]' + msgData.data);
         break;
       case WVMsgService.types.CHANGE_MAP_CENTER_POSITION:
-        // console.log('[RN] CHANGE_MAP_CENTER_POSITION 수신', msgData.data)
+        console.log('[RN] CHANGE_MAP_CENTER_POSITION 수신', msgData.data)
         this.props.setSearchFilter({
           latitude: msgData.data.latitude ? Number(msgData.data.latitude) : '',
           longitude: msgData.data.longitude
@@ -177,8 +178,6 @@ class Search extends Component {
             }}
           />
         )}
-
-        <Text>{this.props.searchQuery}</Text>
 
         {/** 필터 패널. */}
         <SearchFilterPanel

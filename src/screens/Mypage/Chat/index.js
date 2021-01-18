@@ -7,6 +7,7 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import {
   // SafeAreaView,
   View,
@@ -195,19 +196,11 @@ class Chatting extends Component {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="채팅"
-            color="black"
-            fontSize="12"
-            titleStyle={DefaultStyle.headerTitle}
-          />
-        </Appbars>
+
+        <HistoryBackActionBar
+          title={'채팅'}
+          navigation={this.navigation}
+        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
             <ScrollView>
