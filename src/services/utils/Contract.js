@@ -52,10 +52,11 @@ export const keepTableDatas = (
   {
     warehouseNameLabel = '창고명',
     ownerNameLabel = '창고주',
+    rentUserLabel = '임차인',
     addressLabel = '위치',
     typeLabel = '계약유형',
     keepTypeLabel = '보관유형',
-    prvtAreaLabel = '전용면적',
+    prvtAreaLabel = '가용면적',
     usblYmdLabel = '임대 가능기간',
     splyAmountLabel = '보관단가',
     mgmtChrgLabel = '관리단가',
@@ -63,6 +64,7 @@ export const keepTableDatas = (
   {
     warehouseName,
     ownerName,
+    rentUser,
     address,
     type,
     keepType = '임대(보관)',
@@ -82,6 +84,10 @@ export const keepTableDatas = (
       {
         type: ownerNameLabel,
         value: ownerName,
+      },
+      {
+        type: rentUserLabel,
+        value: rentUser,
       },
       {
         type: addressLabel,

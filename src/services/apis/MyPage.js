@@ -37,13 +37,26 @@ export const getUserInfo = async params => {
 export const getDetailCodes = async params => {
   const token = await AsyncStorage.getItem(TOKEN);
   let url = `/api/v1/mang/codes/${params}`;
-  return await mainAxios.get(`${url}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      contentType: 'application/json',
-      "accept-language" : 'ko-kr' // TODO 창고에 Accept-Language 가 아닌 의존 해야함
-    },
-  });
+
+  let config = {};
+  if (token) {
+    config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        "accept-language" : 'ko-kr' // TODO 창고에 Accept-Language 가 아닌 의존 해야함
+      }
+    }
+  } else {
+    config = {
+      headers: {
+        Accept: 'application/json',
+        "accept-language" : 'ko-kr' // TODO 창고에 Accept-Language 가 아닌 의존 해야함
+      }
+    }
+  }
+
+  return await mainAxios.get(`${url}`, config);
 };
 
 

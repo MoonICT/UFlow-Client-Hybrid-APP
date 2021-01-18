@@ -2,6 +2,7 @@ import { Axios, parseQuery } from '@Services/http';
 import { mainAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from "axios";
+import {TokenUtils} from '@Services/utils';
 //Contants
 import { TOKEN } from '@Constant';
 
@@ -17,21 +18,30 @@ export const uploadImage = async formData => {
     },
   });
 };
+
 export const registerWH = async data => {
   console.log('dataregisterWH :>> ', data);
   const token = await AsyncStorage.getItem(TOKEN);
-  return await mainAxios.post('/api/v1/warehouse', data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      // Accept: 'application/json',
-    },
-  });
+
+  let config = {};
+  if (token) {
+    config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      }
+    }
+  }
+
+  return await mainAxios.post('/api/v1/warehouse', data, config);
 };
+
 export const updateWH = async value => {
   console.log('dataregisterWH :>> ', value);
   let url = value.url;
   let data = value.data;
   const token = await AsyncStorage.getItem(TOKEN);
+
   return await mainAxios.put(`/api/v1/warehouse/${url}`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -39,6 +49,7 @@ export const updateWH = async value => {
     },
   });
 };
+
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
   return mainAxios.get('/api/v1/warehouse/owner', {
@@ -48,15 +59,34 @@ export const myWH = async () => {
     },
   });
 };
+
 export const detailWH = async url => {
-  const token = await AsyncStorage.getItem(TOKEN);
-  return await mainAxios.get(`/api/v1/warehouse/${url}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
+  console.log(">>>> 1detailWH <<<<")
+  const token = await TokenUtils.getToken();
+
+  let config = {};
+  console.log(token,'>>>>  token');
+  if (token) {
+    config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+      ...config
+    }
+  } else {
+    config = {
+      headers: {
+        Accept: 'application/json',
+      },
+      ...config
+    }
+  }
+
+  console.log(config,'>>>>  config');
+  return await mainAxios.get(`/api/v1/warehouse/${url}`, config);
 };
+
 export const contractManager = async type => {
   const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.get(`/api/v1/mypage/estmt-cntr?userType=${type}`, {
@@ -590,14 +620,28 @@ export const getWhrg = async ({ id = '', config = '' }) => {
   // });
 
   const token = await AsyncStorage.getItem(TOKEN);
+  // const token = TokenUtils.getToken();
 
-  return await mainAxios.get(`/api/v1/warehouse/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-    // config: configDefault
-  });
+  console.log(token,'>>>>  token 2');
+  if (token) {
+    config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+      ...config
+    }
+  } else {
+    config = {
+      headers: {
+        Accept: 'application/json',
+      },
+      ...config
+    }
+  }
+
+  console.log(config,'>>>>  config');
+  return await mainAxios.get(`/api/v1/warehouse/${id}`, config);
 };
 
 /**

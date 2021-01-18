@@ -85,7 +85,11 @@ class Quotation extends Component {
     const status = route && route.params && route.params.status;
     // console.log('routeQutation', route);
 
+
     const {dataApi} = this.state;
+    if (dataApi)
+      console.log(dataApi, '# dataApi #');
+
 
     let dataKeep = dataApi &&
       typeWH === 'KEEP' && ContractUtils.keepTableDatas(1, {/**한국어 기본**/}, {
@@ -93,6 +97,8 @@ class Quotation extends Component {
         warehouseName: dataApi.warehouse.warehouse,
         /*창고주*/
         ownerName: dataApi.warehouse.owner,
+        /*창고주*/
+        rentUser: dataApi.rentUserName,
         /*위치*/
         address: dataApi.warehouse.address,
         /*계약유형*/
@@ -100,7 +106,7 @@ class Quotation extends Component {
         /*보관유형*/
         keepType: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         /*전용면적*/
-        prvtArea: dataApi.warehouse.prvtArea ? StringUtils.displayAreaUnit(dataApi.warehouse.prvtArea) : "-",
+        prvtArea: dataApi.warehouse.usblValue ? StringUtils.displayAreaUnit(dataApi.warehouse.usblValue) : "-",
         /*임대 가능기간*/
         usblYmd: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
         /*보관단가*/
@@ -182,6 +188,7 @@ class Quotation extends Component {
 
               {/** WAREHOUSE INFO **/}
               <View style={DefaultStyle._card}>
+                {/*<Text>{this.state.imgType}</Text>*/}
                 <View style={DefaultStyle._headerCard}>
                   {this.state.imgType &&
                   <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
@@ -704,9 +711,6 @@ class Quotation extends Component {
       }
     }
 
-    console.log(typeWH, 'typeWH')
-    if (dataApi.whrgMgmtTrust.typeCode)
-      console.log(dataApi.whrgMgmtTrust.typeCode.stdDetailCode, 'dataApi.whrgMgmtKeep.typeCode')
 
     if (typeWH.toLocaleLowerCase() === 'trust') {
 
