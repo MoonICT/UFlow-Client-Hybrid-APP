@@ -116,8 +116,8 @@ export default class SettlementManagement extends Component {
             urlTransaction: item.urlTransaction,
             dataRedwood: [
               {
-                type: '정산 기간',
-                value: `${dateStr(item.cntrYmdFrom)} ~ ${dateStr(item.cntrYmdTo)}`,
+                type: '정산년월',
+                value: `${item.cntrYmdFrom ? Moment(item.cntrYmdFrom).format('yyyy년 MM월') : '-'}`,
               },
               {
                 type: '계약 유형',

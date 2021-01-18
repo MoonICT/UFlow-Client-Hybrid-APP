@@ -14,7 +14,7 @@ import DefaultStyle from '@Styles/default';
 import { moneyUnit , dateStr, toStdCd } from '@Utils/StringUtils';
 import TableInfo from '@Components/atoms/TableInfo';
 import { SettlementManagementService, Calculate } from '@Services/apis'
-import Appbars from '@Components/organisms/AppBar';
+import Moment from 'moment';
 
 import { styles as S } from '../style';
 import { styles as SS } from './style';
@@ -75,6 +75,17 @@ export default class DetailsSettlement extends Component {
       let headerDetailResBody = res.data.data.headerDetailResBody
       let headerDetail1ResBody = res.data.data.headerDetail1ResBody
 
+      console.log(headerDetailResBody, 'headerDetailResBody');
+
+      let date = ''
+      if (headerDetail1ResBody) {
+        date = headerDetail1ResBody.cntrYmdFrom ? Moment(headerDetail1ResBody.cntrYmdFrom).format('yyyy년 MM월') : ''
+      } else if (headerDetailResBody) {
+        date = headerDetailResBody.cntrYmdFrom ? Moment(headerDetailResBody.cntrYmdFrom).format('yyyy년 MM월') : ''
+      }
+
+
+
       this.setState({
         warehouseName: settlementHeaderResBody ? settlementHeaderResBody.warehouse + ' 정산관리' : '정산관리'
       })
@@ -91,9 +102,13 @@ export default class DetailsSettlement extends Component {
           type: '계약유형',
           value: calMgmtMResBody.cntrTypeCode ? calMgmtMResBody.cntrTypeCode.stdDetailCodeName : '',
         },
+        // {
+        //   type: '기간',
+        //   value: `${headerDetail1ResBody ? headerDetail1ResBody.cntrYmdFrom : ''} ~ ${headerDetail1ResBody ? headerDetail1ResBody.cntrYmdTo : ''}`,
+        // },
         {
-          type: '기간',
-          value: `${headerDetail1ResBody ? headerDetail1ResBody.cntrYmdFrom : ''} ~ ${headerDetail1ResBody ? headerDetail1ResBody.cntrYmdTo : ''}`,
+          type: '정산년월',
+          value: `${date}`,
         },
         {
           type: '담당자 전화번호',
