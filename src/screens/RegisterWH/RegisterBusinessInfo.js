@@ -20,7 +20,9 @@ import {
 import { connect } from "react-redux"
 import { launchImageLibrary } from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
-import Postcode from 'react-native-daum-postcode';;
+import Postcode from 'react-native-daum-postcode';
+
+;
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -251,7 +253,7 @@ class RegisterBusinessInfo extends Component {
           data.append('file', singleFile);
 
           // Progress
-          this.props.setProgress({ is: true, });
+          this.props.setProgress({ is: true, type: 'CIRCLE' });
           // console.log('size', singleFile.size / Math.pow(1024, 2))
           // Please change file upload URL
           MediaUpload.uploadFile(data).then(respon => {
@@ -702,6 +704,7 @@ function mapDispatchToProps (dispatch) {
     },
   };
 }
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
