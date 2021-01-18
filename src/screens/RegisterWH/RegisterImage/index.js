@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Appbar, Text, IconButton } from 'react-native-paper';
+import { launchImageLibrary } from 'react-native-image-picker';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
@@ -24,7 +25,6 @@ import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { MediaUpload } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
-import { launchImageLibrary } from 'react-native-image-picker';
 
 class RegisterImage extends Component {
   constructor (props) {
@@ -45,57 +45,8 @@ class RegisterImage extends Component {
 
   _removeImage = () => this.setState({ isRemove: !this.state.isRemove });
 
-  changeContent = e => {
-    console.log('e', e);
-  };
-
-
-  // TODO @Deprecated handlePicker() 중복되는 함수 같음.
-  chooseFile = (type) => {
-
-    let options = {
-      storageOptions: {
-        skipBackup: true,
-        path: 'images'
-      }
-    };
-    launchImageLibrary(options, (response) => {
-      let file = {
-        fileCopyUri: response.uri,
-        name: response.fileName,
-        size: response.fileSize,
-        type: response.type,
-        uri: response.uri
-      }
-
-      this.setState({ singleFile: file }, async () => {
-        if (response != null) {
-          // If file selected then create FormData
-          let { singleFile } = this.state;
-          const data = new FormData();
-          data.append('name', singleFile.name);
-          data.append('file', singleFile);
-          // Please change file upload URL
-          MediaUpload.uploadFile(data).then(respon => {
-            if (respon.status === 200) {
-              let { url } = respon.data;
-              let { filename } = respon.data;
-              // let pimages = [{ uri: url }];
-              // pimages.push();
-              // this.setState({ pimages });
-              console.log('url', url);
-              this.props.registerAction({ url: url, name: filename });
-            }
-          });
-        } else {
-          // If no file selected the show alert
-          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
-        }
-      });
-    });
-  };
-
-  handlePicker = async () => {
+  // TODO @Deprecated ios에서 갤러리 업로드 안됨.
+  chooseFile = async (type) => {
     try {
       // TODO 이미지 피커 교체 필요 (ios에서 갤러리 선택 안됨.)
       const res = await DocumentPicker.pick({
@@ -128,6 +79,81 @@ class RegisterImage extends Component {
           // If no file selected the show alert
           alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
         }
+      });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  };
+
+  handlePicker = async () => {
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    };
+
+    try {
+      launchImageLibrary(options, (response) => {
+        console.log('image response ::: ', response)
+
+        let file = {
+          fileCopyUri: response.uri,
+          name: response.fileName,
+          size: response.fileSize,
+          type: response.type,
+          uri: response.uri
+        }
+
+        // 이미지를 선택 안한 경우.
+        if (response && response.didCancel) {
+          return false;
+        }
+
+        this.setState({ singleFile: file }, async () => {
+          if (response != null) {
+            // If file selected then create FormData
+            let { singleFile, valueTab } = this.state;
+            const data = new FormData();
+            data.append('name', singleFile.name);
+            data.append('file', singleFile);
+
+            // Progress
+            this.props.setProgress({ is: true, type: 'CIRCLE' });
+            // Please change file upload URL
+            await MediaUpload.uploadFile(data).then(respon => {
+              if (respon.status === 200) {
+                let { url } = respon.data;
+                let { filename } = respon.data;
+                // let pimages = [{ uri: url }];
+                // pimages.push();
+                // this.setState({ pimages });
+                console.log('url', url);
+                this.props.uploadImage({
+                  url: url,
+                  name: filename,
+                  value: valueTab,
+                });
+              }
+
+              // Progress
+              setTimeout(() => {
+                this.props.setProgress({ is: false });
+              }, 300);
+            }).catch(error => {
+              alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
+              this.props.setProgress({ is: false });
+            });
+          } else {
+            // If no file selected the show alert
+            // alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
+          }
+        });
+
       });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -177,11 +203,11 @@ class RegisterImage extends Component {
             }}
           />
           {/* TODO 이미지 개별 삭제 가능해야함. */}
-          {/*<Appbar.Action*/}
-          {/*icon="delete"*/}
-          {/*color={isRemove === true ? '#ff6d00' : 'black'}*/}
-          {/*onPress={this._removeImage}*/}
-          {/*/>*/}
+          <Appbar.Action
+            icon="delete"
+            color={isRemove === true ? '#ff6d00' : 'black'}
+            onPress={this._removeImage}
+          />
         </Appbars>
         <ScrollView>
           <View style={DefaultStyle._tabBar}>
@@ -258,6 +284,9 @@ function mapDispatchToProps (dispatch) {
     },
     removeAction: action => {
       dispatch(ActionCreator.removeImage(action));
+    },
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
     },
   };
 }

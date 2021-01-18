@@ -16,7 +16,7 @@ export default (state = defaultState, action) => {
   switch (action.type) {
     // TODO Action 추가 시 아래에 정의.
     case types.DATA_IMAGE_REGISTER:
-      return dataImage(state, action.listImage);
+      return setWHImages(state, action.listImage);
     case types.UPLOAD_IMAGE_REGISTER:
       return upImage(state, action.image);
     case types.REMOVE_IMAGE_REGISTER:
@@ -32,17 +32,17 @@ export default (state = defaultState, action) => {
   }
 };
 
-let dataImage = (state, listImage) => {
+let setWHImages = (state, listImage) => {
   // console.log('state', state);
-  // console.log('listImage', listImage);
+  console.log('listImage', listImage);
   try {
     // let imageUpload = [...state.pimages];
     // imageUpload.push(image);
     let result = {
       ...state,
-      pnImages: listImage,
       whImages: listImage,
-      // thImages: state.whImages[0],
+      thImages: [listImage[0]],
+      // pnImages: listImage,
     };
     return result;
   } catch (e) {
@@ -68,7 +68,7 @@ let upImage = (state, image) => {
     // imageTh.length > 0 ? imageTh : imageTh.push(image);
     let result = {
       ...state,
-      thImages: imageUpload,
+      thImages: [imageUpload[0]],
       whImages: imageUpload,
       pnImages: imagePn,
     };
