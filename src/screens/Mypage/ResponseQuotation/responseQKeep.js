@@ -1,19 +1,20 @@
-import React, {Component, Fragment} from 'react';
-import {TouchableOpacity, View} from "react-native";
+import React, { Component, Fragment } from 'react';
+import { TouchableOpacity, View } from "react-native";
 import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
-import {Text} from "react-native-paper";
-import {styles as S} from "../style";
-import {styles as SS} from "./style";
+import { Text } from "react-native-paper";
+import { styles as S } from "../style";
+import { styles as SS } from "./style";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Moment from 'moment';
-import {Warehouse} from '@Services/apis';
-import {StringUtils, DeepLogs} from '@Services/utils';
+import { Warehouse } from '@Services/apis';
+import { StringUtils, DeepLogs } from '@Services/utils';
+import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import moment from "moment";
 
 class ResponseQKeep extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.navigation = props.navigation;
 
@@ -29,16 +30,17 @@ class ResponseQKeep extends Component {
         splyAmount: props.splyAmount,
         mgmtChrg: props.mgmtChrg,
         remark: ''
-      }
+      },
+      rntlValuePyeong: props.rntlValue ? toPyeong(props.rntlValue) : ''
     }
   }
 
   showDatepicker = () => {
-    this.setState({showFrom: true});
+    this.setState({ showFrom: true });
   };
 
   showDatepickerTo = () => {
-    this.setState({showTo: true});
+    this.setState({ showTo: true });
   };
 
   onChangeFrom = (selectedDate) => {
@@ -63,12 +65,13 @@ class ResponseQKeep extends Component {
     });
   };
 
-  render() {
+  render () {
 
     const {
       showFrom,
       showTo,
       isSubmit,
+      rntlValuePyeong
     } = this.state;
 
     const {
@@ -101,9 +104,9 @@ class ResponseQKeep extends Component {
       <View
         style={[
           S.row,
-          {justifyContent: 'center', marginBottom: 18},
+          { justifyContent: 'center', marginBottom: 18 },
         ]}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <TouchableOpacity
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
@@ -113,11 +116,11 @@ class ResponseQKeep extends Component {
             <Text
               style={[
                 DefaultStyle._labelTextField,
-                {color: '#000000'},
+                { color: '#000000' },
               ]}>
               보관기간 시작일
               <Text style={[
-                {color: 'red'}
+                { color: 'red' }
               ]}> *</Text>
             </Text>
             <DateTimePickerModal
@@ -130,7 +133,7 @@ class ResponseQKeep extends Component {
                 this.onChangeFrom(date);
               }}
               onCancel={() => {
-                this.setState({showFrom: false});
+                this.setState({ showFrom: false });
               }}
             />
           </TouchableOpacity>
@@ -138,7 +141,7 @@ class ResponseQKeep extends Component {
 
         <Text style={SS.hyphen}>-</Text>
 
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <TouchableOpacity
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
@@ -149,11 +152,11 @@ class ResponseQKeep extends Component {
             <Text
               style={[
                 DefaultStyle._labelTextField,
-                {color: '#000000'},
+                { color: '#000000' },
               ]}>
               보관기간 종료일
               <Text style={[
-                {color: 'red'}
+                { color: 'red' }
               ]}> *</Text>
             </Text>
             <DateTimePickerModal
@@ -168,7 +171,7 @@ class ResponseQKeep extends Component {
                   this.onChangeTo(date);
               }}
               onCancel={() => {
-                this.setState({showTo: false});
+                this.setState({ showTo: false });
               }}
             />
           </TouchableOpacity>
@@ -177,25 +180,50 @@ class ResponseQKeep extends Component {
       {/** END:보관기간 (필수) **/}
 
       {/** 응답 면적 (필수) **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="응답 면적"
-        keyboardType="numeric"
-        placeholder={"0"}
-        defaultValue={
-          rntlValue ? String(rntlValue) : '0'
-        }
-
-        isRequired={true}
-        onChangeText={e => {
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              rntlValue: Number(e.replace(/[^0-9]/g), '')
-            }
-          });
-        }}
-      />
+      <View style={DefaultStyle._listElement}>
+        <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+          <TextField
+            colorLabel="#000000"
+            labelTextField="응답 면적"
+            textRight={'평'}
+            keyboardType="numeric"
+            placeholder={"0"}
+            defaultValue={rntlValuePyeong ? String(rntlValuePyeong) : ''}
+            isRequired={true}
+            onChangeText={e => {
+              let value = Number(e.replace(/[^0-9]/g), '');
+              this.setState({
+                formData: {
+                  ...this.state.formData,
+                  rntlValue: value ? toSquareMeter(value) : ''
+                },
+                rntlValuePyeong: value
+              });
+            }}
+          />
+        </View>
+        <View style={[DefaultStyle._element]}>
+          <TextField
+            colorLabel="#000000"
+            labelTextField="응답 면적"
+            textRight={'m2'}
+            keyboardType="numeric"
+            placeholder={"0"}
+            defaultValue={rntlValue ? String(rntlValue) : ''}
+            isRequired={true}
+            onChangeText={e => {
+              let value = Number(e.replace(/[^0-9]/g), '');
+              this.setState({
+                formData: {
+                  ...this.state.formData,
+                  rntlValue: value
+                },
+                rntlValuePyeong: value ? toPyeong(value) : ''
+              });
+            }}
+          />
+        </View>
+      </View>
 
       {/** 보관 단가 (필수) **/}
       <TextField
@@ -245,7 +273,7 @@ class ResponseQKeep extends Component {
         numberOfLines={5}
         textAlignVertical="top"
         multiline={true}
-        styleProps={{height: 100}}
+        styleProps={{ height: 100 }}
         valueProps={value =>
           this.setState({
             formData: {
@@ -270,20 +298,20 @@ class ResponseQKeep extends Component {
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
-            alert(`보관요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
-            return;
+            // alert(`보관요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.splyAmount <= 0) {
             alert(`보관단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.splyAmount > this.props.splyAmount) {
-            alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
-            return;
+            // alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.whinChrg <= 0) {
             alert(`관리단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.mgmtChrg > this.props.mgmtChrg) {
-            alert(`관리단가는 ${this.props.mgmtChrg} 이하로 요청가능합니다.`);
-            return;
+            // alert(`관리단가는 ${this.props.mgmtChrg} 이하로 요청가능합니다.`);
+            // return;
           }
 
           formData.to = formData.to ? Moment(formData.to).format('x') : null;
@@ -316,7 +344,10 @@ class ResponseQKeep extends Component {
 
                 // TODO change illustrator popup
                 alert('견적응답이 완료되었습니다.');
-                this.props.navigation.goBack();
+                // this.props.navigation.goBack();
+                this.props.navigation.navigate('Mypage', {
+                  title: '견적･계약 관리',
+                })
               }
             })
             .catch(err => {
@@ -344,11 +375,11 @@ class ResponseQKeep extends Component {
     </Fragment>;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 
-  componentDidMount() {
+  componentDidMount () {
     console.log('::componentDidMount::');
   }
 }

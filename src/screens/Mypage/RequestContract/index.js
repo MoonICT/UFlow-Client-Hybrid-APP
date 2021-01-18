@@ -106,28 +106,28 @@ class RequestContract extends Component {
               {/** END:HEADER **/}
 
               {/** WAREHOUSE INFO 청고 정보 **/}
-              {status === '1100' && (
-                <View style={DefaultStyle._card}>
-                  <View style={DefaultStyle._headerCard}>
-                    {this.state.imgType && (
-                      <Image
-                        source={this.state.imgType}
-                        style={DefaultStyle._avatarHeader}
-                      />
-                    )}
-                  </View>
-                  <View>
-                    <View style={DefaultStyle._infoTable}>
-                      {contractType === 'keep' && warehouseInfo.dataKeep && (
-                        <TableInfo data={warehouseInfo.dataKeep} />
-                      )}
-                      {contractType === 'trust' && warehouseInfo.dataTrust && (
-                        <TableInfo data={warehouseInfo.dataTrust} />
-                      )}
-                    </View>
-                  </View>
-                </View>
-              )}
+              {/*{status === '1100' && (*/}
+                {/*<View style={DefaultStyle._card}>*/}
+                  {/*<View style={DefaultStyle._headerCard}>*/}
+                    {/*{this.state.imgType && (*/}
+                      {/*<Image*/}
+                        {/*source={this.state.imgType}*/}
+                        {/*style={DefaultStyle._avatarHeader}*/}
+                      {/*/>*/}
+                    {/*)}*/}
+                  {/*</View>*/}
+                  {/*<View>*/}
+                    {/*<View style={DefaultStyle._infoTable}>*/}
+                      {/*{contractType === 'keep' && warehouseInfo.dataKeep && (*/}
+                        {/*<TableInfo data={warehouseInfo.dataKeep} />*/}
+                      {/*)}*/}
+                      {/*{contractType === 'trust' && warehouseInfo.dataTrust && (*/}
+                        {/*<TableInfo data={warehouseInfo.dataTrust} />*/}
+                      {/*)}*/}
+                    {/*</View>*/}
+                  {/*</View>*/}
+                {/*</View>*/}
+              {/*)}*/}
               {/** END:ESTIMATE INFO **/}
 
               {/** CONTRACT INFO **/}

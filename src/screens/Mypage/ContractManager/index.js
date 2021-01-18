@@ -686,7 +686,7 @@ class ContractManager extends Component {
       this.props.setProgress({ is: true, });
       Warehouse.contractManager(valueState)
         .then(res => {
-          // console.log('resContractUpdate', res);
+          console.log('resContractUpdate', res.data.data.content);
           const status = res.status;
           if (status === 200) {
             // this.setState({ dataApi: res.data.data.content });
