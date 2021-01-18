@@ -48,43 +48,11 @@ import DefaultStyle from '@Styles/default';
 import TableInfo from '@Components/atoms/TableInfo';
 import TextField from '@Components/organisms/TextField';
 
-import Appbars from '@Components/organisms/AppBar';
-import {formatDateV1} from '@Utils/dateFormat';
 import {styles as S} from '../style';
 import {styles as SS} from './style';
 import {InOutManagerService} from '@Services/apis';
-import DatePicker from "@react-native-community/datetimepicker";
 import DocumentPicker from 'react-native-document-picker';
-const selectRequest = [
-  {
-    label: '모두',
-    value: 'all'
-  },
-  {
-    label: '입고예정',
-    value: '1100',
-  },
-  {
-    label: '입고확정',
-    value: '1200',
-  },
-  {
-    label: '입고취소',
-    value: '9100',
-  },
-  {
-    label: '출고예정',
-    value: '2100',
-  },
-  {
-    label: '출고확정',
-    value: '2200',
-  },
-  {
-    label: '출고취소',
-    value: '9500',
-  }
-];
+import {StringUtils} from "../../../services/utils";
 
 var searchTimerQuery;
 export default class DetailsManager extends Component {
@@ -196,15 +164,12 @@ export default class DetailsManager extends Component {
   }
 
   componentDidMount() {
-
     this.getAllData()
-
-
   }
-
 
   async getAllData() {
     let {filter, type, rentWarehNo} = this.state;
+    console.log(rentWarehNo, 'rentWarehNo');
     let {startDate, endDate, query, contractType} = filter;
     let params = {
       startDate,
@@ -215,218 +180,229 @@ export default class DetailsManager extends Component {
       type: type,
       contractType
     };
-    await InOutManagerService.getDetail(params).then((res) => {
 
-      let header = res.data.header;
-      let cntrTrustResBody = res.data.header.cntrTrustResBody;
-      let isExpired = header.expired
-      let totalMoney = res.data.total
-      const dataInfo = [
-        {
-          type: '창고명',
-          value: header.warehouse,
-        },
-        {
-          type: '창고주',
-          value: header.owner,
-        },
-        {
-          type: '위치',
-          value: header.address,
-        },
-        {
-          type: '보관유형',
-          value: cntrTrustResBody.typeCode && cntrTrustResBody.typeCode.stdDetailCodeName,
-        },
-        {
-          type: '정산단위',
-          value: cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName,
-        },
-        {
-          type: '산정기준',
-          value: cntrTrustResBody && cntrTrustResBody.calStdDvCode && cntrTrustResBody.calStdDvCode.stdDetailCodeName,
-        },
-        {
-          type: '물동량',
-          value: cntrTrustResBody && cntrTrustResBody.cntrValue && (cntrTrustResBody.cntrValue.량() + " " + (cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName)),
-        },
-        {
-          type: '수탁 기간',
-          value: `${dateStr(cntrTrustResBody.id?.cntrYmdFrom ?? '')} ~ ${dateStr(cntrTrustResBody?.cntrYmdTo ?? '')}`,
-        },
-        {
-          type: '보관비',
-          value: cntrTrustResBody && cntrTrustResBody.splyAmount && moneyUnit(cntrTrustResBody.splyAmount),
-        },
-      ];
+    console.log(params, 'params')
 
-      let responseFilter = res.data.data.content.map((item, index) => {
-        let status = ''
-        let dateStr = ''
-        let dateValue = ''
-        let whinValue = ''
-        let whoutValue = ''
-        switch (true) {
-          case item.type === 'IMPORT' && item.status === '1100':
-            status = '입고 요청'
-            dateStr = '입고예정 일자'
-            dateValue = Moment(item.rtwhWhinResBody.id.whinExpct).format('YYYY.MM.DD')
-            whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? item.rtwhWhinResBody.whinExpctQty.toLocaleString() : "-"
-            break;
-          case item.type === 'IMPORT' && item.status === '1200':
-            status = '입고 확정'
-            dateStr = '입고확정 일자'
-            dateValue = Moment(item.rtwhWhinResBody.whinDecis).format('YYYY.MM.DD')
-            whinValue = item.rtwhWhinResBody.whinDecisQty !== null ? item.rtwhWhinResBody.whinDecisQty.toLocaleString() : "-"
-            break;
-          case item.type === 'IMPORT' && item.status === '9100':
-            status = '입고 요청 취소'
-            dateStr = '입고예정 일자'
-            dateValue = ''
-            whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? item.rtwhWhinResBody.whinExpctQty.toLocaleString() : "-"
-            break;
-          case item.type === 'EXPORT' && item.status === '2100':
-            status = '출고 요청'
-            dateStr = '출고예정 일자'
-            dateValue = Moment(item.rtwhWhoutResBody.id.whoutExpct).format('YYYY.MM.DD')
-            whoutValue = item.rtwhWhoutResBody.expctQty !== null ? item.rtwhWhoutResBody.expctQty.toLocaleString() : "-"
-            break;
-          case item.type === 'EXPORT' && item.status === '2200':
-            status = '출고 확정'
-            dateStr = '출고확정 일자'
-            dateValue = Moment(item.rtwhWhoutResBody.decis).format('YYYY.MM.DD')
-            whoutValue = item.rtwhWhoutResBody.decisQty !== null ? item.rtwhWhoutResBody.decisQty.toLocaleString() : "-"
-            break;
-          case item.type === 'EXPORT' && item.status === '9500':
-            status = '출고 요청 취소'
-            dateStr = '출고예정 일자'
-            dateValue = ''
-            whoutValue = item.rtwhWhoutResBody.expctQty !== null ? item.rtwhWhoutResBody.expctQty.toLocaleString() : "-"
-            break;
+    await InOutManagerService.getDetail(params)
+      .then((res) => {
+
+        let header = res.data.header;
+        let cntrTrustResBody = res.data.header.cntrTrustResBody;
+        let isExpired = header.expired
+        let totalMoney = res.data.total
+        const dataInfo = [
+          {
+            type: '창고명',
+            value: header.warehouse,
+          },
+          {
+            type: '창고주',
+            value: header.owner,
+          },
+          {
+            type: '위치',
+            value: header.address,
+          },
+          {
+            type: '보관유형',
+            value: cntrTrustResBody.typeCode && cntrTrustResBody.typeCode.stdDetailCodeName,
+          },
+          {
+            type: '정산단위',
+            value: cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName,
+          },
+          {
+            type: '산정기준',
+            value: cntrTrustResBody && cntrTrustResBody.calStdDvCode && cntrTrustResBody.calStdDvCode.stdDetailCodeName,
+          },
+          {
+            type: '물동량',
+            value: cntrTrustResBody && cntrTrustResBody.cntrValue && (StringUtils.numberComma(cntrTrustResBody.cntrValue) + " " + (cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName)),
+          },
+          {
+            type: '수탁 기간',
+            value: `${dateStr(cntrTrustResBody.id?.cntrYmdFrom ?? '')} ~ ${dateStr(cntrTrustResBody?.cntrYmdTo ?? '')}`,
+          },
+          {
+            type: '보관비',
+            value: cntrTrustResBody && cntrTrustResBody.splyAmount && moneyUnit(cntrTrustResBody.splyAmount),
+          },
+        ];
+
+        let responseFilter = res.data.data.content.map((item, index) => {
+          let status = ''
+          let dateStr = ''
+          let dateValue = ''
+          let whinValue = ''
+          let whoutValue = ''
+          switch (true) {
+            case item.type === 'IMPORT' && item.status === '1100':
+              status = '입고 요청'
+              dateStr = '입고예정 일자'
+              dateValue = Moment(item.rtwhWhinResBody.id.whinExpct).format('YYYY.MM.DD')
+              whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? item.rtwhWhinResBody.whinExpctQty.toLocaleString() : "-"
+              break;
+            case item.type === 'IMPORT' && item.status === '1200':
+              status = '입고 확정'
+              dateStr = '입고확정 일자'
+              dateValue = Moment(item.rtwhWhinResBody.whinDecis).format('YYYY.MM.DD')
+              whinValue = item.rtwhWhinResBody.whinDecisQty !== null ? item.rtwhWhinResBody.whinDecisQty.toLocaleString() : "-"
+              break;
+            case item.type === 'IMPORT' && item.status === '9100':
+              status = '입고 요청 취소'
+              dateStr = '입고예정 일자'
+              dateValue = ''
+              whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? item.rtwhWhinResBody.whinExpctQty.toLocaleString() : "-"
+              break;
+            case item.type === 'EXPORT' && item.status === '2100':
+              status = '출고 요청'
+              dateStr = '출고예정 일자'
+              dateValue = Moment(item.rtwhWhoutResBody.id.whoutExpct).format('YYYY.MM.DD')
+              whoutValue = item.rtwhWhoutResBody.expctQty !== null ? item.rtwhWhoutResBody.expctQty.toLocaleString() : "-"
+              break;
+            case item.type === 'EXPORT' && item.status === '2200':
+              status = '출고 확정'
+              dateStr = '출고확정 일자'
+              dateValue = Moment(item.rtwhWhoutResBody.decis).format('YYYY.MM.DD')
+              whoutValue = item.rtwhWhoutResBody.decisQty !== null ? item.rtwhWhoutResBody.decisQty.toLocaleString() : "-"
+              break;
+            case item.type === 'EXPORT' && item.status === '9500':
+              status = '출고 요청 취소'
+              dateStr = '출고예정 일자'
+              dateValue = ''
+              whoutValue = item.rtwhWhoutResBody.expctQty !== null ? item.rtwhWhoutResBody.expctQty.toLocaleString() : "-"
+              break;
+          }
+
+          let inoutLabel = ''
+          let inoutValue = ''
+          if (item.type === 'IMPORT') {
+            inoutLabel = '입고 단가';
+            inoutValue = cntrTrustResBody.whinChrg ? (moneyUnit(cntrTrustResBody.whinChrg)) : "-";
+          } else if (item.type === 'EXPORT') {
+            inoutLabel = '출고 단가';
+            inoutValue = cntrTrustResBody.whoutChrg ? (moneyUnit(cntrTrustResBody.whoutChrg)) : "-";
+          }
+
+          let whinUprice = ''
+          let whoutUprice = ''
+          if (item.type === 'IMPORT') {
+            whinUprice = item.rtwhWhinResBody.whinDecisChrg ? moneyUnit(item.rtwhWhinResBody.whinDecisChrg) : moneyUnit(0);
+          } else if (item.type === 'EXPORT') {
+            whoutUprice = item.rtwhWhoutResBody.whoutDecisChrg ? moneyUnit(item.rtwhWhoutResBody.whoutDecisChrg) : moneyUnit(0);
+          }
+
+          let Expct = '';
+          let ExpctSeq = -1;
+
+          if (item.type === 'EXPORT') {
+            Expct = item.rtwhWhoutResBody.id.whoutExpct;
+            ExpctSeq = item.rtwhWhoutResBody.id.whoutExpctSeq;
+          } else if (item.type === 'IMPORT') {
+            Expct = item.rtwhWhinResBody.id.whinExpct;
+            ExpctSeq = item.rtwhWhinResBody.id.whinExpctSeq;
+          }
+
+          return {
+            Expct,
+            ExpctSeq,
+            imageUrl: item.imageUrl && item.imageUrl.replace(/\\\//g, "/"),
+            status: item.status,
+            stockQty: item.stockQty || 0,
+            type: item.type,
+            whinValue,
+            whoutValue,
+            dataProgress: [
+              {
+                type: '작성 일시',
+                value: Moment(item.createdDate).format('YYYY-MM-DD'),
+              },
+              {
+                type: '작성자',
+                value: '임차인(ID)',
+              },
+              {
+                type: '구분',
+                value: status,
+              },
+              {
+                type: dateStr,
+                value: dateValue,
+              },
+              {
+                type: '입고량',
+                value: whinValue,
+              },
+              {
+                type: '출고량',
+                value: whoutValue
+              },
+              {
+                type: '재고',
+                value: item.stockQty && item.stockQty.toLocaleString()
+              },
+              {
+                type: inoutLabel,
+                value: inoutValue
+              },
+              {
+                type: '입고비',// 입고단가 X 입고확정수량
+                value: whinUprice
+              },
+              {
+                type: '출고비',
+                value: whoutUprice
+              },
+              {
+                type: '보관비',
+                value: moneyUnit(item.stockUprice) + " " + (item.stockUpriceRemark && ` (${item.stockUpriceRemark})`)
+              }
+            ]
+          }
+        })
+
+        let isEmpty = responseFilter && responseFilter.length === 0;
+        this.setState({
+          dataInfo, responseFilter, cntrTrustResBody, isExpired, totalMoney, isEmpty
+        })
+
+        if (cntrTrustResBody && cntrTrustResBody.typeCode) {
+          switch (cntrTrustResBody.typeCode) {
+            case "0001":
+              this.setState({
+                imgType: imgType0001
+              })
+              break;
+            case "0002":
+              this.setState({
+                imgType: imgType0002
+              })
+              break;
+            case "0003":
+              this.setState({
+                imgType: imgType0003
+              })
+              break;
+            case "0004":
+              this.setState({
+                imgType: imgType0004
+              })
+              break;
+            default:
+              this.setState({
+                imgType: imgType9100
+              })
+              break;
+          }
         }
-
-        let inoutLabel = ''
-        let inoutValue = ''
-        if (item.type === 'IMPORT') {
-          inoutLabel = '입고 단가';
-          inoutValue = cntrTrustResBody.whinChrg ? (moneyUnit(cntrTrustResBody.whinChrg)) : "-";
-        } else if (item.type === 'EXPORT') {
-          inoutLabel = '출고 단가';
-          inoutValue = cntrTrustResBody.whoutChrg ? (moneyUnit(cntrTrustResBody.whoutChrg)) : "-";
-        }
-
-        let whinUprice = ''
-        let whoutUprice = ''
-        if (item.type === 'IMPORT') {
-          whinUprice = item.rtwhWhinResBody.whinDecisChrg ? moneyUnit(item.rtwhWhinResBody.whinDecisChrg) : moneyUnit(0);
-        } else if (item.type === 'EXPORT') {
-          whoutUprice = item.rtwhWhoutResBody.whoutDecisChrg ? moneyUnit(item.rtwhWhoutResBody.whoutDecisChrg) : moneyUnit(0);
-        }
-
-        let Expct = '';
-        let ExpctSeq = -1;
-
-        if (item.type === 'EXPORT') {
-          Expct = item.rtwhWhoutResBody.id.whoutExpct;
-          ExpctSeq = item.rtwhWhoutResBody.id.whoutExpctSeq;
-        } else if (item.type === 'IMPORT') {
-          Expct = item.rtwhWhinResBody.id.whinExpct;
-          ExpctSeq = item.rtwhWhinResBody.id.whinExpctSeq;
-        }
-
-        return {
-          Expct,
-          ExpctSeq,
-          imageUrl: item.imageUrl && item.imageUrl.replace(/\\\//g, "/"),
-          status: item.status,
-          stockQty: item.stockQty || 0,
-          type: item.type,
-          whinValue,
-          whoutValue,
-          dataProgress: [
-            {
-              type: '작성 일시',
-              value: Moment(item.createdDate).format('YYYY-MM-DD'),
-            },
-            {
-              type: '작성자',
-              value: '임차인(ID)',
-            },
-            {
-              type: '구분',
-              value: status,
-            },
-            {
-              type: dateStr,
-              value: dateValue,
-            },
-            {
-              type: '입고량',
-              value: whinValue,
-            },
-            {
-              type: '출고량',
-              value: whoutValue
-            },
-            {
-              type: '재고',
-              value: item.stockQty && item.stockQty.toLocaleString()
-            },
-            {
-              type: inoutLabel,
-              value: inoutValue
-            },
-            {
-              type: '입고비',// 입고단가 X 입고확정수량
-              value: whinUprice
-            },
-            {
-              type: '출고비',
-              value: whoutUprice
-            },
-            {
-              type: '보관비',
-              value: moneyUnit(item.stockUprice) + " " + (item.stockUpriceRemark && ` (${item.stockUpriceRemark})`)
-            }
-          ]
+      })
+      .catch((err) => {
+        console.log(err, 'err');
+        if (err && err.response.data && err.response.data.message) {
+          alert(err.response.data.message);
         }
       })
 
-      let isEmpty = responseFilter && responseFilter.length === 0;
-      this.setState({
-        dataInfo, responseFilter, cntrTrustResBody, isExpired, totalMoney, isEmpty
-      })
-
-      if (cntrTrustResBody && cntrTrustResBody.typeCode) {
-        switch (cntrTrustResBody.typeCode) {
-          case "0001":
-            this.setState({
-              imgType: imgType0001
-            })
-            break;
-          case "0002":
-            this.setState({
-              imgType: imgType0002
-            })
-            break;
-          case "0003":
-            this.setState({
-              imgType: imgType0003
-            })
-            break;
-          case "0004":
-            this.setState({
-              imgType: imgType0004
-            })
-            break;
-          default:
-            this.setState({
-              imgType: imgType9100
-            })
-            break;
-        }
-      }
-    })
   }
 
 
@@ -584,7 +560,7 @@ export default class DetailsManager extends Component {
 
     // 창고주
     if (type === 'OWNER') {
-      let { singleFile } = this.state;
+      let {singleFile} = this.state;
       if (singleFile !== null) {
         // If file selected then create FormData
         const data = new FormData();
@@ -603,7 +579,8 @@ export default class DetailsManager extends Component {
                 if (!ExpctYmd) {
                   alert('일자 정보가 없습니다.');
                   return;
-                } if (!createDateStr) {
+                }
+                if (!createDateStr) {
                   alert('일자 정보가 없습니다.');
                   return;
                 } else if (!createValue) {
@@ -648,7 +625,8 @@ export default class DetailsManager extends Component {
                 if (!ExpctYmd) {
                   alert('일자 정보가 없습니다.');
                   return;
-                } if (!createDateStr) {
+                }
+                if (!createDateStr) {
                   alert('일자 정보가 없습니다.');
                   return;
                 } else if (!createValue) {
@@ -701,8 +679,6 @@ export default class DetailsManager extends Component {
         // If no file selected the show alert
         alert('사진을 업로드하세요');
       }
-
-
 
 
     } else if (type === 'TENANT') {
@@ -843,27 +819,27 @@ export default class DetailsManager extends Component {
         uri: response.uri
       }
 
-      this.setState({ singleFile: file });
+      this.setState({singleFile: file});
     });
   };
 
-    // upload image
-    handlePicker = async () => {
+  // upload image
+  handlePicker = async () => {
 
-      try {
-        const res = await DocumentPicker.pick({
-          type: [DocumentPicker.types.images],
-        });
-        this.setState({ singleFile: res })
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      });
+      this.setState({singleFile: res})
 
-      } catch (err) {
-        if (DocumentPicker.isCancel(err)) {
-          // User cancelled the picker, exit any dialogs or menus and move on
-        } else {
-          throw err;
-        }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
       }
-    };
+    }
+  };
 
   render() {
     const {isProgress, isToggle, isEmpty, dataInfo, responseFilter, totalMoney, isExpired, type} = this.state;
@@ -1407,29 +1383,29 @@ export default class DetailsManager extends Component {
                 }
 
 
-              <View style={[DefaultStyle._listBtn, SS.listBtnProcess, {
-                marginTop: 11,
-                marginBottom: 0,
-                marginLeft: 0,
-                marginRight: 0,
-                paddingLeft: 0,
-                paddingRight: 0
-              }]}>
+                <View style={[DefaultStyle._listBtn, SS.listBtnProcess, {
+                  marginTop: 11,
+                  marginBottom: 0,
+                  marginLeft: 0,
+                  marginRight: 0,
+                  paddingLeft: 0,
+                  paddingRight: 0
+                }]}>
 
 
-                <TouchableOpacity
-                  onPress={() => this.handlePicker()}
-                  style={[
-                    DefaultStyle._btnOutline,
-                    DefaultStyle._btnLeft,
-                    SS.btnProcess,
-                    {height: 36}
-                  ]}>
-                  <Text style={[DefaultStyle._textButton, {color: '#000000'}]}>
-                    파일 첨부
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                  <TouchableOpacity
+                    onPress={() => this.handlePicker()}
+                    style={[
+                      DefaultStyle._btnOutline,
+                      DefaultStyle._btnLeft,
+                      SS.btnProcess,
+                      {height: 36}
+                    ]}>
+                    <Text style={[DefaultStyle._textButton, {color: '#000000'}]}>
+                      파일 첨부
+                    </Text>
+                  </TouchableOpacity>
+                </View>
 
 
               </View>
@@ -1519,7 +1495,7 @@ export default class DetailsManager extends Component {
           style={DefaultStyle.popup}
           visible={this.state.completeRequestImport}
           onDismiss={() => this.setState({completeRequestImport: false})}>
-          <Dialog.Content  style ={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Dialog.Content style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             {/*<View style={DefaultStyle.imagePopup}/>*/}
             <Image source={imgType0001}/>
           </Dialog.Content>
@@ -1577,10 +1553,10 @@ export default class DetailsManager extends Component {
           style={DefaultStyle.popup}
           visible={this.state.confirmRequestImport}
           onDismiss={() => this.setState({confirmRequestImport: false})}>
-          <Dialog.Content style ={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Dialog.Content style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             {/* <View style={DefaultStyle.imagePopup}/> */}
             {/* <Image source={illust15} style={DefaultStyle._avatarHeader}/> */}
-            <Image source = { {uri: this.state.uirDoneImport} } style = {{width: 150, height: 150}} />
+            <Image source={{uri: this.state.uirDoneImport}} style={{width: 150, height: 150}}/>
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1608,8 +1584,8 @@ export default class DetailsManager extends Component {
           visible={this.state.confirmRequestExport}
           // visible={true}
           onDismiss={() => this.setState({confirmRequestExport: false})}>
-          <Dialog.Content style ={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Image source = { {uri: this.state.uirDoneImport} } style = {{width: 150, height: 150}} />
+          <Dialog.Content style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Image source={{uri: this.state.uirDoneImport}} style={{width: 150, height: 150}}/>
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
