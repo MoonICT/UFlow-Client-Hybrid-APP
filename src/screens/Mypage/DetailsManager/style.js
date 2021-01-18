@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   processing: {
     borderColor: '#e5e5ea',
-    borderWidth: 1,
+    borderWidth: 0,
     borderRadius: 8,
   },
   textProcessing: {
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
     // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
-    // width: '98%', 
+    // width: '98%',
   },
   btnRemove: {
     margin: 0,
@@ -99,6 +99,10 @@ export const styles = StyleSheet.create({
   listBtnProcess: {
     paddingLeft: 16,
     paddingRight: 16,
+  },
+  wrapBtnGroup: {
+    // paddingTop: 11,
+    // paddingBottom: 20,
   },
   btnProcess: {
     borderColor: 'rgba(19, 19, 20, 0.5)',
