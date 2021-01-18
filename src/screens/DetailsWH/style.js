@@ -105,10 +105,26 @@ export const styles = StyleSheet.create({
     width: windowWidth,
     height: 240,
   },
-  iconBackground: {
+  // 파노라마 오버레이
+  panoOverlayWrap: {
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  panoOverlayInner: {
+    width: windowWidth,
+  },
+  btnImageToggle: {
     position: 'absolute',
     right: 12,
     top: 12,
+    backgroundColor: '#fff',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     lineHeight: 21,

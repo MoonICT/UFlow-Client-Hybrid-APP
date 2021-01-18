@@ -73,11 +73,19 @@ class MypageBusinessInfo extends Component {
     Entrp.list().then(res => {
       let resultData = res.data && res.data._embedded && res.data._embedded.businessInfoes ? res.data._embedded.businessInfoes : [];
       let dataConvert = [];
-      console.log('사업자 리스트 ', resultData)
+      // console.log('사업자 리스트 ', resultData)
       resultData.forEach(element => {
+        let label = ''
+        if (element.regDvCode) {
+          if (element.regDvCode === '1100') {
+            label = '[창고주 정보]';
+          } else if (element.regDvCode === '2100') {
+            label = '[임차인 정보]';
+          }
+        }
         dataConvert.push({
           ...element,
-          label: element.name,
+          label: `${label ? label + ' ' : ''}${element.name}`,
           value: element.id
         })
       })
