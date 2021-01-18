@@ -269,81 +269,81 @@ class ReqeustQTrust extends Component {
       />
       {/** 인건 단가 **/}
 
-      <TextField
-        colorLabel="#000000"
-        labelTextField="인건단가"
-        keyboardType="numeric"
-        defaultValue={
-          psnChrg ? String(psnChrg) : '0'
-        }
-        textRight="원"
-        placeholder="0"
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              psnChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
+      {/*<TextField*/}
+        {/*colorLabel="#000000"*/}
+        {/*labelTextField="인건단가"*/}
+        {/*keyboardType="numeric"*/}
+        {/*defaultValue={*/}
+          {/*psnChrg ? String(psnChrg) : '0'*/}
+        {/*}*/}
+        {/*textRight="원"*/}
+        {/*placeholder="0"*/}
+        {/*onChangeText={e =>*/}
+          {/*this.setState({*/}
+            {/*formData: {*/}
+              {/*...this.state.formData,*/}
+              {/*psnChrg: Number(e.replace(/[^0-9]/g), '')*/}
+            {/*}*/}
+          {/*})*/}
+        {/*}*/}
+      {/*/>*/}
       {/** 가공 단가 **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="가공단가"
-        textRight="원"
-        keyboardType="numeric"
-        defaultValue={
-          mnfctChrg ? String(mnfctChrg) : '0'
-        }
-        placeholder="0"
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              mnfctChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
+      {/*<TextField*/}
+        {/*colorLabel="#000000"*/}
+        {/*labelTextField="가공단가"*/}
+        {/*textRight="원"*/}
+        {/*keyboardType="numeric"*/}
+        {/*defaultValue={*/}
+          {/*mnfctChrg ? String(mnfctChrg) : '0'*/}
+        {/*}*/}
+        {/*placeholder="0"*/}
+        {/*onChangeText={e =>*/}
+          {/*this.setState({*/}
+            {/*formData: {*/}
+              {/*...this.state.formData,*/}
+              {/*mnfctChrg: Number(e.replace(/[^0-9]/g), '')*/}
+            {/*}*/}
+          {/*})*/}
+        {/*}*/}
+      {/*/>*/}
       {/** 택배 단가 **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="택배단가"
-        textRight="원"
-        keyboardType="numeric"
-        defaultValue={
-          dlvyChrg ? String(dlvyChrg) : '0'
-        }
-        placeholder="0"
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              dlvyChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
+      {/*<TextField*/}
+        {/*colorLabel="#000000"*/}
+        {/*labelTextField="택배단가"*/}
+        {/*textRight="원"*/}
+        {/*keyboardType="numeric"*/}
+        {/*defaultValue={*/}
+          {/*dlvyChrg ? String(dlvyChrg) : '0'*/}
+        {/*}*/}
+        {/*placeholder="0"*/}
+        {/*onChangeText={e =>*/}
+          {/*this.setState({*/}
+            {/*formData: {*/}
+              {/*...this.state.formData,*/}
+              {/*dlvyChrg: Number(e.replace(/[^0-9]/g), '')*/}
+            {/*}*/}
+          {/*})*/}
+        {/*}*/}
+      {/*/>*/}
       {/** 운송 단가 **/}
-      <TextField
-        colorLabel="#000000"
-        labelTextField="운송단가"
-        textRight="원"
-        keyboardType="numeric"
-        defaultValue={
-          shipChrg ? String(shipChrg) : '0'
-        }
-        placeholder="0"
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              shipChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
-        }
-      />
+      {/*<TextField*/}
+        {/*colorLabel="#000000"*/}
+        {/*labelTextField="운송단가"*/}
+        {/*textRight="원"*/}
+        {/*keyboardType="numeric"*/}
+        {/*defaultValue={*/}
+          {/*shipChrg ? String(shipChrg) : '0'*/}
+        {/*}*/}
+        {/*placeholder="0"*/}
+        {/*onChangeText={e =>*/}
+          {/*this.setState({*/}
+            {/*formData: {*/}
+              {/*...this.state.formData,*/}
+              {/*shipChrg: Number(e.replace(/[^0-9]/g), '')*/}
+            {/*}*/}
+          {/*})*/}
+        {/*}*/}
+      {/*/>*/}
       {/** 추가 요청 사항 **/}
       <TextField
         colorLabel="#000000"
@@ -376,26 +376,26 @@ class ReqeustQTrust extends Component {
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
-            alert(`수탁요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
-            return;
+            // alert(`수탁 요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.splyAmount <= 0) {
             alert(`보관단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.splyAmount > this.props.splyAmount) {
-            alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
-            return;
+            // alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.whinChrg <= 0) {
             alert(`입고단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.whinChrg > this.props.whinChrg) {
-            alert(`입고단가는 ${this.props.whinChrg} 이하로 요청가능합니다.`);
-            return;
+            // alert(`입고단가는 ${this.props.whinChrg} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.whoutChrg <= 0) {
             alert(`출고단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.whoutChrg > this.props.whoutChrg) {
-            alert(`출고단가는 ${this.props.whoutChrg} 이하로 요청가능합니다.`);
-            return;
+            // alert(`출고단가는 ${this.props.whoutChrg} 이하로 요청가능합니다.`);
+            // return;
           }
 
           formData.to = formData.to ? Moment(formData.to).format('x') : null;
@@ -417,6 +417,8 @@ class ReqeustQTrust extends Component {
             remark: formData.remark
           };
 
+          console.log(formData, 'formData');
+
           Warehouse.responQuotation({
             type: `tenant/warehouse/${formData.warehouseRegNo}/trust/${formData.seq}`,
             data: formData,
@@ -432,7 +434,10 @@ class ReqeustQTrust extends Component {
                 });
                 // TODO change illustrator popup
                 alert('견적요청이 완료되었습니다.');
-                this.props.navigation.goBack();
+                // this.props.navigation.goBack();
+                this.props.navigation.navigate('Mypage', {
+                  title: '견적･계약 관리',
+                })
               }
             })
             .catch(err => {
@@ -440,7 +445,6 @@ class ReqeustQTrust extends Component {
               alert(message);
             });
 
-          console.log(formData, 'formData');
         }}
         style={[
           DefaultStyle._btnInline,

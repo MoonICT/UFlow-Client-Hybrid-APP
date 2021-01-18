@@ -398,26 +398,26 @@ class ResponseQTrust extends Component {
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
-            alert(`수탁요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
-            return;
+            // alert(`수탁요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.splyAmount <= 0) {
             alert(`보관단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.splyAmount > this.props.splyAmount) {
-            alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
-            return;
+            // alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.whinChrg <= 0) {
             alert(`입고단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.whinChrg > this.props.whinChrg) {
-            alert(`입고단가는 ${this.props.whinChrg} 이하로 요청가능합니다.`);
-            return;
+            // alert(`입고단가는 ${this.props.whinChrg} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.whoutChrg <= 0) {
             alert(`출고단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.whoutChrg > this.props.whoutChrg) {
-            alert(`출고단가는 ${this.props.whoutChrg} 이하로 요청가능합니다.`);
-            return;
+            // alert(`출고단가는 ${this.props.whoutChrg} 이하로 요청가능합니다.`);
+            // return;
           }
 
           formData.to = formData.to ? Moment(formData.to).format('x') : null;
@@ -455,7 +455,10 @@ class ResponseQTrust extends Component {
 
                 // TODO change illustrator popup
                 alert('견적응답이 완료되었습니다.');
-                this.props.navigation.goBack();
+                // this.props.navigation.goBack();
+                this.props.navigation.navigate('Mypage', {
+                  title: '견적･계약 관리',
+                })
               }
             })
             .catch(err => {

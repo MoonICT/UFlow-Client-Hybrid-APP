@@ -9,6 +9,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Moment from 'moment';
 import { Warehouse } from '@Services/apis';
 import { StringUtils, DeepLogs } from '@Services/utils';
+import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 
 class ReqeustQKeep extends Component {
 
@@ -29,7 +30,8 @@ class ReqeustQKeep extends Component {
         splyAmount: props.splyAmount,
         mgmtChrg: props.mgmtChrg,
         remark: ''
-      }
+      },
+      rntlValuePyeong: props.rntlValue ? toPyeong(props.rntlValue) : ''
     }
   }
 
@@ -69,6 +71,7 @@ class ReqeustQKeep extends Component {
       showFrom,
       showTo,
       isSubmit,
+      rntlValuePyeong
     } = this.state;
 
     const {
@@ -180,45 +183,45 @@ class ReqeustQKeep extends Component {
           <TextField
             colorLabel="#000000"
             labelTextField="보관 요청 면적"
-            textRight={'m2'}
+            textRight={'평'}
             keyboardType="numeric"
             placeholder={"0"}
-            defaultValue={
-              rntlValue ? String(rntlValue) : '0'
-            }
+            defaultValue={rntlValuePyeong ? String(rntlValuePyeong) : ''}
             isRequired={true}
             onChangeText={e => {
+              let value = Number(e.replace(/[^0-9]/g), '')
               this.setState({
                 formData: {
                   ...this.state.formData,
-                  rntlValue: Number(e.replace(/[^0-9]/g), '')
-                }
+                  rntlValue: value ? toSquareMeter(value) : ''
+                },
+                rntlValuePyeong: value
               });
             }}
           />
         </View>
-        {/*<View style={[DefaultStyle._element,]}>*/}
-          {/*<TextField*/}
-            {/*colorLabel="#000000"*/}
-            {/*labelTextField="보관 요청 면적"*/}
-            {/*textRight={'평'}*/}
-            {/*keyboardType="numeric"*/}
-            {/*placeholder={"0"}*/}
-            {/*defaultValue={*/}
-              {/*rntlValue ? String(rntlValue) : '0'*/}
-            {/*}*/}
-
-            {/*isRequired={true}*/}
-            {/*onChangeText={e => {*/}
-              {/*this.setState({*/}
-                {/*formData: {*/}
-                  {/*...this.state.formData,*/}
-                  {/*rntlValue: Number(e.replace(/[^0-9]/g), '')*/}
-                {/*}*/}
-              {/*});*/}
-            {/*}}*/}
-          {/*/>*/}
-        {/*</View>*/}
+        <View style={[DefaultStyle._element]}>
+          <TextField
+            colorLabel="#000000"
+            labelTextField="보관 요청 면적"
+            textRight={'m2'}
+            keyboardType="numeric"
+            placeholder={"0"}
+            defaultValue={rntlValue ? String(rntlValue) : ''}
+            isRequired={true}
+            onChangeText={e => {
+              let value = Number(e.replace(/[^0-9]/g), '')
+              this.setState({
+                ...this.state,
+                formData: {
+                  ...this.state.formData,
+                  rntlValue: value
+                },
+                rntlValuePyeong: value ? toPyeong(value) : ''
+              });
+            }}
+          />
+        </View>
       </View>
 
       {/** 보관 단가 (필수) **/}
@@ -298,20 +301,20 @@ class ReqeustQKeep extends Component {
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
-            alert(`보관요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
-            return;
+            // alert(`보관 요청 면적은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.splyAmount <= 0) {
             alert(`보관단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.splyAmount > this.props.splyAmount) {
-            alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
-            return;
+            // alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
+            // return;
           } else if (formData.mgmtChrg <= 0) {
             alert(`관리단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.mgmtChrg > this.props.mgmtChrg) {
-            alert(`관리단가는 ${this.props.mgmtChrg} 이하로 요청가능합니다.`);
-            return;
+            // alert(`관리단가는 ${this.props.mgmtChrg} 이하로 요청가능합니다.`);
+            // return;
           }
 
           formData.to = formData.to ? Moment(formData.to).format('x') : null;
@@ -343,7 +346,10 @@ class ReqeustQKeep extends Component {
                 });
                 // TODO change illustrator popup
                 alert('견적요청이 완료되었습니다.');
-                this.props.navigation.goBack();
+                // this.props.navigation.goBack();
+                this.props.navigation.navigate('Mypage', {
+                  title: '견적･계약 관리',
+                })
               }
             })
             .catch(err => {

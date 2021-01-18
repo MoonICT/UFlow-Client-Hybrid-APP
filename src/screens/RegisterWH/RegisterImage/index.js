@@ -132,7 +132,11 @@ class RegisterImage extends Component {
                 // let pimages = [{ uri: url }];
                 // pimages.push();
                 // this.setState({ pimages });
-                console.log('url', url);
+                console.log('저장 이미지 :::', {
+                  url: url,
+                  name: filename,
+                  value: valueTab,
+                });
                 this.props.uploadImage({
                   url: url,
                   name: filename,
@@ -145,8 +149,9 @@ class RegisterImage extends Component {
                 this.props.setProgress({ is: false });
               }, 300);
             }).catch(error => {
-              alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
               this.props.setProgress({ is: false });
+              console.log(error)
+              alert(' MediaUpload.uploadFile:' + error.reponse);
             });
           } else {
             // If no file selected the show alert

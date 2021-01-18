@@ -99,8 +99,8 @@ class RegisterIntro extends Component {
   onChangeLocation = e => {
     let addressUpdate = this.state.address;
     let roadUpdate = this.state.roadAddr;
-    addressUpdate.detail = e;
-    roadUpdate.detail = e;
+    addressUpdate.detail = e ? e : '';
+    roadUpdate.detail = e ? e : '';
     this.setState({ address: addressUpdate, roadAddr: roadUpdate });
   };
   searchAddress = data => {

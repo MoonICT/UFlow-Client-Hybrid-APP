@@ -63,6 +63,8 @@ class RegisterWH extends Component {
     let type = this.props.route.params && this.props.route.params.type;
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
+    // Progress
+    this.props.setProgress({ is: true, type: 'CIRCLE' });
     if (type === 'ModifyWH') {
       console.log('수정 데이터 ::: ', this.props.dataWH)
       Warehouse.updateWH({ data: this.props.dataWH, url: warehouseRegNo })
@@ -88,10 +90,16 @@ class RegisterWH extends Component {
 
             this.doubleSubmitFlag = false;
           }
+
+          // Progress
+          setTimeout(() => {
+            this.props.setProgress({ is: false });
+          }, 300);
         })
         .catch(err => {
           // alert('Update err', err);
           console.log('err', err.response);
+          this.props.setProgress({ is: false });
         });
     } else {
 
@@ -100,99 +108,6 @@ class RegisterWH extends Component {
       if (!dataWH) {
         alert('창고등록 정보값이 없습니다.');
       }
-
-      // Register Warehouse Validator
-      // {
-      //   name= 에이아트 창고,
-      //   description= 에이아트 창고 소개,
-      //   telNo= 0222876875,
-      //   address= {
-      //      zipNo= 123456,
-      //     sidoName= 서울시,
-      //     skkCd= ,
-      //     skkName= 마포구,
-      //     bjdongCd= ,
-      //     bjdongName= 서교동,
-      //     hjdongCd= ,
-      //     hjdongName= 서교동,
-      //     roadNmCd= 도로명 코드,
-      //     address= 서울시 마포구 독막로 9길 13,
-      //     detail= 101
-      // },
-      //   roadAddr= {
-      //   zipNo= 123456,
-      //     address= 서울시 마포구 독막로 9길 13,
-      //     detail= 101
-      // },
-      //   gps= {
-      //   latitude= 0,
-      //     longitude= 0
-      // },
-      //   cmpltYmd= 1606316400000,
-      //   bldgArea= 10,
-      //   siteArea= 10,
-      //   totalArea= 10,
-      //   prvtArea= 10,
-      //   cmnArea= 10,
-      //   addOptDvCode= 0001,
-      //   insrDvCode= 0001,
-      //   cnsltPossYn= true,
-      //   sttsDbCode= 0001,
-      //   vrfctFailReason= ,
-      //   floors= [
-      //   {
-      //     flrDvCode= F1,
-      //     flrArea= 100,
-      //     parkArea= 100,
-      //     opcArea= 100,
-      //     prvtArea= 100,
-      //     cmnArea= 100,
-      //     flrHi= 10,
-      //     efctvHi= 15,
-      //     aprchMthdDvCode= 0001,
-      //     dockQty= 2
-      //   }
-      // ],
-      //   images= [
-      //   {
-      //     name= file.png
-      //   }
-      // ],
-      //   keeps= [
-      //   {
-      //     typeCode= 0001,
-      //     calUnitDvCode= CU01,
-      //     calStdDvCode= CS03,
-      //     mgmtChrgDvCode= 0001,
-      //     usblYmdFrom= 1606310400000,
-      //     usblYmdTo= 1606316400000,
-      //     usblValue= 10,
-      //     cmnArea= 100,
-      //     splyAmount= 100000,
-      //     mgmtChrg= 100000,
-      //     remark= 비고란..
-      //   }
-      // ],
-      //   trusts= [
-      //   {
-      //     typeCode= 0002,
-      //     calUnitDvCode= CU02,
-      //     calStdDvCode= CS03,
-      //     usblYmdFrom= 1606310400000,
-      //     usblYmdTo= 1606316400000,
-      //     usblValue= 20,
-      //     cmnArea= 300,
-      //     whinChrg= 100000,
-      //     whoutChrg= 200000,
-      //     psnChrg= 200000,
-      //     mnfctChrg= 200000,
-      //     dlvyChrg= 2000,
-      //     shipChrg= 2000,
-      //     remark= 비고란..
-      //   }
-      // ]
-      // }
-
 
       Warehouse.registerWH(this.props.dataWH)
         .then(res => {
@@ -219,10 +134,16 @@ class RegisterWH extends Component {
             //   title: '내 창고',
             // });
           }
+
+          // Progress
+          setTimeout(() => {
+            this.props.setProgress({ is: false });
+          }, 300);
         })
         .catch(err => {
           // alert('Register err', err);
           console.log('err', err);
+          this.props.setProgress({ is: false });
         });
     }
   };
@@ -626,7 +547,9 @@ function mapDispatchToProps (dispatch) {
     showPopup: status => {
       dispatch(ActionCreator.show(status));
     },
-
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
   };
 }
 
