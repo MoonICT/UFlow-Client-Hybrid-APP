@@ -29,7 +29,7 @@ export const getDetail = async (params) => {
   let type = params.type;
   let url = '';
   if (type === 'OWNER') {
-    url = `/api/v1/rtwh/transaction/owner/${params.id}`;
+    url = `/api/v1/rtwh/transaction/owner/${rentWarehNo}${parseQuery(params)}`;
   } else if (type === 'TENANT') {
     url = `/api/v1/rtwh/transaction/tenant/${params.id}`;
   }

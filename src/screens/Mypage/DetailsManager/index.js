@@ -641,7 +641,7 @@ export default class DetailsManager extends Component {
                       ToastShow("출고 확정을 실패하였습니다. " + res);
                     }
                   }).catch(error => {
-                  alert('postExportOwner error:' + error);
+                  alert(error.response.data.message);
                 });
               } else if (typeCreate === 'import') {
                 // 입고 확정
@@ -686,7 +686,7 @@ export default class DetailsManager extends Component {
                       ToastShow("입고 확정을 실패하였습니다. " + res);
                     }
                   }).catch(error => {
-                  alert('postExportOwner error:' + error);
+                  alert(error.response.data.message);
                 });
               }
 
@@ -695,7 +695,7 @@ export default class DetailsManager extends Component {
 
           }
         }).catch(error => {
-          alert('DetailRegisterTenant MediaUpload error:' + error);
+          alert(error.response.data.message);
         });
       } else {
         // If no file selected the show alert
@@ -743,7 +743,7 @@ export default class DetailsManager extends Component {
               ToastShow("입고 요청이 실패하였습니다. " + res);
             }
           }).catch(error => {
-          alert('postImportTenant error:' + error);
+          alert(error.response.data.message);
         });
       } else if (typeCreate === 'export') {
         if (!createDateStr) {
@@ -780,7 +780,7 @@ export default class DetailsManager extends Component {
               ToastShow("출고 요청이 실패하였습니다. " + res);
             }
           }).catch(error => {
-          alert('postExportTenant error:' + error);
+          alert(error.response.data.message);
         });
       }
     }
@@ -804,7 +804,7 @@ export default class DetailsManager extends Component {
           this.getAllData()
         })
       }).catch(error => {
-        alert('postCancelImport error:' + error);
+        alert(error.response.data.message);
       });
     } else if (typeCreate === 'export') {
       await InOutManagerService.postCancelExport({
@@ -821,7 +821,7 @@ export default class DetailsManager extends Component {
           this.getAllData()
         })
       }).catch(error => {
-        alert('postCancelExport error:' + error);
+        alert(error.response.data.message);
       });
     }
 

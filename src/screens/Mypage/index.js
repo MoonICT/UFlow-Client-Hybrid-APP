@@ -184,13 +184,12 @@ class Mypage extends Component {
         let subTitleTrust = item.trust && item.trust.subTitle;
         let whoutChrgTrustTrust = item.trust && money(item.trust.whoutChrg);
         let whinChrgTrust = item.trust && money(item.trust.whinChrg);
+        let splyAmountTrust = item.trust && money(item.trust.splyAmount);
         let unitTrust = item.trust && item.trust.unit;
         let typeCover = this.coverType(item);
 
         let dataKeep =
-          '최대' +
-          (subTitle ? subTitle : '') +
-          ',\n보관단가 ' +
+          '보관단가 ' +
           (splyAmount ? splyAmount : '') +
           '~/' +
           (unit ? unit : '') +
@@ -200,16 +199,12 @@ class Mypage extends Component {
           (unit ? unit : '');
 
         let dataTrust =
-          '최대' +
-          (subTitleTrust ? subTitleTrust : '') +
-          ',\n보관단가 ' +
+          '입고단가 ' +
           (whinChrgTrust ? whinChrgTrust : '') +
-          '~/' +
-          (unitTrust ? unitTrust : '') +
-          ',\n관리단가 ' +
+          ',\n출고단가 ' +
           (whoutChrgTrustTrust ? whoutChrgTrustTrust : '') +
-          '~/' +
-          (unitTrust ? unitTrust : '');
+          ',\n보관단가 ' +
+          (splyAmountTrust ? splyAmountTrust : '');
 
         let dataTable = [
           {
@@ -218,8 +213,8 @@ class Mypage extends Component {
               item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001'
                 ? '미검증 공실'
                 : item.sttsDbCode.stdDetailCodeName,
-            colorValue: this.coverColor(
-              item.sttsDbCode && item.sttsDbCode.stdDetailCode,
+                colorValue: this.coverColor(
+                  item.sttsDbCode && item.sttsDbCode.stdDetailCode,
             ),
           },
           {
@@ -231,12 +226,12 @@ class Mypage extends Component {
             value: item.address && item.address,
           },
           {
-            type: '보관 요약',
-            value: dataKeep,
+            type: item.keep && '임대 요약',
+            value: item.keep && dataKeep,
           },
           {
-            type: '수탁 요약',
-            value: dataTrust,
+            type: item.trust && '수탁 요약',
+            value: item.trust && dataTrust,
           },
         ];
 
@@ -275,7 +270,7 @@ class Mypage extends Component {
             footer={
               item.modify === true ? (
                 <TouchableOpacity
-                  style={[DefaultStyle._btnOutline, { borderColor: '#000000' }]}
+                  style={[DefaultStyle._btnOutline,DefaultStyle.mt_16, { borderColor: '#000000' }]}
                   onPress={() => {
                     item.sttsDbCode.stdDetailCode === '0001'
                       ? this.props.showPopup({

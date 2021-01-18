@@ -45,6 +45,9 @@ export default StyleSheet.create({
   mt_0: {
     marginTop: 0,
   },
+  mt_16: {
+    marginTop: 16,
+  },
   mt_20: {
     marginTop: 20,
   },
