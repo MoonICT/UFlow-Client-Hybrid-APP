@@ -200,7 +200,7 @@ class RequestContract extends Component {
 
     if (type === 'owner') {
       /**
-       * 마이페이지 견적보관 상세정보 (창고주 전용)
+       * 마이페이지 견적임대 상세정보 (창고주 전용)
        * */
       await MyPageEstmtCntr.getDetailEstmtCntrOwner({
         warehouseRegNo: warehouseRegNo,
@@ -265,7 +265,7 @@ class RequestContract extends Component {
         });
     } else if (type === 'tenant') {
       /**
-       * [estimate-4] 마이페이지 견적보관 상세정보 (임차인 전용)
+       * [estimate-4] 마이페이지 견적임대 상세정보 (임차인 전용)
        */
       await MyPageEstmtCntr.getDetailEstmtCntrTenant({
         warehouseRegNo: warehouseRegNo,
@@ -370,7 +370,7 @@ class RequestContract extends Component {
               /*위치*/
               address: warehouseInfoData.warehouse.address,
               /*계약유형*/
-              type: '임대(보관)',
+              type: '임대',
               /*보관유형*/
               keepType:
                 warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
@@ -387,7 +387,7 @@ class RequestContract extends Component {
                 ) +
                 '~' +
                 StringUtils.dateStr(warehouseInfoData.whrgMgmtKeep.usblYmdTo),
-              /*보관단가*/
+              /*임대단가*/
               splyAmount: StringUtils.moneyConvert(
                 warehouseInfoData.whrgMgmtKeep.splyAmount,
               ),
@@ -483,7 +483,7 @@ class RequestContract extends Component {
             2,
             {
               /**한국어 기본**/
-              prvtAreaLabel: '공용면적',
+              prvtAreaLabel: '가용수치', //'공용면적',
               usblYmdLabel: '임대 계약기간',
             },
             {
@@ -496,12 +496,12 @@ class RequestContract extends Component {
               /*위치*/
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
-              type: '임대(보관)',
+              type: '임대',
               /*보관유형*/
               keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
               /*공용면적*/
-              prvtArea: keepTrustEstimate.cmnArea
-                ? StringUtils.displayAreaUnit(keepTrustEstimate.cmnArea)
+              prvtArea: keepTrustEstimate.usblValue
+                ? StringUtils.displayAreaUnit(keepTrustEstimate.usblValue)
                 : '-',
               /*임대 가능기간*/
               // usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
@@ -581,9 +581,9 @@ class RequestContract extends Component {
             2,
             {
               /**한국어 기본**/
-              prvtAreaLabel: '공용면적',
+              prvtAreaLabel: '가용면적', //'공용면적',
               usblYmdLabel: '임대 계약기간',
-              splyAmountLabel: '보관비',
+              splyAmountLabel: '임대비',
               mgmtChrgLabel: '관리비',
             },
             {
@@ -596,12 +596,12 @@ class RequestContract extends Component {
               /*위치*/
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
-              type: '임대(보관)',
+              type: '임대',
               /*보관유형*/
               keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
               /*공용면적*/
-              prvtArea: keepTrustEstimate.cmnArea
-                ? StringUtils.displayAreaUnit(keepTrustEstimate.cmnArea)
+              prvtArea: keepTrustEstimate.usblValue
+                ? StringUtils.displayAreaUnit(keepTrustEstimate.usblValue)
                 : '0 ㎡',
               /*임대 가능기간*/
               usblYmd:

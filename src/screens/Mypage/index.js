@@ -154,10 +154,10 @@ class Mypage extends Component {
   };
   coverType = value => {
     if (value.keep !== null && value.trust !== null) {
-      return '보관창고, 수탁창고';
+      return '임대창고, 수탁창고';
     }
     if (value.keep !== null && value.trust === null) {
-      return '보관창고';
+      return '임대창고';
     }
     if (value.keep === null && value.trust !== null) {
       return ' 수탁창고';
@@ -189,7 +189,7 @@ class Mypage extends Component {
         let typeCover = this.coverType(item);
 
         let dataKeep =
-          '보관단가 ' +
+          '임대단가 ' +
           (splyAmount ? splyAmount : '') +
           '~/' +
           (unit ? unit : '') +

@@ -1206,7 +1206,7 @@ export default StyleSheet.create({
   _listBtn: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: 24,
+    // marginBottom: 24,
     marginTop: 24,
   },
   _btnLeft: {

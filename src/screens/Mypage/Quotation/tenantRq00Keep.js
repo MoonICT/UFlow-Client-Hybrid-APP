@@ -54,7 +54,7 @@ class TenantRq00Keep extends Component {
               // value: 0,
             },
             {
-              type: '요청 보관 기간',
+              type: '요청 임대 기간',
               value: StringUtils.dateStr(item.from) + ' - ' + StringUtils.dateStr(item.to),
               // value: 0,
             },
@@ -71,7 +71,7 @@ class TenantRq00Keep extends Component {
               value: item.calStdDvCode ? StringUtils.toStdName(calStdDvCodes, item.calStdDvCode) : '-'
             },
             {
-              type: '요청 보관단가',
+              type: '요청 임대단가',
               value: item.splyAmount ? StringUtils.money(item.splyAmount) : '-'
             },
             {
@@ -139,10 +139,10 @@ class TenantRq00Keep extends Component {
 
             {viewRequestKeep}
 
-            <View style={DefaultStyle._footerCards}>
-              <Text style={S.amount}>예상 견적 금액</Text>
-              <Text style={S.total}>{StringUtils.money(total)}</Text>
-            </View>
+            {/*<View style={DefaultStyle._footerCards}>*/}
+              {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
+              {/*<Text style={S.total}>{StringUtils.money(total)}</Text>*/}
+            {/*</View>*/}
 
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>

@@ -112,14 +112,14 @@ class InterestWarehouse extends Component {
           data: [
             {
               type: '창고 유형',
-              value: `${element.keep ? '보관창고' : ''}${element.keep && element.trust ? ', ' : ''}${element.trust ? '수탁창고' : ''}${!element.keep && !element.trust ? '-' : ''}`
+              value: `${element.keep ? '임대창고' : ''}${element.keep && element.trust ? ', ' : ''}${element.trust ? '수탁창고' : ''}${!element.keep && !element.trust ? '-' : ''}`
             },
             {
               type: '창고 주소',
               value: element.warehouse.address
             },
             {
-              type: '보관 요약',
+              type: '임대 요약',
               value: `${this.renderSummaryInfo('KEEP', element)}`
             },
             {
@@ -154,7 +154,7 @@ class InterestWarehouse extends Component {
           resultArr.push(`최대 ${WHItem.keep.subTitle}`)
         }
         if (WHItem.keep && WHItem.keep.splyAmount) {
-          resultArr.push(`보관단가 ${StringUtils.money(WHItem.keep.splyAmount)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
+          resultArr.push(`임대단가 ${StringUtils.money(WHItem.keep.splyAmount)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
         }
         if (WHItem.keep && WHItem.keep.mgmtChrg) {
           resultArr.push(`관리단가 ${StringUtils.money(WHItem.keep.mgmtChrg)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)

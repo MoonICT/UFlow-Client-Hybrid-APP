@@ -1,9 +1,9 @@
-import {Axios} from '@Services/http';
+import { Axios } from '@Services/http';
 import moment from 'moment'
 import AsyncStorage from "@react-native-community/async-storage";
-import {mainAxios, mainAxiosToken} from '../libs/axios';
+import { mainAxios, mainAxiosToken } from '../libs/axios';
 
-import {TOKEN} from '@Constant';
+import { TOKEN } from '@Constant';
 
 
 /**
@@ -13,7 +13,7 @@ import {TOKEN} from '@Constant';
  * @param cntrDvCode
  * @returns CntrMgmtKeepResBody
  */
-export const createKeep = async ({idWarehouse = '', mgmtKeepSeq = '', rentUserNo = 0}) => {
+export const createKeep = async ({ idWarehouse = '', mgmtKeepSeq = '', rentUserNo = 0 }) => {
   const token = await AsyncStorage.getItem(TOKEN);
 
   return await mainAxios.post(
@@ -38,7 +38,7 @@ export const createKeep = async ({idWarehouse = '', mgmtKeepSeq = '', rentUserNo
  * @param cntrDvCode
  * @returns CntrMgmtTrustResBody
  */
-export const createTrust = async ({idWarehouse = '', mgmtTrustSeq = '', rentUserNo = 0}) => {
+export const createTrust = async ({ idWarehouse = '', mgmtTrustSeq = '', rentUserNo = 0 }) => {
   const token = await AsyncStorage.getItem(TOKEN);
 
   return await mainAxios.post(
@@ -110,7 +110,7 @@ export const owner4100 = (contractType, formData) => {
  * @param warehouseId 창고 ID
  * @returns {Promise<*>}
  */
-export const hasEtcFile = ({warehouseId = ''}) => {
+export const hasEtcFile = ({ warehouseId = '' }) => {
   return Axios.getRequest({
     url: `/api/v1/contract/has-etc-file/${warehouseId}`,
     requiresToken: true, // set access_token
@@ -161,6 +161,25 @@ export const ozContractURl = ({
       warehouseId: warehouseRegNo,
       cntrDvCd: cntrDvCd,
       cntrYmdFr: moment(cntrYmdFrom).format('YYYYMMDD')
+    },
+    requiresToken: true, // set access_token
+  });
+};
+
+/**
+ * oz 견적서
+ * */
+export const ozEstimateUrl = ({
+                                warehRegNo = '',
+                                rentUserNo = '',
+                                occrYmd = '',
+                              }) => {
+  return Axios.postRequest({
+    url: `/api/v1/mypage/estmt-cntr/oz/html`,
+    payload: {
+      warehRegNo: warehRegNo,
+      rentUserNo: rentUserNo,
+      occrYmd: moment(occrYmd).format('YYYYMMDD'),
     },
     requiresToken: true, // set access_token
   });

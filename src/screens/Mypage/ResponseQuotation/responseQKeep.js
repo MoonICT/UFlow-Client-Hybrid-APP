@@ -100,7 +100,7 @@ class ResponseQKeep extends Component {
 
     return <Fragment>
 
-      {/** 보관기간 (필수) **/}
+      {/** 임대기간 (필수) **/}
       <View
         style={[
           S.row,
@@ -118,7 +118,7 @@ class ResponseQKeep extends Component {
                 DefaultStyle._labelTextField,
                 { color: '#000000' },
               ]}>
-              보관기간 시작일
+              임대기간 시작일
               <Text style={[
                 { color: 'red' }
               ]}> *</Text>
@@ -154,7 +154,7 @@ class ResponseQKeep extends Component {
                 DefaultStyle._labelTextField,
                 { color: '#000000' },
               ]}>
-              보관기간 종료일
+              임대기간 종료일
               <Text style={[
                 { color: 'red' }
               ]}> *</Text>
@@ -177,7 +177,7 @@ class ResponseQKeep extends Component {
           </TouchableOpacity>
         </View>
       </View>
-      {/** END:보관기간 (필수) **/}
+      {/** END:임대기간 (필수) **/}
 
       {/** 응답 면적 (필수) **/}
       <View style={DefaultStyle._listElement}>
@@ -225,10 +225,10 @@ class ResponseQKeep extends Component {
         </View>
       </View>
 
-      {/** 보관 단가 (필수) **/}
+      {/** 임대 단가 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="보관단가"
+        labelTextField="임대단가"
         textRight="원"
         keyboardType="numeric"
         defaultValue={
@@ -298,13 +298,13 @@ class ResponseQKeep extends Component {
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
-            // alert(`보관요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
+            // alert(`임대요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.splyAmount <= 0) {
-            alert(`보관단가는 0이상으로 요청가능합니다.`);
+            alert(`임대단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.splyAmount > this.props.splyAmount) {
-            // alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
+            // alert(`임대단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.whinChrg <= 0) {
             alert(`관리단가는 0이상으로 요청가능합니다.`);

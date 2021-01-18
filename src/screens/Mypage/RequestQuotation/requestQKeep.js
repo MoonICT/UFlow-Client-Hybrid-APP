@@ -98,7 +98,7 @@ class ReqeustQKeep extends Component {
 
     return <Fragment>
 
-      {/** 보관기간 (필수) **/}
+      {/** 임대기간 (필수) **/}
       <View
         style={[
           S.row,
@@ -116,7 +116,7 @@ class ReqeustQKeep extends Component {
                 DefaultStyle._labelTextField,
                 { color: '#000000' },
               ]}>
-              보관기간 시작일
+              임대기간 시작일
               <Text style={[
                 { color: 'red' }
               ]}> *</Text>
@@ -152,7 +152,7 @@ class ReqeustQKeep extends Component {
                 DefaultStyle._labelTextField,
                 { color: '#000000' },
               ]}>
-              보관기간 종료일
+              임대기간 종료일
               <Text style={[
                 { color: 'red' }
               ]}> *</Text>
@@ -175,14 +175,14 @@ class ReqeustQKeep extends Component {
           </TouchableOpacity>
         </View>
       </View>
-      {/** END:보관기간 (필수) **/}
+      {/** END:임대기간 (필수) **/}
 
       {/** 요청 면적 (필수) **/}
       <View style={DefaultStyle._listElement}>
         <View style={[DefaultStyle._element, { marginRight: 12 }]}>
           <TextField
             colorLabel="#000000"
-            labelTextField="보관 요청 면적"
+            labelTextField="임대 요청 수치"
             textRight={'평'}
             keyboardType="numeric"
             placeholder={"0"}
@@ -203,7 +203,7 @@ class ReqeustQKeep extends Component {
         <View style={[DefaultStyle._element]}>
           <TextField
             colorLabel="#000000"
-            labelTextField="보관 요청 면적"
+            labelTextField="임대 요청 수치"
             textRight={'m2'}
             keyboardType="numeric"
             placeholder={"0"}
@@ -224,10 +224,10 @@ class ReqeustQKeep extends Component {
         </View>
       </View>
 
-      {/** 보관 단가 (필수) **/}
+      {/** 임대 단가 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="보관단가"
+        labelTextField="임대단가"
         textRight="원"
         keyboardType="numeric"
         defaultValue={
@@ -301,13 +301,13 @@ class ReqeustQKeep extends Component {
 
           // TODO 유효성 검사
           if (formData.rntlValue > this.props.rntlValue) {
-            // alert(`보관 요청 면적은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
+            // alert(`임대 요청 면적은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.splyAmount <= 0) {
-            alert(`보관단가는 0이상으로 요청가능합니다.`);
+            alert(`임대단가는 0이상으로 요청가능합니다.`);
             return;
           } else if (formData.splyAmount > this.props.splyAmount) {
-            // alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
+            // alert(`임대단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.mgmtChrg <= 0) {
             alert(`관리단가는 0이상으로 요청가능합니다.`);

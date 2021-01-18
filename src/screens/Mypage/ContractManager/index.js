@@ -30,7 +30,7 @@ const dataSelect = [
     value: '',
   },
   {
-    label: '보관',
+    label: '임대',
     value: 'KEEP',
   },
   {
@@ -110,7 +110,7 @@ class ContractManager extends Component {
             },
             {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -154,7 +154,7 @@ class ContractManager extends Component {
             },
             {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -193,7 +193,7 @@ class ContractManager extends Component {
             },
             {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -233,7 +233,7 @@ class ContractManager extends Component {
             },
             {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -272,7 +272,7 @@ class ContractManager extends Component {
             },
             {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             value.type2 === 'TRUST'
               ? {}
@@ -310,7 +310,7 @@ class ContractManager extends Component {
             },
             {
               type: '창고 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대(보관)',
+              value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             value.type2 === 'TRUST'
               ? {}

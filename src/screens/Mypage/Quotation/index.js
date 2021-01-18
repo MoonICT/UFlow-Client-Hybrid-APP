@@ -5,26 +5,18 @@
  */
 
 // Global Imports
-import React, {Component, Fragment} from 'react';
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import {connect} from 'react-redux';
-import {StringUtils, ContractUtils} from '@Services/utils';
-
+import React, { Component } from 'react';
+import { Image, SafeAreaView, ScrollView, TouchableOpacity, View, Linking } from 'react-native';
+import { connect } from 'react-redux';
+import { ContractUtils, StringUtils } from '@Services/utils';
 // Local Imports
 import TableInfo from '@Components/atoms/TableInfo';
 import DefaultStyle from '@Styles/default';
 
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
-import warehouse1 from '@Assets/images/warehouse-1.png';
-import {Warehouse, MyPage, Contract} from '@Services/apis';
-import {Appbar, Text, Dialog, Paragraph, Button} from 'react-native-paper';
+import { Contract, MyPage, Warehouse } from '@Services/apis';
+import { Appbar, Button, Dialog, Text } from 'react-native-paper';
 
 import TenantRq00Trust from './tenantRq00Trust';
 import TenantRq00Keep from './tenantRq00Keep';
@@ -39,10 +31,11 @@ import imgType0002 from '@Assets/images/type-0002.png';
 import imgType0003 from '@Assets/images/type-0003.png';
 import imgType0004 from '@Assets/images/type-0004.png';
 import imgType9100 from '@Assets/images/type-9100.png';
+import { styles as S } from "../style";
 
 class Quotation extends Component {
 
-  constructor(props) {
+  constructor (props) {
 
     super(props);
     this.webView = null;
@@ -73,10 +66,49 @@ class Quotation extends Component {
     })
   }
 
+  /**
+   * 견적서 URL
+   * */
+  getOzEstimateUrl = () => {
+    let resultEstm = this.props.route.params.typeWH === 'KEEP' ? this.state.estmtKeepGroups : this.state.estmtTrustGroups
+    const { warehouseRegNo, rentUserNo } = this.props.route.params;
+    let occrYmd = ''
+    if (resultEstm && resultEstm.length > 0) {
+      let lastRound = resultEstm[resultEstm.length - 1];
+      let resEstimate = lastRound[lastRound.length - 1];
+      if (resEstimate.estmtDvCd === 'RS00') {
+        occrYmd = resEstimate.occrYmd;
+      }
+    }
+    if (warehouseRegNo && rentUserNo && occrYmd) {
+      // Progress
+      this.props.setProgress({ is: true, })
+      Contract.ozEstimateUrl({
+        warehRegNo: warehouseRegNo,
+        rentUserNo: rentUserNo,
+        occrYmd: occrYmd,
+      }).then(res => {
+        console.log('oz result : ', res)
+        if (res && res.url) {
+          Linking.openURL(res.url);
+        }
+        // Progress
+        setTimeout(() => {
+          this.props.setProgress({ is: false });
+        }, 300);
+      }).catch(error => {
+        console.log(error);
+        this.props.setProgress({ is: false });
+      });
+    } else {
+      alert('확인 가능한 견적서가 없습니다.');
+    }
+  };
 
-  render() {
+
+  render () {
     // const { imageStore } = this.props;
-    const {route} = this.props;
+    const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
     const warehSeq = route && route.params && route.params.warehSeq;
     const rentUserNo = route && route.params && route.params.rentUserNo;
@@ -86,13 +118,13 @@ class Quotation extends Component {
     // console.log('routeQutation', route);
 
 
-    const {dataApi} = this.state;
+    const { dataApi } = this.state;
     if (dataApi)
       console.log(dataApi, '# dataApi #');
 
 
     let dataKeep = dataApi &&
-      typeWH === 'KEEP' && ContractUtils.keepTableDatas(1, {/**한국어 기본**/}, {
+      typeWH === 'KEEP' && ContractUtils.keepTableDatas(1, {/**한국어 기본**/ }, {
         /*창고명*/
         warehouseName: dataApi.warehouse.warehouse,
         /*창고주*/
@@ -102,20 +134,20 @@ class Quotation extends Component {
         /*위치*/
         address: dataApi.warehouse.address,
         /*계약유형*/
-        type: '임대(보관)',
+        type: '임대',
         /*보관유형*/
         keepType: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         /*전용면적*/
         prvtArea: dataApi.whrgMgmtKeep.usblValue ? StringUtils.displayAreaUnit(dataApi.whrgMgmtKeep.usblValue) : "-",
         /*임대 가능기간*/
         usblYmd: StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdFrom) + '~' + StringUtils.dateStr(dataApi.whrgMgmtKeep.usblYmdTo),
-        /*보관단가*/
+        /*임대단가*/
         splyAmount: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.splyAmount),
         /*관리단가*/
         mgmtChrg: StringUtils.moneyConvert(dataApi.whrgMgmtKeep.mgmtChrg),
       });
     let dataTrust = dataApi &&
-      typeWH === 'TRUST' && ContractUtils.trustTableDatas(1, {/**한국어 기본**/}, {
+      typeWH === 'TRUST' && ContractUtils.trustTableDatas(1, {/**한국어 기본**/ }, {
         /*창고명*/
         warehouseName: dataApi.warehouse.warehouse,
         /*창고주*/
@@ -167,7 +199,7 @@ class Quotation extends Component {
         </Appbars>
         <ScrollView style={[DefaultStyle.backgroundGray]}>
 
-          <View style={[DefaultStyle.backgroundWhiteDF2, {paddingBottom: 180}]}>
+          <View style={[DefaultStyle.backgroundWhiteDF2, { paddingBottom: 180 }]}>
             <View style={[DefaultStyle._cards, DefaultStyle.backgroundWhiteDF2]}>
 
               {/** HEADER **/}
@@ -191,14 +223,14 @@ class Quotation extends Component {
                 {/*<Text>{this.state.imgType}</Text>*/}
                 <View style={DefaultStyle._headerCard}>
                   {this.state.imgType &&
-                  <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                  <Image source={this.state.imgType} style={DefaultStyle._avatarHeader} />
                   }
                 </View>
                 <View
                   // style={DefaultStyle._bodyCard}
                 >
                   <View style={DefaultStyle._infoTable}>
-                    <TableInfo data={typeWH === 'KEEP' ? dataKeep : dataTrust}/>
+                    <TableInfo data={typeWH === 'KEEP' ? dataKeep : dataTrust} />
                   </View>
                 </View>
               </View>
@@ -206,7 +238,7 @@ class Quotation extends Component {
             </View>
 
             {/** GRAY SPACE **/}
-            <View style={[DefaultStyle.backgroundGray, {height: 10}]}><>{/**Gray Space**/}</>
+            <View style={[DefaultStyle.backgroundGray, { height: 10 }]}><>{/**Gray Space**/}</>
             </View>
             {/** END:GRAY SPACE **/}
 
@@ -371,6 +403,27 @@ class Quotation extends Component {
             {/*/>*/}
             {/*}*/}
 
+            {/** 견적서 버튼 */}
+            {status === 'RS00' &&
+            <View style={[DefaultStyle._cards, DefaultStyle.backgroundWhiteDF2, { backgroundColor: '#fff' }]}>
+              <TouchableOpacity
+                style={[
+                  DefaultStyle.btnSubmit,
+                  DefaultStyle.activeBtnSubmit,
+                  S.btnMess,
+                ]}
+                onPress={() => this.getOzEstimateUrl()}>
+                <Text
+                  style={[
+                    DefaultStyle.textSubmit,
+                    DefaultStyle.textActiveSubmit,
+                    { paddingLeft: 10 },
+                  ]}>
+                  견적서 확인
+                </Text>
+              </TouchableOpacity>
+            </View>}
+
             {/** <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
              {route.params.status === 'notAnswerd' ? (
               <Fragment>
@@ -475,7 +528,7 @@ class Quotation extends Component {
           style={DefaultStyle.popup}
           visible={this.state.visibleContractTrust}
           onDismiss={() => {
-            this.setState({visibleContractTrust: false});
+            this.setState({ visibleContractTrust: false });
           }}>
           <Dialog.Title style={DefaultStyle._titleDialog}>
             수탁 계약협의 요청
@@ -486,7 +539,7 @@ class Quotation extends Component {
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
-              onPress={() => this.setState({visibleContractTrust: false})}>
+              onPress={() => this.setState({ visibleContractTrust: false })}>
               아니오
             </Button>
             <Button
@@ -516,15 +569,15 @@ class Quotation extends Component {
           </Dialog.Actions>
         </Dialog>
 
-        {/** 임대(보관) 계약협의 요청 **/}
+        {/** 임대 계약협의 요청 **/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.visibleContractKeep}
           onDismiss={() => {
-            this.setState({visibleContractKeep: false});
+            this.setState({ visibleContractKeep: false });
           }}>
           <Dialog.Title style={DefaultStyle._titleDialog}>
-            임대(보관) 계약협의 요청
+            임대 계약협의 요청
           </Dialog.Title>
           <Dialog.Content>
             <Text>견적 금액을 확정하고 계약을 요청하시겠습니까?</Text>
@@ -532,7 +585,7 @@ class Quotation extends Component {
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
-              onPress={() => this.setState({visibleContractKeep: false})}>
+              onPress={() => this.setState({ visibleContractKeep: false })}>
               아니오
             </Button>
             <Button
@@ -567,7 +620,7 @@ class Quotation extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
 
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
@@ -628,7 +681,7 @@ class Quotation extends Component {
       // this.props.quotationData(res.data);
     }
     ;
-    const {dataApi} = this.state;
+    const { dataApi } = this.state;
     if (this.props.route.params.mode) {
       switch (this.props.route.params.mode) {
         case 'RE':
@@ -703,9 +756,9 @@ class Quotation extends Component {
         case 'CT':
           /** 견적 신청 얼럿 **/
           if (this.props.route.params.typeWH === 'KEEP') {
-            this.setState({visibleContractKeep: true});
+            this.setState({ visibleContractKeep: true });
           } else if (this.props.route.params.typeWH === 'TRUST') {
-            this.setState({visibleContractTrust: true});
+            this.setState({ visibleContractTrust: true });
           }
           break;
       }
@@ -779,7 +832,7 @@ class Quotation extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     // if (this.state.isOpen && prevProps.whFilter !== this.props.whFilter) {
     //   this.requestWhList(false);
     // }
@@ -793,9 +846,9 @@ class Quotation extends Component {
         this.props.route.params.typeWH === 'TRUST' ? 'trust' : 'keep';
       let data =
         this.props.route.params.typeWH === 'TRUST'
-          ? {warehouseRegNo, mgmtTrustSeq: warehSeq}
-          : {warehouseRegNo, mgmtKeepSeq: warehSeq};
-      Warehouse.requestContract({typeWH, data})
+          ? { warehouseRegNo, mgmtTrustSeq: warehSeq }
+          : { warehouseRegNo, mgmtKeepSeq: warehSeq };
+      Warehouse.requestContract({ typeWH, data })
         .then(res => {
           const status = res.status;
           console.log('res', res);
@@ -819,13 +872,13 @@ class Quotation extends Component {
 
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     console.log('Component WILL UNMOUNT!');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
@@ -834,10 +887,13 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     quotationData: action => {
       dispatch(ActionCreator.quotationData(action));
+    },
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
     },
   };
 }

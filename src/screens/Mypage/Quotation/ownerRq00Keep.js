@@ -53,7 +53,7 @@ class OwnerRq00Keep extends Component {
               value: StringUtils.dateStr(item.occrYmd),
             },
             {
-              type: '요청 보관기간',
+              type: '요청 임대기간',
               value: StringUtils.dateStr(item.from) + ' - ' + StringUtils.dateStr(item.to),
             },
             {
@@ -69,7 +69,7 @@ class OwnerRq00Keep extends Component {
               value: item.calStdDvCode ? StringUtils.toStdName(calStdDvCodes, item.calStdDvCode) : '-'
             },
             {
-              type: '요청 보관단가',
+              type: '요청 임대단가',
               value: item.splyAmount ? StringUtils.money(item.splyAmount) : '-'
             },
             {
