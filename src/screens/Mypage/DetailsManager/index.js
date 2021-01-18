@@ -190,14 +190,15 @@ export default class DetailsManager extends Component {
         let cntrTrustResBody = res.data.header.cntrTrustResBody;
         let isExpired = header.expired
         let totalMoney = res.data.total
+
         const dataInfo = [
           {
             type: '창고명',
             value: header.warehouse,
           },
           {
-            type: type === 'OWNER' ? '창고주' : '임차인',
-            value: header.owner,
+            type: type === 'OWNER' ? '임차인' : '창고주',
+            value: type === 'OWNER' ? header.rentUser : header.owner,
           },
           {
             type: '위치',
@@ -905,7 +906,7 @@ export default class DetailsManager extends Component {
                         {/** 입고 확정 **/}
                         {(type === 'OWNER' && item.type === 'IMPORT' && item.status === '1100') &&
                         <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
-                          <View style={[{backgroundColor: 'yellow'}]}>
+
                             <TouchableOpacity
                               onPress={() => {
                                 this.setState({
@@ -926,7 +927,7 @@ export default class DetailsManager extends Component {
                                 입고 확정
                               </Text>
                             </TouchableOpacity>
-                          </View>
+
                         </View>
                         }
 
@@ -1622,8 +1623,8 @@ export default class DetailsManager extends Component {
           style={DefaultStyle.popup}
           visible={this.state.cancelRequestImport}
           onDismiss={() => this.setState({cancelRequestImport: false})}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup}/>
+          <Dialog.Content style={[{justifyContent: 'center', alignItems: 'center'}]}>
+            <Image source={illust15}/>
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1650,8 +1651,8 @@ export default class DetailsManager extends Component {
           style={DefaultStyle.popup}
           visible={this.state.cancelRequestExport}
           onDismiss={() => this.setState({cancelRequestExport: false})}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup}/>
+          <Dialog.Content style={[{justifyContent: 'center', alignItems: 'center'}]}>
+            <Image source={illust15}/>
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
