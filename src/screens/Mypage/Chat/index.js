@@ -18,7 +18,12 @@ import {
   Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Text } from 'react-native-paper';
+import { Appbar, Text, List, IconButton } from 'react-native-paper';
+
+// Local Imports
+import AvatarAdmin from '@Assets/images/avatar-admin.png';
+import DefaultStyle from '@Styles/default';
+import Appbars from '@Components/organisms/AppBar';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 // Local Imports
@@ -49,20 +54,6 @@ class Chatting extends Component {
       rentUserNo: rentUserNo
     }).then(res => {
       let dataChatList = res._embedded.cntrChat;
-
-      if (dataChatList.length > 0) {
-        // let oldTime = lastMsgCreateTime.toString()
-        // let newTime = dataChatList[dataChatList.length - 1].createTime.toString()
-        // setIsLastMsg(oldTime === newTime);
-        // if (isScrollBottom) {
-        //   setLastMsgCreateTime(newTime)
-        // }
-      }
-
-      // if (isScrollBottom) {
-      //   handleScrollBottom()
-      // }
-
       this.setState({
         dataChat: dataChatList,
       });
@@ -80,10 +71,10 @@ class Chatting extends Component {
     if (!chatting) {
       return false;
     }
-    console.log(':::Message:::', chatting)
-    console.log(':::Type:::', type)
-    console.log(':::warehouseRegNo:::', warehouseRegNo)
-    console.log(':::rentUserNo:::', rentUserNo)
+    // console.log(':::Message:::', chatting)
+    // console.log(':::Type:::', type)
+    // console.log(':::warehouseRegNo:::', warehouseRegNo)
+    // console.log(':::rentUserNo:::', rentUserNo)
     // 창고주 일때.
     if (type === 'owner') {
       Chat.chatOwner({
@@ -159,6 +150,7 @@ class Chatting extends Component {
         />
         {/*<TouchableWithoutFeedback onPress={Keyboard.dismiss}>*/}
         {/*</TouchableWithoutFeedback>*/}
+
         <View style={[styles.inner]}>
           {/** 창고명 */}
           <View style={SS.header}>
@@ -175,7 +167,9 @@ class Chatting extends Component {
             paddingBottom: 20,
             height: 300,
           }}>
-            <ScrollView ref={ref => {this.scrollView = ref}}
+            <ScrollView ref={ref => {
+              this.scrollView = ref
+            }}
                         onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}>
               <View style={SS.chatting}>
                 {/*<View style={SS.dateTop}>*/}
