@@ -180,7 +180,7 @@ export default class InOutManager extends Component {
         });
       })
       .catch(error => {
-        alert('InOutManagerService:' + error);
+        alert(error.response.data.message);
       });
   }
 
@@ -372,7 +372,7 @@ export default class InOutManager extends Component {
         this.hideDialog();
       })
       .catch(error => {
-        alert('InOutManagerService:' + error);
+        alert(error.response.data.message);
       });
   }
 
