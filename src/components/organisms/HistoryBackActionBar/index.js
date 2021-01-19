@@ -6,21 +6,22 @@
  * @desc [description]
  */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 // import {Appbar} from 'react-native-paper';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
 // Local Imports
-import {styles} from './style';
+import { styles } from './style';
 import AppBar from '@Components/organisms/AppBar';
 import DefaultStyle from '@Styles/default';
-import {Appbar} from "react-native-paper";
+import { Appbar } from 'react-native-paper';
 
 class HistoryBackActionBar extends Component {
   constructor(props) {
     super(props);
   }
   render() {
+    const { title, rightComponent } = this.props;
     return (
       <AppBar {...this.props}>
         <Appbar.Action
@@ -29,13 +30,12 @@ class HistoryBackActionBar extends Component {
           onPress={() => this.props.navigation.goBack()}
         />
         <Appbar.Content
-          title={
-            this.props.title
-          }
+          title={title}
           color="black"
           fontSize="16"
           titleStyle={DefaultStyle.headerTitle}
         />
+        {rightComponent && rightComponent}
       </AppBar>
     );
   }

@@ -190,11 +190,11 @@ class RegisterInfoFloor extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
-            title={'층별 상세 정보'}
-            navigation={this.navigation}
-          />
+          title={'층별 상세 정보'}
+          navigation={this.navigation}
+        />
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={{ backgroundColor: '#ffffff' }}>
             <View
@@ -300,8 +300,8 @@ class RegisterInfoFloor extends Component {
     let parseData = JSON.parse(getData);
     let type = this.props.route.params && this.props.route.params.typeEdit;
     if (type === 'Edit') {
-      this.props.updateInfo({ floors: [{}] });
-      this.setState({ floorsDF: parseData });
+      this.props.updateInfo({ floors: parseData });
+      // this.setState({ floorsDF: parseData });
     } else {
       AsyncStorage.removeItem('DATAFLOOR');
     }
