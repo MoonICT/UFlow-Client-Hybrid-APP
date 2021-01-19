@@ -25,7 +25,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 //---> Screens
 import initStore from '@Store/index';
 import { AuthContext } from '@Store/context';
-
+import { Account } from '@Services/apis';
 import Loading from '@Components/atoms/Loading';
 
 import Global from '@Screeens/Global';
@@ -195,6 +195,7 @@ const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 const App = () => {
+  const navigationRef = React.useRef(null);
   // State
   const [isLoading, setIsLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
@@ -258,7 +259,28 @@ const App = () => {
       <AuthContext.Provider value={authContext}>
         <Provider store={store}>
           <PaperProvider theme={theme}>
-            <NavigationContainer>
+            <NavigationContainer ref={navigationRef}
+                                 onStateChange={(route) => {
+                                   console.log(':::: onStateChange ::::', route)
+                                   Account.me().then(res => {
+                                     console.log('======================>> [토큰이 유효함]')
+                                   }).catch(error => {
+                                     console.log('======================>> [토큰이 유효하지 않음]')
+                                     // 처리1. 토큰 저장소 리셋.
+                                     AsyncStorage.removeItem(TOKEN)
+                                       .then(() => {
+                                         setIsLoading(false);
+                                         setIsLogin(false);
+                                       }).catch(error => {
+                                       alert('TabScreenOptions signOut error:' + error);
+                                     });
+                                     // 처리2. 로그엔 페이지로 라우트 리셋.
+                                     navigationRef.current?.resetRoot({
+                                       index: 0,
+                                       routes: [{ name: 'Login' }],
+                                     });
+                                   })
+                                 }}>
               <Global>
                 <AuthStack.Navigator initialRouteName="Home">
                   <AuthStack.Screen
