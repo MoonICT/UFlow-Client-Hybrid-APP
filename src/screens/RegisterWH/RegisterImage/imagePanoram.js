@@ -39,9 +39,11 @@ class ImagePanoram extends Component {
             </Text>
           </TouchableOpacity>
         ) : (
-          <View style={S.imageContainer}>
+          <View style={S.ImageUpload}>
+
+
             <Image
-              style={S.ImageUpload}
+              style={S.ImageDetail}
               source={{ uri: pnImages && pnImages[0].url }}
               PlaceholderContent={<ActivityIndicator />}
             />
