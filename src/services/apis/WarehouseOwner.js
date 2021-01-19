@@ -15,7 +15,7 @@ export const duplicateEntrp = ({ entrpNo = '' } = {}) => {
       entrpNo: entrpNo,
     })}`,
     requiresToken: true, // set access_token
-  })
+  });
 };
 
 /**
@@ -49,6 +49,7 @@ export const statusWhrgByOwner = async () => {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
+      'Accept-Language': 'ko-KR',
     },
   });
 };
@@ -88,12 +89,16 @@ export const statusWhrgByOwner = async () => {
 export const regBusinessInfo = async businessInfo => {
   console.log('businessInfo', businessInfo);
   const token = await AsyncStorage.getItem(TOKEN);
-  return await mainAxios.post(`/api/v1/warehouse/owner/business-infos`, businessInfo, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
+  return await mainAxios.post(
+    `/api/v1/warehouse/owner/business-infos`,
+    businessInfo,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
     },
-  });
+  );
 };
 
 /**
@@ -162,9 +167,9 @@ export const myWarehouses = async ({ config = '' } = {}) => {
     url: `/api/v1/warehouse/owner`,
     requiresToken: true, // set access_token
     config: {
-      headers: { Authorization: 'Bearer ' + token }
+      headers: { Authorization: 'Bearer ' + token },
     },
-  })
+  });
 };
 
 /**
@@ -172,14 +177,12 @@ export const myWarehouses = async ({ config = '' } = {}) => {
  * @returns
  *
  */
-export const cnsltPossYn = ({
-                              warehouseId: warehouseId
-                            }) => {
+export const cnsltPossYn = ({ warehouseId: warehouseId }) => {
   return Axios.postRequest({
     url: `/api/v1/warehouse/owner/cnslt-poss-toggle`,
     requiresToken: true, // set access_token
     payload: {
-      warehouseId: warehouseId
-    }
-  })
+      warehouseId: warehouseId,
+    },
+  });
 };
