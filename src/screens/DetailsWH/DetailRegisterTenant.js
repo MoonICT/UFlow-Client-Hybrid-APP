@@ -62,7 +62,7 @@ class DetailRegisterTenant extends Component {
       imageList: [],
       businessInfo: WarehouseProprietorInfo,
       selectedInfoIndex: 0,
-      isCert: false,
+      isCert: true,
       photo: null,
       loading: false,
       businessList: [{
@@ -305,20 +305,21 @@ class DetailRegisterTenant extends Component {
     this.setState({ loading: true });
     // 창고주 정보 등록
     WarehouseTenant.regBusinessInfoByTenant(businessInfo).then(res => {
-      alert('창고 사업자 등록이 완료되었습니다.');
+      alert('임차인 정보 등록이 완료되었습니다.');
       this.setState({ loading: false });
-      this.navigation.navigate('RequestQuotation', {
-        data: {
-          whrgMgmtTrust: typeWH === 'TRUST' ? typeInfo : null,
-          whrgMgmtKeep: typeWH === 'KEEP' ? typeInfo : null,
-        },
-        typeWH: typeWH,
-        warehouseRegNo: warehouseRegNo,
-        warehSeq: warehSeq,
-        rentUserNo: rentUserNo,
-        status: status,
-        type: type,
-      });
+      this.navigation.goBack()
+      // this.navigation.navigate('RequestQuotation', {
+      //   data: {
+      //     whrgMgmtTrust: typeWH === 'TRUST' ? typeInfo : null,
+      //     whrgMgmtKeep: typeWH === 'KEEP' ? typeInfo : null,
+      //   },
+      //   typeWH: typeWH,
+      //   warehouseRegNo: warehouseRegNo,
+      //   warehSeq: warehSeq,
+      //   rentUserNo: rentUserNo,
+      //   status: status,
+      //   type: type,
+      // });
     }).catch(error => {
       alert('서버에러:' + error.response.data.message);
       this.setState({ loading: false });
