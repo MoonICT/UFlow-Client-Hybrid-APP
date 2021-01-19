@@ -24,6 +24,7 @@ import AppGrid from '@Components/organisms/AppGrid';
 import ImgHTW from '@Assets/images/how-to-use.png';
 import ImgHTW3 from '@Assets/images/how-to-use3.png';
 import ImgHTW4 from '@Assets/images/how-to-use4.png';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import Diagram from '@Assets/images/diagram-1.png';
 import Diagram2 from '@Assets/images/diagram-2.png';
 import Diagram3 from '@Assets/images/diagram-3.png';
@@ -85,7 +86,7 @@ export default class Notification extends Component {
 
     return (
       <SafeAreaView style={{ backgroundColor: 'white',minHeight:windowHeight }}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -97,7 +98,12 @@ export default class Notification extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'이용방법'}
+            navigation={this.navigation}
+          />
         <View style={S.tabTopbar}>
           <View style={S.boxSelect}>{this.props.navitationTitle}</View>
           <AppGrid

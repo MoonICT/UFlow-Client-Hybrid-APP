@@ -20,6 +20,7 @@ import Select from '@Components/organisms/Select';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 // import TableInfo from '../TableInfo';
 import TableInfo from '@Components/atoms/TableInfo';
 import Checkbox from '@Components/atoms/Checkbox';
@@ -50,7 +51,7 @@ class StorageAgreement extends Component {
     console.log('routeStorageAgreement :>> ', route);
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -62,7 +63,12 @@ class StorageAgreement extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'마이페이지'}
+            navigation={this.navigation}
+          />
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             <View style={DefaultStyle._titleCard}>

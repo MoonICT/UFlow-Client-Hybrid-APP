@@ -9,6 +9,7 @@ import React, { Component, Fragment } from 'react';
 import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { Appbar, Text } from 'react-native-paper';
 
 // Local Imports
@@ -42,7 +43,7 @@ class AnnoucementScreen extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -54,7 +55,12 @@ class AnnoucementScreen extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'공지사항'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           {annoucementList &&
             annoucementList.length > 0 &&

@@ -42,6 +42,7 @@ export default class TextField extends Component {
   render() {
     const {
       labelTextField,
+      labelTextFieldSize,
       textRight,
       rightComponent,
       colorLabel,
@@ -60,6 +61,7 @@ export default class TextField extends Component {
               style={[
                 DefaultStyle._labelTextField,
                 colorLabel ? { color: colorLabel } : null,
+                labelTextFieldSize ? { fontSize: labelTextFieldSize } : null,
               ]}>
               {labelTextField}
 

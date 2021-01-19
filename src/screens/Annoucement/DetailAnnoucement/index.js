@@ -15,6 +15,7 @@ import {
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text } from 'react-native-paper';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { WebView } from 'react-native-webview';
 
 // Local Imports
@@ -60,7 +61,7 @@ class RegisterInfo extends Component {
     let field5 = contentDetail?.fileName5;
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -72,7 +73,11 @@ class RegisterInfo extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+          <HistoryBackActionBar
+            title={'공지사항'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           <View style={S.bodyView}>
             <Text style={DefaultStyle.titleItem}>{data && data.title}</Text>

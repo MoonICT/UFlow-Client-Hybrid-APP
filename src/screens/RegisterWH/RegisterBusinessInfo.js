@@ -6,7 +6,13 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {
   Checkbox,
   Appbar,
@@ -15,14 +21,13 @@ import {
   Button,
   Dialog,
   Paragraph,
-  Portal
+  Portal,
 } from 'react-native-paper';
-import { connect } from "react-redux"
+import { connect } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 import Postcode from 'react-native-daum-postcode';
-
-;
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -31,7 +36,7 @@ import Select from '@Components/organisms/Select';
 import CertMobile from '@Components/organisms/CertMobile';
 import Appbars from '@Components/organisms/AppBar';
 import Loading from '@Components/atoms/Loading';
-import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
+import { WarehouseProprietorInfo } from '@Services/apis/models/warehouse';
 import { WarehouseOwner, Warehouse, MediaUpload } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import ActionCreator from '@Actions';
@@ -39,13 +44,13 @@ import ActionCreator from '@Actions';
 const tabSelect = [
   {
     id: 'tab1',
-    title: '기본 정보'
+    title: '기본 정보',
   },
   {
     id: 'tab2',
-    title: '사업자 등록 정보'
+    title: '사업자 등록 정보',
   },
-]
+];
 
 const dataSelect = [
   {
@@ -55,7 +60,7 @@ const dataSelect = [
 ];
 
 class RegisterBusinessInfo extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       checkAll: false,
@@ -76,69 +81,78 @@ class RegisterBusinessInfo extends Component {
         {
           label: '사업자정보 신규 등록',
           value: -1,
-        }
+        },
       ],
       defautSelect: {
         label: '사업자정보 신규 등록',
         value: -1,
       },
       isPossible: false,
-      singleFile: null
+      singleFile: null,
     };
     this.navigation = props.navigation;
   }
 
   /** when after render DOM */
-  componentDidMount () {
+  componentDidMount() {
     const { businessList } = this.state;
 
-    WarehouseOwner.statusWhrgByOwner().then(res => {
-      if (res.data.status === 'IMP_REG') {
-        this.setState({
-          isPossible: false
-        });
-        alert('창고 수 제한으로 등록이 불가합니다.')
-      } else if (res.data.status === 'NONE' || res.data.status === 'PSB_REG') {
-        this.setState({
-          isPossible: true
-        });
-      }
-    }).catch(error => {
-      // alert('statusWhrgByOwner:' + error.response.data.message);
-    });
-
-    WarehouseOwner.possibleEntrp().then(res => {
-      let resultData = res.data && res.data._embedded && res.data._embedded.entrpResBodies.length > 0 ? res.data._embedded.entrpResBodies : [];
-      let dataConvert = [];
-      resultData.forEach(element => {
-        dataConvert.push({
-          ...element,
-          label: element.name,
-          value: element.id
-        })
+    WarehouseOwner.statusWhrgByOwner()
+      .then(res => {
+        if (res.data.status === 'IMP_REG') {
+          this.setState({
+            isPossible: false,
+          });
+          alert('창고 수 제한으로 등록이 불가합니다.');
+        } else if (
+          res.data.status === 'NONE' ||
+          res.data.status === 'PSB_REG'
+        ) {
+          this.setState({
+            isPossible: true,
+          });
+        }
       })
-      this.setState({
-        businessList: [
-          ...businessList,
-          ...dataConvert
-        ]
+      .catch(error => {
+        // alert('statusWhrgByOwner:' + error.response.data.message);
       });
-    }).catch(error => {
-      // TODO 비 로그인 시 체크 필요.
-      // alert('possibleEntrp:' + error);
-    });
+
+    WarehouseOwner.possibleEntrp()
+      .then(res => {
+        let resultData =
+          res.data &&
+          res.data._embedded &&
+          res.data._embedded.entrpResBodies.length > 0
+            ? res.data._embedded.entrpResBodies
+            : [];
+        let dataConvert = [];
+        resultData.forEach(element => {
+          dataConvert.push({
+            ...element,
+            label: element.name,
+            value: element.id,
+          });
+        });
+        this.setState({
+          businessList: [...businessList, ...dataConvert],
+        });
+      })
+      .catch(error => {
+        // TODO 비 로그인 시 체크 필요.
+        // alert('possibleEntrp:' + error);
+      });
   }
 
   handleClickTab = (tabName, index) => {
     this.setState({ tabInfo: tabSelect[index].title });
-  }
+  };
 
   _showDialog = () => this.setState({ visible: true });
 
   _hideDialog = () => this.setState({ visible: false });
 
   /** 주소 검색 API*/
-  getKakaoAddress = (data) => {
+  getKakaoAddress = data => {
     const { businessInfo } = this.state;
 
     console.log('dataAddress', data);
@@ -161,20 +175,20 @@ class RegisterBusinessInfo extends Component {
             },
             gps: {
               latitude: res.data.documents[0].x,
-              longitude: res.data.documents[0].y
-            }
-          }
+              longitude: res.data.documents[0].y,
+            },
+          },
         });
       })
       .catch(error => {
         alert(error.response.data.message);
       });
-  }
+  };
 
   /**
    * Set business data
    * */
-  setBusinessData = (data) => {
+  setBusinessData = data => {
     let setData = {
       id: data.id,
       name: data.name,
@@ -190,15 +204,17 @@ class RegisterBusinessInfo extends Component {
       jibunAddr: data.jibunAddr,
       roadAddr: data.roadAddr,
       gps: data.gps,
-      businessMode: -1
-    }
+      businessMode: -1,
+    };
 
-    console.log('setData ', setData)
+    console.log('setData ', setData);
     this.setState({
-      imageList: [{
-        data_url: `${configURL.API_SERVER_ADDRESS}/${data.regFile}`,
-      }],
-      businessInfo: setData
+      imageList: [
+        {
+          data_url: `${configURL.API_SERVER_ADDRESS}/${data.regFile}`,
+        },
+      ],
+      businessInfo: setData,
     });
     // reset(setData)
   };
@@ -209,35 +225,35 @@ class RegisterBusinessInfo extends Component {
   handleChangeSelectBox = (e, i) => {
     if (e !== -1) {
       this.setState({
-        businessMode: i
+        businessMode: i,
       });
 
       // this.setBusinessData(listBusinessInfo[i]);
     } else {
       this.setState({
-        businessMode: -1
+        businessMode: -1,
       });
     }
-  }
+  };
 
-  chooseFile = (type) => {
+  chooseFile = type => {
     const { businessInfo } = this.state;
 
     let options = {
       storageOptions: {
         skipBackup: true,
-        path: 'images'
-      }
+        path: 'images',
+      },
     };
-    launchImageLibrary(options, (response) => {
-      console.log('image response ::: ', response)
+    launchImageLibrary(options, response => {
+      console.log('image response ::: ', response);
       let file = {
         fileCopyUri: response.uri,
         name: response.fileName,
         size: response.fileSize,
         type: response.type,
-        uri: response.uri
-      }
+        uri: response.uri,
+      };
 
       // 이미지를 선택 안한 경우.
       if (response && response.didCancel) {
@@ -256,28 +272,30 @@ class RegisterBusinessInfo extends Component {
           this.props.setProgress({ is: true, type: 'CIRCLE' });
           // console.log('size', singleFile.size / Math.pow(1024, 2))
           // Please change file upload URL
-          MediaUpload.uploadFile(data).then(respon => {
-            let { url } = respon.data;
-            console.log('respon', respon)
-            var pathArray = url.split('/');
-            var host = pathArray[pathArray.length - 1];
+          MediaUpload.uploadFile(data)
+            .then(respon => {
+              let { url } = respon.data;
+              console.log('respon', respon);
+              var pathArray = url.split('/');
+              var host = pathArray[pathArray.length - 1];
 
-            this.setState({
-              photo: url,
-              businessInfo: {
-                ...businessInfo,
-                regFile: host
-              }
-            });
+              this.setState({
+                photo: url,
+                businessInfo: {
+                  ...businessInfo,
+                  regFile: host,
+                },
+              });
 
-            // Progress
-            setTimeout(() => {
+              // Progress
+              setTimeout(() => {
+                this.props.setProgress({ is: false });
+              }, 300);
+            })
+            .catch(error => {
+              alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
               this.props.setProgress({ is: false });
-            }, 300);
-          }).catch(error => {
-            alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
-            this.props.setProgress({ is: false });
-          });
+            });
         } else {
           // If no file selected the show alert
           // alert('Please Select File first');
@@ -302,24 +320,26 @@ class RegisterBusinessInfo extends Component {
           data.append('name', singleFile.name);
           data.append('file', singleFile);
           // Please change file upload URL
-          MediaUpload.uploadFile(data).then(respon => {
-            if (respon.status === 200) {
-              let { url } = respon.data;
+          MediaUpload.uploadFile(data)
+            .then(respon => {
+              if (respon.status === 200) {
+                let { url } = respon.data;
 
-              var pathArray = url.split('/');
-              var host = pathArray[pathArray.length - 1];
+                var pathArray = url.split('/');
+                var host = pathArray[pathArray.length - 1];
 
-              this.setState({
-                photo: url,
-                businessInfo: {
-                  ...businessInfo,
-                  regFile: host
-                }
-              });
-            }
-          }).catch(error => {
-            alert(' MediaUpload.uploadFile:' + error);
-          });
+                this.setState({
+                  photo: url,
+                  businessInfo: {
+                    ...businessInfo,
+                    regFile: host,
+                  },
+                });
+              }
+            })
+            .catch(error => {
+              alert(' MediaUpload.uploadFile:' + error);
+            });
         } else {
           // If no file selected the show alert
           alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
@@ -337,21 +357,23 @@ class RegisterBusinessInfo extends Component {
   handleOnSubmit = () => {
     const { businessInfo, isCert } = this.state;
     if (!isCert) {
-      alert('휴대폰 인증을 완료해주세요.')
-      return false
+      alert('휴대폰 인증을 완료해주세요.');
+      return false;
     }
 
     console.log('dataWE', businessInfo);
     this.setState({ loading: true });
     // 창고주 정보 등록
-    WarehouseOwner.regBusinessInfo(businessInfo).then(res => {
-      alert('창고 사업자 등록이 완료되었습니다.');
-      this.setState({ loading: false });
-      this.navigation.navigate('RegisterWH', res.data);
-    }).catch(error => {
-      alert('서버에러:' + error.response.data.message);
-      this.setState({ loading: false });
-    });
+    WarehouseOwner.regBusinessInfo(businessInfo)
+      .then(res => {
+        alert('창고 사업자 등록이 완료되었습니다.');
+        this.setState({ loading: false });
+        this.navigation.navigate('RegisterWH', res.data);
+      })
+      .catch(error => {
+        alert('서버에러:' + error.response.data.message);
+        this.setState({ loading: false });
+      });
   };
 
   /**
@@ -362,21 +384,28 @@ class RegisterBusinessInfo extends Component {
 
     console.log(businessList[businessMode]);
 
-    this.navigation.navigate('RegisterWH', businessList[businessMode])
+    this.navigation.navigate('RegisterWH', businessList[businessMode]);
 
     // setBusinessDialog(false)
     // onComplete(businessList[businessMode])
-  }
+  };
 
-
-  render () {
-    const { businessMode, businessInfo, photo, businessList, defautSelect, isPossible, loading } = this.state;
+  render() {
+    const {
+      businessMode,
+      businessInfo,
+      photo,
+      businessList,
+      defautSelect,
+      isPossible,
+      loading,
+    } = this.state;
 
     return (
-      <SafeAreaView style={DefaultStyle.container}>
-
+      <SafeAreaView
+        style={[DefaultStyle.container, { backgroundColor: 'white' }]}>
         <Appbars>
-          <Appbar.Action
+          {/* <Appbar.Action
             icon="arrow-left"
             color="black"
             onPress={() => this.navigation.goBack()}
@@ -386,24 +415,33 @@ class RegisterBusinessInfo extends Component {
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
+          /> */}
+          <HistoryBackActionBar
+            title={'창고주 정보 등록'}
+            navigation={this.navigation}
           />
         </Appbars>
 
         <ScrollView style={[DefaultStyle._container]}>
           <View style={[DefaultStyle.p_16]}>
-
             <View style={[DefaultStyle._titleCardCol]}>
-              <Text style={[DefaultStyle._textTitleCard]}>창고주 정보 등록</Text>
-              <Text style={[DefaultStyle._textDesCard]}>창고 등록을 위해서 회사 정보를 입력해 주세요.</Text>
+              <Text style={[DefaultStyle._textTitleCard]}>
+                창고주 정보 등록
+              </Text>
+              <Text style={[DefaultStyle._textDesCard]}>
+                창고 등록을 위해서 회사 정보를 입력해 주세요.
+              </Text>
             </View>
 
             <View>
               <Select
                 data={businessList}
                 labelSelected="기등록 사업자 등록정보"
+                color={'#000000'}
                 dataDefault={defautSelect}
+                labelSelectedSize={14}
                 indexProps={(e, index) => {
-                  this.handleChangeSelectBox(e, index)
+                  this.handleChangeSelectBox(e, index);
                 }}
               />
               {/* <Select
@@ -418,252 +456,311 @@ class RegisterBusinessInfo extends Component {
                 valueForm && valueForm(dataF);
               }}
           /> */}
-              <View style={[DefaultStyle.line, DefaultStyle.mb_20]}></View>
-              {
-                businessMode > -1 ?
-                  <View>
-                    <TextField
-                      labelTextField="사업자명"
-                      value={businessList[businessMode].name}
-                      colorLabel="#000000"
-                    />
-                    <TextField
-                      labelTextField="사업자번호"
-                      value={businessList[businessMode].entrpNo}
-                      colorLabel="#000000"
-                    />
-                    <TextField
-                      labelTextField="주소"
-                      colorLabel="#000000"
-                      value={businessList[businessMode].address}
-                    />
-                  </View>
-                  :
-                  <View>
-                    <TextField
-                      labelTextField="사업자 명"
-                      placeholder=""
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            name: e
-                          }
-                        })
-                      }}
-                      value={businessInfo.name ? businessInfo.name : ''}
-                      colorLabel="#000000"
-                    />
-                    <TextField
-                      labelTextField="법인 등록번호"
-                      placeholder="'-'없이 입력해주세요."
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            corpNumber: e
-                          }
-                        })
-                      }}
-                      value={businessInfo.corpNumber ? businessInfo.corpNumber : ''}
-                      colorLabel="#000000"
-                    />
-                    <TextField
-                      labelTextField="사업자번호"
-                      placeholder="'-'없이 입력해주세요."
-                      colorLabel="#000000"
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            number: e
-                          }
-                        })
-                      }}
-                      value={businessInfo.number ? businessInfo.number : ''}
-                    />
+              <View style={[DefaultStyle.line, DefaultStyle.mb_20]} />
+              {businessMode > -1 ? (
+                <View>
+                  <TextField
+                    labelTextField="사업자명"
+                    value={businessList[businessMode].name}
+                    colorLabel="#000000"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                  />
+                  <TextField
+                    labelTextField="사업자번호"
+                    value={businessList[businessMode].entrpNo}
+                    colorLabel="#000000"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                  />
+                  <TextField
+                    labelTextField="주소"
+                    colorLabel="#000000"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    value={businessList[businessMode].address}
+                  />
+                </View>
+              ) : (
+                <View>
+                  <TextField
+                    labelTextField="사업자 명"
+                    placeholder=""
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          name: e,
+                        },
+                      });
+                    }}
+                    value={businessInfo.name ? businessInfo.name : ''}
+                    colorLabel="#000000"
+                  />
+                  <TextField
+                    labelTextField="법인 등록번호"
+                    placeholder="'-'없이 입력해주세요."
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          corpNumber: e,
+                        },
+                      });
+                    }}
+                    value={
+                      businessInfo.corpNumber ? businessInfo.corpNumber : ''
+                    }
+                    colorLabel="#000000"
+                  />
+                  <TextField
+                    labelTextField="사업자번호"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    placeholder="'-'없이 입력해주세요."
+                    colorLabel="#000000"
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          number: e,
+                        },
+                      });
+                    }}
+                    value={businessInfo.number ? businessInfo.number : ''}
+                  />
 
-                    <Text style={DefaultStyle._textDF}>- 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.</Text>
-                    <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>- 사진은 한 파일에 10MB 까지 등록이 가능합니다.</Text>
+                  <Text style={DefaultStyle._textDF}>
+                    - 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.
+                  </Text>
+                  <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>
+                    - 사진은 한 파일에 10MB 까지 등록이 가능합니다.
+                  </Text>
 
-                    {photo && (
-                      <Image
-                        source={{
-                          uri: photo,
-                          type: "image/jpeg",
-                          name: 'photo'
-                        }}
-                        style={{ width: 125, height: 125, marginBottom: 20 }}
-
+                  {photo && (
+                    <Image
+                      source={{
+                        uri: photo,
+                        type: 'image/jpeg',
+                        name: 'photo',
+                      }}
+                      style={{ width: 125, height: 125, marginBottom: 20 }}
+                    />
+                  )}
+                  <TouchableOpacity
+                    style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
+                    onPress={() => this.chooseFile('photo')}>
+                    <Text
+                      style={[
+                        DefaultStyle._textButton,
+                        DefaultStyle._colorMuted,
+                      ]}>
+                      {'사업자등록증 업로드'}
+                    </Text>
+                  </TouchableOpacity>
+                  <View
+                    style={[
+                      DefaultStyle._listBtn,
+                      DefaultStyle.d_flex,
+                      DefaultStyle.mb_20,
+                    ]}>
+                    <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
+                      <TextField
+                        placeholder="우편번호"
+                        colorLabel="#000000"
+                        labelTextField="주소 (필수)"
+                        labelTextFieldSize={14}
+                        fontSize={14}
+                        styleProps={DefaultStyle.mb_0}
+                        value={businessInfo.roadAddr.zipNo}
                       />
-                    )}
+                    </View>
                     <TouchableOpacity
-                      style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                      onPress={() => this.chooseFile('photo')}>
+                      style={[
+                        DefaultStyle._btnOutlineMuted,
+                        DefaultStyle.w_50,
+                        { marginTop: 8 },
+                      ]}
+                      onPress={this._showDialog}>
                       <Text
                         style={[
                           DefaultStyle._textButton,
-                          DefaultStyle._colorMuted
+                          DefaultStyle._colorMuted,
                         ]}>
-                        {'사업자등록증 업로드'}
+                        {'우편번호 검색'}
                       </Text>
                     </TouchableOpacity>
-                    <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex, DefaultStyle.mb_20]}>
-                      <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
-                        <TextField
-                          placeholder="우편번호"
-                          colorLabel="#000000"
-                          styleProps={DefaultStyle.mb_0}
-                          value={businessInfo.roadAddr.zipNo} />
-                      </View>
-                      <TouchableOpacity
-                        style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                        onPress={this._showDialog}>
-                        <Text
-                          style={[
-                            DefaultStyle._textButton,
-                            DefaultStyle._colorMuted
-                          ]}>
-                          {'우편번호 검색'}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <TextField
-                      placeholder="도로명 주소"
-                      colorLabel="#000000"
-                      value={businessInfo.roadAddr.address}
-                    />
-                    <TextField
-                      placeholder="상세주소"
-                      colorLabel="#000000"
-                      value={businessInfo.jibunAddr.detail}
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            jibunAddr: {
-                              ...businessInfo.jibunAddr,
-                              detail: e
-                            },
-                            roadAddr: {
-                              ...businessInfo.roadAddr,
-                              detail: e
-                            },
-                          }
-                        })
-                      }}
-                    />
-                    <TextField
-                      labelTextField="대표자 명"
-                      colorLabel="#000000"
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            repreNm: e
-                          }
-                        })
-                      }}
-                      value={businessInfo.repreNm ? businessInfo.repreNm : ''}
-                    />
-                    <TextField
-                      labelTextField="담당자 휴대폰번호"
-                      placeholder="'-'없이 입력해주세요."
-                      colorLabel="#000000"
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            phone: e
-                          }
-                        })
-                      }}
-                      value={businessInfo.phone ? businessInfo.phone : ''}
-                    />
-
-                    {/* cert phone */}
-                    <CertMobile
-                      mobile={businessInfo.phone}
-                      onComplete={() => {
-                        this.setState({
-                          isCert: true
-                        })
-                      }}
-                    />
-
-                    <TextField
-                      labelTextField="담당자명"
-                      colorLabel="#000000"
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            inchgNm: e
-                          }
-                        })
-                      }}
-                      value={businessInfo.inchgNm ? businessInfo.inchgNm : ''}
-                    />
-                    <TextField
-                      labelTextField="담당자 이메일"
-                      colorLabel="#000000"
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            email: e
-                          }
-                        })
-                      }}
-                      value={businessInfo.email ? businessInfo.email : ''}
-                    />
-                    <TextField
-                      labelTextField="세금계산서 이메일"
-                      colorLabel="#000000"
-                      valueProps={(e) => {
-                        this.setState({
-                          businessInfo: {
-                            ...businessInfo,
-                            taxBillEmail: e
-                          }
-                        })
-                      }}
-                      value={businessInfo.taxBillEmail ? businessInfo.taxBillEmail : ''}
-                    />
                   </View>
-              }
+                  <TextField
+                    placeholder="도로명 주소"
+                    labelTextField="도로명 주소"
+                    colorLabel="#000000"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    value={businessInfo.roadAddr.address}
+                  />
+                  <TextField
+                    placeholder="상세주소"
+                    colorLabel="#000000"
+                    labelTextField="상세주소"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    value={businessInfo.jibunAddr.detail}
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          jibunAddr: {
+                            ...businessInfo.jibunAddr,
+                            detail: e,
+                          },
+                          roadAddr: {
+                            ...businessInfo.roadAddr,
+                            detail: e,
+                          },
+                        },
+                      });
+                    }}
+                  />
+                  <TextField
+                    labelTextField="대표자 명"
+                    colorLabel="#000000"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          repreNm: e,
+                        },
+                      });
+                    }}
+                    value={businessInfo.repreNm ? businessInfo.repreNm : ''}
+                  />
+                  <TextField
+                    labelTextField="담당자 휴대폰번호"
+                    placeholder="'-'없이 입력해주세요."
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    colorLabel="#000000"
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          phone: e,
+                        },
+                      });
+                    }}
+                    value={businessInfo.phone ? businessInfo.phone : ''}
+                  />
+
+                  {/* cert phone */}
+                  <CertMobile
+                    marginTopButton={6}
+                    mobile={businessInfo.phone}
+                    onComplete={() => {
+                      this.setState({
+                        isCert: true,
+                      });
+                    }}
+                  />
+
+                  <TextField
+                    labelTextField="담당자 직함 (필수)"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    colorLabel="#000000"
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          inchgNm: e,
+                        },
+                      });
+                    }}
+                    value={businessInfo.inchgNm ? businessInfo.inchgNm : ''}
+                  />
+                  <TextField
+                    labelTextField="담당자 이메일 (필수)"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    colorLabel="#000000"
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          email: e,
+                        },
+                      });
+                    }}
+                    value={businessInfo.email ? businessInfo.email : ''}
+                  />
+                  <TextField
+                    labelTextField="세금계산서 이메일 (필수)"
+                    colorLabel="#000000"
+                    labelTextFieldSize={14}
+                    fontSize={14}
+                    valueProps={e => {
+                      this.setState({
+                        businessInfo: {
+                          ...businessInfo,
+                          taxBillEmail: e,
+                        },
+                      });
+                    }}
+                    value={
+                      businessInfo.taxBillEmail ? businessInfo.taxBillEmail : ''
+                    }
+                  />
+                </View>
+              )}
             </View>
           </View>
-          <View style={[DefaultStyle._listBtn, DefaultStyle.p_16, DefaultStyle.mt_0]}>
-
-
-            {isPossible ?
-              (
-                businessMode > -1 ?
-                  <Button
-                    mode="contained"
-                    style={[{ width: '100%', borderRadius: 24, height: 40 }, DefaultStyle._primary,]}
-                    color="red"
-                    onPress={this.onClickSelectBusinessComplete}>
-                    선택완료
-                  </Button>
-                  :
-                  <Button
-                    mode="contained"
-                    style={[{ width: '100%', borderRadius: 24, height: 40 }, DefaultStyle._primary,]}
-                    color="red"
-                    onPress={this.handleOnSubmit}>
-                    등록
-                  </Button>
+          <View
+            style={[
+              DefaultStyle._listBtn,
+              DefaultStyle.p_16,
+              DefaultStyle.mt_0,
+            ]}>
+            {isPossible ? (
+              businessMode > -1 ? (
+                <Button
+                  mode="contained"
+                  style={[
+                    { width: '100%', borderRadius: 24, height: 40 },
+                    DefaultStyle._primary,
+                  ]}
+                  color="red"
+                  onPress={this.onClickSelectBusinessComplete}>
+                  선택완료
+                </Button>
+              ) : (
+                <Button
+                  mode="contained"
+                  style={[
+                    { width: '100%', borderRadius: 24, height: 40 },
+                    DefaultStyle._primary,
+                  ]}
+                  color="red"
+                  onPress={this.handleOnSubmit}>
+                  등록
+                </Button>
               )
-              :
+            ) : (
               <Button
                 mode="contained"
                 disabled={true}
-                style={[{ width: '100%', borderRadius: 24, height: 40 }, DefaultStyle._oulineDisabled]}
-              >
+                style={[
+                  { width: '100%', borderRadius: 24, height: 40 },
+                  DefaultStyle._oulineDisabled,
+                ]}>
                 등록불가
-              </Button>}
+              </Button>
+            )}
           </View>
 
           <Portal>
@@ -691,13 +788,13 @@ class RegisterBusinessInfo extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {};
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     setProgress: status => {
       dispatch(ActionCreator.setProgress(status));

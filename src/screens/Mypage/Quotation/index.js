@@ -20,6 +20,7 @@ import { Appbar, Button, Dialog, Text } from 'react-native-paper';
 
 import TenantRq00Trust from './tenantRq00Trust';
 import TenantRq00Keep from './tenantRq00Keep';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import TenantRs00Trust from './tenantRs00Trust';
 import TenantRs00Keep from './tenantRs00Keep';
 
@@ -184,7 +185,7 @@ class Quotation extends Component {
 
     return (
       <SafeAreaView style={DefaultStyle._container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -196,7 +197,12 @@ class Quotation extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'견적･계약 관리'}
+            navigation={this.navigation}
+          />
         <ScrollView style={[DefaultStyle.backgroundGray]}>
 
           <View style={[DefaultStyle.backgroundWhiteDF2, { paddingBottom: 180 }]}>

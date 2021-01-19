@@ -16,6 +16,12 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingBottom: 24,
   },
+  arrowBtn:{
+    alignContent:'center',
+    alignSelf:'center',
+    justifyContent:'center',
+    backgroundColor:'red'
+  },
   row: {
     flexDirection: 'row',
   },

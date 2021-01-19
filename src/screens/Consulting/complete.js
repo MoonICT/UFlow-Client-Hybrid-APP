@@ -12,6 +12,7 @@ import Appbars from '@Components/organisms/AppBar';
 import { Appbar, Text, Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import { RadarChart } from 'react-native-charts-wrapper';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
 
@@ -119,6 +120,10 @@ class RadarChartScreen extends React.Component {
             titleStyle={DefaultStyle.headerTitle}
           />
         </Appbars>
+        {/* <HistoryBackActionBar
+          title={'물류컨설팅'}
+          navigation={this.navigation}
+        /> */}
         <ScrollView>
           <View style={styles.container}>
             <View pointerEvents="none">
@@ -176,8 +181,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
-    paddingBottom:100,
-    minHeight:windowHeight +100,
+    paddingBottom: 100,
+    minHeight: windowHeight + 100,
   },
   chart: {
     flex: 1,

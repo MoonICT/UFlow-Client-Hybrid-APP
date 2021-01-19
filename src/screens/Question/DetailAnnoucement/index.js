@@ -15,6 +15,7 @@ import { Appbar, Text } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from '../style';
 // import { styles as SS } from './style';
 class RegisterInfo extends Component {
@@ -39,7 +40,7 @@ class RegisterInfo extends Component {
   render() {
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -51,7 +52,12 @@ class RegisterInfo extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'창고 위치'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           <View style={S.bodyView}>
             <Text style={DefaultStyle.titleItem}>

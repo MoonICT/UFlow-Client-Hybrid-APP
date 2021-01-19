@@ -18,6 +18,7 @@ import WebviewMap from '@Components/organisms/WebviewMap';
 import ActionCreator from '@Actions';
 import mapImg from '@Assets/images/mapImg.png';
 import { styles as S } from '../style';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as SS } from './style';
 
 class RegisterInfo extends Component {
@@ -43,7 +44,7 @@ class RegisterInfo extends Component {
     const { latitude, longitude } = this.props.route.params
     return (
       <SafeAreaView style={[S.container, { flex: 1 }]}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -55,7 +56,12 @@ class RegisterInfo extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'창고 위치'}
+            navigation={this.navigation}
+          />
         <View style={{
           flex: 1,
         }}>

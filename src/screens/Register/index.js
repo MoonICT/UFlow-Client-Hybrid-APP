@@ -21,6 +21,7 @@ import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import Loading from '@Components/atoms/Loading';
 import DoneRegister from './done';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import TextField from '@Components/organisms/TextField';
 //---> Assets
 import { Account } from '@Services/apis';
@@ -147,7 +148,7 @@ class Register extends Component {
           <DoneRegister navigation={this.navigation} />
         ) : (
           <SafeAreaView style={S.container}>
-            <Appbars>
+            {/* <Appbars>
               <Appbar.Action
                 icon="arrow-left"
                 color="black"
@@ -158,7 +159,12 @@ class Register extends Component {
                 color="black"
                 style={S.appBarTitle}
               />
-            </Appbars>
+            </Appbars> */}
+            
+          <HistoryBackActionBar
+            title={'회원가입'}
+            navigation={this.navigation}
+          />
             <ScrollView style={DefaultStyle.backgroundWhiteDF2}>
               <View style={DefaultStyle._cards}>
                 <Text style={DefaultStyle._textTitleBody}>

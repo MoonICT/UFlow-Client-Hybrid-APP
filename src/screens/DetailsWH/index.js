@@ -24,6 +24,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import { formatDateV1 } from '@Utils/dateFormat';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { StringUtils, ContractUtils } from '@Services/utils';
 import ProductCard from '@Components/organisms/ProductCard';
 import { TOKEN } from '@Constant';
@@ -314,7 +315,7 @@ class DetailWH extends Component {
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
-          <Appbar.Action
+          {/* <Appbar.Action
             icon="arrow-left"
             color="black"
             onPress={() => this.navigation.goBack()}
@@ -324,6 +325,11 @@ class DetailWH extends Component {
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
+          /> */}
+          
+          <HistoryBackActionBar
+            title={'창고 상세'}
+            navigation={this.navigation}
           />
           {favorite ? (
             <Appbar.Action

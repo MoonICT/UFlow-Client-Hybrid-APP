@@ -20,6 +20,7 @@ import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import CertMobile from '@Components/organisms/CertMobile';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import Appbars from '@Components/organisms/AppBar';
 import { WarehouseProprietorInfo } from "@Services/apis/models/warehouse";
 import { WarehouseTenant, Warehouse, MediaUpload } from '@Services/apis';
@@ -346,7 +347,7 @@ class DetailRegisterTenant extends Component {
 
     return (
       <SafeAreaView style={DefaultStyle.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -358,7 +359,12 @@ class DetailRegisterTenant extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'임차인 정보 등록'}
+            navigation={this.navigation}
+          />
         <ScrollView style={[DefaultStyle._container]}>
           <View style={[DefaultStyle.p_16]}>
             <View style={[DefaultStyle._titleCardCol]}>
