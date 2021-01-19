@@ -34,6 +34,7 @@ import {
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import Carousel from '@Components/organisms/Carousel';
 import CarouselSnap from '@Components/organisms/CarouselSnap';
 import { styles as S } from '../style';
@@ -171,7 +172,7 @@ class RegisterInfoFloor extends Component {
     // }
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -188,7 +189,12 @@ class RegisterInfoFloor extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'층별 상세 정보'}
+            navigation={this.navigation}
+          />
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={{ backgroundColor: '#ffffff' }}>
             <View

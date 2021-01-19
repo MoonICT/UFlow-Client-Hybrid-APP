@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text } from 'react-native-paper';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -116,7 +117,7 @@ class DetailInquiry extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -128,7 +129,12 @@ class DetailInquiry extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'문의내역'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           {(params && params.inquiryDetails && params.inquiryDetails.complete === true)
           &&

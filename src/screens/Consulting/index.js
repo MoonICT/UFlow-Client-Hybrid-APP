@@ -21,6 +21,7 @@ import Bgr from '@Assets/images/bgr-consulting.png';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
 class Consulting extends Component {
@@ -277,6 +278,10 @@ class Consulting extends Component {
             titleStyle={DefaultStyle.headerTitleWhite}
           />
         </Appbars>
+        {/* <HistoryBackActionBar
+          title={'물류컨설팅'}
+          navigation={this.navigation}
+        /> */}
         {/* step 0 */}
         {step === 0 && (
           <View style={S.contentCenter}>
@@ -288,7 +293,11 @@ class Consulting extends Component {
             <Button
               mode="contained"
               style={[S.styleButton, { margin: 'auto' }]}
-              onPress={() => {this.setState({ step: 1 }),this.getAllData,console.log('hihi',this.state.listAnswer)}}>
+              onPress={() => {
+                this.setState({ step: 1 }),
+                  this.getAllData,
+                  console.log('hihi', this.state.listAnswer);
+              }}>
               <Text style={[S.textButton]}>물류 컨설팅 시작하기</Text>
             </Button>
           </View>

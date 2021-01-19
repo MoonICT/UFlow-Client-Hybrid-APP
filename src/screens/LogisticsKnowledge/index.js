@@ -15,6 +15,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Accordion from '@Components/organisms/Accordion';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from './style';
 import { LogisticsKnowledgeService } from '@Services/apis';
 
@@ -213,7 +214,7 @@ class LogisticsKnowledge extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -225,7 +226,12 @@ class LogisticsKnowledge extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'물류지식 게시판'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           <View style={S.viewSearch}>
             <Searchbar

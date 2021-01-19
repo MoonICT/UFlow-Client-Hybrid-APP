@@ -16,6 +16,7 @@ import { Appbar, Text } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 class DetailsInquiryWH extends Component {
@@ -30,7 +31,7 @@ class DetailsInquiryWH extends Component {
     const { imageStore } = this.props;
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -42,7 +43,12 @@ class DetailsInquiryWH extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'창고 문의 상세'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           <View style={S.inquirys}>
             <View style={S.leftInquiry}>

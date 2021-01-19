@@ -12,19 +12,14 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   infoUser: {
-    borderWidth: 0,
+    borderWidth: 1,
     borderColor: '#d7d7d7',
     borderRadius: 8,
     borderBottomRightRadius: 35,
     borderTopRightRadius: 35,
     paddingTop: 14,
     paddingBottom: 14,
-
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
     shadowOpacity: 0.06,
     shadowRadius: 1,
     elevation: 3,

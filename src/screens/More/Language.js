@@ -10,6 +10,7 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import AsyncStorage from '@react-native-community/async-storage';
 import { LANG_STATUS_KEY } from '@Constant';
 import { Menu } from '@Services/apis';
@@ -76,7 +77,7 @@ class Language extends Component {
   render () {
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -90,7 +91,12 @@ class Language extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'언어 설정'}
+            navigation={this.navigation}
+          />
 
         {/** Code Sample */}
         {/*<Text>{getMsg(this.props.lang, 'CERT0001', 'Empty')}</Text>*/}

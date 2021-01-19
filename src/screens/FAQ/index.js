@@ -14,6 +14,7 @@ import { Appbar, List, Searchbar } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import AppGrid from '@Components/organisms/AppGrid';
 import Accordion from '@Components/organisms/Accordion';
 import { styles as S } from './style';
@@ -196,7 +197,7 @@ class RegisterWH extends Component {
 
     return (
       <ScrollView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -208,7 +209,12 @@ class RegisterWH extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'자주 묻는 질문'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           <View style={S.viewSearch}>
             <Searchbar

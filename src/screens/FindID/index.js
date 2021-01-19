@@ -18,6 +18,7 @@ import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
 import DefaultStyle from '../../styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from './style';
 
 class ForgotID extends Component {
@@ -47,7 +48,7 @@ class ForgotID extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -59,7 +60,12 @@ class ForgotID extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'아이디 찾기'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           <View>
             <Text style={[S.titleLogin]}>아이디를 찾기 위해 </Text>

@@ -9,7 +9,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 // import { Picker } from '@react-native-community/picker';
 // import RNPickerSelect from 'react-native-picker-select';
 // Local Imports
-import { debounce } from "lodash";
+import { debounce } from 'lodash';
 import { Button, Paragraph, Dialog, Portal } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,20 +29,20 @@ export default class Selected extends Component {
 
   _hideSelect = () => this.setState({ isToggle: false });
 
-  setDebounce = debounce((callback) => {
+  setDebounce = debounce(callback => {
     callback();
   });
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.dataDefault !== this.props.dataDefault) {
       this.setDebounce(() => {
-        this.setState({ selectedValue: this.props.dataDefault.label })
+        this.setState({ selectedValue: this.props.dataDefault.label });
       });
     }
   }
 
   componentDidMount() {
-    const {dataDefault} = this.props;
+    const { dataDefault } = this.props;
     dataDefault
       ? this.setState({ selectedValue: dataDefault.label })
       : this.setState({ selectedValue: '' });
@@ -52,8 +52,10 @@ export default class Selected extends Component {
     const {
       data,
       labelSelected,
+      labelSelectedSize,
       valueSelected,
       colorLabel,
+      color,
       valueProps,
       indexProps,
       required,
@@ -105,17 +107,25 @@ export default class Selected extends Component {
         <TouchableOpacity
           // {...this.props}
           onPress={() => this._showSelect()}
-          style={[DefaultStyle._selected,{ borderColor: required ? 'red' : '#cccccc' }]}>
+          style={[
+            DefaultStyle._selected,
+            { borderColor: required ? 'red' : '#cccccc' },
+          ]}>
           {labelSelected ? (
             <Text
               style={[
                 DefaultStyle._lableSelected,
                 colorLabel ? { color: colorLabel } : null,
+                labelSelectedSize ? { fontSize: labelSelectedSize } : null,
               ]}>
               {labelSelected}
             </Text>
           ) : null}
-          <Text style={DefaultStyle._textDefaultSelected}>
+          <Text
+            style={[
+              DefaultStyle._textDefaultSelected,
+              color ? { color: color } : null,
+            ]}>
             {selectedValue ? selectedValue : valueSelected}
           </Text>
           {isToggle === true ? (

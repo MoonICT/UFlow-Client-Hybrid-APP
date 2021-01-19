@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text, Checkbox } from 'react-native-paper';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import TextField from '@Components/organisms/TextField';
 
 // Local Imports
@@ -85,7 +86,7 @@ class WithdrawalInformation extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -97,7 +98,12 @@ class WithdrawalInformation extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'회원탈퇴'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleCard}>

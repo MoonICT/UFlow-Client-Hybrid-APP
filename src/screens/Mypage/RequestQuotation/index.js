@@ -20,6 +20,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Appbars from '@Components/organisms/AppBar';
 import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import ActionCreator from '@Actions';
 import {styles as S} from '../style';
 import {styles as SS} from './style';
@@ -143,7 +144,7 @@ class RequestQuotation extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -155,7 +156,12 @@ class RequestQuotation extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'견적 요청하기'}
+            navigation={this.navigation}
+          />
         <ScrollView>
 
           <View style={[DefaultStyle._cards, SS.body, {paddingBottom: 450}]}>

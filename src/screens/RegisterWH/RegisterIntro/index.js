@@ -29,6 +29,7 @@ import {
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { Warehouse } from '@Services/apis';
@@ -145,7 +146,7 @@ class RegisterIntro extends Component {
     }
     return (
       <SafeAreaView style={DefaultStyle._container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -157,7 +158,12 @@ class RegisterIntro extends Component {
             fontSize="12"
             titleStyle={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'창고 소개'}
+            navigation={this.navigation}
+          />
         <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 100, }]}>
           <View style={{ backgroundColor: '#ffffff' }}>
             <View style={DefaultStyle._cards}>

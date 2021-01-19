@@ -23,6 +23,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { Warehouse } from '@Services/apis';
 import ResponseQTrust from "./responseQTrust";
 import ResponseQKeep from "./responseQKeep";
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
 class ResponseQuotation extends Component {
   constructor(props) {
@@ -148,7 +149,7 @@ class ResponseQuotation extends Component {
 console.log('routeRespon :>> ', route);
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
+        {/* <Appbars>
           <Appbar.Action
             icon="arrow-left"
             color="black"
@@ -160,7 +161,12 @@ console.log('routeRespon :>> ', route);
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-        </Appbars>
+        </Appbars> */}
+        
+        <HistoryBackActionBar
+            title={'견적 응답하기'}
+            navigation={this.navigation}
+          />
         <ScrollView>
           <View style={[DefaultStyle._cards, SS.body, {paddingBottom: 450}]}>
 
