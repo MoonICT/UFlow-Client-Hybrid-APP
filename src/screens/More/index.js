@@ -109,6 +109,10 @@ class More extends Component {
               </View>
             </TouchableOpacity>
           </View>
+          <View style={{
+            borderBottomColor:'#d7d7d7',
+            borderBottomWidth:1,
+          }}></View>
           {isLogin === false ? null : (
             <Fragment>
               <View style={[DefaultStyle._cards, S.listPage]}>
