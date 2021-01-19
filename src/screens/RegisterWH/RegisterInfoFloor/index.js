@@ -41,6 +41,7 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import Form from './form';
 import { MyPage } from '@Services/apis';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class RegisterInfoFloor extends Component {
   constructor(props) {
@@ -82,7 +83,6 @@ class RegisterInfoFloor extends Component {
   }
 
   goToSlider = index => {
-
     this.slider.goTo(index);
   };
 
@@ -131,12 +131,23 @@ class RegisterInfoFloor extends Component {
     );
   };
 
+  submit = () => {
+    this.navigation.navigate('RegisterWH', {
+      completeFloor: true,
+    });
+    this.props.updateInfo({
+      floors: this.state.floors,
+    });
+    let data = JSON.stringify(this.state.floors);
+    AsyncStorage.setItem('DATAFLOOR', data);
+  };
+
   render() {
-    const { dataInfoFloor } = this.props;
-    const { floors } = this.state;
+    const { dataInfoFloor, route } = this.props;
+    const { floors, floorsDF } = this.state;
 
     console.log('dataInfoFloor', dataInfoFloor);
-    // console.log('floors', floors);
+    console.log('floors', floors);
     let isSubmitUpdate = true;
     // let filterflrArea = floors && floors.filter(item => item.flrArea === '');
     // let filterparkArea = floors && floors.filter(item => item.parkArea === '');
@@ -165,7 +176,12 @@ class RegisterInfoFloor extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.goBack()}
+            onPress={() => {
+              this.navigation.goBack();
+              this.props.route.params &&
+                this.props.route.params.typeEdit === 'Edit' &&
+                this.props.updateInfo({ floors: floorsDF });
+            }}
           />
           <Appbar.Content
             title="층별 상세 정보"
@@ -174,11 +190,11 @@ class RegisterInfoFloor extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
-            title={'층별 상세 정보'}
-            navigation={this.navigation}
-          />
+          title={'층별 상세 정보'}
+          navigation={this.navigation}
+        />
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={{ backgroundColor: '#ffffff' }}>
             <View
@@ -248,14 +264,7 @@ class RegisterInfoFloor extends Component {
                 style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
                 <TouchableOpacity
                   disabled={isSubmitUpdate === true ? false : true}
-                  onPress={() => {
-                    this.navigation.navigate('RegisterWH', {
-                      completeFloor: true,
-                    });
-                    this.props.updateInfo({
-                      floors: floors,
-                    });
-                  }}
+                  onPress={this.submit}
                   style={[
                     DefaultStyle.btnSubmit,
                     isSubmitUpdate === true
@@ -282,8 +291,20 @@ class RegisterInfoFloor extends Component {
     );
   }
 
+  componentWillMount() {
+    console.log('Component WILL MOUNT!');
+  }
   /** when after render DOM */
   async componentDidMount() {
+    let getData = await AsyncStorage.getItem('DATAFLOOR');
+    let parseData = JSON.parse(getData);
+    let type = this.props.route.params && this.props.route.params.typeEdit;
+    if (type === 'Edit') {
+      this.props.updateInfo({ floors: parseData });
+      // this.setState({ floorsDF: parseData });
+    } else {
+      AsyncStorage.removeItem('DATAFLOOR');
+    }
     await MyPage.getDetailCodes('WHRG0010')
       .then(res => {
         if (res.status === 200) {

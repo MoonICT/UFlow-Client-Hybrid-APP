@@ -18,6 +18,7 @@ import { Appbar, Text, IconButton } from 'react-native-paper';
 import { launchImageLibrary } from 'react-native-image-picker';
 // Local Imports
 import DefaultStyle from '@Styles/default';
+import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import Appbars from '@Components/organisms/AppBar';
 import ImagePanoram from './imagePanoram';
 import UpImage from './image';
@@ -178,60 +179,59 @@ class RegisterImage extends Component {
     const { imageStore, pnImages } = this.props;
     const { valueTab, isRemove } = this.state;
     // console.log('imageStore', imageStore);
-
+    let checkRemove = false;
+    if (
+      (valueTab === 0 && imageStore && imageStore.length === 0) ||
+      (pnImages === 1 && pnImages && pnImages.length === 0)
+    ) {
+      checkRemove = true;
+    }
+    console.log('checkRemove :>> ', checkRemove);
     return (
       <SafeAreaView style={S.container}>
-        <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="사진 추가"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-
-          {/* TODO 이미지 개별 삭제 가능해야함. */}
-          {isRemove === true ? (
-            <Appbar.Content
-              color={'black'}
-              onPress={this._removeImage}
-              title={'완료'}
-              titleStyle={S.textHeaderRight}
-              style={S.itemHeaderRight}
-            />
-          ) : (
-            <Fragment>
-              <Appbar.Action
-                icon="image-plus"
-                color="black"
-                onPress={() => {
-                  console.log('tab: ', valueTab);
-                  if (valueTab === 0) {
-                    this.handlePicker('photo');
-                  } else if (valueTab === 1) {
-                    console.log('imageStore.pnImages', pnImages);
-                    if (pnImages && pnImages.length > 0) {
-                      alert('파노라마 사진은 1장만 등록 가능합니다.');
-                    } else {
-                      this.handlePicker('photo');
-                    }
-                  }
-                  // this.chooseFile('photo');
-                  // this.props.registerAction('44444');
-                }}
-              />
-              <Appbar.Action
-                icon="delete"
-                color="black"
+        <HistoryBackActionBar
+          title={'사진 추가'}
+          navigation={this.navigation}
+          rightComponent={
+            isRemove === true && checkRemove === false ? (
+              <Appbar.Content
+                color={'black'}
                 onPress={this._removeImage}
+                title={'완료'}
+                titleStyle={S.textHeaderRight}
+                style={S.itemHeaderRight}
               />
-            </Fragment>
-          )}
-        </Appbars>
+            ) : (
+              <Fragment>
+                <Appbar.Action
+                  icon="image-plus"
+                  color="black"
+                  onPress={() => {
+                    console.log('tab: ', valueTab);
+                    if (valueTab === 0) {
+                      this.handlePicker('photo');
+                    } else if (valueTab === 1) {
+                      console.log('imageStore.pnImages', pnImages);
+                      if (pnImages && pnImages.length > 0) {
+                        alert('파노라마 사진은 1장만 등록 가능합니다.');
+                      } else {
+                        this.handlePicker('photo');
+                      }
+                    }
+                    // this.chooseFile('photo');
+                    // this.props.registerAction('44444');
+                  }}
+                />
+                <Appbar.Action
+                  icon="delete"
+                  color="black"
+                  onPress={this._removeImage}
+                />
+              </Fragment>
+            )
+          }
+        />
+
         <ScrollView>
           <View style={DefaultStyle._tabBar}>
             <TouchableOpacity
