@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   SafeAreaView,
   View,
@@ -27,7 +27,7 @@ import { MediaUpload } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
 
 class RegisterImage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -39,14 +39,18 @@ class RegisterImage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
-  _removeImage = () => this.setState({ isRemove: !this.state.isRemove });
+  _removeImage = () => {
+    if (this.props.imageStore.length > 0 || this.props.pnImages.length > 0) {
+      this.setState({ isRemove: !this.state.isRemove });
+    }
+  };
 
   // TODO @Deprecated ios에서 갤러리 업로드 안됨.
-  chooseFile = async (type) => {
+  chooseFile = async type => {
     try {
       // TODO 이미지 피커 교체 필요 (ios에서 갤러리 선택 안됨.)
       const res = await DocumentPicker.pick({
@@ -93,21 +97,21 @@ class RegisterImage extends Component {
     let options = {
       storageOptions: {
         skipBackup: true,
-        path: 'images'
-      }
+        path: 'images',
+      },
     };
 
     try {
-      launchImageLibrary(options, (response) => {
-        console.log('image response ::: ', response)
+      launchImageLibrary(options, response => {
+        console.log('image response ::: ', response);
 
         let file = {
           fileCopyUri: response.uri,
           name: response.fileName,
           size: response.fileSize,
           type: response.type,
-          uri: response.uri
-        }
+          uri: response.uri,
+        };
 
         // 이미지를 선택 안한 경우.
         if (response && response.didCancel) {
@@ -125,40 +129,41 @@ class RegisterImage extends Component {
             // Progress
             this.props.setProgress({ is: true, type: 'CIRCLE' });
             // Please change file upload URL
-            await MediaUpload.uploadFile(data).then(respon => {
-              if (respon.status === 200) {
-                let { url } = respon.data;
-                let { filename } = respon.data;
-                // let pimages = [{ uri: url }];
-                // pimages.push();
-                // this.setState({ pimages });
-                console.log('저장 이미지 :::', {
-                  url: url,
-                  name: filename,
-                  value: valueTab,
-                });
-                this.props.uploadImage({
-                  url: url,
-                  name: filename,
-                  value: valueTab,
-                });
-              }
+            await MediaUpload.uploadFile(data)
+              .then(respon => {
+                if (respon.status === 200) {
+                  let { url } = respon.data;
+                  let { filename } = respon.data;
+                  // let pimages = [{ uri: url }];
+                  // pimages.push();
+                  // this.setState({ pimages });
+                  console.log('저장 이미지 :::', {
+                    url: url,
+                    name: filename,
+                    value: valueTab,
+                  });
+                  this.props.uploadImage({
+                    url: url,
+                    name: filename,
+                    value: valueTab,
+                  });
+                }
 
-              // Progress
-              setTimeout(() => {
+                // Progress
+                setTimeout(() => {
+                  this.props.setProgress({ is: false });
+                }, 300);
+              })
+              .catch(error => {
                 this.props.setProgress({ is: false });
-              }, 300);
-            }).catch(error => {
-              this.props.setProgress({ is: false });
-              console.log(error)
-              alert(' MediaUpload.uploadFile:' + error.reponse);
-            });
+                console.log(error);
+                alert(' MediaUpload.uploadFile:' + error.reponse);
+              });
           } else {
             // If no file selected the show alert
             // alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
           }
         });
-
       });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -169,7 +174,7 @@ class RegisterImage extends Component {
     }
   };
 
-  render () {
+  render() {
     const { imageStore, pnImages } = this.props;
     const { valueTab, isRemove } = this.state;
     // console.log('imageStore', imageStore);
@@ -188,42 +193,57 @@ class RegisterImage extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
-          <Appbar.Action
-            icon="image-plus"
-            color="black"
-            onPress={() => {
-              console.log('tab: ', valueTab)
-              if (valueTab === 0) {
-                this.handlePicker('photo');
-              } else if (valueTab === 1) {
-                console.log('imageStore.pnImages', pnImages)
-                if (pnImages && pnImages.length > 0) {
-                  alert('파노라마 사진은 1장만 등록 가능합니다.');
-                } else {
-                  this.handlePicker('photo');
-                }
-              }
-              // this.chooseFile('photo');
-              // this.props.registerAction('44444');
-            }}
-          />
+
           {/* TODO 이미지 개별 삭제 가능해야함. */}
-          <Appbar.Action
-            icon="delete"
-            color={isRemove === true ? '#ff6d00' : 'black'}
-            onPress={this._removeImage}
-          />
+          {isRemove === true ? (
+            <Appbar.Content
+              color={'black'}
+              onPress={this._removeImage}
+              title={'완료'}
+              titleStyle={S.textHeaderRight}
+              style={S.itemHeaderRight}
+            />
+          ) : (
+            <Fragment>
+              <Appbar.Action
+                icon="image-plus"
+                color="black"
+                onPress={() => {
+                  console.log('tab: ', valueTab);
+                  if (valueTab === 0) {
+                    this.handlePicker('photo');
+                  } else if (valueTab === 1) {
+                    console.log('imageStore.pnImages', pnImages);
+                    if (pnImages && pnImages.length > 0) {
+                      alert('파노라마 사진은 1장만 등록 가능합니다.');
+                    } else {
+                      this.handlePicker('photo');
+                    }
+                  }
+                  // this.chooseFile('photo');
+                  // this.props.registerAction('44444');
+                }}
+              />
+              <Appbar.Action
+                icon="delete"
+                color="black"
+                onPress={this._removeImage}
+              />
+            </Fragment>
+          )}
         </Appbars>
         <ScrollView>
           <View style={DefaultStyle._tabBar}>
             <TouchableOpacity
               style={valueTab === 0 ? DefaultStyle._btnTabBar : null}
-              onPress={() => this.setState({ valueTab: 0 })}>
+              onPress={() => {
+                this.setState({ valueTab: 0, isRemove: false });
+              }}>
               <Text style={DefaultStyle._textTabBar}>일반 사진</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={valueTab === 1 ? DefaultStyle._btnTabBar : null}
-              onPress={() => this.setState({ valueTab: 1 })}>
+              onPress={() => this.setState({ valueTab: 1, isRemove: false })}>
               <Text style={DefaultStyle._textTabBar}>파노라마 사진</Text>
             </TouchableOpacity>
           </View>
@@ -273,7 +293,7 @@ class RegisterImage extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.whImages,
@@ -282,7 +302,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     uploadImage: action => {
       dispatch(ActionCreator.uploadImage(action));

@@ -16,7 +16,19 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingBottom: 24,
   },
+  itemHeaderRight: {
+    // flex: 1,
+    justifyContent: 'center',
+    maxWidth: 50,
+    paddingLeft: 0,
+  },
 
+  textHeaderRight: {
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.47)',
+    lineHeight: 21,
+    fontWeight: 'bold',
+  },
   bodyRegister: { flex: 1 },
   imageRegister: {
     backgroundColor: '#fafafa',
@@ -112,6 +124,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
+    paddingTop: 0,
   },
   ImageUpload: {
     width: '100%',
@@ -139,7 +152,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     marginRight: 8,
     borderRadius: 4,
-    backgroundColor: '#eee'
+    backgroundColor: '#eee',
   },
   threeImage: {
     justifyContent: 'space-between',

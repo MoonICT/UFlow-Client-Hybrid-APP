@@ -167,10 +167,10 @@ class RegisterWH extends Component {
     ) {
       completeInfo = true;
     }
-    if (dataWH.name !== '' && dataWH.description !== '') {
+    if (dataWH.name && dataWH.name !== '' && dataWH.description !== '') {
       completeIntro = true;
     }
-    if (dataWH.name !== '' && dataWH.description !== '') {
+    if (dataWH.cmpltYmd && dataWH.cmpltYmd !== '') {
       completeMoreInfo = true;
     }
     if (dataWH.floors && dataWH.floors.length > 0) {
