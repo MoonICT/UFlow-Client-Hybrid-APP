@@ -305,6 +305,9 @@ class RegisterWH extends Component {
               onPress={() =>
                 this.navigation.navigate('RegisterInfoFloor', {
                   type: route && route.params && route.params.type,
+                  dataFloor: dataWH.floors,
+                  typeEdit:
+                    dataWH.floors && dataWH.floors.length > 0 ? 'Edit' : '',
                 })
               }>
               <Text style={S.textLeftBtn}>층별 상세 정보</Text>
