@@ -56,6 +56,7 @@ export const myWH = async () => {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
+      'Accept-Language': 'ko-KR',
     },
   });
 };
