@@ -62,6 +62,28 @@ const data = [
   //   title: '관심 창고',
   // },
 ];
+const dataStatusWarehouse = [
+  {
+    value: 'All',
+    label: '전체',
+  },
+  {
+    value: '1100',
+    label: '공실검증완료',
+  },
+  {
+    value: '4100',
+    label: '계약진행중',
+  },
+  {
+    value: '5100',
+    label: '계약체결',
+  },
+  {
+    value: '9100',
+    label: '공실검증실패',
+  },
+];
 const dataSteps = [
   {
     title: '견적요청',
@@ -96,12 +118,14 @@ const dataSteps = [
 ];
 
 class Mypage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       isSwitchOn: true,
+      titleSearchWH: '전체',
       visibleConfirm: false,
       refreshKey: '',
+      // dataSearchWH:[],
       title:
         props.route.params && props.route.params.title
           ? props.route.params.title
@@ -112,12 +136,12 @@ class Mypage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount () {
+  componentWillUnmount() {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -166,16 +190,34 @@ class Mypage extends Component {
       return '';
     }
   };
+  onChangeStatusWarehouse = value => {
+    const { dataWH } = this.state;
+    console.log('onChangeStatusWarehouse', value);
+    if (value === 'All') {
+      this.setState({ dataSearchWH: dataWH });
+    } else {
+      let _dataWH = dataWH.filter(
+        item => item.sttsDbCode.stdDetailCode === value,
+      );
+      this.setState({ dataSearchWH: _dataWH });
+    }
+  };
 
-  render () {
+  render() {
     const { route, workComplete } = this.props;
-    const { title, refreshKey, dataWH } = this.state;
+    const {
+      title,
+      refreshKey,
+      dataWH,
+      titleSearchWH,
+      dataSearchWH,
+    } = this.state;
+    console.log('dataSearchWH', dataSearchWH);
     // console.log('title :>> ', title);
-    // console.log('dataWH :>> ', dataWH);
     // console.log('route :>> ', route.params);
     let viewWH =
       dataWH &&
-      dataWH.map((item, index) => {
+      (dataSearchWH ? dataSearchWH : dataWH).map((item, index) => {
         let subTitle = item.keep && item.keep.subTitle;
         let splyAmount = item.keep && money(item.keep.splyAmount);
         let mgmtChrg = item.keep && money(item.keep.mgmtChrg);
@@ -213,8 +255,8 @@ class Mypage extends Component {
               item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001'
                 ? '미검증 공실'
                 : item.sttsDbCode.stdDetailCodeName,
-                colorValue: this.coverColor(
-                  item.sttsDbCode && item.sttsDbCode.stdDetailCode,
+            colorValue: this.coverColor(
+              item.sttsDbCode && item.sttsDbCode.stdDetailCode,
             ),
           },
           {
@@ -270,21 +312,25 @@ class Mypage extends Component {
             footer={
               item.modify === true ? (
                 <TouchableOpacity
-                  style={[DefaultStyle._btnOutline,DefaultStyle.mt_16, { borderColor: '#000000' }]}
+                  style={[
+                    DefaultStyle._btnOutline,
+                    DefaultStyle.mt_16,
+                    { borderColor: '#000000' },
+                  ]}
                   onPress={() => {
                     item.sttsDbCode.stdDetailCode === '0001'
                       ? this.props.showPopup({
-                        type: 'confirm',
-                        image: '',
-                        content: '공실이 검증되지 않은 창고입니다.',
-                      })
+                          type: 'confirm',
+                          image: '',
+                          content: '공실이 검증되지 않은 창고입니다.',
+                        })
                       : this.navigation.navigate('RegisterWH', {
-                        type: 'ModifyWH',
-                        warehouseRegNo: item.id,
-                        doRefresh: () => {
-                          this.getWHList();
-                        }
-                      });
+                          type: 'ModifyWH',
+                          warehouseRegNo: item.id,
+                          doRefresh: () => {
+                            this.getWHList();
+                          },
+                        });
                   }}>
                   <Text
                     style={[DefaultStyle._textButton, { color: '#000000' }]}>
@@ -305,9 +351,20 @@ class Mypage extends Component {
       // TODO 라우트 갱신할 합수 전달.
       case '내 창고':
         viewComponent = (
-          <View style={[DefaultStyle._cards, DefaultStyle._margin0, {paddingBottom: 100,}]}>
-            <View style={DefaultStyle._titleBody}>
+          <View
+            style={[
+              DefaultStyle._cards,
+              DefaultStyle._margin0,
+              { paddingBottom: 100 },
+            ]}>
+            <View style={[DefaultStyle._titleBody,{flex:1,flexWrap:'wrap'}]}>
               <Text style={[DefaultStyle._textTitleCard]}>내 창고</Text>
+              {/* <Select
+                arrayStyle={{ width: 250,marginLeft:30 }}
+                data={dataStatusWarehouse}
+                valueSelected={titleSearchWH}
+                valueProps={this.onChangeStatusWarehouse}
+              /> */}
             </View>
             {viewWH}
             <TouchableOpacity
@@ -362,7 +419,7 @@ class Mypage extends Component {
     }
 
     return (
-      <SafeAreaView style={[S.container,]}>
+      <SafeAreaView style={[S.container]}>
         <Appbars>
           <Appbar.Action
             icon="arrow-left"
@@ -370,7 +427,8 @@ class Mypage extends Component {
             onPress={() =>
               route.params && route.params.prevView === 'PrevView'
                 ? this.navigation.navigate('Home')
-                : this.navigation.goBack()}
+                : this.navigation.goBack()
+            }
           />
           <Appbar.Content
             title={this.state.title}
@@ -380,7 +438,7 @@ class Mypage extends Component {
           />
         </Appbars>
 
-        <ScrollView style={{ }}>
+        <ScrollView style={{}}>
           <AppGrid
             data={data}
             title={this.state.title}
@@ -457,12 +515,16 @@ class Mypage extends Component {
    * */
   getWHList = async () => {
     // Progress
-    this.props.setProgress({ is: true, })
+    this.props.setProgress({ is: true });
     await Warehouse.myWH()
       .then(res => {
         console.log('res', res);
         if (res.status === 200) {
-          let dataWH = res.data._embedded.warehouses;
+          let _dataWH = res.data._embedded.warehouses;
+          let dataWH = _dataWH.filter(
+            item => item.sttsDbCode.stdDetailCode !== '0001',
+          );
+          console.log('dataWH=>', dataWH);
           this.setState({ dataWH });
         }
 
@@ -477,10 +539,10 @@ class Mypage extends Component {
           this.props.setProgress({ is: false });
         }, 300);
       });
-  }
+  };
 
   /** when after render DOM */
-  async componentDidMount () {
+  async componentDidMount() {
     console.log('::componentDidMount:: MyPage', this.props.route.params.title);
     this.setState({ title: this.props.route.params.title });
     // const getWH = await Warehouse.myWH();
@@ -492,7 +554,7 @@ class Mypage extends Component {
     await this.getWHList();
   }
 
-  UNSAFE_componentWillReceiveProps (newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     let titleProp =
       newProps.route && newProps.route.params && newProps.route.params.title;
     console.log('titleProp :>> ', titleProp);
@@ -500,12 +562,11 @@ class Mypage extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
-  }
+  componentDidUpdate(prevProps, prevState) {}
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -514,7 +575,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     showPopup: status => {
       dispatch(ActionCreator.show(status));

@@ -59,6 +59,7 @@ export default class Selected extends Component {
       valueProps,
       indexProps,
       required,
+      arrayStyle,
     } = this.props;
     const { isToggle, selectedValue, indexActive } = this.state;
     // console.log('required',required);
@@ -109,7 +110,8 @@ export default class Selected extends Component {
           onPress={() => this._showSelect()}
           style={[
             DefaultStyle._selected,
-            { borderColor: required ? 'red' : '#cccccc' },
+            { borderColor: required ? 'red' : '#cccccc'},
+            arrayStyle ? arrayStyle : null,
           ]}>
           {labelSelected ? (
             <Text
