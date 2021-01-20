@@ -9,7 +9,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SafeAreaView, View, ScrollView } from 'react-native';
 import {
-  Checkbox,
   Appbar,
   Searchbar,
   Text,
@@ -23,6 +22,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import TextField from '@Components/organisms/TextField';
 import Loading from '@Components/atoms/Loading';
+import Checkbox from '@Components/atoms/Checkbox';
 import ActionCreator from '@Actions';
 import { Account } from '@Services/apis';
 import editInfo from '@Assets/images/editInfo.png';
@@ -192,12 +192,12 @@ class MypageInfo extends Component {
           <View style={S.checks}>
             <View style={S.checkItem}>
               <Checkbox
-                status={(isAgreeSNS.email && isAgreeSNS.sms) ? 'checked' : 'unchecked'}
+                checked={!(isAgreeSNS.email && isAgreeSNS.sms)}
                 onPress={() => {
                   this.setState({
                     isAgreeSNS:{
                       sms: isAgreeSNS.email && isAgreeSNS.sms ? false : true,
-                      email: isAgreeSNS.email && isAgreeSNS.sms ? false : true
+                      email: isAgreeSNS.email && isAgreeSNS.sms ? false : true,
                     }
                   })
                 }}
@@ -206,7 +206,7 @@ class MypageInfo extends Component {
             </View>
             <View style={[S.checkItem, S.checkChildren]}>
               <Checkbox
-                status={isAgreeSNS.sms ? 'checked' : 'unchecked'}
+                checked={!isAgreeSNS.sms}
                 onPress={() => {
                   this.setState({
                     isAgreeSNS:{
@@ -220,7 +220,7 @@ class MypageInfo extends Component {
             </View>
             <View style={[S.checkItem, S.checkChildren]}>
               <Checkbox
-                status={isAgreeSNS.email ? 'checked' : 'unchecked'}
+                checked={!isAgreeSNS.email}
                 onPress={() => {
                   this.setState({
                     isAgreeSNS:{
