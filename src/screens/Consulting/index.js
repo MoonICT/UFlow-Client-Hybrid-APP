@@ -13,7 +13,6 @@ import {
   Text,
   Button,
   RadioButton,
-  Checkbox,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -22,6 +21,7 @@ import Bgr from '@Assets/images/bgr-consulting.png';
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
+import Checkbox from '@Components/atoms/Checkbox';
 import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
 class Consulting extends Component {
@@ -161,7 +161,19 @@ class Consulting extends Component {
                       onPress={() => {
                         this.handleChange(a.id.answerSeq, index);
                       }}>
-                      <RadioButton
+                      <Checkbox
+                        value={a.id.answerSeq}
+                        onPress={() => {
+                          this.handleChange(a.id.answerSeq, index);
+                        }}
+                        checked={
+                          listAnswer[index].userAnswer.toString() ===
+                          a.id.answerSeq.toString()
+                            ? true
+                            : false
+                        }
+                      />
+                       {/* <RadioButton
                         value={a.id.answerSeq}
                         color="#ff6d00"
                         uncheckedColor="white"
@@ -174,7 +186,7 @@ class Consulting extends Component {
                             ? 'checked'
                             : 'unchecked'
                         }
-                      />
+                      /> */}
                       <Text style={{ color: 'white', fontSize: 15 }}>
                         {a.answer}
                       </Text>
@@ -213,15 +225,15 @@ class Consulting extends Component {
                         this.handleChange(a.id.answerSeq, index, true)
                       }>
                       <Checkbox
-                        status={
+                        checked={
                           listAnswer[index].userAnswer.indexOf(
                             a.id.answerSeq.toString(),
                           ) === -1
-                            ? 'unchecked'
-                            : 'checked'
+                            ? false
+                            : true
                         }
-                        color="#ff6d00"
-                        uncheckedColor="white"
+                        // color="#ff6d00"
+                        // uncheckedColor="white"
                         onPress={() =>
                           this.handleChange(a.id.answerSeq, index, true)
                         }

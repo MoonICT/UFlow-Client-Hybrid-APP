@@ -22,7 +22,6 @@ import SplashScreen from 'react-native-splash-screen';
 import {
   TextInput,
   Appbar,
-  Checkbox,
   Text,
   Switch,
   IconButton,
