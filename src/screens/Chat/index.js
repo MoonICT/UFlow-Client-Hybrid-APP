@@ -16,7 +16,7 @@
 // } from 'react-native';
 // import { connect } from 'react-redux';
 // import SplashScreen from 'react-native-splash-screen';
-// import { Appbar, Text, Checkbox } from 'react-native-paper';
+// import { Appbar, Text } from 'react-native-paper';
 //
 // // Local Imports
 // import DefaultStyle from '@Styles/default';

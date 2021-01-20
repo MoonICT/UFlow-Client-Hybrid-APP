@@ -14,7 +14,6 @@ import {
   Image,
 } from 'react-native';
 import {
-  Checkbox,
   Appbar,
   Searchbar,
   Text,

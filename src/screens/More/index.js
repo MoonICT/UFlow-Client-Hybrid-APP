@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
+import { TextInput, Appbar, Text, Button } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 
 // Local Imports

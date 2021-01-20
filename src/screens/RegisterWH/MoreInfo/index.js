@@ -17,7 +17,6 @@ import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import {
   Appbar,
-  Checkbox,
   Text,
 } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';

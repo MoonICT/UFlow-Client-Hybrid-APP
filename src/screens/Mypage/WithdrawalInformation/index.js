@@ -13,13 +13,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import { Appbar, Text, Checkbox } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import TextField from '@Components/organisms/TextField';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
+import Checkbox from '@Components/atoms/Checkbox';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 
@@ -138,7 +139,7 @@ class WithdrawalInformation extends Component {
                   return (
                     <View key={index} style={S.checkItem}>
                       <Checkbox
-                        status={item.isCheck ? 'checked' : 'unchecked'}
+                        checked={item.isCheck}
                         onPress={() => this.onCheck(item, index)}
                       />
                       <Text style={S.textCheck}>{item.label}</Text>

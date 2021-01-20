@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { Card, Checkbox, Text, Button, IconButton } from 'react-native-paper';
+import { Card, Text, Button, IconButton } from 'react-native-paper';
 import DatePicker from '@Components/organisms/DatePicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
