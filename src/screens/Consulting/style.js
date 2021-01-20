@@ -64,6 +64,13 @@ export const styles = StyleSheet.create({
     lineHeight: 24,
     marginTop: 15,
   },
+  borderStyle: {
+    borderColor: '#d7d7d7',
+  },
+  borderChecked: {
+    borderColor: color.primary.main,
+    backgroundColor: '#ff6d00',
+  },
   styleButton: {
     alignItems: 'center',
     backgroundColor: color.primary.main,

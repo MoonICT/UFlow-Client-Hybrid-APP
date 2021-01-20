@@ -172,6 +172,8 @@ class Consulting extends Component {
                             ? true
                             : false
                         }
+                        borderUnchecked={S.borderStyle}
+                        borderChecked={S.borderChecked}
                       />
                        {/* <RadioButton
                         value={a.id.answerSeq}

@@ -27,7 +27,7 @@ class Checkbox extends Component {
                           }
                         }}>
         <View
-          style={[styles.checkbox, this.props.checked ? styles.checked : styles.unchecked, (this.props.disabled && styles.disabled)]}>
+          style={[styles.checkbox, this.props.checked ? (styles.checked || this.props.borderChecked) : (styles.unchecked ,(this.props.disabled && styles.disabled) || this.props.borderUnchecked) ]}>
           {this.props.checked &&
           <Icon name={'check'} style={[styles.icon, (this.props.disabled && styles.disabled)]} />}
         </View>
@@ -43,6 +43,8 @@ Checkbox.protoType = {
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
   onPress: PropTypes.func,
+  borderUnchecked: PropTypes.object,
+  borderChecked: PropTypes.object,
 };
 
 export default Checkbox;
