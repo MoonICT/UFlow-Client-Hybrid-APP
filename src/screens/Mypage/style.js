@@ -199,9 +199,10 @@ export const styles = StyleSheet.create({
   checkItem: {
     flexDirection: 'row',
     flex: 1,
+    marginBottom: 14,
   },
   textCheck: {
-    paddingTop: 8,
+    // paddingTop: 4,
   },
   checks: {},
   // listChecks: {
