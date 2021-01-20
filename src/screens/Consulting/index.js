@@ -8,12 +8,7 @@
 import React, { Component } from 'react';
 import { View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import {
-  Appbar,
-  Text,
-  Button,
-  RadioButton,
-} from 'react-native-paper';
+import { Appbar, Text, Button, RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Bgr from '@Assets/images/bgr-consulting.png';
@@ -176,7 +171,7 @@ class Consulting extends Component {
                         borderChecked={S.borderChecked}
                         iconColor={S.iconColor}
                       />
-                       {/* <RadioButton
+                      {/* <RadioButton
                         value={a.id.answerSeq}
                         color="#ff6d00"
                         uncheckedColor="white"

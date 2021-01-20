@@ -13,23 +13,39 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from './style';
 
 class Checkbox extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {};
   }
 
-  render () {
+  render() {
     return (
-      <TouchableOpacity style={styles.container}
-                        onPress={() => {
-                          if (!this.props.disabled) {
-                            this.props.onPress();
-                          }
-                        }}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => {
+          if (!this.props.disabled) {
+            this.props.onPress();
+          }
+        }}>
         <View
-          style={[styles.checkbox, this.props.checked ? (styles.checked || this.props.borderChecked) : (styles.unchecked ,(this.props.disabled && styles.disabled) || this.props.borderUnchecked) ]}>
-          {this.props.checked &&
-          <Icon name={'check'} style={[styles.icon, (this.props.disabled && styles.disabled) || this.props.iconColor]} />}
+          style={[
+            styles.checkbox,
+            this.props.checked
+              ? styles.checked || this.props.borderChecked
+              : (styles.unchecked,
+                (this.props.disabled && styles.disabled) ||
+                  this.props.borderUnchecked),
+          ]}>
+          {this.props.checked && (
+            <Icon
+              name={'check'}
+              style={[
+                styles.icon,
+                (this.props.disabled && styles.disabled) ||
+                  this.props.iconColor,
+              ]}
+            />
+          )}
         </View>
         <Text style={styles.label}>{this.props.label}</Text>
       </TouchableOpacity>
