@@ -29,7 +29,7 @@ class Checkbox extends Component {
         <View
           style={[styles.checkbox, this.props.checked ? (styles.checked || this.props.borderChecked) : (styles.unchecked ,(this.props.disabled && styles.disabled) || this.props.borderUnchecked) ]}>
           {this.props.checked &&
-          <Icon name={'check'} style={[styles.icon, (this.props.disabled && styles.disabled)]} />}
+          <Icon name={'check'} style={[styles.icon, (this.props.disabled && styles.disabled) || this.props.iconColor]} />}
         </View>
         <Text style={styles.label}>{this.props.label}</Text>
       </TouchableOpacity>
@@ -45,6 +45,7 @@ Checkbox.protoType = {
   onPress: PropTypes.func,
   borderUnchecked: PropTypes.object,
   borderChecked: PropTypes.object,
+  iconColor: PropTypes.object,
 };
 
 export default Checkbox;

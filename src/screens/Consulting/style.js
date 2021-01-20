@@ -71,6 +71,12 @@ export const styles = StyleSheet.create({
     borderColor: color.primary.main,
     backgroundColor: '#ff6d00',
   },
+  iconColor: {
+    marginLeft: -2,
+    color: '#605e5c',
+    fontSize: 20,
+    lineHeight: 18,
+  },
   styleButton: {
     alignItems: 'center',
     backgroundColor: color.primary.main,
