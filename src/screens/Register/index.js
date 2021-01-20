@@ -11,7 +11,8 @@ import React, { Component } from 'react';
 import { SafeAreaView, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
+import { TextInput, Appbar, Text, Button } from 'react-native-paper';
+
 // import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
@@ -23,6 +24,7 @@ import Loading from '@Components/atoms/Loading';
 import DoneRegister from './done';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import TextField from '@Components/organisms/TextField';
+import Checkbox from '@Components/atoms/Checkbox';
 //---> Assets
 import { Account } from '@Services/apis';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -264,7 +266,7 @@ class Register extends Component {
                   {/** ----------Terms ------------*/}
                   <View style={S.itemTerm}>
                     <Checkbox
-                      status={termsAll ? 'checked' : 'unchecked'}
+                      checked={termsAll}
                       onPress={() => {
                         this.setState({
                           termsAll: !termsAll,
@@ -290,7 +292,7 @@ class Register extends Component {
                   {/** ----------Terms 1 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
-                      status={serviceTerms ? 'checked' : 'unchecked'}
+                      checked={serviceTerms}
                       onPress={() => {
                         this.setState({
                           serviceTerms: !serviceTerms,
@@ -313,7 +315,7 @@ class Register extends Component {
                   {/** ----------Terms 2 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
-                      status={terms.privacy ? 'checked' : 'unchecked'}
+                      checked={terms.privacy}
                       onPress={() => {
                         this.setState({
                           terms: {
@@ -339,7 +341,7 @@ class Register extends Component {
                   {/** ----------Terms 3 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
-                      status={terms.location ? 'checked' : 'unchecked'}
+                      checked={terms.location}
                       onPress={() => {
                         this.setState({
                           terms: {
@@ -365,7 +367,7 @@ class Register extends Component {
                   {/** ----------Terms 4 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
-                      status={terms.financial ? 'checked' : 'unchecked'}
+                      checked={terms.financial}
                       onPress={() => {
                         this.setState({
                           terms: {
@@ -391,7 +393,7 @@ class Register extends Component {
                   {/** ----------Terms 5 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
-                      status={checkMarketing ? 'checked' : 'unchecked'}
+                      checked={checkMarketing}
                       onPress={() => {
                         this.setState({
                           checkMarketing: !checkMarketing,
@@ -418,7 +420,7 @@ class Register extends Component {
                   <View style={[S.itemTermCL, S.itemTermMr]}>
                     <View style={[S.itemTerm, S.itemTermMr]}>
                       <Checkbox
-                        status={marketing.kakao ? 'checked' : 'unchecked'}
+                        checked={marketing.kakao}
                         onPress={() => {
                           this.setState({
                             marketing: {
@@ -441,7 +443,7 @@ class Register extends Component {
 
                     <View style={[S.itemTerm, S.itemTermMr]}>
                       <Checkbox
-                        status={marketing.sms ? 'checked' : 'unchecked'}
+                        checked={marketing.sms}
                         onPress={() => {
                           this.setState({
                             marketing: {
@@ -464,7 +466,7 @@ class Register extends Component {
 
                     <View style={[S.itemTerm, S.itemTermMr]}>
                       <Checkbox
-                        status={marketing.email ? 'checked' : 'unchecked'}
+                        checked={marketing.email}
                         onPress={() => {
                           this.setState({
                             marketing: {

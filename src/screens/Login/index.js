@@ -11,7 +11,7 @@ import React, { Component } from 'react';
 import { SafeAreaView, View, ScrollView, Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { TextInput, Appbar, Checkbox, Text, Button } from 'react-native-paper';
+import { TextInput, Appbar, Text, Button } from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
@@ -21,6 +21,7 @@ import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import { Account, FCM } from '@Services/apis';
 import Loading from '@Components/atoms/Loading';
+import Checkbox from '@Components/atoms/Checkbox';
 import { AuthContext } from '@Store/context';
 
 //Contants
@@ -39,7 +40,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      isRemember: true,
+      isRemember: false,
       isLogin: false,
       loading: false,
     };
@@ -161,7 +162,7 @@ class Login extends Component {
             <View style={S.plusFormLogin}>
               <View style={S.rememberLogin}>
                 <Checkbox
-                  status={isRemember ? 'checked' : 'unchecked'}
+                  checked={isRemember}
                   onPress={() => {
                     this.setState({ isRemember: !isRemember });
                   }}
