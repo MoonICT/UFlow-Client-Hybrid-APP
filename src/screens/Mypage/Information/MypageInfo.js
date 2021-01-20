@@ -192,7 +192,7 @@ class MypageInfo extends Component {
           <View style={S.checks}>
             <View style={S.checkItem}>
               <Checkbox
-                checked={!(isAgreeSNS.email && isAgreeSNS.sms)}
+                checked={(!isAgreeSNS.email && !isAgreeSNS.sms)}
                 onPress={() => {
                   this.setState({
                     isAgreeSNS:{
