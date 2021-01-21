@@ -421,6 +421,7 @@ class FormTrusts extends Component {
               valueForm && valueForm(dataF);
             }}
           />
+          {/**
           <TextField
             labelTextField="인건단가 (선택)"
             placeholder="0"
@@ -487,7 +488,7 @@ class FormTrusts extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-
+ */}
           <TextField
             labelTextField="비고"
             value={formData.remark}
