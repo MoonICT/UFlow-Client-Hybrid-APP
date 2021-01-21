@@ -119,7 +119,7 @@ class ReqeustQTrust extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? moment(from).format('YYYY.MM.DD') : ''}
+              {from ? Moment.unix(this.state.formData.from/1000).format('YYYY.MM.DD') : ''}
             </Text>
             <Text
               style={[
@@ -134,7 +134,7 @@ class ReqeustQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? moment(from).toDate() : new Date()}
+              date={from ? Moment.unix(this.state.formData.from/1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -154,7 +154,7 @@ class ReqeustQTrust extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? moment(to).format('YYYY.MM.DD') : ''}
+              {to ? Moment.unix(this.state.formData.to/1000).format('YYYY.MM.DD') : ''}
             </Text>
             <Text
               style={[
@@ -169,7 +169,7 @@ class ReqeustQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? moment(to).toDate() : new Date()}
+              date={to ? Moment.unix(this.state.formData.to/1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
