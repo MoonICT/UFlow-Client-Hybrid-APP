@@ -303,10 +303,9 @@ class FormInfo extends Component {
                 }}
                 value={commonAreaState2 === '' ? '' : formData.cmnArea}
               />
-            </View> */}
+            </View>
           </View>
- */}
-
+  */}
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
