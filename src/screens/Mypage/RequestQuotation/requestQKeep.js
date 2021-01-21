@@ -331,31 +331,31 @@ class ReqeustQKeep extends Component {
             remark: formData.remark
           };
 
-          Warehouse.responQuotation({
-            type: `tenant/warehouse/${formData.warehouseRegNo}/keep/${formData.seq}`,
-            data: formData,
-          })
-            .then(res => {
-              // const status = res.status;
-              console.log('resRespon', res);
-              if (res.status === 200) {
-                console.log('res', res);
-
-                this.setState({
-                  isSubmitKeep: false
-                });
-                // TODO change illustrator popup
-                alert('견적요청이 완료되었습니다.');
-                // this.props.navigation.goBack();
-                this.props.navigation.navigate('Mypage', {
-                  title: '견적･계약 관리',
-                })
-              }
-            })
-            .catch(err => {
-              let message = err.response && err.response.data.message;
-              alert(message);
-            });
+          // Warehouse.responQuotation({
+          //   type: `tenant/warehouse/${formData.warehouseRegNo}/keep/${formData.seq}`,
+          //   data: formData,
+          // })
+          //   .then(res => {
+          //     // const status = res.status;
+          //     console.log('resRespon', res);
+          //     if (res.status === 200) {
+          //       console.log('res', res);
+          //
+          //       this.setState({
+          //         isSubmitKeep: false
+          //       });
+          //       // TODO change illustrator popup
+          //       alert('견적요청이 완료되었습니다.');
+          //       // this.props.navigation.goBack();
+          //       this.props.navigation.navigate('Mypage', {
+          //         title: '견적･계약 관리',
+          //       })
+          //     }
+          //   })
+          //   .catch(err => {
+          //     let message = err.response && err.response.data.message;
+          //     alert(message);
+          //   });
 
           console.log(formData, 'formData');
         }}

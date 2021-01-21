@@ -102,7 +102,7 @@ class MypageInfo extends Component {
 
   onSubmit = () => {
     console.log('this.state', this.state)
-    
+
     const { data,isAgreeSNS } = this.state;
     if(!data.passwordOld) {
       alert('비밀번호를 입력해주세요');
@@ -143,7 +143,6 @@ class MypageInfo extends Component {
           <View style>
             <TextField
               labelTextField="이름"
-              // placeholder="하혜정"
               value={data.fullName ? data.fullName : ''}
               valueProps={e => this.setState({
                 data:{
@@ -154,7 +153,7 @@ class MypageInfo extends Component {
             />
             <TextField
               labelTextField="이메일"
-              editable={false} 
+              editable={false}
               selectTextOnFocus={false}
               value={data.email || 'haharu@aartkorea.com'}
               placeholder="haharu@aartkorea.com"
@@ -170,7 +169,7 @@ class MypageInfo extends Component {
                 data:{
                   ...data,
                   passwordOld: e
-              }})} 
+              }})}
             />
             <TextField
               type={'password'}
