@@ -101,7 +101,14 @@ class MypageInfo extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   onSubmit = () => {
+    console.log('this.state', this.state)
+    
     const { data,isAgreeSNS } = this.state;
+    if(!data.passwordOld) {
+      alert('비밀번호를 입력해주세요');
+      return
+    }
+
     this.setState({loading: true});
     Account.editMyInfo({
       fullName: data.fullName,
@@ -117,7 +124,6 @@ class MypageInfo extends Component {
         content: '회원정보가 수정되었습니다.',
         image: editInfo
       });
-      console.log('editMyInfo', res);
     }).catch(error => {
       this.setState({loading: false});
       alert(error.response.data.message);
@@ -132,12 +138,12 @@ class MypageInfo extends Component {
       <>
         <View style={[DefaultStyle._cards]}>
           <View style={[DefaultStyle._titleCard, { marginBottom: -4 }]}>
-            <Text style={DefaultStyle._textTitleBody}>거래조건</Text>
+            {/* <Text style={DefaultStyle._textTitleBody}>거래조건</Text> */}
           </View>
           <View style>
             <TextField
               labelTextField="이름"
-              placeholder="하혜정"
+              // placeholder="하혜정"
               value={data.fullName ? data.fullName : ''}
               valueProps={e => this.setState({
                 data:{
