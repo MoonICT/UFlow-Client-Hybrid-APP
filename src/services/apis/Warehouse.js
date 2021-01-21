@@ -627,7 +627,7 @@ export const registWhrg = whrgBody => {
  */
 export const getWhrgId = () => {
   return Axios.getRequest({
-    url: '/api/v1/warehouse/id',
+    url: '/api/v1/warehouse/generate/id',
     requiresToken: true, // set access_token
   });
 };
