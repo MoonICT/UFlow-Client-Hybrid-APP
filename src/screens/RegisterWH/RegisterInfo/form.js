@@ -260,7 +260,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          {/**
+{/**
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
@@ -282,7 +282,7 @@ class FormInfo extends Component {
                 value={formData.cmnArea === '' ? '' : commonAreaState2}
                 keyboardType="numeric"
               />
-            </View> 
+            </View>
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="공용면적"
@@ -303,9 +303,9 @@ class FormInfo extends Component {
                 }}
                 value={commonAreaState2 === '' ? '' : formData.cmnArea}
               />
-            </View> 
+            </View>
           </View>
- */}
+  */}
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
