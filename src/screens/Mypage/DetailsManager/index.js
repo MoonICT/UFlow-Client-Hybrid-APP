@@ -666,8 +666,13 @@ export default class DetailsManager extends Component {
         const data = new FormData();
         data.append('name', singleFile.name);
         data.append('file', singleFile);
+        data.append('id', rentWarehNo);
+        if (typeCreate === 'import')
+          data.append('code', '0005');
+        else if (typeCreate === 'expert')
+          data.append('code', '0006');
         // Please change file upload URL
-        InOutManagerService.uploadFile(data).then(respon => {
+        InOutManagerService.uploadFileNew(data).then(respon => {
           if (respon.status === 200) {
             const {filename, url} = respon.data
             this.setState({
