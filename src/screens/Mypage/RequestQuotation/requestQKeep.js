@@ -50,7 +50,8 @@ class ReqeustQKeep extends Component {
       formData: {
         ...this.state.formData,
         from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showFrom: false
+      },
+      showFrom: false
     });
   };
 
@@ -61,7 +62,8 @@ class ReqeustQKeep extends Component {
       formData: {
         ...this.state.formData,
         to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showTo: false
+      },
+      showTo: false
     });
   };
 
@@ -109,7 +111,7 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment(from).format('YYYY.MM.DD') : ''}
+              {from ? Moment.unix(this.state.formData.from / 1000).format('YYYY.MM.DD') : ''}
             </Text>
             <Text
               style={[
@@ -124,7 +126,7 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? Moment(from).toDate() : new Date()}
+              date={this.state.formData.from ? Moment.unix(this.state.formData.from / 1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -145,7 +147,7 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? Moment(to).format('YYYY.MM.DD') : ''}
+              {to ? Moment.unix(this.state.formData.to / 1000).format('YYYY.MM.DD') : ''}
             </Text>
             <Text
               style={[
@@ -160,7 +162,7 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? Moment(to).toDate() : new Date()}
+              date={this.state.formData.to ? Moment.unix(this.state.formData.to / 1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -331,31 +333,31 @@ class ReqeustQKeep extends Component {
             remark: formData.remark
           };
 
-          // Warehouse.responQuotation({
-          //   type: `tenant/warehouse/${formData.warehouseRegNo}/keep/${formData.seq}`,
-          //   data: formData,
-          // })
-          //   .then(res => {
-          //     // const status = res.status;
-          //     console.log('resRespon', res);
-          //     if (res.status === 200) {
-          //       console.log('res', res);
-          //
-          //       this.setState({
-          //         isSubmitKeep: false
-          //       });
-          //       // TODO change illustrator popup
-          //       alert('견적요청이 완료되었습니다.');
-          //       // this.props.navigation.goBack();
-          //       this.props.navigation.navigate('Mypage', {
-          //         title: '견적･계약 관리',
-          //       })
-          //     }
-          //   })
-          //   .catch(err => {
-          //     let message = err.response && err.response.data.message;
-          //     alert(message);
-          //   });
+          Warehouse.responQuotation({
+            type: `tenant/warehouse/${formData.warehouseRegNo}/keep/${formData.seq}`,
+            data: formData,
+          })
+            .then(res => {
+              // const status = res.status;
+              console.log('resRespon', res);
+              if (res.status === 200) {
+                console.log('res', res);
+
+                this.setState({
+                  isSubmitKeep: false
+                });
+                // TODO change illustrator popup
+                alert('견적요청이 완료되었습니다.');
+                // this.props.navigation.goBack();
+                this.props.navigation.navigate('Mypage', {
+                  title: '견적･계약 관리',
+                })
+              }
+            })
+            .catch(err => {
+              let message = err.response && err.response.data.message;
+              alert(message);
+            });
 
           console.log(formData, 'formData');
         }}
