@@ -260,7 +260,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-
+{/**
           <View style={DefaultStyle._listElement}>
             {/* <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
@@ -305,6 +305,8 @@ class FormInfo extends Component {
               />
             </View> */}
           </View>
+ */}
+
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
