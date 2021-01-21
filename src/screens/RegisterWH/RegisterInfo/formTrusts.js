@@ -421,7 +421,8 @@ class FormTrusts extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          {/* <TextField
+          {/**
+          <TextField
             labelTextField="인건단가 (선택)"
             placeholder="0"
             keyboardType="numeric"
@@ -435,8 +436,8 @@ class FormTrusts extends Component {
               dataF.psnChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-          /> */}
-          {/* <TextField
+          />
+          <TextField
             labelTextField="가공단가 (선택)"
             value={mnfctChrg}
             placeholder="0"
@@ -452,8 +453,8 @@ class FormTrusts extends Component {
               dataF.mnfctChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-          /> */}
-          {/* <TextField
+          />
+          <TextField
             labelTextField="택배단가 (선택)"
             placeholder="0"
             keyboardType="numeric"
@@ -469,8 +470,8 @@ class FormTrusts extends Component {
               dataF.dlvyChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-          /> */}
-          {/* <TextField
+          />
+          <TextField
             labelTextField="운송단가 (선택)"
             placeholder="0"
             keyboardType="numeric"
@@ -486,8 +487,8 @@ class FormTrusts extends Component {
               dataF.shipChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-          /> */}
-
+          />
+ */}
           <TextField
             labelTextField="비고"
             value={formData.remark}
