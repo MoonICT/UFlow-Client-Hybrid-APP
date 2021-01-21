@@ -311,9 +311,22 @@ export const uploadImage = (formData) => {
   });
 };
 
+// Deprecated
 export const uploadFile = async (body) => {
   const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.post(`/api/v1/rtwh/upload`, body,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      contentType: 'multipart/form-data'
+    }
+  });
+};
+
+
+export const uploadFileNew = async (body) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.post(`/api/v1/rtwh/upload/new`, body,
   {
     headers: {
       Authorization: `Bearer ${token}`,
