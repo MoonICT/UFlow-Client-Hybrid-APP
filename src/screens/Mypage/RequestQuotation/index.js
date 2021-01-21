@@ -144,20 +144,7 @@ class RequestQuotation extends Component {
 
     return (
       <SafeAreaView style={S.container}>
-        {/* <Appbars>
-          <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="견적 요청하기"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          />
-        </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'견적 요청하기'}
             navigation={this.navigation}
