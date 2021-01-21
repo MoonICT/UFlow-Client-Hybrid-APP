@@ -24,7 +24,7 @@ import ImagePanoram from './imagePanoram';
 import UpImage from './image';
 import ActionCreator from '@Actions';
 import { styles as S } from '../style';
-import { MediaUpload } from '@Services/apis';
+import { Warehouse } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
 
 class RegisterImage extends Component {
@@ -130,7 +130,24 @@ class RegisterImage extends Component {
             // Progress
             this.props.setProgress({ is: true, type: 'CIRCLE' });
             // Please change file upload URL
-            await MediaUpload.uploadFile(data)
+            {/** TODO 창고 이미지 업로드 시  **/}
+            {/**
+               TODO @deokin
+             * 1)20210121 장종례 창고등록 API 수정 (1)
+             * 2)20210121 장종례 창고등록 API 수정 (2)
+             * 3)창고등록 이미지 업로드 처리
+             * 4)창고수정 이미지 업로드 처리
+             *
+             *
+             *
+             * @param body {
+             *   file => 파일
+             *   id => 창고 ID
+             *   code => 이미지(0001) 또는 파노라마(0002)
+             * }
+             * @returns {Promise<AxiosResponse<any>>}
+             */}
+            await Warehouse.uploadImage(data)
               .then(respon => {
                 if (respon.status === 200) {
                   let { url } = respon.data;
