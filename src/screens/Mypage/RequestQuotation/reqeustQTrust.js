@@ -410,10 +410,10 @@ class ReqeustQTrust extends Component {
             splyAmount: formData.splyAmount,
             whinChrg: formData.whinChrg,
             whoutChrg: formData.whoutChrg,
-            psnChrg: formData.psnChrg,
-            mnfctChrg: formData.mnfctChrg,
-            dlvyChrg: formData.dlvyChrg,
-            shipChrg: formData.shipChrg,
+            // psnChrg: formData.psnChrg,
+            // mnfctChrg: formData.mnfctChrg,
+            // dlvyChrg: formData.dlvyChrg,
+            // shipChrg: formData.shipChrg,
             remark: formData.remark
           };
 
@@ -441,6 +441,7 @@ class ReqeustQTrust extends Component {
               }
             })
             .catch(err => {
+              console.log('err.response :>> ', err.response);
               let message = err.response && err.response.data.message;
               alert(message);
             });

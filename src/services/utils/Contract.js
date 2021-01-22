@@ -220,12 +220,12 @@ export const trustTableDatas = (
     usblYmdLabel = '수탁 가능기간',
     usblValueLabel = '수탁 가용수량',
     splyAmountLabel = '보관단가',
-    mnfctChrgLabel = '가공단가',
-    psnChrgLabel = '인건단가',
+    // mnfctChrgLabel = '가공단가',
+    // psnChrgLabel = '인건단가',
     whinChrgLabel = '입고단가',
     whoutChrgLabel = '출고단가',
-    dlvyChrgLabel = '택배단가',
-    shipChrgLabel = '운송단가'
+    // dlvyChrgLabel = '택배단가',
+    // shipChrgLabel = '운송단가'
   },
   {
     warehouseName,
@@ -299,22 +299,22 @@ export const trustTableDatas = (
         type: whoutChrgLabel,
         value: whoutChrg,
       },
-      {
-        type: mnfctChrgLabel,
-        value: mnfctChrg,
-      },
-      {
-        type: psnChrgLabel,
-        value: psnChrg,
-      },
-      {
-        type: dlvyChrgLabel,
-        value: dlvyChrg,
-      },
-      {
-        type: shipChrgLabel,
-        value: shipChrg,
-      },
+      // {
+      //   type: mnfctChrgLabel,
+      //   value: mnfctChrg,
+      // },
+      // {
+      //   type: psnChrgLabel,
+      //   value: psnChrg,
+      // },
+      // {
+      //   type: dlvyChrgLabel,
+      //   value: dlvyChrg,
+      // },
+      // {
+      //   type: shipChrgLabel,
+      //   value: shipChrg,
+      // },
     ];
   } else if (mode === 2) {
     // 1100, 2100, 4100, 5100
@@ -360,22 +360,22 @@ export const trustTableDatas = (
         type: whoutChrgLabel,
         value: whoutChrg,
       },
-      {
-        type: mnfctChrgLabel,
-        value: mnfctChrg,
-      },
-      {
-        type: psnChrgLabel,
-        value: psnChrg,
-      },
-      {
-        type: dlvyChrgLabel,
-        value: dlvyChrg,
-      },
-      {
-        type: shipChrgLabel,
-        value: shipChrg,
-      },
+      // {
+      //   type: mnfctChrgLabel,
+      //   value: mnfctChrg,
+      // },
+      // {
+      //   type: psnChrgLabel,
+      //   value: psnChrg,
+      // },
+      // {
+      //   type: dlvyChrgLabel,
+      //   value: dlvyChrg,
+      // },
+      // {
+      //   type: shipChrgLabel,
+      //   value: shipChrg,
+      // },
     ];
   } else if (mode === 3) {
     // 5100 계약완료 정보
@@ -421,22 +421,22 @@ export const trustTableDatas = (
         type: whoutChrgLabel,
         value: whoutChrg,
       },
-      {
-        type: mnfctChrgLabel,
-        value: mnfctChrg,
-      },
-      {
-        type: psnChrgLabel,
-        value: psnChrg,
-      },
-      {
-        type: dlvyChrgLabel,
-        value: dlvyChrg,
-      },
-      {
-        type: shipChrgLabel,
-        value: shipChrg,
-      },
+      // {
+      //   type: mnfctChrgLabel,
+      //   value: mnfctChrg,
+      // },
+      // {
+      //   type: psnChrgLabel,
+      //   value: psnChrg,
+      // },
+      // {
+      //   type: dlvyChrgLabel,
+      //   value: dlvyChrg,
+      // },
+      // {
+      //   type: shipChrgLabel,
+      //   value: shipChrg,
+      // },
     ];
   }
   return [];

@@ -71,22 +71,22 @@ class OwnerRq00Trust extends Component {
               type: '출고단가',
               value: item.whoutChrg ? StringUtils.money(item.whoutChrg) : '-'
             },
-            {
-              type: '인건단가',
-              value: item.psnChrg ? StringUtils.money(item.psnChrg) : '-'
-            },
-            {
-              type: '가공단가',
-              value: item.mnfctChrg ? StringUtils.money(item.mnfctChrg) : '-'
-            },
-            {
-              type: '택배단가',
-              value: item.dlvyChrg ? StringUtils.money(item.dlvyChrg) : '-'
-            },
-            {
-              type: '운송단가',
-              value: item.shipChrg ? StringUtils.money(item.shipChrg) : '-'
-            },
+            // {
+            //   type: '인건단가',
+            //   value: item.psnChrg ? StringUtils.money(item.psnChrg) : '-'
+            // },
+            // {
+            //   type: '가공단가',
+            //   value: item.mnfctChrg ? StringUtils.money(item.mnfctChrg) : '-'
+            // },
+            // {
+            //   type: '택배단가',
+            //   value: item.dlvyChrg ? StringUtils.money(item.dlvyChrg) : '-'
+            // },
+            // {
+            //   type: '운송단가',
+            //   value: item.shipChrg ? StringUtils.money(item.shipChrg) : '-'
+            // },
             // {
             //   type: '정산단위',
             //   value: item.calUnitDvCode ? StringUtils.toStdName(this.state.calUnitDvCodes, item.calUnitDvCode) : '-'
