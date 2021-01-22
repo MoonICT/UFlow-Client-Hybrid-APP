@@ -170,17 +170,17 @@ class Quotation extends Component {
         /*보관단가*/
         splyAmount: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount),
         /*가공단가*/
-        mnfctChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg),
+        // mnfctChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg),
         /*인건단가*/
-        psnChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg),
+        // psnChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg),
         /*입고단가*/
         whinChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whinChrg),
         /*출고단가*/
         whoutChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whoutChrg),
         /*택배단가*/
-        dlvyChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg),
+        // dlvyChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg),
         /*운송단가*/
-        shipChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg),
+        // shipChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg),
       });
 
     return (

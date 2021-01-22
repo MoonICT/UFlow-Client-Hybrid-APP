@@ -230,7 +230,7 @@ class ResponseQTrust extends Component {
         colorLabel="#000000"
         labelTextField="보관단가"
         textRight="원"
-        textError={ checkSplyAmount === true ? null : '단가가 허용범위를 초과했습니다.'}
+        // textError={ checkSplyAmount === true ? null : '단가가 허용범위를 초과했습니다.'}
         keyboardType="numeric"
         defaultValue={
           splyAmount ? String(splyAmount) : '0'
@@ -256,7 +256,7 @@ class ResponseQTrust extends Component {
           whinChrg ? String(whinChrg) : '0'
         }
         placeholder="0"
-        textError={ checkWhinChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
+        // textError={ checkWhinChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
         isRequired={true}
         onChangeText={e =>
           this.setState({
@@ -272,7 +272,7 @@ class ResponseQTrust extends Component {
         colorLabel="#000000"
         labelTextField="출고단가"
         textRight="원"
-        textError={ checkWhoutChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
+        // textError={ checkWhoutChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
         keyboardType="numeric"
         defaultValue={
           whoutChrg ? String(whoutChrg) : '0'
@@ -289,7 +289,7 @@ class ResponseQTrust extends Component {
         }
       />
       {/** 인건 단가 **/}
-
+      {/** 
       <TextField
         colorLabel="#000000"
         labelTextField="인건단가"
@@ -308,7 +308,9 @@ class ResponseQTrust extends Component {
           })
         }
       />
+       **/}
       {/** 가공 단가 **/}
+      {/** 
       <TextField
         colorLabel="#000000"
         labelTextField="가공단가"
@@ -327,7 +329,9 @@ class ResponseQTrust extends Component {
           })
         }
       />
+       **/}
       {/** 택배 단가 **/}
+      {/** 
       <TextField
         colorLabel="#000000"
         labelTextField="택배단가"
@@ -346,7 +350,9 @@ class ResponseQTrust extends Component {
           })
         }
       />
+       **/}
       {/** 운송 단가 **/}
+      {/**
       <TextField
         colorLabel="#000000"
         labelTextField="운송단가"
@@ -365,6 +371,7 @@ class ResponseQTrust extends Component {
           })
         }
       />
+       **/}
       {/** 추가 요청 사항 **/}
       <TextField
         colorLabel="#000000"
