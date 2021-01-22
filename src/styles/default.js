@@ -508,6 +508,7 @@ export default StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr',
     fontSize: 12,
     left: 10,
+    marginTop: 8,
   },
   _textAreaStyle:{
     textAlignVertical: 'top',
