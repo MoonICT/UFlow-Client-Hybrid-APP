@@ -114,7 +114,7 @@ const dataSteps = [
     title: '계약승인',
     number: 0,
     status: false,
-  },
+  }
 ];
 
 class Mypage extends Component {

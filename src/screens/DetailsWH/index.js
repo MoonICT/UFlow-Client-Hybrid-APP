@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Appbar, Text, IconButton } from 'react-native-paper';
 import ImageView from 'react-native-image-view';
-
+import { Account } from '@Services/apis';
 // Local Imports
 import { Warehouse, WarehouseTenant, MyPage } from '@Services/apis';
 import DefaultStyle from '@Styles/default';
@@ -39,7 +39,7 @@ import WHType2 from '@Assets/images/icon-warehouse-2.png';
 import WHType3 from '@Assets/images/icon-warehouse-3.png';
 import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
-
+import {toSquareMeter, toPyeong} from '@Services/utils/unit';
 class DetailWH extends Component {
   constructor (props) {
     super(props);
@@ -50,6 +50,7 @@ class DetailWH extends Component {
       toggleImage: false, // 창고이미지 || 파노라마이미지 토클.
       isImageViewVisible: false, // 창고이미지 자세히 보기.
       id: id,
+      userId: -1,
       active: 0,
       checked: true,
       checked2: false,
@@ -100,6 +101,65 @@ class DetailWH extends Component {
       this.getDataWH();
     }
   }
+
+
+    /** when after render DOM */
+    componentDidMount () {
+      // Progress
+      this.props.setProgress({ is: true, });
+  
+      const { route } = this.props;
+      this.getDataWH();
+      this.handleRequestQnaList(4);
+      this.hiddenName();
+      AsyncStorage.getItem(TOKEN)
+        .then(v => {
+          this.setState({ isLogin: v !== '' && v !== null });
+        })
+        .catch(error => {
+          alert('DetailWH componentDidMount error:' + error);
+        });
+      MyPage.getDetailCodes('WHRG0010')
+        .then(res => {
+          if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
+            // console.log('detailCodes', res.data._embedded.detailCodes);
+            let dataCode = res.data._embedded.detailCodes;
+            let dataCover =
+              dataCode &&
+              dataCode.map((item, index) => {
+                return {
+                  title: item.stdDetailCodeName,
+                  value: item.stdDetailCod,
+                };
+              });
+            this.setState({
+              dataCover: dataCover,
+              floors: dataCover[0].title,
+            });
+          }
+  
+          // Progress
+          setTimeout(() => {
+            this.props.setProgress({ is: false });
+          }, 300);
+        })
+        .catch(error => {
+          alert('WHRG0010:' + error);
+          this.props.setProgress({ is: false });
+        });
+
+
+        Account.me().then(res => {
+          this.setState({
+            userId: res.ownerUserNo
+          })
+        }).catch(error => {
+          console.log('error', error)
+        })
+    }
+
+    
+
 
   /**
    * 관심창고 토글
@@ -257,7 +317,9 @@ class DetailWH extends Component {
       activeIndex,
       id,
       dataTab,
+      userId
     } = this.state;
+    console.log('whrgData', whrgData)
 
     // const dataTab = [
     //   {
@@ -602,11 +664,14 @@ class DetailWH extends Component {
                               keep.usblValue,
                               keep.calUnitDvCode,
                             )}
+                            {
+                              `${toPyeong(keep.usblValue)} (${toSquareMeter(keep.usblValue)} ㎡)`
+                            }
                           </Text>
                         </View>
-                        <View style={S.tableRow}>
+                        {/* <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            공용면적
+                            공용면적 fffffffff
                           </Text>
                           <Text style={S.textTable}>
                             {`${
@@ -615,7 +680,7 @@ class DetailWH extends Component {
                                 : '-'
                               }`}
                           </Text>
-                        </View>
+                        </View> */}
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
                             보관단가
@@ -666,15 +731,22 @@ class DetailWH extends Component {
                                   </Text>
                                 </View>
                               ) : (
-                                <TouchableOpacity
-                                  style={[S.btnQuote]}
-                                  onPress={() =>
-                                    this.checkContract('KEEP', keep)
-                                  }>
-                                  <Text style={[S.textBtnQuote]}>
-                                    견적 요청하기
-                                  </Text>
-                                </TouchableOpacity>
+                                <View>
+                                  { userId != whrgData.ownerUserNo &&
+                                    <TouchableOpacity
+                                    style={[S.btnQuote]}
+                                    onPress={() =>
+                                      this.checkContract('KEEP', keep)
+                                    }>
+                                    <Text style={[S.textBtnQuote]}>
+                                      견적 요청하기
+                                    </Text>
+                                  </TouchableOpacity>
+                                  }
+
+                                </View>
+                                
+
                               )}
                             </View>
                           ) : (
@@ -840,7 +912,7 @@ class DetailWH extends Component {
                               }`}
                           </Text>
                         </View>
-                        <View style={S.tableRow}>
+                        {/* <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
                             인건단가
                           </Text>
@@ -851,8 +923,8 @@ class DetailWH extends Component {
                                 : '-'
                               }`}
                           </Text>
-                        </View>
-                        <View style={S.tableRow}>
+                        </View> */}
+                        {/* <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
                             가공단가
                           </Text>
@@ -863,8 +935,8 @@ class DetailWH extends Component {
                                 : '-'
                               }`}
                           </Text>
-                        </View>
-                        <View style={S.tableRow}>
+                        </View> */}
+                        {/* <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
                             택배단가
                           </Text>
@@ -875,8 +947,8 @@ class DetailWH extends Component {
                                 : '-'
                               }`}
                           </Text>
-                        </View>
-                        <View style={S.tableRow}>
+                        </View> */}
+                        {/* <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
                             운송단가
                           </Text>
@@ -887,7 +959,7 @@ class DetailWH extends Component {
                                 : '-'
                               }`}
                           </Text>
-                        </View>
+                        </View> */}
 
                         {/** 정보 수정 시작 **/}
                         <View style={S.tableRow}>
@@ -916,15 +988,21 @@ class DetailWH extends Component {
                                   </Text>
                                 </View>
                               ) : (
-                                <TouchableOpacity
-                                  style={[S.btnQuote]}
-                                  onPress={() =>
-                                    this.checkContract('TRUST', trust)
-                                  }>
-                                  <Text style={[S.textBtnQuote]}>
-                                    견적 요청하기
-                                  </Text>
-                                </TouchableOpacity>
+                                <View>
+                                  {
+                                    userId != whrgData.ownerUserNo &&
+                                      <TouchableOpacity
+                                      style={[S.btnQuote]}
+                                      onPress={() =>
+                                        this.checkContract('TRUST', trust)
+                                      }>
+                                      <Text style={[S.textBtnQuote]}>
+                                        견적 요청하기
+                                      </Text>
+                                    </TouchableOpacity>
+                                  }
+                                </View>
+
                               )}
                             </View>
                           ) : (
@@ -1400,51 +1478,6 @@ class DetailWH extends Component {
     );
   }
 
-  /** when after render DOM */
-  componentDidMount () {
-    // Progress
-    this.props.setProgress({ is: true, });
-
-    const { route } = this.props;
-    this.getDataWH();
-    this.handleRequestQnaList(4);
-    this.hiddenName();
-    AsyncStorage.getItem(TOKEN)
-      .then(v => {
-        this.setState({ isLogin: v !== '' && v !== null });
-      })
-      .catch(error => {
-        alert('DetailWH componentDidMount error:' + error);
-      });
-    MyPage.getDetailCodes('WHRG0010')
-      .then(res => {
-        if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
-          // console.log('detailCodes', res.data._embedded.detailCodes);
-          let dataCode = res.data._embedded.detailCodes;
-          let dataCover =
-            dataCode &&
-            dataCode.map((item, index) => {
-              return {
-                title: item.stdDetailCodeName,
-                value: item.stdDetailCod,
-              };
-            });
-          this.setState({
-            dataCover: dataCover,
-            floors: dataCover[0].title,
-          });
-        }
-
-        // Progress
-        setTimeout(() => {
-          this.props.setProgress({ is: false });
-        }, 300);
-      })
-      .catch(error => {
-        alert('WHRG0010:' + error);
-        this.props.setProgress({ is: false });
-      });
-  }
 
   async getDataWH () {
     const { id } = this.state;
@@ -1462,7 +1495,7 @@ class DetailWH extends Component {
     const dataTabs = [];
     warehouse.data.floors.forEach(element => {
       dataTabs.push({
-        title: element.flrDvCode.stdDetailCodeName,
+        title: element.flrDvCode?.stdDetailCodeName ?? '',
         content: '',
       });
     });

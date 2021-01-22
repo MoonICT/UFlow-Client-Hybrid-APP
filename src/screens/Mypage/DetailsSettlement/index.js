@@ -43,6 +43,7 @@ export default class DetailsSettlement extends Component {
       dataCost: [],
       headerDetailResBody: null,
       dataTotal: [],
+      dataFeeRate: [],
       dataFee: [],
       cntrTypeCode: null,
     };
@@ -127,7 +128,7 @@ export default class DetailsSettlement extends Component {
       let dataTotal = [
         {
           type: '공급가액',
-          value: res.data.data.amount ? moneyUnit(res.data.data.amount) : '0 원',
+          value: res.data.data.calMgmtMResBody ? moneyUnit(res.data.data.amount) : '0 원',
         },
         {
           type: '부가세',
@@ -136,6 +137,21 @@ export default class DetailsSettlement extends Component {
         {
           type: '합계금액',
           value: total ? moneyUnit(total) : '0 원',
+        }
+      ]
+
+      let dataFeeRate = [
+        {
+          type: '요율',
+          value: res.data.data?.calMgmtMResBody?.rate + '%' ?? '',
+        },
+        {
+          type: '수수료	',
+          value: res.data.data?.calMgmtMResBody.fee ?? '',
+        },
+        {
+          type: '적용금액',
+          value: res.data.data?.calMgmtMResBody?.fee ?? ''
         }
       ]
 
@@ -241,7 +257,7 @@ export default class DetailsSettlement extends Component {
       ]
 
       this.setState({
-        dataInfo, inOutSubtotal, headerDetailResBody, dataCost, dataTotal, dataFee, keepSubtotal, cntrTypeCode
+        dataInfo, inOutSubtotal, headerDetailResBody, dataCost, dataTotal, dataFee, keepSubtotal, cntrTypeCode, dataFeeRate
       })
     }).catch(error => {
       alert('SettlementManagementService.getDetail error:' + error);
@@ -263,7 +279,7 @@ export default class DetailsSettlement extends Component {
 
 
   render() {
-    const { feeState, toggleFee, toggleCosts, inOutSubtotal, dataInfo, dataTotal, dataFee , dataCost , keepSubtotal} = this.state;
+    const {dataFeeRate, feeState, toggleFee, toggleCosts, inOutSubtotal, dataInfo, dataTotal, dataFee , dataCost , keepSubtotal} = this.state;
 
     const viewFee =
       dataFee &&
@@ -398,15 +414,16 @@ export default class DetailsSettlement extends Component {
                   style={SS.toggle}
                   styleLabel={SS.textToggle}
               />
-              <TableInfo
-                  data={inOutSubtotal}
-                  style={{borderBottomWidth: 1, borderTopWidth: 0}}
-              />
-              {toggleFee === false ? (
+
+              {toggleFee ? (
                   <Fragment>
                     {viewFee}
                   </Fragment>
               ) : null}
+              <TableInfo
+                  data={inOutSubtotal}
+                  style={{borderBottomWidth: 1, borderTopWidth: 0}}
+              />
             </View>
             }
 
@@ -454,6 +471,29 @@ export default class DetailsSettlement extends Component {
               <View style={DefaultStyle._infoTable}>
                 <TableInfo
                   data={dataTotal}
+                  borderRow={false}
+                  borderBottom={true}
+                />
+              </View>
+            </View>
+            <View style={DefaultStyle._card}>
+              <View
+                style={[
+                  DefaultStyle._headerCardTitle,
+                  DefaultStyle._borderBottom,
+                ]}>
+                <Text
+                  style={[
+                    DefaultStyle._textTitleCard,
+                    S.textTitleTenant,
+                    { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
+                  ]}>
+                  요율 및 수수료
+                </Text>
+              </View>
+              <View style={DefaultStyle._infoTable}>
+                <TableInfo
+                  data={dataFeeRate}
                   borderRow={false}
                   borderBottom={true}
                 />

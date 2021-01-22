@@ -409,9 +409,14 @@ export default class DetailsManager extends Component {
 
   showDialog = () => this.setState({visible: true});
 
-  hideDialog = () => this.setState({
-    visible: false
-  });
+  hideDialog = () => {
+    this.setState({
+      visible: false,
+      valueCreateImport: '',
+      createValue: ''
+    });
+
+  } 
   showConfirm = () => this.setState({confirm: true});
 
   hideConfirm = () => this.setState({confirm: false});
