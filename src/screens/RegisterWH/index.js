@@ -194,7 +194,7 @@ class RegisterWH extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="black"
-            onPress={() => this.navigation.goBack()}
+            onPress={() => this.navigation.navigate('Home')}
           />
           <Appbar.Content
             title={

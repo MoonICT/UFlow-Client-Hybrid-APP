@@ -51,48 +51,48 @@ class RegisterImage extends Component {
   };
 
   // TODO @Deprecated ios에서 갤러리 업로드 안됨.
-  chooseFile = async type => {
-    try {
-      // TODO 이미지 피커 교체 필요 (ios에서 갤러리 선택 안됨.)
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images],
-      });
-      this.setState({ singleFile: res }, async () => {
-        if (res != null) {
-          // If file selected then create FormData
-          let { singleFile, valueTab } = this.state;
-          const data = new FormData();
-          data.append('name', singleFile.name);
-          data.append('file', singleFile);
-          // Please change file upload URL
-          await MediaUpload.uploadFile(data).then(respon => {
-            if (respon.status === 200) {
-              let { url } = respon.data;
-              let { filename } = respon.data;
-              // let pimages = [{ uri: url }];
-              // pimages.push();
-              // this.setState({ pimages });
-              console.log('url', url);
-              this.props.uploadImage({
-                url: url,
-                name: filename,
-                value: valueTab,
-              });
-            }
-          });
-        } else {
-          // If no file selected the show alert
-          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
-        }
-      });
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
-      } else {
-        throw err;
-      }
-    }
-  };
+  // chooseFile = async type => {
+  //   try {
+  //     // TODO 이미지 피커 교체 필요 (ios에서 갤러리 선택 안됨.)
+  //     const res = await DocumentPicker.pick({
+  //       type: [DocumentPicker.types.images],
+  //     });
+  //     this.setState({ singleFile: res }, async () => {
+  //       if (res != null) {
+  //         // If file selected then create FormData
+  //         let { singleFile, valueTab } = this.state;
+  //         const data = new FormData();
+  //         data.append('name', singleFile.name);
+  //         data.append('file', singleFile);
+  //         // Please change file upload URL
+  //         await MediaUpload.uploadFile(data).then(respon => {
+  //           if (respon.status === 200) {
+  //             let { url } = respon.data;
+  //             let { filename } = respon.data;
+  //             // let pimages = [{ uri: url }];
+  //             // pimages.push();
+  //             // this.setState({ pimages });
+  //             console.log('url', url);
+  //             this.props.uploadImage({
+  //               url: url,
+  //               name: filename,
+  //               value: valueTab,
+  //             });
+  //           }
+  //         });
+  //       } else {
+  //         // If no file selected the show alert
+  //         alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
+  //       }
+  //     });
+  //   } catch (err) {
+  //     if (DocumentPicker.isCancel(err)) {
+  //       // User cancelled the picker, exit any dialogs or menus and move on
+  //     } else {
+  //       throw err;
+  //     }
+  //   }
+  // };
 
   handlePicker = async (type) => {
     let options = {
@@ -181,7 +181,7 @@ class RegisterImage extends Component {
               .catch(error => {
                 this.props.setProgress({ is: false });
                 console.log(error);
-                alert(' MediaUpload.uploadFile:' + error.reponse);
+                // alert(' MediaUpload.uploadFile:' + error.reponse);
               });
           } else {
             // If no file selected the show alert

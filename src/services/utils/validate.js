@@ -91,7 +91,7 @@ const isDate = (userInput, errors, rule) => {
   if (!isExist(userInput)) return;
   const userInputTrimmed = userInput.toString().trim();
   if (!rule.formats || !rule.formats.length)
-    // eslint-disable-next-line no-param-reassign
+  // eslint-disable-next-line no-param-reassign
     rule.formats = ['MM-DD-YYYY', 'YYYY-MM-DD', 'DD-MM-YYYY'];
   const userDate = moment(userInputTrimmed, rule.formats, true);
   if (!userDate.isValid())
@@ -205,3 +205,30 @@ const isMember = (userInput, errors, rule) => {
     errors.push(rule.msg ? rule.msg : `be a member of ${rule.array}`);
 };
 exports.isMember = isMember;
+
+// 사업자번호,법인번호 체크로직
+const isBizNum = (userInput, errors, rule) => {
+
+  let reg = /-/g;
+  let bizNum = userInput.replace(reg, '');
+  let checkArray = new Array(1, 3, 7, 1, 3, 7, 1, 3, 5, 1);
+  let tmpBizNum, i, chkSum = 0, c2, remainder;
+
+  for (i = 0; i <= 7; i++) {
+    chkSum += checkArray[i] * bizNum.charAt(i);
+  }
+
+  c2 = "0" + (checkArray[8] * bizNum.charAt(8));
+  c2 = c2.substring(c2.length - 2, c2.length);
+
+  chkSum += Math.floor(c2.charAt(0)) + Math.floor(c2.charAt(1));
+
+  remainder = (10 - (chkSum % 10)) % 10;
+
+  if (Math.floor(bizNum.charAt(9)) == remainder) {
+    return true; // OK!
+  }
+
+  return false;
+};
+exports.isBizNum = isBizNum;

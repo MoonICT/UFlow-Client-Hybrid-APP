@@ -32,6 +32,8 @@ import {
 } from 'react-native-image-picker';
 import { connect } from "react-redux";
 import ActionCreator from '@Actions';
+import validator from 'validator';
+import { isBizNum } from "@Services/utils/validate";
 
 const tabSelect = [
   {
@@ -61,6 +63,19 @@ class MypageBusinessInfo extends Component {
       selectedInfoIndex: 0,
       isCert: false,
       photo: null,
+      // Validation(TODO Temp)
+      valid: {
+        checkName: true,
+        checkBusiness: true,
+        checkBusinessFormat: true,
+        checkAddress: true,
+        checkRepreNm: true,
+        checkPhone: true,
+        checkPhoneFormat: true,
+        checkInchgNm: true,
+        checkEmail: true,
+        checkEmailFormat: true,
+      }
     };
     this.navigation = props.navigation;
   }
@@ -183,23 +198,23 @@ class MypageBusinessInfo extends Component {
           MediaUpload.uploadFile(data).then(respon => {
             // console.log('respon', respon)
             if (respon.status === 200) {
-              let { url } = respon.data;
+              let { filename, url } = respon.data;
 
-              var pathArray = url.split('/');
-              var host = pathArray[pathArray.length - 1];
+              // var pathArray = url.split('/');
+              // var host = pathArray[pathArray.length - 1];
 
               this.setState({
                 photo: url,
                 businessInfo: {
                   ...businessInfo,
-                  regFile: host
+                  regFile: filename
                 }
               });
             }
             // Progress
             this.props.setProgress({ is: false, });
           }).catch(error => {
-            alert('MediaUpload.uploadFile error:' + error.response.data.message);
+            // alert('MediaUpload.uploadFile error:' + error.response.data.message);
             this.props.setProgress({ is: false, });
           });
         } else {
@@ -264,6 +279,7 @@ class MypageBusinessInfo extends Component {
    * Set business data
    * */
   setBusinessData = (data) => {
+    // console.log(data)
     let setData = {
       id: data.id,
       name: data.name,
@@ -291,7 +307,7 @@ class MypageBusinessInfo extends Component {
       businessInfo: setData,
       photo: `${configURL.FILE_SERVER_ADDRESS}/${data.regFile}`
     });
-    // reset(setData)
+    console.log(`${configURL.FILE_SERVER_ADDRESS}/${data.regFile}`)
   };
 
   /**
@@ -312,15 +328,39 @@ class MypageBusinessInfo extends Component {
   handleOnSubmit = () => {
     const { businessInfo, isCert } = this.state;
 
+    let valid = {
+      checkName: !!businessInfo.name,
+      checkBusiness: !!businessInfo.number,
+      checkBusinessFormat: true, // TODO TODO 사업자번호체크로직 주석해제예정
+      // checkBusinessFormat: isBizNum(businessInfo.number),
+      checkAddress: !!businessInfo.roadAddr.address,
+      checkRepreNm: !!businessInfo.repreNm,
+      checkInchgNm: !!businessInfo.inchgNm,
+      checkPhone: !!businessInfo.phone,
+      checkPhoneFormat: businessInfo.phone ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone) : true,
+      checkEmail: !!businessInfo.email,
+      checkEmailFormat: businessInfo.email ? validator.isEmail(businessInfo.email) : true,
+    }
+    this.setState({ valid: valid });
+    for (let key in valid) {
+      if (!valid[key]) {
+        return false;
+      }
+    }
+
     if (!isCert) {
-      alert('휴대폰 인증을 완료해주세요.')
-      return false
+      alert('휴대폰 인증을 완료해주세요.');
+      return false;
+    }
+
+    if (!businessInfo.regFile) {
+      alert('사업자등록증을 업로드 하세요.');
+      return false;
     }
     // console.log('최종 저장 사업자 정보 : ',businessInfo);
 
     // Progress
     this.props.setProgress({ is: true, type: 'CIRCLE' });
-
     Entrp.update(businessInfo).then(res => {
       // Progress
       setTimeout(() => {
@@ -340,7 +380,7 @@ class MypageBusinessInfo extends Component {
 
 
   render () {
-    const { listBusinessInfo, businessInfo, photo } = this.state;
+    const { listBusinessInfo, businessInfo, photo, valid } = this.state;
 
     // console.log(`${configURL.FILE_SERVER_ADDRESS}/${businessInfo.regFile}`)
     return (
@@ -362,18 +402,29 @@ class MypageBusinessInfo extends Component {
             <TextField
               labelTextField="사업자 명"
               placeholder=""
-              valueProps={(e) => {
+              labelTextFieldSize={14}
+              maxLength={50}
+              isRequired={true}
+              textError={
+                !valid.checkName ? '사업자명을 입력하세요.' : ''
+              }
+              fontSize={14}
+              valueProps={e => {
                 this.setState({
+                  valid: {
+                    ...this.state.valid,
+                    checkName: true,
+                  },
                   businessInfo: {
                     ...businessInfo,
-                    name: e
-                  }
-                })
+                    name: e,
+                  },
+                });
               }}
               value={businessInfo.name ? businessInfo.name : ''}
               colorLabel="#000000"
             />
-            <TextField
+            {/*<TextField
               labelTextField="법인 등록번호"
               placeholder=""
               valueProps={(e) => {
@@ -386,17 +437,31 @@ class MypageBusinessInfo extends Component {
               }}
               value={businessInfo.corpNumber ? businessInfo.corpNumber : ''}
               colorLabel="#000000"
-            />
+            />*/}
             <TextField
               labelTextField="사업자번호"
+              labelTextFieldSize={14}
+              fontSize={14}
+              placeholder="'-'없이 입력해주세요."
               colorLabel="#000000"
-              valueProps={(e) => {
+              isRequired={true}
+              keyboardType="numeric"
+              textError={
+                (!valid.checkBusiness ? '사업자 번호를 입력하세요.' : '') +
+                (!valid.checkBusinessFormat ? '사업자 번호 형식이 아닙니다.' : '')
+              }
+              valueProps={e => {
                 this.setState({
+                  valid: {
+                    ...this.state.valid,
+                    checkBusiness: true,
+                    checkBusinessFormat: true,
+                  },
                   businessInfo: {
                     ...businessInfo,
-                    number: e
-                  }
-                })
+                    number: e.replace(/[^0-9]/g, ''),
+                  },
+                });
               }}
               value={businessInfo.number ? businessInfo.number : ''}
             />
@@ -428,7 +493,9 @@ class MypageBusinessInfo extends Component {
             </TouchableOpacity>
             <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex, DefaultStyle.mb_20]}>
               <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
-                <TextField colorLabel="#000000" styleProps={DefaultStyle.mb_0} value={businessInfo.roadAddr.zipNo} />
+                <TextField colorLabel="#000000"
+                           styleProps={DefaultStyle.mb_0}
+                           value={businessInfo.roadAddr.zipNo} />
               </View>
               <TouchableOpacity
                 style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
@@ -444,53 +511,91 @@ class MypageBusinessInfo extends Component {
             </View>
             <TextField
               placeholder="도로명 주소"
+              labelTextField="도로명 주소"
               colorLabel="#000000"
+              labelTextFieldSize={14}
+              fontSize={14}
               value={businessInfo.roadAddr.address}
+              isRequired={true}
+              textError={
+                !valid.checkAddress ? '주소를 입력하세요.' : ''
+              }
             />
             <TextField
               placeholder="상세주소"
               colorLabel="#000000"
+              labelTextField="상세주소"
+              labelTextFieldSize={14}
+              fontSize={14}
+              maxLength={50}
               value={businessInfo.jibunAddr.detail}
-              valueProps={(e) => {
+              valueProps={e => {
                 this.setState({
+                  valid: {
+                    ...this.state.valid,
+                    checkAddress: true,
+                  },
                   businessInfo: {
                     ...businessInfo,
                     jibunAddr: {
                       ...businessInfo.jibunAddr,
-                      detail: e
+                      detail: e,
                     },
                     roadAddr: {
                       ...businessInfo.roadAddr,
-                      detail: e
+                      detail: e,
                     },
-                  }
-                })
+                  },
+                });
               }}
             />
             <TextField
               labelTextField="대표자 명"
               colorLabel="#000000"
-              valueProps={(e) => {
+              labelTextFieldSize={14}
+              fontSize={14}
+              maxLength={20}
+              isRequired={true}
+              textError={
+                !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
+              }
+              valueProps={e => {
                 this.setState({
+                  valid: {
+                    ...this.state.valid,
+                    checkRepreNm: true,
+                  },
                   businessInfo: {
                     ...businessInfo,
-                    repreNm: e
-                  }
-                })
+                    repreNm: e,
+                  },
+                });
               }}
               value={businessInfo.repreNm ? businessInfo.repreNm : ''}
             />
             <TextField
               labelTextField="담당자 휴대폰번호"
               placeholder="'-'없이 입력해주세요."
+              labelTextFieldSize={14}
+              fontSize={14}
+              isRequired={true}
               colorLabel="#000000"
-              valueProps={(e) => {
+              textError={(
+                (!valid.checkPhone ? '휴대폰번호를 입력하세요. ' : '') +
+                (!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '')
+              )}
+              valueProps={e => {
                 this.setState({
+                  valid: {
+                    ...this.state.valid,
+                    checkPhone: true,
+                    checkPhoneFormat: true,
+                  },
                   businessInfo: {
                     ...businessInfo,
-                    phone: e
-                  }
-                })
+                    phone: e,
+                  },
+                });
               }}
               value={businessInfo.phone ? businessInfo.phone : ''}
             />
@@ -504,32 +609,56 @@ class MypageBusinessInfo extends Component {
               }}
             />
             <TextField
-              labelTextField="담당자명"
+              labelTextField="담당자 직함 (필수)"
+              labelTextFieldSize={14}
+              fontSize={14}
               colorLabel="#000000"
-              valueProps={(e) => {
+              isRequired={true}
+              maxLength={20}
+              textError={
+                !valid.checkInchgNm ? '담당자 명을 입력하세요.' : ''
+              }
+              valueProps={e => {
                 this.setState({
+                  valid: {
+                    ...this.state.valid,
+                    checkInchgNm: true,
+                  },
                   businessInfo: {
                     ...businessInfo,
-                    inchgNm: e
-                  }
-                })
+                    inchgNm: e,
+                  },
+                });
               }}
               value={businessInfo.inchgNm ? businessInfo.inchgNm : ''}
             />
             <TextField
-              labelTextField="담당자 이메일"
+              labelTextField="담당자 이메일 (필수)"
+              labelTextFieldSize={14}
+              fontSize={14}
               colorLabel="#000000"
-              valueProps={(e) => {
+              maxLength={20}
+              isRequired={true}
+              textError={
+                (!valid.checkEmail ? '담당자 이메일을 입력하세요. ' : '') +
+                (!valid.checkEmailFormat ? '이메일 형식이 아닙니다. ' : '')
+              }
+              valueProps={e => {
                 this.setState({
+                  valid: {
+                    ...this.state.valid,
+                    checkEmail: true,
+                    checkEmailFormat: true,
+                  },
                   businessInfo: {
                     ...businessInfo,
-                    email: e
-                  }
-                })
+                    email: e,
+                  },
+                });
               }}
               value={businessInfo.email ? businessInfo.email : ''}
             />
-            <TextField
+            {/*<TextField
               labelTextField="세금계산서 이메일"
               colorLabel="#000000"
               valueProps={(e) => {
@@ -541,7 +670,7 @@ class MypageBusinessInfo extends Component {
                 })
               }}
               value={businessInfo.taxBillEmail ? businessInfo.taxBillEmail : ''}
-            />
+            />*/}
           </View>
         </View>
         <View style={S.btn}>
