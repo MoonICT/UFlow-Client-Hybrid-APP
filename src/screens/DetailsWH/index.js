@@ -330,8 +330,8 @@ class DetailWH extends Component {
           <HistoryBackActionBar
             title={'창고 상세'}
             navigation={this.navigation}
-          />
-          {favorite ? (
+            rightComponent={
+              favorite ? (
             <Appbar.Action
               icon="heart"
               color="#f2453d"
@@ -347,7 +347,9 @@ class DetailWH extends Component {
                 this.toggleFavoriteWH();
               }}
             />
-          )}
+          )
+            }
+          />
         </Appbars>
         <ScrollView style={DefaultStyle.backgroundGray} ref={this.myRef}>
           <View style={DefaultStyle._cards}>
