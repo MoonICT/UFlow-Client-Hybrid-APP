@@ -145,7 +145,18 @@ class Register extends Component {
       errorEmail,
     } = this.state;
 
+    let checkAll = false;
     let checkSubmit = false;
+
+    if (
+      terms.privacy === true &&
+      terms.location === true &&
+      terms.financial === true &&
+      serviceTerms === true &&
+      checkMarketing === true
+    ) {
+      checkAll = true;
+    }
     if (
       terms.privacy === true &&
       terms.location === true &&
@@ -154,7 +165,6 @@ class Register extends Component {
     ) {
       checkSubmit = true;
     }
-    console.log('checkSubmit :>> ', checkSubmit);
     return (
       <>
         {isDone ? (
@@ -277,7 +287,7 @@ class Register extends Component {
                   {/** ----------Terms ------------*/}
                   <View style={S.itemTerm}>
                     <Checkbox
-                      checked={termsAll}
+                      checked={checkAll}
                       onPress={() => {
                         this.setState({
                           termsAll: !termsAll,
@@ -307,11 +317,11 @@ class Register extends Component {
                       onPress={() => {
                         this.setState({
                           serviceTerms: !serviceTerms,
-                          termsAll:
-                            !serviceTerms &&
-                            checkMarketing &&
-                            terms &&
-                            marketing,
+                          // termsAll:
+                          //   !serviceTerms &&
+                          //   checkMarketing &&
+                          //   terms &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -333,11 +343,11 @@ class Register extends Component {
                             ...terms,
                             privacy: !terms.privacy,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.privacy &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.privacy &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -359,11 +369,11 @@ class Register extends Component {
                             ...terms,
                             location: !terms.location,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.location &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.location &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -385,11 +395,11 @@ class Register extends Component {
                             ...terms,
                             financial: !terms.financial,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.financial &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.financial &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -414,8 +424,8 @@ class Register extends Component {
                             sms: !checkMarketing,
                             email: !checkMarketing,
                           },
-                          termsAll:
-                            serviceTerms && !checkMarketing && terms.financial,
+                          // termsAll:
+                          //   serviceTerms && !checkMarketing && terms.financial,
                         });
                       }}
                     />
@@ -442,10 +452,10 @@ class Register extends Component {
                               !marketing.kakao &&
                               marketing.sms &&
                               marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   !checkMarketing &&
+                            //   terms.financial,
                           });
                         }}
                       />
@@ -465,10 +475,10 @@ class Register extends Component {
                               marketing.kakao &&
                               !marketing.sms &&
                               marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   terms.financial &&
+                            //   !checkMarketing,
                           });
                         }}
                       />
@@ -488,10 +498,10 @@ class Register extends Component {
                               marketing.kakao &&
                               marketing.sms &&
                               !marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   terms.financial &&
+                            //   !checkMarketing,
                           });
                         }}
                       />
