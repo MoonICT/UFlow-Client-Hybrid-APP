@@ -252,21 +252,21 @@ export const postCancelExport = ({
   });
 };
 
-/**
- * 송장 업로드
- *
- * @param formData
- * @returns {Promise<*>}
- */
-export const uploadImage = (formData) => {
-  return Axios.postRequest({
-    url: `/api/v1/rtwh/upload`,
-    payload: formData,
-    requiresToken: true, // set access_token
-    config: {
-      headers: {
-        contentType: 'multipart/form-data'
-      }
-    }
-  });
-};
+// /**
+//  * 송장 업로드
+//  *
+//  * @param formData
+//  * @returns {Promise<*>}
+//  */
+// export const uploadImage = (formData) => {
+//   return Axios.postRequest({
+//     url: `/api/v1/rtwh/upload`,
+//     payload: formData,
+//     requiresToken: true, // set access_token
+//     config: {
+//       headers: {
+//         contentType: 'multipart/form-data'
+//       }
+//     }
+//   });
+// };

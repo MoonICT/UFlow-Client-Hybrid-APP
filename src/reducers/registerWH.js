@@ -62,8 +62,9 @@ let upImage = (state, image) => {
     if (image.value === 0) {
       imageUpload.push({ name: image.name, url: image.url });
     }
-    if (image.value === 1 && imagePn.length < 1) {
-      imagePn.push({ name: image.name, url: image.url });
+    if (image.value === 1) {
+      imagePn = [{ name: image.name, url: image.url }];
+      // imagePn.push({ name: image.name, url: image.url });
     }
     // imageTh.length > 0 ? imageTh : imageTh.push(image);
     let result = {
