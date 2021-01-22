@@ -144,6 +144,27 @@ class Register extends Component {
       isDone,
       errorEmail,
     } = this.state;
+
+    let checkAll = false;
+    let checkSubmit = false;
+
+    if (
+      terms.privacy === true &&
+      terms.location === true &&
+      terms.financial === true &&
+      serviceTerms === true &&
+      checkMarketing === true
+    ) {
+      checkAll = true;
+    }
+    if (
+      terms.privacy === true &&
+      terms.location === true &&
+      terms.financial === true &&
+      serviceTerms === true
+    ) {
+      checkSubmit = true;
+    }
     return (
       <>
         {isDone ? (
@@ -162,11 +183,11 @@ class Register extends Component {
                 style={S.appBarTitle}
               />
             </Appbars> */}
-            
-          <HistoryBackActionBar
-            title={'회원가입'}
-            navigation={this.navigation}
-          />
+
+            <HistoryBackActionBar
+              title={'회원가입'}
+              navigation={this.navigation}
+            />
             <ScrollView style={DefaultStyle.backgroundWhiteDF2}>
               <View style={DefaultStyle._cards}>
                 <Text style={DefaultStyle._textTitleBody}>
@@ -266,7 +287,7 @@ class Register extends Component {
                   {/** ----------Terms ------------*/}
                   <View style={S.itemTerm}>
                     <Checkbox
-                      checked={termsAll}
+                      checked={checkAll}
                       onPress={() => {
                         this.setState({
                           termsAll: !termsAll,
@@ -296,11 +317,11 @@ class Register extends Component {
                       onPress={() => {
                         this.setState({
                           serviceTerms: !serviceTerms,
-                          termsAll:
-                            !serviceTerms &&
-                            checkMarketing &&
-                            terms &&
-                            marketing,
+                          // termsAll:
+                          //   !serviceTerms &&
+                          //   checkMarketing &&
+                          //   terms &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -322,11 +343,11 @@ class Register extends Component {
                             ...terms,
                             privacy: !terms.privacy,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.privacy &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.privacy &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -348,11 +369,11 @@ class Register extends Component {
                             ...terms,
                             location: !terms.location,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.location &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.location &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -374,11 +395,11 @@ class Register extends Component {
                             ...terms,
                             financial: !terms.financial,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.financial &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.financial &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -403,8 +424,8 @@ class Register extends Component {
                             sms: !checkMarketing,
                             email: !checkMarketing,
                           },
-                          termsAll:
-                            serviceTerms && !checkMarketing && terms.financial,
+                          // termsAll:
+                          //   serviceTerms && !checkMarketing && terms.financial,
                         });
                       }}
                     />
@@ -431,10 +452,10 @@ class Register extends Component {
                               !marketing.kakao &&
                               marketing.sms &&
                               marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   !checkMarketing &&
+                            //   terms.financial,
                           });
                         }}
                       />
@@ -454,10 +475,10 @@ class Register extends Component {
                               marketing.kakao &&
                               !marketing.sms &&
                               marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   terms.financial &&
+                            //   !checkMarketing,
                           });
                         }}
                       />
@@ -477,10 +498,10 @@ class Register extends Component {
                               marketing.kakao &&
                               marketing.sms &&
                               !marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   terms.financial &&
+                            //   !checkMarketing,
                           });
                         }}
                       />
@@ -494,7 +515,7 @@ class Register extends Component {
                   style={[
                     DefaultStyle.containerBTN,
                     S.loginBtn,
-                    termsAll
+                    checkSubmit === true
                       ? DefaultStyle._primary
                       : DefaultStyle._textDisabled,
                   ]}
@@ -502,7 +523,7 @@ class Register extends Component {
                   onPress={() => {
                     this.handleOnClickSubmit();
                   }}
-                  disabled={!termsAll}>
+                  disabled={checkSubmit === true ? false : true}>
                   확인
                 </Button>
               </View>

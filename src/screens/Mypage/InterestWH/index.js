@@ -56,7 +56,7 @@ class InterestWarehouse extends Component {
     // console.log('More Token ==>', value);
     Account.getMe()
       .then(res => {
-        // console.log('::::: Get Me :::::', res);
+        console.log('::::: Get Me :::::', res);
         const status = res.status;
         if (status === 200) {
           this.setState({
@@ -65,7 +65,7 @@ class InterestWarehouse extends Component {
             fullName: res.data.fullName,
           });
         }
-
+        this.getDataFavorite();
         this.reRenderSomething = this.props.navigation.addListener('focus', () => {
           this.getDataFavorite();
         });
@@ -101,9 +101,11 @@ class InterestWarehouse extends Component {
   }
 
   getDataFavorite = () => {
+    console.log('getDataFavoritedddddddđ :>> ');
     this.props.setProgress({ is: true, });
 
     Fav.page().then(res => {
+      console.log('resFavvvvvvvvvvvvv :>> ', res);
       let resultData = res.data && res.data._embedded && res.data._embedded.mbspUserFavResBodies ? res.data._embedded.mbspUserFavResBodies : [];
       let dataConvert = [];
 
