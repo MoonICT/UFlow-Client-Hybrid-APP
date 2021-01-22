@@ -324,6 +324,9 @@ export const uploadFile = async (body) => {
 };
 
 
+/**
+ * 입출고 송장 이미지 업로드.
+ * */
 export const uploadFileNew = async (body) => {
   const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.post(`/api/v1/rtwh/upload/new`, body,

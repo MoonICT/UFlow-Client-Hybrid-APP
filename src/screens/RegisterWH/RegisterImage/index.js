@@ -28,7 +28,7 @@ import { Warehouse } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
 
 class RegisterImage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -40,7 +40,7 @@ class RegisterImage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
@@ -94,7 +94,7 @@ class RegisterImage extends Component {
     }
   };
 
-  handlePicker = async () => {
+  handlePicker = async (type) => {
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -121,34 +121,40 @@ class RegisterImage extends Component {
 
         this.setState({ singleFile: file }, async () => {
           if (response != null) {
+            // 이미지 업로드시 창고 아이디 필요함.
+            let { idWH } = this.props.route.params
+            if (!idWH) {
+              console.log('Error ::: 창고 아이디가 없습니다. ')
+              return false;
+            }
+
+            if (!type) {
+              console.log('Error ::: 이미지 업로드 타입이 없습니다. ')
+              return false;
+            }
+
             // If file selected then create FormData
             let { singleFile, valueTab } = this.state;
             const data = new FormData();
-            data.append('name', singleFile.name);
             data.append('file', singleFile);
+            data.append('id', idWH);
+            data.append('code', type); // 이미지(0001) 또는 파노라마(0002)
 
             // Progress
             this.props.setProgress({ is: true, type: 'CIRCLE' });
             // Please change file upload URL
-            {/** TODO 창고 이미지 업로드 시  **/}
             {/**
-               TODO @deokin
-             * 1)20210121 장종례 창고등록 API 수정 (1)
-             * 2)20210121 장종례 창고등록 API 수정 (2)
-             * 3)창고등록 이미지 업로드 처리
-             * 4)창고수정 이미지 업로드 처리
-             *
-             *
-             *
              * @param body {
              *   file => 파일
              *   id => 창고 ID
              *   code => 이미지(0001) 또는 파노라마(0002)
              * }
              * @returns {Promise<AxiosResponse<any>>}
-             */}
+             */
+            }
             await Warehouse.uploadImage(data)
               .then(respon => {
+                console.log('이미지 업로드 완료 : ', respon)
                 if (respon.status === 200) {
                   let { url } = respon.data;
                   let { filename } = respon.data;
@@ -192,7 +198,7 @@ class RegisterImage extends Component {
     }
   };
 
-  render() {
+  render () {
     const { imageStore, pnImages } = this.props;
     const { valueTab, isRemove } = this.state;
     // console.log('imageStore', imageStore);
@@ -226,13 +232,13 @@ class RegisterImage extends Component {
                   onPress={() => {
                     console.log('tab: ', valueTab);
                     if (valueTab === 0) {
-                      this.handlePicker('photo');
+                      this.handlePicker('001'); // 창고 이미지
                     } else if (valueTab === 1) {
                       console.log('imageStore.pnImages', pnImages);
                       if (pnImages && pnImages.length > 0) {
                         alert('파노라마 사진은 1장만 등록 가능합니다.');
                       } else {
-                        this.handlePicker('photo');
+                        this.handlePicker('002'); // 파노라마 이미지
                       }
                     }
                     // this.chooseFile('photo');
@@ -268,13 +274,13 @@ class RegisterImage extends Component {
             <UpImage
               valueTab={valueTab}
               isRemove={isRemove}
-              handldeProps={() => this.handlePicker(valueTab)}
+              handldeProps={() => this.handlePicker('001')}
             />
           ) : (
             <ImagePanoram
               valueTab={valueTab}
               isRemove={isRemove}
-              handldeProps={() => this.handlePicker(valueTab)}
+              handldeProps={() => this.handlePicker('002')}
             />
           )}
 
@@ -307,10 +313,14 @@ class RegisterImage extends Component {
       </SafeAreaView>
     );
   }
+
+  componentDidMount () {
+    console.log('이미지 등록을 위한 창고 아이디', this.props.route.params)
+  }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.whImages,
@@ -319,7 +329,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     uploadImage: action => {
       dispatch(ActionCreator.uploadImage(action));

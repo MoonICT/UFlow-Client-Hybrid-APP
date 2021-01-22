@@ -59,13 +59,15 @@ export const updateWH = async value => {
  * }
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const uploadImage = (body) => {
-  mainMediaAxios.body = body;
-  const data =  mainMediaAxios.request({
-    method: 'POST',
-    url: '/api/v1/warehouse/imageupload/new',
-  });
-  return data;
+export const uploadImage = async (body) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.post(`/api/v1/warehouse/image/upload/new`, body,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        contentType: 'multipart/form-data'
+      }
+    });
 };
 
 

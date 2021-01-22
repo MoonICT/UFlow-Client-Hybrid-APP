@@ -81,10 +81,7 @@ class RegisterWH extends Component {
               content: '창고정보 수정을 완료했습니다.',
               image: illust10,
               navigation: () => {
-                if (
-                  this.props.route.params &&
-                  this.props.route.params.doRefresh
-                ) {
+                if (this.props.route.params && this.props.route.params.doRefresh) {
                   this.props.route.params.doRefresh();
                 }
                 this.navigation.navigate('Mypage', {
@@ -217,7 +214,9 @@ class RegisterWH extends Component {
           <View style={[]}>
             <TouchableOpacity
               style={S.imageRegister}
-              onPress={() => this.navigation.navigate('RegisterImage')}>
+              onPress={() => this.navigation.navigate('RegisterImage', {
+                idWH: this.state.idWH,
+              })}>
               {imageStore && imageStore.length > 0 ? (
                 <Fragment>
                   <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>

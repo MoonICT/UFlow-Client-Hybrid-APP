@@ -13,63 +13,65 @@ import { Text, IconButton } from 'react-native-paper';
 import ActionCreator from '@Actions';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
+
 class ImagePanoram extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
+
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
-  render() {
+  render () {
     const { pnImages, valueTab, handldeProps, isRemove } = this.props;
     return (
       <Fragment>
-        {pnImages && pnImages.length === 0 ? (
-          <TouchableOpacity
-            style={S.bgrRegister}
-            onPress={() =>
-              // this.handlePicker(valueTab)
-              handldeProps && handldeProps()
-            }>
-            <Image source={ignore3} style={S.ImageStyle} />
-            <Text style={S.textBgr}>
-              파노라마 사진은 1장만 등록 가능합니다.
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={S.ImagePanaUpload}>
-            <Image
-              style={S.ImageDetail}
-              source={{ uri: pnImages && pnImages[0].url }}
-              PlaceholderContent={<ActivityIndicator />}
-            />
-            {isRemove === true ? (
-              <IconButton
-                style={S.btnRemove}
-                icon="close-circle"
-                onPress={() =>
-                  this.props.removeAction({ value: valueTab, id: 0 })
-                }
+        <TouchableOpacity onPress={() =>
+          // this.handlePicker(valueTab)
+          handldeProps && handldeProps()
+        }>
+          {pnImages && pnImages.length === 0 ? (
+            <View style={S.bgrRegister}>
+              <Image source={ignore3} style={S.ImageStyle} />
+              <Text style={S.textBgr}>
+                파노라마 사진은 1장만 등록 가능합니다.
+              </Text>
+            </View>
+          ) : (
+            <View style={S.ImagePanaUpload}>
+              <Image
+                style={S.ImageDetail}
+                source={{ uri: pnImages && pnImages[0].url }}
+                PlaceholderContent={<ActivityIndicator />}
               />
-            ) : null}
-          </View>
-        )}
+              {isRemove === true ? (
+                <IconButton
+                  style={S.btnRemove}
+                  icon="close-circle"
+                  onPress={() =>
+                    this.props.removeAction({ value: valueTab, id: 0 })
+                  }
+                />
+              ) : null}
+            </View>
+          )}
+        </TouchableOpacity>
       </Fragment>
     );
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     pnImages: state.registerWH.pnImages,
   };
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     uploadImage: action => {
       dispatch(ActionCreator.uploadImage(action));
