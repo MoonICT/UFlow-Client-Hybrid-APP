@@ -43,10 +43,10 @@ class RadarChartScreen extends React.Component {
     let _label = resultAdvisory.data.labels;
     let _dataSets = resultAdvisory.data.datasets;
     let __dataSets1 = await _dataSets[0].data.map(item => {
-      return { value: item };
+      return item;
     });
     let __dataSets2 = await _dataSets[1].data.map(item => {
-      return { value: item };
+      return item;
     });
     // console.log('__dataSets1', __dataSets1);
     // console.log('__dataSets2', __dataSets2);
@@ -102,7 +102,7 @@ class RadarChartScreen extends React.Component {
   }
 
   render() {
-    console.log('data', this.state.data);
+    console.log('dataTest', this.state.data);
     return (
       <View style={{ flex: 1 }}>
         <Appbars
