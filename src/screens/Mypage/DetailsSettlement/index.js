@@ -143,7 +143,7 @@ export default class DetailsSettlement extends Component {
       let dataFeeRate = [
         {
           type: '요율',
-          value: res.data.data?.calMgmtMResBody?.rate + '%' ?? '',
+          value: res.data.data?.calMgmtMResBody?.rate  ?  res.data.data?.calMgmtMResBody?.rate + '%' : '',
         },
         {
           type: '수수료	',

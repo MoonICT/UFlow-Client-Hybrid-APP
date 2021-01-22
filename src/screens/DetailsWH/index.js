@@ -660,12 +660,8 @@ class DetailWH extends Component {
                             가용수치
                           </Text>
                           <Text style={S.textTable}>
-                            {displayUsblValue(
-                              keep.usblValue,
-                              keep.calUnitDvCode,
-                            )}
                             {
-                              `${toPyeong(keep.usblValue)} (${toSquareMeter(keep.usblValue)} ㎡)`
+                              keep.usblValue ? `${toPyeong(keep.usblValue)} (${toSquareMeter(keep.usblValue)} ㎡)` : '-'
                             }
                           </Text>
                         </View>
@@ -862,7 +858,7 @@ class DetailWH extends Component {
                             )}
                           </Text>
                         </View>
-                        <View style={S.tableRow}>
+                        {/* <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
                             공용면적
                           </Text>
@@ -873,7 +869,7 @@ class DetailWH extends Component {
                                 : '-'
                               }`}
                           </Text>
-                        </View>
+                        </View> */}
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
                             보관단가
@@ -1122,7 +1118,7 @@ class DetailWH extends Component {
                       </Text>
                     </View>
 
-                    <View style={S.tableRow}>
+                    {/* <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
                         공용면적
                       </Text>
@@ -1131,7 +1127,7 @@ class DetailWH extends Component {
                           ? StringUtils.displayAreaUnit(whrgData.cmnArea)
                           : '-'}
                       </Text>
-                    </View>
+                    </View> */}
 
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
@@ -1257,7 +1253,7 @@ class DetailWH extends Component {
                                   : '-'}
                               </Text>
                             </View>
-                            <View style={S.tableRow}>
+                            {/* <View style={S.tableRow}>
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 공용면적
                               </Text>
@@ -1266,7 +1262,7 @@ class DetailWH extends Component {
                                   ? StringUtils.displayAreaUnit(floor.cmnArea)
                                   : '-'}
                               </Text>
-                            </View>
+                            </View> */}
                             <View style={S.tableRow}>
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 층고
