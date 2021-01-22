@@ -144,6 +144,17 @@ class Register extends Component {
       isDone,
       errorEmail,
     } = this.state;
+
+    let checkSubmit = false;
+    if (
+      terms.privacy === true &&
+      terms.location === true &&
+      terms.financial === true &&
+      serviceTerms === true
+    ) {
+      checkSubmit = true;
+    }
+    console.log('checkSubmit :>> ', checkSubmit);
     return (
       <>
         {isDone ? (
@@ -162,11 +173,11 @@ class Register extends Component {
                 style={S.appBarTitle}
               />
             </Appbars> */}
-            
-          <HistoryBackActionBar
-            title={'회원가입'}
-            navigation={this.navigation}
-          />
+
+            <HistoryBackActionBar
+              title={'회원가입'}
+              navigation={this.navigation}
+            />
             <ScrollView style={DefaultStyle.backgroundWhiteDF2}>
               <View style={DefaultStyle._cards}>
                 <Text style={DefaultStyle._textTitleBody}>
@@ -494,7 +505,7 @@ class Register extends Component {
                   style={[
                     DefaultStyle.containerBTN,
                     S.loginBtn,
-                    termsAll
+                    checkSubmit === true
                       ? DefaultStyle._primary
                       : DefaultStyle._textDisabled,
                   ]}
@@ -502,7 +513,7 @@ class Register extends Component {
                   onPress={() => {
                     this.handleOnClickSubmit();
                   }}
-                  disabled={!termsAll}>
+                  disabled={checkSubmit === true ? false : true}>
                   확인
                 </Button>
               </View>
