@@ -1,23 +1,23 @@
 import { Axios, parseQuery } from '@Services/http';
-import { mainAxios } from '../libs/axios';
+import { mainAxios, mainMediaAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from "axios";
 import {TokenUtils} from '@Services/utils';
 //Contants
 import { TOKEN } from '@Constant';
 
-export const uploadImage = async formData => {
-  // const token = await AsyncStorage.getItem(TOKEN);
-  // console.log('token :>> ', token);
-  console.log('formData :>> ', formData);
-  return await mainAxios.post('/api/v1/file/images', {
-    formData,
-    headers: {
-      // Accept: 'application/json',
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-};
+// export const uploadImage = async formData => {
+//   // const token = await AsyncStorage.getItem(TOKEN);
+//   // console.log('token :>> ', token);
+//   console.log('formData :>> ', formData);
+//   return await mainAxios.post('/api/v1/file/images', {
+//     formData,
+//     headers: {
+//       // Accept: 'application/json',
+//       'Content-Type': 'multipart/form-data',
+//     },
+//   });
+// };
 
 export const registerWH = async data => {
   console.log('dataregisterWH :>> ', data);
@@ -49,6 +49,25 @@ export const updateWH = async value => {
     },
   });
 };
+
+/**
+ *
+ * @param body {
+ *   file => 파일
+ *   id => 창고 ID
+ *   code => 이미지(0001) 또는 파노라마(0002)
+ * }
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const uploadImage = (body) => {
+  mainMediaAxios.body = body;
+  const data =  mainMediaAxios.request({
+    method: 'POST',
+    url: '/api/v1/warehouse/imageupload/new',
+  });
+  return data;
+};
+
 
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
@@ -474,6 +493,7 @@ export const listCalStdDvCodeTrust = () => {
 };
 
 /**
+ * Deprecated
  * 창고등록
  * @param whrgBody
  * {
@@ -584,6 +604,7 @@ export const listCalStdDvCodeTrust = () => {
  *   }
  * @returns {Promise<unknown>}
  */
+// Deprecated
 export const registWhrg = whrgBody => {
   return Axios.request({
     methodType: 'POST',
@@ -595,6 +616,38 @@ export const registWhrg = whrgBody => {
         contentType: 'application/json',
       },
     },
+  });
+};
+
+/**
+ * 20210121 장종례 창고등록 API 수정 (1)
+ * > 창고등록시 아이디 id : RG20210121....
+ *
+ * @returns id : RG20210121....
+ */
+export const getWhrgId = () => {
+  return Axios.getRequest({
+    url: '/api/v1/warehouse/generate/id',
+    requiresToken: true, // set access_token
+  });
+};
+
+/**
+ * 20210121 장종례 창고등록 API 수정 (2)
+ * > 창고 아이디를 추가 입력해야함 id : RG20210121....
+ *
+ * @param whrgBody 기존 whrgBody + id
+ */
+export const registWhrgNew = whrgBody => {
+
+  if (!whrgBody || !whrgBody.id) {
+    console.error("잘못된 요청입니다.", whrgBody);
+    return;
+  }
+  return Axios.postRequest({
+    url: '/api/v1/warehouse/new',
+    payload: whrgBody,
+    requiresToken: true, // set access_token
   });
 };
 
