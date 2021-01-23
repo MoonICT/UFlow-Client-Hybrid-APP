@@ -14,17 +14,17 @@ import {
   Image,
 } from 'react-native';
 import {
-  Appbar,
-  Searchbar,
+  // Appbar,
+  // Searchbar,
   Text,
   Button,
   Dialog,
-  Paragraph,
+  // Paragraph,
   Portal,
 } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
+// import DocumentPicker from 'react-native-document-picker';
 import Postcode from 'react-native-daum-postcode';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
@@ -39,10 +39,14 @@ import { WarehouseProprietorInfo } from '@Services/apis/models/warehouse';
 import { WarehouseOwner, Warehouse, MediaUpload } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import ActionCreator from '@Actions';
+<<<<<<< HEAD
+// import validation from '@Utils/validate';
+=======
 import validator from 'validator';
 import { isBizNum } from "@Services/utils/validate";
 
 import validation from '@Utils/validate';
+>>>>>>> 76d3b636b33835cd3f328e3c7c3de71ad9fb1487
 const tabSelect = [
   {
     id: 'tab1',
@@ -62,7 +66,7 @@ const dataSelect = [
 ];
 
 class RegisterBusinessInfo extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       checkAll: false,
@@ -104,13 +108,13 @@ class RegisterBusinessInfo extends Component {
         checkInchgNm: true,
         checkEmail: true,
         checkEmailFormat: true,
-      }
+      },
     };
     this.navigation = props.navigation;
   }
 
   /** when after render DOM */
-  componentDidMount () {
+  componentDidMount() {
     const { businessList } = this.state;
 
     WarehouseOwner.statusWhrgByOwner()
@@ -344,86 +348,86 @@ class RegisterBusinessInfo extends Component {
       }
     }
   }
-  handleOnSubmit = () => {
-    const { businessInfo, isCert } = this.state;
+  // handleOnSubmit = () => {
+  //   const { businessInfo, isCert } = this.state;
 
-    // let emailError = validation('name', businessInfo.name);
-    if (businessInfo.name !== undefined && businessInfo.name !== '') {
-      this.setState({ checkName: true });
-    } else {
-      this.setState({ checkName: false });
-    }
-    if (businessInfo.number !== undefined && businessInfo.number !== '') {
-      this.setState({ checkBusiness: true });
-    } else {
-      this.setState({ checkBusiness: false });
-    }
-    if (
-      businessInfo.roadAddr.address !== undefined &&
-      businessInfo.roadAddr.address !== ''
-    ) {
-      this.setState({ checkAddress: true });
-    } else {
-      this.setState({ checkAddress: false });
-    }
-    if (
-      businessInfo.checkRepreNm !== undefined &&
-      businessInfo.checkRepreNm !== ''
-    ) {
-      this.setState({ checkRepreNm: true });
-    } else {
-      this.setState({ checkRepreNm: false });
-    }
+  //   // let emailError = validation('name', businessInfo.name);
+  //   if (businessInfo.name !== undefined && businessInfo.name !== '') {
+  //     this.setState({ checkName: true });
+  //   } else {
+  //     this.setState({ checkName: false });
+  //   }
+  //   if (businessInfo.number !== undefined && businessInfo.number !== '') {
+  //     this.setState({ checkBusiness: true });
+  //   } else {
+  //     this.setState({ checkBusiness: false });
+  //   }
+  //   if (
+  //     businessInfo.roadAddr.address !== undefined &&
+  //     businessInfo.roadAddr.address !== ''
+  //   ) {
+  //     this.setState({ checkAddress: true });
+  //   } else {
+  //     this.setState({ checkAddress: false });
+  //   }
+  //   if (
+  //     businessInfo.checkRepreNm !== undefined &&
+  //     businessInfo.checkRepreNm !== ''
+  //   ) {
+  //     this.setState({ checkRepreNm: true });
+  //   } else {
+  //     this.setState({ checkRepreNm: false });
+  //   }
 
-    if (
-      businessInfo.checkRepreNm !== undefined &&
-      businessInfo.checkRepreNm !== ''
-    ) {
-      this.setState({ checkRepreNm: true });
-    } else {
-      this.setState({ checkRepreNm: false });
-    }
+  //   if (
+  //     businessInfo.checkRepreNm !== undefined &&
+  //     businessInfo.checkRepreNm !== ''
+  //   ) {
+  //     this.setState({ checkRepreNm: true });
+  //   } else {
+  //     this.setState({ checkRepreNm: false });
+  //   }
 
-    if (
-      businessInfo.checkInchgNm !== undefined &&
-      businessInfo.checkInchgNm !== ''
-    ) {
-      this.setState({ checkInchgNm: true });
-    } else {
-      this.setState({ checkInchgNm: false });
-    }
-    if (
-      businessInfo.checkEmail !== undefined &&
-      businessInfo.checkEmail !== ''
-    ) {
-      this.setState({ checkEmail: true });
-    } else {
-      this.setState({ checkEmail: false });
-    }
+  //   if (
+  //     businessInfo.checkInchgNm !== undefined &&
+  //     businessInfo.checkInchgNm !== ''
+  //   ) {
+  //     this.setState({ checkInchgNm: true });
+  //   } else {
+  //     this.setState({ checkInchgNm: false });
+  //   }
+  //   if (
+  //     businessInfo.checkEmail !== undefined &&
+  //     businessInfo.checkEmail !== ''
+  //   ) {
+  //     this.setState({ checkEmail: true });
+  //   } else {
+  //     this.setState({ checkEmail: false });
+  //   }
 
-    if (!isCert) {
-      alert('휴대폰 인증을 완료해주세요.');
-      return false;
-    }
+  //   if (!isCert) {
+  //     alert('휴대폰 인증을 완료해주세요.');
+  //     return false;
+  //   }
 
-    if (!businessInfo.regFile) {
-      alert('사업자등록증을 업로드 하세요.');
-      return false;
-    }
+  //   if (!businessInfo.regFile) {
+  //     alert('사업자등록증을 업로드 하세요.');
+  //     return false;
+  //   }
 
-    this.setState({ loading: true });
-    // 창고주 정보 등록
-    WarehouseOwner.regBusinessInfo(businessInfo)
-      .then(res => {
-        alert('창고 사업자 등록이 완료되었습니다.');
-        this.setState({ loading: false });
-        this.navigation.navigate('RegisterWH', res.data);
-      })
-      .catch(error => {
-        alert('서버에러:' + error.response.data.message);
-        this.setState({ loading: false });
-      });
-  };
+  //   this.setState({ loading: true });
+  //   // 창고주 정보 등록
+  //   WarehouseOwner.regBusinessInfo(businessInfo)
+  //     .then(res => {
+  //       alert('창고 사업자 등록이 완료되었습니다.');
+  //       this.setState({ loading: false });
+  //       this.navigation.navigate('RegisterWH', res.data);
+  //     })
+  //     .catch(error => {
+  //       alert('서버에러:' + error.response.data.message);
+  //       this.setState({ loading: false });
+  //     });
+  // };
 
   /**
    * 기등록 사업자 선택 완료.
@@ -439,7 +443,7 @@ class RegisterBusinessInfo extends Component {
     // onComplete(businessList[businessMode])
   };
 
-  render () {
+  render() {
     const {
       businessMode,
       businessInfo,
@@ -572,7 +576,7 @@ class RegisterBusinessInfo extends Component {
                         checkBusiness: true,
                         businessInfo: {
                           ...businessInfo,
-                          number: e.replace(/[^0-9]/g, '') ,
+                          number: e.replace(/[^0-9]/g, ''),
                         },
                       });
                     }}
@@ -712,10 +716,12 @@ class RegisterBusinessInfo extends Component {
                     fontSize={14}
                     isRequired={true}
                     colorLabel="#000000"
-                    textError={(
+                    textError={
                       (!valid.checkPhone ? '휴대폰번호를 입력하세요. ' : '') +
-                      (!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '')
-                    )}
+                      (!valid.checkPhoneFormat
+                        ? '전화번호 형식이 아닙니다. '
+                        : '')
+                    }
                     valueProps={e => {
                       this.setState({
                         valid: {
@@ -881,13 +887,13 @@ class RegisterBusinessInfo extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {};
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     setProgress: status => {
       dispatch(ActionCreator.setProgress(status));
