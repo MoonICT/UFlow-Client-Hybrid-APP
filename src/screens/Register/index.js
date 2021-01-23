@@ -146,6 +146,8 @@ class Register extends Component {
     } = this.state;
 
     let checkSubmit = false;
+    let checkAll = false;
+
     if (
       terms.privacy === true &&
       terms.location === true &&
@@ -154,7 +156,10 @@ class Register extends Component {
     ) {
       checkSubmit = true;
     }
-    console.log('checkSubmit :>> ', checkSubmit);
+    if (checkSubmit === true && checkMarketing === true) {
+      checkAll = true;
+    }
+    // console.log('checkSubmit :>> ', checkSubmit);
     return (
       <>
         {isDone ? (

@@ -39,14 +39,10 @@ import { WarehouseProprietorInfo } from '@Services/apis/models/warehouse';
 import { WarehouseOwner, Warehouse, MediaUpload } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import ActionCreator from '@Actions';
-<<<<<<< HEAD
-// import validation from '@Utils/validate';
-=======
 import validator from 'validator';
-import { isBizNum } from "@Services/utils/validate";
+import { isBizNum } from '@Services/utils/validate';
 
 import validation from '@Utils/validate';
->>>>>>> 76d3b636b33835cd3f328e3c7c3de71ad9fb1487
 const tabSelect = [
   {
     id: 'tab1',
@@ -337,9 +333,13 @@ class RegisterBusinessInfo extends Component {
       checkRepreNm: !!businessInfo.repreNm,
       checkInchgNm: !!businessInfo.inchgNm,
       checkPhone: !!businessInfo.phone,
-      checkPhoneFormat: businessInfo.phone ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone) : true,
+      checkPhoneFormat: businessInfo.phone
+        ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone)
+        : true,
       checkEmail: !!businessInfo.email,
-      checkEmailFormat: businessInfo.email ? validator.isEmail(businessInfo.email) : true,
+      checkEmailFormat: businessInfo.email
+        ? validator.isEmail(businessInfo.email)
+        : true,
     };
     this.setState({ valid: valid });
     for (let key in valid) {
@@ -347,7 +347,7 @@ class RegisterBusinessInfo extends Component {
         return false;
       }
     }
-  }
+  };
   // handleOnSubmit = () => {
   //   const { businessInfo, isCert } = this.state;
 
@@ -458,6 +458,7 @@ class RegisterBusinessInfo extends Component {
       checkRepreNm,
       checkInchgNm,
       checkEmail,
+      valid,
     } = this.state;
     // console.log('businessInfo :>> ', businessInfo);
     return (
