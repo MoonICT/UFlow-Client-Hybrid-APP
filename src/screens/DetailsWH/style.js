@@ -272,9 +272,11 @@ export const styles = StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontWeight: 'normal',
+    marginBottom: 4,
   },
   titleCompleted: {
     color: 'rgba(255, 109, 0, 0.87)',
+    marginBottom: 4,
   },
   contentInquiry: {
     color: 'rgba(0, 0, 0, 0.87)',
