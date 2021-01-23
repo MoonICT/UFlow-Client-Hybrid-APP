@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-24 13:57:48
- * @modify date 2021-01-08 10:35:18
+ * @modify date 2021-01-23 09:37:01
  * @desc [description]
  */
 
@@ -145,18 +145,7 @@ class Register extends Component {
       errorEmail,
     } = this.state;
 
-    let checkAll = false;
     let checkSubmit = false;
-
-    if (
-      terms.privacy === true &&
-      terms.location === true &&
-      terms.financial === true &&
-      serviceTerms === true &&
-      checkMarketing === true
-    ) {
-      checkAll = true;
-    }
     if (
       terms.privacy === true &&
       terms.location === true &&
@@ -165,6 +154,7 @@ class Register extends Component {
     ) {
       checkSubmit = true;
     }
+    console.log('checkSubmit :>> ', checkSubmit);
     return (
       <>
         {isDone ? (

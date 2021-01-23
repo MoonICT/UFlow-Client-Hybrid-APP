@@ -112,17 +112,17 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
-            value.type2 === 'TRUST'
-              ? {}
-              : {
-                type: '견적 금액',
-                value: StringUtils.moneyConvert(
-                  (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice),
-                ),
-              },
+            // value.type2 === 'TRUST'
+            //   ? {}
+            //   : {
+            //     type: '견적 금액',
+            //     value: StringUtils.moneyConvert(
+            //       (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+            //       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+            //       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+            //       (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            //     ),
+            //   },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -156,17 +156,17 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
-            value.type2 === 'TRUST'
-              ? {}
-              : {
-                type: '견적 금액',
-                value: StringUtils.moneyConvert(
-                  (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice),
-                ),
-              },
+            // value.type2 === 'TRUST'
+            //   ? {}
+            //   : {
+            //     type: '견적 금액',
+            //     value: StringUtils.moneyConvert(
+            //       (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+            //       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+            //       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+            //       (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            //     ),
+            //   },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -195,17 +195,17 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
-            value.type2 === 'TRUST'
-              ? {}
-              : {
-                type: '견적 금액',
-                value: StringUtils.moneyConvert(
-                  (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice),
-                ),
-              },
+            // value.type2 === 'TRUST'
+            //   ? {}
+            //   : {
+            //     type: '견적 금액',
+            //     value: StringUtils.moneyConvert(
+            //       (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+            //       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+            //       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+            //       (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            //     ),
+            //   },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -235,17 +235,17 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
-            value.type2 === 'TRUST'
-              ? {}
-              : {
-                type: '견적 금액',
-                value: StringUtils.moneyConvert(
-                  (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice),
-                ),
-              },
+            // value.type2 === 'TRUST'
+            //   ? {}
+            //   : {
+            //     type: '견적 금액',
+            //     value: StringUtils.moneyConvert(
+            //       (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+            //       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+            //       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+            //       (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            //     ),
+            //   },
             {
               type: '창고 주소',
               value: value.info.address,
@@ -312,17 +312,17 @@ class ContractManager extends Component {
               type: '창고 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
-            value.type2 === 'TRUST'
-              ? {}
-              : {
-                type: '견적 금액',
-                value: StringUtils.moneyConvert(
-                  (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
-                  (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
-                  (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
-                  (value.cntrKeep && value.cntrKeep.estimatedPrice),
-                ),
-              },
+            // value.type2 === 'TRUST'
+            //   ? {}
+            //   : {
+            //     type: '견적 금액',
+            //     value: StringUtils.moneyConvert(
+            //       (value.estmtTrust && value.estmtTrust.estimatedPrice) ||
+            //       (value.estmtKeep && value.estmtKeep.estimatedPrice) ||
+            //       (value.cntrTrust && value.cntrTrust.estimatedPrice) ||
+            //       (value.cntrKeep && value.cntrKeep.estimatedPrice),
+            //     ),
+            //   },
             {
               type: '창고 주소',
               value: value.info.address,

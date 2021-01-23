@@ -15,6 +15,7 @@ import {
   Button,
   Dialog,
   Paragraph,
+  Portal
 } from 'react-native-paper';
 
 // Local Imports
@@ -51,6 +52,7 @@ class MypageInfo extends Component {
       tabInfo: '',
       userInfo: {},
       data:{},
+      isOpenChangePass: false,
       loading:false,
       isAgreeSNS:{
         sms: false,
@@ -101,19 +103,16 @@ class MypageInfo extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   onSubmit = () => {
+<<<<<<< HEAD
     console.log('this.state', this.state)
 
+=======
+>>>>>>> origin/leo
     const { data,isAgreeSNS } = this.state;
-    if(!data.passwordOld) {
-      alert('비밀번호를 입력해주세요');
-      return
-    }
 
     this.setState({loading: true});
     Account.editMyInfo({
       fullName: data.fullName,
-      passwordOld: data.passwordOld,
-      password: data.password,
       emailRcv: isAgreeSNS.email,
       smsRcv: isAgreeSNS.sms
     }).then(res => {
@@ -130,9 +129,59 @@ class MypageInfo extends Component {
     })
   };
 
+  _onChangePass = () => {
+    const { data,isAgreeSNS } = this.state;
+    if(!data.passwordOld ) {
+      alert('현재 비밀번호를 입력하세요');
+      return
+    }
+    if(!data.password ) {
+      alert('새 비밀번호를 입력하세요');
+      return
+    }
+    if(!data.ConfirmPassword) {
+      alert('새 비밀번호를 입력하세요');
+      return
+    }
+    if(data.password !== data.ConfirmPassword ) {
+      alert('암호가 일치하지 않습니다');
+      return
+    }
+    this.setState({loading: true});
+
+    Account.editMyInfo({
+      passwordOld: data.passwordOld,
+      password: data.password
+    }).then(res => {
+      this.setState({loading: false, isOpenChangePass: false});
+      this.props.showPopup({
+        type: 'confirm',
+        title: '회원정보 수정 완료',
+        content: '회원정보가 수정되었습니다.',
+        image: editInfo
+      });
+    }).catch(error => {
+      this.setState({loading: false});
+      alert(error.response.data.message);
+    })
+  }
+
+  _onOpenChangePass = () => {
+    let {isOpenChangePass} = this.state;
+    this.setState({
+      isOpenChangePass: !isOpenChangePass
+    })
+  }
+
+  _hideDialogChangePass = () => {
+    this.setState({
+      isOpenChangePass: false
+    })
+  }
+
   render() {
 
-    const { checkAll, checkSMS, checkMail, tabInfo, loading, data, isAgreeSNS } = this.state;
+    const { checkAll, checkSMS, checkMail, tabInfo, loading, data, isAgreeSNS, isOpenChangePass } = this.state;
 
     return (
       <>
@@ -193,6 +242,18 @@ class MypageInfo extends Component {
               labelTextField="새 비밀번호 확인"
               colorLabel="#000000"
             />
+
+            <Button
+              onPress={this._onOpenChangePass}
+              style={{
+                borderColor: 'rgba(0, 0, 0, 0.1)',
+                margin: 0,
+                borderRadius: 0,
+                width: '100%',
+              }}>
+              비밀번호 변경
+            </Button>
+
           </View>
           <View style={S.checks}>
             <View style={S.checkItem}>
@@ -207,7 +268,7 @@ class MypageInfo extends Component {
                   })
                 }}
               />
-              <Text style={S.textCheck}>마케팅 수신 동의</Text>
+              <Text style={S.textCheck} >마케팅 수신 동의</Text>
             </View>
             <View style={[S.checkItem, S.checkChildren]}>
               <Checkbox
@@ -235,7 +296,7 @@ class MypageInfo extends Component {
                   })
                 }}
               />
-              <Text style={S.textCheck}>이메일</Text>
+              <Text style={S.textCheck} >이메일</Text>
             </View>
           </View>
         </View>
@@ -249,6 +310,82 @@ class MypageInfo extends Component {
           </Button>
         </View>
         <Loading loading={loading}/>
+
+
+        <Portal>
+            <Dialog
+              style={DefaultStyle._postCode}
+              visible={isOpenChangePass}
+              onDismiss={this._hideDialogChangePass}
+              >
+              <Dialog.Title style={[DefaultStyle._titleDialog, S.titleQuestion]}>
+              비밀번호 변경
+              </Dialog.Title>
+              <Dialog.Content style={DefaultStyle._postCodeContent}>
+                <View style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+
+                  <View style={{width: '100%'}}>
+                    <TextField
+                      type={'password'}
+                      secureTextEntry={true}
+                      labelTextField="현재 비밀번호"
+                      colorLabel="#000000"
+                      value={data.passwordOld ? data.passwordOld : ''}
+                      valueProps={e => this.setState({
+                        data:{
+                          ...data,
+                          passwordOld: e
+                      }})}
+                    />
+                    <TextField
+                      type={'password'}
+                      secureTextEntry={true}
+                      value={data.password ? data.password : ''}
+                      valueProps={e => this.setState({
+                        data:{
+                          ...data,
+                          password: e
+                      }})}
+                      labelTextField="새 비밀번호" colorLabel="#000000" />
+                    <TextField
+                      type={'password'}
+                      secureTextEntry={true}
+                      value={data.ConfirmPassword ? data.ConfirmPassword : ''}
+                      valueProps={e => this.setState({
+                        data:{
+                          ...data,
+                          ConfirmPassword: e
+                      }})}
+                      labelTextField="새 비밀번호 확인"
+                      colorLabel="#000000"
+                    />
+
+
+                    <Dialog.Actions style={{display: 'flex',justifyContent: 'center'}}>
+                      <Button
+                        // style={[DefaultStyle._buttonElement]}
+                        color={'rgba(0, 0, 0, 0.54)'}
+                        onPress={this._hideDialogChangePass}
+                        >
+                        취소
+                      </Button>
+                      <Button
+                        // style={[DefaultStyle._buttonElement]}
+                        onPress={this._onChangePass}>
+                        확인
+                      </Button>
+                    </Dialog.Actions>
+
+
+                  </View>
+                  
+                </View>
+                
+              </Dialog.Content>
+            </Dialog>
+          </Portal>
+
+
       </>
     );
   }

@@ -464,9 +464,13 @@ export default class InOutManager extends Component {
   }
 
   showDialogExpert = () => this.setState({ visibleExpert: true });
-  hideDialogExpert = () => this.setState({ visibleExpert: false });
+  hideDialogExpert = () => {
+    this.setState({ visibleExpert: false, valueCreateExpert: ''});
+  } 
   showDialogImport = () => this.setState({ visibleImport: true });
-  hideDialogImport = () => this.setState({ visibleImport: false });
+  hideDialogImport = () => {
+    this.setState({ visibleImport: false, valueCreateImport: '' })
+  };
 
   showConfirm = () => this.setState({ confirm: true });
   hideConfirm = () => this.setState({ confirm: false });
@@ -653,67 +657,6 @@ export default class InOutManager extends Component {
                 bgrImage={{
                   uri: item.image
                 }}
-                footer={
-                  <>
-                    {valueTab === 'TENANT' && (
-                      <View
-                        style={[
-                          DefaultStyle._listBtn,
-                          { marginTop: 20, marginBottom: 0 },
-                        ]}>
-                        <TouchableOpacity
-                          style={[
-                            DefaultStyle._btnInline,
-                            DefaultStyle._btnLeft,
-                          ]}
-                          onPress={() => {
-                            this.setState(
-                              {
-                                typeCreate: 'import',
-                                rentWarehNoCurrent: item.rentWarehNo,
-                              },
-                              () => {
-                                this.showDialogImport();
-                              },
-                            );
-                          }}>
-                          <Text
-                            style={[
-                              DefaultStyle._textButton,
-                              DefaultStyle._textInline,
-                            ]}>
-                            입고요청
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={[
-                            DefaultStyle._btnInline,
-                            DefaultStyle._btnRight,
-                            { backgroundColor: '#e64a19' },
-                          ]}
-                          onPress={() => {
-                            this.setState(
-                              {
-                                typeCreate: 'export',
-                                rentWarehNoCurrent: item.rentWarehNo,
-                              },
-                              () => {
-                                this.showDialogExpert();
-                              },
-                            );
-                          }}>
-                          <Text
-                            style={[
-                              DefaultStyle._textButton,
-                              DefaultStyle._textInline,
-                            ]}>
-                            출고 요청
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                  </>
-                }
               />
             );
           })}
@@ -725,7 +668,7 @@ export default class InOutManager extends Component {
         visible={this.state.visibleExpert}
         onDismiss={this.hideDialogExpert}>
         <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
-          출고요청
+          출고요청 fff
         </Dialog.Title>
         <Dialog.Content>
           <View style={SS.bodyPopup}>
@@ -838,13 +781,6 @@ export default class InOutManager extends Component {
                       <Text style={DefaultStyle._textDate}>
                         {dateStr(timeCreateImport)}
                       </Text>
-                      {/*<Text*/}
-                      {/*  style={[*/}
-                      {/*    DefaultStyle._labelTextField,*/}
-                      {/*    { color: '#000000' },*/}
-                      {/*  ]}>*/}
-                      {/*  출고 예정일*/}
-                      {/*</Text>*/}
                       {isOpenTimeCreateImport &&
                       <DateTimePickerModal
                         mode="date"

@@ -143,15 +143,23 @@ class RegisterImage extends Component {
             // Progress
             this.props.setProgress({ is: true, type: 'CIRCLE' });
             // Please change file upload URL
+            {/** TODO 창고 이미지 업로드 시  **/}
             {/**
+               TODO @deokin
+             * 1)20210121 장종례 창고등록 API 수정 (1)
+             * 2)20210121 장종례 창고등록 API 수정 (2)
+             * 3)창고등록 이미지 업로드 처리
+             * 4)창고수정 이미지 업로드 처리
+             *
+             *
+             *
              * @param body {
              *   file => 파일
              *   id => 창고 ID
              *   code => 이미지(0001) 또는 파노라마(0002)
              * }
              * @returns {Promise<AxiosResponse<any>>}
-             */
-            }
+             */}
             await Warehouse.uploadImage(data)
               .then(respon => {
                 console.log('이미지 업로드 완료 : ', respon)
