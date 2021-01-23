@@ -14,17 +14,17 @@ import {
   Image,
 } from 'react-native';
 import {
-  Appbar,
-  Searchbar,
+  // Appbar,
+  // Searchbar,
   Text,
   Button,
   Dialog,
-  Paragraph,
+  // Paragraph,
   Portal,
 } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
+// import DocumentPicker from 'react-native-document-picker';
 import Postcode from 'react-native-daum-postcode';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
@@ -39,13 +39,7 @@ import { WarehouseProprietorInfo } from '@Services/apis/models/warehouse';
 import { WarehouseOwner, Warehouse, MediaUpload } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import ActionCreator from '@Actions';
-<<<<<<< HEAD
-import validator from 'validator';
-import { isBizNum } from "@Services/utils/validate";
-
-=======
-import validation from '@Utils/validate';
->>>>>>> origin/leo
+// import validation from '@Utils/validate';
 const tabSelect = [
   {
     id: 'tab1',
@@ -65,7 +59,7 @@ const dataSelect = [
 ];
 
 class RegisterBusinessInfo extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       checkAll: false,
@@ -107,13 +101,13 @@ class RegisterBusinessInfo extends Component {
         checkInchgNm: true,
         checkEmail: true,
         checkEmailFormat: true,
-      }
+      },
     };
     this.navigation = props.navigation;
   }
 
   /** when after render DOM */
-  componentDidMount () {
+  componentDidMount() {
     const { businessList } = this.state;
 
     WarehouseOwner.statusWhrgByOwner()
@@ -324,28 +318,28 @@ class RegisterBusinessInfo extends Component {
     });
   };
 
-  handleOnSubmit = () => {
-    const { businessInfo, isCert } = this.state;
+  // handleOnSubmit = () => {
+  //   const { businessInfo, isCert } = this.state;
 
-    let valid = {
-      checkName: !!businessInfo.name,
-      checkBusiness: !!businessInfo.number,
-      checkBusinessFormat: true, // TODO TODO 사업자번호체크로직 주석해제예정
-      // checkBusinessFormat: isBizNum(businessInfo.number),
-      checkAddress: !!businessInfo.roadAddr.address,
-      checkRepreNm: !!businessInfo.repreNm,
-      checkInchgNm: !!businessInfo.inchgNm,
-      checkPhone: !!businessInfo.phone,
-      checkPhoneFormat: businessInfo.phone ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone) : true,
-      checkEmail: !!businessInfo.email,
-      checkEmailFormat: businessInfo.email ? validator.isEmail(businessInfo.email) : true,
-    }
-    this.setState({ valid: valid });
-    for (let key in valid) {
-      if (!valid[key]) {
-        return false;
-      }
-    }
+  //   let valid = {
+  //     checkName: !!businessInfo.name,
+  //     checkBusiness: !!businessInfo.number,
+  //     checkBusinessFormat: true, // TODO TODO 사업자번호체크로직 주석해제예정
+  //     // checkBusinessFormat: isBizNum(businessInfo.number),
+  //     checkAddress: !!businessInfo.roadAddr.address,
+  //     checkRepreNm: !!businessInfo.repreNm,
+  //     checkInchgNm: !!businessInfo.inchgNm,
+  //     checkPhone: !!businessInfo.phone,
+  //     checkPhoneFormat: businessInfo.phone ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone) : true,
+  //     checkEmail: !!businessInfo.email,
+  //     checkEmailFormat: businessInfo.email ? validator.isEmail(businessInfo.email) : true,
+  //   }
+  //   this.setState({ valid: valid });
+  //   for (let key in valid) {
+  //     if (!valid[key]) {
+  //       return false;
+  //     }
+  //   }
 
   handleOnSubmit = () => {
     const { businessInfo, isCert } = this.state;
@@ -442,7 +436,7 @@ class RegisterBusinessInfo extends Component {
     // onComplete(businessList[businessMode])
   };
 
-  render () {
+  render() {
     const {
       businessMode,
       businessInfo,
@@ -575,7 +569,7 @@ class RegisterBusinessInfo extends Component {
                         checkBusiness: true,
                         businessInfo: {
                           ...businessInfo,
-                          number: e.replace(/[^0-9]/g, '') ,
+                          number: e.replace(/[^0-9]/g, ''),
                         },
                       });
                     }}
@@ -715,10 +709,12 @@ class RegisterBusinessInfo extends Component {
                     fontSize={14}
                     isRequired={true}
                     colorLabel="#000000"
-                    textError={(
+                    textError={
                       (!valid.checkPhone ? '휴대폰번호를 입력하세요. ' : '') +
-                      (!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '')
-                    )}
+                      (!valid.checkPhoneFormat
+                        ? '전화번호 형식이 아닙니다. '
+                        : '')
+                    }
                     valueProps={e => {
                       this.setState({
                         valid: {
@@ -884,13 +880,13 @@ class RegisterBusinessInfo extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {};
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     setProgress: status => {
       dispatch(ActionCreator.setProgress(status));

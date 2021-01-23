@@ -103,11 +103,6 @@ class MypageInfo extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   onSubmit = () => {
-<<<<<<< HEAD
-    console.log('this.state', this.state)
-
-=======
->>>>>>> origin/leo
     const { data,isAgreeSNS } = this.state;
 
     this.setState({loading: true});
