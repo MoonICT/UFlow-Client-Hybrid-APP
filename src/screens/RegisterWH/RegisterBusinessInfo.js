@@ -39,13 +39,10 @@ import { WarehouseProprietorInfo } from '@Services/apis/models/warehouse';
 import { WarehouseOwner, Warehouse, MediaUpload } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import ActionCreator from '@Actions';
-<<<<<<< HEAD
 import validator from 'validator';
 import { isBizNum } from "@Services/utils/validate";
 
-=======
 import validation from '@Utils/validate';
->>>>>>> origin/leo
 const tabSelect = [
   {
     id: 'tab1',
@@ -339,14 +336,14 @@ class RegisterBusinessInfo extends Component {
       checkPhoneFormat: businessInfo.phone ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone) : true,
       checkEmail: !!businessInfo.email,
       checkEmailFormat: businessInfo.email ? validator.isEmail(businessInfo.email) : true,
-    }
+    };
     this.setState({ valid: valid });
     for (let key in valid) {
       if (!valid[key]) {
         return false;
       }
     }
-
+  }
   handleOnSubmit = () => {
     const { businessInfo, isCert } = this.state;
 

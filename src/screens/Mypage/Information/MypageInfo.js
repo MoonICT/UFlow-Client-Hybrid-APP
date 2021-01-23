@@ -7,7 +7,7 @@
 // Global Imports
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import { SafeAreaView, View, TouchableOpacity } from 'react-native';
 import {
   Appbar,
   Searchbar,
@@ -103,11 +103,8 @@ class MypageInfo extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   onSubmit = () => {
-<<<<<<< HEAD
     console.log('this.state', this.state)
 
-=======
->>>>>>> origin/leo
     const { data,isAgreeSNS } = this.state;
 
     this.setState({loading: true});
@@ -299,7 +296,10 @@ class MypageInfo extends Component {
               <Text style={S.textCheck} >이메일</Text>
             </View>
           </View>
-        </View>
+        <TouchableOpacity style={S._right} onPress={()=> this.navigation.navigate('WithdrawalInformation')}>
+          <Text style={DefaultStyle._textDF3}>회원탈퇴</Text>
+        </TouchableOpacity>
+          </View>
         <View style={S.btn}>
           <Button
             mode="contained"

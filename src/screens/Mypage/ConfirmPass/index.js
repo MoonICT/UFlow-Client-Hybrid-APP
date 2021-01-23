@@ -18,10 +18,12 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from '../style';
-
+import { AuthContext } from '@Store/context';
+import illust6 from '@Assets/images/illust6.png';
 import { MyPage } from '@Services/apis';
 
 class WithdrawalInformation extends Component {
+  static contextType = AuthContext;
   constructor(props) {
     super(props);
     this.webView = null;
@@ -29,10 +31,10 @@ class WithdrawalInformation extends Component {
       visible: false,
       passWord: '',
     };
+   
 
     this.navigation = props.navigation;
   }
-
   /** when after render DOM */
   async componentDidMount() {
     console.log('::componentDidMount::');
@@ -49,22 +51,48 @@ class WithdrawalInformation extends Component {
       password: this.state.passWord,
       ...params,
     };
-    MyPage.cancelMembership(defaultParams)
-      .then(res => {
-        console.log('::::: cancelMembership :::::', res);
-        if (res.status === 200) {
-          this.showDialog()
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
+    if (params.leaveReason && params.leaveReason.length > 0) {
+      MyPage.cancelMembership(defaultParams)
+        .then(res => {
+          console.log('::::: cancelMembership :::::', res);
+          if (res.status === 200) {
+            // this.showDialog();
+            this.props.showPopup({
+              type: 'confirm',
+              title: '회원탈퇴 완료',
+              content:
+                '회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.',
+              image: illust6,
+              navigation: () => {
+                this.context.signOut();
+                this.navigation.navigate('Login');
+              },
+            });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+          this.props.showPopup({
+            type: 'confirm',
+            title: '에러가 났습니다',
+            content: '회원탈퇴가 완료되지 않았습니다',
+            image: illust6,
+          });
+        });
+    } else {
+      this.props.showPopup({
+        type: 'confirm',
+        title: '에러가 났습니다',
+        content: '비밀번호와 회원탈퇴사유를 입력하세요',
+        image: illust6,
       });
+    }
   }
 
-  onCancelMembership = (labelList) => {
-    let labelString = labelList.toString();
-    this.cancelMembership({ leaveReason: labelString });
-  }
+  onCancelMembership = labelList => {
+    // let labelString = labelList.toString();
+    this.cancelMembership({ leaveReason: labelList });
+  };
 
   showDialog = () => this.setState({ visible: true });
 
@@ -74,12 +102,7 @@ class WithdrawalInformation extends Component {
     const { params } = this.props.route;
     return (
       <SafeAreaView style={S.container}>
-
-        <HistoryBackActionBar
-          title={'회원탈퇴'}
-          navigation={this.navigation}
-        />
-
+        <HistoryBackActionBar title={'회원탈퇴'} navigation={this.navigation} />
 
         <ScrollView>
           <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
@@ -155,9 +178,9 @@ function mapDispatchToProps(dispatch) {
     dataAction: action => {
       dispatch(ActionCreator.ContractConditions(action));
     },
-    // countDown: diff => {
-    //   dispatch(ActionCreator.countDown(diff));
-    // },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
+    },
   };
 }
 
