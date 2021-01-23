@@ -348,11 +348,11 @@ export default class DetailsManager extends Component {
               },
               {
                 type: '입고비',// 입고단가 X 입고확정수량
-                value: whinUprice
+                value: moneyUnit(whinUprice)
               },
               {
                 type: '출고비',
-                value: whoutUprice
+                value: moneyUnit(whoutUprice)
               },
               {
                 type: '보관비',

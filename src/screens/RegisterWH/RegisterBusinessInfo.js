@@ -39,7 +39,14 @@ import { WarehouseProprietorInfo } from '@Services/apis/models/warehouse';
 import { WarehouseOwner, Warehouse, MediaUpload } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import ActionCreator from '@Actions';
+<<<<<<< HEAD
 // import validation from '@Utils/validate';
+=======
+import validator from 'validator';
+import { isBizNum } from "@Services/utils/validate";
+
+import validation from '@Utils/validate';
+>>>>>>> 76d3b636b33835cd3f328e3c7c3de71ad9fb1487
 const tabSelect = [
   {
     id: 'tab1',
@@ -318,109 +325,109 @@ class RegisterBusinessInfo extends Component {
     });
   };
 
-  // handleOnSubmit = () => {
-  //   const { businessInfo, isCert } = this.state;
-
-  //   let valid = {
-  //     checkName: !!businessInfo.name,
-  //     checkBusiness: !!businessInfo.number,
-  //     checkBusinessFormat: true, // TODO TODO 사업자번호체크로직 주석해제예정
-  //     // checkBusinessFormat: isBizNum(businessInfo.number),
-  //     checkAddress: !!businessInfo.roadAddr.address,
-  //     checkRepreNm: !!businessInfo.repreNm,
-  //     checkInchgNm: !!businessInfo.inchgNm,
-  //     checkPhone: !!businessInfo.phone,
-  //     checkPhoneFormat: businessInfo.phone ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone) : true,
-  //     checkEmail: !!businessInfo.email,
-  //     checkEmailFormat: businessInfo.email ? validator.isEmail(businessInfo.email) : true,
-  //   }
-  //   this.setState({ valid: valid });
-  //   for (let key in valid) {
-  //     if (!valid[key]) {
-  //       return false;
-  //     }
-  //   }
-
   handleOnSubmit = () => {
     const { businessInfo, isCert } = this.state;
 
-    // let emailError = validation('name', businessInfo.name);
-    if (businessInfo.name !== undefined && businessInfo.name !== '') {
-      this.setState({ checkName: true });
-    } else {
-      this.setState({ checkName: false });
+    let valid = {
+      checkName: !!businessInfo.name,
+      checkBusiness: !!businessInfo.number,
+      checkBusinessFormat: true, // TODO TODO 사업자번호체크로직 주석해제예정
+      // checkBusinessFormat: isBizNum(businessInfo.number),
+      checkAddress: !!businessInfo.roadAddr.address,
+      checkRepreNm: !!businessInfo.repreNm,
+      checkInchgNm: !!businessInfo.inchgNm,
+      checkPhone: !!businessInfo.phone,
+      checkPhoneFormat: businessInfo.phone ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone) : true,
+      checkEmail: !!businessInfo.email,
+      checkEmailFormat: businessInfo.email ? validator.isEmail(businessInfo.email) : true,
+    };
+    this.setState({ valid: valid });
+    for (let key in valid) {
+      if (!valid[key]) {
+        return false;
+      }
     }
-    if (businessInfo.number !== undefined && businessInfo.number !== '') {
-      this.setState({ checkBusiness: true });
-    } else {
-      this.setState({ checkBusiness: false });
-    }
-    if (
-      businessInfo.roadAddr.address !== undefined &&
-      businessInfo.roadAddr.address !== ''
-    ) {
-      this.setState({ checkAddress: true });
-    } else {
-      this.setState({ checkAddress: false });
-    }
-    if (
-      businessInfo.checkRepreNm !== undefined &&
-      businessInfo.checkRepreNm !== ''
-    ) {
-      this.setState({ checkRepreNm: true });
-    } else {
-      this.setState({ checkRepreNm: false });
-    }
+  }
+  // handleOnSubmit = () => {
+  //   const { businessInfo, isCert } = this.state;
 
-    if (
-      businessInfo.checkRepreNm !== undefined &&
-      businessInfo.checkRepreNm !== ''
-    ) {
-      this.setState({ checkRepreNm: true });
-    } else {
-      this.setState({ checkRepreNm: false });
-    }
+  //   // let emailError = validation('name', businessInfo.name);
+  //   if (businessInfo.name !== undefined && businessInfo.name !== '') {
+  //     this.setState({ checkName: true });
+  //   } else {
+  //     this.setState({ checkName: false });
+  //   }
+  //   if (businessInfo.number !== undefined && businessInfo.number !== '') {
+  //     this.setState({ checkBusiness: true });
+  //   } else {
+  //     this.setState({ checkBusiness: false });
+  //   }
+  //   if (
+  //     businessInfo.roadAddr.address !== undefined &&
+  //     businessInfo.roadAddr.address !== ''
+  //   ) {
+  //     this.setState({ checkAddress: true });
+  //   } else {
+  //     this.setState({ checkAddress: false });
+  //   }
+  //   if (
+  //     businessInfo.checkRepreNm !== undefined &&
+  //     businessInfo.checkRepreNm !== ''
+  //   ) {
+  //     this.setState({ checkRepreNm: true });
+  //   } else {
+  //     this.setState({ checkRepreNm: false });
+  //   }
 
-    if (
-      businessInfo.checkInchgNm !== undefined &&
-      businessInfo.checkInchgNm !== ''
-    ) {
-      this.setState({ checkInchgNm: true });
-    } else {
-      this.setState({ checkInchgNm: false });
-    }
-    if (
-      businessInfo.checkEmail !== undefined &&
-      businessInfo.checkEmail !== ''
-    ) {
-      this.setState({ checkEmail: true });
-    } else {
-      this.setState({ checkEmail: false });
-    }
+  //   if (
+  //     businessInfo.checkRepreNm !== undefined &&
+  //     businessInfo.checkRepreNm !== ''
+  //   ) {
+  //     this.setState({ checkRepreNm: true });
+  //   } else {
+  //     this.setState({ checkRepreNm: false });
+  //   }
 
-    if (!isCert) {
-      alert('휴대폰 인증을 완료해주세요.');
-      return false;
-    }
+  //   if (
+  //     businessInfo.checkInchgNm !== undefined &&
+  //     businessInfo.checkInchgNm !== ''
+  //   ) {
+  //     this.setState({ checkInchgNm: true });
+  //   } else {
+  //     this.setState({ checkInchgNm: false });
+  //   }
+  //   if (
+  //     businessInfo.checkEmail !== undefined &&
+  //     businessInfo.checkEmail !== ''
+  //   ) {
+  //     this.setState({ checkEmail: true });
+  //   } else {
+  //     this.setState({ checkEmail: false });
+  //   }
 
-    if (!businessInfo.regFile) {
-      alert('사업자등록증을 업로드 하세요.');
-      return false;
-    }
+  //   if (!isCert) {
+  //     alert('휴대폰 인증을 완료해주세요.');
+  //     return false;
+  //   }
 
-    this.setState({ loading: true });
-    // 창고주 정보 등록
-    WarehouseOwner.regBusinessInfo(businessInfo)
-      .then(res => {
-        alert('창고 사업자 등록이 완료되었습니다.');
-        this.setState({ loading: false });
-        this.navigation.navigate('RegisterWH', res.data);
-      })
-      .catch(error => {
-        alert('서버에러:' + error.response.data.message);
-        this.setState({ loading: false });
-      });
-  };
+  //   if (!businessInfo.regFile) {
+  //     alert('사업자등록증을 업로드 하세요.');
+  //     return false;
+  //   }
+
+  //   this.setState({ loading: true });
+  //   // 창고주 정보 등록
+  //   WarehouseOwner.regBusinessInfo(businessInfo)
+  //     .then(res => {
+  //       alert('창고 사업자 등록이 완료되었습니다.');
+  //       this.setState({ loading: false });
+  //       this.navigation.navigate('RegisterWH', res.data);
+  //     })
+  //     .catch(error => {
+  //       alert('서버에러:' + error.response.data.message);
+  //       this.setState({ loading: false });
+  //     });
+  // };
 
   /**
    * 기등록 사업자 선택 완료.

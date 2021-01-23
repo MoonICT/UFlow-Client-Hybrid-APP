@@ -6,12 +6,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, Text } from 'react-native-paper';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
@@ -35,25 +30,25 @@ class WithdrawalInformation extends Component {
         {
           id: 1,
           label: '고객서비스',
-          isCheck: false
+          isCheck: false,
         },
         {
           id: 2,
           label: '방문 빈도가 낮음',
-          isCheck: false
+          isCheck: false,
         },
         {
           id: 3,
           label: '서비스 기능 불만',
-          isCheck: false
+          isCheck: false,
         },
         {
           id: 4,
           label: '서비스 내용 불만',
-          isCheck: false
-        }
+          isCheck: false,
+        },
       ],
-      arrLabel: []
+      arrLabel: [],
     };
 
     this.navigation = props.navigation;
@@ -73,18 +68,18 @@ class WithdrawalInformation extends Component {
   onCheck = (item, index) => {
     let newList = [...this.state.arrList];
     newList[index].isCheck = !newList[index].isCheck;
-    let arrListCheck = newList.filter((item) => item.isCheck === true);
-    let arrLabelChecked = arrListCheck.map((item) => item.label)
+    let arrListCheck = newList.filter(item => item.isCheck === true);
+    let arrLabelChecked = arrListCheck.map(item => item.label);
     this.setState({
       arrList: newList,
       arrLabel: arrLabelChecked,
-    })
-  }
+    });
+  };
 
   render() {
-
     const { arrList, arrLabel } = this.state;
-
+    console.log('arrList :>> ', arrList);
+    console.log('arrLabel :>> ', arrLabel);
     return (
       <SafeAreaView style={S.container}>
         {/* <Appbars>
@@ -100,11 +95,8 @@ class WithdrawalInformation extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
-        <HistoryBackActionBar
-            title={'회원탈퇴'}
-            navigation={this.navigation}
-          />
+
+        <HistoryBackActionBar title={'회원탈퇴'} navigation={this.navigation} />
         <ScrollView>
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleCard}>
@@ -134,37 +126,52 @@ class WithdrawalInformation extends Component {
               </Text>
             </View>
             <View style={S.listChecks}>
-              {
-                arrList.map((item, index) => {
-                  return (
-                    <View key={index} style={S.checkItem}>
-                      <Checkbox
-                        checked={item.isCheck}
-                        onPress={() => this.onCheck(item, index)}
-                      />
-                      <Text style={S.textCheck}>{item.label}</Text>
-                    </View>
-                  )
-                })
-              }
+              {arrList.map((item, index) => {
+                return (
+                  <View key={index} style={S.checkItem}>
+                    <Checkbox
+                      checked={item.isCheck}
+                      onPress={() => this.onCheck(item, index)}
+                    />
+                    <Text style={S.textCheck}>{item.label}</Text>
+                  </View>
+                );
+              })}
             </View>
             <TextField
               numberOfLines={5}
               placeholder="고객님의 진심어린 충고 부탁드립니다."
               colorLabel="#000000"
               styleProps={SS.textInput}
+              ref={ref => {
+                this.askInput = ref;
+              }}
+              valueProps={e => console.log('e :>> ', e)}
               multiline
               textAlignVertical="top"
             />
             <View style={SS.listBtn}>
               <TouchableOpacity
                 style={SS.btnCancel}
-                onPress={() => console.log('취소하기')}>
+                onPress={() => this.navigation.goBack()}>
                 <Text style={SS.textBtn}>취소하기</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={SS.btnUnsubscribe}
-                onPress={() => this.navigation.navigate('ConfirmPass', { arrLabel: arrLabel })}>
+                onPress={() =>
+                  // this.navigation.navigate('ConfirmPass', {
+                  //   arrLabel: arrLabel,
+                  // })
+                  {
+                    let text = this.askInput.state.value
+                      ? ',' + this.askInput.state.value
+                      : '';
+                    let leaveReason = arrLabel.toString() + text;
+                    this.navigation.navigate('ConfirmPass', {
+                      arrLabel: leaveReason,
+                    });
+                  }
+                }>
                 <Text style={SS.textBtn}>탈퇴하기</Text>
               </TouchableOpacity>
             </View>
