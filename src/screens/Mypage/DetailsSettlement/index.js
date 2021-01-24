@@ -466,17 +466,18 @@ export default class DetailsSettlement extends Component {
                     S.textTitleTenant,
                     { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
                   ]}>
-                  정산 합계
+                  요율 및 수수료
                 </Text>
               </View>
               <View style={DefaultStyle._infoTable}>
                 <TableInfo
-                  data={dataTotal}
+                  data={dataFeeRate}
                   borderRow={false}
                   borderBottom={true}
                 />
               </View>
             </View>
+
             <View style={DefaultStyle._card}>
               <View
                 style={[
@@ -489,12 +490,12 @@ export default class DetailsSettlement extends Component {
                     S.textTitleTenant,
                     { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
                   ]}>
-                  요율 및 수수료
+                  정산 합계
                 </Text>
               </View>
               <View style={DefaultStyle._infoTable}>
                 <TableInfo
-                  data={dataFeeRate}
+                  data={dataTotal}
                   borderRow={false}
                   borderBottom={true}
                 />

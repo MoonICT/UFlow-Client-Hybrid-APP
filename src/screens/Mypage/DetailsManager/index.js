@@ -7,13 +7,13 @@
  * @desc [description]
  */
 // Global Imports
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import Moment from 'moment';
-import {dateStr, toStdCd} from '@Utils/StringUtils';
-import {ToastShow} from '@Utils/Toast';
+import { dateStr, toStdCd } from '@Utils/StringUtils';
+import { ToastShow } from '@Utils/Toast';
 import ImageModal from 'react-native-image-modal';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
 import {
@@ -48,19 +48,22 @@ import DefaultStyle from '@Styles/default';
 import TableInfo from '@Components/atoms/TableInfo';
 import TextField from '@Components/organisms/TextField';
 
-import {styles as S} from '../style';
-import {styles as SS} from './style';
-import {InOutManagerService} from '@Services/apis';
+import { styles as S } from '../style';
+import { styles as SS } from './style';
+import { InOutManagerService } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
-import {StringUtils} from "../../../services/utils";
+import { StringUtils } from "../../../services/utils";
 import { money, numberComma } from '@Services/utils/StringUtils';
+import ActionCreator from '@Actions';
+import { connect } from "react-redux";
 
 var searchTimerQuery;
-export default class DetailsManager extends Component {
-  constructor(props) {
+
+class DetailsManager extends Component {
+  constructor (props) {
     super(props);
     this.webView = null;
-    let {rentWarehNo, type} = props.route.params
+    let { rentWarehNo, type } = props.route.params
     this.state = {
       warehouseName: '',
       rentWarehNo,
@@ -164,14 +167,14 @@ export default class DetailsManager extends Component {
     this.navigation = props.navigation;
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getAllData()
   }
 
-  async getAllData() {
-    let {filter, type, rentWarehNo} = this.state;
+  async getAllData () {
+    let { filter, type, rentWarehNo } = this.state;
     console.log(rentWarehNo, 'rentWarehNo');
-    let {startDate, endDate, query, contractType} = filter;
+    let { startDate, endDate, query, contractType } = filter;
     let params = {
       startDate,
       endDate,
@@ -272,7 +275,7 @@ export default class DetailsManager extends Component {
               status = '출고 요청 취소'
               dateStr = '출고예정 일자'
               dateValue = ''
-              whoutValue = item.rtwhWhoutResBody.expctQty !== null ? numberComma(item.rtwhWhoutResBody.expctQty) : "-"
+              whoutValue = item.rtwhWhoutResBody.expctQty !== null ? numberComma(item.rtwhWhoutResBody.expctQty).toLocaleString() : "-"
               break;
           }
 
@@ -408,7 +411,7 @@ export default class DetailsManager extends Component {
   }
 
 
-  showDialog = () => this.setState({visible: true});
+  showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => {
     this.setState({
@@ -418,25 +421,25 @@ export default class DetailsManager extends Component {
     });
 
   }
-  showConfirm = () => this.setState({confirm: true});
+  showConfirm = () => this.setState({ confirm: true });
 
-  hideConfirm = () => this.setState({confirm: false});
+  hideConfirm = () => this.setState({ confirm: false });
 
   showDateStart = () => {
-    let {isOpenStart} = this.state
+    let { isOpenStart } = this.state
     this.setState({
       isOpenStart: !isOpenStart
     })
   }
   showTimeCreateImport = () => {
-    let {isOpenTimeCreateImport} = this.state
+    let { isOpenTimeCreateImport } = this.state
     this.setState({
       isOpenTimeCreateImport: !isOpenTimeCreateImport
     })
   }
 
   showDateEnd = () => {
-    let {isOpenEnd} = this.state
+    let { isOpenEnd } = this.state
     this.setState({
       isOpenEnd: !isOpenEnd
     })
@@ -444,9 +447,9 @@ export default class DetailsManager extends Component {
 
 
   onChangeStart = (selectedDate) => {
-    let {isOpenStart} = this.state;
+    let { isOpenStart } = this.state;
 
-    let filter = {...this.state.filter}
+    let filter = { ...this.state.filter }
     filter.startDate = selectedDate
     this.setState({
       filter: filter,
@@ -457,9 +460,9 @@ export default class DetailsManager extends Component {
   }
 
   onChangeEnd = (selectedDate) => {
-    let {isOpenEnd} = this.state
+    let { isOpenEnd } = this.state
 
-    let filter = {...this.state.filter}
+    let filter = { ...this.state.filter }
     filter.endDate = selectedDate
     this.setState({
       filter,
@@ -500,7 +503,7 @@ export default class DetailsManager extends Component {
 
 
   onChangeRangeDay = (value) => {
-    let filter = {...this.state.filter}
+    let filter = { ...this.state.filter }
     if (value) {
 
       const start = Moment().subtract(value, 'days').format('YYYY-MM-DD');
@@ -524,7 +527,7 @@ export default class DetailsManager extends Component {
   };
 
   onChangeContractType = (value) => {
-    let filter = {...this.state.filter}
+    let filter = { ...this.state.filter }
     filter.contractType = value
     this.setState({
       filter
@@ -534,7 +537,7 @@ export default class DetailsManager extends Component {
   }
 
 
-  async createImport() {
+  async createImport () {
 
     let {
       rentWarehNo,
@@ -565,6 +568,9 @@ export default class DetailsManager extends Component {
       return;
     }
 
+    console.log('type :::: ', type)
+    console.log('typeCreate :::: ', typeCreate)
+
     // 창고주
     if (type === 'OWNER') {
 
@@ -585,6 +591,7 @@ export default class DetailsManager extends Component {
             alert('공유창고 정보가 없습니다.');
             return;
           }
+
           let data = {
             rentWarehNo: rentWarehNo,
             whoutExpct: Moment(ExpctYmd).valueOf(),
@@ -594,7 +601,9 @@ export default class DetailsManager extends Component {
             reason: "",
             filename: filename ? filename : "",
           }
-          console.log(data, 'data');
+          console.log(data, 'data1111');
+          // Progress
+          this.props.setProgress({ is: true, type: 'CIRCLE' });
           InOutManagerService.postExportOwner(data)
             .then((res) => {
               if (res.status === 200) {
@@ -613,8 +622,14 @@ export default class DetailsManager extends Component {
               } else {
                 ToastShow("출고 확정을 실패하였습니다. " + res);
               }
+              // Progress
+              setTimeout(() => {
+                this.props.setProgress({ is: false, });
+              }, 300)
             }).catch(error => {
             alert(error.response.data.message);
+            // Progress
+            this.props.setProgress({ is: false, });
           });
         } else if (typeCreate === 'import') {
           // 입고 확정
@@ -642,6 +657,8 @@ export default class DetailsManager extends Component {
             filename: filename,
           }
           console.log(data, 'data');
+          // Progress
+          this.props.setProgress({ is: true, type: 'CIRCLE' });
           InOutManagerService.postImportOwner(data)
             .then((res) => {
               if (res.status === 200) {
@@ -660,27 +677,37 @@ export default class DetailsManager extends Component {
               } else {
                 ToastShow("입고 확정을 실패하였습니다. " + res);
               }
+              // Progress
+              setTimeout(() => {
+                this.props.setProgress({ is: false, });
+              }, 300)
             }).catch(error => {
+              // TODO 입고 확정 수량이 클경우 400 message null. 확인 필요.
             alert(error.response.data.message);
+            // Progress
+            this.props.setProgress({ is: false, });
           });
         }
       }
 
-      let {singleFile} = this.state;
+      let { singleFile } = this.state;
       if (singleFile !== null) {
         // If file selected then create FormData
         const data = new FormData();
         data.append('name', singleFile.name);
         data.append('file', singleFile);
         data.append('id', rentWarehNo);
+        console.debug('aaaaa ', typeCreate)
         if (typeCreate === 'import')
           data.append('code', '0005');
-        else if (typeCreate === 'expert')
+        else if (typeCreate === 'export')
           data.append('code', '0006');
+
+        console.log('formData ::: ', data)
         // Please change file upload URL
         InOutManagerService.uploadFileNew(data).then(respon => {
           if (respon.status === 200) {
-            const {filename, url} = respon.data
+            const { filename, url } = respon.data
             this.setState({
               uirDoneImport: url,
               ImageFilename: filename
@@ -779,8 +806,8 @@ export default class DetailsManager extends Component {
     }
   }
 
-  async onCancelRequest() {
-    let {rentWarehNo, ExpctYmd, ExpctSeq, typeCreate} = this.state
+  async onCancelRequest () {
+    let { rentWarehNo, ExpctYmd, ExpctSeq, typeCreate } = this.state
 
 
     if (typeCreate === 'import') {
@@ -793,7 +820,7 @@ export default class DetailsManager extends Component {
           ToastShow('입고 요청 취소가 실패하였습니다. ' + res)
           return
         }
-        this.setState({cancelRequestImport: true, isCancel: false}, () => {
+        this.setState({ cancelRequestImport: true, isCancel: false }, () => {
           this.getAllData()
         })
       }).catch(error => {
@@ -810,7 +837,7 @@ export default class DetailsManager extends Component {
           return
         }
 
-        this.setState({cancelRequestExport: true, isCancel: false}, () => {
+        this.setState({ cancelRequestExport: true, isCancel: false }, () => {
           this.getAllData()
         })
       }).catch(error => {
@@ -836,7 +863,12 @@ export default class DetailsManager extends Component {
         uri: response.uri
       }
 
-      this.setState({singleFile: file});
+      // 이미지를 선택 안한 경우.
+      if (response && response.didCancel) {
+        return false;
+      }
+
+      this.setState({ singleFile: file });
     });
   };
 
@@ -858,12 +890,12 @@ export default class DetailsManager extends Component {
   //   }
   // };
 
-  render() {
-    const {isProgress, isToggle, isEmpty, dataInfo, responseFilter, totalMoney, isExpired, type} = this.state;
-    const {isOpenStart, isOpenEnd, rangeDay, limitRow, isOpenTimeCreateImport, timeCreateImport} = this.state;
-    const {ExpctSeq, ExpctYmd, IOType, IOStatus} = this.state;
+  render () {
+    const { isProgress, isToggle, isEmpty, dataInfo, responseFilter, totalMoney, isExpired, type } = this.state;
+    const { isOpenStart, isOpenEnd, rangeDay, limitRow, isOpenTimeCreateImport, timeCreateImport } = this.state;
+    const { ExpctSeq, ExpctYmd, IOType, IOStatus } = this.state;
 
-    let {startDate, endDate} = this.state.filter;
+    let { startDate, endDate } = this.state.filter;
     const processing =
       isProgress === true ? (
         <View style={DefaultStyle._bodyCard}>
@@ -880,181 +912,188 @@ export default class DetailsManager extends Component {
                     paddingBottom: 0,
                     marginBottom: 0
                   }}>
-                    <View style={{paddingTop: 0, borderColor: '#e5e5ea', borderWidth:1, marginTop: 0, marginBottom: 20, paddingBottom:0}}>
+                    <View style={{
+                      paddingTop: 0,
+                      borderColor: '#e5e5ea',
+                      borderWidth: 1,
+                      marginTop: 0,
+                      marginBottom: 20,
+                      paddingBottom: 0
+                    }}>
 
                       <TableInfo
                         data={item.dataProgress}
-                        style={{borderBottomWidth: 1, borderTopWidth: 0}}
+                        style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
                       />
 
 
+                      {/** 출고 확정 **/}
+                      {(type === 'OWNER' && item.type === 'EXPORT' && item.status === '2100') &&
+                      <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
+                        <TouchableOpacity
+                          onPress={() => {
 
-                        {/** 출고 확정 **/}
-                        {(type === 'OWNER' && item.type === 'EXPORT' && item.status === '2100') &&
-                        <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
-                          <TouchableOpacity
-                            onPress={() => {
+                            this.setState({
+                              popUpTitle: '출고 확정',
+                              popUpDateLabel: '출고 확정일',
+                              popUpQtyLabel: '출고 확정 수량',
+                              typeCreate: 'export',
+                              ExpctSeq: item.ExpctSeq,
+                              ExpctYmd: item.Expct,
+                              createValue: item.whoutValue,
+                              singleFile: null,
+                            }, () => {
+                              this.showDialog()
+                            })
+                          }}
+                          style={[
+                            DefaultStyle._btnInline,
+                            { backgroundColor: '#e64a19' },
+                          ]}>
+                          <Text
+                            style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
+                            출고 확정
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      }
 
+                      {/** 입고 확정 **/}
+                      {(type === 'OWNER' && item.type === 'IMPORT' && item.status === '1100') &&
+                      <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
+
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.setState({
+                              popUpTitle: '입고 확정',
+                              popUpDateLabel: '입고 확정일',
+                              popUpQtyLabel: '입고 확정 수량',
+                              typeCreate: 'import',
+                              ExpctSeq: item.ExpctSeq,
+                              ExpctYmd: item.Expct,
+                              createValue: item.whinValue,
+                              singleFile: null,
+                            }, () => {
+                              this.showDialog()
+                            })
+                          }}
+                          style={[DefaultStyle._btnInline, { marginRight: 8 }]}>
+                          <Text
+                            style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
+                            입고 확정
+                          </Text>
+                        </TouchableOpacity>
+
+                      </View>
+                      }
+
+                      {(type === 'TENANT' && item.type === 'IMPORT' && item.status === '1100') &&
+                      <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.setState({
+                              popUpTitle: '입고 요청 취소',
+                              typeCreate: 'import',
+                              ExpctSeq: item.ExpctSeq,
+                              ExpctYmd: item.Expct,
+                            }, () => {
                               this.setState({
-                                popUpTitle: '출고 확정',
-                                popUpDateLabel: '출고 확정일',
-                                popUpQtyLabel: '출고 확정 수량',
-                                typeCreate: 'export',
-                                ExpctSeq: item.ExpctSeq,
-                                ExpctYmd: item.Expct,
-                                createValue: item.whoutValue
-                              }, () => {
-                                this.showDialog()
+                                isCancel: true
                               })
-                            }}
-                            style={[
-                              DefaultStyle._btnInline,
-                              {backgroundColor: '#e64a19'},
-                            ]}>
-                            <Text
-                              style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                              출고 확정
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                        }
+                            })
+                          }}
+                          style={[
+                            DefaultStyle._btnOutline,
+                            DefaultStyle._btnLeft,
+                            SS.btnProcess,
+                          ]}>
+                          <Text
+                            style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                            입고 요청 취소
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      }
 
-                        {/** 입고 확정 **/}
-                        {(type === 'OWNER' && item.type === 'IMPORT' && item.status === '1100') &&
-                        <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
-
-                            <TouchableOpacity
-                              onPress={() => {
-                                this.setState({
-                                  popUpTitle: '입고 확정',
-                                  popUpDateLabel: '입고 확정일',
-                                  popUpQtyLabel: '입고 확정 수량',
-                                  typeCreate: 'import',
-                                  ExpctSeq: item.ExpctSeq,
-                                  ExpctYmd: item.Expct,
-                                  createValue: item.whinValue
-                                }, () => {
-                                  this.showDialog()
-                                })
-                              }}
-                              style={[DefaultStyle._btnInline, {marginRight: 8}]}>
-                              <Text
-                                style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                                입고 확정
-                              </Text>
-                            </TouchableOpacity>
-
-                        </View>
-                        }
-
-                        {(type === 'TENANT' && item.type === 'IMPORT' && item.status === '1100') &&
-                        <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
-                          <TouchableOpacity
-                            onPress={() => {
+                      {(type === 'TENANT' && item.type === 'EXPORT' && item.status === '2100') &&
+                      <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.setState({
+                              popUpTitle: '출고 요청 취소',
+                              typeCreate: 'export',
+                              ExpctSeq: item.ExpctSeq,
+                              ExpctYmd: item.Expct,
+                            }, () => {
                               this.setState({
-                                popUpTitle: '입고 요청 취소',
-                                typeCreate: 'import',
-                                ExpctSeq: item.ExpctSeq,
-                                ExpctYmd: item.Expct,
-                              }, () => {
-                                this.setState({
-                                  isCancel: true
-                                })
+                                isCancel: true
                               })
-                            }}
-                            style={[
-                              DefaultStyle._btnOutline,
-                              DefaultStyle._btnLeft,
-                              SS.btnProcess,
-                            ]}>
-                            <Text
-                              style={[DefaultStyle._textButton, {color: '#000000'}]}>
-                              입고 요청 취소
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                        }
-
-                        {(type === 'TENANT' && item.type === 'EXPORT' && item.status === '2100') &&
-                        <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
-                          <TouchableOpacity
-                            onPress={() => {
-                              this.setState({
-                                popUpTitle: '출고 요청 취소',
-                                typeCreate: 'export',
-                                ExpctSeq: item.ExpctSeq,
-                                ExpctYmd: item.Expct,
-                              }, () => {
-                                this.setState({
-                                  isCancel: true
-                                })
-                              })
-                            }}
-                            style={[
-                              DefaultStyle._btnOutline,
-                              DefaultStyle._btnLeft,
-                              SS.btnProcess,
-                            ]}>
-                            <Text
-                              style={[DefaultStyle._textButton, {color: '#000000'}]}>
-                              출고 요청 취소
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                        }
+                            })
+                          }}
+                          style={[
+                            DefaultStyle._btnOutline,
+                            DefaultStyle._btnLeft,
+                            SS.btnProcess,
+                          ]}>
+                          <Text
+                            style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                            출고 요청 취소
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      }
 
 
-
-                        {/**입고 사진 확인**/}
-                        {item.type === 'IMPORT' && item.status === '1200' && item.imageUrl &&
-                        <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
-                          <TouchableOpacity
-                            onPress={() => {
-                              // Linking.canOpenURL(item.imageUrl).then(supported => {
-                              //   if (supported) {
-                              //     Linking.openURL(item.imageUrl);
-                              //   } else {
-                              //     console.log("Don't know how to open URI: " + res);
-                              //   }})
-                              this.setState({
-                                imageUrl: item.imageUrl,
-                                openImagePopup: true,
-                                openImagePopupTitle: '입고 사진 확인',
-                              })
-                            }}
-                            style={[
-                              DefaultStyle._btnOutline,
-                              DefaultStyle._btnLeft,
-                              SS.btnProcess,
-                            ]}>
-                            <Text style={[DefaultStyle._textButton, {color: '#000000'}]}>
-                              입고 사진 확인
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                        }
-                        {/**출고 사진 확인**/}
-                        {item.type === 'EXPORT' && item.status === '2200' && item.imageUrl &&
-                        <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
-                          <TouchableOpacity
-                            onPress={() => {
-                              this.setState({
-                                imageUrl: item.imageUrl,
-                                openImagePopup: true,
-                                openImagePopupTitle: '출고 사진 확인',
-                              })
-                            }}
-                            style={[
-                              DefaultStyle._btnOutline,
-                              DefaultStyle._btnLeft,
-                              SS.btnProcess,
-                            ]}>
-                            <Text style={[DefaultStyle._textButton, {color: '#000000'}]}>
-                              출고 사진 확인
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                        }
+                      {/**입고 사진 확인**/}
+                      {item.type === 'IMPORT' && item.status === '1200' && item.imageUrl &&
+                      <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            // Linking.canOpenURL(item.imageUrl).then(supported => {
+                            //   if (supported) {
+                            //     Linking.openURL(item.imageUrl);
+                            //   } else {
+                            //     console.log("Don't know how to open URI: " + res);
+                            //   }})
+                            this.setState({
+                              imageUrl: item.imageUrl,
+                              openImagePopup: true,
+                              openImagePopupTitle: '입고 사진 확인',
+                            })
+                          }}
+                          style={[
+                            DefaultStyle._btnOutline,
+                            DefaultStyle._btnLeft,
+                            SS.btnProcess,
+                          ]}>
+                          <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                            입고 사진 확인
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      }
+                      {/**출고 사진 확인**/}
+                      {item.type === 'EXPORT' && item.status === '2200' && item.imageUrl &&
+                      <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.setState({
+                              imageUrl: item.imageUrl,
+                              openImagePopup: true,
+                              openImagePopupTitle: '출고 사진 확인',
+                            })
+                          }}
+                          style={[
+                            DefaultStyle._btnOutline,
+                            DefaultStyle._btnLeft,
+                            SS.btnProcess,
+                          ]}>
+                          <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                            출고 사진 확인
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      }
 
                     </View>
                   </View>
@@ -1074,13 +1113,13 @@ export default class DetailsManager extends Component {
           navigation={this.navigation}
         />
         <ScrollView>
-          <View style={[DefaultStyle._cards, {marginTop: 0, marginBottom: 180}]}>
+          <View style={[DefaultStyle._cards, { marginTop: 0, marginBottom: 180 }]}>
             <View style={DefaultStyle._titleCard}>
               <Text
                 style={[
                   DefaultStyle._textTitleCard,
                   S.textTitleTenant,
-                  {paddingBottom: 0},
+                  { paddingBottom: 0 },
                 ]}>
                 입･출고 상세 내역
               </Text>
@@ -1089,29 +1128,29 @@ export default class DetailsManager extends Component {
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>
                 {this.state.imgType &&
-                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader}/>
+                <Image source={this.state.imgType} style={DefaultStyle._avatarHeader} />
                 }
               </View>
               <View style={DefaultStyle._infoTable}>
-                <TableInfo data={dataInfo}/>
+                <TableInfo data={dataInfo} />
               </View>
             </View>
 
             <View style={S.filter}>
               <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
-                <View style={[S.optionSelect, S.optionSelectLeft, {marginBottom: 25, height: 36}]}>
+                <View style={[S.optionSelect, S.optionSelectLeft, { marginBottom: 25, height: 36 }]}>
 
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <TouchableOpacity
                       onPress={() => this.showDateStart()}
                       style={DefaultStyle._btnDateFilter}>
-                      <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
+                      <Text style={[DefaultStyle._textDate, { fontSize: 12, paddingTop: 7, textAlign: 'center' }]}>
                         {dateStr(startDate) || 'YYYY-MM-DD'}
                       </Text>
                       <Text
                         style={[
                           DefaultStyle._labelTextField,
-                          {color: '#000000', fontSize: 12},
+                          { color: '#000000', fontSize: 12 },
                         ]}>
                         시작일
                       </Text>
@@ -1135,20 +1174,20 @@ export default class DetailsManager extends Component {
 
 
                 </View>
-                <Text style={[S.hyphen, {height: 36, lineHeight: 36}]}>-</Text>
-                <View style={[S.optionSelect, S.optionSelectLeft, {height: 36}]}>
+                <Text style={[S.hyphen, { height: 36, lineHeight: 36 }]}>-</Text>
+                <View style={[S.optionSelect, S.optionSelectLeft, { height: 36 }]}>
 
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <TouchableOpacity
                       onPress={() => this.showDateEnd()}
                       style={DefaultStyle._btnDateFilter}>
-                      <Text style={[DefaultStyle._textDate, {fontSize: 12, paddingTop: 7, textAlign: 'center'}]}>
+                      <Text style={[DefaultStyle._textDate, { fontSize: 12, paddingTop: 7, textAlign: 'center' }]}>
                         {dateStr(endDate) || 'YYYY-MM-DD'}
                       </Text>
                       <Text
                         style={[
                           DefaultStyle._labelTextField,
-                          {color: '#000000', fontSize: 12},
+                          { color: '#000000', fontSize: 12 },
                         ]}>
                         종료일
                       </Text>
@@ -1172,10 +1211,10 @@ export default class DetailsManager extends Component {
 
 
                 </View>
-                <View style={[S.optionSelect, S.optionSelectLeft, {height: 36}]}>
+                <View style={[S.optionSelect, S.optionSelectLeft, { height: 36 }]}>
                   <Select data={rangeDay}
                           valueProps={this.onChangeRangeDay}
-                          style={[S.select, {height: 36}]}
+                          style={[S.select, { height: 36 }]}
                   />
                 </View>
               </View>
@@ -1230,7 +1269,7 @@ export default class DetailsManager extends Component {
               type === 'TENANT' &&
 
               <View>
-                <View style={[DefaultStyle._listBtn, SS.listBtnProcess, {marginTop: 0, marginBottom: 20}]}>
+                <View style={[DefaultStyle._listBtn, SS.listBtnProcess, { marginTop: 0, marginBottom: 20 }]}>
 
                   <TouchableOpacity
                     onPress={() => {
@@ -1243,7 +1282,7 @@ export default class DetailsManager extends Component {
                         this.showDialog()
                       })
                     }}
-                    style={[DefaultStyle._btnInline, {marginRight: 8}]}>
+                    style={[DefaultStyle._btnInline, { marginRight: 8 }]}>
                     <Text
                       style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
                       입고요청
@@ -1263,7 +1302,7 @@ export default class DetailsManager extends Component {
                     }}
                     style={[
                       DefaultStyle._btnInline,
-                      {backgroundColor: '#e64a19'},
+                      { backgroundColor: '#e64a19' },
                     ]}>
                     <Text
                       style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
@@ -1278,9 +1317,9 @@ export default class DetailsManager extends Component {
             <View style={SS.processing}>
               <FilterButton
                 label="진행 내역 보기"
-                onPress={() => this.setState({isToggle: !isToggle})}
+                onPress={() => this.setState({ isToggle: !isToggle })}
                 isToggle={isToggle}
-                style={[SS.toggle, {borderColor: '#e5e5ea', borderWidth:1}]}
+                style={[SS.toggle, { borderColor: '#e5e5ea', borderWidth: 1 }]}
                 styleLabel={SS.textToggle}
               />
               {/*{isToggle === true &&*/}
@@ -1350,11 +1389,11 @@ export default class DetailsManager extends Component {
                   width: '100%'
                 }]}>
 
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <TouchableOpacity
                       onPress={() => this.showTimeCreateImport()}
-                      style={[DefaultStyle._btnDate, {marginTop: 0}]}>
-                      <Text style={[{height: 36, lineHeight: 36, paddingLeft: 16}]}>
+                      style={[DefaultStyle._btnDate, { marginTop: 0 }]}>
+                      <Text style={[{ height: 36, lineHeight: 36, paddingLeft: 16 }]}>
                         {dateStr(this.state.createDate)}
                       </Text>
                       {
@@ -1377,15 +1416,15 @@ export default class DetailsManager extends Component {
 
               </View>
 
-              <Text style={[DefaultStyle._textTitleCard, {marginBottom: 5}]}>
+              <Text style={[DefaultStyle._textTitleCard, { marginBottom: 5 }]}>
                 {this.state.popUpQtyLabel}
               </Text>
 
               <TextField
                 ref={el => this.inputValueCreateImport = el}
                 value={this.state.createValue}
-                styleRight={{top: 5}}
-                styleProps={[{height: 36, lineHeight: 18, padding: 0, paddingLeft: 15, fontSize: 14}]}
+                styleRight={{ top: 5 }}
+                styleProps={[{ height: 36, lineHeight: 18, padding: 0, paddingLeft: 15, fontSize: 14 }]}
                 onChangeText={(text) => this.onChangeValueImport(text)}
               />
 
@@ -1394,7 +1433,8 @@ export default class DetailsManager extends Component {
                 {
                   this.state.singleFile &&
                   <View style={SS.infoAttach}>
-                    <Text style={SS.textAttach}>{this.state.singleFile.name}</Text>
+                    <Image source={{ uri: this.state.singleFile.uri }} style={{ width: 150, height: 150, }} />
+                    {/*<Text style={SS.textAttach}>{this.state.singleFile.name}</Text>*/}
                     <IconButton
                       style={SS.btnRemove}
                       icon="close-circle"
@@ -1426,9 +1466,9 @@ export default class DetailsManager extends Component {
                       DefaultStyle._btnOutline,
                       DefaultStyle._btnLeft,
                       SS.btnProcess,
-                      {height: 36}
+                      { height: 36 }
                     ]}>
-                    <Text style={[DefaultStyle._textButton, {color: '#000000'}]}>
+                    <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
                       파일 첨부
                     </Text>
                   </TouchableOpacity>
@@ -1463,7 +1503,7 @@ export default class DetailsManager extends Component {
           visible={this.state.confirm}
           onDismiss={this.hideConfirm}>
           <Dialog.Content>
-            <View style={DefaultStyle.imagePopup}/>
+            <View style={DefaultStyle.imagePopup} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1489,7 +1529,7 @@ export default class DetailsManager extends Component {
 
         <Dialog
           visible={this.state.isCancel}
-          onDismiss={() => this.setState({isCancel: false})}>
+          onDismiss={() => this.setState({ isCancel: false })}>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
             {this.state.popUpTitle}
@@ -1502,12 +1542,12 @@ export default class DetailsManager extends Component {
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               color="rgba(0, 0, 0, 0.54)"
-              style={[DefaultStyle._buttonElement, {paddingTop: 10, paddingBottom: 10}]}
-              onPress={() => this.setState({isCancel: false})}>
+              style={[DefaultStyle._buttonElement, { paddingTop: 10, paddingBottom: 10 }]}
+              onPress={() => this.setState({ isCancel: false })}>
               아니오
             </Button>
             <Button
-              style={[DefaultStyle._buttonElement, {paddingTop: 10, paddingBottom: 10}]}
+              style={[DefaultStyle._buttonElement, { paddingTop: 10, paddingBottom: 10 }]}
               onPress={() => {
                 this.onCancelRequest()
               }
@@ -1521,10 +1561,10 @@ export default class DetailsManager extends Component {
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.completeRequestImport}
-          onDismiss={() => this.setState({completeRequestImport: false})}>
-          <Dialog.Content style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          onDismiss={() => this.setState({ completeRequestImport: false })}>
+          <Dialog.Content style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {/*<View style={DefaultStyle.imagePopup}/>*/}
-            <Image source={imgType0001}/>
+            <Image source={imgType0001} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1537,9 +1577,9 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
+              style={[DefaultStyle._buttonElement, { marginTop: 10, marginBottom: 10 }]}
               onPress={() =>
-                this.setState({completeRequestImport: false})
+                this.setState({ completeRequestImport: false })
               }>
               확인
             </Button>
@@ -1550,10 +1590,10 @@ export default class DetailsManager extends Component {
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.completeRequestExport}
-          onDismiss={() => this.setState({completeRequestExport: false})}>
-          <Dialog.Content>
+          onDismiss={() => this.setState({ completeRequestExport: false })}>
+          <Dialog.Content style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {/*<View style={DefaultStyle.imagePopup}/>*/}
-            <Image source={illust15} style={DefaultStyle._avatarHeader}/>
+            <Image source={illust15} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1566,23 +1606,23 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
+              style={[DefaultStyle._buttonElement, { marginTop: 10, marginBottom: 10 }]}
               onPress={() =>
-                this.setState({completeRequestExport: false})
+                this.setState({ completeRequestExport: false })
               }>
               확인
             </Button>
           </Dialog.Actions>
         </Dialog>
 
-        {/** 입고 확정 완료 **/}
+        {/** 입고 확정 완료 TODO 모달확인 **/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.confirmRequestImport}
-          onDismiss={() => this.setState({confirmRequestImport: false})}>
-          <Dialog.Content style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          onDismiss={() => this.setState({ confirmRequestImport: false })}>
+          <Dialog.Content style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {/* <View style={DefaultStyle.imagePopup}/> */}
-             <Image source={illust15}/>
+            <Image source={illust15} />
             {/*<Image source={{uri: this.state.uirDoneImport}} style={{width: 150, height: 150}}/>*/}
           </Dialog.Content>
           <Dialog.Title
@@ -1596,23 +1636,23 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
+              style={[DefaultStyle._buttonElement, { marginTop: 10, marginBottom: 10 }]}
               onPress={() =>
-                this.setState({confirmRequestImport: false})
+                this.setState({ confirmRequestImport: false })
               }>
               확인
             </Button>
           </Dialog.Actions>
         </Dialog>
 
-        {/** 출고 확정 완료 **/}
+        {/** 출고 확정 완료 TODO 모달확인**/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.confirmRequestExport}
           // visible={true}
-          onDismiss={() => this.setState({confirmRequestExport: false})}>
-          <Dialog.Content style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Image source={illust15}/>
+          onDismiss={() => this.setState({ confirmRequestExport: false })}>
+          <Dialog.Content style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Image source={illust15} />
             {/*<Image source={{uri: this.state.uirDoneImport}} style={{width: 150, height: 150}}/>*/}
           </Dialog.Content>
           <Dialog.Title
@@ -1626,22 +1666,22 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
+              style={[DefaultStyle._buttonElement, { marginTop: 10, marginBottom: 10 }]}
               onPress={() =>
-                this.setState({confirmRequestExport: false})
+                this.setState({ confirmRequestExport: false })
               }>
               확인
             </Button>
           </Dialog.Actions>
         </Dialog>
 
-        {/** 입고 요청 취소 완료 **/}
+        {/** 입고 요청 취소 완료 TODO 모달확인**/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.cancelRequestImport}
-          onDismiss={() => this.setState({cancelRequestImport: false})}>
-          <Dialog.Content style={[{justifyContent: 'center', alignItems: 'center'}]}>
-            <Image source={illust15}/>
+          onDismiss={() => this.setState({ cancelRequestImport: false })}>
+          <Dialog.Content style={[{ justifyContent: 'center', alignItems: 'center' }]}>
+            <Image source={illust15} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1654,22 +1694,22 @@ export default class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {marginTop: 10, marginBottom: 10}]}
+              style={[DefaultStyle._buttonElement, { marginTop: 10, marginBottom: 10 }]}
               onPress={() =>
-                this.setState({cancelRequestImport: false})
+                this.setState({ cancelRequestImport: false })
               }>
               확인
             </Button>
           </Dialog.Actions>
         </Dialog>
 
-        {/** 출고 요청 취소 완료 **/}
+        {/** 출고 요청 취소 완료 TODO 모달확인**/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.cancelRequestExport}
-          onDismiss={() => this.setState({cancelRequestExport: false})}>
-          <Dialog.Content style={[{justifyContent: 'center', alignItems: 'center'}]}>
-            <Image source={illust15}/>
+          onDismiss={() => this.setState({ cancelRequestExport: false })}>
+          <Dialog.Content style={[{ justifyContent: 'center', alignItems: 'center' }]}>
+            <Image source={illust15} />
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
@@ -1684,7 +1724,7 @@ export default class DetailsManager extends Component {
             <Button
               style={DefaultStyle._buttonElement}
               onPress={() =>
-                this.setState({cancelRequestExport: false})
+                this.setState({ cancelRequestExport: false })
               }>
               확인
             </Button>
@@ -1692,37 +1732,38 @@ export default class DetailsManager extends Component {
         </Dialog>
 
         {/** 이미지 팝업 **/}
-        <Dialog
-          style={DefaultStyle.popup}
-          visible={this.state.openImagePopup}
-          onDismiss={() => this.setState({openImagePopup: false, imageUrl: ''})}>
+        <Dialog style={DefaultStyle.popup}
+                visible={this.state.openImagePopup}
+                onDismiss={() => this.setState({ openImagePopup: false, imageUrl: '' })}>
           <Dialog.Title
-            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog, {marginTop: 20}]}>
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog, { marginTop: 20 }]}>
             {this.state.openImagePopupTitle}
           </Dialog.Title>
           <Dialog.Content style={[{
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }]}>
-            <ImageModal
-              resizeMode="contain"
-              imageBackgroundColor="#fff"
-              style={{
-                width: 300,
-                height: 250,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-              source={{
-                uri: this.state.imageUrl,
-              }}
-            />
+            <View style={[{ width: 300, }]}>
+              <ImageModal
+                resizeMode="contain"
+                imageBackgroundColor="#fff"
+                style={{
+                  width: 300,
+                  height: 250,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+                source={{
+                  uri: this.state.imageUrl,
+                }}
+              />
+            </View>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
-              style={[DefaultStyle._buttonElement, {fontSize: 20, paddingTop: 16, paddingBottom: 16}]}
+              style={[DefaultStyle._buttonElement, { fontSize: 20, paddingTop: 16, paddingBottom: 16 }]}
               onPress={() =>
-                this.setState({openImagePopup: false, imageUrl: ''})
+                this.setState({ openImagePopup: false, imageUrl: '' })
               }>
               닫기
             </Button>
@@ -1736,3 +1777,23 @@ export default class DetailsManager extends Component {
 
 }
 
+
+/** map state with store states redux store */
+function mapStateToProps (state) {
+  // console.log('++++++mapStateToProps: ', state);
+  return {};
+}
+
+/** dispatch action to redux */
+function mapDispatchToProps (dispatch) {
+  return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DetailsManager);

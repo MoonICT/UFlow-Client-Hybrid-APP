@@ -73,6 +73,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
+
+    position: 'relative',
+    width: 150,
+    height: 150,
   },
   textAttach: {
     color: '#2196f3',
@@ -84,6 +88,10 @@ export const styles = StyleSheet.create({
   btnRemove: {
     margin: 0,
     marginLeft: 6,
+
+    position: 'absolute',
+    top: 4,
+    right: 4,
   },
   footerPopup: {
     justifyContent: 'center',
@@ -102,7 +110,7 @@ export const styles = StyleSheet.create({
   },
   wrapBtnGroup: {
     // paddingTop: 11,
-    // paddingBottom: 20,
+    paddingBottom: 20,
   },
   btnProcess: {
     borderColor: 'rgba(19, 19, 20, 0.5)',
