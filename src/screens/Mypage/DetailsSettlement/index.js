@@ -11,7 +11,8 @@ import {SafeAreaView, View, ScrollView, TouchableOpacity, Linking} from 'react-n
 import { Appbar, Text } from 'react-native-paper';
 import FilterButton from '@Components/atoms/FilterButton';
 import DefaultStyle from '@Styles/default';
-import { moneyUnit , dateStr, toStdCd } from '@Utils/StringUtils';
+import { dateStr, toStdCd } from '@Utils/StringUtils';
+import { money, numberComma } from '@Services/utils/StringUtils';
 import TableInfo from '@Components/atoms/TableInfo';
 import { SettlementManagementService, Calculate } from '@Services/apis'
 import Moment from 'moment';
@@ -128,15 +129,15 @@ export default class DetailsSettlement extends Component {
       let dataTotal = [
         {
           type: '공급가액',
-          value: res.data.data.calMgmtMResBody ? moneyUnit(res.data.data.amount) : '0 원',
+          value: res.data.data.calMgmtMResBody ? money(res.data.data.amount) : '0 원',
         },
         {
           type: '부가세',
-          value: res.data.data.vat ? moneyUnit(res.data.data.vat) : '0 원',
+          value: res.data.data.vat ? money(res.data.data.vat) : '0 원',
         },
         {
           type: '합계금액',
-          value: total ? moneyUnit(total) : '0 원',
+          value: total ? money(total) : '0 원',
         }
       ]
 
@@ -147,11 +148,11 @@ export default class DetailsSettlement extends Component {
         },
         {
           type: '수수료	',
-          value: res.data.data?.calMgmtMResBody.fee ?? '',
+          value: money(res.data.data?.calMgmtMResBody.fee) ?? '',
         },
         {
           type: '적용금액',
-          value: res.data.data?.calMgmtMResBody?.fee ?? ''
+          value: money(res.data.data?.calMgmtMResBody?.fee) ?? ''
         }
       ]
 
@@ -182,32 +183,32 @@ export default class DetailsSettlement extends Component {
               // 단가
             {
               type: '입고단가',
-              value: item.whinChrg ? moneyUnit(item.whinChrg) : '0 원'
+              value: item.whinChrg ? money(item.whinChrg) : '0 원'
             },
             {
               type: '출고단가',
-              value: item.whoutChrg ? moneyUnit(item.whoutChrg) : '0 원'
+              value: item.whoutChrg ? money(item.whoutChrg) : '0 원'
             },
             {
               type: '재고단가',
-              value: item.stckChrg ? moneyUnit(item.stckChrg) : '0 원'
+              value: item.stckChrg ? money(item.stckChrg) : '0 원'
             },
               // 비
             {
               type: '입고비',
-              value: item.whinUprice ? moneyUnit(item.whinUprice) : '0 원'
+              value: item.whinUprice ? money(item.whinUprice) : '0 원'
             },
             {
               type: '출고비',
-              value: item.whoutUprice ? moneyUnit(item.whoutUprice) : '0 원'
+              value: item.whoutUprice ? money(item.whoutUprice) : '0 원'
             },
             {
               type: '재고비',
-              value: item.stckUprice ? moneyUnit(item.stckUprice) : '0 원'
+              value: item.stckUprice ? money(item.stckUprice) : '0 원'
             },
             {
               type: '합계',
-              value: item.amount ? moneyUnit(item.amount) : '0 원'
+              value: item.amount ? money(item.amount) : '0 원'
             },
             {
               type: '비고',
@@ -220,7 +221,7 @@ export default class DetailsSettlement extends Component {
       let inOutSubtotal = [
         {
           type: '소계',
-          value: moneyUnit(detail1Subtotal)
+          value: money(detail1Subtotal)
         }
       ]
 
@@ -239,7 +240,7 @@ export default class DetailsSettlement extends Component {
             },
             {
               type: '비용',
-              value: item.amount ? moneyUnit(item.amount) : '0 원'
+              value: item.amount ? money(item.amount) : '0 원'
             },
             {
               type: '비고',
@@ -252,7 +253,7 @@ export default class DetailsSettlement extends Component {
       let keepSubtotal = [
         {
           type: '소계',
-          value: countTotal ? moneyUnit(countTotal) : '0 원'
+          value: countTotal ? money(countTotal) : '0 원'
         }
       ]
 

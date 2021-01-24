@@ -12,7 +12,8 @@ import { styles as SS } from './style';
 import illust15 from '@Assets/images/illust15.png';
 
 import Moment from 'moment';
-import { moneyUnit, dateStr, toStdCd } from '@Utils/StringUtils';
+import { dateStr, toStdCd } from '@Utils/StringUtils';
+import { money } from '@Services/utils/StringUtils';
 import { View, TouchableOpacity, Image} from 'react-native';
 import { Text, Dialog, Button, Paragraph } from 'react-native-paper';
 import Select from '@Components/organisms/SelectFilter';
@@ -176,7 +177,7 @@ export default class InOutManager extends Component {
               },
               {
                 type: '입출고료 합계',
-                value: item.totalWhrg ? moneyUnit(item.totalWhrg) : '0 원',
+                value: item.totalWhrg ? money(item.totalWhrg) : '0 원',
               },
             ],
           };
@@ -466,7 +467,7 @@ export default class InOutManager extends Component {
   showDialogExpert = () => this.setState({ visibleExpert: true });
   hideDialogExpert = () => {
     this.setState({ visibleExpert: false, valueCreateExpert: ''});
-  } 
+  }
   showDialogImport = () => this.setState({ visibleImport: true });
   hideDialogImport = () => {
     this.setState({ visibleImport: false, valueCreateImport: '' })

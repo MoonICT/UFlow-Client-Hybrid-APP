@@ -12,4 +12,5 @@ export const MY_PAGE_TAB_STATUS_KEY = 'myPageTabStatus';
 // export const API_CLIENT_ADDRESS = 'http://localhost:13000';
 export const API_CLIENT_ADDRESS = 'http://www.uflow.voltpage.net';
 export const API_SERVER_ADDRESS = 'http://api.uflow.voltpage.net';
-export const FILE_SERVER_ADDRESS = 'http://files.uflow.voltpage.net';
+export const FILE_SERVER_ADDRESS = 'http://file.lains.logisall.com:8500/uflowdev';
+

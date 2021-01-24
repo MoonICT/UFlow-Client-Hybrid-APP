@@ -10,7 +10,7 @@ const moneyUnit = (value: string, unitStr = '원') => {
 }
 
 const numberComma = (value: string) => {
-    return value ? value.toLocaleString() : 0;
+    return value ? value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : '';
 };
 
 const dateStr = (date:Date, format = 'YYYY-MM-DD') => {

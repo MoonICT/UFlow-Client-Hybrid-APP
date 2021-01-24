@@ -9,7 +9,7 @@
 // Global Imports
 import React, {Component, Fragment} from 'react';
 import Moment from 'moment';
-import {moneyUnit, dateStr, toStdCd} from '@Utils/StringUtils';
+import {dateStr, toStdCd} from '@Utils/StringUtils';
 import {ToastShow} from '@Utils/Toast';
 import ImageModal from 'react-native-image-modal';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -53,6 +53,7 @@ import {styles as SS} from './style';
 import {InOutManagerService} from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
 import {StringUtils} from "../../../services/utils";
+import { money } from '@Services/utils/StringUtils';
 
 var searchTimerQuery;
 export default class DetailsManager extends Component {
@@ -226,7 +227,7 @@ export default class DetailsManager extends Component {
           },
           {
             type: '보관비',
-            value: cntrTrustResBody && cntrTrustResBody.splyAmount && moneyUnit(cntrTrustResBody.splyAmount),
+            value: cntrTrustResBody && cntrTrustResBody.splyAmount && money(cntrTrustResBody.splyAmount),
           },
         ];
 
@@ -279,18 +280,18 @@ export default class DetailsManager extends Component {
           let inoutValue = ''
           if (item.type === 'IMPORT') {
             inoutLabel = '입고 단가';
-            inoutValue = cntrTrustResBody.whinChrg ? (moneyUnit(cntrTrustResBody.whinChrg)) : "-";
+            inoutValue = cntrTrustResBody.whinChrg ? (money(cntrTrustResBody.whinChrg)) : "-";
           } else if (item.type === 'EXPORT') {
             inoutLabel = '출고 단가';
-            inoutValue = cntrTrustResBody.whoutChrg ? (moneyUnit(cntrTrustResBody.whoutChrg)) : "-";
+            inoutValue = cntrTrustResBody.whoutChrg ? (money(cntrTrustResBody.whoutChrg)) : "-";
           }
 
           let whinUprice = ''
           let whoutUprice = ''
           if (item.type === 'IMPORT') {
-            whinUprice = item.rtwhWhinResBody.whinDecisChrg ? moneyUnit(item.rtwhWhinResBody.whinDecisChrg) : moneyUnit(0);
+            whinUprice = item.rtwhWhinResBody.whinDecisChrg ? money(item.rtwhWhinResBody.whinDecisChrg) : money(0);
           } else if (item.type === 'EXPORT') {
-            whoutUprice = item.rtwhWhoutResBody.whoutDecisChrg ? moneyUnit(item.rtwhWhoutResBody.whoutDecisChrg) : moneyUnit(0);
+            whoutUprice = item.rtwhWhoutResBody.whoutDecisChrg ? money(item.rtwhWhoutResBody.whoutDecisChrg) : money(0);
           }
 
           let Expct = '';
@@ -348,15 +349,15 @@ export default class DetailsManager extends Component {
               },
               {
                 type: '입고비',// 입고단가 X 입고확정수량
-                value: moneyUnit(whinUprice)
+                value: money(whinUprice)
               },
               {
                 type: '출고비',
-                value: moneyUnit(whoutUprice)
+                value: money(whoutUprice)
               },
               {
                 type: '보관비',
-                value: moneyUnit(item.stockUprice) + " " + (item.stockUpriceRemark && ` (${item.stockUpriceRemark})`)
+                value: money(item.stockUprice) + " " + (item.stockUpriceRemark && ` (${item.stockUpriceRemark})`)
               }
             ]
           }
@@ -416,7 +417,7 @@ export default class DetailsManager extends Component {
       createValue: ''
     });
 
-  } 
+  }
   showConfirm = () => this.setState({confirm: true});
 
   hideConfirm = () => this.setState({confirm: false});
@@ -1219,7 +1220,7 @@ export default class DetailsManager extends Component {
                 </View>
                 <View style={SS.totalFees}>
                   <Text style={SS.textTotalFees}>입･출고료 합계</Text>
-                  <Text style={SS.textTotal}> {moneyUnit(totalMoney ? totalMoney : 0)}</Text>
+                  <Text style={SS.textTotal}> {money(totalMoney ? totalMoney : 0)}</Text>
                 </View>
               </View>
 
