@@ -53,7 +53,7 @@ import {styles as SS} from './style';
 import {InOutManagerService} from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
 import {StringUtils} from "../../../services/utils";
-import { money } from '@Services/utils/StringUtils';
+import { money, numberComma } from '@Services/utils/StringUtils';
 
 var searchTimerQuery;
 export default class DetailsManager extends Component {
@@ -242,37 +242,37 @@ export default class DetailsManager extends Component {
               status = '입고 요청'
               dateStr = '입고예정 일자'
               dateValue = Moment(item.rtwhWhinResBody.id.whinExpct).format('YYYY.MM.DD')
-              whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? item.rtwhWhinResBody.whinExpctQty.toLocaleString() : "-"
+              whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? numberComma(item.rtwhWhinResBody.whinExpctQty) : "-"
               break;
             case item.type === 'IMPORT' && item.status === '1200':
               status = '입고 확정'
               dateStr = '입고확정 일자'
               dateValue = Moment(item.rtwhWhinResBody.whinDecis).format('YYYY.MM.DD')
-              whinValue = item.rtwhWhinResBody.whinDecisQty !== null ? item.rtwhWhinResBody.whinDecisQty.toLocaleString() : "-"
+              whinValue = item.rtwhWhinResBody.whinDecisQty !== null ? numberComma(item.rtwhWhinResBody.whinDecisQty) : "-"
               break;
             case item.type === 'IMPORT' && item.status === '9100':
               status = '입고 요청 취소'
               dateStr = '입고예정 일자'
               dateValue = ''
-              whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? item.rtwhWhinResBody.whinExpctQty.toLocaleString() : "-"
+              whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? numberComma(item.rtwhWhinResBody.whinExpctQty) : "-"
               break;
             case item.type === 'EXPORT' && item.status === '2100':
               status = '출고 요청'
               dateStr = '출고예정 일자'
               dateValue = Moment(item.rtwhWhoutResBody.id.whoutExpct).format('YYYY.MM.DD')
-              whoutValue = item.rtwhWhoutResBody.expctQty !== null ? item.rtwhWhoutResBody.expctQty.toLocaleString() : "-"
+              whoutValue = item.rtwhWhoutResBody.expctQty !== null ? numberComma(item.rtwhWhoutResBody.expctQty) : "-"
               break;
             case item.type === 'EXPORT' && item.status === '2200':
               status = '출고 확정'
               dateStr = '출고확정 일자'
               dateValue = Moment(item.rtwhWhoutResBody.decis).format('YYYY.MM.DD')
-              whoutValue = item.rtwhWhoutResBody.decisQty !== null ? item.rtwhWhoutResBody.decisQty.toLocaleString() : "-"
+              whoutValue = item.rtwhWhoutResBody.decisQty !== null ? numberComma(item.rtwhWhoutResBody.decisQty) : "-"
               break;
             case item.type === 'EXPORT' && item.status === '9500':
               status = '출고 요청 취소'
               dateStr = '출고예정 일자'
               dateValue = ''
-              whoutValue = item.rtwhWhoutResBody.expctQty !== null ? item.rtwhWhoutResBody.expctQty.toLocaleString() : "-"
+              whoutValue = item.rtwhWhoutResBody.expctQty !== null ? numberComma(item.rtwhWhoutResBody.expctQty) : "-"
               break;
           }
 
@@ -333,15 +333,15 @@ export default class DetailsManager extends Component {
               },
               {
                 type: '입고량',
-                value: whinValue,
+                value: numberComma(whinValue),
               },
               {
                 type: '출고량',
-                value: whoutValue
+                value: numberComma(whoutValue)
               },
               {
                 type: '재고',
-                value: item.stockQty && item.stockQty.toLocaleString()
+                value: item.stockQty && numberComma(item.stockQty)
               },
               {
                 type: inoutLabel,

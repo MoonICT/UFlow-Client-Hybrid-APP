@@ -18,6 +18,7 @@ import ActionCreator from "@Actions";
 import Appbars from '@Components/organisms/AppBar';
 import RangeSlider from '@Components/atoms/RangeSlider';
 import Checkbox from '@Components/atoms/Checkbox';
+import { numberComma } from '@Services/utils/StringUtils';
 
 /*TODO 임시 값 (추후 변경 필요)*/
 let siteAreaMax = 13200; // 대지면적 최대
@@ -127,7 +128,7 @@ class FilterOther extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={siteAreaMax}
-                       LabelMiddle={`${(siteAreaMax / 2).toLocaleString()}㎡`}
+                       LabelMiddle={`${numberComma((siteAreaMax / 2))}㎡`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            siteArea: value,
@@ -156,7 +157,7 @@ class FilterOther extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={bldgAreaMax}
-                       LabelMiddle={`${(bldgAreaMax / 2).toLocaleString()}㎡`}
+                       LabelMiddle={`${numberComma((bldgAreaMax / 2))}㎡`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            bldgArea: value,
@@ -185,7 +186,7 @@ class FilterOther extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={totalAreaMax}
-                       LabelMiddle={`${(totalAreaMax / 2).toLocaleString()}㎡`}
+                       LabelMiddle={`${numberComma((totalAreaMax / 2))}㎡`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            totalArea: value,
@@ -237,7 +238,7 @@ class FilterOther extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={flrHiMax}
-                       LabelMiddle={`${(flrHiMax / 2).toLocaleString()}m`}
+                       LabelMiddle={`${numberComma((flrHiMax / 2))}m`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            flrHi: value,

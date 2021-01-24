@@ -170,15 +170,15 @@ export default class DetailsSettlement extends Component {
              // 량
             {
               type: '입고량',
-              value: item.whinQty || '0'
+              value: numberComma(item.whinQty) || '0'
             },
             {
               type: '출고량',
-              value: item.whoutQty || '0'
+              value: numberComma(item.whoutQty) || '0'
             },
             {
               type: '재고량',
-              value: item.stckQty || '0'
+              value: numberComma(item.stckQty) || '0'
             },
               // 단가
             {

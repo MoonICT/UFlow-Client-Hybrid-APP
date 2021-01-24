@@ -6,7 +6,7 @@ import Moment from 'moment';
 
 const moneyUnit = (value: string, unitStr = '원') => {
     // return value ? (value.toLocaleString() + ' ' + unitStr) : 0 + ' ' + unitStr;
-    return value ? (value.toLocaleString() + ' ' + unitStr) : 0 + ' ' + unitStr;
+    return value ? value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' ' + unitStr : 0 + ' ' + unitStr;
 }
 
 const numberComma = (value: string) => {

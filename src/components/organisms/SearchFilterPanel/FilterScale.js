@@ -14,6 +14,7 @@ import { compose } from 'redux';
 import { styles } from './style';
 import ActionCreator from "@Actions";
 import RangeSlider from '@Components/atoms/RangeSlider';
+import { numberComma } from '@Services/utils/StringUtils';
 
 /*TODO 임시 값 (추후 변경 필요)*/
 let prvtAreaMax = 13200; // 전용면적 최대
@@ -72,7 +73,7 @@ class FilterScale extends Component {
                      contentStyle={{ marginBottom: 24 }}
                      minimumValue={0}
                      maximumValue={prvtAreaMax}
-                     LabelMiddle={`${(prvtAreaMax / 2).toLocaleString()}㎡`}
+                     LabelMiddle={`${numberComma((prvtAreaMax / 2))}㎡`}
                      onValueChange={(value) => {
                        this.props.setSearchFilter({
                          prvtArea: value,
@@ -101,7 +102,7 @@ class FilterScale extends Component {
                      contentStyle={{ marginBottom: 24 }}
                      minimumValue={0}
                      maximumValue={cmnAreaMax}
-                     LabelMiddle={`${(cmnAreaMax / 2).toLocaleString()}㎡`}
+                     LabelMiddle={`${numberComma((cmnAreaMax / 2))}㎡`}
                      onValueChange={(value) => {
                        this.props.setSearchFilter({
                          cmnArea: value,

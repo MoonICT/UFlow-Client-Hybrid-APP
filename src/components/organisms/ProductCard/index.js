@@ -17,6 +17,7 @@ import cardBG from '@Assets/images/card-img.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import { TOKEN } from '@Constant';
 import { StringUtils } from '@Services/utils';
+import { money } from '@Services/utils/StringUtils';
 
 class ProductCard extends Component {
   constructor(props) {
@@ -201,10 +202,7 @@ class ProductCard extends Component {
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
                       ･보관단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
-                        {StringUtils.moneyConvert(
-                          data.keep.splyAmount.toLocaleString(),
-                          '',
-                        )}
+                        {money(data.keep.splyAmount)}
                       </Text>
                       원 ~/{data.keep.unit}
                     </Text>
@@ -215,10 +213,7 @@ class ProductCard extends Component {
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
                       ･보관단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
-                        {StringUtils.moneyConvert(
-                          data.keep.mgmtChrg.toLocaleString(),
-                          '',
-                        )}
+                        {money(data.keep.mgmtChrg)}
                       </Text>
                       원 ~/{data.keep.unit}
                     </Text>
@@ -281,10 +276,7 @@ class ProductCard extends Component {
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
                       ･입고단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
-                        {StringUtils.moneyConvert(
-                          data.trust.whinChrg.toLocaleString(),
-                          '',
-                        )}
+                        {money(data.trust.whinChrg)}
                       </Text>
                       원 ~/{data.trust.unit}
                     </Text>
@@ -295,10 +287,7 @@ class ProductCard extends Component {
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
                       ･출고단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
-                        {StringUtils.moneyConvert(
-                          data.trust.whoutChrg.toLocaleString(),
-                          '',
-                        )}
+                        {money(data.trust.whoutChrg)}
                         {/* 탁 */}
                       </Text>
                       원 ~/{data.trust.unit}
