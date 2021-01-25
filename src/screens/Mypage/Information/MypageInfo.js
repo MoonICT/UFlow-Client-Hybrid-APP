@@ -41,7 +41,7 @@ const tabSelect = [
 ];
 
 class MypageInfo extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       checkAll: false,
@@ -58,12 +58,13 @@ class MypageInfo extends Component {
         sms: false,
         email: false,
       },
+      errText: '',
     };
     this.navigation = props.navigation;
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     Account.getMe()
       .then(res => {
         console.log(res);
@@ -91,7 +92,7 @@ class MypageInfo extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
@@ -150,24 +151,40 @@ class MypageInfo extends Component {
       alert('암호가 일치하지 않습니다');
       return;
     }
-    this.setState({ loading: true });
-
+    // Progress
+    this.props.setProgress({ is: true, type: 'CIRCLE' });
     Account.editMyInfo({
       passwordOld: data.passwordOld,
       password: data.password,
     })
       .then(res => {
-        this.setState({ loading: false, isOpenChangePass: false });
+        this.setState({
+          isOpenChangePass: false,
+          data: {
+            ...this.state.data,
+            passwordOld: '',
+            password: '',
+            ConfirmPassword: '',
+          },
+          errText: '',
+        });
         this.props.showPopup({
           type: 'confirm',
           title: '회원정보 수정 완료',
           content: '회원정보가 수정되었습니다.',
           image: editInfo,
         });
+
+        // Progress
+        setTimeout(() => {
+          this.props.setProgress({ is: false });
+        }, 300);
       })
       .catch(error => {
-        this.setState({ loading: false });
-        alert(error.response.data.message);
+        this.setState({
+          errText: error.response.data.message ? error.response.data.message : '입력하신 정보가 맞지 않습니다.'
+        });
+        this.props.setProgress({ is: false });
       });
   };
 
@@ -181,10 +198,17 @@ class MypageInfo extends Component {
   _hideDialogChangePass = () => {
     this.setState({
       isOpenChangePass: false,
+      data: {
+        ...this.state.data,
+        passwordOld: '',
+        password: '',
+        ConfirmPassword: '',
+      },
+      errText: '',
     });
   };
 
-  render() {
+  render () {
     const {
       checkAll,
       checkSMS,
@@ -353,16 +377,15 @@ class MypageInfo extends Component {
 
         <Portal>
           <Dialog
-            style={DefaultStyle._postCode}
+            style={DefaultStyle.popup}
             visible={isOpenChangePass}
             onDismiss={this._hideDialogChangePass}>
             <Dialog.Title style={[DefaultStyle._titleDialog, S.titleQuestion]}>
               비밀번호 변경
             </Dialog.Title>
-            <Dialog.Content style={DefaultStyle._postCodeContent}>
+            <Dialog.Content style={{ marginTop: 10 }}>
               <View
                 style={{
-                  height: '100%',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -414,6 +437,7 @@ class MypageInfo extends Component {
                     labelTextField="새 비밀번호 확인"
                     colorLabel="#000000"
                   />
+                  {!!this.state.errText && <Text style={{ color: 'red', }}>{this.state.errText}</Text>}
 
                   <Dialog.Actions
                     style={{ display: 'flex', justifyContent: 'center' }}>
@@ -440,7 +464,7 @@ class MypageInfo extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
@@ -449,7 +473,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     dataAction: action => {
       dispatch(ActionCreator.ContractConditions(action));
@@ -459,6 +483,9 @@ function mapDispatchToProps(dispatch) {
     },
     showPopup: status => {
       dispatch(ActionCreator.show(status));
+    },
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
     },
   };
 }
