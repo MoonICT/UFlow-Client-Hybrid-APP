@@ -207,10 +207,10 @@ export const termsContract = async (body, typeWH) => {
   });
 };
 export const searchAddressKakao = async ({
-  query = '',
-  page = 0,
-  size = 20,
-}) => {
+                                           query = '',
+                                           page = 0,
+                                           size = 20,
+                                         }) => {
   let url = parseQuery({
     query: query,
     page: page,
@@ -703,13 +703,13 @@ export const getWhrg = async ({ id = '', config = '' }) => {
  * @returns {Promise<unknown>}
  */
 export const pageWhrg = ({
-  query = '',
-  startDate = '',
-  endDate = '',
-  size = 20,
-  page = 0,
-  sort = 'createdDate,desc',
-}) => {
+                           query = '',
+                           startDate = '',
+                           endDate = '',
+                           size = 20,
+                           page = 0,
+                           sort = 'createdDate,desc',
+                         }) => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse${parseQuery({
@@ -763,19 +763,20 @@ export const listAllBussinessInfo = () => {
   });
 };
 
-export const pageWhrgQnA = ({
-  id = '',
-  query = '',
-  startDate = '',
-  endDate = '',
-  size = 15,
-  page = 0,
-  sort = 'createdDate,desc',
-  requiresToken = true,
-}) => {
+export const pageWhrgQnA = async ({
+                                    id = '',
+                                    query = '',
+                                    startDate = '',
+                                    endDate = '',
+                                    size = 15,
+                                    page = 0,
+                                    sort = 'createdDate,desc',
+                                    requiresToken = true,
+                                  }) => {
+  const token = await AsyncStorage.getItem(TOKEN);
   return Axios.getRequest({
     methodType: 'GET',
-    requiresToken: true,
+    requiresToken: !!token,
     url: `/api/v1/warehouse/question${parseQuery({
       idWarehouse: id,
       query: query,
