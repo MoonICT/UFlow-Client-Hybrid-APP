@@ -146,7 +146,7 @@ class WithdrawalInformation extends Component {
               ref={ref => {
                 this.askInput = ref;
               }}
-              valueProps={e => console.log('e :>> ', e)}
+              // valueProps={e => console.log('e :>> ', e)}
               multiline
               textAlignVertical="top"
             />
