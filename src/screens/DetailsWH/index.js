@@ -730,7 +730,7 @@ class DetailWH extends Component {
                                 </View>
                               ) : (
                                 <View>
-                                  {userId != whrgData.ownerUserNo &&
+                                  {userId != whrgData.ownerUserNo ?
                                   <TouchableOpacity
                                     style={[S.btnQuote, { minWidth: 100, }]}
                                     onPress={() =>
@@ -740,6 +740,8 @@ class DetailWH extends Component {
                                       견적 요청하기
                                     </Text>
                                   </TouchableOpacity>
+                                  :
+                                  <Text>내 창고</Text>
                                   }
 
                                 </View>
