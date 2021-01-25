@@ -31,7 +31,6 @@ class WithdrawalInformation extends Component {
       visible: false,
       passWord: '',
     };
-   
 
     this.navigation = props.navigation;
   }
@@ -51,42 +50,33 @@ class WithdrawalInformation extends Component {
       password: this.state.passWord,
       ...params,
     };
-    if (params.leaveReason && params.leaveReason.length > 0) {
-      MyPage.cancelMembership(defaultParams)
-        .then(res => {
-          console.log('::::: cancelMembership :::::', res);
-          if (res.status === 200) {
-            // this.showDialog();
-            this.props.showPopup({
-              type: 'confirm',
-              title: '회원탈퇴 완료',
-              content:
-                '회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.',
-              image: illust6,
-              navigation: () => {
-                this.context.signOut();
-                this.navigation.navigate('Login');
-              },
-            });
-          }
-        })
-        .catch(err => {
-          console.log('err', err);
+    MyPage.cancelMembership(defaultParams)
+      .then(res => {
+        console.log('::::: cancelMembership :::::', res);
+        if (res.status === 200) {
+          // this.showDialog();
           this.props.showPopup({
             type: 'confirm',
-            title: '에러가 났습니다',
-            content: '회원탈퇴가 완료되지 않았습니다',
+            title: '회원탈퇴 완료',
+            content:
+              '회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.',
             image: illust6,
+            navigation: () => {
+              this.context.signOut();
+              this.navigation.navigate('Login');
+            },
           });
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+        this.props.showPopup({
+          type: 'confirm',
+          title: '에러가 났습니다',
+          content: '회원탈퇴가 완료되지 않았습니다',
+          image: illust6,
         });
-    } else {
-      this.props.showPopup({
-        type: 'confirm',
-        title: '에러가 났습니다',
-        content: '비밀번호와 회원탈퇴사유를 입력하세요',
-        image: illust6,
       });
-    }
   }
 
   onCancelMembership = labelList => {
@@ -100,6 +90,12 @@ class WithdrawalInformation extends Component {
 
   render() {
     const { params } = this.props.route;
+    const { passWord } = this.state;
+    let isSubmit = false;
+
+    if (passWord.length > 0) {
+      isSubmit = true;
+    }
     return (
       <SafeAreaView style={S.container}>
         <HistoryBackActionBar title={'회원탈퇴'} navigation={this.navigation} />
@@ -121,12 +117,16 @@ class WithdrawalInformation extends Component {
               />
             </View>
             <TouchableOpacity
-              style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
-              onPress={() => this.onCancelMembership(params.arrLabel)}>
+              style={[
+                DefaultStyle.btnSubmit,
+                isSubmit === true ? DefaultStyle.activeBtnSubmit : '',
+              ]}
+              onPress={() => this.onCancelMembership(params.arrLabel)}
+              disabled={isSubmit === true ? false : true}>
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  DefaultStyle.textActiveSubmit,
+                  isSubmit === true ? DefaultStyle.textActiveSubmit : '',
                 ]}>
                 확인
               </Text>
