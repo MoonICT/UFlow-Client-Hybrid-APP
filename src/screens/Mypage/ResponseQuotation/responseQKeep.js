@@ -11,7 +11,7 @@ import { Warehouse } from '@Services/apis';
 import { StringUtils, DeepLogs } from '@Services/utils';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import moment from "moment";
-
+var searchTimerQuery;
 class ResponseQKeep extends Component {
 
   constructor (props) {
@@ -191,14 +191,21 @@ class ResponseQKeep extends Component {
             defaultValue={rntlValuePyeong ? String(rntlValuePyeong) : ''}
             isRequired={true}
             onChangeText={e => {
-              let value = Number(e.replace(/[^0-9]/g), '');
-              this.setState({
-                formData: {
-                  ...this.state.formData,
-                  rntlValue: value ? toSquareMeter(value) : ''
-                },
-                rntlValuePyeong: value
-              });
+              if (searchTimerQuery) {
+                clearTimeout(searchTimerQuery);
+              }
+              searchTimerQuery = setTimeout(async () => {
+                let value = Number(e.replace(/[^0-9]/g), '');
+                this.setState({
+                  formData: {
+                    ...this.state.formData,
+                    rntlValue: value ? toSquareMeter(value) : ''
+                  },
+                  rntlValuePyeong: value
+                });
+              }, 500);
+
+
             }}
           />
         </View>
@@ -212,14 +219,21 @@ class ResponseQKeep extends Component {
             defaultValue={rntlValue ? String(rntlValue) : ''}
             isRequired={true}
             onChangeText={e => {
-              let value = Number(e.replace(/[^0-9]/g), '');
-              this.setState({
-                formData: {
-                  ...this.state.formData,
-                  rntlValue: value
-                },
-                rntlValuePyeong: value ? toPyeong(value) : ''
-              });
+              if (searchTimerQuery) {
+                clearTimeout(searchTimerQuery);
+              }
+              searchTimerQuery = setTimeout(async () => {
+                let value = Number(e.replace(/[^0-9]/g), '');
+                this.setState({
+                  formData: {
+                    ...this.state.formData,
+                    rntlValue: value
+                  },
+                  rntlValuePyeong: value ? toPyeong(value) : ''
+                });
+              }, 500);
+
+
             }}
           />
         </View>
@@ -236,13 +250,20 @@ class ResponseQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              splyAmount: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
+        onChangeText={e => {
+          if (searchTimerQuery) {
+            clearTimeout(searchTimerQuery);
+          }
+          searchTimerQuery = setTimeout(async () => {
+            this.setState({
+              formData: {
+                ...this.state.formData,
+                splyAmount: Number(e.replace(/[^0-9]/g), '')
+              }
+            })
+          }, 500);
+        }
+
         }
       />
       {/** 관리단가 (필수) **/}
@@ -256,13 +277,21 @@ class ResponseQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              mgmtChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
+        onChangeText={e => {
+          if (searchTimerQuery) {
+            clearTimeout(searchTimerQuery);
+          }
+          searchTimerQuery = setTimeout(async () => {
+            this.setState({
+              formData: {
+                ...this.state.formData,
+                mgmtChrg: Number(e.replace(/[^0-9]/g), '')
+              }
+            })
+          }, 500);
+
+        }
+
         }
       />
       {/** 추가 요청 사항 **/}

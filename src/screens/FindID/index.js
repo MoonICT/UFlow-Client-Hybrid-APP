@@ -20,7 +20,7 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from './style';
-
+var searchTimerQuery;
 class ForgotID extends Component {
   constructor(props) {
     super(props);
@@ -86,7 +86,15 @@ class ForgotID extends Component {
                 },
               }}
               multiline={true}
-              onChangeText={text => this.setState({ email: text })}
+              onChangeText={text => {
+                if (searchTimerQuery) {
+                  clearTimeout(searchTimerQuery);
+                }
+                searchTimerQuery = setTimeout(async () => {
+                  this.setState({ email: text })
+                }, 500);
+                
+              }}
             />
             <Button
               mode="contained"
