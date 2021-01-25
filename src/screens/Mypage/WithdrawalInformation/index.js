@@ -157,7 +157,7 @@ class WithdrawalInformation extends Component {
                 <Text style={SS.textBtn}>취소하기</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={SS.btnUnsubscribe}
+                style={[SS.btnUnsubscribe,DefaultStyle.activeBtnSubmit]}
                 onPress={() =>
                   // this.navigation.navigate('ConfirmPass', {
                   //   arrLabel: arrLabel,
@@ -172,7 +172,7 @@ class WithdrawalInformation extends Component {
                     });
                   }
                 }>
-                <Text style={SS.textBtn}>탈퇴하기</Text>
+                <Text style={[SS.textBtn,DefaultStyle.textActiveSubmit]}>탈퇴하기</Text>
               </TouchableOpacity>
             </View>
           </View>

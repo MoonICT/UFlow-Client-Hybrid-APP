@@ -69,7 +69,7 @@ class RadarChartScreen extends React.Component {
                   config: {
                     color: processColor('black'),
                     drawFilled: true,
-                    fillColor: processColor('black'),
+                    fillColor: processColor('#7a7a7a'),
                     fillAlpha: 100,
                     lineWidth: 1.5,
                   },
