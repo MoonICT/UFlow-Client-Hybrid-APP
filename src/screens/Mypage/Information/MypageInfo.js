@@ -104,15 +104,17 @@ class MypageInfo extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   onSubmit = () => {
-    console.log('this.state', this.state);
-
     const { data, isAgreeSNS } = this.state;
-
+    if (!data.passwordOld) {
+      alert('현재 비밀번호를 입력하세요');
+      return;
+    }
     this.setState({ loading: true });
     Account.editMyInfo({
       fullName: data.fullName,
       emailRcv: isAgreeSNS.email,
       smsRcv: isAgreeSNS.sms,
+      passwordOld: data.passwordOld
     })
       .then(res => {
         this.setState({ loading: false });
@@ -121,6 +123,7 @@ class MypageInfo extends Component {
           title: '회원정보 수정 완료',
           content: '회원정보가 수정되었습니다.',
           image: editInfo,
+          navigation: () => this.navigation.navigate('More')
         });
       })
       .catch(error => {
@@ -236,7 +239,7 @@ class MypageInfo extends Component {
                 })
               }
             />
-            <TextField
+            {/* <TextField
               type={'password'}
               secureTextEntry={true}
               value={data.password ? data.password : ''}
@@ -265,7 +268,7 @@ class MypageInfo extends Component {
               }
               labelTextField="새 비밀번호 확인"
               colorLabel="#000000"
-            />
+            /> */}
 
             <Button
               onPress={this._onOpenChangePass}

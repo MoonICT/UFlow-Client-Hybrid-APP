@@ -69,7 +69,7 @@ class Language extends Component {
         title: '언어 설정 완료',
         content: '언어 설정을 완료하였습니다.',
         navigation: () =>
-          this.navigation.navigate('More'),
+          this.navigation.navigate('More')
       });
     }
   };
