@@ -113,13 +113,21 @@ class DetailWH extends Component {
     this.getDataWH();
     this.handleRequestQnaList(4);
     this.hiddenName();
-    AsyncStorage.getItem(TOKEN)
-      .then(v => {
-        this.setState({ isLogin: v !== '' && v !== null });
-      })
-      .catch(error => {
-        alert('DetailWH componentDidMount error:' + error);
-      });
+    AsyncStorage.getItem(TOKEN).then(v => {
+      this.setState({ isLogin: v !== '' && v !== null });
+      if (v) {
+        Account.me().then(res => {
+          console.log('User info :;;;;; ', res)
+          this.setState({
+            userId: res.id
+          })
+        }).catch(error => {
+          console.log('error', error)
+        })
+      }
+    }).catch(error => {
+      alert('DetailWH componentDidMount error:' + error);
+    });
     MyPage.getDetailCodes('WHRG0010')
       .then(res => {
         if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
@@ -148,15 +156,6 @@ class DetailWH extends Component {
         alert('WHRG0010:' + error);
         this.props.setProgress({ is: false });
       });
-
-
-    Account.me().then(res => {
-      this.setState({
-        userId: res.ownerUserNo
-      })
-    }).catch(error => {
-      console.log('error', error)
-    })
   }
 
 
@@ -731,17 +730,17 @@ class DetailWH extends Component {
                               ) : (
                                 <View>
                                   {userId != whrgData.ownerUserNo ?
-                                  <TouchableOpacity
-                                    style={[S.btnQuote, { minWidth: 100, }]}
-                                    onPress={() =>
-                                      this.checkContract('KEEP', keep)
-                                    }>
-                                    <Text style={[S.textBtnQuote]}>
-                                      견적 요청하기
-                                    </Text>
-                                  </TouchableOpacity>
-                                  :
-                                  <Text>내 창고</Text>
+                                    <TouchableOpacity
+                                      style={[S.btnQuote, { minWidth: 100, }]}
+                                      onPress={() =>
+                                        this.checkContract('KEEP', keep)
+                                      }>
+                                      <Text style={[S.textBtnQuote]}>
+                                        견적 요청하기
+                                      </Text>
+                                    </TouchableOpacity>
+                                    :
+                                    <Text>내가 등록한 창고입니다.(견적 요청 불가)</Text>
                                   }
 
                                 </View>
@@ -990,16 +989,18 @@ class DetailWH extends Component {
                               ) : (
                                 <View>
                                   {
-                                    userId != whrgData.ownerUserNo &&
-                                    <TouchableOpacity
-                                      style={[S.btnQuote, { minWidth: 100, }]}
-                                      onPress={() =>
-                                        this.checkContract('TRUST', trust)
-                                      }>
-                                      <Text style={[S.textBtnQuote]}>
-                                        견적 요청하기
-                                      </Text>
-                                    </TouchableOpacity>
+                                    userId != whrgData.ownerUserNo ?
+                                      <TouchableOpacity
+                                        style={[S.btnQuote, { minWidth: 100, }]}
+                                        onPress={() =>
+                                          this.checkContract('TRUST', trust)
+                                        }>
+                                        <Text style={[S.textBtnQuote]}>
+                                          견적 요청하기
+                                        </Text>
+                                      </TouchableOpacity>
+                                      :
+                                      <Text>내가 등록한 창고입니다.(견적 요청 불가)</Text>
                                   }
                                 </View>
 
@@ -1316,11 +1317,16 @@ class DetailWH extends Component {
                 <View style={S.rightTitle}>
                   <TouchableOpacity
                     style={S.btnInquiry}
-                    onPress={() =>
-                      this.navigation.navigate('CreateInquiryWH', {
-                        idWH: id,
-                        onReloadQna: this.handleRequestQnaList,
-                      })
+                    onPress={() => {
+                      if (this.state.isLogin) {
+                        this.navigation.navigate('CreateInquiryWH', {
+                          idWH: id,
+                          onReloadQna: () => this.handleRequestQnaList,
+                        })
+                      } else {
+                        alert('로그인 후 이용가능합니다.')
+                      }
+                    }
                     }>
                     <Text style={S.textInquiry}>문의하기</Text>
                   </TouchableOpacity>
