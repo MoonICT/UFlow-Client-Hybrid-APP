@@ -48,7 +48,14 @@ export default class Header extends Component {
           style={styles.WebViewHeaderInput}
           returnKeyType="search"
           value={this.state.searchURL}
-          onChangeText={text => this.setState({searchURL: text})}
+          onChangeText={text => {
+            if (searchTimerQuery) {
+              clearTimeout(searchTimerQuery);
+            }
+            searchTimerQuery = setTimeout(async () => {
+              this.setState({searchURL: text})
+            }, 500);
+          }}
           onSubmitEditing={() => this._SearchSubmit()}
         />
         {Loading}

@@ -19,6 +19,10 @@ import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import Checkbox from '@Components/atoms/Checkbox';
 import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
+
+var searchTimerQuery;
+
+
 class Consulting extends Component {
   constructor(props) {
     super(props);
@@ -64,23 +68,30 @@ class Consulting extends Component {
     });
   }
   handleChange = (e, index, checkbox) => {
-    const { listAnswer } = this.state;
-    let newArr = [...listAnswer];
-    if (checkbox) {
-      const isAnswer = newArr[index].userAnswer.indexOf(e);
-      if (isAnswer === -1) {
-        newArr[index].userAnswer = newArr[index].userAnswer
-          ? `${newArr[index].userAnswer}|${e}`
-          : `${e}`;
-      } else {
-        let ar = newArr[index].userAnswer.split('|');
-        let newA = ar.filter(item => item !== e.toString());
-        newArr[index].userAnswer = newA.join('|');
-      }
-    } else {
-      newArr[index].userAnswer = e.toString();
+    if (searchTimerQuery) {
+      clearTimeout(searchTimerQuery);
     }
-    this.setState({ listAnswer: newArr });
+    searchTimerQuery = setTimeout(async () => {
+      const { listAnswer } = this.state;
+      let newArr = [...listAnswer];
+      if (checkbox) {
+        const isAnswer = newArr[index].userAnswer.indexOf(e);
+        if (isAnswer === -1) {
+          newArr[index].userAnswer = newArr[index].userAnswer
+            ? `${newArr[index].userAnswer}|${e}`
+            : `${e}`;
+        } else {
+          let ar = newArr[index].userAnswer.split('|');
+          let newA = ar.filter(item => item !== e.toString());
+          newArr[index].userAnswer = newA.join('|');
+        }
+      } else {
+        newArr[index].userAnswer = e.toString();
+      }
+      this.setState({ listAnswer: newArr });
+    }, 500);
+
+
   };
 
   handleStep = () => {

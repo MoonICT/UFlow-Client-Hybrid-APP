@@ -493,12 +493,18 @@ class DetailsManager extends Component {
   };
 
   onChangeValueImport = (value) => {
-    if (value) {
+    if (searchTimerQuery) {
+      clearTimeout(searchTimerQuery);
+    }
+    searchTimerQuery = setTimeout(async () => {
+          if (value) {
       value = value.replace(/[^0-9]/g, '')
     }
     this.setState({
       createValue: value
     });
+    }, 500);
+
   }
 
 
