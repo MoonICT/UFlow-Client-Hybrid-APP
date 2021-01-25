@@ -1,18 +1,18 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import DefaultStyle from '@Styles/default';
-import {TouchableOpacity, View} from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Select from '@Components/organisms/Select';
-import {StringUtils, DeepLogs} from '@Services/utils';
+import { StringUtils, DeepLogs } from '@Services/utils';
 import TableInfo from '@Components/atoms/TableInfo';
-import {Button, Dialog, Text} from "react-native-paper";
-import {Contract} from '@Services/apis';
-import {styles as S} from "../style";
-import {styles as SS} from "./style";
+import { Button, Dialog, Text } from "react-native-paper";
+import { Contract } from '@Services/apis';
+import { styles as S } from "../style";
+import { styles as SS } from "./style";
 
 
 class TenantRs00Keep extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.navigation = props.navigation;
     this.state = {
@@ -20,7 +20,7 @@ class TenantRs00Keep extends Component {
     }
   }
 
-  render() {
+  render () {
     /**
      * TENANT - RS00 - KEEP
      */
@@ -99,7 +99,7 @@ class TenantRs00Keep extends Component {
                   </Text>
                 </View>
                 <View style={DefaultStyle._infoTable}>
-                  <TableInfo data={dataRequest}/>
+                  <TableInfo data={dataRequest} />
                 </View>
               </View>
 
@@ -115,7 +115,6 @@ class TenantRs00Keep extends Component {
           value: index
         };
       }) : [];
-
 
       return (
         <Fragment>
@@ -135,15 +134,15 @@ class TenantRs00Keep extends Component {
                             groupOrderIndex: value
                           });
                         }}
-                        style={SS.optionSelect}/>
+                        style={SS.optionSelect} />
               </View>
             </View>
 
             {viewRequestKeep}
 
             {/*<View style={DefaultStyle._footerCards}>*/}
-              {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
-              {/*<Text style={S.total}>{StringUtils.money(total)}</Text>*/}
+            {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
+            {/*<Text style={S.total}>{StringUtils.money(total)}</Text>*/}
             {/*</View>*/}
 
             <View style={DefaultStyle._listBtn}>
@@ -203,12 +202,17 @@ class TenantRs00Keep extends Component {
 
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 
-  componentDidMount() {
-
+  componentDidMount () {
+    // 마지막 차수로 설정.
+    if (this.state.groupOrders && this.state.groupOrders.length > 0) {
+      this.setState({
+        groupOrderIndex: this.state.groupOrders.length - 1
+      });
+    }
   }
 }
 

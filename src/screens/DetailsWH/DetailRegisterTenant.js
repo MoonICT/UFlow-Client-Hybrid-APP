@@ -30,7 +30,9 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 import Postcode from 'react-native-daum-postcode';
 import validator from 'validator';
+import ActionCreator from '@Actions';
 import { isBizNum } from "@Services/utils/validate";
+import { connect } from "react-redux";
 
 const tabSelect = [
   {
@@ -188,6 +190,14 @@ class DetailRegisterTenant extends Component {
           data.append('name', singleFile.name);
           data.append('file', singleFile);
           // Please change file upload URL
+
+          // 이미지를 선택 안한 경우.
+          if (response && response.didCancel) {
+            return false;
+          }
+
+          // Progress
+          this.props.setProgress({ is: true, type: 'CIRCLE' });
           MediaUpload.uploadFile(data).then(respon => {
             if (respon.status === 200) {
               let { filename, url } = respon.data;
@@ -201,9 +211,12 @@ class DetailRegisterTenant extends Component {
                   regFile: filename
                 }
               });
+              // Progress
+              this.props.setProgress({ is: false, });
             }
           }).catch(error => {
-            alert('DetailRegisterTenant MediaUpload error:' + error);
+            // alert('DetailRegisterTenant MediaUpload error:' + error);
+            this.props.setProgress({ is: false, });
           });
         } else {
           // If no file selected the show alert
@@ -212,53 +225,6 @@ class DetailRegisterTenant extends Component {
       });
     });
   };
-
-  // upload image
-  // handlePicker = async () => {
-  //   const { businessInfo } = this.state;
-  //
-  //   try {
-  //     const res = await DocumentPicker.pick({
-  //       type: [DocumentPicker.types.images],
-  //     });
-  //     this.setState({ singleFile: res }, async () => {
-  //       if (res != null) {
-  //         // If file selected then create FormData
-  //         let { singleFile } = this.state;
-  //         const data = new FormData();
-  //         data.append('name', singleFile.name);
-  //         data.append('file', singleFile);
-  //         // Please change file upload URL
-  //         MediaUpload.uploadFile(data).then(respon => {
-  //           if (respon.status === 200) {
-  //             let { url } = respon.data;
-  //             var pathArray = url.split('/');
-  //             var host = pathArray[pathArray.length - 1];
-  //
-  //             this.setState({
-  //               photo: url,
-  //               businessInfo: {
-  //                 ...businessInfo,
-  //                 regFile: host
-  //               }
-  //             });
-  //           }
-  //         }).catch(error => {
-  //           alert('DetailRegisterTenant MediaUpload error:' + error);
-  //         });
-  //       } else {
-  //         // If no file selected the show alert
-  //         alert('Please Select File first');
-  //       }
-  //     });
-  //   } catch (err) {
-  //     if (DocumentPicker.isCancel(err)) {
-  //       // User cancelled the picker, exit any dialogs or menus and move on
-  //     } else {
-  //       throw err;
-  //     }
-  //   }
-  // };
 
   handleOnSubmit = () => {
     const { businessInfo, isCert } = this.state;
@@ -690,4 +656,22 @@ class DetailRegisterTenant extends Component {
   }
 }
 
-export default DetailRegisterTenant;
+/** map state with store states redux store */
+function mapStateToProps (state) {
+  // console.log('++++++mapStateToProps: ', state);
+  return {};
+}
+
+/** dispatch action to redux */
+function mapDispatchToProps (dispatch) {
+  return {
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DetailRegisterTenant);

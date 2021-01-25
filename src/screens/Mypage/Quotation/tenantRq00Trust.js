@@ -201,21 +201,12 @@ class TenantRq00Trust extends Component {
   }
 
   componentDidMount() {
-
-    console.log('::componentDidMount::');
-    // this.setState({
-    //   groupOrderIndex: this.props.groupOrders ? this.props.groupOrders.length - 1 : 0
-    // })
-    // if (prevState.groupOrderIndex !== this.state.groupOrderIndex) {
-    //   console.log(this.props.groupOrders, 'this.props.groupOrders');
-    //   console.log(this.props.groupOrders.length - 1, 'this.props.groupOrders');
-    // console.log(this.props, '>> props')
-    // console.log(this.props.groupOrders, '> props.groupOrders')
-      // this.setState({
-      //   groupOrderIndex: this.props.groupOrders ? this.props.groupOrders.length - 1 : 0
-      // })
-    // }
-
+    // 마지막 차수로 설정.
+    if (this.state.groupOrders && this.state.groupOrders.length > 0) {
+      this.setState({
+        groupOrderIndex: this.state.groupOrders.length - 1
+      });
+    }
   }
 }
 

@@ -189,7 +189,11 @@ class TenantRq00Keep extends Component {
   }
 
   componentDidMount() {
-
+    if (this.state.groupOrders && this.state.groupOrders.length > 0) {
+      this.setState({
+        groupOrderIndex: this.state.groupOrders.length - 1
+      });
+    }
   }
 }
 

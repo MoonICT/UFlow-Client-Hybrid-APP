@@ -39,7 +39,8 @@ import WHType2 from '@Assets/images/icon-warehouse-2.png';
 import WHType3 from '@Assets/images/icon-warehouse-3.png';
 import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
-import {toSquareMeter, toPyeong} from '@Services/utils/unit';
+import { toSquareMeter, toPyeong } from '@Services/utils/unit';
+
 class DetailWH extends Component {
   constructor (props) {
     super(props);
@@ -103,62 +104,60 @@ class DetailWH extends Component {
   }
 
 
-    /** when after render DOM */
-    componentDidMount () {
-      // Progress
-      this.props.setProgress({ is: true, });
-  
-      const { route } = this.props;
-      this.getDataWH();
-      this.handleRequestQnaList(4);
-      this.hiddenName();
-      AsyncStorage.getItem(TOKEN)
-        .then(v => {
-          this.setState({ isLogin: v !== '' && v !== null });
-        })
-        .catch(error => {
-          alert('DetailWH componentDidMount error:' + error);
-        });
-      MyPage.getDetailCodes('WHRG0010')
-        .then(res => {
-          if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
-            // console.log('detailCodes', res.data._embedded.detailCodes);
-            let dataCode = res.data._embedded.detailCodes;
-            let dataCover =
-              dataCode &&
-              dataCode.map((item, index) => {
-                return {
-                  title: item.stdDetailCodeName,
-                  value: item.stdDetailCod,
-                };
-              });
-            this.setState({
-              dataCover: dataCover,
-              floors: dataCover[0].title,
+  /** when after render DOM */
+  componentDidMount () {
+    // Progress
+    this.props.setProgress({ is: true, });
+
+    const { route } = this.props;
+    this.getDataWH();
+    this.handleRequestQnaList(4);
+    this.hiddenName();
+    AsyncStorage.getItem(TOKEN)
+      .then(v => {
+        this.setState({ isLogin: v !== '' && v !== null });
+      })
+      .catch(error => {
+        alert('DetailWH componentDidMount error:' + error);
+      });
+    MyPage.getDetailCodes('WHRG0010')
+      .then(res => {
+        if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
+          // console.log('detailCodes', res.data._embedded.detailCodes);
+          let dataCode = res.data._embedded.detailCodes;
+          let dataCover =
+            dataCode &&
+            dataCode.map((item, index) => {
+              return {
+                title: item.stdDetailCodeName,
+                value: item.stdDetailCod,
+              };
             });
-          }
-  
-          // Progress
-          setTimeout(() => {
-            this.props.setProgress({ is: false });
-          }, 300);
-        })
-        .catch(error => {
-          alert('WHRG0010:' + error);
-          this.props.setProgress({ is: false });
-        });
-
-
-        Account.me().then(res => {
           this.setState({
-            userId: res.ownerUserNo
-          })
-        }).catch(error => {
-          console.log('error', error)
-        })
-    }
+            dataCover: dataCover,
+            floors: dataCover[0].title,
+          });
+        }
 
-    
+        // Progress
+        setTimeout(() => {
+          this.props.setProgress({ is: false });
+        }, 300);
+      })
+      .catch(error => {
+        alert('WHRG0010:' + error);
+        this.props.setProgress({ is: false });
+      });
+
+
+    Account.me().then(res => {
+      this.setState({
+        userId: res.ownerUserNo
+      })
+    }).catch(error => {
+      console.log('error', error)
+    })
+  }
 
 
   /**
@@ -388,28 +387,28 @@ class DetailWH extends Component {
             fontSize="12"
             style={DefaultStyle.headerTitle}
           /> */}
-          
+
           <HistoryBackActionBar
             title={'창고 상세'}
             navigation={this.navigation}
             rightComponent={
               favorite ? (
-            <Appbar.Action
-              icon="heart"
-              color="#f2453d"
-              onPress={() => {
-                this.toggleFavoriteWH();
-              }}
-            />
-          ) : (
-            <Appbar.Action
-              icon="heart-outline"
-              color="black"
-              onPress={() => {
-                this.toggleFavoriteWH();
-              }}
-            />
-          )
+                <Appbar.Action
+                  icon="heart"
+                  color="#f2453d"
+                  onPress={() => {
+                    this.toggleFavoriteWH();
+                  }}
+                />
+              ) : (
+                <Appbar.Action
+                  icon="heart-outline"
+                  color="black"
+                  onPress={() => {
+                    this.toggleFavoriteWH();
+                  }}
+                />
+              )
             }
           />
         </Appbars>
@@ -500,7 +499,8 @@ class DetailWH extends Component {
                   {this.state.toggleImage ?
                     <TouchableOpacity onPress={() =>
                       this.navigation.navigate('ViewPanoramaImage', {
-                        image: whrgData.pnImages && whrgData.pnImages.length > 0 ? whrgData.pnImages[0].url : '' })}>
+                        image: whrgData.pnImages && whrgData.pnImages.length > 0 ? whrgData.pnImages[0].url : ''
+                      })}>
                       <Image
                         style={S.backgroundImage}
                         source={whrgData.pnImages && whrgData.pnImages.length > 0
@@ -522,13 +522,13 @@ class DetailWH extends Component {
                     </TouchableOpacity>}
                   {/* 이미지 타입 토글 */}
                   {whrgData.pnImages && whrgData.pnImages.length > 0 &&
-                    <TouchableOpacity style={S.btnImageToggle}
-                                      onPress={() => this.setState({ toggleImage: !this.state.toggleImage })}>
-                      {this.state.toggleImage ?
-                        <IconButton size={20} icon="image-multiple" />
-                        :
-                        <Image style={{ width: 25, height: 25, }} source={panoIcon} />}
-                    </TouchableOpacity>}
+                  <TouchableOpacity style={S.btnImageToggle}
+                                    onPress={() => this.setState({ toggleImage: !this.state.toggleImage })}>
+                    {this.state.toggleImage ?
+                      <IconButton size={20} icon="image-multiple" />
+                      :
+                      <Image style={{ width: 25, height: 25, }} source={panoIcon} />}
+                  </TouchableOpacity>}
                 </View>
                 {/* 이미지 슬라이드 팝업 */}
                 <ImageView
@@ -663,7 +663,7 @@ class DetailWH extends Component {
                           </Text>
                           <Text style={S.textTable}>
                             {
-                              keep.usblValue ? `${toPyeong(keep.usblValue)} (${toSquareMeter(keep.usblValue)} ㎡)` : '-'
+                              keep.usblValue ? `${toPyeong(keep.usblValue)}평 (${toSquareMeter(keep.usblValue)} ㎡)` : '-'
                             }
                           </Text>
                         </View>
@@ -730,9 +730,9 @@ class DetailWH extends Component {
                                 </View>
                               ) : (
                                 <View>
-                                  { userId != whrgData.ownerUserNo &&
-                                    <TouchableOpacity
-                                    style={[S.btnQuote]}
+                                  {userId != whrgData.ownerUserNo &&
+                                  <TouchableOpacity
+                                    style={[S.btnQuote, { minWidth: 100, }]}
                                     onPress={() =>
                                       this.checkContract('KEEP', keep)
                                     }>
@@ -743,7 +743,7 @@ class DetailWH extends Component {
                                   }
 
                                 </View>
-                                
+
 
                               )}
                             </View>
@@ -989,8 +989,8 @@ class DetailWH extends Component {
                                 <View>
                                   {
                                     userId != whrgData.ownerUserNo &&
-                                      <TouchableOpacity
-                                      style={[S.btnQuote]}
+                                    <TouchableOpacity
+                                      style={[S.btnQuote, { minWidth: 100, }]}
                                       onPress={() =>
                                         this.checkContract('TRUST', trust)
                                       }>
@@ -1350,11 +1350,24 @@ class DetailWH extends Component {
                           {qnaItem.answer ?
                             <Text style={S.titleCompleted}>답변완료</Text> :
                             <Text style={S.titleInquiry}>미답변</Text>}
-                          <Text style={S.contentInquiry}>
-                            <IconButton style={S.btnIcon} size={16} icon="lock" />
+                          <View>
                             {/** TODO 기본 비밀글로 처리. 추후 변경.*/}
-                            {qnaItem.me || !(qnaItem.secret || true) ? qnaItem.content : '비밀글 입니다.'}
-                          </Text>
+                            {qnaItem.me || !(qnaItem.secret || true) ?
+                              <>
+                                <Text style={S.contentInquiry}>
+                                  {qnaItem.content}
+                                </Text>
+                                <Text style={[S.contentInquiry, { marginTop: 4, }]}>
+                                  {qnaItem.answer ? `\n답변 :\n${qnaItem.answer.content}` : ''}
+                                </Text>
+                              </>
+                              :
+                              <Text style={S.contentInquiry}>
+                                <IconButton style={S.btnIcon} size={16} icon="lock" />
+                                비밀글 입니다.
+                              </Text>
+                            }
+                          </View>
                           <Text style={S.footerInquiry}>
                             {/** TODO 기본 비밀글로 처리. 추후 변경.*/}
                             {qnaItem.me || !(qnaItem.secret || true) ? qnaItem.writer : this.hiddenName(qnaItem.writer)} | {formatDateV1(qnaItem.date)}

@@ -10,7 +10,8 @@ import React, {Component, Fragment} from 'react';
 import {styles as S} from '../style';
 
 import Moment from 'moment';
-import {moneyUnit, dateStr, toStdCd} from '@Utils/StringUtils';
+import {dateStr, toStdCd} from '@Utils/StringUtils';
+import { money } from '@Services/utils/StringUtils';
 import Select from '@Components/organisms/SelectFilter';
 import {
   Linking,
@@ -125,7 +126,7 @@ export default class SettlementManagement extends Component {
               },
               {
                 type: '정산 합계\n(VAT포함)',
-                value: `${(item.amount && item.vat) ? moneyUnit(item.amount + item.vat) : ''}`,
+                value: `${(item.amount && item.vat) ? money(item.amount + item.vat) : ''}`,
               },
             ]
           }

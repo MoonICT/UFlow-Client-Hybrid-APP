@@ -975,7 +975,7 @@ export default StyleSheet.create({
     borderColor: '#e5e5ea',
     borderRadius: 8,
     marginTop: 16,
-    marginBottom: 18,
+    // marginBottom: 18,
   },
   _headerCard: {
     flexDirection: 'row',

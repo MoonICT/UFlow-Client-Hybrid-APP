@@ -15,6 +15,7 @@ import { styles } from './style';
 import ActionCreator from "@Actions";
 import RangeSlider from '@Components/atoms/RangeSlider';
 import moment from "./FilterPeriod";
+import { money, numberComma } from '@Services/utils/StringUtils';
 
 /*TODO 임시 값 (추후 변경 필요)*/
 const splyAmountMax = 100000; // 보관비 최대
@@ -80,7 +81,7 @@ class FilterPrice extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={splyAmountMax}
-                       LabelMiddle={`${(splyAmountMax / 2).toLocaleString()}원`}
+                       LabelMiddle={`${money((splyAmountMax / 2))}`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            splyAmount: value,
@@ -108,7 +109,7 @@ class FilterPrice extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={mgmtChrgMax}
-                       LabelMiddle={`${(mgmtChrgMax / 2).toLocaleString()}원`}
+                       LabelMiddle={`${money((mgmtChrgMax / 2))}`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            mgmtChrg: value,
@@ -136,7 +137,7 @@ class FilterPrice extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={whinChrgMax}
-                       LabelMiddle={`${(whinChrgMax / 2).toLocaleString()}원`}
+                       LabelMiddle={`${money((whinChrgMax / 2))}`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            whinChrg: value,
@@ -165,7 +166,7 @@ class FilterPrice extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={whoutChrgMax}
-                       LabelMiddle={`${(whoutChrgMax / 2).toLocaleString()}원`}
+                       LabelMiddle={`${money((whoutChrgMax / 2))}`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            whoutChrg: value,

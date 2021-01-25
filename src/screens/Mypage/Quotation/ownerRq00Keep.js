@@ -164,7 +164,12 @@ class OwnerRq00Keep extends Component {
   }
 
   componentDidMount() {
-
+// 마지막 차수로 설정.
+    if (this.state.groupOrders && this.state.groupOrders.length > 0) {
+      this.setState({
+        groupOrderIndex: this.state.groupOrders.length - 1
+      });
+    }
   }
 }
 

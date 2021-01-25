@@ -12,8 +12,9 @@ import { styles as SS } from './style';
 import illust15 from '@Assets/images/illust15.png';
 
 import Moment from 'moment';
-import { moneyUnit, dateStr, toStdCd } from '@Utils/StringUtils';
-import { View, TouchableOpacity, Image} from 'react-native';
+import { dateStr, toStdCd } from '@Utils/StringUtils';
+import { money } from '@Services/utils/StringUtils';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { Text, Dialog, Button, Paragraph } from 'react-native-paper';
 import Select from '@Components/organisms/SelectFilter';
 import AsyncStorage from "@react-native-community/async-storage";
@@ -35,7 +36,7 @@ var searchTimerQuery;
 var searchTimerQuery2;
 var searchTimerQuery3;
 export default class InOutManager extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -96,7 +97,7 @@ export default class InOutManager extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::: 입출고 관리 페이지 :::');
     // 탭 초기화.
     const tabStatus = await AsyncStorage.getItem(MY_PAGE_TAB_STATUS_KEY);
@@ -110,7 +111,7 @@ export default class InOutManager extends Component {
     );
   }
 
-  async getAllData() {
+  async getAllData () {
     let { filter, valueTab } = this.state;
     let { startDate, endDate, query, contractType } = filter;
     let params = {
@@ -176,7 +177,7 @@ export default class InOutManager extends Component {
               },
               {
                 type: '입출고료 합계',
-                value: item.totalWhrg ? moneyUnit(item.totalWhrg) : '0 원',
+                value: item.totalWhrg ? money(item.totalWhrg) : '0 원',
               },
             ],
           };
@@ -191,7 +192,7 @@ export default class InOutManager extends Component {
       });
   }
 
-  onChangeTab(value) {
+  onChangeTab (value) {
     this.setState(
       {
         valueTab: value,
@@ -389,7 +390,7 @@ export default class InOutManager extends Component {
     }, 500);
   };
 
-  async createImport() {
+  async createImport () {
     let {
       rentWarehNoCurrent,
       timeCreateImport,
@@ -409,8 +410,8 @@ export default class InOutManager extends Component {
 
     await WarehouseOut.postImportTenant({
       rentWarehNo: rentWarehNoCurrent,
-      whinExpct : timeCreateImport,
-      whinExpctQty : valueCreateImport
+      whinExpct: timeCreateImport,
+      whinExpctQty: valueCreateImport
     })
       .then((res) => {
         this.setState({
@@ -424,7 +425,7 @@ export default class InOutManager extends Component {
       });
   }
 
-  async createExpert() {
+  async createExpert () {
     let {
       rentWarehNoCurrent,
       timeCreateExpert,
@@ -448,8 +449,8 @@ export default class InOutManager extends Component {
 
     await WarehouseOut.postExportTenant({
       rentWarehNo: rentWarehNoCurrent,
-      whoutExpct : timeCreateExpert,
-      expctQty : valueCreateExpert
+      whoutExpct: timeCreateExpert,
+      expctQty: valueCreateExpert
     })
       .then((res) => {
         this.setState({
@@ -465,8 +466,8 @@ export default class InOutManager extends Component {
 
   showDialogExpert = () => this.setState({ visibleExpert: true });
   hideDialogExpert = () => {
-    this.setState({ visibleExpert: false, valueCreateExpert: ''});
-  } 
+    this.setState({ visibleExpert: false, valueCreateExpert: '' });
+  }
   showDialogImport = () => this.setState({ visibleImport: true });
   hideDialogImport = () => {
     this.setState({ visibleImport: false, valueCreateImport: '' })
@@ -475,7 +476,7 @@ export default class InOutManager extends Component {
   showConfirm = () => this.setState({ confirm: true });
   hideConfirm = () => this.setState({ confirm: false });
 
-  render() {
+  render () {
     const {
       valueTab,
       isOpenStart,
@@ -490,156 +491,156 @@ export default class InOutManager extends Component {
     let { startDate, endDate } = this.state.filter;
     return (
       <>
-      <View style={[DefaultStyle._cards, { marginBottom: 180 }]}>
-        <View style={DefaultStyle._tabBar}>
-          <TouchableOpacity
-            style={valueTab === 'OWNER' ? DefaultStyle._btnTabBar : null}
-            onPress={() => this.onChangeTab('OWNER')}>
-            <Text
-              style={
-                valueTab === 'OWNER'
-                  ? DefaultStyle._textActiveTab
-                  : DefaultStyle._textTabBar
-              }>
-              요청 받은 견적･계약 (창고주)
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={valueTab === 'TENANT' ? DefaultStyle._btnTabBar : null}
-            onPress={() => this.onChangeTab('TENANT')}>
-            <Text
-              style={
-                valueTab === 'TENANT'
-                  ? DefaultStyle._textActiveTab
-                  : DefaultStyle._textTabBar
-              }>
-              요청한 견적･계약 (임차인)
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <View style={[DefaultStyle._cards, { marginBottom: 180 }]}>
+          <View style={DefaultStyle._tabBar}>
+            <TouchableOpacity
+              style={valueTab === 'OWNER' ? DefaultStyle._btnTabBar : null}
+              onPress={() => this.onChangeTab('OWNER')}>
+              <Text
+                style={
+                  valueTab === 'OWNER'
+                    ? DefaultStyle._textActiveTab
+                    : DefaultStyle._textTabBar
+                }>
+                요청 받은 견적･계약 (창고주)
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={valueTab === 'TENANT' ? DefaultStyle._btnTabBar : null}
+              onPress={() => this.onChangeTab('TENANT')}>
+              <Text
+                style={
+                  valueTab === 'TENANT'
+                    ? DefaultStyle._textActiveTab
+                    : DefaultStyle._textTabBar
+                }>
+                요청한 견적･계약 (임차인)
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={[DefaultStyle._titleCard, { marginBottom: 5 }]}>
-          <Text
-            style={[
-              DefaultStyle._textTitleCard,
-              S.textTitleTenant,
-              { paddingBottom: 0 },
-            ]}>
-            입･출고 관리
-          </Text>
-        </View>
-        <Text style={[SS.infoContent, { marginBottom: 14 }]}>
-          수탁 계약이 완료된 창고의 입고, 출고 내역을 확인해 주세요.
-        </Text>
-
-        <View style={S.filter}>
-          <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
-            <View
+          <View style={[DefaultStyle._titleCard, { marginBottom: 5 }]}>
+            <Text
               style={[
-                S.optionSelect,
-                S.optionSelectLeft,
-                { marginBottom: 25, height: 36 },
+                DefaultStyle._textTitleCard,
+                S.textTitleTenant,
+                { paddingBottom: 0 },
               ]}>
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  onPress={() => this.showDateStart()}
-                  style={DefaultStyle._btnDateFilter}>
-                  <Text
-                    style={[
-                      DefaultStyle._textDate,
-                      { fontSize: 12, paddingTop: 5, textAlign: 'center' },
-                    ]}>
-                    {dateStr(startDate) || 'YYYY-MM-DD'}
-                  </Text>
-                  <Text
-                    style={[
-                      DefaultStyle._labelTextField,
-                      { color: '#000000', fontSize: 12 },
-                    ]}>
-                    시작일
-                  </Text>
-                  {
-                    isOpenStart && (
+              입･출고 관리
+            </Text>
+          </View>
+          <Text style={[SS.infoContent, { marginBottom: 14 }]}>
+            수탁 계약이 완료된 창고의 입고, 출고 내역을 확인해 주세요.
+          </Text>
+
+          <View style={S.filter}>
+            <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
+              <View
+                style={[
+                  S.optionSelect,
+                  S.optionSelectLeft,
+                  { marginBottom: 25, height: 36 },
+                ]}>
+                <View style={{ flex: 1 }}>
+                  <TouchableOpacity
+                    onPress={() => this.showDateStart()}
+                    style={DefaultStyle._btnDateFilter}>
+                    <Text
+                      style={[
+                        DefaultStyle._textDate,
+                        { fontSize: 12, paddingTop: 5, textAlign: 'center' },
+                      ]}>
+                      {dateStr(startDate) || 'YYYY-MM-DD'}
+                    </Text>
+                    <Text
+                      style={[
+                        DefaultStyle._labelTextField,
+                        { color: '#000000', fontSize: 12 },
+                      ]}>
+                      시작일
+                    </Text>
+                    {
+                      isOpenStart && (
+                        <DateTimePickerModal
+                          mode="date"
+                          isVisible={isOpenStart}
+                          date={startDate ? startDate : new Date()}
+                          onConfirm={date => this.onChangeStart(date)}
+                          onCancel={() => {
+                            this.setState({
+                              isOpenStart: false,
+                            });
+                          }}
+                        />
+                      )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <Text style={[S.hyphen, { height: 36, lineHeight: 36 }]}>-</Text>
+              <View style={[S.optionSelect, S.optionSelectLeft, { height: 36 }]}>
+                <View style={{ flex: 1 }}>
+                  <TouchableOpacity
+                    onPress={() => this.showDateEnd()}
+                    style={DefaultStyle._btnDateFilter}>
+                    <Text
+                      style={[
+                        DefaultStyle._textDate,
+                        { fontSize: 12, paddingTop: 5, textAlign: 'center' },
+                      ]}>
+                      {dateStr(endDate) || 'YYYY-MM-DD'}
+                    </Text>
+                    <Text
+                      style={[
+                        DefaultStyle._labelTextField,
+                        { color: '#000000', fontSize: 12 },
+                      ]}>
+                      종료일
+                    </Text>
+                    {isOpenEnd && (
+
                       <DateTimePickerModal
                         mode="date"
-                        isVisible={isOpenStart}
-                        date={startDate ? startDate : new Date()}
-                        onConfirm={date => this.onChangeStart(date)}
+                        isVisible={isOpenEnd}
+                        date={endDate ? endDate : new Date()}
+                        onConfirm={date => this.onChangeEnd(date)}
                         onCancel={() => {
                           this.setState({
-                            isOpenStart: false,
+                            isOpenEnd: false,
                           });
                         }}
                       />
                     )}
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={[S.optionSelect, S.optionSelectLeft, { height: 36 }]}>
+                <Select
+                  data={rangeDay}
+                  valueProps={this.onChangeRangeDay}
+                  style={[S.select, { height: 36 }]}
+                />
               </View>
             </View>
-            <Text style={[S.hyphen, { height: 36, lineHeight: 36 }]}>-</Text>
-            <View style={[S.optionSelect, S.optionSelectLeft, { height: 36 }]}>
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  onPress={() => this.showDateEnd()}
-                  style={DefaultStyle._btnDateFilter}>
-                  <Text
-                    style={[
-                      DefaultStyle._textDate,
-                      { fontSize: 12, paddingTop: 5, textAlign: 'center' },
-                    ]}>
-                    {dateStr(endDate) || 'YYYY-MM-DD'}
-                  </Text>
-                  <Text
-                    style={[
-                      DefaultStyle._labelTextField,
-                      { color: '#000000', fontSize: 12 },
-                    ]}>
-                    종료일
-                  </Text>
-                  {isOpenEnd && (
-
-                    <DateTimePickerModal
-                      mode="date"
-                      isVisible={isOpenEnd}
-                      date={endDate ? endDate : new Date()}
-                      onConfirm={date => this.onChangeEnd(date)}
-                      onCancel={() => {
-                        this.setState({
-                          isOpenEnd: false,
-                        });
-                      }}
-                    />
-                  )}
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={[S.optionSelect, S.optionSelectLeft, { height: 36 }]}>
-              <Select
-                data={rangeDay}
-                valueProps={this.onChangeRangeDay}
-                style={[S.select, { height: 36 }]}
-              />
-            </View>
+            <TextField
+              styleProps={[DefaultStyle._inputSearch, { paddingRight: 50 }]}
+              placeholder="검색어를 입력해 주세요."
+              ref={el => (this.inputKeyWord = el)}
+              onChange={this.onChangeKeyWord}
+              rightComponent={
+                <Icon
+                  name="search"
+                  color="rgba(0, 0, 0, 0.54)"
+                  size={17}
+                  style={DefaultStyle._searchRightIcon}
+                  onPress={() => this.onChangeKeyWord()}
+                />
+              }
+            />
           </View>
-          <TextField
-            styleProps={[DefaultStyle._inputSearch, { paddingRight: 50 }]}
-            placeholder="검색어를 입력해 주세요."
-            ref={el => (this.inputKeyWord = el)}
-            onChange={this.onChangeKeyWord}
-            rightComponent={
-              <Icon
-                name="search"
-                color="rgba(0, 0, 0, 0.54)"
-                size={17}
-                style={DefaultStyle._searchRightIcon}
-                onPress={() => this.onChangeKeyWord()}
-              />
-            }
-          />
-        </View>
 
-        {dataCard.length > 0 &&
+          {dataCard.length > 0 &&
           dataCard.map((item, index) => {
-            console.log(item,'item');
+            console.log(item, 'item');
             return (
               <CardMypage
                 key={index}
@@ -661,48 +662,48 @@ export default class InOutManager extends Component {
             );
           })}
 
-      </View>
-      {/** 출고요청 팝업 **/}
-      <Dialog
-        style={[DefaultStyle.popup, SS.popup]}
-        visible={this.state.visibleExpert}
-        onDismiss={this.hideDialogExpert}>
-        <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
-          출고요청 fff
-        </Dialog.Title>
-        <Dialog.Content>
-          <View style={SS.bodyPopup}>
-            <Text style={DefaultStyle._textTitleCard}>출고 예정일</Text>
+        </View>
+        {/** 출고요청 팝업 **/}
+        <Dialog
+          style={[DefaultStyle.popup, SS.popup]}
+          visible={this.state.visibleExpert}
+          onDismiss={this.hideDialogExpert}>
+          <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
+            출고요청 fff
+          </Dialog.Title>
+          <Dialog.Content>
+            <View style={SS.bodyPopup}>
+              <Text style={DefaultStyle._textTitleCard}>출고 예정일</Text>
 
-            <View
-              style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
               <View
-                style={[
-                  S.optionSelect,
-                  S.optionSelectLeft,
-                  {
-                    height: 40,
-                    marginBottom: 45,
-                    marginTop: 15,
-                    width: '100%',
-                  },
-                ]}>
-                <View style={{ flex: 1 }}>
-                  <TouchableOpacity
-                    onPress={() => this.showTimeCreateExpert()}
-                    style={DefaultStyle._btnDate}>
-                    <Text style={DefaultStyle._textDate}>
-                      {dateStr(timeCreateExpert)}
-                    </Text>
-                    {/*<Text*/}
-                    {/*  style={[*/}
-                    {/*    DefaultStyle._labelTextField,*/}
-                    {/*    { color: '#000000' },*/}
-                    {/*  ]}>*/}
-                    {/*  출고 예정일*/}
-                    {/*</Text>*/}
-                    {isOpenTimeCreateExpert &&
-                     <DateTimePickerModal
+                style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
+                <View
+                  style={[
+                    S.optionSelect,
+                    S.optionSelectLeft,
+                    {
+                      height: 40,
+                      marginBottom: 45,
+                      marginTop: 15,
+                      width: '100%',
+                    },
+                  ]}>
+                  <View style={{ flex: 1 }}>
+                    <TouchableOpacity
+                      onPress={() => this.showTimeCreateExpert()}
+                      style={DefaultStyle._btnDate}>
+                      <Text style={DefaultStyle._textDate}>
+                        {dateStr(timeCreateExpert)}
+                      </Text>
+                      {/*<Text*/}
+                      {/*  style={[*/}
+                      {/*    DefaultStyle._labelTextField,*/}
+                      {/*    { color: '#000000' },*/}
+                      {/*  ]}>*/}
+                      {/*  출고 예정일*/}
+                      {/*</Text>*/}
+                      {isOpenTimeCreateExpert &&
+                      <DateTimePickerModal
                         mode="date"
                         isVisible={isOpenTimeCreateExpert}
                         date={endDate ? endDate : new Date()}
@@ -715,42 +716,42 @@ export default class InOutManager extends Component {
                           });
                         }}
                       />
-                    }
-                  </TouchableOpacity>
+                      }
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
+
+              <Text style={DefaultStyle._textTitleCard}>출고 예정 수량</Text>
+              <TextField
+                ref={el => (this.inputValueCreateExpert = el)}
+                textRight=""
+                styleRight={{ top: 5 }}
+                styleProps={SS.inputStyle}
+                onChange={e => this.onChangeValueExpert(e)}
+              />
             </View>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={this.hideDialogExpert}>
+              취소
+            </Button>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => {
+                this.createExpert();
+              }}>
+              확인
+            </Button>
+          </Dialog.Actions>
 
-            <Text style={DefaultStyle._textTitleCard}>출고 예정 수량</Text>
-            <TextField
-              ref={el => (this.inputValueCreateExpert = el)}
-              textRight=""
-              styleRight={{ top: 5 }}
-              styleProps={SS.inputStyle}
-              onChange={e => this.onChangeValueExpert(e)}
-            />
-          </View>
-        </Dialog.Content>
-        <Dialog.Actions style={DefaultStyle._buttonPopup}>
-          <Button
-            style={DefaultStyle._buttonElement}
-            onPress={this.hideDialogExpert}>
-            취소
-          </Button>
-          <Button
-            style={DefaultStyle._buttonElement}
-            onPress={() => {
-              this.createExpert();
-            }}>
-            확인
-          </Button>
-        </Dialog.Actions>
-
-    </Dialog>
+        </Dialog>
         {/** END:출고요청 팝업 **/}
 
         {/** 입고요청 팝업 **/}
-      <Dialog
+        <Dialog
           style={[DefaultStyle.popup, SS.popup]}
           visible={this.state.visibleImport}
           onDismiss={this.hideDialogImport}>
@@ -830,35 +831,35 @@ export default class InOutManager extends Component {
         </Dialog>
         {/** END:입고요청 팝업 **/}
         <Dialog
-      style={DefaultStyle.popup}
-      visible={this.state.confirm}
-      onDismiss={this.hideConfirm}>
-      <Dialog.Content style={[{justifyContent: 'center', alignItems: 'center'}]}>
-        <Image source={illust15}/>
-      </Dialog.Content>
-      <Dialog.Title
-        style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-        {this.state.confirmTitle}
-      </Dialog.Title>
-      <Dialog.Content>
-        <Paragraph style={DefaultStyle.contentDialog}>
-          {this.state.confirmTitle}을 완료했습니다.
-        </Paragraph>
-      </Dialog.Content>
-      <Dialog.Actions style={DefaultStyle._buttonPopup}>
-        <Button
-          style={DefaultStyle._buttonElement}
-          onPress={() => {
-            this.hideConfirm();
-            this.setState({ isProgress: true }, () => {
-              this.getAllData();
-            });
-          }}>
-          확인
-        </Button>
-      </Dialog.Actions>
-    </Dialog>
-    </>
+          style={DefaultStyle.popup}
+          visible={this.state.confirm}
+          onDismiss={this.hideConfirm}>
+          <Dialog.Content style={[{ justifyContent: 'center', alignItems: 'center' }]}>
+            <Image source={illust15} />
+          </Dialog.Content>
+          <Dialog.Title
+            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
+            {this.state.confirmTitle}
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={DefaultStyle.contentDialog}>
+              {this.state.confirmTitle}을 완료했습니다.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={DefaultStyle._buttonPopup}>
+            <Button
+              style={DefaultStyle._buttonElement}
+              onPress={() => {
+                this.hideConfirm();
+                this.setState({ isProgress: true }, () => {
+                  this.getAllData();
+                });
+              }}>
+              확인
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </>
     );
   }
 }

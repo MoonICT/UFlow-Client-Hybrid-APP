@@ -367,86 +367,6 @@ class RegisterBusinessInfo extends Component {
       this.setState({ loading: false });
     });
   };
-  // handleOnSubmit = () => {
-  //   const { businessInfo, isCert } = this.state;
-
-  //   // let emailError = validation('name', businessInfo.name);
-  //   if (businessInfo.name !== undefined && businessInfo.name !== '') {
-  //     this.setState({ checkName: true });
-  //   } else {
-  //     this.setState({ checkName: false });
-  //   }
-  //   if (businessInfo.number !== undefined && businessInfo.number !== '') {
-  //     this.setState({ checkBusiness: true });
-  //   } else {
-  //     this.setState({ checkBusiness: false });
-  //   }
-  //   if (
-  //     businessInfo.roadAddr.address !== undefined &&
-  //     businessInfo.roadAddr.address !== ''
-  //   ) {
-  //     this.setState({ checkAddress: true });
-  //   } else {
-  //     this.setState({ checkAddress: false });
-  //   }
-  //   if (
-  //     businessInfo.checkRepreNm !== undefined &&
-  //     businessInfo.checkRepreNm !== ''
-  //   ) {
-  //     this.setState({ checkRepreNm: true });
-  //   } else {
-  //     this.setState({ checkRepreNm: false });
-  //   }
-
-  //   if (
-  //     businessInfo.checkRepreNm !== undefined &&
-  //     businessInfo.checkRepreNm !== ''
-  //   ) {
-  //     this.setState({ checkRepreNm: true });
-  //   } else {
-  //     this.setState({ checkRepreNm: false });
-  //   }
-
-  //   if (
-  //     businessInfo.checkInchgNm !== undefined &&
-  //     businessInfo.checkInchgNm !== ''
-  //   ) {
-  //     this.setState({ checkInchgNm: true });
-  //   } else {
-  //     this.setState({ checkInchgNm: false });
-  //   }
-  //   if (
-  //     businessInfo.checkEmail !== undefined &&
-  //     businessInfo.checkEmail !== ''
-  //   ) {
-  //     this.setState({ checkEmail: true });
-  //   } else {
-  //     this.setState({ checkEmail: false });
-  //   }
-
-  //   if (!isCert) {
-  //     alert('휴대폰 인증을 완료해주세요.');
-  //     return false;
-  //   }
-
-  //   if (!businessInfo.regFile) {
-  //     alert('사업자등록증을 업로드 하세요.');
-  //     return false;
-  //   }
-
-  //   this.setState({ loading: true });
-  //   // 창고주 정보 등록
-  //   WarehouseOwner.regBusinessInfo(businessInfo)
-  //     .then(res => {
-  //       alert('창고 사업자 등록이 완료되었습니다.');
-  //       this.setState({ loading: false });
-  //       this.navigation.navigate('RegisterWH', res.data);
-  //     })
-  //     .catch(error => {
-  //       alert('서버에러:' + error.response.data.message);
-  //       this.setState({ loading: false });
-  //     });
-  // };
 
   /**
    * 기등록 사업자 선택 완료.
@@ -545,7 +465,7 @@ class RegisterBusinessInfo extends Component {
                     labelTextFieldSize={14}
                     isRequired={true}
                     textError={
-                      !valid.checkName === false ? '사업자명을 입력하세요.' : ''
+                      !valid.checkName ? '사업자명을 입력하세요.' : ''
                     }
                     fontSize={14}
                     valueProps={e => {
@@ -675,7 +595,7 @@ class RegisterBusinessInfo extends Component {
                     value={businessInfo.roadAddr.address}
                     isRequired={true}
                     textError={
-                      !valid.checkAddress === false ? '주소를 입력하세요.' : ''
+                      !valid.checkAddress ? '주소를 입력하세요.' : ''
                     }
                   />
                   <TextField
@@ -713,7 +633,7 @@ class RegisterBusinessInfo extends Component {
                     fontSize={14}
                     isRequired={true}
                     textError={
-                      !valid.checkRepreNm === false ? '대표자 명을 입력하세요.' : ''
+                      !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
                     }
                     valueProps={e => {
                       this.setState({
@@ -739,9 +659,7 @@ class RegisterBusinessInfo extends Component {
                     colorLabel="#000000"
                     textError={
                       (!valid.checkPhone ? '휴대폰번호를 입력하세요. ' : '') +
-                      (!valid.checkPhoneFormat
-                        ? '전화번호 형식이 아닙니다. '
-                        : '')
+                      (!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '')
                     }
                     valueProps={e => {
                       this.setState({
@@ -777,7 +695,7 @@ class RegisterBusinessInfo extends Component {
                     colorLabel="#000000"
                     isRequired={true}
                     textError={
-                      !valid.checkInchgNm === false ? '담당자 명을 입력하세요.' : ''
+                      !valid.checkInchgNm ? '담당자 명을 입력하세요.' : ''
                     }
                     valueProps={e => {
                       this.setState({

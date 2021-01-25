@@ -193,6 +193,12 @@ class MypageBusinessInfo extends Component {
           // console.log('append', singleFile)
           // console.log('data', data)
           // Please change file upload URL
+
+          // 이미지를 선택 안한 경우.
+          if (response && response.didCancel) {
+            return false;
+          }
+
           // Progress
           this.props.setProgress({ is: true, type: 'CIRCLE' });
           MediaUpload.uploadFile(data).then(respon => {
