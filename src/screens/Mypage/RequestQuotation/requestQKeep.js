@@ -111,7 +111,8 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment.unix(this.state.formData.from / 1000).format('YYYY.MM.DD') : ''}
+              {from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment.unix(this.state.formData.from / 1000).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -126,7 +127,8 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={this.state.formData.from ? Moment.unix(this.state.formData.from / 1000).toDate() : new Date()}
+              date={this.state.formData.from ? Moment(this.state.formData.from).toDate() : new Date()}
+              // date={this.state.formData.from ? Moment.unix(this.state.formData.from / 1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -147,7 +149,8 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? Moment.unix(this.state.formData.to / 1000).format('YYYY.MM.DD') : ''}
+              {from ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}
+              {/*{to ? Moment.unix(this.state.formData.to / 1000).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -162,7 +165,8 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={this.state.formData.to ? Moment.unix(this.state.formData.to / 1000).toDate() : new Date()}
+              date={this.state.formData.from ? Moment(this.state.formData.to).toDate() : new Date()}
+              // date={this.state.formData.to ? Moment.unix(this.state.formData.to / 1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
