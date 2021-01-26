@@ -81,6 +81,51 @@ class RadarChartScreen extends React.Component {
       // console.log('datas', datas);
       // const dataFake = [{value:8},{value:6},{value:9},{value:6}];
       // const dataFake = [{value:15},{value:15},{value:13},{value:12}];
+      // await this.setState(
+      //   update(this.state, {
+      //     data: {
+      //       $set: {
+      //         dataSets: [
+      //           {
+      //             values: __dataSets1,
+      //             // values: dataFake1,
+      //             label: '',
+      //             config: {
+      //               color: processColor('black'),
+      //               drawFilled: true,
+      //               fillColor: processColor('#7a7a7a'),
+      //               fillAlpha: 100,
+      //               lineWidth: 1.5,
+      //             },
+      //           },
+      //           {
+      //             values: __dataSets2,
+      //             // values: dataFake2,
+      //             label: '',
+      //             config: {
+      //               color: processColor('#ff6d00'),
+      //               drawFilled: true,
+      //               fillColor: processColor('rgba(255, 109, 0, 0.2)'),
+      //               fillAlpha: 50,
+      //               lineWidth: 5,
+      //             },
+      //           },
+      //         ],
+      //       },
+      //     },
+      //     xAxis: {
+      //       $set: {
+      //         valueFormatter: _label,
+      //       },
+      //     },
+      //   }),
+      // );
+
+      // this._WVSendMessage({
+      //   // type: WVMsgService.types.CHANGE_SEARCH_CENTER_POSITION,
+      //   data: resultAdvisory.data,
+      // });
+      this.setState({ data: resultAdvisory.data });
       await this.setState(
         update(this.state, {
           data: {
