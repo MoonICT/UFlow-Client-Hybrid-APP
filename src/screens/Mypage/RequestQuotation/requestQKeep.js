@@ -10,7 +10,7 @@ import Moment from 'moment';
 import { Warehouse } from '@Services/apis';
 import { StringUtils, DeepLogs } from '@Services/utils';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
-
+var searchTimerQuery;
 class ReqeustQKeep extends Component {
 
   constructor (props) {
@@ -111,7 +111,8 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment.unix(this.state.formData.from / 1000).format('YYYY.MM.DD') : ''}
+              {from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment.unix(this.state.formData.from / 1000).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -126,7 +127,8 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={this.state.formData.from ? Moment.unix(this.state.formData.from / 1000).toDate() : new Date()}
+              date={this.state.formData.from ? Moment(this.state.formData.from).toDate() : new Date()}
+              // date={this.state.formData.from ? Moment.unix(this.state.formData.from / 1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -147,7 +149,8 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? Moment.unix(this.state.formData.to / 1000).format('YYYY.MM.DD') : ''}
+              {from ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}
+              {/*{to ? Moment.unix(this.state.formData.to / 1000).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -162,7 +165,8 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={this.state.formData.to ? Moment.unix(this.state.formData.to / 1000).toDate() : new Date()}
+              date={this.state.formData.from ? Moment(this.state.formData.to).toDate() : new Date()}
+              // date={this.state.formData.to ? Moment.unix(this.state.formData.to / 1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -191,14 +195,21 @@ class ReqeustQKeep extends Component {
             defaultValue={rntlValuePyeong ? String(rntlValuePyeong) : ''}
             isRequired={true}
             onChangeText={e => {
-              let value = Number(e.replace(/[^0-9]/g), '')
-              this.setState({
-                formData: {
-                  ...this.state.formData,
-                  rntlValue: value ? toSquareMeter(value) : ''
-                },
-                rntlValuePyeong: value
-              });
+              if (searchTimerQuery) {
+                clearTimeout(searchTimerQuery);
+              }
+              searchTimerQuery = setTimeout(async () => {
+                let value = Number(e.replace(/[^0-9]/g), '')
+                this.setState({
+                  formData: {
+                    ...this.state.formData,
+                    rntlValue: value ? toSquareMeter(value) : ''
+                  },
+                  rntlValuePyeong: value
+                });
+              }, 500);
+
+
             }}
           />
         </View>
@@ -212,15 +223,21 @@ class ReqeustQKeep extends Component {
             defaultValue={rntlValue ? String(rntlValue) : ''}
             isRequired={true}
             onChangeText={e => {
-              let value = Number(e.replace(/[^0-9]/g), '')
-              this.setState({
-                ...this.state,
-                formData: {
-                  ...this.state.formData,
-                  rntlValue: value
-                },
-                rntlValuePyeong: value ? toPyeong(value) : ''
-              });
+              if (searchTimerQuery) {
+                clearTimeout(searchTimerQuery);
+              }
+              searchTimerQuery = setTimeout(async () => {
+                let value = Number(e.replace(/[^0-9]/g), '')
+                this.setState({
+                  ...this.state,
+                  formData: {
+                    ...this.state.formData,
+                    rntlValue: value
+                  },
+                  rntlValuePyeong: value ? toPyeong(value) : ''
+                });
+              }, 500);
+
             }}
           />
         </View>
@@ -237,13 +254,19 @@ class ReqeustQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              splyAmount: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
+        onChangeText={e => {
+          if (searchTimerQuery) {
+            clearTimeout(searchTimerQuery);
+          }
+          searchTimerQuery = setTimeout(async () => {
+            this.setState({
+              formData: {
+                ...this.state.formData,
+                splyAmount: Number(e.replace(/[^0-9]/g), '')
+              }
+            })
+          }, 500);
+        }
         }
       />
 
@@ -258,13 +281,19 @@ class ReqeustQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
-          this.setState({
-            formData: {
-              ...this.state.formData,
-              mgmtChrg: Number(e.replace(/[^0-9]/g), '')
-            }
-          })
+        onChangeText={e => {
+          if (searchTimerQuery) {
+            clearTimeout(searchTimerQuery);
+          }
+          searchTimerQuery = setTimeout(async () => {
+            this.setState({
+              formData: {
+                ...this.state.formData,
+                mgmtChrg: Number(e.replace(/[^0-9]/g), '')
+              }
+            })
+          }, 500);
+        }
         }
       />
       {/** 추가 요청 사항 **/}

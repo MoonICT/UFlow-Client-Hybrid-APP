@@ -21,10 +21,11 @@ import { styles as S } from '../style';
 import { AuthContext } from '@Store/context';
 import illust6 from '@Assets/images/illust6.png';
 import { MyPage } from '@Services/apis';
-
+var searchTimerQuery;
 class WithdrawalInformation extends Component {
   static contextType = AuthContext;
-  constructor(props) {
+
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -34,22 +35,24 @@ class WithdrawalInformation extends Component {
 
     this.navigation = props.navigation;
   }
+
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount::');
     SplashScreen.hide();
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 
-  cancelMembership(params) {
+  cancelMembership (params) {
     let defaultParams = {
       password: this.state.passWord,
-      ...params,
+      leaveReason: params.leaveReason ? params.leaveReason : '-',
     };
+    console.log('탈퇴 : ', defaultParams)
     MyPage.cancelMembership(defaultParams)
       .then(res => {
         console.log('::::: cancelMembership :::::', res);
@@ -88,7 +91,7 @@ class WithdrawalInformation extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  render() {
+  render () {
     const { params } = this.props.route;
     const { passWord } = this.state;
     let isSubmit = false;
@@ -112,7 +115,13 @@ class WithdrawalInformation extends Component {
                 textContentType="password"
                 secureTextEntry={true}
                 onChangeText={text => {
-                  this.setState({ passWord: text });
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.setState({ passWord: text });
+                  }, 500);
+                  
                 }}
               />
             </View>
@@ -164,7 +173,7 @@ class WithdrawalInformation extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
@@ -173,7 +182,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     dataAction: action => {
       dispatch(ActionCreator.ContractConditions(action));
