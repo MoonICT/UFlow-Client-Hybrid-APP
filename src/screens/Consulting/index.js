@@ -6,7 +6,13 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { View, Image, TextInput, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Appbar, Text, Button, RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,8 +26,9 @@ import Checkbox from '@Components/atoms/Checkbox';
 import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 var searchTimerQuery;
-
 
 class Consulting extends Component {
   constructor(props) {
@@ -32,6 +39,9 @@ class Consulting extends Component {
       limitIndex: 0,
       listQuest: [],
       listAnswer: [],
+      inforone: '',
+      infortwo: '',
+      inforthree: '',
     };
     this.navigation = props.navigation;
   }
@@ -90,8 +100,6 @@ class Consulting extends Component {
       }
       this.setState({ listAnswer: newArr });
     }, 500);
-
-
   };
 
   handleStep = () => {
@@ -281,7 +289,14 @@ class Consulting extends Component {
   };
 
   render() {
-    const { step, limitIndex, listQuest } = this.state;
+    const {
+      step,
+      limitIndex,
+      listQuest,
+      inforone,
+      infortwo,
+      inforthree,
+    } = this.state;
 
     return (
       <View style={S.container}>
@@ -311,13 +326,48 @@ class Consulting extends Component {
               유플로우 물류창고에 임대 관심이 있으시면{'\n'}시작 버튼을
               눌러주세요.
             </Text>
+            <View
+              style={{
+                width: windowWidth - 32,
+                paddingLeft: 16,
+                paddingRight: 16,
+                marginBottom: 15,
+                marginTop: 15,
+              }}>
+              <TextInput
+                placeholderTextColor="#979797"
+                style={S.inputNomarl}
+                placeholder="이름을 입력해 주세요"
+                value={inforone}
+                onChangeText={e => this.setState({ inforone: e })}
+              />
+              <TextInput
+                placeholderTextColor="#979797"
+                style={S.inputNomarl}
+                value={infortwo}
+                placeholder="이름을 입력해 주세요"
+                onChangeText={e => this.setState({ infortwo: e })}
+              />
+              <TextInput
+                placeholderTextColor="#979797"
+                style={S.inputNomarl}
+                value={inforthree}
+                placeholder="이름을 입력해 주세요"
+                onChangeText={e => this.setState({ inforthree: e })}
+              />
+            </View>
             <Button
               mode="contained"
-              style={[S.styleButton, { margin: 'auto' }]}
+              pointerEvents={
+                inforone !== '' && infortwo !== '' && inforthree !== ''
+                  ? 'auto'
+                  : 'none'
+              }
+              style={[S.styleButton, { margin: 'auto', backgroundColor:`${inforone !== '' && infortwo !== '' && inforthree !== ''
+              ? '#ff6d00'
+              : '#cccccc'}` }]}
               onPress={() => {
-                this.setState({ step: 1 }),
-                  this.getAllData,
-                  console.log('hihi', this.state.listAnswer);
+                this.setState({ step: 1 }), this.getAllData;
               }}>
               <Text style={[S.textButton]}>물류 컨설팅 시작하기</Text>
             </Button>
