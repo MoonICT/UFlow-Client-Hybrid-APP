@@ -52,11 +52,6 @@ class Login extends Component {
     return true;
   }
 
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
-  }
-
   /** Save Login to Local  */
   setLoginLocal = async loginData => {
     // console.log('loginData', loginData);
@@ -148,7 +143,7 @@ class Login extends Component {
               maxLength={30}
               style={[DefaultStyle.inputs]}
               onChangeText={text => this.setState({ email: text })}
-              
+
             />
             <TextInput
               label="비밀번호"
