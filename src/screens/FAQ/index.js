@@ -72,7 +72,7 @@ import { debounce } from 'lodash';
 //     title: '설문',
 //   },
 // ];
-
+var searchTimerQuery;
 class RegisterWH extends Component {
   constructor(props) {
     super(props);
@@ -154,7 +154,13 @@ class RegisterWH extends Component {
     };
 
     const handleQueryChange = query => {
-      this.fetchData({ query: query });
+      if (searchTimerQuery) {
+        clearTimeout(searchTimerQuery);
+      }
+      searchTimerQuery = setTimeout(async () => {
+        this.fetchData({ query: query });
+      }, 500);
+      
     };
 
     const handleClickTab = (tabName, index) => {

@@ -35,10 +35,14 @@ export default class TextField extends Component {
     };
   }
   onChangeText(e) {
-    console.log('e', e);
-    this.setState({
-      value: e,
-    });
+    if (searchTimerQuery) {
+      clearTimeout(searchTimerQuery);
+    }
+    searchTimerQuery = setTimeout(async () => {
+      this.setState({
+        value: e,
+      });
+    }, 500);
   }
 
   onFocusChange(e) {
@@ -88,7 +92,14 @@ export default class TextField extends Component {
                     ? [DefaultStyle._fillValueInput, DefaultStyle._activeInput]
                     : null,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               {this.state.isNotifi === true ? (
@@ -106,7 +117,14 @@ export default class TextField extends Component {
               <TextInput
                 defaultValue={'default'}
                 style={[DefaultStyle._fillInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -126,7 +144,14 @@ export default class TextField extends Component {
                   DefaultStyle._fillValueInput,
                   DefaultStyle._activeInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -136,7 +161,14 @@ export default class TextField extends Component {
               <TextInput
                 defaultValue={'Has value'}
                 style={[DefaultStyle._fillInput, DefaultStyle._fillValueInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -146,7 +178,14 @@ export default class TextField extends Component {
                 editable={false}
                 defaultValue={'Disabled'}
                 style={[DefaultStyle._fillInput, DefaultStyle._disableInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -155,7 +194,14 @@ export default class TextField extends Component {
               <TextInput
                 defaultValue={'Empty Error'}
                 style={[DefaultStyle._fillInput, DefaultStyle._errorInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text
@@ -181,7 +227,14 @@ export default class TextField extends Component {
                   DefaultStyle._fillValueInput,
                   DefaultStyle._errorInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text
@@ -223,7 +276,14 @@ export default class TextField extends Component {
                       ]
                     : null,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               {this.state.isNotifi === true ? (
@@ -241,7 +301,14 @@ export default class TextField extends Component {
               <TextInput
                 defaultValue={'default'}
                 style={[DefaultStyle._lineInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -261,7 +328,14 @@ export default class TextField extends Component {
                   DefaultStyle._fillValueInput,
                   DefaultStyle._activeInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -271,7 +345,14 @@ export default class TextField extends Component {
               <TextInput
                 defaultValue={'Has value'}
                 style={[DefaultStyle._lineInput, DefaultStyle._fillValueInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                }}
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -284,7 +365,14 @@ export default class TextField extends Component {
                   DefaultStyle._lineInput,
                   DefaultStyle._outLineDisableInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -293,7 +381,14 @@ export default class TextField extends Component {
               <TextInput
                 defaultValue={'Empty Error'}
                 style={[DefaultStyle._lineInput, DefaultStyle._errorInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text
@@ -319,7 +414,14 @@ export default class TextField extends Component {
                   DefaultStyle._fillValueInput,
                   DefaultStyle._errorInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text
@@ -361,7 +463,14 @@ export default class TextField extends Component {
                       ]
                     : null,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               {this.state.isNotifi === true ? (
@@ -379,7 +488,14 @@ export default class TextField extends Component {
               <TextInput
                 defaultValue={'default'}
                 style={[DefaultStyle._outLineInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -399,7 +515,14 @@ export default class TextField extends Component {
                   DefaultStyle._fillValueInput,
                   DefaultStyle._activeInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -412,7 +535,14 @@ export default class TextField extends Component {
                   DefaultStyle._outLineInput,
                   DefaultStyle._fillValueInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -426,7 +556,14 @@ export default class TextField extends Component {
                   DefaultStyle._disableInput,
                   DefaultStyle._outLineDisableInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text style={[DefaultStyle._notifiInput]}>notification</Text>
@@ -435,7 +572,14 @@ export default class TextField extends Component {
               <TextInput
                 defaultValue={'Empty Error'}
                 style={[DefaultStyle._outLineInput, DefaultStyle._errorInput]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text
@@ -461,7 +605,14 @@ export default class TextField extends Component {
                   DefaultStyle._fillValueInput,
                   DefaultStyle._errorInput,
                 ]}
-                onChangeText={text => this.onChangeText(text)}
+                onChangeText={text => {
+                  if (searchTimerQuery) {
+                    clearTimeout(searchTimerQuery);
+                  }
+                  searchTimerQuery = setTimeout(async () => {
+                    this.onChangeText(text)
+                  }, 500);
+                } }
                 value={this.state && this.state.value}
               />
               <Text

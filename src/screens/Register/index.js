@@ -31,7 +31,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Contants
 import { TOKEN } from '@Constant';
-
+var searchTimerQuery;
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -195,7 +195,14 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="이름"
-                    onChangeText={text => this.setState({ fullName: text })}
+                    onChangeText={text => {
+                      if (searchTimerQuery) {
+                        clearTimeout(searchTimerQuery);
+                      }
+                      searchTimerQuery = setTimeout(async () => {
+                        this.setState({ fullName: text })
+                      }, 500);
+                    }}
                     value={fullName}
                     type="text"
                     mode="outlined"
@@ -208,8 +215,13 @@ class Register extends Component {
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="이메일"
                     onChangeText={text => {
-                      // this.setState({ email: text });
-                      this.onChangeEmail(text);
+                      if (searchTimerQuery) {
+                        clearTimeout(searchTimerQuery);
+                      }
+                      searchTimerQuery = setTimeout(async () => {
+                        this.onChangeEmail(text);
+                      }, 500);
+                      
                     }}
                     value={email}
                     type="text"
@@ -226,7 +238,14 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="비밀번호"
-                    onChangeText={text => this.setState({ password: text })}
+                    onChangeText={text => {
+                      if (searchTimerQuery) {
+                        clearTimeout(searchTimerQuery);
+                      }
+                      searchTimerQuery = setTimeout(async () => {
+                        this.setState({ password: text })
+                      }, 500);
+                    }}
                     value={password}
                     type="text"
                     mode="outlined"
@@ -239,8 +258,14 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="비밀번호 확인"
-                    onChangeText={text =>
-                      this.setState({ confirmPassword: text })
+                    onChangeText={text => {
+                      if (searchTimerQuery) {
+                        clearTimeout(searchTimerQuery);
+                      }
+                      searchTimerQuery = setTimeout(async () => {
+                        this.setState({ confirmPassword: text })
+                      }, 500);
+                    }
                     }
                     value={confirmPassword}
                     type="text"
@@ -260,9 +285,15 @@ class Register extends Component {
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="휴대폰번호"
                     onChangeText={text => {
-                      this.setState({
-                        mobile: text.replace(/[^0-9]/g, ''),
-                      });
+                      if (searchTimerQuery) {
+                        clearTimeout(searchTimerQuery);
+                      }
+                      searchTimerQuery = setTimeout(async () => {
+                        this.setState({
+                          mobile: text.replace(/[^0-9]/g, ''),
+                        });
+                      }, 500);
+
                       // this.validations(text);
                     }}
                     keyboardType="numeric"

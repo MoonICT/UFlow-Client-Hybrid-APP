@@ -32,7 +32,7 @@ import { styles as S } from './style';
 
 import { Emergency } from '@Services/apis';
 const windowHeight = Dimensions.get('window').height;
-
+var searchTimerQuery;
 class QuestionScreen extends Component {
   constructor(props) {
     super(props);
@@ -85,7 +85,15 @@ class QuestionScreen extends Component {
 
   handleChangeEmail = value => this.setState({ email: value });
 
-  handleChangeContent = value => this.setState({ content: value });
+  handleChangeContent = value => {
+    if (searchTimerQuery) {
+      clearTimeout(searchTimerQuery);
+    }
+    searchTimerQuery = setTimeout(async () => {
+      this.setState({ content: value });
+    }, 500);
+    
+  } 
 
   onSubmit = async () => {
     const { email, content } = this.state;
