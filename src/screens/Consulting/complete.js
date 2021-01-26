@@ -65,16 +65,16 @@ class RadarChartScreen extends React.Component {
     // console.log('__dataSets2', __dataSets2);
     // let datas = [...__dataSets1,...__dataSets2];
     if (resultAdvisory) {
-      let dataSend = _dataSets.map((el, index) => {
-        return {
-          data: el.data,
-          backgroundColor:
-            index === 0 ? 'rgba(117,117,117,0.2)' : 'rgba(255, 109, 0, 0.2)',
-          borderColor:
-            index === 0 ? 'rgba(117,117,117,1)' : 'rgba(255,109,0,1)',
-        };
-      });
-      console.log('dataSendssssssssss', dataSend);
+      // let dataSend = _dataSets.map((el, index) => {
+      //   return {
+      //     data: el.data,
+      //     backgroundColor:
+      //       index === 0 ? 'rgba(117,117,117,0.2)' : 'rgba(255, 109, 0, 0.2)',
+      //     borderColor:
+      //       index === 0 ? 'rgba(117,117,117,1)' : 'rgba(255,109,0,1)',
+      //   };
+      // });
+      // console.log('dataSendssssssssss', dataSend);
 
       // console.log('__dataSets1', __dataSets1);
       // console.log('__dataSets2', __dataSets2);
@@ -121,45 +121,14 @@ class RadarChartScreen extends React.Component {
       //   }),
       // );
 
-      this._WVSendMessage({
-        // type: WVMsgService.types.CHANGE_SEARCH_CENTER_POSITION,
-        data: resultAdvisory.data,
-      });
+      // this._WVSendMessage({
+      //   // type: WVMsgService.types.CHANGE_SEARCH_CENTER_POSITION,
+      //   data: resultAdvisory.data,
+      // });
       this.setState({ data: resultAdvisory.data });
     }
     // else {
     //   this.setState({ data: 0 });
-    // }
-  }
-  // When the WebView has finished loading.
-  async _WVOnLoad(e) {
-    console.log('::: Web View Loaded ::: ');
-    console.log('e :>> ', e);
-  }
-
-  // When the webview calls window.postMessage.
-  async _WVOnMessage(e) {
-    console.log(':::: onReceiveWebViewMessage');
-    console.log('e :>> ', e);
-    let msgData = WVMsgService.parseMessageData(e);
-    // switch (msgData.type) {
-    //   case WVMsgService.types.CONSOLE_LOG:
-    //     console.log('[WEBVIEW]' + msgData.data);
-    //     break;
-    //   case WVMsgService.types.CHANGE_MAP_CENTER_POSITION:
-    //     console.log('[RN] CHANGE_MAP_CENTER_POSITION 수신', msgData.data);
-    //     this.props.setSearchFilter({
-    //       latitude: msgData.data.latitude ? Number(msgData.data.latitude) : '',
-    //       longitude: msgData.data.longitude
-    //         ? Number(msgData.data.longitude)
-    //         : '',
-    //       distance: msgData.data.distance ? Number(msgData.data.distance) : 10,
-    //     });
-    //     break;
-    //   case WVMsgService.types.GO_WH_DETAIL:
-    //     // console.log('[RN] GO_WH_DETAIL 수신', msgData.data)
-    //     this.navigation.navigate('DetailsWH', { id: msgData.data });
-    //     break;
     // }
   }
 
@@ -208,41 +177,49 @@ class RadarChartScreen extends React.Component {
         /> */}
         <ScrollView>
           <View style={styles.container}>
-            {this.state.progress < 1 && (
-              <View style={styles.loadingWrap}>
-                <View style={styles.loadingInner}>
-                  <Progress />
+            <View
+            // style={{
+            //   flex: 1,
+            // }}
+            >
+              {this.state.progress < 1 && (
+                <View style={styles.loadingWrap}>
+                  <View style={styles.loadingInner}>
+                    <Progress />
+                  </View>
                 </View>
-              </View>
-            )}
-            <WebView
-              // Loading URL
-              source={{
-                uri:
-                  'http://192.168.1.106:13000/webview/advisory?email=test@logisall.com',
-                // 'http://www.uflow.voltpage.net/premium/advisory/complete?email=test@logisall.com',
-              }}
-              // Webview style
-              style={styles.WebViewStyle}
-              // Attaching a ref to a DOM component
-              ref={webView => (this.webView = webView)}
-              // If the user taps to navigate to a new page but the new page is not in this safelist,
-              // the URL will be handled by the OS. The default safelistlisted origins are "http://" and "https://".
-              originWhitelist={['*']}
-              // Want to show the view or not
-              useWebKit={true}
-              onLoad={event => this._WVOnLoad(event)}
-              onLoadStart={() => this.setState({ isLoading: true })}
-              onLoadEnd={() => this.setState({ isLoading: false })}
-              onLoadProgress={({ nativeEvent }) =>
-                this.setState({ progress: nativeEvent.progress })
-              }
-              onMessage={event => this._WVOnMessage(event)}
-              // Inject javascript code in webview
-              injectedJavaScript={injectJSCode} // for Android
-              injectedJavaScriptBeforeContentLoaded={injectJSCode.toString()} // for iOS
-              javaScriptEnabledAndroid={true}
-            />
+              )}
+
+              <WebView
+                // Loading URL
+                source={{
+                  uri:
+                    // 'http://192.168.1.106:13000/webview/advisory?email=test@logisall.com',
+                    'http://www.uflow.voltpage.net/webview/advisory?email=test@logisall.com',
+                }}
+                // Webview style
+                style={styles.WebViewStyle}
+                // Attaching a ref to a DOM component
+                ref={webView => (this.webView = webView)}
+                // If the user taps to navigate to a new page but the new page is not in this safelist,
+                // the URL will be handled by the OS. The default safelistlisted origins are "http://" and "https://".
+                originWhitelist={['*']}
+                // Want to show the view or not
+                useWebKit={true}
+                // onLoad={event => this._WVOnLoad(event)}
+                onLoadStart={() => this.setState({ isLoading: true })}
+                onLoadEnd={() => this.setState({ isLoading: false })}
+                onLoadProgress={({ nativeEvent }) =>
+                  this.setState({ progress: nativeEvent.progress })
+                }
+                onMessage={event => this._WVOnMessage(event)}
+                // Inject javascript code in webview
+                injectedJavaScript={injectJSCode} // for Android
+                injectedJavaScriptBeforeContentLoaded={injectJSCode.toString()} // for iOS
+                javaScriptEnabledAndroid={true}
+              />
+            </View>
+
             <View pointerEvents="none">
               {/**    <RadarChart
                 style={styles.chart}
@@ -314,6 +291,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     width: windowWidth,
+  },
+  loadingWrap: {
+    position: 'absolute',
+    zIndex: 99999999,
+    backgroundColor: '#f1f1f1',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  loadingInner: {
+    width: '100%',
+    height: 40,
   },
 });
 
