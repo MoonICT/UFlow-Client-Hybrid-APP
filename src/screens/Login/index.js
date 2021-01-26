@@ -52,10 +52,6 @@ class Login extends Component {
     return true;
   }
 
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
-  }
 
   /** Save Login to Local  */
   setLoginLocal = async loginData => {
