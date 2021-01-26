@@ -381,10 +381,10 @@ export default class Notification extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'이용방법'}
-            navigation={this.navigation}
+            navigation={this.props.nav}
           />
         <View style={S.tabTopbar}>
           <View style={S.boxSelect}>{this.props.navitationTitle}</View>
@@ -400,6 +400,7 @@ export default class Notification extends Component {
           <View
             onLayout={this.getDimesionsHeightSection1}
             style={[S.boxSection, { marginTop: 150 }]}>
+            <Text>{this.props.nav.goBack ? 'has' : 'empty'}</Text>
             <Text style={S.title}>원하는 창고를 쉽게 찾아보세요.</Text>
             <Text style={S.description}>
               유플로우에 창고 정보와 사업자 정보를 등록하여 {'\n'}임대할 창고를

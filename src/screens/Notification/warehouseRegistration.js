@@ -36,6 +36,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles as S } from './style';
 import Carousel from '@Components/organisms/Carousel';
 import { Appbar } from 'react-native-paper';
+
 const data = [
   {
     title: '1.창고 등록',
@@ -52,7 +53,7 @@ const data = [
 ];
 
 export default class Notification extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.myRef = React.createRef();
     this.state = {
@@ -216,7 +217,8 @@ export default class Notification extends Component {
         break;
     }
   };
-  render() {
+
+  render () {
     const windowWidth = Dimensions.get('window').width;
     let slidesText = [
       {
@@ -365,9 +367,8 @@ export default class Notification extends Component {
       <SafeAreaView style={{ backgroundColor: 'white' }}>
         {/* <View style={{ backgroundColor: 'white' }}> */}
         <HistoryBackActionBar
-          title={'서비스 이용안내'}
-          navigation={this.props.nav}/>
-
+          title={'이용방법'}
+          navigation={this.props.nav} />
         <View style={[S.line, { width: windowWidth }]}>
           <Text />
         </View>
@@ -386,6 +387,7 @@ export default class Notification extends Component {
           <View
             onLayout={this.getDimesionsHeightSection1}
             style={[S.boxSection, { marginTop: 150 }]}>
+            <Text>{this.props.nav ? 'has' : 'empty'}</Text>
             <Text style={S.title}>임대하고 싶은{'\n'}창고를 등록해보세요.</Text>
             <Text style={S.description}>
               유플로우에 창고 정보와 사업자 정보를 등록하여 {'\n'}임대할 창고를
