@@ -143,7 +143,6 @@ class Login extends Component {
               maxLength={30}
               style={[DefaultStyle.inputs]}
               onChangeText={text => this.setState({ email: text })}
-
             />
             <TextInput
               label="비밀번호"
