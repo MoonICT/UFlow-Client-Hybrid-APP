@@ -51,31 +51,18 @@ class RadarChartScreen extends React.Component {
       email: 'test@logisall.com',
     });
 
-    console.log('resultAdvisory', resultAdvisory);
-
-    let _label = resultAdvisory.data.labels;
-    let _dataSets = resultAdvisory.data.datasets;
-    let __dataSets1 = await _dataSets[0].data.map(item => {
-      return item;
-    });
-    let __dataSets2 = await _dataSets[1].data.map(item => {
-      return item;
-    });
+    // let _label = resultAdvisory.data.labels;
+    // let _dataSets = resultAdvisory.data.datasets;
+    // let __dataSets1 = await _dataSets[0].data.map(item => {
+    //   return item;
+    // });
+    // let __dataSets2 = await _dataSets[1].data.map(item => {
+    //   return item;
+    // });
     // console.log('__dataSets1', __dataSets1);
     // console.log('__dataSets2', __dataSets2);
     // let datas = [...__dataSets1,...__dataSets2];
     if (resultAdvisory) {
-      // let dataSend = _dataSets.map((el, index) => {
-      //   return {
-      //     data: el.data,
-      //     backgroundColor:
-      //       index === 0 ? 'rgba(117,117,117,0.2)' : 'rgba(255, 109, 0, 0.2)',
-      //     borderColor:
-      //       index === 0 ? 'rgba(117,117,117,1)' : 'rgba(255,109,0,1)',
-      //   };
-      // });
-      // console.log('dataSendssssssssss', dataSend);
-
       // console.log('__dataSets1', __dataSets1);
       // console.log('__dataSets2', __dataSets2);
       // console.log('datas', datas);
@@ -120,54 +107,8 @@ class RadarChartScreen extends React.Component {
       //     },
       //   }),
       // );
-
-      // this._WVSendMessage({
-      //   // type: WVMsgService.types.CHANGE_SEARCH_CENTER_POSITION,
-      //   data: resultAdvisory.data,
-      // });
       this.setState({ data: resultAdvisory.data });
-      await this.setState(
-        update(this.state, {
-          data: {
-            $set: {
-              dataSets: [
-                {
-                  values: __dataSets1,
-                  // values: dataFake1,
-                  label: '',
-                  config: {
-                    color: processColor('black'),
-                    drawFilled: true,
-                    fillColor: processColor('#7a7a7a'),
-                    fillAlpha: 100,
-                    lineWidth: 1.5,
-                  },
-                },
-                {
-                  values: __dataSets2,
-                  // values: dataFake2,
-                  label: '',
-                  config: {
-                    color: processColor('#ff6d00'),
-                    drawFilled: true,
-                    fillColor: processColor('rgba(255, 109, 0, 0.2)'),
-                    fillAlpha: 50,
-                    lineWidth: 5,
-                  },
-                },
-              ],
-            },
-          },
-          xAxis: {
-            $set: {
-              valueFormatter: _label,
-            },
-          },
-        }),
-      );
-    } else {
-      this.setState({ data: 0 });
-    }
+    } 
     // else {
     //   this.setState({ data: 0 });
     // }
@@ -180,7 +121,6 @@ class RadarChartScreen extends React.Component {
     // console.log(':::: Send Message ::::', resultMsg);
   }
   render() {
-    // console.log('dataTest', this.state.data);
     const strMsgType = JSON.stringify(this.state.data);
 
     let injectJSCode = `
