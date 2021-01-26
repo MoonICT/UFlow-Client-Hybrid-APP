@@ -57,7 +57,6 @@ import { money, numberComma } from '@Services/utils/StringUtils';
 import ActionCreator from '@Actions';
 import { connect } from "react-redux";
 
-var searchTimerQuery;
 
 class DetailsManager extends Component {
   constructor (props) {
@@ -493,18 +492,12 @@ class DetailsManager extends Component {
   };
 
   onChangeValueImport = (value) => {
-    if (searchTimerQuery) {
-      clearTimeout(searchTimerQuery);
-    }
-    searchTimerQuery = setTimeout(async () => {
-          if (value) {
+    if (value) {
       value = value.replace(/[^0-9]/g, '')
     }
     this.setState({
       createValue: value
     });
-    }, 500);
-
   }
 
 

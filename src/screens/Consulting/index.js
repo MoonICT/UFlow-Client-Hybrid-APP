@@ -28,7 +28,6 @@ import { styles as S } from './style';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-var searchTimerQuery;
 
 class Consulting extends Component {
   constructor(props) {
@@ -78,10 +77,6 @@ class Consulting extends Component {
     });
   }
   handleChange = (e, index, checkbox) => {
-    if (searchTimerQuery) {
-      clearTimeout(searchTimerQuery);
-    }
-    searchTimerQuery = setTimeout(async () => {
       const { listAnswer } = this.state;
       let newArr = [...listAnswer];
       if (checkbox) {
@@ -99,7 +94,6 @@ class Consulting extends Component {
         newArr[index].userAnswer = e.toString();
       }
       this.setState({ listAnswer: newArr });
-    }, 500);
   };
 
   handleStep = () => {

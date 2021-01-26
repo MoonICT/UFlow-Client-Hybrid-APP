@@ -18,7 +18,6 @@ import { debounce } from 'lodash';
 import { styles } from './style';
 import ActionCreator from '@Actions';
 import PropTypes from 'prop-types';
-var searchTimerQuery;
 class SearchOverlay extends Component {
   constructor (props) {
     super(props);
@@ -42,11 +41,6 @@ class SearchOverlay extends Component {
    * On change search query.
    * */
   _onChangeSearchQuery (keyword) {
-    if (searchTimerQuery) {
-      clearTimeout(searchTimerQuery);
-    }
-    searchTimerQuery = setTimeout(async () => {
-      // logic ở đây
       if (keyword) {
         this.setState({
           isProgress: true,
@@ -81,7 +75,6 @@ class SearchOverlay extends Component {
         // this.props.searchToggle(false);
         this.props.setSearchQuery('');
       }
-    }, 500);
 
 
 

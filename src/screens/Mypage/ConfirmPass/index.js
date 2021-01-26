@@ -21,7 +21,6 @@ import { styles as S } from '../style';
 import { AuthContext } from '@Store/context';
 import illust6 from '@Assets/images/illust6.png';
 import { MyPage } from '@Services/apis';
-var searchTimerQuery;
 class WithdrawalInformation extends Component {
   static contextType = AuthContext;
 
@@ -115,13 +114,7 @@ class WithdrawalInformation extends Component {
                 textContentType="password"
                 secureTextEntry={true}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.setState({ passWord: text });
-                  }, 500);
-                  
+                  this.setState({ passWord: text });
                 }}
               />
             </View>

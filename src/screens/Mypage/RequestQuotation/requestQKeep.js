@@ -10,7 +10,6 @@ import Moment from 'moment';
 import { Warehouse } from '@Services/apis';
 import { StringUtils, DeepLogs } from '@Services/utils';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
-var searchTimerQuery;
 class ReqeustQKeep extends Component {
 
   constructor (props) {
@@ -195,20 +194,14 @@ class ReqeustQKeep extends Component {
             defaultValue={rntlValuePyeong ? String(rntlValuePyeong) : ''}
             isRequired={true}
             onChangeText={e => {
-              if (searchTimerQuery) {
-                clearTimeout(searchTimerQuery);
-              }
-              searchTimerQuery = setTimeout(async () => {
-                let value = Number(e.replace(/[^0-9]/g), '')
-                this.setState({
-                  formData: {
-                    ...this.state.formData,
-                    rntlValue: value ? toSquareMeter(value) : ''
-                  },
-                  rntlValuePyeong: value
-                });
-              }, 500);
-
+              let value = Number(e.replace(/[^0-9]/g), '')
+              this.setState({
+                formData: {
+                  ...this.state.formData,
+                  rntlValue: value ? toSquareMeter(value) : ''
+                },
+                rntlValuePyeong: value
+              });
 
             }}
           />
@@ -223,20 +216,15 @@ class ReqeustQKeep extends Component {
             defaultValue={rntlValue ? String(rntlValue) : ''}
             isRequired={true}
             onChangeText={e => {
-              if (searchTimerQuery) {
-                clearTimeout(searchTimerQuery);
-              }
-              searchTimerQuery = setTimeout(async () => {
-                let value = Number(e.replace(/[^0-9]/g), '')
-                this.setState({
-                  ...this.state,
-                  formData: {
-                    ...this.state.formData,
-                    rntlValue: value
-                  },
-                  rntlValuePyeong: value ? toPyeong(value) : ''
-                });
-              }, 500);
+              let value = Number(e.replace(/[^0-9]/g), '')
+              this.setState({
+                ...this.state,
+                formData: {
+                  ...this.state.formData,
+                  rntlValue: value
+                },
+                rntlValuePyeong: value ? toPyeong(value) : ''
+              });
 
             }}
           />
@@ -255,17 +243,12 @@ class ReqeustQKeep extends Component {
         placeholder="0"
         isRequired={true}
         onChangeText={e => {
-          if (searchTimerQuery) {
-            clearTimeout(searchTimerQuery);
-          }
-          searchTimerQuery = setTimeout(async () => {
-            this.setState({
-              formData: {
-                ...this.state.formData,
-                splyAmount: Number(e.replace(/[^0-9]/g), '')
-              }
-            })
-          }, 500);
+          this.setState({
+            formData: {
+              ...this.state.formData,
+              splyAmount: Number(e.replace(/[^0-9]/g), '')
+            }
+          })
         }
         }
       />
@@ -282,17 +265,12 @@ class ReqeustQKeep extends Component {
         placeholder="0"
         isRequired={true}
         onChangeText={e => {
-          if (searchTimerQuery) {
-            clearTimeout(searchTimerQuery);
-          }
-          searchTimerQuery = setTimeout(async () => {
-            this.setState({
-              formData: {
-                ...this.state.formData,
-                mgmtChrg: Number(e.replace(/[^0-9]/g), '')
-              }
-            })
-          }, 500);
+          this.setState({
+            formData: {
+              ...this.state.formData,
+              mgmtChrg: Number(e.replace(/[^0-9]/g), '')
+            }
+          })
         }
         }
       />

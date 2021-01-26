@@ -10,7 +10,6 @@ import Moment from 'moment';
 import {Warehouse} from '@Services/apis';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import moment from "moment";
-var searchTimerQuery;
 class ReqeustQTrust extends Component {
 
   constructor(props) {
@@ -202,17 +201,12 @@ class ReqeustQTrust extends Component {
 
         isRequired={true}
         onChangeText={e => {
-          if (searchTimerQuery) {
-            clearTimeout(searchTimerQuery);
-          }
-          searchTimerQuery = setTimeout(async () => {
-            this.setState({
-              formData: {
-                ...this.state.formData,
-                rntlValue: Number(e.replace(/[^0-9]/g), '')
-              }
-            });
-          }, 500);
+          this.setState({
+            formData: {
+              ...this.state.formData,
+              rntlValue: Number(e.replace(/[^0-9]/g), '')
+            }
+          });
 
         }}
       />
@@ -229,18 +223,12 @@ class ReqeustQTrust extends Component {
         placeholder="0"
         isRequired={true}
         onChangeText={e =>{
-          if (searchTimerQuery) {
-            clearTimeout(searchTimerQuery);
-          }
-          searchTimerQuery = setTimeout(async () => {
-            this.setState({
-              formData: {
-                ...this.state.formData,
-                splyAmount: Number(e.replace(/[^0-9]/g), '')
-              }
-            })
-          }, 500);
-
+          this.setState({
+            formData: {
+              ...this.state.formData,
+              splyAmount: Number(e.replace(/[^0-9]/g), '')
+            }
+          })
         }
         }
       />
@@ -256,17 +244,12 @@ class ReqeustQTrust extends Component {
         placeholder="0"
         isRequired={true}
         onChangeText={e => {
-          if (searchTimerQuery) {
-            clearTimeout(searchTimerQuery);
-          }
-          searchTimerQuery = setTimeout(async () => {
-            this.setState({
-              formData: {
-                ...this.state.formData,
-                whinChrg: Number(e.replace(/[^0-9]/g), '')
-              }
-            })
-          }, 500);
+          this.setState({
+            formData: {
+              ...this.state.formData,
+              whinChrg: Number(e.replace(/[^0-9]/g), '')
+            }
+          })
         }
 
         }
@@ -283,17 +266,12 @@ class ReqeustQTrust extends Component {
         placeholder="0"
         isRequired={true}
         onChangeText={e => {
-          if (searchTimerQuery) {
-            clearTimeout(searchTimerQuery);
-          }
-          searchTimerQuery = setTimeout(async () => {
-            this.setState({
-              formData: {
-                ...this.state.formData,
-                whoutChrg: Number(e.replace(/[^0-9]/g), '')
-              }
-            })
-          }, 500);
+          this.setState({
+            formData: {
+              ...this.state.formData,
+              whoutChrg: Number(e.replace(/[^0-9]/g), '')
+            }
+          })
         }
 
         }

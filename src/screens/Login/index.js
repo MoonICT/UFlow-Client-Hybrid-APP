@@ -26,7 +26,6 @@ import { AuthContext } from '@Store/context';
 
 //Contants
 import { TOKEN, FCM_TOKEN_KEY } from '@Constant';
-var searchTimerQuery;
 import AsyncStorage from '@react-native-community/async-storage';
 //---> Assets
 const Logo = require('@Assets/images/logo.png');
@@ -143,13 +142,7 @@ class Login extends Component {
               maxLength={30}
               style={[DefaultStyle.inputs]}
               onChangeText={text => {
-                if (searchTimerQuery) {
-                  clearTimeout(searchTimerQuery);
-                }
-                searchTimerQuery = setTimeout(async () => {
-                  this.setState({ email: text })
-                }, 500);
-                
+                this.setState({ email: text })
               }}
             />
             <TextInput
@@ -161,12 +154,7 @@ class Login extends Component {
               maxLength={20}
               style={[DefaultStyle.inputs, S.inputPass]}
               onChangeText={text => {
-                if (searchTimerQuery) {
-                  clearTimeout(searchTimerQuery);
-                }
-                searchTimerQuery = setTimeout(async () => {
-                  this.setState({ password: text })
-                }, 500);
+                this.setState({ password: text })
               }}
             />
             <View style={S.plusFormLogin}>

@@ -18,7 +18,6 @@ import Accordion from '@Components/organisms/Accordion';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from './style';
 import { LogisticsKnowledgeService } from '@Services/apis';
-var searchTimerQuery;
 import { debounce } from 'lodash';
 
 // const tabDutyDvCode = [
@@ -172,12 +171,7 @@ class LogisticsKnowledge extends Component {
     };
 
     const handleQueryChange = debounce(query => {
-      if (searchTimerQuery) {
-        clearTimeout(searchTimerQuery);
-      }
-      searchTimerQuery = setTimeout(async () => {
-        this.fetchData({ query: query });
-      }, 500);
+      this.fetchData({ query: query });
       
     }, 200);
 

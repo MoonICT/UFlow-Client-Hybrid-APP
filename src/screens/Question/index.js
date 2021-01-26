@@ -31,7 +31,6 @@ import Loading from '@Components/atoms/Loading';
 import { styles as S } from './style';
 
 import { Question } from '@Services/apis';
-var searchTimerQuery;
 const windowHeight = Dimensions.get('window').height;
 
 class QuestionScreen extends Component {
@@ -82,21 +81,11 @@ class QuestionScreen extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   handleChangeEmail = value => {
-    if (searchTimerQuery) {
-      clearTimeout(searchTimerQuery);
-    }
-    searchTimerQuery = setTimeout(async () => {
-      this.setState({ email: value })
-    }, 500);
+    this.setState({ email: value })
   };
 
   handleChangeContent = value => {
-    if (searchTimerQuery) {
-      clearTimeout(searchTimerQuery);
-    }
-    searchTimerQuery = setTimeout(async () => {
-      this.setState({ content: value });
-    }, 500);
+    this.setState({ content: value });
   } 
 
   onSubmit = () => {

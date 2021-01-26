@@ -34,7 +34,6 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { Warehouse } from '@Services/apis';
 import Postcode from 'react-native-daum-postcode';
-var searchTimerQuery;
 class RegisterIntro extends Component {
   constructor (props) {
     super(props);
@@ -180,12 +179,7 @@ class RegisterIntro extends Component {
                 multiline={true}
                 numberOfLines={2}
                 onChangeText={e => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.setState({ name: e })
-                  }, 500);
+                  this.setState({ name: e })
                 } }
                 value={name}
                 placeholder={'예)신논혁역 도보 5분 거리, 깨끗한 창고입니다.'}
@@ -205,12 +199,7 @@ class RegisterIntro extends Component {
                 // onChangeText={text => this.onChangeIntro(text)}
                 value={this.state.description}
                 onChangeText={e => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.setState({ description: e })
-                  }, 500);
+                  this.setState({ description: e })
                 } }
                 placeholder={`상세 설명 작성 주의사항
 
@@ -235,13 +224,7 @@ class RegisterIntro extends Component {
                   editable={false}
                   selectTextOnFocus={false}
                   onChangeText={query => {
-                    if (searchTimerQuery) {
-                      clearTimeout(searchTimerQuery);
-                    }
-                    searchTimerQuery = setTimeout(async () => {
-                      this.setState({ firstQuery: query });
-                    }, 500);
-                    
+                    this.setState({ firstQuery: query });
                   }}
                   value={address && address.zipNo}
                 />
@@ -257,12 +240,7 @@ class RegisterIntro extends Component {
               <TextInput
                 style={[SS.inputIntro, SS.inputLoction]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeLocation(text)
-                  }, 500);
+                  this.onChangeLocation(text)
                 } }
                 value={address.detail}
                 placeholder={'상세 주소'}

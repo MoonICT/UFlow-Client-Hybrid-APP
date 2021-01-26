@@ -25,7 +25,6 @@ import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { log } from 'react-native-reanimated';
 import { connect } from "react-redux";
-var searchTimerQuery;
 const selectOptions = [
   {
     label: '창고주 ',
@@ -192,14 +191,7 @@ class Inquiry extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   handleQueryChange = (query) => {
-    if (searchTimerQuery) {
-      clearTimeout(searchTimerQuery);
-    }
-    searchTimerQuery = setTimeout(async () => {
-      this.setState({ query: query }, () => {
-        this.getAllData();
-      });
-    }, 500);
+    this.getAllData();
 
   };
 

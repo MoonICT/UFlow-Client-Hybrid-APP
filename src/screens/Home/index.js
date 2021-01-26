@@ -89,7 +89,6 @@ import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 import AsyncStorage from '@react-native-community/async-storage';
 //Contants
 import { TOKEN } from '@Constant';
-var searchTimerQuery;
 
 // import Masonry from 'react-native-masonry';
 
@@ -500,12 +499,7 @@ class Home extends Component {
                   ellipsizeMode="start"
                   value={textSearch}
                   onChangeText={text => {
-                    if (searchTimerQuery) {
-                      clearTimeout(searchTimerQuery);
-                    }
-                    searchTimerQuery = setTimeout(async () => {
-                      this.setState({ textSearch: text })
-                    }, 500);
+                    this.setState({ textSearch: text })
                   }}
                 />
                 {

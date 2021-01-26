@@ -35,14 +35,9 @@ export default class TextField extends Component {
     };
   }
   onChangeText(e) {
-    if (searchTimerQuery) {
-      clearTimeout(searchTimerQuery);
-    }
-    searchTimerQuery = setTimeout(async () => {
-      this.setState({
-        value: e,
-      });
-    }, 500);
+    this.setState({
+      value: e,
+    });
   }
 
   onFocusChange(e) {
@@ -93,12 +88,7 @@ export default class TextField extends Component {
                     : null,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -118,12 +108,7 @@ export default class TextField extends Component {
                 defaultValue={'default'}
                 style={[DefaultStyle._fillInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -145,12 +130,7 @@ export default class TextField extends Component {
                   DefaultStyle._activeInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -162,12 +142,7 @@ export default class TextField extends Component {
                 defaultValue={'Has value'}
                 style={[DefaultStyle._fillInput, DefaultStyle._fillValueInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -179,12 +154,7 @@ export default class TextField extends Component {
                 defaultValue={'Disabled'}
                 style={[DefaultStyle._fillInput, DefaultStyle._disableInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -195,12 +165,7 @@ export default class TextField extends Component {
                 defaultValue={'Empty Error'}
                 style={[DefaultStyle._fillInput, DefaultStyle._errorInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -228,12 +193,7 @@ export default class TextField extends Component {
                   DefaultStyle._errorInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -277,12 +237,7 @@ export default class TextField extends Component {
                     : null,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -302,12 +257,7 @@ export default class TextField extends Component {
                 defaultValue={'default'}
                 style={[DefaultStyle._lineInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -329,12 +279,7 @@ export default class TextField extends Component {
                   DefaultStyle._activeInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -346,12 +291,7 @@ export default class TextField extends Component {
                 defaultValue={'Has value'}
                 style={[DefaultStyle._lineInput, DefaultStyle._fillValueInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 }}
                 value={this.state && this.state.value}
               />
@@ -366,12 +306,7 @@ export default class TextField extends Component {
                   DefaultStyle._outLineDisableInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -382,12 +317,7 @@ export default class TextField extends Component {
                 defaultValue={'Empty Error'}
                 style={[DefaultStyle._lineInput, DefaultStyle._errorInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -415,12 +345,7 @@ export default class TextField extends Component {
                   DefaultStyle._errorInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -464,12 +389,7 @@ export default class TextField extends Component {
                     : null,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -489,12 +409,7 @@ export default class TextField extends Component {
                 defaultValue={'default'}
                 style={[DefaultStyle._outLineInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -516,12 +431,7 @@ export default class TextField extends Component {
                   DefaultStyle._activeInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -536,12 +446,7 @@ export default class TextField extends Component {
                   DefaultStyle._fillValueInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -557,12 +462,7 @@ export default class TextField extends Component {
                   DefaultStyle._outLineDisableInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -573,12 +473,7 @@ export default class TextField extends Component {
                 defaultValue={'Empty Error'}
                 style={[DefaultStyle._outLineInput, DefaultStyle._errorInput]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />
@@ -606,12 +501,7 @@ export default class TextField extends Component {
                   DefaultStyle._errorInput,
                 ]}
                 onChangeText={text => {
-                  if (searchTimerQuery) {
-                    clearTimeout(searchTimerQuery);
-                  }
-                  searchTimerQuery = setTimeout(async () => {
-                    this.onChangeText(text)
-                  }, 500);
+                  this.onChangeText(text)
                 } }
                 value={this.state && this.state.value}
               />

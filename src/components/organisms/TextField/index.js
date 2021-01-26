@@ -10,7 +10,6 @@ import { View, Text, TextInput } from 'react-native';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Styles from './style';
-var searchTimerQuery;
 export default class TextField extends Component {
   constructor(props) {
     super(props);
@@ -21,15 +20,9 @@ export default class TextField extends Component {
   }
 
   onChangeText(e) {
-    if (searchTimerQuery) {
-      clearTimeout(searchTimerQuery);
-    }
-    searchTimerQuery = setTimeout(async () => {
-      this.setState({
-        value: e,
-      });
-    }, 500);
-
+    this.setState({
+      value: e,
+    });
   }
 
   onFocusChange(e) {

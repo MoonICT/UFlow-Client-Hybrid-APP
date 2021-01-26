@@ -49,12 +49,7 @@ export default class Header extends Component {
           returnKeyType="search"
           value={this.state.searchURL}
           onChangeText={text => {
-            if (searchTimerQuery) {
-              clearTimeout(searchTimerQuery);
-            }
-            searchTimerQuery = setTimeout(async () => {
-              this.setState({searchURL: text})
-            }, 500);
+            this.setState({searchURL: text})
           }}
           onSubmitEditing={() => this._SearchSubmit()}
         />
