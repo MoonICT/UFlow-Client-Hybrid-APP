@@ -108,7 +108,7 @@ class RadarChartScreen extends React.Component {
       //   }),
       // );
       this.setState({ data: resultAdvisory.data });
-    } 
+    }
     // else {
     //   this.setState({ data: 0 });
     // }
@@ -220,30 +220,24 @@ class RadarChartScreen extends React.Component {
                 // onSelect={this.handleSelect.bind(this)}
                 // onChange={event => console.log(event.nativeEvent)}
               /> */}
-              <View
-                style={{
-                  width: 80,
-                  height: 80,
-                  backgroundColor: 'white',
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                }}
-              />
             </View>
-            <Text style={{ fontSize: 20 }}>물류 컨성팅이 완료되었습니다.</Text>
-            <Text style={{ fontSize: 16, lineHeight: 24, marginTop: 20 }}>
-              컨설팅 결과 설명{'\n'}컨설팅 결과 설명
-            </Text>
-
-            <Button
-              mode="contained"
-              style={[S.styleButton, { marginTop: 30 }]}
-              onPress={() => this.navigation.replace('Home')}>
-              <Text style={[S.textButton, { width: 175 }]}>
-                메인페이지로 이동
+            <View style={styles.footer}>
+              <Text style={{ fontSize: 20,textAlign:'center'  }}>
+                물류 컨성팅이 완료되었습니다.
               </Text>
-            </Button>
+              <Text style={{ fontSize: 16, lineHeight: 24, marginTop: 20,textAlign:'center' }}>
+                컨설팅 결과 설명{'\n'}컨설팅 결과 설명
+              </Text>
+
+              <Button
+                mode="contained"
+                style={[S.styleButton, { marginTop: 30 }]}
+                onPress={() => this.navigation.replace('Home')}>
+                <Text style={[S.textButton, { width: 175 }]}>
+                  메인페이지로 이동
+                </Text>
+              </Button>
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -257,7 +251,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     paddingBottom: 100,
-    minHeight: windowHeight + 100,
+    minHeight: windowHeight,
+    position: 'relative',
   },
   chart: {
     flex: 1,
@@ -276,7 +271,7 @@ const styles = StyleSheet.create({
   loadingWrap: {
     position: 'absolute',
     zIndex: 99999999,
-    backgroundColor: '#f1f1f1',
+    // backgroundColor: '#f1f1f1',
     left: 0,
     top: 0,
     width: '100%',
@@ -287,6 +282,11 @@ const styles = StyleSheet.create({
   loadingInner: {
     width: '100%',
     height: 40,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 100,
+    zIndex: 99999999,
   },
 });
 
