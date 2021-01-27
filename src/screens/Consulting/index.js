@@ -38,9 +38,10 @@ class Consulting extends Component {
       limitIndex: 0,
       listQuest: [],
       listAnswer: [],
-      inforone: '',
-      infortwo: '',
-      inforthree: '',
+      email: { text: '', validate: false },
+      companyName: '',
+      curator: '',
+      startStep:false,
     };
     this.navigation = props.navigation;
   }
@@ -77,23 +78,23 @@ class Consulting extends Component {
     });
   }
   handleChange = (e, index, checkbox) => {
-      const { listAnswer } = this.state;
-      let newArr = [...listAnswer];
-      if (checkbox) {
-        const isAnswer = newArr[index].userAnswer.indexOf(e);
-        if (isAnswer === -1) {
-          newArr[index].userAnswer = newArr[index].userAnswer
-            ? `${newArr[index].userAnswer}|${e}`
-            : `${e}`;
-        } else {
-          let ar = newArr[index].userAnswer.split('|');
-          let newA = ar.filter(item => item !== e.toString());
-          newArr[index].userAnswer = newA.join('|');
-        }
+    const { listAnswer } = this.state;
+    let newArr = [...listAnswer];
+    if (checkbox) {
+      const isAnswer = newArr[index].userAnswer.indexOf(e);
+      if (isAnswer === -1) {
+        newArr[index].userAnswer = newArr[index].userAnswer
+          ? `${newArr[index].userAnswer}|${e}`
+          : `${e}`;
       } else {
-        newArr[index].userAnswer = e.toString();
+        let ar = newArr[index].userAnswer.split('|');
+        let newA = ar.filter(item => item !== e.toString());
+        newArr[index].userAnswer = newA.join('|');
       }
-      this.setState({ listAnswer: newArr });
+    } else {
+      newArr[index].userAnswer = e.toString();
+    }
+    this.setState({ listAnswer: newArr });
   };
 
   handleStep = () => {
@@ -281,17 +282,28 @@ class Consulting extends Component {
       this.navigation.goBack();
     }
   };
-
+  validate = text => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(text) === false) {
+      this.setState({ email: { text: text, validate: false } });
+      return false;
+    } else {
+      this.setState({ email: { text: text, validate: true } });
+    }
+  };
+  // startStep = () => {
+  //   this.setState({ step: 1  }), this.getAllData;
+  // };
   render() {
     const {
       step,
       limitIndex,
       listQuest,
-      inforone,
-      infortwo,
-      inforthree,
+      email,
+      companyName,
+      curator,
+      startStep,
     } = this.state;
-
     return (
       <View style={S.container}>
         <View>
@@ -331,38 +343,48 @@ class Consulting extends Component {
               <TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
-                placeholder="이름을 입력해 주세요"
-                value={inforone}
-                onChangeText={e => this.setState({ inforone: e })}
+                placeholder="이름을 입력해주세요"
+                value={email}
+                // onChangeText={e => this.setState({ email: e })}
+                onChangeText={text => this.validate(text)}
+              />
+              {email.validate === false && email.text !== '' && (
+                <Text style={{color:'#ff6d00',marginTop:10}}>메일 주소가 맞지 않습니다.</Text>
+              )}
+              <TextInput
+                placeholderTextColor="#979797"
+                style={S.inputNomarl}
+                value={companyName}
+                placeholder="회사명을 입력해주세요"
+                onChangeText={e => this.setState({ companyName: e })}
               />
               <TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
-                value={infortwo}
-                placeholder="이름을 입력해 주세요"
-                onChangeText={e => this.setState({ infortwo: e })}
-              />
-              <TextInput
-                placeholderTextColor="#979797"
-                style={S.inputNomarl}
-                value={inforthree}
-                placeholder="이름을 입력해 주세요"
-                onChangeText={e => this.setState({ inforthree: e })}
+                value={curator}
+                placeholder="담당자명을 입력해주세요"
+                onChangeText={e => this.setState({ curator: e })}
               />
             </View>
             <Button
               mode="contained"
               pointerEvents={
-                inforone !== '' && infortwo !== '' && inforthree !== ''
+                email.validate && companyName !== '' && curator !== ''
                   ? 'auto'
                   : 'none'
               }
-              style={[S.styleButton, { margin: 'auto', backgroundColor:`${inforone !== '' && infortwo !== '' && inforthree !== ''
-              ? '#ff6d00'
-              : '#cccccc'}` }]}
-              onPress={() => {
-                this.setState({ step: 1 }), this.getAllData;
-              }}>
+              style={[
+                S.styleButton,
+                {
+                  margin: 'auto',
+                  backgroundColor: `${
+                    email.validate && companyName !== '' && curator !== ''
+                      ? '#ff6d00'
+                      : '#cccccc'
+                  }`,
+                },
+              ]}
+              onPress={() => {this.setState({ step: 1  }), this.getAllData;}}>
               <Text style={[S.textButton]}>물류 컨설팅 시작하기</Text>
             </Button>
           </View>

@@ -175,8 +175,7 @@ class RadarChartScreen extends React.Component {
                 // Loading URL
                 source={{
                   uri:
-                    // 'http://192.168.1.106:13000/webview/advisory?email=test@logisall.com',
-                    'http://www.uflow.voltpage.net/webview/advisory?email=test@logisall.com',
+                    `${API_CLIENT_ADDRESS}/webview/advisory?email=test@logisall.com`,
                 }}
                 // Webview style
                 style={styles.WebViewStyle}
