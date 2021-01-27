@@ -21,72 +21,64 @@ import { styles as S } from '../style';
 import { AuthContext } from '@Store/context';
 import illust6 from '@Assets/images/illust6.png';
 import { MyPage } from '@Services/apis';
-
 class WithdrawalInformation extends Component {
   static contextType = AuthContext;
-  constructor(props) {
+
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
       visible: false,
       passWord: '',
     };
-   
 
     this.navigation = props.navigation;
   }
+
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount::');
     SplashScreen.hide();
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 
-  cancelMembership(params) {
+  cancelMembership (params) {
     let defaultParams = {
       password: this.state.passWord,
-      ...params,
+      leaveReason: params.leaveReason ? params.leaveReason : '-',
     };
-    if (params.leaveReason && params.leaveReason.length > 0) {
-      MyPage.cancelMembership(defaultParams)
-        .then(res => {
-          console.log('::::: cancelMembership :::::', res);
-          if (res.status === 200) {
-            // this.showDialog();
-            this.props.showPopup({
-              type: 'confirm',
-              title: '회원탈퇴 완료',
-              content:
-                '회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.',
-              image: illust6,
-              navigation: () => {
-                this.context.signOut();
-                this.navigation.navigate('Login');
-              },
-            });
-          }
-        })
-        .catch(err => {
-          console.log('err', err);
+    console.log('탈퇴 : ', defaultParams)
+    MyPage.cancelMembership(defaultParams)
+      .then(res => {
+        console.log('::::: cancelMembership :::::', res);
+        if (res.status === 200) {
+          // this.showDialog();
           this.props.showPopup({
             type: 'confirm',
-            title: '에러가 났습니다',
-            content: '회원탈퇴가 완료되지 않았습니다',
+            title: '회원탈퇴 완료',
+            content:
+              '회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.',
             image: illust6,
+            navigation: () => {
+              this.context.signOut();
+              this.navigation.navigate('Login');
+            },
           });
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+        this.props.showPopup({
+          type: 'confirm',
+          title: '에러가 났습니다',
+          content: '회원탈퇴가 완료되지 않았습니다',
+          image: illust6,
         });
-    } else {
-      this.props.showPopup({
-        type: 'confirm',
-        title: '에러가 났습니다',
-        content: '비밀번호와 회원탈퇴사유를 입력하세요',
-        image: illust6,
       });
-    }
   }
 
   onCancelMembership = labelList => {
@@ -98,8 +90,14 @@ class WithdrawalInformation extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  render() {
+  render () {
     const { params } = this.props.route;
+    const { passWord } = this.state;
+    let isSubmit = false;
+
+    if (passWord.length > 0) {
+      isSubmit = true;
+    }
     return (
       <SafeAreaView style={S.container}>
         <HistoryBackActionBar title={'회원탈퇴'} navigation={this.navigation} />
@@ -121,12 +119,16 @@ class WithdrawalInformation extends Component {
               />
             </View>
             <TouchableOpacity
-              style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
-              onPress={() => this.onCancelMembership(params.arrLabel)}>
+              style={[
+                DefaultStyle.btnSubmit,
+                isSubmit === true ? DefaultStyle.activeBtnSubmit : '',
+              ]}
+              onPress={() => this.onCancelMembership(params.arrLabel)}
+              disabled={isSubmit === true ? false : true}>
               <Text
                 style={[
                   DefaultStyle.textSubmit,
-                  DefaultStyle.textActiveSubmit,
+                  isSubmit === true ? DefaultStyle.textActiveSubmit : '',
                 ]}>
                 확인
               </Text>
@@ -164,7 +166,7 @@ class WithdrawalInformation extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
@@ -173,7 +175,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     dataAction: action => {
       dispatch(ActionCreator.ContractConditions(action));

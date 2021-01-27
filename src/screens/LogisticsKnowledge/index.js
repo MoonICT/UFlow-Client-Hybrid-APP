@@ -18,7 +18,6 @@ import Accordion from '@Components/organisms/Accordion';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from './style';
 import { LogisticsKnowledgeService } from '@Services/apis';
-
 import { debounce } from 'lodash';
 
 // const tabDutyDvCode = [
@@ -173,6 +172,7 @@ class LogisticsKnowledge extends Component {
 
     const handleQueryChange = debounce(query => {
       this.fetchData({ query: query });
+      
     }, 200);
 
     const handleClickTab = (tabName, index) => {

@@ -194,10 +194,13 @@ export const styles = StyleSheet.create({
   listChecks: {
     flex: 1,
     marginBottom: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   checkItem: {
     flexDirection: 'row',
-    flex: 1,
+    flexWrap: 'wrap',
+    marginRight: 25,
     marginBottom: 14,
   },
   textCheck: {

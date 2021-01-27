@@ -10,7 +10,6 @@ import Moment from 'moment';
 import {Warehouse} from '@Services/apis';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import moment from "moment";
-
 class ResponseQTrust extends Component {
 
   constructor(props) {
@@ -237,13 +236,15 @@ class ResponseQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e =>{
           this.setState({
             formData: {
               ...this.state.formData,
               splyAmount: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
+
         }
       />
       {/** 입고 단가 (필수) **/}
@@ -258,13 +259,15 @@ class ResponseQTrust extends Component {
         placeholder="0"
         // textError={ checkWhinChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               whinChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
+
         }
       />
       {/** 출고 단가 (필수) **/}
@@ -279,13 +282,15 @@ class ResponseQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               whoutChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
+
         }
       />
       {/** 인건 단가 **/}

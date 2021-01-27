@@ -18,7 +18,6 @@ import { debounce } from 'lodash';
 import { styles } from './style';
 import ActionCreator from '@Actions';
 import PropTypes from 'prop-types';
-
 class SearchOverlay extends Component {
   constructor (props) {
     super(props);
@@ -42,41 +41,44 @@ class SearchOverlay extends Component {
    * On change search query.
    * */
   _onChangeSearchQuery (keyword) {
-    console.log('keyword==>', keyword);
-    if (keyword) {
-      this.setState({
-        isProgress: true,
-        // query: keyword,
-      });
-      this.props.setSearchQuery(keyword)
-
-      this.setDebounce(() => {
-        WhrgSearch.searchKeywords({ query: keyword })
-          .then(res => {
-            if (res) {
-              this.setState({
-                searchAddress: res.addresses,
-                searchWarehouse: res.warehouses,
-              });
-            }
-
-            setTimeout(
-              function () {
+      if (keyword) {
+        this.setState({
+          isProgress: true,
+          // query: keyword,
+        });
+        this.props.setSearchQuery(keyword)
+  
+        this.setDebounce(() => {
+          WhrgSearch.searchKeywords({ query: keyword })
+            .then(res => {
+              if (res) {
                 this.setState({
-                  isProgress: false,
+                  searchAddress: res.addresses,
+                  searchWarehouse: res.warehouses,
                 });
-              }.bind(this),
-              100,
-            );
-          })
-          .catch(err => {
-            alert('서버에러:', err.response.message);
-          });
-      });
-    } else {
-      // this.props.searchToggle(false);
-      this.props.setSearchQuery('');
-    }
+              }
+  
+              setTimeout(
+                function () {
+                  this.setState({
+                    isProgress: false,
+                  });
+                }.bind(this),
+                100,
+              );
+            })
+            .catch(err => {
+              alert('서버에러:', err.response.message);
+            });
+        });
+      } else {
+        // this.props.searchToggle(false);
+        this.props.setSearchQuery('');
+      }
+
+
+
+
   }
 
   /**

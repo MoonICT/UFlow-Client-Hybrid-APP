@@ -34,7 +34,6 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { Warehouse } from '@Services/apis';
 import Postcode from 'react-native-daum-postcode';
-
 class RegisterIntro extends Component {
   constructor (props) {
     super(props);
@@ -179,7 +178,9 @@ class RegisterIntro extends Component {
                 style={SS.inputIntro}
                 multiline={true}
                 numberOfLines={2}
-                onChangeText={e => this.setState({ name: e })}
+                onChangeText={e => {
+                  this.setState({ name: e })
+                } }
                 value={name}
                 placeholder={'예)신논혁역 도보 5분 거리, 깨끗한 창고입니다.'}
               />
@@ -197,7 +198,9 @@ class RegisterIntro extends Component {
                 numberOfLines={4}
                 // onChangeText={text => this.onChangeIntro(text)}
                 value={this.state.description}
-                onChangeText={e => this.setState({ description: e })}
+                onChangeText={e => {
+                  this.setState({ description: e })
+                } }
                 placeholder={`상세 설명 작성 주의사항
 
   - 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)
@@ -236,7 +239,9 @@ class RegisterIntro extends Component {
               />
               <TextInput
                 style={[SS.inputIntro, SS.inputLoction]}
-                onChangeText={text => this.onChangeLocation(text)}
+                onChangeText={text => {
+                  this.onChangeLocation(text)
+                } }
                 value={address.detail}
                 placeholder={'상세 주소'}
               />

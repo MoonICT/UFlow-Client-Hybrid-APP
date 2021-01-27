@@ -72,7 +72,6 @@ import { debounce } from 'lodash';
 //     title: '설문',
 //   },
 // ];
-
 class RegisterWH extends Component {
   constructor(props) {
     super(props);
@@ -155,6 +154,7 @@ class RegisterWH extends Component {
 
     const handleQueryChange = query => {
       this.fetchData({ query: query });
+      
     };
 
     const handleClickTab = (tabName, index) => {

@@ -48,7 +48,9 @@ export default class Header extends Component {
           style={styles.WebViewHeaderInput}
           returnKeyType="search"
           value={this.state.searchURL}
-          onChangeText={text => this.setState({searchURL: text})}
+          onChangeText={text => {
+            this.setState({searchURL: text})
+          }}
           onSubmitEditing={() => this._SearchSubmit()}
         />
         {Loading}

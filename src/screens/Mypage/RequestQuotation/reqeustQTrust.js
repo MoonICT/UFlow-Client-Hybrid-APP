@@ -10,7 +10,6 @@ import Moment from 'moment';
 import {Warehouse} from '@Services/apis';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import moment from "moment";
-
 class ReqeustQTrust extends Component {
 
   constructor(props) {
@@ -119,7 +118,8 @@ class ReqeustQTrust extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment.unix(this.state.formData.from/1000).format('YYYY.MM.DD') : ''}
+              {from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment.unix(this.state.formData.from/1000).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -134,7 +134,8 @@ class ReqeustQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? Moment.unix(this.state.formData.from/1000).toDate() : new Date()}
+              date={from ? Moment(this.state.formData.from).toDate() : new Date()}
+              // date={from ? Moment.unix(this.state.formData.from/1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -154,7 +155,8 @@ class ReqeustQTrust extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? Moment.unix(this.state.formData.to/1000).format('YYYY.MM.DD') : ''}
+              {to ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}
+              {/*{to ? Moment.unix(this.state.formData.to/1000).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -169,7 +171,8 @@ class ReqeustQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? Moment.unix(this.state.formData.to/1000).toDate() : new Date()}
+              date={to ? Moment(this.state.formData.to).toDate() : new Date()}
+              // date={to ? Moment.unix(this.state.formData.to/1000).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -204,6 +207,7 @@ class ReqeustQTrust extends Component {
               rntlValue: Number(e.replace(/[^0-9]/g), '')
             }
           });
+
         }}
       />
 
@@ -218,13 +222,14 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e =>{
           this.setState({
             formData: {
               ...this.state.formData,
               splyAmount: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
         }
       />
       {/** 입고 단가 (필수) **/}
@@ -238,13 +243,15 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               whinChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
+
         }
       />
       {/** 출고 단가 (필수) **/}
@@ -258,13 +265,15 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               whoutChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
+
         }
       />
       {/** 인건 단가 **/}

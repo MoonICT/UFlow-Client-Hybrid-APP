@@ -57,7 +57,6 @@ import { money, numberComma } from '@Services/utils/StringUtils';
 import ActionCreator from '@Actions';
 import { connect } from "react-redux";
 
-var searchTimerQuery;
 
 class DetailsManager extends Component {
   constructor (props) {

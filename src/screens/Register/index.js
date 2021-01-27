@@ -31,7 +31,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Contants
 import { TOKEN } from '@Constant';
-
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -195,7 +194,9 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="이름"
-                    onChangeText={text => this.setState({ fullName: text })}
+                    onChangeText={text => {
+                      this.setState({ fullName: text })
+                    }}
                     value={fullName}
                     type="text"
                     mode="outlined"
@@ -208,7 +209,6 @@ class Register extends Component {
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="이메일"
                     onChangeText={text => {
-                      // this.setState({ email: text });
                       this.onChangeEmail(text);
                     }}
                     value={email}
@@ -226,7 +226,9 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="비밀번호"
-                    onChangeText={text => this.setState({ password: text })}
+                    onChangeText={text => {
+                      this.setState({ password: text })
+                    }}
                     value={password}
                     type="text"
                     mode="outlined"
@@ -239,8 +241,9 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="비밀번호 확인"
-                    onChangeText={text =>
+                    onChangeText={text => {
                       this.setState({ confirmPassword: text })
+                    }
                     }
                     value={confirmPassword}
                     type="text"
@@ -263,6 +266,7 @@ class Register extends Component {
                       this.setState({
                         mobile: text.replace(/[^0-9]/g, ''),
                       });
+
                       // this.validations(text);
                     }}
                     keyboardType="numeric"

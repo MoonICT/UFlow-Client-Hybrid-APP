@@ -11,7 +11,6 @@ import { Warehouse } from '@Services/apis';
 import { StringUtils, DeepLogs } from '@Services/utils';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import moment from "moment";
-
 class ResponseQKeep extends Component {
 
   constructor (props) {
@@ -199,6 +198,8 @@ class ResponseQKeep extends Component {
                 },
                 rntlValuePyeong: value
               });
+
+
             }}
           />
         </View>
@@ -220,6 +221,7 @@ class ResponseQKeep extends Component {
                 },
                 rntlValuePyeong: value ? toPyeong(value) : ''
               });
+
             }}
           />
         </View>
@@ -236,13 +238,15 @@ class ResponseQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               splyAmount: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
+
         }
       />
       {/** 관리단가 (필수) **/}
@@ -256,13 +260,16 @@ class ResponseQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               mgmtChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
+
+        }
+
         }
       />
       {/** 추가 요청 사항 **/}

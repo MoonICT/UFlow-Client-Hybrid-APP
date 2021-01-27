@@ -32,7 +32,6 @@ import { styles as S } from './style';
 
 import { Emergency } from '@Services/apis';
 const windowHeight = Dimensions.get('window').height;
-
 class QuestionScreen extends Component {
   constructor(props) {
     super(props);
@@ -85,7 +84,9 @@ class QuestionScreen extends Component {
 
   handleChangeEmail = value => this.setState({ email: value });
 
-  handleChangeContent = value => this.setState({ content: value });
+  handleChangeContent = value => {
+    this.setState({ content: value });
+  } 
 
   onSubmit = async () => {
     const { email, content } = this.state;
