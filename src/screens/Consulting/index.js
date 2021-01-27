@@ -38,9 +38,9 @@ class Consulting extends Component {
       limitIndex: 0,
       listQuest: [],
       listAnswer: [],
-      inforone: '',
-      infortwo: '',
-      inforthree: '',
+      email: '',
+      companyName: '',
+      curator: '',
     };
     this.navigation = props.navigation;
   }
@@ -287,9 +287,9 @@ class Consulting extends Component {
       step,
       limitIndex,
       listQuest,
-      inforone,
-      infortwo,
-      inforthree,
+      email,
+      companyName,
+      curator,
     } = this.state;
 
     return (
@@ -331,33 +331,33 @@ class Consulting extends Component {
               <TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
-                placeholder="이름을 입력해 주세요"
-                value={inforone}
-                onChangeText={e => this.setState({ inforone: e })}
+                placeholder="이름을 입력해주세요"
+                value={email}
+                onChangeText={e => this.setState({ email: e })}
               />
               <TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
-                value={infortwo}
-                placeholder="이름을 입력해 주세요"
-                onChangeText={e => this.setState({ infortwo: e })}
+                value={companyName}
+                placeholder="회사명을 입력해주세요"
+                onChangeText={e => this.setState({ companyName: e })}
               />
               <TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
-                value={inforthree}
-                placeholder="이름을 입력해 주세요"
-                onChangeText={e => this.setState({ inforthree: e })}
+                value={curator}
+                placeholder="담당자명을 입력해주세요"
+                onChangeText={e => this.setState({ curator: e })}
               />
             </View>
             <Button
               mode="contained"
               pointerEvents={
-                inforone !== '' && infortwo !== '' && inforthree !== ''
+                email !== '' && companyName !== '' && curator !== ''
                   ? 'auto'
                   : 'none'
               }
-              style={[S.styleButton, { margin: 'auto', backgroundColor:`${inforone !== '' && infortwo !== '' && inforthree !== ''
+              style={[S.styleButton, { margin: 'auto', backgroundColor:`${email !== '' && companyName !== '' && curator !== ''
               ? '#ff6d00'
               : '#cccccc'}` }]}
               onPress={() => {
