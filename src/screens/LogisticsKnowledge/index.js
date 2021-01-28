@@ -202,9 +202,10 @@ class LogisticsKnowledge extends Component {
               titleStyle={[DefaultStyle._contentAccordion, S.title]}
               id={`${index}`}>
               <List.Item
-                numberOfLines={5}
+                descriptionNumberOfLines={15}
+                titleStyle={{display:'none'}}
                 description={item.rplyContent}
-                titleStyle={S.descript}
+                descriptionStyle={S.descript}
               />
             </List.Accordion>
             <Divider />
