@@ -422,7 +422,7 @@ class DetailWH extends Component {
               {whrgData.typeCode && whrgData.typeCode}
             </Text>
             <Text style={S.describeTitle}>
-              {`${whrgData.hasKeep ? '보관창고' : ''}`}
+              {`${whrgData.hasKeep ? '임대창고' : ''}`}
               {`${whrgData.hasKeep && whrgData.hasTrust ? ', ' : ''}`}
               {`${whrgData.hasTrust ? '수탁창고' : ''}`}
             </Text>
@@ -568,7 +568,7 @@ class DetailWH extends Component {
                   style={[S.btnTabBarLeft, active === 0 ? S.activeBtn : null]}
                   onPress={() => this.setState({ active: 0 })}>
                   <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
-                    보관
+                    임대
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -580,7 +580,7 @@ class DetailWH extends Component {
                 </TouchableOpacity>
               </View>
 
-              {/***** Keep (보관) *****/}
+              {/***** Keep (임대) *****/}
               {active === 0 &&
               (whrgData.keeps && whrgData.keeps.length > 0 ? (
                 whrgData.keeps.map((keep, index) => (
@@ -618,7 +618,7 @@ class DetailWH extends Component {
                       <View style={S.table}>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            보관유형
+                            창고유형
                           </Text>
                           <Text style={S.textTable}>
                             {keep.typeCode
@@ -690,7 +690,7 @@ class DetailWH extends Component {
                         </View> */}
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            보관단가
+                            임대단가
                           </Text>
                           <Text style={S.textTable}>
                             {`${
@@ -812,7 +812,7 @@ class DetailWH extends Component {
                       <View style={S.table}>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            보관유형
+                            창고유형
                           </Text>
                           <Text style={S.textTable}>
                             {trust.typeCode

@@ -14,7 +14,7 @@ export const pageSearchWhrg = ({
                                  page = 0,
                                  sort = 'createdDate,desc',
 
-                                 typeCodes = '', // 보관/수탁 KEEP/TRUST (,구분)
+                                 typeCodes = '', // 임대/수탁 KEEP/TRUST (,구분)
                                  gdsKeepTypeCodes = '', // 상품보관형태 WHRG0001 (,구분)
 
                                  keepFrom = '', // YYYY-MM-DD
@@ -23,7 +23,7 @@ export const pageSearchWhrg = ({
                                  trustTo = '', // YYYY-MM-DD
 
 
-                                 splyAmount = '', // Trust : 보관비 max
+                                 splyAmount = '', // Trust : 임대비 max
                                  mgmtChrg = '', // Keep : 관리비 max
                                  whinChrg = '', // Trust : 입고비 max
                                  whoutChrg = '', // Trust: 출고비 max
@@ -59,7 +59,7 @@ export const pageSearchWhrg = ({
       page: page,
       sort: sort,
       
-      typeCodes: typeCodes, // 보관/수탁 KEEP/TRUST (,구분)
+      typeCodes: typeCodes, // 임대/수탁 KEEP/TRUST (,구분)
       gdsKeepTypeCodes: gdsKeepTypeCodes, // 상품보관형태 WHRG0001 (,구분)
 
       keepFrom: keepFrom, // YYYY-MM-DD
@@ -68,7 +68,7 @@ export const pageSearchWhrg = ({
       trustTo: trustTo, // YYYY-MM-DD
 
 
-      splyAmount: splyAmount, // Trust : 보관비 max
+      splyAmount: splyAmount, // Trust : 임대비 max
       mgmtChrg: mgmtChrg, // Keep : 관리비 max
       whinChrg: whinChrg, // Trust : 입고비 max
       whoutChrg: whoutChrg, // Trust: 출고비 max
@@ -108,7 +108,7 @@ export const listSearchWhrg = ({
                                  endDate = '',
                                  sort = 'createdDate,desc',
 
-                                 typeCodes = '', // 보관/수탁 KEEP/TRUST (,구분)
+                                 typeCodes = '', // 임대/수탁 KEEP/TRUST (,구분)
                                  gdsKeepTypeCodes = '', // 상품보관형태 WHRG0001 (,구분)
 
                                  keepFrom = '', // YYYY-MM-DD
@@ -117,7 +117,7 @@ export const listSearchWhrg = ({
                                  trustTo = '', // YYYY-MM-DD
 
 
-                                 splyAmount = '', // Trust : 보관비 max
+                                 splyAmount = '', // Trust : 임대비 max
                                  mgmtChrg = '', // Keep : 관리비 max
                                  whinChrg = '', // Trust : 입고비 max
                                  whoutChrg = '', // Trust: 출고비 max
@@ -151,7 +151,7 @@ export const listSearchWhrg = ({
       endDate: endDate,
       sort: sort,
 
-      typeCodes: typeCodes, // 보관/수탁 KEEP/TRUST (,구분)
+      typeCodes: typeCodes, // 임대/수탁 KEEP/TRUST (,구분)
       gdsKeepTypeCodes: gdsKeepTypeCodes, // 상품보관형태 WHRG0001 (,구분)
 
       keepFrom: keepFrom, // YYYY-MM-DD
@@ -160,7 +160,7 @@ export const listSearchWhrg = ({
       trustTo: trustTo, // YYYY-MM-DD
 
 
-      splyAmount: splyAmount, // Trust : 보관비 max
+      splyAmount: splyAmount, // Trust : 임대비 max
       mgmtChrg: mgmtChrg, // Keep : 관리비 max
       whinChrg: whinChrg, // Trust : 입고비 max
       whoutChrg: whoutChrg, // Trust: 출고비 max

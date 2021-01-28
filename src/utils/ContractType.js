@@ -3,9 +3,9 @@ export const contractType = (type) => {
   if (type === '2100') {
     return 'TRUST'; // 수탁
   } else if (type === '1100') {
-    return 'KEEP'; // 보관
+    return 'KEEP'; // 임대
   } else if (type === '3100') {
-    return 'TRUST&KEEP'; // 보관&수탁
+    return 'TRUST&KEEP'; // 임대&수탁
   }
   return '';
 };

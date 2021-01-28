@@ -3,7 +3,7 @@ import { Axios, parseQuery } from '@Services/http';
 /**
  * [estmt-cntr-1] 마이페이지 견적·계약 (창고주) pagination
  * @param userType: TENANT(임차인)/OWNER(창고주)
- * @param contractType: TRUST(수탁)/KEEP(보관)
+ * @param contractType: TRUST(수탁)/KEEP(임대)
  * @param status:
  *          1. RQ00 : 견적요청
  *          2. RS00 : 견적응답
@@ -45,9 +45,9 @@ export const pageEstmtCntr = ({
  * [mypage-estimate-tenant-1]
  * 상세 견적
  * @param warehouseRegNo : 창고 ID
- * @param mgmtWareHSeq : 보관·수탁 단가의 seq
+ * @param mgmtWareHSeq : 임대·수탁 단가의 seq
  * @param type : tenant/owner 임차인/창고주
- * @param contractType : 계약유형 (keep/trust) 보관·수탁
+ * @param contractType : 계약유형 (keep/trust) 임대·수탁
  * @param rentUserNo : 임차인 ID
  * @returns {Promise<unknown>}
  */
@@ -81,8 +81,8 @@ export const getContract = ({
  * [mypage-estimate-owner-2] 마이페이지 견적 상세정보 (창고주 전용)
  *
  * @param warehouseRegNo : 창고ID
- * @param contractType : 계약유형 (keep/trust) 보관·수탁
- * @param warehSeq : 보관·수탁 단가의 seq
+ * @param contractType : 계약유형 (keep/trust) 임대·수탁
+ * @param warehSeq : 임대·수탁 단가의 seq
  * @param rentUserNo
  * @returns {Promise<unknown>}
  */
@@ -111,8 +111,8 @@ export const getDetailEstmtCntrOwner = ({
  * [mypage-estimate-tenant-2] 마이페이지 견적 상세정보 (임차인 전용)
  *
  * @param warehouseRegNo : 창고ID
- * @param contractType : 계약유형 (keep/trust) 보관·수탁
- * @param warehSeq : 보관·수탁 단가의 seq
+ * @param contractType : 계약유형 (keep/trust) 임대·수탁
+ * @param warehSeq : 임대·수탁 단가의 seq
  * @returns {Promise<unknown>}
  */
 export const getDetailEstmtCntrTenant = ({
@@ -129,17 +129,17 @@ export const getDetailEstmtCntrTenant = ({
 };
 
 /**
- * [estimate-keep-tenant-1] 임차인 보관 견적 요청 Create request estimate keep by tenant
- * [estimate-keep-owner-1] 창고주 보관 견적 응답 Create response estimate keep by owner
+ * [estimate-keep-tenant-1] 임차인 임대 견적 요청 Create request estimate keep by tenant
+ * [estimate-keep-owner-1] 창고주 임대 견적 응답 Create response estimate keep by owner
  *
  * @param type: 사용자 유형
  * @param warehouseRegNo : 창고 ID
- * @param seq : 보관계약유형 seq
+ * @param seq : 임대계약유형 seq
  * @param rentUserNo : 임차인
- * @param from : 보관기간FROM
- * @param to : 보관기간TO
+ * @param from : 임대기간FROM
+ * @param to : 임대기간TO
  * @param rntlValue : 임대수치 (전용면적)
- * @param splyAmount : 공급금액 (보관단가)
+ * @param splyAmount : 공급금액 (임대단가)
  * @param mgmtChrg : 관리단가
  * @param remark : 비고
  * @returns {Promise<unknown>}
@@ -185,7 +185,7 @@ export const postQuoteReqResKeep = ({
  *
  * @param type : 임차인/창고주 tenant/owner
  * @param warehouseRegNo : 창고 ID
- * @param seq : 보관계약유형 seq
+ * @param seq : 수탁계약유형 seq
  * @param rentUserNo : 임차인 ID
  * @param from : 수탁기간FROM
  * @param to : 수탁기간TO

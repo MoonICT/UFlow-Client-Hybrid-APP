@@ -75,7 +75,7 @@ export const regBusinessInfoByTenant = async businessInfo => {
 
 /**
  * [warehouse-tenant-3] possible Contract by tenant (창고 견적요청 가능 유/무 확인 by 임차인)
- * @param contractType : 계약유형(KEEP(보관)/TRUST(수탁))
+ * @param contractType : 계약유형(KEEP(임대)/TRUST(수탁))
  * @param warehouseRegNo : 창고 ID
  * @param seq : KEEP seq or TRUST seq
  * @returns {Promise<*>}

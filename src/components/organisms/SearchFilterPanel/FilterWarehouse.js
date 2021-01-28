@@ -58,7 +58,7 @@ class FilterWarehouse extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'창고 유형'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'계약 유형'}</Text>
             <Text style={[styles.filterLabel, styles.filterLabelSub]}>{'중복선택 가능합니다.'}</Text>
           </View>
         </View>

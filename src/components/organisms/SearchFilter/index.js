@@ -57,7 +57,7 @@ class SearchFilter extends Component {
   };
 
   /**
-   * 보관 기간 선택 시, 표현 될 값.
+   * 임대 기간 선택 시, 표현 될 값.
    * */
   handleRenderSelectBoxValue = () => {
     if (this.props.whFilter.keepFrom || this.props.whFilter.keepTo || this.props.whFilter.trustFrom || this.props.whFilter.trustTo) {
@@ -65,7 +65,7 @@ class SearchFilter extends Component {
       let trustDate = (this.props.whFilter.trustFrom || this.props.whFilter.trustTo) ? `${this.props.whFilter.trustFrom}~${this.props.whFilter.trustTo}` : ''
       return (keepDate ? keepDate : trustDate) + (keepDate && trustDate ? '...' : '');
     } else {
-      return '보관 기간';
+      return '기간';
     }
   };
 
@@ -75,7 +75,7 @@ class SearchFilter extends Component {
   handleRenderPriceValue = () => {
     let resultArr = []
     if (this.props.whFilter.splyAmount && this.props.whFilter.splyAmount > 0) {
-      resultArr.push(`보관 ${parseFloat((this.props.whFilter.splyAmount / 10000).toFixed(1))}만`);
+      resultArr.push(`임대 ${parseFloat((this.props.whFilter.splyAmount / 10000).toFixed(1))}만`);
     }
     if (this.props.whFilter.mgmtChrg && this.props.whFilter.mgmtChrg > 0) {
       resultArr.push(`관리 ${parseFloat((this.props.whFilter.mgmtChrg / 10000).toFixed(1))}만`);
@@ -136,7 +136,7 @@ class SearchFilter extends Component {
                               onPress={() => this._onClickFilter(originEl.type)}
                               label={originEl.label}
                               isToggle={originEl.toggle}>
-                  {/** 창고유형 */}
+                  {/** 계약 유형 */}
                   {originEl.type === 'WAREHOUSE' &&
                   <Text>
                     {this.props.whFilter.typeCodes ? (
@@ -149,7 +149,7 @@ class SearchFilter extends Component {
                     ) : originEl.label}
                   </Text>}
 
-                  {/** 보관 유형 */}
+                  {/** 창고 유형 */}
                   {originEl.type === 'STORAGE' &&
                   <Text>
                     {this.props.whFilter.gdsKeepTypeCodes ? (
@@ -167,7 +167,7 @@ class SearchFilter extends Component {
                     ) : originEl.label}
                   </Text>}
 
-                  {/** 보관 기간 */}
+                  {/** 기간 */}
                   {originEl.type === 'PERIOD' &&
                   <Text>{this.handleRenderSelectBoxValue()}</Text>}
 

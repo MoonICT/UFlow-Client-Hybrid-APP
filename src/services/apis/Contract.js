@@ -7,7 +7,7 @@ import { TOKEN } from '@Constant';
 
 
 /**
- * [mypage-estimate-contract-keep-1] 임차인 보관 계약요청 Tenant create contract keep
+ * [mypage-estimate-contract-keep-1] 임차인 임대 계약요청 Tenant create contract keep
  *
  * @param idWarehouse
  * @param cntrDvCode
@@ -19,7 +19,7 @@ export const createKeep = async ({ idWarehouse = '', mgmtKeepSeq = '', rentUserN
   return await mainAxios.post(
     `/api/v1/contract/keep`,
     {
-      mgmtKeepSeq: mgmtKeepSeq, // 견적 보관 seq
+      mgmtKeepSeq: mgmtKeepSeq, // 견적 임대 seq
       warehouseRegNo: idWarehouse,
       rentUserNo: rentUserNo
     },
@@ -84,7 +84,7 @@ export const getContractKeep = ({
 };
 
 /**
- * [mypage-contract-owner-4100-trust] 창고주 수탁/보관 계약협의 요청(약관동의) (4100)
+ * [mypage-contract-owner-4100-trust] 창고주 수탁/임대 계약협의 요청(약관동의) (4100)
  * @param contractType 계약유형 keep/trust
  * @param file 통장사본
  * @param warehouseRegNo 창고주 ID
@@ -118,7 +118,7 @@ export const hasEtcFile = ({ warehouseId = '' }) => {
 }
 
 /**
- * [mypage-contract-tenant-4100-trust] 임차인 수탁/보관 계약협의 요청(약관동의) (4100)
+ * [mypage-contract-tenant-4100-trust] 임차인 수탁/임대 계약협의 요청(약관동의) (4100)
  * @param contractType 계약유형
  * @param warehouseRegNo 창고 ID
  * @param rentUserNo 임차인 ID
@@ -143,7 +143,7 @@ export const tenant4100 = ({
 };
 
 /**
- * oz 보관 계약서
+ * oz 계약서
  * @param warehouseRegNo
  * @param cntrDvCd
  * @param cntrYmdFrom

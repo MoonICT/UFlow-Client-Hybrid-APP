@@ -349,7 +349,7 @@ class RegisterInfo extends Component {
               <TouchableOpacity
                 style={this.state.valueTab === 'keeps' ? SS.btnTabBar : null}
                 onPress={() => this.setState({ valueTab: 'keeps' })}>
-                <Text style={SS.textTabBar}>보관</Text>
+                <Text style={SS.textTabBar}>임대</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={this.state.valueTab === 'trusts' ? SS.btnTabBar : null}

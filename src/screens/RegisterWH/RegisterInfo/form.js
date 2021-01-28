@@ -213,7 +213,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
             // selectedValue={formData.typeCode}
-            labelSelected="보관유형"
+            labelSelected="창고유형"
           />
           <Select
             data={calUnitDvCodes}
@@ -363,7 +363,7 @@ class FormInfo extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                보관 시작일
+                임대 시작일
               </Text>
               {/*<DatePicker*/}
               {/*  mode={mode}*/}
@@ -397,7 +397,7 @@ class FormInfo extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                보관 종료일
+                임대 종료일
               </Text>
               {/*<DatePicker*/}
               {/*  mode={mode}*/}
@@ -421,7 +421,7 @@ class FormInfo extends Component {
           </View>
 
           <TextField
-            labelTextField="보관단가"
+            labelTextField="임대단가"
             value={splyAmount}
             defaultValue={
               formData.splyAmount ? numberToStd(formData.splyAmount) : ''
