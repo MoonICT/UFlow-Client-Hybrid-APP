@@ -12,6 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -40,6 +41,9 @@ import WHType3 from '@Assets/images/icon-warehouse-3.png';
 import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
+import { PanoramaView } from "@lightbase/react-native-panorama-view";
+
+const windowWidth = Dimensions.get('window').width;
 
 class DetailWH extends Component {
   constructor (props) {
@@ -500,13 +504,19 @@ class DetailWH extends Component {
                       this.navigation.navigate('ViewPanoramaImage', {
                         image: whrgData.pnImages && whrgData.pnImages.length > 0 ? whrgData.pnImages[0].url : ''
                       })}>
-                      <Image
+                      <PanoramaView
+                        style={S.backgroundImage}
+                        dimensions={{ height: 230, width:windowWidth }}
+                        inputType="mono"
+                        imageUrl={whrgData.pnImages[0].url}
+                      />
+                  {/**    <Image
                         style={S.backgroundImage}
                         source={whrgData.pnImages && whrgData.pnImages.length > 0
                           ? { uri: whrgData.pnImages[0].url }
                           : ''
                         }
-                      />
+                      />*/}
                     </TouchableOpacity>
                     :
                     <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>
