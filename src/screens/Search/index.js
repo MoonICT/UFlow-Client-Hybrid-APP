@@ -247,7 +247,7 @@ class Search extends Component {
     // searchToggle(route.params && route.params.searchQuery);
 
     // 필터 코드값.
-    const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 보관유형
+    const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 창고유형
     const listCalUnitDvCode = await Warehouse.listCalUnitDvCode(); // 정산단위
     const listCalStdDvCode = await Warehouse.listCalStdDvCode(); // 산정기준
     const listFlrDvCode = await Warehouse.listFlrDvCode(); // 층수
@@ -259,7 +259,7 @@ class Search extends Component {
       listGdsTypeCode:
         listGdsTypeCode && listGdsTypeCode._embedded
           ? listGdsTypeCode._embedded.detailCodes
-          : [], // 보관유형
+          : [], // 창고유형
       listCalUnitDvCode:
         listCalUnitDvCode && listCalUnitDvCode._embedded
           ? listCalUnitDvCode._embedded.detailCodes

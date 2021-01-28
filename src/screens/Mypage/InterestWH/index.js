@@ -113,7 +113,7 @@ class InterestWarehouse extends Component {
         dataConvert.push({
           data: [
             {
-              type: '창고 유형',
+              type: '계약 유형',
               value: `${element.keep ? '임대창고' : ''}${element.keep && element.trust ? ', ' : ''}${element.trust ? '수탁창고' : ''}${!element.keep && !element.trust ? '-' : ''}`
             },
             {

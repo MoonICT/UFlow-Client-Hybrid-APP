@@ -260,7 +260,7 @@ class Mypage extends Component {
             ),
           },
           {
-            type: '창고 유형',
+            type: '계약 유형',
             value: typeCover,
           },
           {

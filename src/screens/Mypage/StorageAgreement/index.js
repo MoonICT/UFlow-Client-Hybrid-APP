@@ -64,7 +64,7 @@ class StorageAgreement extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'마이페이지'}
             navigation={this.navigation}
@@ -72,7 +72,7 @@ class StorageAgreement extends Component {
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             <View style={DefaultStyle._titleCard}>
-              <Text style={DefaultStyle._textTitleCard}>UFLOW 보관 계약서</Text>
+              <Text style={DefaultStyle._textTitleCard}>UFLOW 계약서</Text>
             </View>
 
             <View style={DefaultStyle._card}>

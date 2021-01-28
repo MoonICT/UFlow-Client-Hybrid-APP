@@ -105,7 +105,7 @@ class RequestContract extends Component {
               </View>
               {/** END:HEADER **/}
 
-              {/** WAREHOUSE INFO 청고 정보 **/}
+              {/** WAREHOUSE INFO 창고 정보 **/}
               {/*{status === '1100' && (*/}
                 {/*<View style={DefaultStyle._card}>*/}
                   {/*<View style={DefaultStyle._headerCard}>*/}
@@ -371,7 +371,7 @@ class RequestContract extends Component {
               address: warehouseInfoData.warehouse.address,
               /*계약유형*/
               type: '임대',
-              /*보관유형*/
+              /*창고유형*/
               keepType:
                 warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
               /*전용면적*/
@@ -413,7 +413,7 @@ class RequestContract extends Component {
               address: warehouseInfoData.warehouse.address,
               /*계약유형*/
               type: '수탁',
-              /*보관유형*/
+              /*창고유형*/
               keepType:
                 warehouseInfoData.whrgMgmtTrust.typeCode.stdDetailCodeName,
               /*정산단위*/
@@ -497,7 +497,7 @@ class RequestContract extends Component {
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
               type: '임대',
-              /*보관유형*/
+              /*창고유형*/
               keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
               /*공용면적*/
               prvtArea: keepTrustEstimate.usblValue
@@ -509,7 +509,7 @@ class RequestContract extends Component {
                 StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) +
                 '~' +
                 StringUtils.dateStr(keepTrustContract.cntrYmdTo),
-              /*보관단가*/
+              /*임대단가*/
               splyAmount: StringUtils.moneyConvert(
                 keepTrustContract.splyAmount,
               ),
@@ -539,7 +539,7 @@ class RequestContract extends Component {
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
               type: '수탁',
-              /*보관유형*/
+              /*창고유형*/
               keepType: keepTrustContract.typeCode.stdDetailCodeName,
               /*수탁 가용일자*/
               // usblYmd: StringUtils.dateStr(keepTrustEstimate.usblYmdFrom) + '~' + StringUtils.dateStr(keepTrustEstimate.usblYmdTo),
@@ -597,7 +597,7 @@ class RequestContract extends Component {
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
               type: '임대',
-              /*보관유형*/
+              /*창고유형*/
               keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
               /*공용면적*/
               prvtArea: keepTrustEstimate.usblValue
@@ -608,7 +608,7 @@ class RequestContract extends Component {
                 StringUtils.dateStr(keepTrustContract.id.cntrYmdFrom) +
                 '~' +
                 StringUtils.dateStr(keepTrustContract.cntrYmdTo),
-              /*보관단가*/
+              /*임대단가*/
               splyAmount: StringUtils.moneyConvert(
                 keepTrustContract.splyAmount,
               ),
@@ -645,7 +645,7 @@ class RequestContract extends Component {
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
               type: '수탁',
-              /*보관유형*/
+              /*창고유형*/
               keepType: keepTrustContract.typeCode.stdDetailCodeName,
               /*수탁 가용일자*/
               usblYmd:

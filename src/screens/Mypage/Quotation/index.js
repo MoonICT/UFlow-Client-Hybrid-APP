@@ -136,7 +136,7 @@ class Quotation extends Component {
         address: dataApi.warehouse.address,
         /*계약유형*/
         type: '임대',
-        /*보관유형*/
+        /*창고유형*/
         keepType: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         /*전용면적*/
         prvtArea: dataApi.whrgMgmtKeep.usblValue ? StringUtils.displayAreaUnit(dataApi.whrgMgmtKeep.usblValue) : "-",
@@ -157,7 +157,7 @@ class Quotation extends Component {
         address: dataApi.warehouse.address,
         /*계약유형*/
         type: '수탁',
-        /*보관유형*/
+        /*창고유형*/
         keepType: dataApi.whrgMgmtTrust.typeCode.stdDetailCodeName,
         /*정산단위*/
         calUnitDvCode: dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
@@ -198,7 +198,7 @@ class Quotation extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'견적･계약 관리'}
             navigation={this.navigation}

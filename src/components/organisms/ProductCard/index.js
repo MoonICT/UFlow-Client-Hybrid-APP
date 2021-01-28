@@ -64,7 +64,7 @@ class ProductCard extends Component {
     if (data === undefined) {
       data = {
         img: cardBG,
-        type: '보관창고',
+        type: '임대창고',
         title: '과천동 상온 50평',
         price: '12,345평',
         address: '경기도 화천시 부평읍',
@@ -143,7 +143,7 @@ class ProductCard extends Component {
                 {data.name}
               </Text>
 
-              {/** 창고 유형 */}
+              {/** 계약 유형 */}
               <Text
                 style={[
                   styles.fontColor1,
@@ -151,7 +151,7 @@ class ProductCard extends Component {
                   styles.font9,
                   styles.mrb12,
                 ]}>
-                {data.keep ? '보관창고' : ''}
+                {data.keep ? '임대창고' : ''}
                 {data.keep && data.trust ? ', ' : ''}
                 {data.trust ? '수탁창고' : ''}
               </Text>
@@ -163,7 +163,7 @@ class ProductCard extends Component {
                     <Text
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
                       <Text style={[styles.bold, styles.blackColor]}>
-                        보관{' '}
+                        임대{' '}
                       </Text>
                       최대 {data.keep.subTitle ? data.keep.subTitle : ''}
                     </Text>
@@ -200,7 +200,7 @@ class ProductCard extends Component {
                   {data.keep.splyAmount && (
                     <Text
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･보관단가{' '}
+                      ･임대단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
                         {money(data.keep.splyAmount)}
                       </Text>
@@ -211,7 +211,7 @@ class ProductCard extends Component {
                   {data.keep.mgmtChrg && (
                     <Text
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･보관단가{' '}
+                      ･임대단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
                         {money(data.keep.mgmtChrg)}
                       </Text>

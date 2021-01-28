@@ -283,7 +283,7 @@ class Inquiry extends Component {
                       DefaultStyle._labelTextField,
                       { color: '#000000', fontSize: 12 },
                     ]}>
-                    보관 기간
+                    임대 기간
                   </Text>
                   <DateTimePickerModal
                     mode={mode}

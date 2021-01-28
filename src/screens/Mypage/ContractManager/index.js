@@ -109,7 +109,7 @@ class ContractManager extends Component {
               value: value.warehouseRegNo,
             },
             {
-              type: '창고 유형',
+              type: '계약 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             // value.type2 === 'TRUST'
@@ -153,7 +153,7 @@ class ContractManager extends Component {
               value: value.warehouseRegNo,
             },
             {
-              type: '창고 유형',
+              type: '계약 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             // value.type2 === 'TRUST'
@@ -192,7 +192,7 @@ class ContractManager extends Component {
               value: value.warehouseRegNo,
             },
             {
-              type: '창고 유형',
+              type: '계약 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             // value.type2 === 'TRUST'
@@ -232,7 +232,7 @@ class ContractManager extends Component {
               value: value.warehouseRegNo,
             },
             {
-              type: '창고 유형',
+              type: '계약 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             // value.type2 === 'TRUST'
@@ -271,7 +271,7 @@ class ContractManager extends Component {
               value: value.warehouseRegNo,
             },
             {
-              type: '창고 유형',
+              type: '계약 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             // value.type2 === 'TRUST'
@@ -309,7 +309,7 @@ class ContractManager extends Component {
               value: value.warehouseRegNo,
             },
             {
-              type: '창고 유형',
+              type: '계약 유형',
               value: value.type2 === 'TRUST' ? '수탁' : '임대',
             },
             // value.type2 === 'TRUST'

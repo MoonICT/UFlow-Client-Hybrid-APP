@@ -183,7 +183,7 @@ class FormTrusts extends Component {
     ) {
       timeCheck = true;
     }
-    
+
     //check validate
     let checkUsblValue = false;
     let checkSplyAmount = false;
@@ -230,7 +230,7 @@ class FormTrusts extends Component {
         <View style>
           <Select
             data={typeCodes}
-            labelSelected="보관유형"
+            labelSelected="창고유형"
             // valueSelected={defaultTypeCodeT !== undefined ? defaultTypeCodeT.label : ''}
             dataDefault={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
             // selectedValue={formData.typeCode}
@@ -302,7 +302,7 @@ class FormTrusts extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                수탁 기간
+                수탁 시작일
               </Text>
               <DateTimePickerModal
                 mode="date"
@@ -333,7 +333,7 @@ class FormTrusts extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                수탁 기간
+                수탁 종료일
               </Text>
               <DateTimePickerModal
                 mode="date"
@@ -401,7 +401,7 @@ class FormTrusts extends Component {
           <TextField
             labelTextField="출고단가"
             isRequired={true}
-            placeholder="0"    
+            placeholder="0"
             textError={
               checkWhoutChrg === true
                 ? null

@@ -9,22 +9,22 @@ const defaultState = {
   filterList: [
     {
       type: 'WAREHOUSE',
-      label: '창고 유형',
+      label: '계약 유형',
       toggle: false,
     },
     {
       type: 'STORAGE',
-      label: '보관 유형',
+      label: '창고 유형',
       toggle: false,
     },
     {
       type: 'PERIOD',
-      label: '보관 기간',
+      label: '기간',
       toggle: false,
     },
     {
       type: 'PRICE',
-      label: '가격대',
+      label: '가격',
       toggle: false,
     },
     {
@@ -39,11 +39,11 @@ const defaultState = {
     },
   ],
   filterCodes: {
-    listTypeCodes: [ // 창고유
-      { name: '보관', value: 'KEEP' },
+    listTypeCodes: [ // 계약유형
+      { name: '임대', value: 'KEEP' },
       { name: '수탁', value: 'TRUST' },
     ],
-    listGdsTypeCode: [], // 보관유형
+    listGdsTypeCode: [], // 창고유형
     listCalUnitDvCode: [], // 정산단위
     listCalStdDvCode: [], // 산정기준
     listFlrDvCode: [], // 층수

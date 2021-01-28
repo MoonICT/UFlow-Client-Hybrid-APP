@@ -208,7 +208,7 @@ class DetailsManager extends Component {
             value: header.address,
           },
           {
-            type: '보관유형',
+            type: '창고유형',
             value: cntrTrustResBody.typeCode && cntrTrustResBody.typeCode.stdDetailCodeName,
           },
           {
