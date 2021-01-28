@@ -194,7 +194,6 @@ class FormInfo extends Component {
       formData &&
       mgmtChrgDvCodes &&
       mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
-
     return (
       <Card style={S.cards}>
         <View style>
