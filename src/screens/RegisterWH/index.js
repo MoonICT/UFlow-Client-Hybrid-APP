@@ -156,7 +156,7 @@ class RegisterWH extends Component {
   render () {
     const { imageStore, route, dataWH } = this.props;
 
-    // console.log('dataWHAll', dataWH);
+    console.log('dataWHAll', dataWH);
     // console.log('imageStore', imageStore);
     let completeMoreInfo = false;
     let completeInfo = false;
@@ -182,7 +182,7 @@ class RegisterWH extends Component {
     if (
       // imageStore.length > 0 &&
     // completeMoreInfo === true &&
-    // completeInfo === true &&
+    completeInfo === true &&
     // completeFloor === true &&
       completeIntro === true
     ) {

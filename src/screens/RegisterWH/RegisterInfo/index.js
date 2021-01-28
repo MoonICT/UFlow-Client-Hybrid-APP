@@ -123,8 +123,8 @@ class RegisterInfo extends Component {
       ? listTrusts.push({
         // key: lengths,
         // typeCode: '',
-        // calUnitDvCode: '',
-        // calStdDvCode: '',
+        calUnitDvCode: this.state.calUnitDvCodeTrusts[0]?.value,
+        calStdDvCode: this.state.calStdDvCodeTrusts[0]?.value,
         usblYmdFrom: new Date().getTime(),
         usblYmdTo: new Date().getTime(),
         // splyAmount: '',
@@ -139,8 +139,8 @@ class RegisterInfo extends Component {
       })
       : listKeeps.push({
         // typeCode: '',
-        // calUnitDvCode: '',
-        // calStdDvCode: '',
+        calUnitDvCode: this.state.calUnitDvCodeKeeps[1]?.value,
+        calStdDvCode: this.state.calStdDvCodeKeeps[0]?.value,
         // mgmtChrgDvCode: '',
         // commonArea: '',
         // usblValue: '',
@@ -262,7 +262,7 @@ class RegisterInfo extends Component {
       goToSlideKeep,
     } = this.state;
     // console.log('dataInfo :>> ', dataInfo);
-    console.log('keeps :>> ', keeps);
+    console.log('keeps ====:>> ', keeps);
 
     // TODO 확인버튼은 수탁과 보관의 모든것의 필수값이 입력된 경우만 true
     let isSubmitUpdate = false;
