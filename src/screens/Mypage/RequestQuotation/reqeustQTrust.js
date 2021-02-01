@@ -19,6 +19,8 @@ class ReqeustQTrust extends Component {
     console.log(props.warehSeq, 'props.warehSeq');
 
     this.state = {
+      fromDate: props.from ? Moment(props.from).toDate() : new Date(),
+      toDate: props.to ? Moment(props.to).toDate() : new Date(),
       fromMinDate: props.from ? Moment(props.from).toDate() : null,
       toMaxDate: props.to ? Moment(props.to).toDate() : null,
       formData: {
@@ -46,25 +48,29 @@ class ReqeustQTrust extends Component {
   };
 
   onChangeFrom = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeFrom');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showFrom: false
+      fromDate: selectedDate,
+      showFrom: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   }, showFrom: false
+    // });
   };
 
   onChangeTo = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeTo');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showTo: false
+      toDate: selectedDate,
+      showTo: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   }, showTo: false
+    // });
   };
 
   render() {
@@ -118,8 +124,8 @@ class ReqeustQTrust extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}
-              {/*{from ? Moment.unix(this.state.formData.from/1000).format('YYYY.MM.DD') : ''}*/}
+              {this.state.fromDate ? Moment(this.state.fromDate).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -134,8 +140,8 @@ class ReqeustQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? Moment(this.state.formData.from).toDate() : new Date()}
-              // date={from ? Moment.unix(this.state.formData.from/1000).toDate() : new Date()}
+              date={this.state.fromDate}
+              // date={from ? Moment(this.state.formData.from).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -155,8 +161,8 @@ class ReqeustQTrust extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}
-              {/*{to ? Moment.unix(this.state.formData.to/1000).format('YYYY.MM.DD') : ''}*/}
+              {this.state.toDate ? Moment(this.state.toDate).format('YYYY.MM.DD') : ''}
+              {/*{to ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -171,8 +177,8 @@ class ReqeustQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? Moment(this.state.formData.to).toDate() : new Date()}
-              // date={to ? Moment.unix(this.state.formData.to/1000).toDate() : new Date()}
+              date={this.state.toDate}
+              // date={to ? Moment(this.state.formData.to).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -407,14 +413,16 @@ class ReqeustQTrust extends Component {
             // return;
           }
 
-          formData.to = formData.to ? Moment(formData.to).format('x') : null;
-          formData.from = formData.from ? Moment(formData.from).format('x') : null;
+          // formData.to = formData.to ? Moment(formData.to).format('x') : null;
+          // formData.from = formData.from ? Moment(formData.from).format('x') : null;
 
           formData = {
             warehouseRegNo: this.props.warehouseRegNo,
             seq: this.props.warehSeq,
-            from: formData.from,
-            to: formData.to,
+            from: this.state.fromDate ? Moment(this.state.fromDate).format('x') : null,
+            to: this.state.toDate ? Moment(this.state.toDate).format('x') : null,
+            // from: formData.from,
+            // to: formData.to,
             rntlValue: formData.rntlValue,
             splyAmount: formData.splyAmount,
             whinChrg: formData.whinChrg,
