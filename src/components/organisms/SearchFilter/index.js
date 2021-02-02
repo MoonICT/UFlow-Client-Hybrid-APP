@@ -108,7 +108,7 @@ class SearchFilter extends Component {
       resultArr = resultArr.slice(0, 1)
       resultArr.push('...')
     }
-    return resultArr.length > 0 ? resultArr.join(', ') : '규모';
+    return resultArr.length > 0 ? resultArr.join(', ') : '가용면적';
   }
 
 
@@ -175,7 +175,7 @@ class SearchFilter extends Component {
                   {originEl.type === 'PRICE' &&
                   <Text>{this.handleRenderPriceValue()}</Text>}
 
-                  {/** 규모 */}
+                  {/** 규모(가용면적) */}
                   {originEl.type === 'SCALE' &&
                   <Text>{this.handleRenderAreaValue()}</Text>}
 

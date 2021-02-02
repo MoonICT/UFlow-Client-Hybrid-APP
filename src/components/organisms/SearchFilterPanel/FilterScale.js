@@ -53,7 +53,7 @@ class FilterScale extends Component {
     return (
       <View style={styles.filterContainer}>
 
-        {/***** 가양면적  *****/}
+        {/***** 공용면적  *****/}
 
         {/** Label */}
         <View style={styles.filterLabelWrap}>
