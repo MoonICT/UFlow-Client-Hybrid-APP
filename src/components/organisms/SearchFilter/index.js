@@ -94,6 +94,7 @@ class SearchFilter extends Component {
   }
 
   /**
+   * TODO 가용 수치/면적 으로 필드 변경 필요.
    * 규모 선택 시, 표현될 값.
    * */
   handleRenderAreaValue = () => {

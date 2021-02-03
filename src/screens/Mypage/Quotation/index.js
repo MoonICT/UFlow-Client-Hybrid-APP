@@ -26,6 +26,8 @@ import TenantRs00Keep from './tenantRs00Keep';
 
 import OwnerRq00Trust from './ownerRq00Trust';
 import OwnerRq00Keep from './ownerRq00Keep';
+import OwnerRs00Keep from './ownerRs00Keep';
+import OwnerRs00Trust from './ownerRs00Trust';
 
 import imgType0001 from '@Assets/images/type-0001.png';
 import imgType0002 from '@Assets/images/type-0002.png';
@@ -374,40 +376,42 @@ class Quotation extends Component {
             }
 
             {/** 엑션 없음 **/}
-            {/*{(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&*/}
-            {/*<OwnerRs00Trust*/}
-            {/*  navigation={this.props.navigation}*/}
-            {/*  warehouseRegNo={warehouseRegNo}*/}
-            {/*  warehSeq={warehSeq}*/}
-            {/*  rentUserNo={rentUserNo}*/}
-            {/*  type={type}*/}
-            {/*  typeWH={typeWH}*/}
-            {/*  status={status}*/}
-            {/*  data={dataApi}*/}
-            {/*  calUnitDvCodes={this.state.calUnitDvCodes}*/}
-            {/*  calStdDvCodes={this.state.calStdDvCodes}*/}
-            {/*  estmtTrustGroups={this.state.estmtTrustGroups}*/}
-            {/*  groupOrders={this.state.groupOrders}*/}
-            {/*/>*/}
-            {/*}*/}
+            {(type === 'OWNER' && status === 'RS00' && typeWH === 'TRUST') &&
+            <OwnerRs00Trust
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtTrustGroups={this.state.estmtTrustGroups}
+              groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
+            />
+            }
 
             {/** 엑션 없음 **/}
-            {/*{(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&*/}
-            {/*<OwnerRs00Keep*/}
-            {/*  navigation={this.props.navigation}*/}
-            {/*  warehouseRegNo={warehouseRegNo}*/}
-            {/*  warehSeq={warehSeq}*/}
-            {/*  rentUserNo={rentUserNo}*/}
-            {/*  type={type}*/}
-            {/*  typeWH={typeWH}*/}
-            {/*  status={status}*/}
-            {/*  data={dataApi}*/}
-            {/*  calUnitDvCodes={this.state.calUnitDvCodes}*/}
-            {/*  calStdDvCodes={this.state.calStdDvCodes}*/}
-            {/*  estmtKeepGroups={this.state.estmtKeepGroups}*/}
-            {/*  groupOrders={this.state.groupOrders}*/}
-            {/*/>*/}
-            {/*}*/}
+            {(type === 'OWNER' && status === 'RS00' && typeWH === 'KEEP') &&
+            <OwnerRs00Keep
+              navigation={this.props.navigation}
+              warehouseRegNo={warehouseRegNo}
+              warehSeq={warehSeq}
+              rentUserNo={rentUserNo}
+              type={type}
+              typeWH={typeWH}
+              status={status}
+              data={dataApi}
+              calUnitDvCodes={this.state.calUnitDvCodes}
+              calStdDvCodes={this.state.calStdDvCodes}
+              estmtKeepGroups={this.state.estmtKeepGroups}
+              groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
+            />
+            }
 
             {/** 견적서 버튼 */}
             {type === 'TENANT' && status === 'RS00' &&
