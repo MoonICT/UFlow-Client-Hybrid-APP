@@ -37,7 +37,7 @@ class OwnerRq00Trust extends Component {
 
     let lastRequestData = {};
     if (estmtTrustGroups && estmtTrustGroups.length > 0) {
-      lastRequestData = estmtTrustGroups[0][estmtTrustGroups[0].length - 1];
+      lastRequestData = estmtTrustGroups[this.state.groupOrderIndex][estmtTrustGroups[this.state.groupOrderIndex].length - 1];
     }
 
     let viewRequestTrust =
@@ -182,15 +182,15 @@ class OwnerRq00Trust extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    console.log('::componentDidUpdate::');
+    // console.log('::componentDidUpdate::');
   }
 
   componentDidMount () {
-    console.log('::componentDidMount::');
-// 마지막 차수로 설정.
-    if (this.state.groupOrders && this.state.groupOrders.length > 0) {
+    // console.log('::componentDidMount::');
+    // 마지막 차수로 설정.
+    if (this.props.groupOrders && this.props.groupOrders.length > 0) {
       this.setState({
-        groupOrderIndex: this.state.groupOrders.length - 1
+        groupOrderIndex: this.props.groupOrders.length - 1
       });
     }
   }
