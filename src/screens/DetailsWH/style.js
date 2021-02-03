@@ -105,6 +105,10 @@ export const styles = StyleSheet.create({
     width: windowWidth,
     height: 240,
   },
+  backgroundImagePana: {
+    width: windowWidth,
+    height: windowHeight,
+  },
   // 파노라마 오버레이
   panoOverlayWrap: {
     backgroundColor: '#000',

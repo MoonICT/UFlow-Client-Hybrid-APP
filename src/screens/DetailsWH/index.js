@@ -504,19 +504,19 @@ class DetailWH extends Component {
                       this.navigation.navigate('ViewPanoramaImage', {
                         image: whrgData.pnImages && whrgData.pnImages.length > 0 ? whrgData.pnImages[0].url : ''
                       })}>
-                      <PanoramaView
+                     {/**    <PanoramaView
                         style={S.backgroundImage}
                         dimensions={{ height: 230, width:windowWidth }}
                         inputType="mono"
                         imageUrl={whrgData.pnImages[0].url}
-                      />
-                  {/**    <Image
+                      />*/}
+                   <Image
                         style={S.backgroundImage}
                         source={whrgData.pnImages && whrgData.pnImages.length > 0
                           ? { uri: whrgData.pnImages[0].url }
                           : ''
                         }
-                      />*/}
+                      />
                     </TouchableOpacity>
                     :
                     <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>

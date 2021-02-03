@@ -14,7 +14,7 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, List, Searchbar } from 'react-native-paper';
@@ -112,8 +112,8 @@ class SignatureCaptureScreen extends Component {
               saveImageFileInExtStorage={false}
               showNativeButtons={false}
               showTitleLabel={false}
-              backgroundColor="#ff00ff"
-              strokeColor="#ffffff"
+              backgroundColor="#fafafa"
+              strokeColor="#000000"
               minStrokeWidth={4}
               maxStrokeWidth={4}
               viewMode={'portrait'}
@@ -123,17 +123,16 @@ class SignatureCaptureScreen extends Component {
               <TouchableHighlight
                 style={styles.buttonStyle}
                 onPress={() => {
-                  this.saveSign();
+                  this.resetSign();
                 }}>
-                <Text>Save</Text>
+                <Text style={DefaultStyle._textDF3}>Reset</Text>
               </TouchableHighlight>
-
               <TouchableHighlight
                 style={styles.buttonStyle}
                 onPress={() => {
-                  this.resetSign();
+                  this.saveSign();
                 }}>
-                <Text>Reset</Text>
+                <Text style={DefaultStyle._textDF3}>Save</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -150,14 +149,17 @@ const styles = StyleSheet.create({
     flex: 1,
     borderColor: '#000033',
     borderWidth: 1,
-    height: windowHeight-200,
+    height: windowHeight - 200,
   },
   buttonStyle: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    backgroundColor: '#eeeeee',
-    margin: 10,
+    borderWidth: 1,
+    borderColor: '#d7d7d7',
+    borderRadius: 4,
+    padding: 0,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });
