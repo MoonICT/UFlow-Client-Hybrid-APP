@@ -16,10 +16,9 @@ class ReqeustQKeep extends Component {
     super(props);
     this.navigation = props.navigation;
 
-    console.log(props.from ? Moment(props.from).toDate() : null, 'from');
-    console.log(props.to ? Moment(props.to).toDate() : null, 'to');
-
     this.state = {
+      fromDate: props.from ? Moment(props.from).toDate() : new Date(),
+      toDate: props.to ? Moment(props.to).toDate() : new Date(),
       fromMinDate: props.from ? Moment(props.from).toDate() : null,
       toMaxDate: props.to ? Moment(props.to).toDate() : null,
       formData: {
@@ -43,27 +42,31 @@ class ReqeustQKeep extends Component {
   };
 
   onChangeFrom = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeFrom');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      },
-      showFrom: false
+      fromDate: selectedDate,
+      showFrom: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   },
+    //   showFrom: false
+    // });
   };
 
   onChangeTo = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeTo');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      },
-      showTo: false
+      toDate: selectedDate,
+      showTo: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   },
+    //   showTo: false
+    // });
   };
 
   render () {
@@ -110,8 +113,8 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}
-              {/*{from ? Moment.unix(this.state.formData.from / 1000).format('YYYY.MM.DD') : ''}*/}
+              {this.state.fromDate ? Moment(this.state.fromDate).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -126,8 +129,8 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={this.state.formData.from ? Moment(this.state.formData.from).toDate() : new Date()}
-              // date={this.state.formData.from ? Moment.unix(this.state.formData.from / 1000).toDate() : new Date()}
+              date={this.state.fromDate}
+              // date={this.state.formData.from ? Moment(this.state.formData.from).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -148,8 +151,8 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}
-              {/*{to ? Moment.unix(this.state.formData.to / 1000).format('YYYY.MM.DD') : ''}*/}
+              {this.state.toDate ? Moment(this.state.toDate).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -164,8 +167,8 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={this.state.formData.from ? Moment(this.state.formData.to).toDate() : new Date()}
-              // date={this.state.formData.to ? Moment.unix(this.state.formData.to / 1000).toDate() : new Date()}
+              date={this.state.toDate}
+              // date={this.state.formData.from ? Moment(this.state.formData.to).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -326,14 +329,16 @@ class ReqeustQKeep extends Component {
             // return;
           }
 
-          formData.to = formData.to ? Moment(formData.to).format('x') : null;
-          formData.from = formData.from ? Moment(formData.from).format('x') : null;
+          // formData.to = formData.to ? Moment(formData.to).format('x') : null;
+          // formData.from = formData.from ? Moment(formData.from).format('x') : null;
 
           formData = {
             warehouseRegNo: this.props.warehouseRegNo,
             seq: this.props.warehSeq,
-            from: formData.from,
-            to: formData.to,
+            from: this.state.fromDate ? Moment(this.state.fromDate).format('x') : null,
+            to: this.state.toDate ? Moment(this.state.toDate).format('x') : null,
+            // from: formData.from,
+            // to: formData.to,
             rntlValue: formData.rntlValue,
             splyAmount: formData.splyAmount,
             mgmtChrg: formData.mgmtChrg,

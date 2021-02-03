@@ -251,10 +251,9 @@ class Mypage extends Component {
         let dataTable = [
           {
             type: '등록 상태',
-            value:
-              item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001'
-                ? '미검증 공실'
-                : item.sttsDbCode.stdDetailCodeName,
+            value: item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001' ?
+              '미검증 공실'
+              : item.sttsDbCode.stdDetailCodeName,
             colorValue: this.coverColor(
               item.sttsDbCode && item.sttsDbCode.stdDetailCode,
             ),
@@ -525,11 +524,11 @@ class Mypage extends Component {
         console.log('res', res);
         if (res.status === 200) {
           let _dataWH = res.data._embedded.warehouses;
-          let dataWH = _dataWH.filter(
-            item => item.sttsDbCode.stdDetailCode !== '0001',
-          );
-          console.log('dataWH=>', dataWH);
-          this.setState({ dataWH });
+          // let dataWH = _dataWH.filter(
+          //   item => item.sttsDbCode.stdDetailCode !== '0001',
+          // );
+          // console.log('dataWH=>', _dataWH);
+          this.setState({ dataWH: _dataWH });
         }
 
         // Progress

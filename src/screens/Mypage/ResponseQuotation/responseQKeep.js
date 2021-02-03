@@ -11,6 +11,7 @@ import { Warehouse } from '@Services/apis';
 import { StringUtils, DeepLogs } from '@Services/utils';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import moment from "moment";
+
 class ResponseQKeep extends Component {
 
   constructor (props) {
@@ -20,6 +21,8 @@ class ResponseQKeep extends Component {
     console.log(props.warehSeq, 'props.warehSeq');
 
     this.state = {
+      fromDate: props.from ? Moment(props.from).toDate() : new Date(),
+      toDate: props.to ? Moment(props.to).toDate() : new Date(),
       fromMinDate: props.from ? Moment(props.from).toDate() : null,
       toMaxDate: props.to ? Moment(props.to).toDate() : null,
       formData: {
@@ -43,25 +46,29 @@ class ResponseQKeep extends Component {
   };
 
   onChangeFrom = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeFrom');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showFrom: false
+      fromDate: selectedDate,
+      showFrom: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   }, showFrom: false
+    // });
   };
 
   onChangeTo = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeTo');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showTo: false
+      toDate: selectedDate,
+      showTo: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   }, showTo: false
+    // });
   };
 
   render () {
@@ -110,7 +117,8 @@ class ResponseQKeep extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? moment(from).format('YYYY.MM.DD') : ''}
+              {this.state.fromDate ? moment(this.state.fromDate).format('YYYY.MM.DD') : ''}
+              {/*{from ? moment(from).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -125,7 +133,8 @@ class ResponseQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? moment(from).toDate() : new Date()}
+              date={this.state.fromDate}
+              // date={from ? moment(from).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -145,7 +154,8 @@ class ResponseQKeep extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? moment(to).format('YYYY.MM.DD') : ''}
+              {this.state.toDate ? moment(this.state.toDate).format('YYYY.MM.DD') : ''}
+              {/*{to ? moment(to).format('YYYY.MM.DD') : ''}*/}
             </Text>
 
             <Text
@@ -161,7 +171,8 @@ class ResponseQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? moment(to).toDate() : new Date()}
+              date={this.state.toDate}
+              // date={to ? moment(to).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -321,19 +332,23 @@ class ResponseQKeep extends Component {
             // return;
           }
 
-          formData.to = formData.to ? Moment(formData.to).format('x') : null;
-          formData.from = formData.from ? Moment(formData.from).format('x') : null;
+          // formData.to = formData.to ? Moment(formData.to).format('x') : null;
+          // formData.from = formData.from ? Moment(formData.from).format('x') : null;
 
           formData = {
             warehouseRegNo: this.props.warehouseRegNo,
             seq: this.props.warehSeq,
-            from: formData.from,
-            to: formData.to,
+            from: this.state.fromDate ? Moment(this.state.fromDate).format('x') : null,
+            to: this.state.toDate ? Moment(this.state.toDate).format('x') : null,
+            // from: formData.from,
+            // to: formData.to,
             rntlValue: formData.rntlValue,
             splyAmount: formData.splyAmount,
             mgmtChrg: formData.mgmtChrg,
             remark: formData.remark
           };
+
+          console.log(formData, 'formData1')
 
           Warehouse.responQuotation({
             type: `owner/warehouse/${formData.warehouseRegNo}/keep/${formData.seq}/${this.props.rentUserNo}`,

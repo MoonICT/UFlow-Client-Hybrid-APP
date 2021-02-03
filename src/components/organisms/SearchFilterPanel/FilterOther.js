@@ -111,112 +111,89 @@ class FilterOther extends Component {
           {/***** 대지면적  *****/}
 
           {/** Label */}
-          <View style={styles.filterLabelWrap}>
-            <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'대지면적'}</Text>
-            </View>
-            <Text
-              style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(Number(this.props.whFilter.siteArea) === siteAreaMax || Number(this.props.whFilter.siteArea) === 0) ?
-                '전체' : this.props.whFilter.siteArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
-            </Text>
-          </View>
+          {/*<View style={styles.filterLabelWrap}>*/}
+            {/*<View style={styles.filterLabelWrap}>*/}
+              {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'대지면적'}</Text>*/}
+            {/*</View>*/}
+            {/*<Text*/}
+              {/*style={[styles.filterLabel, styles.filterLabelMain]}>*/}
+              {/*{(Number(this.props.whFilter.siteArea) === siteAreaMax || Number(this.props.whFilter.siteArea) === 0) ?*/}
+                {/*'전체' : this.props.whFilter.siteArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}*/}
+            {/*</Text>*/}
+          {/*</View>*/}
 
           {/** Slider */}
-          <RangeSlider value={this.props.whFilter.siteArea ? Number(this.props.whFilter.siteArea) : 0}
-                       step={1000}
-                       contentStyle={{ marginBottom: 24 }}
-                       minimumValue={0}
-                       maximumValue={siteAreaMax}
-                       LabelMiddle={`${numberComma((siteAreaMax / 2))}㎡`}
-                       onValueChange={(value) => {
-                         this.props.setSearchFilter({
-                           siteArea: value,
-                         });
-                       }} />
+          {/*<RangeSlider value={this.props.whFilter.siteArea ? Number(this.props.whFilter.siteArea) : 0}*/}
+                       {/*step={1000}*/}
+                       {/*contentStyle={{ marginBottom: 24 }}*/}
+                       {/*minimumValue={0}*/}
+                       {/*maximumValue={siteAreaMax}*/}
+                       {/*LabelMiddle={`${numberComma((siteAreaMax / 2))}㎡`}*/}
+                       {/*onValueChange={(value) => {*/}
+                         {/*this.props.setSearchFilter({*/}
+                           {/*siteArea: value,*/}
+                         {/*});*/}
+                       {/*}} />*/}
 
-          <View style={styles.filterDivider}></View>
+          {/*<View style={styles.filterDivider}></View>*/}
 
           {/***** 건축면적 *****/}
 
           {/** Label */}
-          <View style={styles.filterLabelWrap}>
-            <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'건축면적'}</Text>
-            </View>
-            <Text
-              style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(Number(this.props.whFilter.bldgArea) === bldgAreaMax || Number(this.props.whFilter.bldgArea) === 0) ?
-                '전체' : this.props.whFilter.bldgArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
-            </Text>
-          </View>
+          {/*<View style={styles.filterLabelWrap}>*/}
+            {/*<View style={styles.filterLabelWrap}>*/}
+              {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'건축면적'}</Text>*/}
+            {/*</View>*/}
+            {/*<Text*/}
+              {/*style={[styles.filterLabel, styles.filterLabelMain]}>*/}
+              {/*{(Number(this.props.whFilter.bldgArea) === bldgAreaMax || Number(this.props.whFilter.bldgArea) === 0) ?*/}
+                {/*'전체' : this.props.whFilter.bldgArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}*/}
+            {/*</Text>*/}
+          {/*</View>*/}
 
           {/** Slider */}
-          <RangeSlider value={this.props.whFilter.bldgArea ? Number(this.props.whFilter.bldgArea) : 0}
-                       step={1000}
-                       contentStyle={{ marginBottom: 24 }}
-                       minimumValue={0}
-                       maximumValue={bldgAreaMax}
-                       LabelMiddle={`${numberComma((bldgAreaMax / 2))}㎡`}
-                       onValueChange={(value) => {
-                         this.props.setSearchFilter({
-                           bldgArea: value,
-                         });
-                       }} />
+          {/*<RangeSlider value={this.props.whFilter.bldgArea ? Number(this.props.whFilter.bldgArea) : 0}*/}
+                       {/*step={1000}*/}
+                       {/*contentStyle={{ marginBottom: 24 }}*/}
+                       {/*minimumValue={0}*/}
+                       {/*maximumValue={bldgAreaMax}*/}
+                       {/*LabelMiddle={`${numberComma((bldgAreaMax / 2))}㎡`}*/}
+                       {/*onValueChange={(value) => {*/}
+                         {/*this.props.setSearchFilter({*/}
+                           {/*bldgArea: value,*/}
+                         {/*});*/}
+                       {/*}} />*/}
 
-          <View style={styles.filterDivider}></View>
+          {/*<View style={styles.filterDivider}></View>*/}
 
           {/***** 연면적 *****/}
 
           {/** Label */}
-          <View style={styles.filterLabelWrap}>
-            <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'연면적'}</Text>
-            </View>
-            <Text
-              style={[styles.filterLabel, styles.filterLabelMain]}>
-              {(Number(this.props.whFilter.totalArea) === totalAreaMax || Number(this.props.whFilter.totalArea) === 0) ?
-                '전체' : this.props.whFilter.totalArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
-            </Text>
-          </View>
+          {/*<View style={styles.filterLabelWrap}>*/}
+            {/*<View style={styles.filterLabelWrap}>*/}
+              {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'연면적'}</Text>*/}
+            {/*</View>*/}
+            {/*<Text*/}
+              {/*style={[styles.filterLabel, styles.filterLabelMain]}>*/}
+              {/*{(Number(this.props.whFilter.totalArea) === totalAreaMax || Number(this.props.whFilter.totalArea) === 0) ?*/}
+                {/*'전체' : this.props.whFilter.totalArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}*/}
+            {/*</Text>*/}
+          {/*</View>*/}
 
           {/** Slider */}
-          <RangeSlider value={this.props.whFilter.totalArea ? Number(this.props.whFilter.totalArea) : 0}
-                       step={1000}
-                       contentStyle={{ marginBottom: 24 }}
-                       minimumValue={0}
-                       maximumValue={totalAreaMax}
-                       LabelMiddle={`${numberComma((totalAreaMax / 2))}㎡`}
-                       onValueChange={(value) => {
-                         this.props.setSearchFilter({
-                           totalArea: value,
-                         });
-                       }} />
+          {/*<RangeSlider value={this.props.whFilter.totalArea ? Number(this.props.whFilter.totalArea) : 0}*/}
+                       {/*step={1000}*/}
+                       {/*contentStyle={{ marginBottom: 24 }}*/}
+                       {/*minimumValue={0}*/}
+                       {/*maximumValue={totalAreaMax}*/}
+                       {/*LabelMiddle={`${numberComma((totalAreaMax / 2))}㎡`}*/}
+                       {/*onValueChange={(value) => {*/}
+                         {/*this.props.setSearchFilter({*/}
+                           {/*totalArea: value,*/}
+                         {/*});*/}
+                       {/*}} />*/}
 
-          <View style={styles.filterDivider}></View>
-
-          {/***** 층수 *****/}
-
-          {/** Label */}
-          <View style={styles.filterLabelWrap}>
-            <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'층수'}</Text>
-            </View>
-          </View>
-
-          {/** Checkbox */}
-          <View style={styles.gridRow}>
-            {this.props.filterCodes.listFlrDvCode.map((item, index) =>
-              <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
-                <Checkbox
-                  checked={(this.props.whFilter.flrDvCodes ? this.props.whFilter.flrDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
-                  label={item.stdDetailCodeName}
-                  value={item.stdDetailCode}
-                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'flrDvCodes')} /></View>)}
-          </View>
-
-          <View style={styles.filterDivider}></View>
-
+          {/*<View style={styles.filterDivider}></View>*/}
 
           {/***** 층고 *****/}
 
@@ -247,27 +224,50 @@ class FilterOther extends Component {
 
           <View style={styles.filterDivider}></View>
 
-          {/***** 준공연차 *****/}
+          {/***** 층수 *****/}
 
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'준공연차'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'층수'}</Text>
             </View>
           </View>
 
           {/** Checkbox */}
           <View style={styles.gridRow}>
-            {this.props.filterCodes.listCmpltTypes.map((item, index) =>
+            {this.props.filterCodes.listFlrDvCode.map((item, index) =>
               <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
                 <Checkbox
-                  checked={(this.props.whFilter.cmpltYmds ? this.props.whFilter.cmpltYmds.indexOf(Object.keys(item)[1]) > -1 : false)}
-                  label={item[Object.keys(item)[1]]}
-                  value={Object.keys(item)[1]}
-                  onPress={() => this.handleOnChangeFilterCheckbox(Object.keys(item)[1], 'cmpltYmds')} /></View>)}
+                  checked={(this.props.whFilter.flrDvCodes ? this.props.whFilter.flrDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
+                  label={item.stdDetailCodeName}
+                  value={item.stdDetailCode}
+                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'flrDvCodes')} /></View>)}
           </View>
 
           <View style={styles.filterDivider}></View>
+
+
+          {/***** 준공연차 *****/}
+
+          {/** Label */}
+          {/*<View style={styles.filterLabelWrap}>*/}
+            {/*<View style={styles.filterLabelWrap}>*/}
+              {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'준공연차'}</Text>*/}
+            {/*</View>*/}
+          {/*</View>*/}
+
+          {/** Checkbox */}
+          {/*<View style={styles.gridRow}>*/}
+            {/*{this.props.filterCodes.listCmpltTypes.map((item, index) =>*/}
+              {/*<View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>*/}
+                {/*<Checkbox*/}
+                  {/*checked={(this.props.whFilter.cmpltYmds ? this.props.whFilter.cmpltYmds.indexOf(Object.keys(item)[1]) > -1 : false)}*/}
+                  {/*label={item[Object.keys(item)[1]]}*/}
+                  {/*value={Object.keys(item)[1]}*/}
+                  {/*onPress={() => this.handleOnChangeFilterCheckbox(Object.keys(item)[1], 'cmpltYmds')} /></View>)}*/}
+          {/*</View>*/}
+
+          {/*<View style={styles.filterDivider}></View>*/}
 
           {/***** 접안방식 *****/}
 
@@ -296,7 +296,7 @@ class FilterOther extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'보험가입'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'보험가입 여부'}</Text>
             </View>
           </View>
 
@@ -316,46 +316,46 @@ class FilterOther extends Component {
           {/***** 정산단위 *****/}
 
           {/** Label */}
-          <View style={styles.filterLabelWrap}>
-            <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'정산단위'}</Text>
-            </View>
-          </View>
+          {/*<View style={styles.filterLabelWrap}>*/}
+            {/*<View style={styles.filterLabelWrap}>*/}
+              {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'정산단위'}</Text>*/}
+            {/*</View>*/}
+          {/*</View>*/}
 
           {/** Checkbox */}
-          <View style={styles.gridRow}>
-            {this.props.filterCodes.listCalUnitDvCode.map((item, index) =>
-              <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
-                <Checkbox
-                  checked={(this.props.whFilter.calUnitDvCodes ? this.props.whFilter.calUnitDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
-                  label={item.stdDetailCodeName}
-                  value={item.stdDetailCode}
-                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'calUnitDvCodes')} /></View>)}
-          </View>
+          {/*<View style={styles.gridRow}>*/}
+            {/*{this.props.filterCodes.listCalUnitDvCode.map((item, index) =>*/}
+              {/*<View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>*/}
+                {/*<Checkbox*/}
+                  {/*checked={(this.props.whFilter.calUnitDvCodes ? this.props.whFilter.calUnitDvCodes.indexOf(item.stdDetailCode) > -1 : false)}*/}
+                  {/*label={item.stdDetailCodeName}*/}
+                  {/*value={item.stdDetailCode}*/}
+                  {/*onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'calUnitDvCodes')} /></View>)}*/}
+          {/*</View>*/}
 
-          <View style={styles.filterDivider}></View>
+          {/*<View style={?styles.filterDivider}></View>*/}
 
           {/***** 산정기준 *****/}
 
           {/** Label */}
-          <View style={styles.filterLabelWrap}>
-            <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'산정기준'}</Text>
-            </View>
-          </View>
+          {/*<View style={styles.filterLabelWrap}>*/}
+            {/*<View style={styles.filterLabelWrap}>*/}
+              {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'산정기준'}</Text>*/}
+            {/*</View>*/}
+          {/*</View>*/}
 
           {/** Checkbox */}
-          <View style={styles.gridRow}>
-            {this.props.filterCodes.listCalStdDvCode.map((item, index) =>
-              <View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>
-                <Checkbox
-                  checked={(this.props.whFilter.calStdDvCodes ? this.props.whFilter.calStdDvCodes.indexOf(item.stdDetailCode) > -1 : false)}
-                  label={item.stdDetailCodeName}
-                  value={item.stdDetailCode}
-                  onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'calStdDvCodes')} /></View>)}
-          </View>
+          {/*<View style={styles.gridRow}>*/}
+            {/*{this.props.filterCodes.listCalStdDvCode.map((item, index) =>*/}
+              {/*<View style={[styles.filterCheckWrap, styles.gridColumn]} key={index}>*/}
+                {/*<Checkbox*/}
+                  {/*checked={(this.props.whFilter.calStdDvCodes ? this.props.whFilter.calStdDvCodes.indexOf(item.stdDetailCode) > -1 : false)}*/}
+                  {/*label={item.stdDetailCodeName}*/}
+                  {/*value={item.stdDetailCode}*/}
+                  {/*onPress={() => this.handleOnChangeFilterCheckbox(item.stdDetailCode, 'calStdDvCodes')} /></View>)}*/}
+          {/*</View>*/}
 
-          <View style={styles.filterDivider}></View>
+          {/*<View style={styles.filterDivider}></View>*/}
 
           <View style={{ marginBottom: 40, }}>
             <Button mode="contained"

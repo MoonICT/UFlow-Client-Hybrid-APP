@@ -349,18 +349,18 @@ class DetailsManager extends Component {
                 type: inoutLabel,
                 value: inoutValue
               },
-              {
-                type: '입고비',// 입고단가 X 입고확정수량
-                value: money(whinUprice)
-              },
-              {
-                type: '출고비',
-                value: money(whoutUprice)
-              },
-              {
-                type: '보관비',
-                value: money(item.stockUprice) + " " + (item.stockUpriceRemark && ` (${item.stockUpriceRemark})`)
-              }
+              // {
+              //   type: '입고비',// 입고단가 X 입고확정수량
+              //   value: money(whinUprice)
+              // },
+              // {
+              //   type: '출고비',
+              //   value: money(whoutUprice)
+              // },
+              // {
+              //   type: '보관비',
+              //   value: money(item.stockUprice) + " " + (item.stockUpriceRemark && ` (${item.stockUpriceRemark})`)
+              // }
             ]
           }
         })

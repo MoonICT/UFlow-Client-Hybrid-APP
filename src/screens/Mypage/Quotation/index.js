@@ -410,7 +410,7 @@ class Quotation extends Component {
             {/*}*/}
 
             {/** 견적서 버튼 */}
-            {status === 'RS00' &&
+            {type === 'TENANT' && status === 'RS00' &&
             <View style={[DefaultStyle._cards, DefaultStyle.backgroundWhiteDF2, { backgroundColor: '#fff' }]}>
               <TouchableOpacity
                 style={[

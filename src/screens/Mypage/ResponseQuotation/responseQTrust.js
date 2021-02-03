@@ -19,6 +19,8 @@ class ResponseQTrust extends Component {
     console.log(props.warehSeq, 'props.warehSeq');
 
     this.state = {
+      fromDate: props.from ? Moment(props.from).toDate() : new Date(),
+      toDate: props.to ? Moment(props.to).toDate() : new Date(),
       fromMinDate: props.from ? Moment(props.from).toDate() : null,
       toMaxDate: props.to ? Moment(props.to).toDate() : null,
       formData: {
@@ -46,25 +48,29 @@ class ResponseQTrust extends Component {
   };
 
   onChangeFrom = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeFrom');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showFrom: false
+      fromDate: selectedDate,
+      showFrom: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   }, showFrom: false
+    // });
   };
 
   onChangeTo = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeTo');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showTo: false
+      toDate: selectedDate,
+      showTo: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   }, showTo: false
+    // });
   };
 
   render() {
@@ -135,7 +141,8 @@ class ResponseQTrust extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? moment(from).format('YYYY.MM.DD') : ''}
+              {this.state.fromDate ? Moment(this.state.fromDate).format('YYYY.MM.DD') : ''}
+              {/*{from ? moment(from).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -150,7 +157,8 @@ class ResponseQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? moment(from).toDate() : new Date()}
+              date={this.state.fromDate}
+              // date={from ? moment(from).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -170,7 +178,8 @@ class ResponseQTrust extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? moment(to).format('YYYY.MM.DD') : ''}
+              {this.state.toDate ? Moment(this.state.toDate).format('YYYY.MM.DD') : ''}
+              {/*{to ? moment(to).format('YYYY.MM.DD') : ''}*/}
             </Text>
 
             <Text
@@ -186,7 +195,8 @@ class ResponseQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? moment(to).toDate() : new Date()}
+              date={this.state.toDate}
+              // date={to ? moment(to).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -294,7 +304,7 @@ class ResponseQTrust extends Component {
         }
       />
       {/** 인건 단가 **/}
-      {/** 
+      {/**
       <TextField
         colorLabel="#000000"
         labelTextField="인건단가"
@@ -315,7 +325,7 @@ class ResponseQTrust extends Component {
       />
        **/}
       {/** 가공 단가 **/}
-      {/** 
+      {/**
       <TextField
         colorLabel="#000000"
         labelTextField="가공단가"
@@ -336,7 +346,7 @@ class ResponseQTrust extends Component {
       />
        **/}
       {/** 택배 단가 **/}
-      {/** 
+      {/**
       <TextField
         colorLabel="#000000"
         labelTextField="택배단가"
@@ -432,14 +442,16 @@ class ResponseQTrust extends Component {
             // return;
           }
 
-          formData.to = formData.to ? Moment(formData.to).format('x') : null;
-          formData.from = formData.from ? Moment(formData.from).format('x') : null;
+          // formData.to = formData.to ? Moment(formData.to).format('x') : null;
+          // formData.from = formData.from ? Moment(formData.from).format('x') : null;
 
           formData = {
             warehouseRegNo: this.props.warehouseRegNo,
             seq: this.props.warehSeq,
-            from: formData.from,
-            to: formData.to,
+            from: this.state.fromDate ? Moment(this.state.fromDate).format('x') : null,
+            to: this.state.toDate ? Moment(this.state.toDate).format('x') : null,
+            // from: formData.from,
+            // to: formData.to,
             rntlValue: formData.rntlValue,
             splyAmount: formData.splyAmount,
             whinChrg: formData.whinChrg,
