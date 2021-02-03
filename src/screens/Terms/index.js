@@ -20,6 +20,8 @@ import Appbars from '@Components/organisms/AppBar';
 import Select from '@Components/organisms/Select';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
+import { Term } from '@Services/apis';
+
 //---> Assets
 
 //Data Terms Select
@@ -63,12 +65,12 @@ class Terms extends Component {
 
   /** when exits screen */
   componentWillUnmount() {
-  //console.log('//::componentWillUnmount::');
+    //console.log('//::componentWillUnmount::');
   }
 
   render() {
-    let { terms } = this.state;
-
+    let { terms, dataType, code } = this.state;
+    console.log('code', code);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -82,7 +84,12 @@ class Terms extends Component {
         <ScrollView>
           <View style={S.content}>
             <View style={S.selectTerms}>
-              <Select data={data} />
+              <Select
+                data={dataType}
+                valueProps={e => {
+                  this.setState({ code: e });
+                }}
+              />
             </View>
             <Text style={[S.titleTerm, S.fontMedium, S.fontS16]}>
               {'제 1조 (목적)'}
@@ -130,13 +137,36 @@ class Terms extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    console.log('::componentDidMount::');
+    await Term.getTypeTerm()
+      .then(res => {
+        if (res) {
+          let data = res.map(el => {
+            return {
+              label: el.stdDetailCodeName,
+              value: el.stdDetailCode,
+            };
+          });
+          this.setState({ dataType: data });
+        }
+      })
+      .catch(err => {
+        console.log('errTerm', err);
+      });
     SplashScreen.hide();
   }
 
   /** when update state or props */
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
+    if (this.state.code !== prevState.code) {
+      Term.getCodeTerm(this.state.code)
+        .then(res => {
+          console.log('res', res);
+        })
+        .catch(err => {
+          console.log('errCodeTerm', err);
+        });
+    }
   }
 }
 
