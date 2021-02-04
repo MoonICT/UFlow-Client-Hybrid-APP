@@ -11,7 +11,8 @@ import {SafeAreaView, View, ScrollView, TouchableOpacity, Linking} from 'react-n
 import { Appbar, Text } from 'react-native-paper';
 import FilterButton from '@Components/atoms/FilterButton';
 import DefaultStyle from '@Styles/default';
-import { moneyUnit , dateStr, toStdCd } from '@Utils/StringUtils';
+import { dateStr, toStdCd } from '@Utils/StringUtils';
+import { money, numberComma } from '@Services/utils/StringUtils';
 import TableInfo from '@Components/atoms/TableInfo';
 import { SettlementManagementService, Calculate } from '@Services/apis'
 import Moment from 'moment';
@@ -43,6 +44,7 @@ export default class DetailsSettlement extends Component {
       dataCost: [],
       headerDetailResBody: null,
       dataTotal: [],
+      dataFeeRate: [],
       dataFee: [],
       cntrTypeCode: null,
     };
@@ -127,15 +129,30 @@ export default class DetailsSettlement extends Component {
       let dataTotal = [
         {
           type: '공급가액',
-          value: res.data.data.amount ? moneyUnit(res.data.data.amount) : '0 원',
+          value: res.data.data.calMgmtMResBody ? money(res.data.data.amount) : '0 원',
         },
         {
           type: '부가세',
-          value: res.data.data.vat ? moneyUnit(res.data.data.vat) : '0 원',
+          value: res.data.data.vat ? money(res.data.data.vat) : '0 원',
         },
         {
           type: '합계금액',
-          value: total ? moneyUnit(total) : '0 원',
+          value: total ? money(total) : '0 원',
+        }
+      ]
+
+      let dataFeeRate = [
+        {
+          type: '요율',
+          value: res.data.data?.calMgmtMResBody?.rate  ?  res.data.data?.calMgmtMResBody?.rate + '%' : '',
+        },
+        {
+          type: '수수료	',
+          value: money(res.data.data?.calMgmtMResBody.fee) ?? '',
+        },
+        {
+          type: '적용금액',
+          value: money(res.data.data?.calMgmtMResBody?.fee) ?? ''
         }
       ]
 
@@ -153,45 +170,45 @@ export default class DetailsSettlement extends Component {
              // 량
             {
               type: '입고량',
-              value: item.whinQty || '0'
+              value: numberComma(item.whinQty) || '0'
             },
             {
               type: '출고량',
-              value: item.whoutQty || '0'
+              value: numberComma(item.whoutQty) || '0'
             },
             {
               type: '재고량',
-              value: item.stckQty || '0'
+              value: numberComma(item.stckQty) || '0'
             },
               // 단가
             {
               type: '입고단가',
-              value: item.whinChrg ? moneyUnit(item.whinChrg) : '0 원'
+              value: item.whinChrg ? money(item.whinChrg) : '0 원'
             },
             {
               type: '출고단가',
-              value: item.whoutChrg ? moneyUnit(item.whoutChrg) : '0 원'
+              value: item.whoutChrg ? money(item.whoutChrg) : '0 원'
             },
             {
               type: '재고단가',
-              value: item.stckChrg ? moneyUnit(item.stckChrg) : '0 원'
+              value: item.stckChrg ? money(item.stckChrg) : '0 원'
             },
               // 비
             {
               type: '입고비',
-              value: item.whinUprice ? moneyUnit(item.whinUprice) : '0 원'
+              value: item.whinUprice ? money(item.whinUprice) : '0 원'
             },
             {
               type: '출고비',
-              value: item.whoutUprice ? moneyUnit(item.whoutUprice) : '0 원'
+              value: item.whoutUprice ? money(item.whoutUprice) : '0 원'
             },
             {
               type: '재고비',
-              value: item.stckUprice ? moneyUnit(item.stckUprice) : '0 원'
+              value: item.stckUprice ? money(item.stckUprice) : '0 원'
             },
             {
               type: '합계',
-              value: item.amount ? moneyUnit(item.amount) : '0 원'
+              value: item.amount ? money(item.amount) : '0 원'
             },
             {
               type: '비고',
@@ -204,7 +221,7 @@ export default class DetailsSettlement extends Component {
       let inOutSubtotal = [
         {
           type: '소계',
-          value: moneyUnit(detail1Subtotal)
+          value: money(detail1Subtotal)
         }
       ]
 
@@ -223,7 +240,7 @@ export default class DetailsSettlement extends Component {
             },
             {
               type: '비용',
-              value: item.amount ? moneyUnit(item.amount) : '0 원'
+              value: item.amount ? money(item.amount) : '0 원'
             },
             {
               type: '비고',
@@ -236,12 +253,12 @@ export default class DetailsSettlement extends Component {
       let keepSubtotal = [
         {
           type: '소계',
-          value: countTotal ? moneyUnit(countTotal) : '0 원'
+          value: countTotal ? money(countTotal) : '0 원'
         }
       ]
 
       this.setState({
-        dataInfo, inOutSubtotal, headerDetailResBody, dataCost, dataTotal, dataFee, keepSubtotal, cntrTypeCode
+        dataInfo, inOutSubtotal, headerDetailResBody, dataCost, dataTotal, dataFee, keepSubtotal, cntrTypeCode, dataFeeRate
       })
     }).catch(error => {
       alert('SettlementManagementService.getDetail error:' + error);
@@ -263,7 +280,7 @@ export default class DetailsSettlement extends Component {
 
 
   render() {
-    const { feeState, toggleFee, toggleCosts, inOutSubtotal, dataInfo, dataTotal, dataFee , dataCost , keepSubtotal} = this.state;
+    const {dataFeeRate, feeState, toggleFee, toggleCosts, inOutSubtotal, dataInfo, dataTotal, dataFee , dataCost , keepSubtotal} = this.state;
 
     const viewFee =
       dataFee &&
@@ -398,15 +415,16 @@ export default class DetailsSettlement extends Component {
                   style={SS.toggle}
                   styleLabel={SS.textToggle}
               />
-              <TableInfo
-                  data={inOutSubtotal}
-                  style={{borderBottomWidth: 1, borderTopWidth: 0}}
-              />
-              {toggleFee === false ? (
+
+              {toggleFee ? (
                   <Fragment>
                     {viewFee}
                   </Fragment>
               ) : null}
+              <TableInfo
+                  data={inOutSubtotal}
+                  style={{borderBottomWidth: 1, borderTopWidth: 0}}
+              />
             </View>
             }
 
@@ -435,6 +453,30 @@ export default class DetailsSettlement extends Component {
                 }
               </View>
             {/* } */}
+
+            <View style={DefaultStyle._card}>
+              <View
+                style={[
+                  DefaultStyle._headerCardTitle,
+                  DefaultStyle._borderBottom,
+                ]}>
+                <Text
+                  style={[
+                    DefaultStyle._textTitleCard,
+                    S.textTitleTenant,
+                    { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
+                  ]}>
+                  요율 및 수수료
+                </Text>
+              </View>
+              <View style={DefaultStyle._infoTable}>
+                <TableInfo
+                  data={dataFeeRate}
+                  borderRow={false}
+                  borderBottom={true}
+                />
+              </View>
+            </View>
 
             <View style={DefaultStyle._card}>
               <View

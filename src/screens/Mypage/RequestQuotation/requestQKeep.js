@@ -10,17 +10,15 @@ import Moment from 'moment';
 import { Warehouse } from '@Services/apis';
 import { StringUtils, DeepLogs } from '@Services/utils';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
-
 class ReqeustQKeep extends Component {
 
   constructor (props) {
     super(props);
     this.navigation = props.navigation;
 
-    console.log(props.from ? Moment(props.from).toDate() : null, 'from');
-    console.log(props.to ? Moment(props.to).toDate() : null, 'to');
-
     this.state = {
+      fromDate: props.from ? Moment(props.from).toDate() : new Date(),
+      toDate: props.to ? Moment(props.to).toDate() : new Date(),
       fromMinDate: props.from ? Moment(props.from).toDate() : null,
       toMaxDate: props.to ? Moment(props.to).toDate() : null,
       formData: {
@@ -44,25 +42,31 @@ class ReqeustQKeep extends Component {
   };
 
   onChangeFrom = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeFrom');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showFrom: false
+      fromDate: selectedDate,
+      showFrom: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   },
+    //   showFrom: false
+    // });
   };
 
   onChangeTo = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeTo');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showTo: false
+      toDate: selectedDate,
+      showTo: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   },
+    //   showTo: false
+    // });
   };
 
   render () {
@@ -109,7 +113,8 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? Moment(from).format('YYYY.MM.DD') : ''}
+              {this.state.fromDate ? Moment(this.state.fromDate).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -124,7 +129,8 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? Moment(from).toDate() : new Date()}
+              date={this.state.fromDate}
+              // date={this.state.formData.from ? Moment(this.state.formData.from).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -145,7 +151,8 @@ class ReqeustQKeep extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? Moment(to).format('YYYY.MM.DD') : ''}
+              {this.state.toDate ? Moment(this.state.toDate).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -160,7 +167,8 @@ class ReqeustQKeep extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? Moment(to).toDate() : new Date()}
+              date={this.state.toDate}
+              // date={this.state.formData.from ? Moment(this.state.formData.to).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -197,6 +205,7 @@ class ReqeustQKeep extends Component {
                 },
                 rntlValuePyeong: value
               });
+
             }}
           />
         </View>
@@ -219,6 +228,7 @@ class ReqeustQKeep extends Component {
                 },
                 rntlValuePyeong: value ? toPyeong(value) : ''
               });
+
             }}
           />
         </View>
@@ -235,13 +245,14 @@ class ReqeustQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               splyAmount: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
         }
       />
 
@@ -256,13 +267,14 @@ class ReqeustQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               mgmtChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
         }
       />
       {/** 추가 요청 사항 **/}
@@ -317,14 +329,16 @@ class ReqeustQKeep extends Component {
             // return;
           }
 
-          formData.to = formData.to ? Moment(formData.to).format('x') : null;
-          formData.from = formData.from ? Moment(formData.from).format('x') : null;
+          // formData.to = formData.to ? Moment(formData.to).format('x') : null;
+          // formData.from = formData.from ? Moment(formData.from).format('x') : null;
 
           formData = {
             warehouseRegNo: this.props.warehouseRegNo,
             seq: this.props.warehSeq,
-            from: formData.from,
-            to: formData.to,
+            from: this.state.fromDate ? Moment(this.state.fromDate).format('x') : null,
+            to: this.state.toDate ? Moment(this.state.toDate).format('x') : null,
+            // from: formData.from,
+            // to: formData.to,
             rntlValue: formData.rntlValue,
             splyAmount: formData.splyAmount,
             mgmtChrg: formData.mgmtChrg,

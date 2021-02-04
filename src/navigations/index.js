@@ -85,6 +85,7 @@ import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import Emergency from '@Screeens/Emergency';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
+import SignatureCapture from '@Screeens/SignatureCapture';
 
 import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
 import RegisterBusinessInfo from '@Screeens/RegisterWH/RegisterBusinessInfo';
@@ -259,28 +260,34 @@ const App = () => {
       <AuthContext.Provider value={authContext}>
         <Provider store={store}>
           <PaperProvider theme={theme}>
-            <NavigationContainer ref={navigationRef}
-                                 onStateChange={(route) => {
-                                   console.log(':::: onStateChange ::::', route)
-                                   Account.me().then(res => {
-                                     console.log('======================>> [토큰이 유효함]')
-                                   }).catch(error => {
-                                     console.log('======================>> [토큰이 유효하지 않음]')
-                                     // 처리1. 토큰 저장소 리셋.
-                                     AsyncStorage.removeItem(TOKEN)
-                                       .then(() => {
-                                         setIsLoading(false);
-                                         setIsLogin(false);
-                                       }).catch(error => {
-                                       alert('TabScreenOptions signOut error:' + error);
-                                     });
-                                     // 처리2. 로그엔 페이지로 라우트 리셋.
-                                     navigationRef.current?.resetRoot({
-                                       index: 0,
-                                       routes: [{ name: 'Login' }],
-                                     });
-                                   })
-                                 }}>
+            <NavigationContainer
+              ref={navigationRef}
+              onStateChange={route => {
+                console.log(':::: onStateChange ::::', route);
+                Account.me()
+                  .then(res => {
+                    console.log('======================>> [토큰이 유효함]');
+                  })
+                  .catch(error => {
+                    console.log(
+                      '======================>> [토큰이 유효하지 않음]',
+                    );
+                    // 처리1. 토큰 저장소 리셋.
+                    AsyncStorage.removeItem(TOKEN)
+                      .then(() => {
+                        setIsLoading(false);
+                        setIsLogin(false);
+                      })
+                      .catch(error => {
+                        alert('TabScreenOptions signOut error:' + error);
+                      });
+                    // 처리2. 로그엔 페이지로 라우트 리셋.
+                    navigationRef.current?.resetRoot({
+                      index: 0,
+                      routes: [{ name: 'Login' }],
+                    });
+                  });
+              }}>
               <Global>
                 <AuthStack.Navigator initialRouteName="Home">
                   <AuthStack.Screen
@@ -443,7 +450,6 @@ const App = () => {
                     //   headerMode={false}
                     //   options={{ headerShown: false }}
                     // />
-
                   }
                   <AuthStack.Screen
                     name="WithdrawalInformation"
@@ -606,6 +612,12 @@ const App = () => {
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
+                  <AuthStack.Screen
+                  name="SignatureCapture"
+                  component={SignatureCapture}
+                  headerMode={false}
+                  options={{ headerShown: false }}
+                />
                 </AuthStack.Navigator>
               </Global>
             </NavigationContainer>
@@ -664,6 +676,11 @@ const App = () => {
                     name="DetailsWH"
                     component={DetailsWH}
                     headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="Terms"
+                    component={Terms}
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen

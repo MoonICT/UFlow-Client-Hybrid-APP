@@ -17,6 +17,7 @@ import cardBG from '@Assets/images/card-img.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import { TOKEN } from '@Constant';
 import { StringUtils } from '@Services/utils';
+import { money } from '@Services/utils/StringUtils';
 
 class ProductCard extends Component {
   constructor(props) {
@@ -63,7 +64,7 @@ class ProductCard extends Component {
     if (data === undefined) {
       data = {
         img: cardBG,
-        type: '보관창고',
+        type: '임대창고',
         title: '과천동 상온 50평',
         price: '12,345평',
         address: '경기도 화천시 부평읍',
@@ -142,7 +143,7 @@ class ProductCard extends Component {
                 {data.name}
               </Text>
 
-              {/** 창고 유형 */}
+              {/** 계약 유형 */}
               <Text
                 style={[
                   styles.fontColor1,
@@ -150,7 +151,7 @@ class ProductCard extends Component {
                   styles.font9,
                   styles.mrb12,
                 ]}>
-                {data.keep ? '보관창고' : ''}
+                {data.keep ? '임대창고' : ''}
                 {data.keep && data.trust ? ', ' : ''}
                 {data.trust ? '수탁창고' : ''}
               </Text>
@@ -162,7 +163,7 @@ class ProductCard extends Component {
                     <Text
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
                       <Text style={[styles.bold, styles.blackColor]}>
-                        보관{' '}
+                        임대{' '}
                       </Text>
                       최대 {data.keep.subTitle ? data.keep.subTitle : ''}
                     </Text>
@@ -199,12 +200,9 @@ class ProductCard extends Component {
                   {data.keep.splyAmount && (
                     <Text
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･보관단가{' '}
+                      ･임대단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
-                        {StringUtils.moneyConvert(
-                          data.keep.splyAmount.toLocaleString(),
-                          '',
-                        )}
+                        {money(data.keep.splyAmount)}
                       </Text>
                       원 ~/{data.keep.unit}
                     </Text>
@@ -213,12 +211,9 @@ class ProductCard extends Component {
                   {data.keep.mgmtChrg && (
                     <Text
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･보관단가{' '}
+                      ･임대단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
-                        {StringUtils.moneyConvert(
-                          data.keep.mgmtChrg.toLocaleString(),
-                          '',
-                        )}
+                        {money(data.keep.mgmtChrg)}
                       </Text>
                       원 ~/{data.keep.unit}
                     </Text>
@@ -281,10 +276,7 @@ class ProductCard extends Component {
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
                       ･입고단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
-                        {StringUtils.moneyConvert(
-                          data.trust.whinChrg.toLocaleString(),
-                          '',
-                        )}
+                        {money(data.trust.whinChrg)}
                       </Text>
                       원 ~/{data.trust.unit}
                     </Text>
@@ -295,10 +287,7 @@ class ProductCard extends Component {
                       style={[styles.fontColor1, styles.regular, styles.font9]}>
                       ･출고단가{' '}
                       <Text style={[styles.bold, styles.blackColor]}>
-                        {StringUtils.moneyConvert(
-                          data.trust.whoutChrg.toLocaleString(),
-                          '',
-                        )}
+                        {money(data.trust.whoutChrg)}
                         {/* 탁 */}
                       </Text>
                       원 ~/{data.trust.unit}

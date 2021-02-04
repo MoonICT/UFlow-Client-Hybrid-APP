@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-04 17:12:03
- * @modify date 2021-01-08 16:40:07
+ * @modify date 2021-01-26 17:32:48
  * @desc [description]
  */
 
@@ -26,7 +26,6 @@ import { AuthContext } from '@Store/context';
 
 //Contants
 import { TOKEN, FCM_TOKEN_KEY } from '@Constant';
-
 import AsyncStorage from '@react-native-community/async-storage';
 //---> Assets
 const Logo = require('@Assets/images/logo.png');
@@ -50,11 +49,6 @@ class Login extends Component {
   /** listener when change props */
   shouldComponentUpdate(nextProps, nextState) {
     return true;
-  }
-
-  /** when exits screen */
-  componentWillUnmount() {
-    //console.log('//::componentWillUnmount::');
   }
 
   /** Save Login to Local  */
@@ -147,7 +141,9 @@ class Login extends Component {
               type="number"
               maxLength={30}
               style={[DefaultStyle.inputs]}
-              onChangeText={text => this.setState({ email: text })}
+              onChangeText={text => {
+                this.setState({ email: text })
+              }}
             />
             <TextInput
               label="비밀번호"
@@ -157,7 +153,9 @@ class Login extends Component {
               secureTextEntry={true}
               maxLength={20}
               style={[DefaultStyle.inputs, S.inputPass]}
-              onChangeText={text => this.setState({ password: text })}
+              onChangeText={text => {
+                this.setState({ password: text })
+              }}
             />
             <View style={S.plusFormLogin}>
               <View style={S.rememberLogin}>

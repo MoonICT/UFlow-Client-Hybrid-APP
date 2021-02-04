@@ -10,7 +10,6 @@ import Moment from 'moment';
 import {Warehouse} from '@Services/apis';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import moment from "moment";
-
 class ReqeustQTrust extends Component {
 
   constructor(props) {
@@ -20,6 +19,8 @@ class ReqeustQTrust extends Component {
     console.log(props.warehSeq, 'props.warehSeq');
 
     this.state = {
+      fromDate: props.from ? Moment(props.from).toDate() : new Date(),
+      toDate: props.to ? Moment(props.to).toDate() : new Date(),
       fromMinDate: props.from ? Moment(props.from).toDate() : null,
       toMaxDate: props.to ? Moment(props.to).toDate() : null,
       formData: {
@@ -47,25 +48,29 @@ class ReqeustQTrust extends Component {
   };
 
   onChangeFrom = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeFrom');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showFrom: false
+      fromDate: selectedDate,
+      showFrom: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     from: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   }, showFrom: false
+    // });
   };
 
   onChangeTo = (selectedDate) => {
-
-    console.log(selectedDate, 'onChangeTo');
     this.setState({
-      formData: {
-        ...this.state.formData,
-        to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
-      }, showTo: false
+      toDate: selectedDate,
+      showTo: false,
     });
+    // this.setState({
+    //   formData: {
+    //     ...this.state.formData,
+    //     to: Moment(selectedDate).isValid() ? Moment(selectedDate).format('YYYY-MM-DD') : '',
+    //   }, showTo: false
+    // });
   };
 
   render() {
@@ -119,7 +124,8 @@ class ReqeustQTrust extends Component {
             onPress={this.showDatepicker}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {from ? moment(from).format('YYYY.MM.DD') : ''}
+              {this.state.fromDate ? Moment(this.state.fromDate).format('YYYY.MM.DD') : ''}
+              {/*{from ? Moment(this.state.formData.from).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -134,7 +140,8 @@ class ReqeustQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showFrom}
-              date={from ? moment(from).toDate() : new Date()}
+              date={this.state.fromDate}
+              // date={from ? Moment(this.state.formData.from).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -154,7 +161,8 @@ class ReqeustQTrust extends Component {
             onPress={this.showDatepickerTo}
             style={DefaultStyle._btnDate}>
             <Text style={DefaultStyle._textDate}>
-              {to ? moment(to).format('YYYY.MM.DD') : ''}
+              {this.state.toDate ? Moment(this.state.toDate).format('YYYY.MM.DD') : ''}
+              {/*{to ? Moment(this.state.formData.to).format('YYYY.MM.DD') : ''}*/}
             </Text>
             <Text
               style={[
@@ -169,7 +177,8 @@ class ReqeustQTrust extends Component {
             <DateTimePickerModal
               mode="date"
               isVisible={showTo}
-              date={to ? moment(to).toDate() : new Date()}
+              date={this.state.toDate}
+              // date={to ? Moment(this.state.formData.to).toDate() : new Date()}
               maximumDate={this.state.toMaxDate}
               minimumDate={this.state.fromMinDate}
               onConfirm={(date) => {
@@ -204,6 +213,7 @@ class ReqeustQTrust extends Component {
               rntlValue: Number(e.replace(/[^0-9]/g), '')
             }
           });
+
         }}
       />
 
@@ -218,13 +228,14 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e =>{
           this.setState({
             formData: {
               ...this.state.formData,
               splyAmount: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
         }
       />
       {/** 입고 단가 (필수) **/}
@@ -238,13 +249,15 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               whinChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
+
         }
       />
       {/** 출고 단가 (필수) **/}
@@ -258,13 +271,15 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
-        onChangeText={e =>
+        onChangeText={e => {
           this.setState({
             formData: {
               ...this.state.formData,
               whoutChrg: Number(e.replace(/[^0-9]/g), '')
             }
           })
+        }
+
         }
       />
       {/** 인건 단가 **/}
@@ -398,22 +413,24 @@ class ReqeustQTrust extends Component {
             // return;
           }
 
-          formData.to = formData.to ? Moment(formData.to).format('x') : null;
-          formData.from = formData.from ? Moment(formData.from).format('x') : null;
+          // formData.to = formData.to ? Moment(formData.to).format('x') : null;
+          // formData.from = formData.from ? Moment(formData.from).format('x') : null;
 
           formData = {
             warehouseRegNo: this.props.warehouseRegNo,
             seq: this.props.warehSeq,
-            from: formData.from,
-            to: formData.to,
+            from: this.state.fromDate ? Moment(this.state.fromDate).format('x') : null,
+            to: this.state.toDate ? Moment(this.state.toDate).format('x') : null,
+            // from: formData.from,
+            // to: formData.to,
             rntlValue: formData.rntlValue,
             splyAmount: formData.splyAmount,
             whinChrg: formData.whinChrg,
             whoutChrg: formData.whoutChrg,
-            psnChrg: formData.psnChrg,
-            mnfctChrg: formData.mnfctChrg,
-            dlvyChrg: formData.dlvyChrg,
-            shipChrg: formData.shipChrg,
+            // psnChrg: formData.psnChrg,
+            // mnfctChrg: formData.mnfctChrg,
+            // dlvyChrg: formData.dlvyChrg,
+            // shipChrg: formData.shipChrg,
             remark: formData.remark
           };
 
@@ -441,6 +458,7 @@ class ReqeustQTrust extends Component {
               }
             })
             .catch(err => {
+              console.log('err.response :>> ', err.response);
               let message = err.response && err.response.data.message;
               alert(message);
             });

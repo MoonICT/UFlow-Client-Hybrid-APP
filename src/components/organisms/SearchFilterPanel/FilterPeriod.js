@@ -58,7 +58,7 @@ class FilterPeriod extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'보관 가능 기간'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'임대 가능 기간'}</Text>
           </View>
         </View>
 

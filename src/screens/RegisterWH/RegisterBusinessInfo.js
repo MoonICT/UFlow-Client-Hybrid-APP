@@ -14,17 +14,17 @@ import {
   Image,
 } from 'react-native';
 import {
-  Appbar,
-  Searchbar,
+  // Appbar,
+  // Searchbar,
   Text,
   Button,
   Dialog,
-  Paragraph,
+  // Paragraph,
   Portal,
 } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
+// import DocumentPicker from 'react-native-document-picker';
 import Postcode from 'react-native-daum-postcode';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
@@ -39,7 +39,10 @@ import { WarehouseProprietorInfo } from '@Services/apis/models/warehouse';
 import { WarehouseOwner, Warehouse, MediaUpload } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 import ActionCreator from '@Actions';
+import validator from 'validator';
+import { isBizNum } from "@Services/utils/validate";
 
+// import validation from '@Utils/validate';
 const tabSelect = [
   {
     id: 'tab1',
@@ -65,6 +68,7 @@ class RegisterBusinessInfo extends Component {
       checkAll: false,
       checkSMS: false,
       checkMail: false,
+      // checkName: false,
       firstQuery: '',
       visible: false,
       tabInfo: '',
@@ -88,6 +92,19 @@ class RegisterBusinessInfo extends Component {
       },
       isPossible: false,
       singleFile: null,
+      // Validation(TODO Temp)
+      valid: {
+        checkName: true,
+        checkBusiness: true,
+        checkBusinessFormat: true,
+        checkAddress: true,
+        checkRepreNm: true,
+        checkPhone: true,
+        checkPhoneFormat: true,
+        checkInchgNm: true,
+        checkEmail: true,
+        checkEmailFormat: true,
+      },
     };
     this.navigation = props.navigation;
   }
@@ -98,6 +115,7 @@ class RegisterBusinessInfo extends Component {
 
     WarehouseOwner.statusWhrgByOwner()
       .then(res => {
+        console.log('redddddddddddddddds :>> ', res);
         if (res.data.status === 'IMP_REG') {
           this.setState({
             isPossible: false,
@@ -273,16 +291,16 @@ class RegisterBusinessInfo extends Component {
           // Please change file upload URL
           MediaUpload.uploadFile(data)
             .then(respon => {
-              let { url } = respon.data;
-              console.log('respon', respon);
-              var pathArray = url.split('/');
-              var host = pathArray[pathArray.length - 1];
+              let { filename, url } = respon.data;
+              console.log('respon', respon.data);
+              // var pathArray = url.split('/');
+              // var host = pathArray[pathArray.length - 1];
 
               this.setState({
                 photo: url,
                 businessInfo: {
                   ...businessInfo,
-                  regFile: host,
+                  regFile: filename,
                 },
               });
 
@@ -292,7 +310,7 @@ class RegisterBusinessInfo extends Component {
               }, 300);
             })
             .catch(error => {
-              alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
+              // alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
               this.props.setProgress({ is: false });
             });
         } else {
@@ -303,76 +321,51 @@ class RegisterBusinessInfo extends Component {
     });
   };
 
-  // upload image
-  handlePicker = async () => {
-    const { businessInfo } = this.state;
-
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images],
-      });
-      this.setState({ singleFile: res }, async () => {
-        if (res != null) {
-          // If file selected then create FormData
-          let { singleFile } = this.state;
-          const data = new FormData();
-          data.append('name', singleFile.name);
-          data.append('file', singleFile);
-          // Please change file upload URL
-          MediaUpload.uploadFile(data)
-            .then(respon => {
-              if (respon.status === 200) {
-                let { url } = respon.data;
-
-                var pathArray = url.split('/');
-                var host = pathArray[pathArray.length - 1];
-
-                this.setState({
-                  photo: url,
-                  businessInfo: {
-                    ...businessInfo,
-                    regFile: host,
-                  },
-                });
-              }
-            })
-            .catch(error => {
-              alert(' MediaUpload.uploadFile:' + error);
-            });
-        } else {
-          // If no file selected the show alert
-          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
-        }
-      });
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
-      } else {
-        throw err;
-      }
-    }
-  };
-
   handleOnSubmit = () => {
     const { businessInfo, isCert } = this.state;
+
+    let valid = {
+      checkName: !!businessInfo.name,
+      checkBusiness: !!businessInfo.number,
+      checkBusinessFormat: true, // TODO TODO 사업자번호체크로직 주석해제예정
+      // checkBusinessFormat: isBizNum(businessInfo.number),
+      checkAddress: !!businessInfo.roadAddr.address,
+      checkRepreNm: !!businessInfo.repreNm,
+      checkInchgNm: !!businessInfo.inchgNm,
+      checkPhone: !!businessInfo.phone,
+      checkPhoneFormat: businessInfo.phone ? /^\d{2,3}\d{3,4}\d{4}$/.test(businessInfo.phone) : true,
+      checkEmail: !!businessInfo.email,
+      checkEmailFormat: businessInfo.email ? validator.isEmail(businessInfo.email) : true,
+    };
+    this.setState({ valid: valid });
+    for (let key in valid) {
+      if (!valid[key]) {
+        return false;
+      }
+    }
+
     if (!isCert) {
       alert('휴대폰 인증을 완료해주세요.');
       return false;
     }
 
-    console.log('dataWE', businessInfo);
-    this.setState({ loading: true });
+    if (!businessInfo.regFile) {
+      alert('사업자등록증을 업로드 하세요.');
+      return false;
+    }
+
+  this.setState({ loading: true });
     // 창고주 정보 등록
-    WarehouseOwner.regBusinessInfo(businessInfo)
-      .then(res => {
-        alert('창고 사업자 등록이 완료되었습니다.');
-        this.setState({ loading: false });
-        this.navigation.navigate('RegisterWH', res.data);
-      })
-      .catch(error => {
-        alert('서버에러:' + error.response.data.message);
-        this.setState({ loading: false });
-      });
+  WarehouseOwner.regBusinessInfo(businessInfo)
+    .then(res => {
+      alert('창고 사업자 등록이 완료되었습니다.');
+      this.setState({ loading: false });
+      this.navigation.navigate('RegisterWH', res.data);
+    })
+    .catch(error => {
+      alert('서버에러:' + error.response.data.message);
+      this.setState({ loading: false });
+    });
   };
 
   /**
@@ -398,23 +391,19 @@ class RegisterBusinessInfo extends Component {
       defautSelect,
       isPossible,
       loading,
+      // checkName,
+      // checkBusiness,
+      // checkAddress,
+      // checkRepreNm,
+      // checkInchgNm,
+      // checkEmail,
+      valid,
     } = this.state;
-
+    // console.log('businessInfo :>> ', businessInfo);
     return (
       <SafeAreaView
         style={[DefaultStyle.container, { backgroundColor: 'white' }]}>
         <Appbars>
-          {/* <Appbar.Action
-            icon="arrow-left"
-            color="black"
-            onPress={() => this.navigation.goBack()}
-          />
-          <Appbar.Content
-            title="창고주 정보 등록"
-            color="black"
-            fontSize="12"
-            style={DefaultStyle.headerTitle}
-          /> */}
           <HistoryBackActionBar
             title={'창고주 정보 등록'}
             navigation={this.navigation}
@@ -443,18 +432,6 @@ class RegisterBusinessInfo extends Component {
                   this.handleChangeSelectBox(e, index);
                 }}
               />
-              {/* <Select
-              data={calUnitDvCodes}
-              labelSelected="정산단위"
-              dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
-              selectedValue={formData.calUnitDvCode}
-              valueProps={e => {
-                // this.setState({ calUnitDvCode: e })
-                let dataF = formData;
-                dataF.calUnitDvCode = e;
-                valueForm && valueForm(dataF);
-              }}
-          /> */}
               <View style={[DefaultStyle.line, DefaultStyle.mb_20]} />
               {businessMode > -1 ? (
                 <View>
@@ -486,9 +463,14 @@ class RegisterBusinessInfo extends Component {
                     labelTextField="사업자 명"
                     placeholder=""
                     labelTextFieldSize={14}
+                    isRequired={true}
+                    textError={
+                      !valid.checkName ? '사업자명을 입력하세요.' : ''
+                    }
                     fontSize={14}
                     valueProps={e => {
                       this.setState({
+                        checkName: true,
                         businessInfo: {
                           ...businessInfo,
                           name: e,
@@ -498,6 +480,7 @@ class RegisterBusinessInfo extends Component {
                     value={businessInfo.name ? businessInfo.name : ''}
                     colorLabel="#000000"
                   />
+                  {/**
                   <TextField
                     labelTextField="법인 등록번호"
                     placeholder="'-'없이 입력해주세요."
@@ -511,22 +494,30 @@ class RegisterBusinessInfo extends Component {
                         },
                       });
                     }}
-                    value={
+                   value={
                       businessInfo.corpNumber ? businessInfo.corpNumber : ''
                     }
                     colorLabel="#000000"
                   />
+                */}
                   <TextField
                     labelTextField="사업자번호"
                     labelTextFieldSize={14}
                     fontSize={14}
                     placeholder="'-'없이 입력해주세요."
                     colorLabel="#000000"
+                    isRequired={true}
+                    keyboardType="numeric"
+                    textError={
+                      (!valid.checkBusiness ? '사업자 번호를 입력하세요.' : '') +
+                      (!valid.checkBusinessFormat ? '사업자 번호 형식이 아닙니다.' : '')
+                    }
                     valueProps={e => {
                       this.setState({
+                        checkBusiness: true,
                         businessInfo: {
                           ...businessInfo,
-                          number: e,
+                          number: e.replace(/[^0-9]/g, ''),
                         },
                       });
                     }}
@@ -572,6 +563,7 @@ class RegisterBusinessInfo extends Component {
                         placeholder="우편번호"
                         colorLabel="#000000"
                         labelTextField="주소 (필수)"
+                        isRequired={true}
                         labelTextFieldSize={14}
                         fontSize={14}
                         styleProps={DefaultStyle.mb_0}
@@ -601,6 +593,10 @@ class RegisterBusinessInfo extends Component {
                     labelTextFieldSize={14}
                     fontSize={14}
                     value={businessInfo.roadAddr.address}
+                    isRequired={true}
+                    textError={
+                      !valid.checkAddress ? '주소를 입력하세요.' : ''
+                    }
                   />
                   <TextField
                     placeholder="상세주소"
@@ -608,9 +604,14 @@ class RegisterBusinessInfo extends Component {
                     labelTextField="상세주소"
                     labelTextFieldSize={14}
                     fontSize={14}
+                    maxLength={50}
                     value={businessInfo.jibunAddr.detail}
                     valueProps={e => {
                       this.setState({
+                        valid: {
+                          ...this.state.valid,
+                          checkAddress: true,
+                        },
                         businessInfo: {
                           ...businessInfo,
                           jibunAddr: {
@@ -630,8 +631,16 @@ class RegisterBusinessInfo extends Component {
                     colorLabel="#000000"
                     labelTextFieldSize={14}
                     fontSize={14}
+                    isRequired={true}
+                    textError={
+                      !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
+                    }
                     valueProps={e => {
                       this.setState({
+                        valid: {
+                          ...this.state.valid,
+                          checkRepreNm: true,
+                        },
                         businessInfo: {
                           ...businessInfo,
                           repreNm: e,
@@ -640,14 +649,25 @@ class RegisterBusinessInfo extends Component {
                     }}
                     value={businessInfo.repreNm ? businessInfo.repreNm : ''}
                   />
+                  {/*<Text>{!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '12'}</Text>*/}
                   <TextField
                     labelTextField="담당자 휴대폰번호"
                     placeholder="'-'없이 입력해주세요."
                     labelTextFieldSize={14}
                     fontSize={14}
+                    isRequired={true}
                     colorLabel="#000000"
+                    textError={
+                      (!valid.checkPhone ? '휴대폰번호를 입력하세요. ' : '') +
+                      (!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '')
+                    }
                     valueProps={e => {
                       this.setState({
+                        valid: {
+                          ...this.state.valid,
+                          checkPhone: true,
+                          checkPhoneFormat: true,
+                        },
                         businessInfo: {
                           ...businessInfo,
                           phone: e,
@@ -673,8 +693,16 @@ class RegisterBusinessInfo extends Component {
                     labelTextFieldSize={14}
                     fontSize={14}
                     colorLabel="#000000"
+                    isRequired={true}
+                    textError={
+                      !valid.checkInchgNm ? '담당자 명을 입력하세요.' : ''
+                    }
                     valueProps={e => {
                       this.setState({
+                        valid: {
+                          ...this.state.valid,
+                          checkInchgNm: true,
+                        },
                         businessInfo: {
                           ...businessInfo,
                           inchgNm: e,
@@ -688,8 +716,18 @@ class RegisterBusinessInfo extends Component {
                     labelTextFieldSize={14}
                     fontSize={14}
                     colorLabel="#000000"
+                    isRequired={true}
+                    textError={
+                      (!valid.checkEmail ? '담당자 이메일을 입력하세요. ' : '') +
+                      (!valid.checkEmailFormat ? '이메일 형식이 아닙니다. ' : '')
+                    }
                     valueProps={e => {
                       this.setState({
+                        valid: {
+                          ...this.state.valid,
+                          checkEmail: true,
+                          checkEmailFormat: true,
+                        },
                         businessInfo: {
                           ...businessInfo,
                           email: e,
@@ -698,6 +736,7 @@ class RegisterBusinessInfo extends Component {
                     }}
                     value={businessInfo.email ? businessInfo.email : ''}
                   />
+                  {/**
                   <TextField
                     labelTextField="세금계산서 이메일 (필수)"
                     colorLabel="#000000"
@@ -711,10 +750,11 @@ class RegisterBusinessInfo extends Component {
                         },
                       });
                     }}
-                    value={
+                   value={
                       businessInfo.taxBillEmail ? businessInfo.taxBillEmail : ''
                     }
                   />
+                  */}
                 </View>
               )}
             </View>

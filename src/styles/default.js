@@ -508,6 +508,7 @@ export default StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr',
     fontSize: 12,
     left: 10,
+    marginTop: 8,
   },
   _textAreaStyle:{
     textAlignVertical: 'top',
@@ -974,7 +975,7 @@ export default StyleSheet.create({
     borderColor: '#e5e5ea',
     borderRadius: 8,
     marginTop: 16,
-    marginBottom: 18,
+    // marginBottom: 18,
   },
   _headerCard: {
     flexDirection: 'row',

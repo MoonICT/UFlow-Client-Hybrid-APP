@@ -72,8 +72,7 @@ import { debounce } from 'lodash';
 //     title: '설문',
 //   },
 // ];
-
-class RegisterWH extends Component {
+class FAQScreen extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -155,6 +154,7 @@ class RegisterWH extends Component {
 
     const handleQueryChange = query => {
       this.fetchData({ query: query });
+      
     };
 
     const handleClickTab = (tabName, index) => {
@@ -185,9 +185,11 @@ class RegisterWH extends Component {
               id={`${index}`}>
               <List.Item
                 style={[DefaultStyle.bgMuted]}
-                numberOfLines={5}
+                descriptionNumberOfLines={15}
+                titleStyle={{display:'none'}}
                 description={item.rplyContent}
-                titleStyle={S.descript}
+                // title={item.rplyContent}
+                descriptionStyle={S.descript}
               />
             </List.Accordion>
             <Divider />
@@ -260,4 +262,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegisterWH);
+)(FAQScreen);

@@ -10,7 +10,6 @@ import { View, Text, TextInput } from 'react-native';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Styles from './style';
-
 export default class TextField extends Component {
   constructor(props) {
     super(props);

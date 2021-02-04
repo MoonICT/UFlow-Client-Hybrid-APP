@@ -103,7 +103,7 @@ class Information extends Component {
           <View style={{ flex: 1 }}>
             <AppGrid data={tabSelect} title={tabInfo} titleProps={this.handleClickTab} />
           </View>
-          {tabInfo === '기본 정보' && <MypageInfo />}
+          {tabInfo === '기본 정보' && <MypageInfo navigation={this.navigation} />}
           {tabInfo === '사업자 등록 정보' && <MypageBusinessInfo />}
         </ScrollView>
         <Dialog

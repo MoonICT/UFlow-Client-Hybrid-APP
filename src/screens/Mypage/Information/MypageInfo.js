@@ -7,7 +7,7 @@
 // Global Imports
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import { SafeAreaView, View, TouchableOpacity } from 'react-native';
 import {
   Appbar,
   Searchbar,
@@ -15,6 +15,7 @@ import {
   Button,
   Dialog,
   Paragraph,
+  Portal,
 } from 'react-native-paper';
 
 // Local Imports
@@ -31,16 +32,16 @@ import { styles as S } from '../style';
 const tabSelect = [
   {
     id: 'tab1',
-    title: '기본 정보'
+    title: '기본 정보',
   },
   {
     id: 'tab2',
-    title: '사업자 등록 정보'
+    title: '사업자 등록 정보',
   },
-]
+];
 
 class MypageInfo extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       checkAll: false,
@@ -50,31 +51,34 @@ class MypageInfo extends Component {
       visible: false,
       tabInfo: '',
       userInfo: {},
-      data:{},
-      loading:false,
-      isAgreeSNS:{
+      data: {},
+      isOpenChangePass: false,
+      loading: false,
+      isAgreeSNS: {
         sms: false,
-        email: false
-      }
+        email: false,
+      },
+      errText: '',
     };
     this.navigation = props.navigation;
   }
 
   /** when after render DOM */
-  async componentDidMount() {
-
-    Account.getMe().then(res => {
-      console.log(res)
-      this.setState({
-        data: res.data,
-        isAgreeSNS:{
-          sms: res.data.marketingRcp.sms,
-          email: res.data.marketingRcp.email
-        }
+  async componentDidMount () {
+    Account.getMe()
+      .then(res => {
+        console.log(res);
+        this.setState({
+          data: res.data,
+          isAgreeSNS: {
+            sms: res.data.marketingRcp.sms,
+            email: res.data.marketingRcp.email,
+          },
+        });
       })
-    }).catch(err => {
-      console.log(err);
-    })
+      .catch(err => {
+        console.log(err);
+      });
 
     // Warehouse.listAllBussinessInfo().then(res => {
     //   this.setState({
@@ -88,51 +92,133 @@ class MypageInfo extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   handleClickTab = (tabName, index) => {
     this.setState({ tabInfo: tabSelect[index].title });
-  }
+  };
 
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => this.setState({ visible: false });
 
   onSubmit = () => {
-    console.log('this.state', this.state)
-    
-    const { data,isAgreeSNS } = this.state;
-    if(!data.passwordOld) {
-      alert('비밀번호를 입력해주세요');
-      return
+    const { data, isAgreeSNS } = this.state;
+    if (!data.passwordOld) {
+      alert('현재 비밀번호를 입력하세요');
+      return;
     }
-
-    this.setState({loading: true});
+    this.setState({ loading: true });
     Account.editMyInfo({
       fullName: data.fullName,
-      passwordOld: data.passwordOld,
-      password: data.password,
       emailRcv: isAgreeSNS.email,
-      smsRcv: isAgreeSNS.sms
-    }).then(res => {
-      this.setState({loading: false});
-      this.props.showPopup({
-        type: 'confirm',
-        title: '회원정보 수정 완료',
-        content: '회원정보가 수정되었습니다.',
-        image: editInfo
-      });
-    }).catch(error => {
-      this.setState({loading: false});
-      alert(error.response.data.message);
+      smsRcv: isAgreeSNS.sms,
+      passwordOld: data.passwordOld
     })
+      .then(res => {
+        this.setState({ loading: false });
+        this.props.showPopup({
+          type: 'confirm',
+          title: '회원정보 수정 완료',
+          content: '회원정보가 수정되었습니다.',
+          image: editInfo,
+          navigation: () => this.navigation.navigate('More')
+        });
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+        alert(error.response.data.message);
+      });
   };
 
-  render() {
+  _onChangePass = () => {
+    const { data, isAgreeSNS } = this.state;
+    if (!data.passwordOld) {
+      alert('현재 비밀번호를 입력하세요');
+      return;
+    }
+    if (!data.password) {
+      alert('새 비밀번호를 입력하세요');
+      return;
+    }
+    if (!data.ConfirmPassword) {
+      alert('새 비밀번호를 입력하세요');
+      return;
+    }
+    if (data.password !== data.ConfirmPassword) {
+      alert('암호가 일치하지 않습니다');
+      return;
+    }
+    // Progress
+    this.props.setProgress({ is: true, type: 'CIRCLE' });
+    Account.editMyInfo({
+      passwordOld: data.passwordOld,
+      password: data.password,
+    })
+      .then(res => {
+        this.setState({
+          isOpenChangePass: false,
+          data: {
+            ...this.state.data,
+            passwordOld: '',
+            password: '',
+            ConfirmPassword: '',
+          },
+          errText: '',
+        });
+        this.props.showPopup({
+          type: 'confirm',
+          title: '회원정보 수정 완료',
+          content: '회원정보가 수정되었습니다.',
+          image: editInfo,
+        });
 
-    const { checkAll, checkSMS, checkMail, tabInfo, loading, data, isAgreeSNS } = this.state;
+        // Progress
+        setTimeout(() => {
+          this.props.setProgress({ is: false });
+        }, 300);
+      })
+      .catch(error => {
+        this.setState({
+          errText: error.response.data.message ? error.response.data.message : '입력하신 정보가 맞지 않습니다.'
+        });
+        this.props.setProgress({ is: false });
+      });
+  };
+
+  _onOpenChangePass = () => {
+    let { isOpenChangePass } = this.state;
+    this.setState({
+      isOpenChangePass: !isOpenChangePass,
+    });
+  };
+
+  _hideDialogChangePass = () => {
+    this.setState({
+      isOpenChangePass: false,
+      data: {
+        ...this.state.data,
+        passwordOld: '',
+        password: '',
+        ConfirmPassword: '',
+      },
+      errText: '',
+    });
+  };
+
+  render () {
+    const {
+      checkAll,
+      checkSMS,
+      checkMail,
+      tabInfo,
+      loading,
+      data,
+      isAgreeSNS,
+      isOpenChangePass,
+    } = this.state;
 
     return (
       <>
@@ -143,18 +229,20 @@ class MypageInfo extends Component {
           <View style>
             <TextField
               labelTextField="이름"
-              // placeholder="하혜정"
               value={data.fullName ? data.fullName : ''}
-              valueProps={e => this.setState({
-                data:{
-                  ...data,
-                  fullName: e
-                }})}
+              valueProps={e =>
+                this.setState({
+                  data: {
+                    ...data,
+                    fullName: e,
+                  },
+                })
+              }
               colorLabel="#000000"
             />
             <TextField
               labelTextField="이메일"
-              editable={false} 
+              editable={false}
               selectTextOnFocus={false}
               value={data.email || 'haharu@aartkorea.com'}
               placeholder="haharu@aartkorea.com"
@@ -166,46 +254,68 @@ class MypageInfo extends Component {
               labelTextField="현재 비밀번호"
               colorLabel="#000000"
               value={data.passwordOld ? data.passwordOld : ''}
-              valueProps={e => this.setState({
-                data:{
-                  ...data,
-                  passwordOld: e
-              }})} 
+              valueProps={e =>
+                this.setState({
+                  data: {
+                    ...data,
+                    passwordOld: e,
+                  },
+                })
+              }
             />
-            <TextField
+            {/* <TextField
               type={'password'}
               secureTextEntry={true}
               value={data.password ? data.password : ''}
-              valueProps={e => this.setState({
-                data:{
-                  ...data,
-                  password: e
-              }})}
-              labelTextField="새 비밀번호" colorLabel="#000000" />
+              valueProps={e =>
+                this.setState({
+                  data: {
+                    ...data,
+                    password: e,
+                  },
+                })
+              }
+              labelTextField="새 비밀번호"
+              colorLabel="#000000"
+            />
             <TextField
               type={'password'}
               secureTextEntry={true}
               value={data.ConfirmPassword ? data.ConfirmPassword : ''}
-              valueProps={e => this.setState({
-                data:{
-                  ...data,
-                  ConfirmPassword: e
-              }})}
+              valueProps={e =>
+                this.setState({
+                  data: {
+                    ...data,
+                    ConfirmPassword: e,
+                  },
+                })
+              }
               labelTextField="새 비밀번호 확인"
               colorLabel="#000000"
-            />
+            /> */}
+
+            <Button
+              onPress={this._onOpenChangePass}
+              style={{
+                borderColor: 'rgba(0, 0, 0, 0.1)',
+                margin: 0,
+                borderRadius: 0,
+                width: '100%',
+              }}>
+              비밀번호 변경
+            </Button>
           </View>
           <View style={S.checks}>
             <View style={S.checkItem}>
               <Checkbox
-                checked={(!isAgreeSNS.email && !isAgreeSNS.sms)}
+                checked={!isAgreeSNS.email && !isAgreeSNS.sms}
                 onPress={() => {
                   this.setState({
-                    isAgreeSNS:{
+                    isAgreeSNS: {
                       sms: isAgreeSNS.email && isAgreeSNS.sms ? false : true,
                       email: isAgreeSNS.email && isAgreeSNS.sms ? false : true,
-                    }
-                  })
+                    },
+                  });
                 }}
               />
               <Text style={S.textCheck}>마케팅 수신 동의</Text>
@@ -215,11 +325,11 @@ class MypageInfo extends Component {
                 checked={!isAgreeSNS.sms}
                 onPress={() => {
                   this.setState({
-                    isAgreeSNS:{
+                    isAgreeSNS: {
                       sms: !isAgreeSNS.sms,
-                      email: isAgreeSNS.email
-                    }
-                  })
+                      email: isAgreeSNS.email,
+                    },
+                  });
                 }}
               />
               <Text style={S.textCheck}>SMS</Text>
@@ -229,34 +339,132 @@ class MypageInfo extends Component {
                 checked={!isAgreeSNS.email}
                 onPress={() => {
                   this.setState({
-                    isAgreeSNS:{
+                    isAgreeSNS: {
                       email: !isAgreeSNS.email,
-                      sms: isAgreeSNS.sms
-                    }
-                  })
+                      sms: isAgreeSNS.sms,
+                    },
+                  });
                 }}
               />
               <Text style={S.textCheck}>이메일</Text>
             </View>
           </View>
+          <TouchableOpacity
+            style={S._right}
+            onPress={() => this.navigation.navigate('WithdrawalInformation')}>
+            <Text style={DefaultStyle._textDF3}>회원탈퇴</Text>
+          </TouchableOpacity>
         </View>
         <View style={S.btn}>
           <Button
             mode="contained"
-            style={[{ width: '95%', margin: 12, borderRadius: 24, height: 40, marginBottom: 24 }, DefaultStyle._primary,]}
+            style={[
+              {
+                width: '95%',
+                margin: 12,
+                borderRadius: 24,
+                height: 40,
+                marginBottom: 24,
+              },
+              DefaultStyle._primary,
+            ]}
             color="red"
             onPress={this.onSubmit}>
             확인
           </Button>
         </View>
-        <Loading loading={loading}/>
+        <Loading loading={loading} />
+
+        <Portal>
+          <Dialog
+            style={DefaultStyle.popup}
+            visible={isOpenChangePass}
+            onDismiss={this._hideDialogChangePass}>
+            <Dialog.Title style={[DefaultStyle._titleDialog, S.titleQuestion]}>
+              비밀번호 변경
+            </Dialog.Title>
+            <Dialog.Content style={{ marginTop: 10 }}>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                }}>
+                <View style={{ width: '100%' }}>
+                  <TextField
+                    type={'password'}
+                    secureTextEntry={true}
+                    labelTextField="현재 비밀번호"
+                    colorLabel="#000000"
+                    value={data.passwordOld ? data.passwordOld : ''}
+                    valueProps={e =>
+                      this.setState({
+                        data: {
+                          ...data,
+                          passwordOld: e,
+                        },
+                      })
+                    }
+                  />
+                  <TextField
+                    type={'password'}
+                    secureTextEntry={true}
+                    value={data.password ? data.password : ''}
+                    valueProps={e =>
+                      this.setState({
+                        data: {
+                          ...data,
+                          password: e,
+                        },
+                      })
+                    }
+                    labelTextField="새 비밀번호"
+                    colorLabel="#000000"
+                  />
+                  <TextField
+                    type={'password'}
+                    secureTextEntry={true}
+                    value={data.ConfirmPassword ? data.ConfirmPassword : ''}
+                    valueProps={e =>
+                      this.setState({
+                        data: {
+                          ...data,
+                          ConfirmPassword: e,
+                        },
+                      })
+                    }
+                    labelTextField="새 비밀번호 확인"
+                    colorLabel="#000000"
+                  />
+                  {!!this.state.errText && <Text style={{ color: 'red', }}>{this.state.errText}</Text>}
+
+                  <Dialog.Actions
+                    style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                      // style={[DefaultStyle._buttonElement]}
+                      color={'rgba(0, 0, 0, 0.54)'}
+                      onPress={this._hideDialogChangePass}>
+                      취소
+                    </Button>
+                    <Button
+                      // style={[DefaultStyle._buttonElement]}
+                      onPress={this._onChangePass}>
+                      확인
+                    </Button>
+                  </Dialog.Actions>
+                </View>
+              </View>
+            </Dialog.Content>
+          </Dialog>
+        </Portal>
       </>
     );
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
@@ -265,7 +473,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     dataAction: action => {
       dispatch(ActionCreator.ContractConditions(action));
@@ -275,6 +483,9 @@ function mapDispatchToProps(dispatch) {
     },
     showPopup: status => {
       dispatch(ActionCreator.show(status));
+    },
+    setProgress: status => {
+      dispatch(ActionCreator.setProgress(status));
     },
   };
 }

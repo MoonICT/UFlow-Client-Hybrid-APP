@@ -2,7 +2,7 @@
  * @author [Peter]
  * @email [hoangvanlam9988@mail.com]
  * @create date 2020-11-24 13:57:48
- * @modify date 2021-01-08 10:35:18
+ * @modify date 2021-01-23 09:37:01
  * @desc [description]
  */
 
@@ -31,7 +31,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Contants
 import { TOKEN } from '@Constant';
-
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -144,6 +143,22 @@ class Register extends Component {
       isDone,
       errorEmail,
     } = this.state;
+
+    let checkSubmit = false;
+    let checkAll = false;
+
+    if (
+      terms.privacy === true &&
+      terms.location === true &&
+      terms.financial === true &&
+      serviceTerms === true
+    ) {
+      checkSubmit = true;
+    }
+    if (checkSubmit === true && checkMarketing === true) {
+      checkAll = true;
+    }
+    // console.log('checkSubmit :>> ', checkSubmit);
     return (
       <>
         {isDone ? (
@@ -162,11 +177,11 @@ class Register extends Component {
                 style={S.appBarTitle}
               />
             </Appbars> */}
-            
-          <HistoryBackActionBar
-            title={'회원가입'}
-            navigation={this.navigation}
-          />
+
+            <HistoryBackActionBar
+              title={'회원가입'}
+              navigation={this.navigation}
+            />
             <ScrollView style={DefaultStyle.backgroundWhiteDF2}>
               <View style={DefaultStyle._cards}>
                 <Text style={DefaultStyle._textTitleBody}>
@@ -179,7 +194,9 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="이름"
-                    onChangeText={text => this.setState({ fullName: text })}
+                    onChangeText={text => {
+                      this.setState({ fullName: text })
+                    }}
                     value={fullName}
                     type="text"
                     mode="outlined"
@@ -192,7 +209,6 @@ class Register extends Component {
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="이메일"
                     onChangeText={text => {
-                      // this.setState({ email: text });
                       this.onChangeEmail(text);
                     }}
                     value={email}
@@ -210,7 +226,9 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="비밀번호"
-                    onChangeText={text => this.setState({ password: text })}
+                    onChangeText={text => {
+                      this.setState({ password: text })
+                    }}
                     value={password}
                     type="text"
                     mode="outlined"
@@ -223,8 +241,9 @@ class Register extends Component {
                     colorLabel="#000000"
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="비밀번호 확인"
-                    onChangeText={text =>
+                    onChangeText={text => {
                       this.setState({ confirmPassword: text })
+                    }
                     }
                     value={confirmPassword}
                     type="text"
@@ -247,6 +266,7 @@ class Register extends Component {
                       this.setState({
                         mobile: text.replace(/[^0-9]/g, ''),
                       });
+
                       // this.validations(text);
                     }}
                     keyboardType="numeric"
@@ -266,7 +286,7 @@ class Register extends Component {
                   {/** ----------Terms ------------*/}
                   <View style={S.itemTerm}>
                     <Checkbox
-                      checked={termsAll}
+                      checked={checkAll}
                       onPress={() => {
                         this.setState({
                           termsAll: !termsAll,
@@ -296,11 +316,11 @@ class Register extends Component {
                       onPress={() => {
                         this.setState({
                           serviceTerms: !serviceTerms,
-                          termsAll:
-                            !serviceTerms &&
-                            checkMarketing &&
-                            terms &&
-                            marketing,
+                          // termsAll:
+                          //   !serviceTerms &&
+                          //   checkMarketing &&
+                          //   terms &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -322,11 +342,11 @@ class Register extends Component {
                             ...terms,
                             privacy: !terms.privacy,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.privacy &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.privacy &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -348,11 +368,11 @@ class Register extends Component {
                             ...terms,
                             location: !terms.location,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.location &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.location &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -374,11 +394,11 @@ class Register extends Component {
                             ...terms,
                             financial: !terms.financial,
                           },
-                          termsAll:
-                            serviceTerms &&
-                            checkMarketing &&
-                            !terms.financial &&
-                            marketing,
+                          // termsAll:
+                          //   serviceTerms &&
+                          //   checkMarketing &&
+                          //   !terms.financial &&
+                          //   marketing,
                         });
                       }}
                     />
@@ -403,8 +423,8 @@ class Register extends Component {
                             sms: !checkMarketing,
                             email: !checkMarketing,
                           },
-                          termsAll:
-                            serviceTerms && !checkMarketing && terms.financial,
+                          // termsAll:
+                          //   serviceTerms && !checkMarketing && terms.financial,
                         });
                       }}
                     />
@@ -431,10 +451,10 @@ class Register extends Component {
                               !marketing.kakao &&
                               marketing.sms &&
                               marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   !checkMarketing &&
+                            //   terms.financial,
                           });
                         }}
                       />
@@ -454,10 +474,10 @@ class Register extends Component {
                               marketing.kakao &&
                               !marketing.sms &&
                               marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   terms.financial &&
+                            //   !checkMarketing,
                           });
                         }}
                       />
@@ -477,10 +497,10 @@ class Register extends Component {
                               marketing.kakao &&
                               marketing.sms &&
                               !marketing.email,
-                            termsAll:
-                              serviceTerms &&
-                              !checkMarketing &&
-                              terms.financial,
+                            // termsAll:
+                            //   serviceTerms &&
+                            //   terms.financial &&
+                            //   !checkMarketing,
                           });
                         }}
                       />
@@ -494,7 +514,7 @@ class Register extends Component {
                   style={[
                     DefaultStyle.containerBTN,
                     S.loginBtn,
-                    termsAll
+                    checkSubmit === true
                       ? DefaultStyle._primary
                       : DefaultStyle._textDisabled,
                   ]}
@@ -502,7 +522,7 @@ class Register extends Component {
                   onPress={() => {
                     this.handleOnClickSubmit();
                   }}
-                  disabled={!termsAll}>
+                  disabled={checkSubmit === true ? false : true}>
                   확인
                 </Button>
               </View>

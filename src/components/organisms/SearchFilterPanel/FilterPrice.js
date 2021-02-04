@@ -15,9 +15,10 @@ import { styles } from './style';
 import ActionCreator from "@Actions";
 import RangeSlider from '@Components/atoms/RangeSlider';
 import moment from "./FilterPeriod";
+import { money, numberComma } from '@Services/utils/StringUtils';
 
 /*TODO 임시 값 (추후 변경 필요)*/
-const splyAmountMax = 100000; // 보관비 최대
+const splyAmountMax = 100000; // 임대비 최대
 const mgmtChrgMax = 100000; // 관리비 최대
 const whinChrgMax = 100000; // 입고비 최대
 const whoutChrgMax = 100000; // 출고비 최대
@@ -26,7 +27,7 @@ class FilterPrice extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      splyAmount: this.props.whFilter.splyAmount ? Number(this.props.whFilter.splyAmount) : 0, // 보관단가
+      splyAmount: this.props.whFilter.splyAmount ? Number(this.props.whFilter.splyAmount) : 0, // 임대단가
       mgmtChrg: this.props.whFilter.mgmtChrg ? Number(this.props.whFilter.mgmtChrg) : 0, // 관리단가
       whinChrg: this.props.whFilter.whinChrg ? Number(this.props.whFilter.whinChrg) : 0, // 입고비
       whoutChrg: this.props.whFilter.whoutChrg ? Number(this.props.whFilter.whinChrg) : 0, // 출고비
@@ -60,12 +61,12 @@ class FilterPrice extends Component {
       <View style={[styles.filterContainer]}>
 
         <ScrollView style={{ height: 380, }}>
-          {/***** 보관비 *****/}
+          {/***** 임대비 *****/}
 
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'보관비'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'임대비'}</Text>
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
@@ -80,7 +81,7 @@ class FilterPrice extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={splyAmountMax}
-                       LabelMiddle={`${(splyAmountMax / 2).toLocaleString()}원`}
+                       LabelMiddle={`${money((splyAmountMax / 2))}`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            splyAmount: value,
@@ -108,7 +109,7 @@ class FilterPrice extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={mgmtChrgMax}
-                       LabelMiddle={`${(mgmtChrgMax / 2).toLocaleString()}원`}
+                       LabelMiddle={`${money((mgmtChrgMax / 2))}`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            mgmtChrg: value,
@@ -122,7 +123,7 @@ class FilterPrice extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'관리비'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'입고비'}</Text>
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
@@ -136,7 +137,7 @@ class FilterPrice extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={whinChrgMax}
-                       LabelMiddle={`${(whinChrgMax / 2).toLocaleString()}원`}
+                       LabelMiddle={`${money((whinChrgMax / 2))}`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            whinChrg: value,
@@ -151,7 +152,7 @@ class FilterPrice extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'관리비'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'출고비'}</Text>
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
@@ -165,7 +166,7 @@ class FilterPrice extends Component {
                        contentStyle={{ marginBottom: 24 }}
                        minimumValue={0}
                        maximumValue={whoutChrgMax}
-                       LabelMiddle={`${(whoutChrgMax / 2).toLocaleString()}원`}
+                       LabelMiddle={`${money((whoutChrgMax / 2))}`}
                        onValueChange={(value) => {
                          this.props.setSearchFilter({
                            whoutChrg: value,

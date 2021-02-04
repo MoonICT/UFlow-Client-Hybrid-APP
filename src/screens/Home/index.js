@@ -498,7 +498,9 @@ class Home extends Component {
                   numberOfLines={1}
                   ellipsizeMode="start"
                   value={textSearch}
-                  onChangeText={text => this.setState({ textSearch: text })}
+                  onChangeText={text => {
+                    this.setState({ textSearch: text })
+                  }}
                 />
                 {
                   <Icon

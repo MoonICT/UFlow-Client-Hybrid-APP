@@ -111,7 +111,7 @@ export default class Notification extends Component {
       <>
         {page === '창고 등록' && (
           <WarehouseRegistration
-            nav={this.navigation}
+            nav={this.props.navigation}
             navitationTitle={
               <Select
                 data={navitationTitle2}
@@ -125,7 +125,7 @@ export default class Notification extends Component {
         )}
         {page === '창고 이용' && (
           <WarehouseUse
-            nav={this.navigation}
+            nav={this.props.navigation}
             navitationTitle={
               <Select
                 data={navitationTitle2}
@@ -139,7 +139,7 @@ export default class Notification extends Component {
         )}
         {page === '계약 방식' && (
           <ContractMode
-            nav={this.navigation}
+            nav={this.props.navigation}
             navitationTitle={
               <Select
                 valueSelected={page}

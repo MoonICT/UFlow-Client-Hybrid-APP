@@ -28,7 +28,7 @@ import { Warehouse } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
 
 class RegisterImage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -40,7 +40,7 @@ class RegisterImage extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
@@ -51,50 +51,50 @@ class RegisterImage extends Component {
   };
 
   // TODO @Deprecated ios에서 갤러리 업로드 안됨.
-  chooseFile = async type => {
-    try {
-      // TODO 이미지 피커 교체 필요 (ios에서 갤러리 선택 안됨.)
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images],
-      });
-      this.setState({ singleFile: res }, async () => {
-        if (res != null) {
-          // If file selected then create FormData
-          let { singleFile, valueTab } = this.state;
-          const data = new FormData();
-          data.append('name', singleFile.name);
-          data.append('file', singleFile);
-          // Please change file upload URL
-          await MediaUpload.uploadFile(data).then(respon => {
-            if (respon.status === 200) {
-              let { url } = respon.data;
-              let { filename } = respon.data;
-              // let pimages = [{ uri: url }];
-              // pimages.push();
-              // this.setState({ pimages });
-              console.log('url', url);
-              this.props.uploadImage({
-                url: url,
-                name: filename,
-                value: valueTab,
-              });
-            }
-          });
-        } else {
-          // If no file selected the show alert
-          alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
-        }
-      });
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
-      } else {
-        throw err;
-      }
-    }
-  };
+  // chooseFile = async type => {
+  //   try {
+  //     // TODO 이미지 피커 교체 필요 (ios에서 갤러리 선택 안됨.)
+  //     const res = await DocumentPicker.pick({
+  //       type: [DocumentPicker.types.images],
+  //     });
+  //     this.setState({ singleFile: res }, async () => {
+  //       if (res != null) {
+  //         // If file selected then create FormData
+  //         let { singleFile, valueTab } = this.state;
+  //         const data = new FormData();
+  //         data.append('name', singleFile.name);
+  //         data.append('file', singleFile);
+  //         // Please change file upload URL
+  //         await MediaUpload.uploadFile(data).then(respon => {
+  //           if (respon.status === 200) {
+  //             let { url } = respon.data;
+  //             let { filename } = respon.data;
+  //             // let pimages = [{ uri: url }];
+  //             // pimages.push();
+  //             // this.setState({ pimages });
+  //             console.log('url', url);
+  //             this.props.uploadImage({
+  //               url: url,
+  //               name: filename,
+  //               value: valueTab,
+  //             });
+  //           }
+  //         });
+  //       } else {
+  //         // If no file selected the show alert
+  //         alert('등록된 파일이 없습니다. 파일을 등록해주세요.');
+  //       }
+  //     });
+  //   } catch (err) {
+  //     if (DocumentPicker.isCancel(err)) {
+  //       // User cancelled the picker, exit any dialogs or menus and move on
+  //     } else {
+  //       throw err;
+  //     }
+  //   }
+  // };
 
-  handlePicker = async () => {
+  handlePicker = async (type) => {
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -121,11 +121,24 @@ class RegisterImage extends Component {
 
         this.setState({ singleFile: file }, async () => {
           if (response != null) {
+            // 이미지 업로드시 창고 아이디 필요함.
+            let { idWH } = this.props.route.params
+            if (!idWH) {
+              console.log('Error ::: 창고 아이디가 없습니다. ')
+              return false;
+            }
+
+            if (!type) {
+              console.log('Error ::: 이미지 업로드 타입이 없습니다. ')
+              return false;
+            }
+
             // If file selected then create FormData
             let { singleFile, valueTab } = this.state;
             const data = new FormData();
-            data.append('name', singleFile.name);
             data.append('file', singleFile);
+            data.append('id', idWH);
+            data.append('code', type); // 이미지(0001) 또는 파노라마(0002)
 
             // Progress
             this.props.setProgress({ is: true, type: 'CIRCLE' });
@@ -149,6 +162,7 @@ class RegisterImage extends Component {
              */}
             await Warehouse.uploadImage(data)
               .then(respon => {
+                console.log('이미지 업로드 완료 : ', respon)
                 if (respon.status === 200) {
                   let { url } = respon.data;
                   let { filename } = respon.data;
@@ -175,7 +189,7 @@ class RegisterImage extends Component {
               .catch(error => {
                 this.props.setProgress({ is: false });
                 console.log(error);
-                alert(' MediaUpload.uploadFile:' + error.reponse);
+                // alert(' MediaUpload.uploadFile:' + error.reponse);
               });
           } else {
             // If no file selected the show alert
@@ -192,7 +206,7 @@ class RegisterImage extends Component {
     }
   };
 
-  render() {
+  render () {
     const { imageStore, pnImages } = this.props;
     const { valueTab, isRemove } = this.state;
     // console.log('imageStore', imageStore);
@@ -226,13 +240,13 @@ class RegisterImage extends Component {
                   onPress={() => {
                     console.log('tab: ', valueTab);
                     if (valueTab === 0) {
-                      this.handlePicker('photo');
+                      this.handlePicker('001'); // 창고 이미지
                     } else if (valueTab === 1) {
                       console.log('imageStore.pnImages', pnImages);
                       if (pnImages && pnImages.length > 0) {
                         alert('파노라마 사진은 1장만 등록 가능합니다.');
                       } else {
-                        this.handlePicker('photo');
+                        this.handlePicker('002'); // 파노라마 이미지
                       }
                     }
                     // this.chooseFile('photo');
@@ -268,13 +282,13 @@ class RegisterImage extends Component {
             <UpImage
               valueTab={valueTab}
               isRemove={isRemove}
-              handldeProps={() => this.handlePicker(valueTab)}
+              handldeProps={() => this.handlePicker('001')}
             />
           ) : (
             <ImagePanoram
               valueTab={valueTab}
               isRemove={isRemove}
-              handldeProps={() => this.handlePicker(valueTab)}
+              handldeProps={() => this.handlePicker('002')}
             />
           )}
 
@@ -307,10 +321,14 @@ class RegisterImage extends Component {
       </SafeAreaView>
     );
   }
+
+  componentDidMount () {
+    console.log('이미지 등록을 위한 창고 아이디', this.props.route.params)
+  }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.whImages,
@@ -319,7 +337,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     uploadImage: action => {
       dispatch(ActionCreator.uploadImage(action));

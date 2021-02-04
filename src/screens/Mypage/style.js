@@ -16,11 +16,11 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingBottom: 24,
   },
-  arrowBtn:{
-    alignContent:'center',
-    alignSelf:'center',
-    justifyContent:'center',
-    backgroundColor:'red'
+  arrowBtn: {
+    alignContent: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'red',
   },
   row: {
     flexDirection: 'row',
@@ -30,7 +30,6 @@ export const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   steps: {
-
     padding: 0,
     paddingTop: 20,
     paddingBottom: 0,
@@ -62,8 +61,8 @@ export const styles = StyleSheet.create({
     color: color.text.primary,
     // backgroundColor: 'yellow',
     marginBottom: 8,
-    minWidth:80,
-    marginLeft:-15
+    minWidth: 80,
+    marginLeft: -15,
   },
   numberStep: {
     // flexDirection: 'row',textNumber
@@ -195,10 +194,13 @@ export const styles = StyleSheet.create({
   listChecks: {
     flex: 1,
     marginBottom: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   checkItem: {
     flexDirection: 'row',
-    flex: 1,
+    flexWrap: 'wrap',
+    marginRight: 25,
     marginBottom: 14,
   },
   textCheck: {
@@ -254,5 +256,9 @@ export const styles = StyleSheet.create({
     fontStyle: 'normal',
     color: '#000000',
     marginLeft: 12,
+  },
+  _right: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
   },
 });

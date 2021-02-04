@@ -55,12 +55,12 @@ class FilterStorage extends Component {
     return (
       <View style={styles.filterContainer}>
 
-        {/***** 보관비 *****/}
+        {/***** 창고 유형 *****/}
 
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'보관 유형'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'창고 유형'}</Text>
             <Text style={[styles.filterLabel, styles.filterLabelSub]}>{'중복선택 가능합니다.'}</Text>
           </View>
         </View>

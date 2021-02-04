@@ -194,7 +194,6 @@ class FormInfo extends Component {
       formData &&
       mgmtChrgDvCodes &&
       mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
-
     return (
       <Card style={S.cards}>
         <View style>
@@ -214,7 +213,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
             // selectedValue={formData.typeCode}
-            labelSelected="보관유형"
+            labelSelected="창고유형"
           />
           <Select
             data={calUnitDvCodes}
@@ -260,9 +259,9 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-
+{/**
           <View style={DefaultStyle._listElement}>
-            {/* <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+            <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField="공용면적"
                 defaultValue={
@@ -282,8 +281,8 @@ class FormInfo extends Component {
                 value={formData.cmnArea === '' ? '' : commonAreaState2}
                 keyboardType="numeric"
               />
-            </View> */}
-            {/* <View style={DefaultStyle._element}>
+            </View>
+            <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="공용면적"
                 defaultValue={
@@ -303,8 +302,9 @@ class FormInfo extends Component {
                 }}
                 value={commonAreaState2 === '' ? '' : formData.cmnArea}
               />
-            </View> */}
+            </View>
           </View>
+  */}
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
@@ -363,7 +363,7 @@ class FormInfo extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                보관 시작일
+                임대 시작일
               </Text>
               {/*<DatePicker*/}
               {/*  mode={mode}*/}
@@ -397,7 +397,7 @@ class FormInfo extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                보관 종료일
+                임대 종료일
               </Text>
               {/*<DatePicker*/}
               {/*  mode={mode}*/}
@@ -421,7 +421,7 @@ class FormInfo extends Component {
           </View>
 
           <TextField
-            labelTextField="보관단가"
+            labelTextField="임대단가"
             value={splyAmount}
             defaultValue={
               formData.splyAmount ? numberToStd(formData.splyAmount) : ''
@@ -456,7 +456,6 @@ class FormInfo extends Component {
             isRequired={true}
             keyboardType="numeric"
             textError={checkMgmtChrg === true ? null : '정보를 입력해주세요.'}
-
           />
 
           <TextField

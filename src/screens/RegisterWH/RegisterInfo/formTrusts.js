@@ -183,7 +183,7 @@ class FormTrusts extends Component {
     ) {
       timeCheck = true;
     }
-    
+
     //check validate
     let checkUsblValue = false;
     let checkSplyAmount = false;
@@ -230,7 +230,7 @@ class FormTrusts extends Component {
         <View style>
           <Select
             data={typeCodes}
-            labelSelected="보관유형"
+            labelSelected="창고유형"
             // valueSelected={defaultTypeCodeT !== undefined ? defaultTypeCodeT.label : ''}
             dataDefault={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
             // selectedValue={formData.typeCode}
@@ -302,7 +302,7 @@ class FormTrusts extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                수탁 기간
+                수탁 시작일
               </Text>
               <DateTimePickerModal
                 mode="date"
@@ -333,7 +333,7 @@ class FormTrusts extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                수탁 기간
+                수탁 종료일
               </Text>
               <DateTimePickerModal
                 mode="date"
@@ -401,7 +401,7 @@ class FormTrusts extends Component {
           <TextField
             labelTextField="출고단가"
             isRequired={true}
-            placeholder="0"    
+            placeholder="0"
             textError={
               checkWhoutChrg === true
                 ? null
@@ -421,7 +421,8 @@ class FormTrusts extends Component {
               valueForm && valueForm(dataF);
             }}
           />
-          {/* <TextField
+          {/**
+          <TextField
             labelTextField="인건단가 (선택)"
             placeholder="0"
             keyboardType="numeric"
@@ -435,8 +436,8 @@ class FormTrusts extends Component {
               dataF.psnChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-          /> */}
-          {/* <TextField
+          />
+          <TextField
             labelTextField="가공단가 (선택)"
             value={mnfctChrg}
             placeholder="0"
@@ -452,8 +453,8 @@ class FormTrusts extends Component {
               dataF.mnfctChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-          /> */}
-          {/* <TextField
+          />
+          <TextField
             labelTextField="택배단가 (선택)"
             placeholder="0"
             keyboardType="numeric"
@@ -469,8 +470,8 @@ class FormTrusts extends Component {
               dataF.dlvyChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-          /> */}
-          {/* <TextField
+          />
+          <TextField
             labelTextField="운송단가 (선택)"
             placeholder="0"
             keyboardType="numeric"
@@ -486,8 +487,8 @@ class FormTrusts extends Component {
               dataF.shipChrg = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-          /> */}
-
+          />
+ */}
           <TextField
             labelTextField="비고"
             value={formData.remark}

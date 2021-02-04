@@ -54,6 +54,7 @@ class Search extends Component {
       url: this.option.defaultURL,
       progress: 0,
       searchQuery: '',
+      centerChangeFlag: false
     };
     // Ref
     this.refSearchFilter = React.createRef();
@@ -123,6 +124,9 @@ class Search extends Component {
       type: WVMsgService.types.CHANGE_SEARCH_CENTER_POSITION,
       data: result,
     });
+
+    // 검색 목록 클릭에 의한 중심좌표 변경일 경우.
+    this.setState({ centerChangeFlag: true });
   };
 
   /**
@@ -187,7 +191,7 @@ class Search extends Component {
         />
 
         {/* 테스트 용도 */}
-        {/*<TouchableOpacity onPress={()=>this.navigation.navigate('DetailsWH', { id: 'RG20210103255' })}><Text>Reload</Text></TouchableOpacity>*/}
+        {/*<TouchableOpacity onPress={()=>this.navigation.navigate('DetailsWH', { id: 'RG20210103255' })}><Text>{this.option.defaultURL}</Text></TouchableOpacity>*/}
 
         {/** 웹뷰 지도. */}
         <View
@@ -243,7 +247,7 @@ class Search extends Component {
     // searchToggle(route.params && route.params.searchQuery);
 
     // 필터 코드값.
-    const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 보관유형
+    const listGdsTypeCode = await Warehouse.listGdsTypeCode(); // 창고유형
     const listCalUnitDvCode = await Warehouse.listCalUnitDvCode(); // 정산단위
     const listCalStdDvCode = await Warehouse.listCalStdDvCode(); // 산정기준
     const listFlrDvCode = await Warehouse.listFlrDvCode(); // 층수
@@ -255,7 +259,7 @@ class Search extends Component {
       listGdsTypeCode:
         listGdsTypeCode && listGdsTypeCode._embedded
           ? listGdsTypeCode._embedded.detailCodes
-          : [], // 보관유형
+          : [], // 창고유형
       listCalUnitDvCode:
         listCalUnitDvCode && listCalUnitDvCode._embedded
           ? listCalUnitDvCode._embedded.detailCodes
@@ -297,11 +301,18 @@ class Search extends Component {
     // console.log('::componentDidUpdate::');
     if (prevProps.whFilter !== this.props.whFilter) {
       this.setDebounce(() => {
-        // 필터 갱신 될때마다 지도 동기화.
-        this._WVSendMessage({
-          type: WVMsgService.types.CHANGE_SEARCH_FILTER,
-          data: this.props.whFilter,
-        });
+        // 검색 목록 클릭에 의한 중심좌표 변경일 경우,
+        // 필터변경 이벤트를 전달 안함.(중복 이벤트 발생하기때문)
+        if (!this.state.centerChangeFlag) {
+          // 필터 갱신 될때마다 지도 동기화.
+          this._WVSendMessage({
+            type: WVMsgService.types.CHANGE_SEARCH_FILTER,
+            data: this.props.whFilter,
+          });
+        } else {
+          this.setState({ centerChangeFlag: false })
+        }
+
         // console.log('::::: 필터 변경에 의 지도 갱신 시점 :::::', this.props.whFilter);
       });
     }

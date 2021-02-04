@@ -31,7 +31,6 @@ import Loading from '@Components/atoms/Loading';
 import { styles as S } from './style';
 
 import { Question } from '@Services/apis';
-
 const windowHeight = Dimensions.get('window').height;
 
 class QuestionScreen extends Component {
@@ -81,9 +80,13 @@ class QuestionScreen extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  handleChangeEmail = value => this.setState({ email: value });
+  handleChangeEmail = value => {
+    this.setState({ email: value })
+  };
 
-  handleChangeContent = value => this.setState({ content: value });
+  handleChangeContent = value => {
+    this.setState({ content: value });
+  } 
 
   onSubmit = () => {
     if (this.state.email.length > 0 && this.state.content.length > 0) {

@@ -1,16 +1,16 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import DefaultStyle from '@Styles/default';
-import {TouchableOpacity, View} from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Select from '@Components/organisms/Select';
-import {StringUtils, DeepLogs} from '@Services/utils';
+import { StringUtils, DeepLogs } from '@Services/utils';
 import TableInfo from '@Components/atoms/TableInfo';
-import {Text} from "react-native-paper";
-import {styles as SS} from "./style";
+import { Text } from "react-native-paper";
+import { styles as SS } from "./style";
 
 
 class OwnerRq00Trust extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.navigation = props.navigation;
     this.state = {
@@ -18,7 +18,7 @@ class OwnerRq00Trust extends Component {
     }
   }
 
-  render() {
+  render () {
     /**
      * OWNER - RQ00 - TRUST
      */
@@ -37,7 +37,7 @@ class OwnerRq00Trust extends Component {
 
     let lastRequestData = {};
     if (estmtTrustGroups && estmtTrustGroups.length > 0) {
-      lastRequestData = estmtTrustGroups[0][estmtTrustGroups[0].length-1];
+      lastRequestData = estmtTrustGroups[0][estmtTrustGroups[0].length - 1];
     }
 
     let viewRequestTrust =
@@ -71,22 +71,22 @@ class OwnerRq00Trust extends Component {
               type: '출고단가',
               value: item.whoutChrg ? StringUtils.money(item.whoutChrg) : '-'
             },
-            {
-              type: '인건단가',
-              value: item.psnChrg ? StringUtils.money(item.psnChrg) : '-'
-            },
-            {
-              type: '가공단가',
-              value: item.mnfctChrg ? StringUtils.money(item.mnfctChrg) : '-'
-            },
-            {
-              type: '택배단가',
-              value: item.dlvyChrg ? StringUtils.money(item.dlvyChrg) : '-'
-            },
-            {
-              type: '운송단가',
-              value: item.shipChrg ? StringUtils.money(item.shipChrg) : '-'
-            },
+            // {
+            //   type: '인건단가',
+            //   value: item.psnChrg ? StringUtils.money(item.psnChrg) : '-'
+            // },
+            // {
+            //   type: '가공단가',
+            //   value: item.mnfctChrg ? StringUtils.money(item.mnfctChrg) : '-'
+            // },
+            // {
+            //   type: '택배단가',
+            //   value: item.dlvyChrg ? StringUtils.money(item.dlvyChrg) : '-'
+            // },
+            // {
+            //   type: '운송단가',
+            //   value: item.shipChrg ? StringUtils.money(item.shipChrg) : '-'
+            // },
             // {
             //   type: '정산단위',
             //   value: item.calUnitDvCode ? StringUtils.toStdName(this.state.calUnitDvCodes, item.calUnitDvCode) : '-'
@@ -111,7 +111,7 @@ class OwnerRq00Trust extends Component {
                   </Text>
                 </View>
                 <View style={DefaultStyle._infoTable}>
-                  <TableInfo data={dataRequest}/>
+                  <TableInfo data={dataRequest} />
                 </View>
               </View>
 
@@ -147,7 +147,7 @@ class OwnerRq00Trust extends Component {
                             groupOrderIndex: value
                           });
                         }}
-                        style={SS.optionSelect}/>
+                        style={SS.optionSelect} />
               </View>
             </View>
 
@@ -181,13 +181,18 @@ class OwnerRq00Trust extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 
-  componentDidMount() {
+  componentDidMount () {
     console.log('::componentDidMount::');
-
+// 마지막 차수로 설정.
+    if (this.state.groupOrders && this.state.groupOrders.length > 0) {
+      this.setState({
+        groupOrderIndex: this.state.groupOrders.length - 1
+      });
+    }
   }
 }
 

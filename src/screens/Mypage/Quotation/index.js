@@ -136,7 +136,7 @@ class Quotation extends Component {
         address: dataApi.warehouse.address,
         /*계약유형*/
         type: '임대',
-        /*보관유형*/
+        /*창고유형*/
         keepType: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         /*전용면적*/
         prvtArea: dataApi.whrgMgmtKeep.usblValue ? StringUtils.displayAreaUnit(dataApi.whrgMgmtKeep.usblValue) : "-",
@@ -157,7 +157,7 @@ class Quotation extends Component {
         address: dataApi.warehouse.address,
         /*계약유형*/
         type: '수탁',
-        /*보관유형*/
+        /*창고유형*/
         keepType: dataApi.whrgMgmtTrust.typeCode.stdDetailCodeName,
         /*정산단위*/
         calUnitDvCode: dataApi.whrgMgmtTrust.calUnitDvCode.stdDetailCodeName,
@@ -170,17 +170,17 @@ class Quotation extends Component {
         /*보관단가*/
         splyAmount: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.splyAmount),
         /*가공단가*/
-        mnfctChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg),
+        // mnfctChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.mnfctChrg),
         /*인건단가*/
-        psnChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg),
+        // psnChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.psnChrg),
         /*입고단가*/
         whinChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whinChrg),
         /*출고단가*/
         whoutChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.whoutChrg),
         /*택배단가*/
-        dlvyChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg),
+        // dlvyChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.dlvyChrg),
         /*운송단가*/
-        shipChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg),
+        // shipChrg: StringUtils.moneyConvert(dataApi.whrgMgmtTrust.shipChrg),
       });
 
     return (
@@ -198,7 +198,7 @@ class Quotation extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'견적･계약 관리'}
             navigation={this.navigation}
@@ -410,7 +410,7 @@ class Quotation extends Component {
             {/*}*/}
 
             {/** 견적서 버튼 */}
-            {status === 'RS00' &&
+            {type === 'TENANT' && status === 'RS00' &&
             <View style={[DefaultStyle._cards, DefaultStyle.backgroundWhiteDF2, { backgroundColor: '#fff' }]}>
               <TouchableOpacity
                 style={[

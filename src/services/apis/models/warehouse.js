@@ -1,8 +1,8 @@
 /**
- * [창고등록] 보관계약 모델
+ * [창고등록] 임대계약 모델
  * */
 export const WarehouseKeepsModel = {
-  typeCode: "", // "0001", 보관유형 // required
+  typeCode: "", // "0001", 창고유형 // required
   calUnitDvCode: "", //"CU01", 정산단위 // required
   calStdDvCode: "", // "CS03", 정산기준 // required
   mgmtChrgDvCode: "", // "0001",
@@ -10,7 +10,7 @@ export const WarehouseKeepsModel = {
   usblYmdTo: null, // 1606316400000,
   usblValue: "", //10, // 전용면적
   cmnArea: "", //100, // 공용면적
-  splyAmount: "", //100000, // 보관단가
+  splyAmount: "", //100000, // 임대단가
   mgmtChrg: "", //100000, // 관리단가
   remark: "", //"비고란.." // 비고
 }
@@ -19,7 +19,7 @@ export const WarehouseKeepsModel = {
  * [창고등록] 수탁계약 모델
  * */
 export const WarehouseTrustsModel = {
-  typeCode: "", // 보관유형
+  typeCode: "", // 창고유형
   calUnitDvCode: "", // 정산단위
   calStdDvCode: "", // 정산기준
   usblYmdFrom: null, // 가용일자 from
@@ -132,7 +132,7 @@ export const WarehouseModel = {
     //   usblYmdTo: "", // 1606316400000,
     //   usblValue: "", //10, // 전용면적
     //   cmnArea: "", //100, // 공용면적
-    //   splyAmount: "", //100000, // 보관비
+    //   splyAmount: "", //100000, // 임대비
     //   mgmtChrg: "", //100000, // 관리비
     //   remark: "", //"비고란.." // 비고
     // }
@@ -199,7 +199,7 @@ export const WarehouseSearchFilterModel = {
   sort: 'createdDate,desc',
 
   /** Filter */
-  typeCodes: '', // 보관/수탁 KEEP/TRUST (,구분)
+  typeCodes: '', // 임대/수탁 KEEP/TRUST (,구분)
   gdsKeepTypeCodes: '', // 상품보관형태 WHRG0001 (,구분)
 
   keepFrom: '', // YYYY-MM-DD
@@ -207,7 +207,7 @@ export const WarehouseSearchFilterModel = {
   trustFrom: '', // YYYY-MM-DD
   trustTo: '', // YYYY-MM-DD
 
-  splyAmount: '', // Trust : 보관비 max
+  splyAmount: '', // Trust : 임대비 max
   mgmtChrg: '', // Keep : 관리비 max
   whinChrg: '', // Trust : 입고비 max
   whoutChrg: '', // Trust: 출고비 max
@@ -263,15 +263,15 @@ export const WarehouseTenantInfo = {
 }
 
 /**
- * [견적요청] 보관 견적 요청
+ * [견적요청] 임대 견적 요청
  * */
 export const RequestKeepQuotationModel = {
   idWarehouse: '', // 창고 ID
   seq: '',
-  from: null, // 보관기간
-  to: null, // 보관기간
+  from: null, // 임대기간
+  to: null, // 임대기간
   rntlValue: '', // 임대수치(요청면적)
-  splyAmount: '', // 보관료(보관단가)
+  splyAmount: '', // 임대료(임대단가)
   mgmtChrg: '', // 관리비(관리단가)
   remark: '', // 추가요청사항.
 }

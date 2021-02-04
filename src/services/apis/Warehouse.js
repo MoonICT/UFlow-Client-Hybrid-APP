@@ -1,8 +1,8 @@
 import { Axios, parseQuery } from '@Services/http';
 import { mainAxios, mainMediaAxios } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import axios from "axios";
-import {TokenUtils} from '@Services/utils';
+import axios from 'axios';
+import { TokenUtils } from '@Services/utils';
 //Contants
 import { TOKEN } from '@Constant';
 
@@ -29,8 +29,8 @@ export const registerWH = async data => {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-      }
-    }
+      },
+    };
   }
 
   return await mainAxios.post('/api/v1/warehouse', data, config);
@@ -59,15 +59,16 @@ export const updateWH = async value => {
  * }
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const uploadImage = (body) => {
-  mainMediaAxios.body = body;
-  const data =  mainMediaAxios.request({
-    method: 'POST',
-    url: '/api/v1/warehouse/imageupload/new',
-  });
-  return data;
-};
-
+export const uploadImage = async (body) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  return await mainAxios.post(`/api/v1/warehouse/image/upload/new`, body,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        contentType: 'multipart/form-data'
+      }
+    });
+}
 
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
@@ -81,29 +82,29 @@ export const myWH = async () => {
 };
 
 export const detailWH = async url => {
-  console.log(">>>> 1detailWH <<<<")
+  console.log('>>>> 1detailWH <<<<');
   const token = await TokenUtils.getToken();
 
   let config = {};
-  console.log(token,'>>>>  token');
+  console.log(token, '>>>>  token');
   if (token) {
     config = {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
       },
-      ...config
-    }
+      ...config,
+    };
   } else {
     config = {
       headers: {
         Accept: 'application/json',
       },
-      ...config
-    }
+      ...config,
+    };
   }
 
-  console.log(config,'>>>>  config');
+  console.log(config, '>>>>  config');
   return await mainAxios.get(`/api/v1/warehouse/${url}`, config);
 };
 
@@ -178,42 +179,38 @@ export const chatting = async value => {
  * @param id 창고 ID
  * @returns {Promise<unknown>}
  */
-export const postWhrgQuestion = async (payload) => {
-
+export const postWhrgQuestion = async payload => {
   const token = await AsyncStorage.getItem(TOKEN);
 
-  return await mainAxios.post(
-    `/api/v1/warehouse/question`,payload,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-      },
+  return await mainAxios.post(`/api/v1/warehouse/question`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
     },
-  );
+  });
 };
 
-export const  termsContract = async (body, typeWH) => {
+export const termsContract = async (body, typeWH) => {
   const token = await AsyncStorage.getItem(TOKEN);
   let typeWHStr = typeWH === 'TRUST' ? 'trust' : 'keep';
-  console.log('body', body)
+  console.log('body', body);
   return axios({
-      method: 'Post',
-      url: `/api/v1/contract/4100/owner/${typeWHStr}`,
-      data: body,
-      headers: {
-          // 'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-      }
+    method: 'Post',
+    url: `/api/v1/contract/4100/owner/${typeWHStr}`,
+    data: body,
+    headers: {
+      // 'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`,
+    },
   }).catch(err => {
-      console.log(err)
-  })
-}
+    console.log(err);
+  });
+};
 export const searchAddressKakao = async ({
-  query = '',
-  page = 0,
-  size = 20,
-}) => {
+                                           query = '',
+                                           page = 0,
+                                           size = 20,
+                                         }) => {
   let url = parseQuery({
     query: query,
     page: page,
@@ -221,7 +218,6 @@ export const searchAddressKakao = async ({
   });
   return await mainAxios.get(`/api/v1/kakao-map/address${url}`);
 };
-
 
 /**  TODO 아래 API가 웹에서 사용하던 것. (아래 API로 사용 권장. 왜 그대로 안쓰고 다시 만들어 쓰는지 확인필요.)*/
 
@@ -639,9 +635,8 @@ export const getWhrgId = () => {
  * @param whrgBody 기존 whrgBody + id
  */
 export const registWhrgNew = whrgBody => {
-
   if (!whrgBody || !whrgBody.id) {
-    console.error("잘못된 요청입니다.", whrgBody);
+    console.error('잘못된 요청입니다.', whrgBody);
     return;
   }
   return Axios.postRequest({
@@ -680,25 +675,25 @@ export const getWhrg = async ({ id = '', config = '' }) => {
   const token = await AsyncStorage.getItem(TOKEN);
   // const token = TokenUtils.getToken();
 
-  console.log(token,'>>>>  token 2');
+  console.log(token, '>>>>  token 2');
   if (token) {
     config = {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
       },
-      ...config
-    }
+      ...config,
+    };
   } else {
     config = {
       headers: {
         Accept: 'application/json',
       },
-      ...config
-    }
+      ...config,
+    };
   }
 
-  console.log(config,'>>>>  config');
+  console.log(config, '>>>>  config');
   return await mainAxios.get(`/api/v1/warehouse/${id}`, config);
 };
 
@@ -708,13 +703,13 @@ export const getWhrg = async ({ id = '', config = '' }) => {
  * @returns {Promise<unknown>}
  */
 export const pageWhrg = ({
-  query = '',
-  startDate = '',
-  endDate = '',
-  size = 20,
-  page = 0,
-  sort = 'createdDate,desc',
-}) => {
+                           query = '',
+                           startDate = '',
+                           endDate = '',
+                           size = 20,
+                           page = 0,
+                           sort = 'createdDate,desc',
+                         }) => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse${parseQuery({
@@ -741,7 +736,6 @@ export const pageWhrg = ({
  * @returns {Promise<unknown>}
  **/
 export const listRecommend = async params => {
-
   return await mainAxios.get(`/api/v1/warehouse/recommend`, {
     params: {
       ...params,
@@ -769,19 +763,20 @@ export const listAllBussinessInfo = () => {
   });
 };
 
-export const pageWhrgQnA = ({
-  id = '',
-  query = '',
-  startDate = '',
-  endDate = '',
-  size = 15,
-  page = 0,
-  sort = 'createdDate,desc',
-  requiresToken = false,
-}) => {
+export const pageWhrgQnA = async ({
+                                    id = '',
+                                    query = '',
+                                    startDate = '',
+                                    endDate = '',
+                                    size = 15,
+                                    page = 0,
+                                    sort = 'createdDate,desc',
+                                    requiresToken = true,
+                                  }) => {
+  const token = await AsyncStorage.getItem(TOKEN);
   return Axios.getRequest({
     methodType: 'GET',
-    requiresToken: requiresToken,
+    requiresToken: !!token,
     url: `/api/v1/warehouse/question${parseQuery({
       idWarehouse: id,
       query: query,
@@ -796,13 +791,17 @@ export const pageWhrgQnA = ({
 
 export const toggleFav = async idWarehouse => {
   const token = await AsyncStorage.getItem(TOKEN);
-  console.log(token)
-  console.log('url',`/api/v1/warehouse/${idWarehouse}/favorite` )
-  return await mainAxios.post(`/api/v1/warehouse/${idWarehouse}/favorite`, {}, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  console.log(token);
+  console.log('url', `/api/v1/warehouse/${idWarehouse}/favorite`);
+  return await mainAxios.post(
+    `/api/v1/warehouse/${idWarehouse}/favorite`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 };
 
 export const getLinkContract = body => {

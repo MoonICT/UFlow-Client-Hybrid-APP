@@ -98,6 +98,7 @@ class ContractInformation extends Component {
               DefaultStyle.btnSubmit,
               DefaultStyle.activeBtnSubmit,
               S.btnMess,
+              {marginTop: 20}
             ]}
             onPress={() =>
               this.navigation.navigate('Chatting', {

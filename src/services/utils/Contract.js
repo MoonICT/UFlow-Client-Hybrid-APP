@@ -55,10 +55,10 @@ export const keepTableDatas = (
     rentUserLabel = '임차인',
     addressLabel = '위치',
     typeLabel = '계약유형',
-    keepTypeLabel = '보관유형',
+    keepTypeLabel = '창고유형',
     prvtAreaLabel = '가용면적',
     usblYmdLabel = '임대 가능기간',
-    splyAmountLabel = '보관단가',
+    splyAmountLabel = '임대단가',
     mgmtChrgLabel = '관리단가',
   },
   {
@@ -67,7 +67,7 @@ export const keepTableDatas = (
     rentUser,
     address,
     type,
-    keepType = '임대(보관)',
+    keepType = '임대',
     prvtArea,
     usblYmd,
     splyAmount,
@@ -213,19 +213,19 @@ export const trustTableDatas = (
     ownerNameLabel = '창고주',
     addressLabel = '위치',
     typeLabel = '계약유형',
-    keepTypeLabel = '보관유형',
+    keepTypeLabel = '창고유형',
 
     calUnitDvCodeLabel = '정산단위',
     calStdDvCodeLabel = '산정기준',
     usblYmdLabel = '수탁 가능기간',
     usblValueLabel = '수탁 가용수량',
     splyAmountLabel = '보관단가',
-    mnfctChrgLabel = '가공단가',
-    psnChrgLabel = '인건단가',
+    // mnfctChrgLabel = '가공단가',
+    // psnChrgLabel = '인건단가',
     whinChrgLabel = '입고단가',
     whoutChrgLabel = '출고단가',
-    dlvyChrgLabel = '택배단가',
-    shipChrgLabel = '운송단가'
+    // dlvyChrgLabel = '택배단가',
+    // shipChrgLabel = '운송단가'
   },
   {
     warehouseName,
@@ -299,22 +299,22 @@ export const trustTableDatas = (
         type: whoutChrgLabel,
         value: whoutChrg,
       },
-      {
-        type: mnfctChrgLabel,
-        value: mnfctChrg,
-      },
-      {
-        type: psnChrgLabel,
-        value: psnChrg,
-      },
-      {
-        type: dlvyChrgLabel,
-        value: dlvyChrg,
-      },
-      {
-        type: shipChrgLabel,
-        value: shipChrg,
-      },
+      // {
+      //   type: mnfctChrgLabel,
+      //   value: mnfctChrg,
+      // },
+      // {
+      //   type: psnChrgLabel,
+      //   value: psnChrg,
+      // },
+      // {
+      //   type: dlvyChrgLabel,
+      //   value: dlvyChrg,
+      // },
+      // {
+      //   type: shipChrgLabel,
+      //   value: shipChrg,
+      // },
     ];
   } else if (mode === 2) {
     // 1100, 2100, 4100, 5100
@@ -360,22 +360,22 @@ export const trustTableDatas = (
         type: whoutChrgLabel,
         value: whoutChrg,
       },
-      {
-        type: mnfctChrgLabel,
-        value: mnfctChrg,
-      },
-      {
-        type: psnChrgLabel,
-        value: psnChrg,
-      },
-      {
-        type: dlvyChrgLabel,
-        value: dlvyChrg,
-      },
-      {
-        type: shipChrgLabel,
-        value: shipChrg,
-      },
+      // {
+      //   type: mnfctChrgLabel,
+      //   value: mnfctChrg,
+      // },
+      // {
+      //   type: psnChrgLabel,
+      //   value: psnChrg,
+      // },
+      // {
+      //   type: dlvyChrgLabel,
+      //   value: dlvyChrg,
+      // },
+      // {
+      //   type: shipChrgLabel,
+      //   value: shipChrg,
+      // },
     ];
   } else if (mode === 3) {
     // 5100 계약완료 정보
@@ -421,22 +421,22 @@ export const trustTableDatas = (
         type: whoutChrgLabel,
         value: whoutChrg,
       },
-      {
-        type: mnfctChrgLabel,
-        value: mnfctChrg,
-      },
-      {
-        type: psnChrgLabel,
-        value: psnChrg,
-      },
-      {
-        type: dlvyChrgLabel,
-        value: dlvyChrg,
-      },
-      {
-        type: shipChrgLabel,
-        value: shipChrg,
-      },
+      // {
+      //   type: mnfctChrgLabel,
+      //   value: mnfctChrg,
+      // },
+      // {
+      //   type: psnChrgLabel,
+      //   value: psnChrg,
+      // },
+      // {
+      //   type: dlvyChrgLabel,
+      //   value: dlvyChrg,
+      // },
+      // {
+      //   type: shipChrgLabel,
+      //   value: shipChrg,
+      // },
     ];
   }
   return [];

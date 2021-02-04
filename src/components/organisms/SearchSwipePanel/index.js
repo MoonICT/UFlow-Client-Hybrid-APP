@@ -20,6 +20,7 @@ import { WhrgSearch, WarehouseRecommend } from '@Services/apis';
 import Alert from '@Components/atoms/Alert';
 import Progress from '@Components/organisms/Progress';
 import ProductCard from '@Components/organisms/ProductCard';
+import { numberComma } from '@Services/utils/StringUtils';
 
 const status = getStatusBarHeight(true);
 
@@ -179,7 +180,7 @@ class SearchSwipePanel extends Component {
 
             <View style={{ paddingHorizontal: 16 }}>
               <Text
-                style={styles.counterText}>{`창고 목록 총 ${this.state.pageInfo ? this.state.pageInfo.totalElements.toString().toLocaleString() : 0}개`}</Text>
+                style={styles.counterText}>{`창고 목록 총 ${this.state.pageInfo ? numberComma(this.state.pageInfo.totalElements) : 0}개`}</Text>
             </View>
 
             {/** 목록 없음. */}

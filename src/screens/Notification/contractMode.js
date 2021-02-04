@@ -99,10 +99,10 @@ export default class Notification extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'이용방법'}
-            navigation={this.navigation}
+            navigation={this.props.nav}
           />
         <View style={S.tabTopbar}>
           <View style={S.boxSelect}>{this.props.navitationTitle}</View>
@@ -124,6 +124,7 @@ export default class Notification extends Component {
                   marginBottom: 60,
                   alignItems: 'center',
                 }}>
+                <Text>{this.props.nav.goBack ? 'has' : 'empty'}</Text>
                 <Text style={S.title}>
                   계약 결정까지 유플로우가{'\n'}
                   쌍방간의 계약을 {'\n'}

@@ -25,7 +25,6 @@ import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { log } from 'react-native-reanimated';
 import { connect } from "react-redux";
-
 const selectOptions = [
   {
     label: '창고주 ',
@@ -192,9 +191,8 @@ class Inquiry extends Component {
   hideDialog = () => this.setState({ visible: false });
 
   handleQueryChange = (query) => {
-    this.setState({ query: query }, () => {
-      this.getAllData();
-    });
+    this.getAllData();
+
   };
 
   render () {
@@ -285,7 +283,7 @@ class Inquiry extends Component {
                       DefaultStyle._labelTextField,
                       { color: '#000000', fontSize: 12 },
                     ]}>
-                    보관 기간
+                    임대 기간
                   </Text>
                   <DateTimePickerModal
                     mode={mode}
