@@ -1054,9 +1054,14 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>위치</Text>
               <Text style={S.describeTitle}>
-                {whrgData.roadAddr
-                  ? `${whrgData.roadAddr.address} ${whrgData.roadAddr.detail}`
-                  : '-'}
+              {whrgData.roadAddr
+                ? `${whrgData.roadAddr.address} ${
+                    whrgData.roadAddr.detail === null ||
+                    whrgData.roadAddr.detail === undefined
+                      ? ''
+                      : whrgData.roadAddr.detail
+                  }`
+                : '-'}
               </Text>
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
