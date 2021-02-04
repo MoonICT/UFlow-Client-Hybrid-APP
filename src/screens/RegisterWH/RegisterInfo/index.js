@@ -496,7 +496,6 @@ class RegisterInfo extends Component {
                         }))
                       : this.props.showPopup({
                         type: 'confirm',
-                        title: '에러',
                         content: '필수정보를 입력해야 합니다.',
                         image: illust10,
                       })
