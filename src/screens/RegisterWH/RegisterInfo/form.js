@@ -193,7 +193,7 @@ class FormInfo extends Component {
     let defaulcmgmtChrg =
       formData &&
       mgmtChrgDvCodes &&
-      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
+      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCodes);
     return (
       <Card style={S.cards}>
         <View style>
@@ -310,6 +310,7 @@ class FormInfo extends Component {
               <TextField
                 labelTextField="가용수치"
                 textRight="평"
+                isRequired={true}
                 defaultValue={
                   formData.usblValue
                     ? numberToStd(toPyeong(formData.usblValue))
