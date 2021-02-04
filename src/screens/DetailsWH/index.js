@@ -504,13 +504,13 @@ class DetailWH extends Component {
                       this.navigation.navigate('ViewPanoramaImage', {
                         image: whrgData.pnImages && whrgData.pnImages.length > 0 ? whrgData.pnImages[0].url : ''
                       })}>
-                     {/**    <PanoramaView
-                        style={S.backgroundImage}
-                        dimensions={{ height: 230, width:windowWidth }}
-                        inputType="mono"
-                        imageUrl={whrgData.pnImages[0].url}
-                      />*/}
-                   <Image
+                      {/**    <PanoramaView
+                       style={S.backgroundImage}
+                       dimensions={{ height: 230, width:windowWidth }}
+                       inputType="mono"
+                       imageUrl={whrgData.pnImages[0].url}
+                       />*/}
+                      <Image
                         style={S.backgroundImage}
                         source={whrgData.pnImages && whrgData.pnImages.length > 0
                           ? { uri: whrgData.pnImages[0].url }
@@ -671,9 +671,7 @@ class DetailWH extends Component {
                             가용수치
                           </Text>
                           <Text style={S.textTable}>
-                            {
-                              keep.usblValue ? `${toPyeong(keep.usblValue)}평 (${toSquareMeter(keep.usblValue)} ㎡)` : '-'
-                            }
+                            {keep.usblValue ? StringUtils.displayAreaUnit(keep.usblValue) : '-'}
                           </Text>
                         </View>
                         {/* <View style={S.tableRow}>
@@ -1282,13 +1280,15 @@ class DetailWH extends Component {
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 층고
                               </Text>
-                              <Text style={S.textTable}>{floor.flrHi}</Text>
+                              <Text
+                                style={S.textTable}>{floor.flrHi ? StringUtils.numberComma(floor.flrHi) : '-'}</Text>
                             </View>
                             <View style={S.tableRow}>
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 유효고
                               </Text>
-                              <Text style={S.textTable}>{floor.efctvHi}</Text>
+                              <Text
+                                style={S.textTable}>{floor.efctvHi ? StringUtils.numberComma(floor.efctvHi) : '-'}</Text>
                             </View>
                             <View style={S.tableRow}>
                               <Text style={[S.textTable, S.textLeftTable]}>
@@ -1304,7 +1304,8 @@ class DetailWH extends Component {
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 도크 수
                               </Text>
-                              <Text style={S.textTable}>{floor.dockQty}</Text>
+                              <Text
+                                style={S.textTable}>{floor.dockQty ? StringUtils.numberComma(floor.dockQty) : '-'}</Text>
                             </View>
                           </View>
                         </View>
