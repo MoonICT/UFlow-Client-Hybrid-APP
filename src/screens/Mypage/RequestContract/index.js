@@ -87,7 +87,10 @@ class RequestContract extends Component {
         <View>
 
           <ScrollView  nestedScrollEnabled = {true}>
-            <View style={[DefaultStyle._body, { paddingBottom: 300 }]}>
+            <View style={[
+              DefaultStyle._body, 
+              { paddingBottom: 100 }
+            ]}>
               {/** HEADER **/}
               <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
                 <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
