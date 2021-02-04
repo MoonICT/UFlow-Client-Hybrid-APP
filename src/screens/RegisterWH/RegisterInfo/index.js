@@ -138,10 +138,10 @@ class RegisterInfo extends Component {
         // remark: '',
       })
       : listKeeps.push({
-        // typeCode: '',
+        typeCode: this.state.typeCodes[0]?.value,
         calUnitDvCode: this.state.calUnitDvCodeKeeps[1]?.value,
         calStdDvCode: this.state.calStdDvCodeKeeps[0]?.value,
-        // mgmtChrgDvCode: '',
+        mgmtChrgDvCodes:this.state.mgmtChrgDvCodesKeep[0]?.value,
         // commonArea: '',
         // usblValue: '',
         usblYmdFrom: new Date().getTime(),
@@ -165,7 +165,7 @@ class RegisterInfo extends Component {
     }, 500);
   };
   _removeForm = valueTab => {
-    console.log('vaodaynao');
+    // console.log('vaodaynao');
     let listKeeps = this.state.keeps;
     let listTrusts = this.state.trusts;
     let numberSlideKeep = this.state.numberSlide;
@@ -207,7 +207,7 @@ class RegisterInfo extends Component {
     let dataKeep = this.state.keeps;
     return (
       <Form
-        mgmtChrgDvCodes={this.state.mgmtChrgDvCodes}
+        mgmtChrgDvCodes={this.state.mgmtChrgDvCodesKeep}
         typeCodes={this.state.typeCodes}
         calUnitDvCodes={this.state.calUnitDvCodeKeeps}
         calStdDvCodes={this.state.calStdDvCodeKeeps}
@@ -478,8 +478,10 @@ class RegisterInfo extends Component {
               {/*<Text style={SS.textFooter}>할 때 가격 협의가 가능합니다.</Text>*/}
               {/*</View>*/}
 
-              {((valueTab === 'keeps' && (keeps && keeps.length > 0)) ||
-                (valueTab === 'trusts' && (trusts && trusts.length > 0))) && (
+              {
+                // ((valueTab === 'keeps' && (keeps && keeps.length > 0)) ||
+                // (valueTab === 'trusts' && (trusts && trusts.length > 0))) && 
+                (
                 <TouchableOpacity
                   // disabled={isSubmitUpdate === true ? false : true}
                   onPress={() =>
@@ -660,7 +662,7 @@ class RegisterInfo extends Component {
       .then(res => {
         if (res.status === 200) {
           let data = res.data._embedded.detailCodes;
-          let mgmtChrgDvCodes =
+          let mgmtChrgDvCodesData =
             data &&
             data.map((item, index) => {
               return {
@@ -668,7 +670,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ mgmtChrgDvCodes });
+          this.setState({ mgmtChrgDvCodesKeep:mgmtChrgDvCodesData });
         }
       })
       .catch(err => {
