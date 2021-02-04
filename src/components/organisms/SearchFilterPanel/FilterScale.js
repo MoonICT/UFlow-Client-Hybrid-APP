@@ -53,6 +53,8 @@ class FilterScale extends Component {
     return (
       <View style={styles.filterContainer}>
 
+        {/* TODO 가용 수치/면적 으로 필드 변경 필요.*/}
+
         {/***** 공용면적  *****/}
 
         {/** Label */}
