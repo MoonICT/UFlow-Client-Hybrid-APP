@@ -187,7 +187,7 @@ class FAQScreen extends Component {
                 style={[DefaultStyle.bgMuted]}
                 descriptionNumberOfLines={15}
                 titleStyle={{display:'none'}}
-                description={item.rplyContent}
+                description={`${item.rplyContent}`}
                 // title={item.rplyContent}
                 descriptionStyle={S.descript}
               />

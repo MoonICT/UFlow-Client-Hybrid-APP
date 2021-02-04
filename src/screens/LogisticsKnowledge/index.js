@@ -204,7 +204,8 @@ class LogisticsKnowledge extends Component {
               <List.Item
                 descriptionNumberOfLines={15}
                 titleStyle={{display:'none'}}
-                description={item.rplyContent}
+                description={`${item.rplyContent}`}
+                // description={item.rplyContent}
                 descriptionStyle={S.descript}
               />
             </List.Accordion>
