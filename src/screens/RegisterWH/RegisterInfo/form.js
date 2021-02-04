@@ -330,6 +330,7 @@ class FormInfo extends Component {
             <View style={DefaultStyle._element}>
               <TextField
                 labelTextField="가용수치"
+                isRequired={true}
                 textRight="m2"
                 defaultValue={
                   formData.usblValue ? numberToStd(formData.usblValue) : ''

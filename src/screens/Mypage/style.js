@@ -261,4 +261,21 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'flex-end',
   },
+  signature: {
+    flex: 1,
+    borderColor: '#000033',
+    borderWidth: 1,
+  },
+  buttonStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    // height: 50,
+    borderWidth: 1,
+    borderColor: '#d7d7d7',
+    borderRadius: 4,
+    padding: 6,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 14,
+  },
 });

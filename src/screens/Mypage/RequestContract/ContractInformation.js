@@ -10,8 +10,11 @@ import {
   View,
   TouchableOpacity,
   Platform, Linking,
+  TouchableHighlight,
+  Dimensions,
 } from 'react-native';
 import { Appbar, Text, Dialog, Paragraph, Button } from 'react-native-paper';
+import SignatureCapture from 'react-native-signature-capture';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
@@ -22,7 +25,7 @@ import TermsContract from './TermsContract';
 import { styles as S } from '../style';
 import { Warehouse, Contract } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
-
+const windowHeight = Dimensions.get('window').height;
 class ContractInformation extends Component {
   constructor (props) {
     super(props);
@@ -39,7 +42,23 @@ class ContractInformation extends Component {
 
     this.navigation = props.navigation;
   }
+  saveSign() {
+    this.refs['sign'].saveImage();
+  }
 
+  resetSign() {
+    this.refs['sign'].resetImage();
+  }
+
+  _onSaveEvent(result) {
+    //result.encoded - for the base64 encoded png
+    //result.pathName - for the file path name
+    console.log(result);
+  }
+  _onDragEvent() {
+    // This callback will be called when the user enters signature
+    console.log('dragged');
+  }
   /**
    * 오프라인 견적 요청하기
    * */
@@ -158,13 +177,13 @@ class ContractInformation extends Component {
                 { marginTop: 12, marginBottom: Platform.OS === 'ios' ? 90 : 12 },
               ]}>
 
-              {/*<TouchableOpacity*/}
-              {/*  style={[DefaultStyle._btnInline, DefaultStyle._btnLeft]}*/}
-              {/*  onPress={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>*/}
-              {/*  <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>*/}
-              {/*    전자계약*/}
-              {/*  </Text>*/}
-              {/*</TouchableOpacity>*/}
+              <TouchableOpacity
+                style={[DefaultStyle._btnInline, DefaultStyle._btnLeft]}
+                onPress={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>
+                <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
+                  전자계약
+                </Text>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                 onPress={() => this.setState({ isOffLineDialog: !this.state.isOffLineDialog })}>
@@ -226,14 +245,38 @@ class ContractInformation extends Component {
         <Dialog style={DefaultStyle.popup}
                 visible={this.state.isOnLineDialog}
                 onDismiss={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>
-          <Dialog.Title style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            전자 계약 요청
+          <Dialog.Title style={[DefaultStyle._titleDialog]}>
+          서명하기
           </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={DefaultStyle.contentDialog}>
-              선택하신 계약 방식으로{'\n'}계약을 요청하시겠습니까?
-            </Paragraph>
-          </Dialog.Content>
+          <Dialog.Content
+          style={{ width: '100%', height: windowHeight / 2 }}>
+          <View style={{ flex: 1, flexDirection: 'column' }}>
+            <SignatureCapture
+              style={[S.signature]}
+              ref="sign"
+              onSaveEvent={this._onSaveEvent}
+              onDragEvent={this._onDragEvent}
+              saveImageFileInExtStorage={false}
+              showNativeButtons={false}
+              showTitleLabel={false}
+              backgroundColor="#fafafa"
+              strokeColor="#000000"
+              minStrokeWidth={4}
+              maxStrokeWidth={4}
+              viewMode={'portrait'}
+            />
+
+            <View style={{ flexDirection: 'row',justifyContent: 'flex-end' }}>
+              <TouchableHighlight
+                style={S.buttonStyle}
+                onPress={() => {
+                  this.resetSign();
+                }}>
+                <Text style={DefaultStyle._textDF3}>삭제</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={[DefaultStyle._buttonElement]}
@@ -244,8 +287,9 @@ class ContractInformation extends Component {
               style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
               onPress={() => {
                 this.setState({ isOnLineDialog: false })
-                alert('준비중입니다.');
-              }}>확인</Button>
+                this.saveSign();
+                // alert('준비중입니다.');
+              }}>재출</Button>
           </Dialog.Actions>
         </Dialog>
 

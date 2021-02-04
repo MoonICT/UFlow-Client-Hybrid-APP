@@ -534,7 +534,7 @@ export default StyleSheet.create({
   _titleDialog: {
     fontSize: 20,
     color: color.text.primary,
-    fontWeight: '500',
+    fontWeight: 'bold',
     // fontFamily: 'NotoSansCJKkr-Medium',
     marginTop: 15,
     marginBottom: 17,
