@@ -84,6 +84,7 @@ import ConsultingComplete from '@Screeens/Consulting/complete.js';
 import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import Emergency from '@Screeens/Emergency';
+import LogisticConsulting from '@Screeens/LogisticConsulting';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
 import SignatureCapture from '@Screeens/SignatureCapture';
 
@@ -613,11 +614,17 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
-                  name="SignatureCapture"
-                  component={SignatureCapture}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
+                    name="LogisticConsulting"
+                    component={LogisticConsulting}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
+                    name="SignatureCapture"
+                    component={SignatureCapture}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
                 </AuthStack.Navigator>
               </Global>
             </NavigationContainer>

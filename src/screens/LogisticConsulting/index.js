@@ -23,7 +23,7 @@ import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import { styles as S } from './style';
 import { Emergency } from '@Services/apis';
-class QuestionScreen extends Component {
+class LogisticConsulting extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -40,7 +40,7 @@ class QuestionScreen extends Component {
 
   /** when after render DOM */
   componentDidMount() {
-    Emergency.GetEvs({code: '0001'})
+    Emergency.GetEvs({code: '0002'})
       .then(res => {
         if (res && res.length > 0) {
           let dataConvert = res.map(item => {
@@ -209,4 +209,4 @@ const styles = StyleSheet.create({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(QuestionScreen);
+)(LogisticConsulting);

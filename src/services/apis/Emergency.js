@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
  * @returns {Promise<Promise<unknown> | Promise<unknown>>}
  * @constructor
  */
-export const GetEvs = ({ code = '0001'}) => {
+export const GetEvs = ({ code }) => {
   return Axios.request({
     methodType: "GET",
     url: `/api/v1/evs${parseQuery({code: code})}`,
