@@ -20,7 +20,7 @@ import Appbars from '@Components/organisms/AppBar';
 import Select from '@Components/organisms/Select';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
-import { Term } from '@Services/apis';
+import { Term, Terms } from '@Services/apis';
 
 //---> Assets
 
@@ -48,7 +48,7 @@ const data = [
   },
 ];
 
-class Terms extends Component {
+class TermsScreen extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
@@ -137,8 +137,10 @@ class Terms extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    await Term.getTypeTerm()
+    await Term.getCodeTerm({code: '0004'})
+    // await Terms.getTerms({code: '0001'})
       .then(res => {
+        console.log('res=====>', res)
         if (res) {
           let data = res.map(el => {
             return {
@@ -159,7 +161,7 @@ class Terms extends Component {
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
     if (this.state.code !== prevState.code) {
-      Term.getCodeTerm(this.state.code)
+      Terms.getCodeTerm(this.state.code)
         .then(res => {
           console.log('res', res);
         })
@@ -193,4 +195,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Terms);
+)(TermsScreen);
