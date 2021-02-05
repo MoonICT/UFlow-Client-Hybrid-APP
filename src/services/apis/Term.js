@@ -15,7 +15,7 @@ export const getTypeTerm = () => {
   });
 };
 
-export const getCodeTerm = (code) => {
+export const getCodeTerm = ({code}) => {
   console.log('codeddddddddd', code)
   return Axios.request({
     methodType: 'GET',
