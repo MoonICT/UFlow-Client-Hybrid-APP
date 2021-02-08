@@ -115,6 +115,7 @@ class SearchSwipePanel extends Component {
   };
 
   render () {
+    console.log('this.state.isOpenRecommend', this.state.isOpenRecommend);
     let height = Math.round(Dimensions.get('window').height);
     if (Platform.OS === 'ios') {
       const naviHeight = 54;
@@ -171,7 +172,7 @@ class SearchSwipePanel extends Component {
                 <View style={styles.divider} />
                 {this.state.WHRecommendList.map((item, index) =>
                   <View key={index} style={{ paddingHorizontal: 16, }}>
-                    <ProductCard navigation={this.props.navigation} data={item} isShadow={false} type={'HORIZONTAL'} />
+                    <ProductCard navigation={this.props.navigation} data={item} isShadow={false} type={'HORIZONTAL'} isRecommend={this.state.isOpenRecommend} />
                     {this.state.WHRecommendList.length - 1 !== index && <View style={styles.divider} />}
                   </View>
                 )}

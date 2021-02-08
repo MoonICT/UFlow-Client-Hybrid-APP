@@ -12,12 +12,14 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 
 // Local Imports
 import { styles } from './style';
+import DefaultStyle from '@Styles/default';
 import { Card } from 'react-native-paper';
 import cardBG from '@Assets/images/card-img.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import { TOKEN } from '@Constant';
 import { StringUtils } from '@Services/utils';
 import { money } from '@Services/utils/StringUtils';
+import bageCard from '@Assets/images/bageCard.png';
 
 class ProductCard extends Component {
   constructor(props) {
@@ -58,9 +60,8 @@ class ProductCard extends Component {
   }
 
   render() {
-    let { data } = this.props;
+    let { data, bageTypes, isRecommend } = this.props;
     let { isLogin } = this.state;
-
     if (data === undefined) {
       data = {
         img: cardBG,
@@ -106,24 +107,49 @@ class ProductCard extends Component {
                     this.state.isHorizontal && styles.cardImageHorizon,
                   ]}
                 />
+
+                {/**bageOffer */}
+                {isRecommend === true && (
+                  <View style={styles.bageCard}>
+                    <Image style={styles.imageBage} source={bageCard} />
+                    <Text style={styles.textBage}>추천</Text>
+                  </View>
+                )}
+                {bageTypes === true &&
+                  data.typeCode &&
+                  data.typeCode.id.stdDetailCode !== '0001' && (
+                    <View
+                      style={[
+                        styles.bageTypes,
+                        data.badgeType,
+                        {
+                          backgroundColor: data.typeCode.value1
+                            ? data.typeCode.value1
+                            : 'rgba(0, 0, 0, 0.54)',
+                        },
+                      ]}>
+                      <Text style={[styles.badgeLabel]}>
+                        {/** 창고 멤버십 타입 */}
+                        {data.typeCode.stdDetailCodeName}
+                      </Text>
+                    </View>
+                    // <View
+                    //   style={[
+                    //     styles.badge,
+                    //     data.badgeType,
+                    //     {
+                    //       backgroundColor: data.typeCode.value1
+                    //         ? data.typeCode.value1
+                    //         : 'rgba(0, 0, 0, 0.54)',
+                    //     },
+                    //   ]}>
+                    //   <Text style={[styles.badgeLabel]}>
+                    //     {/** 창고 멤버십 타입 */}
+                    //     {data.typeCode.stdDetailCodeName}
+                    //   </Text>
+                    // </View>
+                  )}
               </View>
-              {data.typeCode && data.typeCode.id.stdDetailCode !== '0001' && (
-                <View
-                  style={[
-                    styles.badge,
-                    data.badgeType,
-                    {
-                      backgroundColor: data.typeCode.value1
-                        ? data.typeCode.value1
-                        : 'rgba(0, 0, 0, 0.54)',
-                    },
-                  ]}>
-                  <Text style={[styles.badgeLabel]}>
-                    {/** 창고 멤버십 타입 */}
-                    {data.typeCode.stdDetailCodeName}
-                  </Text>
-                </View>
-              )}
             </View>
 
             {/** Contents */}
@@ -132,6 +158,26 @@ class ProductCard extends Component {
                 styles.contentWrap,
                 this.state.isHorizontal && styles.contentWrapHorizon,
               ]}>
+              {bageTypes !== true &&
+                data.typeCode &&
+                data.typeCode.id.stdDetailCode !== '0001' && (
+                  <View
+                    style={[
+                      DefaultStyle._titleWH,
+                      data.badgeType,
+                      {
+                        backgroundColor: data.typeCode.value1
+                          ? data.typeCode.value1
+                          : 'rgba(0, 0, 0, 0.54)',
+                      },
+                    ]}>
+                    <Text style={[styles.badgeLabel]}>
+                      {/** 창고 멤버십 타입 */}
+                      {data.typeCode.stdDetailCodeName}
+                    </Text>
+                  </View>
+                )}
+
               {/** 창고명 */}
               <Text
                 style={[
