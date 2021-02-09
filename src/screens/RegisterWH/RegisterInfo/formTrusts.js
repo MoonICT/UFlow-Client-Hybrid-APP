@@ -172,7 +172,7 @@ class FormTrusts extends Component {
     } = this.state;
 
     let timeCheck = false;
-    console.log('usblValue :>> ', usblValue);
+    // console.log('usblValue :>> ', usblValue);
     console.log('formDataTrust :>> ', formData);
 
     if (
@@ -225,6 +225,7 @@ class FormTrusts extends Component {
       formData &&
       calStdDvCodes &&
       calStdDvCodes.find(item => item.value === formData.calStdDvCode);
+      console.log('defaultTypeCodeT ====>', defaultTypeCodeT)
     return (
       <Card style={S.cards}>
         <View style>

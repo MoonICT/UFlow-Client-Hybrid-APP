@@ -123,7 +123,7 @@ class RegisterInfo extends Component {
     valueTab === 'trusts'
       ? listTrusts.push({
           // key: lengths,
-          // typeCode: '',
+          typeCode: this.state.typeCodes[0]?.value,
           calUnitDvCode: this.state.calUnitDvCodeTrusts[0]?.value,
           calStdDvCode:
             this.state.calStdDvCodeTrusts &&
