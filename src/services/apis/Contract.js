@@ -190,26 +190,24 @@ export const ozEstimateUrl = ({
  *
  * @param type : owner/tenant (소문자)
  * @param contractType : trust/keep (소문자)
+ *
+ * <formData>
+ * @param file 사인패드 이미지
  * @param warehouseRegNo 창고 ID
  * @param rentUserNo 임차인 ID
  * @param cntrYmdFrom 계약일 (YYYYMMDD)
  * @returns {Promise<*>}
  */
-export const ownerTrustSignpad4100 = ({
-                                        type = '',
-                                        contractType = '',
+export const elctrCntr = ({
+                            type = '',
+                            contractType = '',
 
-                                        warehouseRegNo = '',
-                                        rentUserNo = 0,
-                                        cntrYmdFrom = '',
-                                      }) => {
+
+                            formData
+                          }) => {
   return Axios.postRequest({
     url: `/4100/${type}/${contractType}/sign-pad`,
-    payload: {
-      warehouseRegNo: warehouseRegNo,
-      rentUserNo: rentUserNo,
-      cntrYmdFrom: cntrYmdFrom
-    },
+    payload: formData,
     requiresToken: true, // set access_token
     config: {
       headers: {
