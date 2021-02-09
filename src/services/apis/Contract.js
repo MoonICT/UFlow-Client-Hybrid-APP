@@ -184,3 +184,37 @@ export const ozEstimateUrl = ({
     requiresToken: true, // set access_token
   });
 };
+
+
+/**
+ *
+ * @param type : owner/tenant (소문자)
+ * @param contractType : trust/keep (소문자)
+ * @param warehouseRegNo 창고 ID
+ * @param rentUserNo 임차인 ID
+ * @param cntrYmdFrom 계약일 (YYYYMMDD)
+ * @returns {Promise<*>}
+ */
+export const ownerTrustSignpad4100 = ({
+                                        type = '',
+                                        contractType = '',
+
+                                        warehouseRegNo = '',
+                                        rentUserNo = 0,
+                                        cntrYmdFrom = '',
+                                      }) => {
+  return Axios.postRequest({
+    url: `/4100/${type}/${contractType}/sign-pad`,
+    payload: {
+      warehouseRegNo: warehouseRegNo,
+      rentUserNo: rentUserNo,
+      cntrYmdFrom: cntrYmdFrom
+    },
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'multipart/form-data'
+      }
+    }
+  });
+}
