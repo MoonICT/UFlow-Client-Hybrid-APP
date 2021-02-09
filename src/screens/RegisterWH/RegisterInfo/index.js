@@ -40,9 +40,10 @@ import { styles as SS } from './style';
 import Form from './form';
 import FormTrusts from './formTrusts';
 import { MyPage, Warehouse } from '@Services/apis';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class RegisterInfo extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -59,56 +60,56 @@ class RegisterInfo extends Component {
         props.dataInfo && props.dataInfo.keeps
           ? props.dataInfo.keeps
           : [
-            // {
-            //   typeCode: '',
-            //   calUnitDvCode: '',
-            //   calStdDvCode: '',
-            //   mgmtChrgDvCode: '',
-            //   // exclusiveArea2: '',
-            //   commonArea: '',
-            //   usblValue: '',
-            //   // rentalArea: '',
-            //   // rentalArea2: '',
-            //   usblYmdFrom: '',
-            //   usblYmdTo: '',
-            //   splyAmount: '',
-            //   mgmtChrg: '',
-            //   remark: '',
-            // },
-          ],
+              // {
+              //   typeCode: '',
+              //   calUnitDvCode: '',
+              //   calStdDvCode: '',
+              //   mgmtChrgDvCode: '',
+              //   // exclusiveArea2: '',
+              //   commonArea: '',
+              //   usblValue: '',
+              //   // rentalArea: '',
+              //   // rentalArea2: '',
+              //   usblYmdFrom: '',
+              //   usblYmdTo: '',
+              //   splyAmount: '',
+              //   mgmtChrg: '',
+              //   remark: '',
+              // },
+            ],
       trusts:
         props.dataInfo && props.dataInfo.trusts
           ? props.dataInfo.trusts
           : [
-            // {
-            //   typeCode: '',
-            //   calUnitDvCode: '',
-            //   calStdDvCode: '',
-            //   usblYmdFrom: '',
-            //   usblYmdTo: '',
-            //   splyAmount: '',
-            //   usblValue: '',
-            //   whinChrg: '',
-            //   whoutChrg: '',
-            //   psnChrg: '',
-            //   mnfctChrg: '',
-            //   dlvyChrg: '',
-            //   shipChrg: '',
-            //   remark: '',
-            // },
-          ],
+              // {
+              //   typeCode: '',
+              //   calUnitDvCode: '',
+              //   calStdDvCode: '',
+              //   usblYmdFrom: '',
+              //   usblYmdTo: '',
+              //   splyAmount: '',
+              //   usblValue: '',
+              //   whinChrg: '',
+              //   whoutChrg: '',
+              //   psnChrg: '',
+              //   mnfctChrg: '',
+              //   dlvyChrg: '',
+              //   shipChrg: '',
+              //   remark: '',
+              // },
+            ],
     };
 
     this.navigation = props.navigation;
   }
 
   /** listener when change props */
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount () {
+  componentWillUnmount() {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -121,35 +122,39 @@ class RegisterInfo extends Component {
     let listTrusts = this.state.trusts;
     valueTab === 'trusts'
       ? listTrusts.push({
-        // key: lengths,
-        // typeCode: '',
-        calUnitDvCode: this.state.calUnitDvCodeTrusts[0]?.value,
-        calStdDvCode: this.state.calStdDvCodeTrusts[0]?.value,
-        usblYmdFrom: new Date().getTime(),
-        usblYmdTo: new Date().getTime(),
-        // splyAmount: '',
-        // usblValue: '',
-        // whinChrg: '',
-        // whoutChrg: '',
-        // psnChrg: '',
-        // mnfctChrg: '',
-        // dlvyChrg: '',
-        // shipChrg: '',
-        // remark: '',
-      })
+          // key: lengths,
+          typeCode: this.state.typeCodes[0]?.value,
+          calUnitDvCode: this.state.calUnitDvCodeTrusts[0]?.value,
+          calStdDvCode:
+            this.state.calStdDvCodeTrusts &&
+            this.state.calStdDvCodeTrusts[0]?.value,
+          usblYmdFrom: new Date().getTime(),
+          usblYmdTo: new Date().getTime(),
+          // splyAmount: '',
+          // usblValue: '',
+          // whinChrg: '',
+          // whoutChrg: '',
+          // psnChrg: '',
+          // mnfctChrg: '',
+          // dlvyChrg: '',
+          // shipChrg: '',
+          // remark: '',
+        })
       : listKeeps.push({
-        typeCode: this.state.typeCodes[0]?.value,
-        calUnitDvCode: this.state.calUnitDvCodeKeeps[1]?.value,
-        calStdDvCode: this.state.calStdDvCodeKeeps[0]?.value,
-        mgmtChrgDvCodes:this.state.mgmtChrgDvCodesKeep[0]?.value,
-        // commonArea: '',
-        // usblValue: '',
-        usblYmdFrom: new Date().getTime(),
-        usblYmdTo: new Date().getTime(),
-        // splyAmount: '',
-        // mgmtChrg: '',
-        // remark: '',
-      });
+          typeCode: this.state.typeCodes[0]?.value,
+          calUnitDvCode: this.state.calUnitDvCodeKeeps[1]?.value,
+          calStdDvCode: this.state.calStdDvCodeKeeps[0]?.value,
+          mgmtChrgDvCodes:
+            this.state.mgmtChrgDvCodesKeep &&
+            this.state.mgmtChrgDvCodesKeep[0]?.value,
+          // commonArea: '',
+          // usblValue: '',
+          usblYmdFrom: new Date().getTime(),
+          usblYmdTo: new Date().getTime(),
+          // splyAmount: '',
+          // mgmtChrg: '',
+          // remark: '',
+        });
     this.setState({
       keeps: listKeeps,
       trusts: listTrusts,
@@ -165,7 +170,6 @@ class RegisterInfo extends Component {
     }, 500);
   };
   _removeForm = valueTab => {
-    // console.log('vaodaynao');
     let listKeeps = this.state.keeps;
     let listTrusts = this.state.trusts;
     let numberSlideKeep = this.state.numberSlide;
@@ -173,7 +177,6 @@ class RegisterInfo extends Component {
       this.state.numberSlide > 0 ? this.state.numberSlide - 1 : 0;
     let slideTrustStart =
       this.state.numberSlideTrusts > 0 ? this.state.numberSlideTrusts - 1 : 0;
-    // console.log('slideKeepStart :>> ', slideKeepStart);
     let numberSlideTrusts = this.state.numberSlideTrusts;
     let filterKeep =
       listKeeps &&
@@ -197,13 +200,11 @@ class RegisterInfo extends Component {
         });
       }
     }, 500);
-
   };
   onToggleSwitch = () =>
     this.setState({ cnsltPossYn: !this.state.cnsltPossYn });
   _renderPagination;
   _renderItem = ({ item }) => {
-    // console.log('item :>> ', item);
     let dataKeep = this.state.keeps;
     return (
       <Form
@@ -221,7 +222,7 @@ class RegisterInfo extends Component {
           this.setState({
             ...(this.state.keeps[index] = e),
           });
-          console.log('dataForm===>', e);
+          // console.log('dataForm===>', e);
         }}
       />
     );
@@ -250,19 +251,15 @@ class RegisterInfo extends Component {
     if (this.slider) this.slider.goTo(index);
   };
 
-  render () {
+  render() {
     const { imageStore, route, dataInfo } = this.props;
     const {
       valueTab,
-      numberSlide,
-      numberSlideTrusts,
       keeps,
       trusts,
-      isSubmit,
-      goToSlideKeep,
     } = this.state;
     // console.log('dataInfo :>> ', dataInfo);
-    console.log('keeps ====:>> ', keeps);
+    // console.log('keeps ====:>> ', keeps);
 
     // TODO 확인버튼은 수탁과 보관의 모든것의 필수값이 입력된 경우만 true
     let isSubmitUpdate = false;
@@ -307,10 +304,9 @@ class RegisterInfo extends Component {
     //   trusts && trusts.filter(item => item.dlvyChrg === '');
     // let filtershipChrgTrust =
     //   trusts && trusts.filter(item => item.shipChrg === '');
-    console.log('filtersplyAmount :>> ', filtersplyAmount);
     if (
       // filterArea.length === 0 &&
-    // filterusblValue.length === 0 &&
+      // filterusblValue.length === 0 &&
       (keeps.length > 0 &&
         filtersplyAmount.length === 0 &&
         filtermgmtChrg.length === 0) ||
@@ -343,7 +339,7 @@ class RegisterInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={[DefaultStyle.backgroundGray,]}>
+        <ScrollView style={[DefaultStyle.backgroundGray]}>
           <View style={{ backgroundColor: '#ffffff', paddingBottom: 100 }}>
             <View style={SS.tabBar}>
               <TouchableOpacity
@@ -366,7 +362,7 @@ class RegisterInfo extends Component {
                       valueTab === 'keeps' && (!keeps || keeps.length === 0)
                         ? 60
                         : valueTab === 'trusts' &&
-                        (!trusts || trusts.length === 0)
+                          (!trusts || trusts.length === 0)
                         ? 60
                         : 16,
                   },
@@ -480,25 +476,34 @@ class RegisterInfo extends Component {
 
               {
                 // ((valueTab === 'keeps' && (keeps && keeps.length > 0)) ||
-                // (valueTab === 'trusts' && (trusts && trusts.length > 0))) && 
-                (
+                // (valueTab === 'trusts' && (trusts && trusts.length > 0))) &&
                 <TouchableOpacity
                   // disabled={isSubmitUpdate === true ? false : true}
                   onPress={() =>
                     isSubmitUpdate === true
                       ? (this.navigation.navigate('RegisterWH', {
-                        completeInfo: true,
-                      }),
+                          completeInfo: true,
+                        }),
                         this.props.updateInfo({
                           cnsltPossYn: this.state.cnsltPossYn,
                           keeps: this.state.keeps,
                           trusts: this.state.trusts,
-                        }))
+                        }),
+                        AsyncStorage.setItem(
+                          'DATAKEEP',
+                          JSON.stringify(this.state.keeps),
+                          // JSON.stringify(this.state.trusts),
+                          // JSON.stringify(this.state.cnsltPossYn)
+                        ),
+                        AsyncStorage.setItem(
+                          'DATATRUST',
+                          JSON.stringify(this.state.trusts),
+                        ))
                       : this.props.showPopup({
-                        type: 'confirm',
-                        content: '필수정보를 입력해야 합니다.',
-                        image: illust10,
-                      })
+                          type: 'confirm',
+                          content: '필수정보를 입력해야 합니다.',
+                          image: illust10,
+                        })
                   }
                   style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
                   // disabled={imageStore.length > 2 ? false : true}
@@ -511,7 +516,7 @@ class RegisterInfo extends Component {
                     확인
                   </Text>
                 </TouchableOpacity>
-              )}
+              }
             </View>
           </View>
         </ScrollView>
@@ -520,7 +525,18 @@ class RegisterInfo extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount () {
+  async componentDidMount() {
+    let getDataKeep = await AsyncStorage.getItem('DATAKEEP');
+    let getDataTrust = await AsyncStorage.getItem('DATATRUST');
+    let parseDataKeep = JSON.parse(getDataKeep);
+    let parseDataTrust = JSON.parse(getDataTrust);
+    let type = this.props.route.params && this.props.route.params.typeEdit;
+    if (type === 'Edit') {
+      this.props.updateInfo({ keeps: parseDataKeep,trusts: parseDataTrust });
+    } else {
+      AsyncStorage.removeItem('DATAKEEP');
+      AsyncStorage.removeItem('DATATRUST');
+    }
     await MyPage.getDetailCodes('WHRG0001')
       .then(res => {
         if (res.status === 200) {
@@ -561,7 +577,6 @@ class RegisterInfo extends Component {
 
     await Warehouse.listCalUnitDvCodeKeep()
       .then(res => {
-
         let data = res._embedded.detailCodes;
         let calUnitDvCodes =
           data &&
@@ -571,9 +586,8 @@ class RegisterInfo extends Component {
               value: item.stdDetailCode,
             };
           });
-        console.log(calUnitDvCodes, 'calUnitDvCodes Keep')
+        console.log(calUnitDvCodes, 'calUnitDvCodes Keep');
         this.setState({ calUnitDvCodeKeeps: calUnitDvCodes });
-
       })
       .catch(err => {
         console.log('errCalUnitDvCode', err);
@@ -581,7 +595,6 @@ class RegisterInfo extends Component {
 
     await Warehouse.listCalUnitDvCodeTrust()
       .then(res => {
-
         let data = res._embedded.detailCodes;
         let calUnitDvCodes =
           data &&
@@ -591,9 +604,8 @@ class RegisterInfo extends Component {
               value: item.stdDetailCode,
             };
           });
-        console.log(calUnitDvCodes, 'calUnitDvCodes Trust')
+        console.log(calUnitDvCodes, 'calUnitDvCodes Trust');
         this.setState({ calUnitDvCodeTrusts: calUnitDvCodes });
-
       })
       .catch(err => {
         console.log('errCalUnitDvCode', err);
@@ -620,27 +632,24 @@ class RegisterInfo extends Component {
 
     await Warehouse.listCalStdDvCodeKeep()
       .then(res => {
-
         let data = res._embedded.detailCodes;
         let calStdDvCodes =
           data &&
           data.map((item, index) => {
-            console.log(item, 'items')
+            console.log(item, 'items');
             return {
               label: item.stdDetailCodeName,
               value: item.stdDetailCode,
             };
           });
-        console.log(calStdDvCodes, 'calStdDvCodes Keep')
+        console.log(calStdDvCodes, 'calStdDvCodes Keep');
         this.setState({ calStdDvCodeKeeps: calStdDvCodes });
-
       })
       .catch(err => {
         console.log('errCalUnitDvCode', err);
       });
     await Warehouse.listCalStdDvCodeTrust()
       .then(res => {
-
         let data = res._embedded.detailCodes;
         let calStdDvCodes =
           data &&
@@ -650,9 +659,8 @@ class RegisterInfo extends Component {
               value: item.stdDetailCode,
             };
           });
-        console.log(calStdDvCodes, 'calStdDvCodes Trust')
+        console.log(calStdDvCodes, 'calStdDvCodes Trust');
         this.setState({ calStdDvCodeTrusts: calStdDvCodes });
-
       })
       .catch(err => {
         console.log('errCalUnitDvCode', err);
@@ -669,7 +677,7 @@ class RegisterInfo extends Component {
                 value: item.stdDetailCode,
               };
             });
-          this.setState({ mgmtChrgDvCodesKeep:mgmtChrgDvCodesData });
+          this.setState({ mgmtChrgDvCodesKeep: mgmtChrgDvCodesData });
         }
       })
       .catch(err => {
@@ -678,14 +686,14 @@ class RegisterInfo extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     // console.log('::prevState::', prevState);
     // console.log('::state::', this.state);
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     // count: state.home.count,
@@ -695,7 +703,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));
