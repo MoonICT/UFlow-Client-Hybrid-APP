@@ -130,7 +130,7 @@ class ProductCard extends Component {
                       ]}>
                       <Text style={[styles.badgeLabel]}>
                         {/** 창고 멤버십 타입 */}
-                        {data.typeCode.stdDetailCodeName}
+                        {data.typeCode.stdDetailCodeName} 창고
                       </Text>
                     </View>
                     // <View
@@ -173,7 +173,7 @@ class ProductCard extends Component {
                     ]}>
                     <Text style={[styles.badgeLabel]}>
                       {/** 창고 멤버십 타입 */}
-                      {data.typeCode.stdDetailCodeName}
+                      {data.typeCode.stdDetailCodeName} 창고
                     </Text>
                   </View>
                 )}
