@@ -309,7 +309,7 @@ class Mypage extends Component {
             styleRight={S.styleRightTable}
             bgrImage={item.thumbnail ? { uri: item.thumbnail } : null}
             footer={
-              item.modify === true ? (
+              item.modify ? (
                 <TouchableOpacity
                   style={[
                     DefaultStyle._btnOutline,
@@ -317,19 +317,26 @@ class Mypage extends Component {
                     { borderColor: '#000000' },
                   ]}
                   onPress={() => {
-                    item.sttsDbCode.stdDetailCode === '0001'
-                      ? this.props.showPopup({
-                        type: 'confirm',
-                        image: '',
-                        content: '공실이 검증되지 않은 창고입니다.',
-                      })
-                      : this.navigation.navigate('RegisterWH', {
-                        type: 'ModifyWH',
-                        warehouseRegNo: item.id,
-                        doRefresh: () => {
-                          this.getWHList();
-                        },
-                      });
+                    // item.sttsDbCode.stdDetailCode === '0001'
+                    //   ? this.props.showPopup({
+                    //     type: 'confirm',
+                    //     image: '',
+                    //     content: '공실이 검증되지 않은 창고입니다.',
+                    //   })
+                    //   : this.navigation.navigate('RegisterWH', {
+                    //     type: 'ModifyWH',
+                    //     warehouseRegNo: item.id,
+                    //     doRefresh: () => {
+                    //       this.getWHList();
+                    //     },
+                    //   });
+                    this.navigation.navigate('RegisterWH', {
+                      type: 'ModifyWH',
+                      warehouseRegNo: item.id,
+                      doRefresh: () => {
+                        this.getWHList();
+                      },
+                    })
                   }}>
                   <Text
                     style={[DefaultStyle._textButton, { color: '#000000' }]}>

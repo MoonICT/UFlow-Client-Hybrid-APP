@@ -487,7 +487,7 @@ export default StyleSheet.create({
     fontWeight: 'normal',
     fontStyle: 'normal',
     padding: 13,
-    paddingRight: 50,
+    // paddingRight: 50,
     lineHeight: 24,
     minHeight: 36,
   },

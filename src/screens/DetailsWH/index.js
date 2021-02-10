@@ -1054,14 +1054,14 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>위치</Text>
               <Text style={S.describeTitle}>
-              {whrgData.roadAddr
-                ? `${whrgData.roadAddr.address} ${
+                {whrgData.roadAddr
+                  ? `${whrgData.roadAddr.address} ${
                     whrgData.roadAddr.detail === null ||
                     whrgData.roadAddr.detail === undefined
                       ? ''
                       : whrgData.roadAddr.detail
-                  }`
-                : '-'}
+                    }`
+                  : '-'}
               </Text>
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
@@ -1337,7 +1337,9 @@ class DetailWH extends Component {
                       if (this.state.isLogin) {
                         this.navigation.navigate('CreateInquiryWH', {
                           idWH: id,
-                          onReloadQna: () => this.handleRequestQnaList,
+                          onReloadQna: () => {
+                            this.handleRequestQnaList()
+                          },
                         })
                       } else {
                         alert('로그인 후 이용가능합니다.')
@@ -1585,6 +1587,7 @@ class DetailWH extends Component {
   }
 
   handleRequestQnaList = q_size => {
+    console.log(':::::::::::::::::::::::::::::::::::::::::::::REFRESH QNA')
     const { id } = this.state;
     let qnaParams = {
       id: id,

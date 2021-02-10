@@ -436,7 +436,7 @@ export default class DetailsSettlement extends Component {
                 <FilterButton
                   label="보관 및 추가비용"
                   onPress={() => this.setState({ toggleCosts: !toggleCosts })}
-                  isToggle={!toggleCosts}
+                  isToggle={toggleCosts}
                   style={SS.toggle}
                   styleLabel={SS.textToggle}
                 />

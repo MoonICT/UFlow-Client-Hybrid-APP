@@ -47,7 +47,7 @@ class QuestionScreen extends Component {
             return {
               value: item.value,
               code: item.code,
-              label: item.value,
+              label: item.name,
               name: item.name,
             };
           });
@@ -77,7 +77,7 @@ class QuestionScreen extends Component {
 
   handleChangeContent = value => {
     this.setState({ content: value });
-  } 
+  }
 
   onSubmit = async () => {
     const { email, content } = this.state;
@@ -141,12 +141,16 @@ class QuestionScreen extends Component {
                   <TextField
                     borderColor={isContent ? 'red' : '#cccccc'}
                     labelTextField="문의 내용"
-                    colorLabel="#000000"
+                    colorLabel="#888"
                     placeholder="문의하실 내용을 입랙해 주세요."
-                    numberOfLines={5}
-                    paddingTop={0}
+                    numberOfLines={10}
                     multiline={true}
                     onChangeText={this.handleChangeContent}
+                    styleProps={{
+                      height: 150,
+                      textAlignVertical: 'top',
+                      paddingTop: 16,
+                    }}
                   />
                 </View>
               </Dialog.Content>
