@@ -423,12 +423,17 @@ class RegisterWH extends Component {
     if (generateWHId && generateWHId.id) {
       this.setState({ idWH: generateWHId.id });
     }
+    let warehMgmtType =
+      this.props.route.params && this.props.route.params.warehMgmtType;
 
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
-    let entrpNo = this.props.route.params && this.props.route.params.entrpNo;
+    let entrpNo =
+      this.props.route.params && this.props.route.params.entrpNo
+        ? this.props.route.params.entrpNo
+        : null;
     this.props.removeData();
-    this.props.updateInfo({ entrpNo });
+    this.props.updateInfo({ entrpNo, warehMgmtType });
     console.log('warehouseRegNo :>> ', warehouseRegNo);
     if (warehouseRegNo) {
       await Warehouse.detailWH(warehouseRegNo)
