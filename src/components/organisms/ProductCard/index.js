@@ -191,17 +191,19 @@ class ProductCard extends Component {
               </Text>
 
               {/** 계약 유형 */}
-              <Text
-                style={[
-                  styles.fontColor1,
-                  styles.regular,
-                  styles.font9,
-                  styles.mrb12,
-                ]}>
-                {data.keep ? '임대창고' : ''}
-                {data.keep && data.trust ? ', ' : ''}
-                {data.trust ? '수탁창고' : ''}
-              </Text>
+             { 
+              //  <Text
+              //   style={[
+              //     styles.fontColor1,
+              //     styles.regular,
+              //     styles.font9,
+              //     styles.mrb12,
+              //   ]}>
+              //   {data.keep ? '임대창고' : ''}
+              //   {data.keep && data.trust ? ', ' : ''}
+              //   {data.trust ? '수탁창고' : ''}
+              // </Text>
+            }
 
               {/******************** Keep ***************************/}
               {data.keep && (
@@ -212,67 +214,78 @@ class ProductCard extends Component {
                       <Text style={[styles.bold, styles.blackColor]}>
                         임대{' '}
                       </Text>
-                      최대 {data.keep.subTitle ? data.keep.subTitle : ''}
+                     { 
+                      //  최대 {data.keep.subTitle ? data.keep.subTitle : ''}
+                      }
+                      {data.keepCapa ? data.keepCapa : ''}
                     </Text>
                   </View>
 
                   {/* Badge */}
-                  {data.keep.gdsTypeCodes && data.keep.gdsTypeCodes.length > 0 && (
-                    <View style={[styles.cardAction, styles.mrt2]}>
-                      {data.keep.gdsTypeCodes.map((keepItem, index) => (
-                        <View
-                          key={index}
-                          style={[
-                            styles.label,
-                            styles[
-                              this.badgeColor(keepItem.stdDetailCode).label
-                            ],
-                          ]}
-                          title={keepItem.stdDetailCodeName}>
-                          <Text
-                            style={[
-                              styles.font9,
-                              styles[
-                                this.badgeColor(keepItem.stdDetailCode).border
-                              ],
-                            ]}>
-                            {keepItem.stdDetailCodeName}
-                          </Text>
-                        </View>
-                      ))}
-                    </View>
-                  )}
+                  {
+                  //   data.keep.gdsTypeCodes && data.keep.gdsTypeCodes.length > 0 && (
+                  //   <View style={[styles.cardAction, styles.mrt2]}>
+                  //     {data.keep.gdsTypeCodes.map((keepItem, index) => (
+                  //       <View
+                  //         key={index}
+                  //         style={[
+                  //           styles.label,
+                  //           styles[
+                  //             this.badgeColor(keepItem.stdDetailCode).label
+                  //           ],
+                  //         ]}
+                  //         title={keepItem.stdDetailCodeName}>
+                  //         <Text
+                  //           style={[
+                  //             styles.font9,
+                  //             styles[
+                  //               this.badgeColor(keepItem.stdDetailCode).border
+                  //             ],
+                  //           ]}>
+                  //           {keepItem.stdDetailCodeName}
+                  //         </Text>
+                  //       </View>
+                  //     ))}
+                  //   </View>
+                  // )
+                }
 
                   {/** Price */}
-                  {data.keep.splyAmount && (
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･임대단가{' '}
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        {money(data.keep.splyAmount)}
-                      </Text>
-                      원 ~/{data.keep.unit}
-                    </Text>
-                  )}
+                  {
+                  //   data.keep.splyAmount && (
+                  //   <Text
+                  //     style={[styles.fontColor1, styles.regular, styles.font9]}>
+                  //     ･임대단가{' '}
+                  //     <Text style={[styles.bold, styles.blackColor]}>
+                  //       {money(data.keep.splyAmount)}
+                  //     </Text>
+                  //     원 ~/{data.keep.unit}
+                  //   </Text>
+                  // )
+                }
 
-                  {data.keep.mgmtChrg && (
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･임대단가{' '}
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        {money(data.keep.mgmtChrg)}
-                      </Text>
-                      원 ~/{data.keep.unit}
-                    </Text>
-                  )}
+                  {
+                  //   data.keep.mgmtChrg && (
+                  //   <Text
+                  //     style={[styles.fontColor1, styles.regular, styles.font9]}>
+                  //     ･임대단가{' '}
+                  //     <Text style={[styles.bold, styles.blackColor]}>
+                  //       {money(data.keep.mgmtChrg)}
+                  //     </Text>
+                  //     원 ~/{data.keep.unit}
+                  //   </Text>
+                  // )
+                }
                 </>
               )}
 
-              {data.keep && data.trust ? (
-                <View style={styles.line} />
-              ) : (
-                <Text>{''}</Text>
-              )}
+              {
+              //   data.keep && data.trust ? (
+              //   <View style={styles.line} />
+              // ) : (
+              //   <Text>{''}</Text>
+              // )
+            }
 
               {/***************** Trust ************************/}
               {data.trust && (
@@ -284,62 +297,71 @@ class ProductCard extends Component {
                         style={[styles.bold, styles.blackColor, styles.font9]}>
                         수탁{' '}
                       </Text>
-                      최대 {data.trust.subTitle ? data.trust.subTitle : ''}
+                     { 
+                      //  최대 {data.trust.subTitle ? data.trust.subTitle : ''}
+                      }
+                      {data.trustCapa ? data.trustCapa : ''}
                     </Text>
                   </View>
 
                   {/* Badge */}
-                  {data.trust.gdsTypeCodes &&
-                    data.trust.gdsTypeCodes.length > 0 && (
-                      <View style={[styles.cardAction, styles.mrt2]}>
-                        {data.trust.gdsTypeCodes.map((trustItem, index) => (
-                          <TouchableOpacity
-                            key={index}
-                            style={[
-                              styles.label,
-                              styles[
-                                this.badgeColor(trustItem.stdDetailCode).label
-                              ],
-                            ]}
-                            title={trustItem.stdDetailCodeName}>
-                            <Text
-                              style={[
-                                styles.font9,
-                                styles[
-                                  this.badgeColor(trustItem.stdDetailCode)
-                                    .border
-                                ],
-                              ]}>
-                              {trustItem.stdDetailCodeName}
-                            </Text>
-                          </TouchableOpacity>
-                        ))}
-                      </View>
-                    )}
+                  {
+                    // data.trust.gdsTypeCodes &&
+                    // data.trust.gdsTypeCodes.length > 0 && (
+                    //   <View style={[styles.cardAction, styles.mrt2]}>
+                    //     {data.trust.gdsTypeCodes.map((trustItem, index) => (
+                    //       <TouchableOpacity
+                    //         key={index}
+                    //         style={[
+                    //           styles.label,
+                    //           styles[
+                    //             this.badgeColor(trustItem.stdDetailCode).label
+                    //           ],
+                    //         ]}
+                    //         title={trustItem.stdDetailCodeName}>
+                    //         <Text
+                    //           style={[
+                    //             styles.font9,
+                    //             styles[
+                    //               this.badgeColor(trustItem.stdDetailCode)
+                    //                 .border
+                    //             ],
+                    //           ]}>
+                    //           {trustItem.stdDetailCodeName}
+                    //         </Text>
+                    //       </TouchableOpacity>
+                    //     ))}
+                    //   </View>
+                    // )
+                  }
 
                   {/** Price */}
-                  {data.whinChrg && (
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･입고단가{' '}
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        {money(data.trust.whinChrg)}
-                      </Text>
-                      원 ~/{data.trust.unit}
-                    </Text>
-                  )}
+                  {
+                  //   data.whinChrg && (
+                  //   <Text
+                  //     style={[styles.fontColor1, styles.regular, styles.font9]}>
+                  //     ･입고단가{' '}
+                  //     <Text style={[styles.bold, styles.blackColor]}>
+                  //       {money(data.trust.whinChrg)}
+                  //     </Text>
+                  //     원 ~/{data.trust.unit}
+                  //   </Text>
+                  // )
+                }
 
-                  {data.trust.whoutChrg && (
-                    <Text
-                      style={[styles.fontColor1, styles.regular, styles.font9]}>
-                      ･출고단가{' '}
-                      <Text style={[styles.bold, styles.blackColor]}>
-                        {money(data.trust.whoutChrg)}
-                        {/* 탁 */}
-                      </Text>
-                      원 ~/{data.trust.unit}
-                    </Text>
-                  )}
+                  {
+                  //   data.trust.whoutChrg && (
+                  //   <Text
+                  //     style={[styles.fontColor1, styles.regular, styles.font9]}>
+                  //     ･출고단가{' '}
+                  //     <Text style={[styles.bold, styles.blackColor]}>
+                  //       {money(data.trust.whoutChrg)}
+                  //       {/* 탁 */}
+                  //     </Text>
+                  //     원 ~/{data.trust.unit}
+                  //   </Text>
+                  // )
+                }
                 </>
               )}
             </View>
