@@ -234,8 +234,7 @@ class DetailRegisterTenant extends Component {
     let valid = {
       checkName: !!businessInfo.name,
       checkBusiness: !!businessInfo.number,
-      checkBusinessFormat: true, // TODO TODO 사업자번호체크로직 주석해제예정
-      // checkBusinessFormat: isBizNum(businessInfo.number),
+      checkBusinessFormat: isBizNum(businessInfo.number),
       checkAddress: !!businessInfo.roadAddr.address,
       checkRepreNm: !!businessInfo.repreNm,
       checkInchgNm: !!businessInfo.inchgNm,

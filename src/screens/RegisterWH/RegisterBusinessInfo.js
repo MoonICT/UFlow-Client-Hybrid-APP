@@ -115,7 +115,6 @@ class RegisterBusinessInfo extends Component {
 
     WarehouseOwner.statusWhrgByOwner()
       .then(res => {
-        console.log('redddddddddddddddds :>> ', res);
         if (res.data.status === 'IMP_REG') {
           this.setState({
             isPossible: false,
