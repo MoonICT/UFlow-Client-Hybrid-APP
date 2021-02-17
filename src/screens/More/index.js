@@ -233,7 +233,8 @@ class More extends Component {
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
                   onPress={() =>
-                    this.navigation.navigate('RegisterBusinessInfo')
+                    // this.navigation.navigate('RegisterBusinessInfo')
+                    this.navigation.navigate('WarehouseType')
                   }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={addwarehouse} />
