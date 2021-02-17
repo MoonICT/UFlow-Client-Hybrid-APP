@@ -808,7 +808,7 @@ class Home extends Component {
               style={styles.mainCallBTN}
               onPress={() =>
                 isLogin
-                  ? this.navigation.navigate('RegisterBusinessInfo')
+                  ? this.navigation.navigate('WarehouseType')
                   : this.navigation.navigate('Login')
               }>
               <Text

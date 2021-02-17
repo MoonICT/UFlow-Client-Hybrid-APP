@@ -41,6 +41,7 @@ import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
 import TextField from '@Screeens/TextField';
 // import testScreen from '@Screeens/testScreen';
+import WarehouseType from '@Screeens/RegisterWH/WarehouseType';
 import RegisterWH from '@Screeens/RegisterWH';
 import RegisterImage from '@Screeens/RegisterWH/RegisterImage';
 import RegisterInfo from '@Screeens/RegisterWH/RegisterInfo';
@@ -335,6 +336,12 @@ const App = () => {
                     component={TextField}
                     headerMode={true}
                     options={{ headerShown: true }}
+                  />
+                  <AuthStack.Screen
+                    name="WarehouseType"
+                    component={WarehouseType}
+                    headerMode={false}
+                    options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
                     name="RegisterWH"
