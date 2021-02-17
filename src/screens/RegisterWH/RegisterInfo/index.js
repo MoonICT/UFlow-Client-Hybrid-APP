@@ -158,6 +158,7 @@ class RegisterInfo extends Component {
     this.setState({
       keeps: listKeeps,
       trusts: listTrusts,
+      isSubmit: false,
     });
     setTimeout(() => {
       if (valueTab === 'keeps') {
@@ -260,7 +261,6 @@ class RegisterInfo extends Component {
     } = this.state;
     // console.log('dataInfo :>> ', dataInfo);
     // console.log('keeps ====:>> ', keeps);
-
     // TODO 확인버튼은 수탁과 보관의 모든것의 필수값이 입력된 경우만 true
     let isSubmitUpdate = false;
     // console.log('keeps', keeps);
@@ -296,6 +296,7 @@ class RegisterInfo extends Component {
       trusts.filter(
         item => item.whoutChrg === '' || item.whoutChrg === undefined,
       );
+    console.log('filtersplyAmountTrust====>', filtersplyAmountTrust);
     // let filterpsnChrgTrust =
     //   trusts && trusts.filter(item => item.psnChrg === '');
     // let filtermnfctChrgTrust =
@@ -307,14 +308,16 @@ class RegisterInfo extends Component {
     if (
       // filterArea.length === 0 &&
       // filterusblValue.length === 0 &&
-      (keeps.length > 0 &&
-        filtersplyAmount.length === 0 &&
-        filtermgmtChrg.length === 0) ||
-      (trusts.length > 0 &&
-        filterusblValueTrust.length === 0 &&
-        filtersplyAmountTrust.length === 0 &&
-        filterwhinChrgTrust.length === 0 &&
-        filterwhoutChrgTrust.length === 0)
+      (keeps.length === 0 ||
+        (keeps.length > 0 &&
+          filtersplyAmount.length === 0 &&
+          filtermgmtChrg.length === 0)) &&
+      (trusts.length === 0 ||
+        (trusts.length > 0 &&
+          filterusblValueTrust.length === 0 &&
+          filtersplyAmountTrust.length === 0 &&
+          filterwhinChrgTrust.length === 0 &&
+          filterwhoutChrgTrust.length === 0))
     ) {
       isSubmitUpdate = true;
     }
@@ -532,7 +535,7 @@ class RegisterInfo extends Component {
     let parseDataTrust = JSON.parse(getDataTrust);
     let type = this.props.route.params && this.props.route.params.typeEdit;
     if (type === 'Edit') {
-      this.props.updateInfo({ keeps: parseDataKeep,trusts: parseDataTrust });
+      this.props.updateInfo({ keeps: parseDataKeep, trusts: parseDataTrust });
     } else {
       AsyncStorage.removeItem('DATAKEEP');
       AsyncStorage.removeItem('DATATRUST');
