@@ -222,7 +222,7 @@ class ResponseQTrust extends Component {
         defaultValue={
           rntlValue ? String(rntlValue) : '0'
         }
-        textError={ checkRntlValue === true ? null : '단가가 허용범위를 초과했습니다.'}
+        textError={ checkRntlValue === true ? null : '요청수량이 허용범위를 초과했습니다.'}
         isRequired={true}
         onChangeText={e => {
           this.setState({
