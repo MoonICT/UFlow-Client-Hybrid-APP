@@ -169,7 +169,7 @@ class RegisterWH extends Component {
 
     if (
       (dataWH.keeps && dataWH.keeps.length > 0) ||
-      (dataWH.trusts && dataWH.keeps.trusts > 0)
+      (dataWH.trusts && dataWH.trusts.length > 0)
     ) {
       completeInfo = true;
     }
