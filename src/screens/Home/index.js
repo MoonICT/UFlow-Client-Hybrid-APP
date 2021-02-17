@@ -390,12 +390,14 @@ class Home extends Component {
         cardItem.push(
           <View key={i} style={styles.mainProductItem}>
             {v?.thumbnail !== null ? (
-              <ProductCard navigation={this.navigation} data={v} bageTypes={true} />
+              <ProductCard navigation={this.navigation}
+                           isRecommend={true}
+                           data={v}
+              />
             ) : (
-              <ProductCard
-                navigation={this.navigation}
-                data={{ ...v, img: cardBG }}
-                bageTypes={true}
+              <ProductCard navigation={this.navigation}
+                           isRecommend={true}
+                           data={{ ...v, img: cardBG }}
               />
             )}
           </View>,
