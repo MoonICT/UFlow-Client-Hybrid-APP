@@ -179,10 +179,10 @@ class SearchSwipePanel extends Component {
               </View>
             </Animated.View>
 
-            <View style={{ paddingHorizontal: 16 }}>
-              <Text
-                style={styles.counterText}>{`창고 목록 총 ${this.state.pageInfo ? numberComma(this.state.pageInfo.totalElements) : 0}개`}</Text>
-            </View>
+            {/*<View style={{ paddingHorizontal: 16 }}>*/}
+              {/*<Text*/}
+                {/*style={styles.counterText}>{`창고 목록 총 ${this.state.pageInfo ? numberComma(this.state.pageInfo.totalElements) : 0}개`}</Text>*/}
+            {/*</View>*/}
 
             {/** 목록 없음. */}
             {(this.state.WHList.length === 0 && !this.state.isProgress) &&

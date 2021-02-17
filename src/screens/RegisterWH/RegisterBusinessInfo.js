@@ -115,7 +115,6 @@ class RegisterBusinessInfo extends Component {
 
     WarehouseOwner.statusWhrgByOwner()
       .then(res => {
-        console.log('redddddddddddddddds :>> ', res);
         if (res.data.status === 'IMP_REG') {
           this.setState({
             isPossible: false,
@@ -642,6 +641,7 @@ class RegisterBusinessInfo extends Component {
                     colorLabel="#000000"
                     labelTextFieldSize={14}
                     fontSize={14}
+                    maxLength={100}
                     isRequired={true}
                     textError={
                       !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
@@ -705,6 +705,7 @@ class RegisterBusinessInfo extends Component {
                     labelTextField="담당자 직함 (필수)"
                     labelTextFieldSize={14}
                     fontSize={14}
+                    maxLength={100}
                     colorLabel="#000000"
                     isRequired={true}
                     textError={
@@ -728,6 +729,7 @@ class RegisterBusinessInfo extends Component {
                     labelTextField="담당자 이메일 (필수)"
                     labelTextFieldSize={14}
                     fontSize={14}
+                    maxLength={100}
                     colorLabel="#000000"
                     isRequired={true}
                     textError={

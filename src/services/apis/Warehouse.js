@@ -329,7 +329,7 @@ export const listInsrDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/insr-dv-code`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -363,7 +363,7 @@ export const listAprchMthdDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/aprch-mthd-dv-code`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -380,7 +380,7 @@ export const listFlrDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/flr-dv-code`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -455,7 +455,7 @@ export const listCalStdDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/cal-std-dv-code`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -467,7 +467,7 @@ export const listCalStdDvCodeKeep = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/cal-std-dv-code/keep`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -479,7 +479,7 @@ export const listCalStdDvCodeTrust = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/cal-std-dv-code/trust`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',

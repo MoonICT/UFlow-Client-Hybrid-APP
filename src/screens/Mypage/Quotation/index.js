@@ -316,6 +316,7 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtTrustGroups={this.state.estmtTrustGroups}
               groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
               onClickContract={this.onClickContractTrust}
             />
             }
@@ -334,6 +335,7 @@ class Quotation extends Component {
               calStdDvCodes={this.state.calStdDvCodes}
               estmtKeepGroups={this.state.estmtKeepGroups}
               groupOrders={this.state.groupOrders}
+              groupOrderIndex={this.state.groupOrders ? this.state.groupOrders.length - 1 : 0}
               onClickContract={this.onClickContractKeep}
             />
             }
