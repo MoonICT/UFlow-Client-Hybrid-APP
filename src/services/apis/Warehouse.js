@@ -818,3 +818,17 @@ export const getLinkContract = body => {
     },
   });
 };
+
+/**
+ * 창고 삭제
+ * @param id 창고 ID
+ * @returns {Promise<*>}
+ */
+export const deleteWarehouse = ({
+                                  id = ""
+                                }) => {
+  return Axios.deleteRequest({
+    url: `/api/v1/warehouse/${id}`,
+    requiresToken: true, // set access_token
+  });
+};

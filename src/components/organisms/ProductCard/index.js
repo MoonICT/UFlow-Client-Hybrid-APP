@@ -83,9 +83,10 @@ class ProductCard extends Component {
         ]}>
         <TouchableOpacity
           onPress={() =>
-            isLogin
-              ? this.navigation.navigate('DetailsWH', { id: data.id })
-              : this.navigation.navigate('Login')
+            this.navigation.navigate('DetailsWH', { id: data.id })
+            // isLogin
+            //   ? this.navigation.navigate('DetailsWH', { id: data.id })
+            //   : this.navigation.navigate('Login')
           }>
           <View
             style={[
