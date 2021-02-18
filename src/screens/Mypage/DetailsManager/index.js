@@ -1268,7 +1268,7 @@ class DetailsManager extends Component {
               type === 'TENANT' &&
 
               <View>
-                <View style={[DefaultStyle._listBtn, SS.listBtnProcess, { marginTop: 0, marginBottom: 20 }]}>
+                <View style={[DefaultStyle._listBtn, SS.listBtnProcess, { marginTop: 20, marginBottom: 20 }]}>
 
                   <TouchableOpacity
                     onPress={() => {
