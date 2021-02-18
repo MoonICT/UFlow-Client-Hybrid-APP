@@ -30,7 +30,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
 
 class RegisterWH extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -43,7 +43,7 @@ class RegisterWH extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
@@ -70,32 +70,30 @@ class RegisterWH extends Component {
     this.props.setProgress({ is: true, type: 'CIRCLE' });
     if (type === 'ModifyWH') {
       console.log('수정 데이터 ::: ', this.props.dataWH);
-      Warehouse.updateWH({ data: this.props.dataWH, url: warehouseRegNo })
+      Warehouse.modifyWhrg(this.props.dataWH, warehouseRegNo)
         .then(res => {
           const status = res.status;
-          if (status === 200) {
-            // this.navigation.navigate('Home');
-            this.props.showPopup({
-              type: 'confirm',
-              title: '수정 완료',
-              content: '창고정보 수정을 완료했습니다.',
-              image: illust10,
-              navigation: () => {
-                if (
-                  this.props.route.params &&
-                  this.props.route.params.doRefresh
-                ) {
-                  this.props.route.params.doRefresh();
-                }
-                this.navigation.navigate('Mypage', {
-                  title: '내 창고',
-                  prevView: 'PrevView',
-                });
-              },
-            });
+          console.log('1111')
+          this.props.showPopup({
+            type: 'confirm',
+            title: '수정 완료',
+            content: '창고정보 수정을 완료했습니다.',
+            image: illust10,
+            navigation: () => {
+              if (
+                this.props.route.params &&
+                this.props.route.params.doRefresh
+              ) {
+                this.props.route.params.doRefresh();
+              }
+              this.navigation.navigate('Mypage', {
+                title: '내 창고',
+                prevView: 'PrevView',
+              });
+            },
+          });
 
-            this.doubleSubmitFlag = false;
-          }
+          this.doubleSubmitFlag = false;
 
           // Progress
           setTimeout(() => {
@@ -119,10 +117,13 @@ class RegisterWH extends Component {
         return false;
       }
 
-      Warehouse.registWhrgNew({
+      let body = {
         ...this.props.dataWH,
-        id: this.state.idWH,
-      })
+        id: this.state.idWH
+      }
+
+      console.log('등록 데이터 ::: ', body);
+      Warehouse.registWhrg(body)
         .then(res => {
           // console.log(res, '창고등록 결과')
           // this.navigation.navigate('Home');
@@ -156,7 +157,7 @@ class RegisterWH extends Component {
     }
   };
 
-  render() {
+  render () {
     const { imageStore, route, dataWH } = this.props;
 
     console.log('dataWHAll', dataWH);
@@ -169,7 +170,7 @@ class RegisterWH extends Component {
 
     if (
       (dataWH.keeps && dataWH.keeps.length > 0) ||
-      (dataWH.trusts && dataWH.keeps.trusts > 0)
+      (dataWH.trusts && dataWH.trusts.length > 0)
     ) {
       completeInfo = true;
     }
@@ -184,7 +185,7 @@ class RegisterWH extends Component {
     }
     if (
       // imageStore.length > 0 &&
-      // completeMoreInfo === true &&
+    // completeMoreInfo === true &&
       completeInfo === true &&
       // completeFloor === true &&
       completeIntro === true
@@ -250,11 +251,11 @@ class RegisterWH extends Component {
               <Text style={S.textLeftBtn}>창고 소개</Text>
               <View style={S.rightBtn}>
                 {// (dataWH && dataWH.name)
-                completeIntro === true ? (
-                  <Text style={S.completeText}>작업완료</Text>
-                ) : (
-                  <Text style={S.textRightBtn}>입력하세요</Text>
-                )}
+                  completeIntro === true ? (
+                    <Text style={S.completeText}>작업완료</Text>
+                  ) : (
+                    <Text style={S.textRightBtn}>입력하세요</Text>
+                  )}
                 <Icon
                   name="arrow-forward-ios"
                   size={12}
@@ -417,126 +418,123 @@ class RegisterWH extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     /** 창고 등록을 위한 아이디 생성.* */
     const generateWHId = await Warehouse.getWhrgId();
+    console.log('창고 아이디 생성 : ', generateWHId)
     if (generateWHId && generateWHId.id) {
       this.setState({ idWH: generateWHId.id });
     }
-    let warehMgmtType =
-      this.props.route.params && this.props.route.params.warehMgmtType;
+    let warehMgmtType = this.props.route.params && this.props.route.params.warehMgmtType;
 
-    let warehouseRegNo =
-      this.props.route.params && this.props.route.params.warehouseRegNo;
-    let entrpNo =
-      this.props.route.params && this.props.route.params.entrpNo
-        ? this.props.route.params.entrpNo
-        : null;
+    let warehouseRegNo = this.props.route.params && this.props.route.params.warehouseRegNo;
+    let entrpNo = this.props.route.params && this.props.route.params.entrpNo ? this.props.route.params.entrpNo : null;
     this.props.removeData();
     this.props.updateInfo({ entrpNo, warehMgmtType });
     console.log('warehouseRegNo :>> ', warehouseRegNo);
     if (warehouseRegNo) {
       await Warehouse.detailWH(warehouseRegNo)
         .then(res => {
-          console.log('resDetailWH', res);
+          console.log('resDetailWH', res.data);
           if (res.status === 200) {
             let dataWH = res.data;
             let entrpNo = dataWH.relativeEntrp && dataWH.relativeEntrp.entrpNo;
             let floors =
               dataWH.floors.length > 0
                 ? dataWH.floors.map((item, index) => {
-                    item.seq = dataWH.floors[index].id.seq;
-                    item.flrDvCode =
-                      dataWH.floors[index].flrDvCode &&
-                      dataWH.floors[index].flrDvCode.stdDetailCode;
-                    item.aprchMthdDvCode =
-                      dataWH.floors[index].aprchMthdDvCode &&
-                      dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
-                    return item;
-                  })
+                  item.seq = dataWH.floors[index].id.seq;
+                  item.flrDvCode =
+                    dataWH.floors[index].flrDvCode &&
+                    dataWH.floors[index].flrDvCode.stdDetailCode;
+                  item.aprchMthdDvCode =
+                    dataWH.floors[index].aprchMthdDvCode &&
+                    dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
+                  return item;
+                })
                 : [];
             let keeps =
               dataWH.keeps.length > 0
                 ? dataWH.keeps.map((item, index) => {
-                    item.seq = dataWH.keeps[index].id.seq;
-                    item.typeCode =
-                      dataWH.keeps[index].typeCode &&
-                      dataWH.keeps[index].typeCode.stdDetailCode;
-                    item.calUnitDvCode =
-                      dataWH.keeps[index].calUnitDvCode &&
-                      dataWH.keeps[index].calUnitDvCode.stdDetailCode;
-                    item.calStdDvCode =
-                      dataWH.keeps[index].calStdDvCode &&
-                      dataWH.keeps[index].calStdDvCode.stdDetailCode;
-                    item.mgmtChrgDvCode =
-                      dataWH.keeps[index].mgmtChrgDvCode &&
-                      dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
-                    return item;
-                  })
+                  item.seq = dataWH.keeps[index].id.seq;
+                  item.typeCode =
+                    dataWH.keeps[index].typeCode &&
+                    dataWH.keeps[index].typeCode.stdDetailCode;
+                  item.calUnitDvCode =
+                    dataWH.keeps[index].calUnitDvCode &&
+                    dataWH.keeps[index].calUnitDvCode.stdDetailCode;
+                  item.calStdDvCode =
+                    dataWH.keeps[index].calStdDvCode &&
+                    dataWH.keeps[index].calStdDvCode.stdDetailCode;
+                  item.mgmtChrgDvCode =
+                    dataWH.keeps[index].mgmtChrgDvCode &&
+                    dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
+                  return item;
+                })
                 : [];
             let trusts =
               dataWH.trusts.length > 0
                 ? dataWH.trusts.map((item, index) => {
-                    item.seq = dataWH.trusts[index].id.seq;
-                    item.typeCode =
-                      dataWH.trusts[index].typeCode &&
-                      dataWH.trusts[index].typeCode.stdDetailCode;
-                    item.calUnitDvCode =
-                      dataWH.trusts[index].calUnitDvCode &&
-                      dataWH.trusts[index].calUnitDvCode.stdDetailCode;
-                    item.calStdDvCode =
-                      dataWH.trusts[index].calStdDvCode &&
-                      dataWH.trusts[index].calStdDvCode.stdDetailCode;
-                    return item;
-                  })
+                  item.seq = dataWH.trusts[index].id.seq;
+                  item.typeCode =
+                    dataWH.trusts[index].typeCode &&
+                    dataWH.trusts[index].typeCode.stdDetailCode;
+                  item.calUnitDvCode =
+                    dataWH.trusts[index].calUnitDvCode &&
+                    dataWH.trusts[index].calUnitDvCode.stdDetailCode;
+                  item.calStdDvCode =
+                    dataWH.trusts[index].calStdDvCode &&
+                    dataWH.trusts[index].calStdDvCode.stdDetailCode;
+                  return item;
+                })
                 : [];
             let insrDvCodes =
               dataWH.insrDvCodes.length > 0
                 ? dataWH.insrDvCodes.map((item, index) => {
-                    item = dataWH.insrDvCodes[index].stdDetailCode
-                      ? dataWH.insrDvCodes[index].stdDetailCode
-                      : '';
-                    return item;
-                  })
+                  item = dataWH.insrDvCodes[index].stdDetailCode
+                    ? dataWH.insrDvCodes[index].stdDetailCode
+                    : '';
+                  return item;
+                })
                 : [];
             let addOptDvCodes =
               dataWH.addOptDvCodes.length > 0
                 ? dataWH.addOptDvCodes.map((item, index) => {
-                    item = dataWH.addOptDvCodes[index].stdDetailCode
-                      ? dataWH.addOptDvCodes[index].stdDetailCode
-                      : '';
-                    return item;
-                  })
+                  item = dataWH.addOptDvCodes[index].stdDetailCode
+                    ? dataWH.addOptDvCodes[index].stdDetailCode
+                    : '';
+                  return item;
+                })
                 : [];
             // this.setState({ dataWH });
 
             this.props.updateInfo({
-              // ...dataWH,
-              id: dataWH.id,
-              name: dataWH.name,
-              description: dataWH.description,
-              telNo: dataWH.telNo,
-              address: dataWH.address,
-              roadAddr: dataWH.roadAddr,
-              gps: dataWH.gps,
-              cmpltYmd: dataWH.cmpltYmd,
-              bldgArea: dataWH.bldgArea,
-              siteArea: dataWH.siteArea,
-              totalArea: dataWH.totalArea,
-              prvtArea: dataWH.prvtArea,
-              cmnArea: dataWH.cmnArea,
-              addOptDvCodes,
-              insrDvCodes,
-              cnsltPossYn: dataWH.cnsltPossYn,
-              sttsDbCode: dataWH.sttsDbCode,
-              vrfctFailReason: dataWH.vrfctFailReason,
-              pnImages: dataWH.pnImages,
-              whImages: dataWH.whImages,
-              thImages: dataWH.thImages,
-              floors,
-              keeps,
-              trusts,
-              entrpNo,
+              ...dataWH,
+              // id: dataWH.id,
+              // name: dataWH.name,
+              // description: dataWH.description,
+              // telNo: dataWH.telNo,
+              // address: dataWH.address,
+              // roadAddr: dataWH.roadAddr,
+              // gps: dataWH.gps,
+              // cmpltYmd: dataWH.cmpltYmd,
+              // bldgArea: dataWH.bldgArea,
+              // siteArea: dataWH.siteArea,
+              // totalArea: dataWH.totalArea,
+              // prvtArea: dataWH.prvtArea,
+              // cmnArea: dataWH.cmnArea,
+              // addOptDvCodes,
+              // insrDvCodes,
+              // cnsltPossYn: dataWH.cnsltPossYn,
+              // sttsDbCode: dataWH.sttsDbCode,
+              // vrfctFailReason: dataWH.vrfctFailReason,
+              // pnImages: dataWH.pnImages,
+              // whImages: dataWH.whImages,
+              // thImages: dataWH.thImages,
+              warehMgmtType: dataWH.warehMgmtType ? dataWH.warehMgmtType : '0002',
+              // floors,
+              // keeps,
+              // trusts,
+              // entrpNo,
             });
           }
         })
@@ -549,13 +547,13 @@ class RegisterWH extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.whImages,
@@ -565,7 +563,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));

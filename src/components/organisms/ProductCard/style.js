@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr-Regular',
   },
   medium: {
+    fontWeight: '700',
     // fontFamily: 'NotoSansCJKkr-Medium',
   },
   bold: {
@@ -102,17 +103,17 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   imageWrapHorizon: {
-    width: 124,
+    width: 160,
   },
   contentWrap: {
     // flex: 1,
     height: 'auto',
-    paddingVertical: 15,
+    paddingVertical: 16,
     paddingHorizontal: 16,
   },
   contentWrapHorizon: {
     paddingVertical: 0,
-    paddingLeft: 8,
+    paddingLeft: 16,
     paddingRight: 0,
     width: '100%',
   },
@@ -127,7 +128,7 @@ export const styles = StyleSheet.create({
   },
   cardImageHorizon: {
     height: 124,
-    width: 124,
+    width: 160,
     borderRadius: 12,
   },
   badge: {

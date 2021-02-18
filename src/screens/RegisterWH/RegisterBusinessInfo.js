@@ -364,8 +364,7 @@ class RegisterBusinessInfo extends Component {
         this.setState({ loading: false });
         this.navigation.navigate('RegisterWH', {
           ...res.data,
-          warehMgmtType:
-            this.props.route.params && this.props.route.params.warehMgmtType,
+          warehMgmtType: '0002',
         });
       })
       .catch(error => {
@@ -384,8 +383,7 @@ class RegisterBusinessInfo extends Component {
 
     this.navigation.navigate('RegisterWH', {
       ...businessList[businessMode],
-      warehMgmtType:
-        this.props.route.params && this.props.route.params.warehMgmtType,
+      warehMgmtType: '0002',
     });
 
     // setBusinessDialog(false)
