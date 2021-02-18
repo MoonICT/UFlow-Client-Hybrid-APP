@@ -36,19 +36,6 @@ export const registerWH = async data => {
   return await mainAxios.post('/api/v1/warehouse', data, config);
 };
 
-export const updateWH = async value => {
-  console.log('dataregisterWH :>> ', value);
-  let url = value.url;
-  let data = value.data;
-  const token = await AsyncStorage.getItem(TOKEN);
-
-  return await mainAxios.put(`/api/v1/warehouse/${url}`, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-};
 
 /**
  *
@@ -600,7 +587,11 @@ export const listCalStdDvCodeTrust = () => {
  *   }
  * @returns {Promise<unknown>}
  */
-// Deprecated
+/**
+ * 20210215 필드 추가
+ * warehMgmtType : "0001" --> WHRG1002 창고관리유형(0001:오픈형, 0002:책임형) >> 0001 오픈형인 경우 사업자 번호 필요 없음.
+ * @returns {Promise<Promise<unknown> | Promise<unknown>>}
+ */
 export const registWhrg = whrgBody => {
   return Axios.request({
     methodType: 'POST',
@@ -613,6 +604,25 @@ export const registWhrg = whrgBody => {
       },
     },
   });
+};
+
+/**
+ * 20210215 필드 추가
+ * warehMgmtType : "0001" --> WHRG1002 창고관리유형(0001:오픈형, 0002:책임형) >> 0001 오픈형인 경우 사업자 번호 필요 없음.
+ * @returns {Promise<Promise<unknown> | Promise<unknown>>}
+ */
+export const modifyWhrg = (whrgBody, id) => {
+  return Axios.request({
+    methodType: 'PUT',
+    url: `/api/v1/warehouse/${id}`,
+    payload: whrgBody,
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json'
+      }
+    }
+  })
 };
 
 /**
@@ -824,11 +834,15 @@ export const getLinkContract = body => {
  * @param id 창고 ID
  * @returns {Promise<*>}
  */
-export const deleteWarehouse = ({
+export const deleteWarehouse = async ({
                                   id = ""
                                 }) => {
-  return Axios.deleteRequest({
-    url: `/api/v1/warehouse/${id}`,
-    requiresToken: true, // set access_token
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.delete(`/api/v1/warehouse/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
 };

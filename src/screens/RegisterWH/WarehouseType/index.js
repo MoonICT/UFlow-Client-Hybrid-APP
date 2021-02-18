@@ -66,7 +66,7 @@ class WarehouseType extends Component {
     } = this.state;
 
     return (
-      <SafeAreaView style={DefaultStyle._container}>
+      <SafeAreaView style={[DefaultStyle._container]}>
         <HistoryBackActionBar
           title={'창고형 선택'}
           navigation={this.navigation}
@@ -86,7 +86,7 @@ class WarehouseType extends Component {
             </TouchableOpacity>
             <View style={S.underlined} />
           </View>
-          <View style={S.container}>
+          <View style={[S.container, {paddingBottom: 80}]}>
             <Image source={illust21} />
             <Text style={S.title}>UFLOW 책임형</Text>
             <Text style={S.content}>
@@ -95,7 +95,7 @@ class WarehouseType extends Component {
             </Text>
             <TouchableOpacity
               style={[DefaultStyle._btnOutline, S.btnType]}
-              onPress={() => this.navigation.navigate('RegisterBusinessInfo',{warehMgmtType: '0002'})}>
+              onPress={() => this.navigation.navigate('RegisterBusinessInfo')}>
               <Text style={DefaultStyle._textButton}>선택하기</Text>
             </TouchableOpacity>
           </View>
