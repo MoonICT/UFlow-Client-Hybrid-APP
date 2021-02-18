@@ -733,10 +733,11 @@ class DetailsManager extends Component {
         //   alert('일자 정보가 없습니다.');
         //   return;
         // } else 
-        if (createDateStr === null || createDateStr === "" || createDateStr === undefined) {
-          alert('일자 정보가 없습니다.');
-          return;
-        } else if (!createValue) {
+        // if (createDateStr === null || createDateStr === "" || createDateStr === undefined) {
+        //   alert('일자 정보가 없습니다.');
+        //   return;
+        // } else 
+        if (!createValue) {
           alert('수량 정보가 없습니다.');
           return;
         } else if (!rentWarehNo) {
