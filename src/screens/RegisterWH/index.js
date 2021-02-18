@@ -73,7 +73,6 @@ class RegisterWH extends Component {
       Warehouse.modifyWhrg(this.props.dataWH, warehouseRegNo)
         .then(res => {
           const status = res.status;
-          console.log('1111')
           this.props.showPopup({
             type: 'confirm',
             title: '수정 완료',
