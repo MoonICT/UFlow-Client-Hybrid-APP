@@ -31,7 +31,7 @@ class Popup extends Component {
   };
 
   render () {
-    const { popup, title, content, hidePopup, type, image } = this.props;
+    const { popup, title, content, hidePopup, type, image, onConfirm } = this.props;
     console.log('type :>> ', type);
     return (
       <Fragment>
@@ -77,11 +77,11 @@ class Popup extends Component {
                 <Text style={styles.textContent}>{content}</Text>
               </View>
               <View style={styles.action}>
-                {/*<Button onPress={() => hidePopup()} style={styles.actionButton}>*/}
-                  {/*취소*/}
-                {/*</Button>*/}
+                <Button onPress={() => hidePopup()} style={styles.actionButton}>
+                  취소
+                </Button>
                 <View style={styles.borderHave} />
-                <Button onPress={() => hidePopup()} style={styles.actionButton}>확인</Button>
+                <Button onPress={() => {onConfirm(), hidePopup()}} style={styles.actionButton}>확인</Button>
               </View>
             </Modal>
           </Portal>
@@ -100,6 +100,7 @@ function mapStateToProps (state) {
     type: state.popup.type,
     image: state.popup.image,
     navigation: state.popup.navigation,
+    onConfirm: state.popup.onConfirm,
   };
 }
 
