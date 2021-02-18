@@ -834,11 +834,15 @@ export const getLinkContract = body => {
  * @param id 창고 ID
  * @returns {Promise<*>}
  */
-export const deleteWarehouse = ({
+export const deleteWarehouse = async ({
                                   id = ""
                                 }) => {
-  return Axios.deleteRequest({
-    url: `/api/v1/warehouse/${id}`,
-    requiresToken: true, // set access_token
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.delete(`/api/v1/warehouse/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
 };
