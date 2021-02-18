@@ -733,10 +733,10 @@ class DetailsManager extends Component {
         //   alert('일자 정보가 없습니다.');
         //   return;
         // } else 
-        // if (createDateStr === null || createDateStr === "" || createDateStr === undefined) {
-        //   alert('일자 정보가 없습니다.');
-        //   return;
-        // } else 
+        if (createDateStr === null || createDateStr === "" || createDateStr === undefined) {
+          alert('일자 정보가 없습니다.');
+          return;
+        } else 
         if (!createValue) {
           alert('수량 정보가 없습니다.');
           return;
@@ -770,10 +770,15 @@ class DetailsManager extends Component {
             alert(error.response.data.message);
           });
       } else if (typeCreate === 'export') {
-        if (!createDateStr) {
+        // if (!createDateStr) {  //Chonglechang write code, Peter update code here
+        //   alert('일자 정보가 없습니다.');
+        //   return;
+        // } else 
+        if (createDateStr === null || createDateStr === "" || createDateStr === undefined) {
           alert('일자 정보가 없습니다.');
           return;
-        } else if (!createValue) {
+        } else 
+        if (!createValue) {
           alert('수량 정보가 없습니다.');
           return;
         } else if (!rentWarehNo) {
