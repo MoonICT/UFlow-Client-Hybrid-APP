@@ -15,7 +15,7 @@ import {
   Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
-import {  Text, Dialog, Button } from 'react-native-paper';
+import { Text, Dialog, Button } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -23,8 +23,9 @@ import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import { styles as S } from './style';
 import { Emergency } from '@Services/apis';
+
 class QuestionScreen extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -39,8 +40,8 @@ class QuestionScreen extends Component {
   }
 
   /** when after render DOM */
-  componentDidMount() {
-    Emergency.GetEvs({code: '0001'})
+  componentDidMount () {
+    Emergency.GetEvs({ code: '0001' })
       .then(res => {
         if (res && res.length > 0) {
           let dataConvert = res.map(item => {
@@ -53,6 +54,7 @@ class QuestionScreen extends Component {
           });
           this.setState({
             dataEvs: dataConvert,
+            email: dataConvert[0].value
           });
         }
       })
@@ -62,7 +64,7 @@ class QuestionScreen extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 
@@ -106,7 +108,8 @@ class QuestionScreen extends Component {
   valueProps = value => {
     this.setState({ email: value });
   };
-  render() {
+
+  render () {
     const { dataEvs, email, content, isContent, isEmail } = this.state;
     console.log('email', email);
     console.log('content', content);
@@ -133,6 +136,7 @@ class QuestionScreen extends Component {
                   ]}>
                   <Select
                     required={isEmail}
+                    dataDefault={dataEvs[0]}
                     valueSelected={email}
                     data={dataEvs}
                     labelSelected="이메일"
@@ -174,7 +178,7 @@ class QuestionScreen extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     imageStore: state.registerWH.pimages,
     workComplete: state.registerWH.workComplete,
@@ -182,9 +186,10 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {};
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

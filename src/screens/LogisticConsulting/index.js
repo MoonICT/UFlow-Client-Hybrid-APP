@@ -53,6 +53,7 @@ class LogisticConsulting extends Component {
           });
           this.setState({
             dataEvs: dataConvert,
+            email: dataConvert[0].value
           });
         }
       })
@@ -133,6 +134,7 @@ class LogisticConsulting extends Component {
                   ]}>
                   <Select
                     required={isEmail}
+                    dataDefault={dataEvs[0]}
                     valueSelected={email}
                     data={dataEvs}
                     labelSelected="이메일"

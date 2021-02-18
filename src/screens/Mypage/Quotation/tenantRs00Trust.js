@@ -140,7 +140,7 @@ class TenantRs00Trust extends Component {
               </Text>
               <View style={DefaultStyle._optionList}>
                 <Select data={dataSelect}
-                        alueSelected={dataSelect[this.state.groupOrderIndex].label}
+                        valueSelected={dataSelect[this.state.groupOrderIndex].label}
                         valueProps={(value) => {
                           this.setState({
                             groupOrderIndex: value
