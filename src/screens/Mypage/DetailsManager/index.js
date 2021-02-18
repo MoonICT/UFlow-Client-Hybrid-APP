@@ -9,11 +9,11 @@
 // Global Imports
 import React, { Component, Fragment } from 'react';
 import Moment from 'moment';
-import { dateStr, toStdCd } from '@Utils/StringUtils';
+import { dateStr } from '@Utils/StringUtils'; //{toStdCd}
 import { ToastShow } from '@Utils/Toast';
 import ImageModal from 'react-native-image-modal';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';//{launchCamera}
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
 import {
@@ -22,8 +22,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableHighlight,
-  Linking, Image
-} from 'react-native';
+  Image
+} from 'react-native';//{  Linking, }
 
 import imgType0001 from '@Assets/images/type-0001.png';
 import imgType0002 from '@Assets/images/type-0002.png';
@@ -32,7 +32,7 @@ import imgType0004 from '@Assets/images/type-0004.png';
 import imgType9100 from '@Assets/images/type-9100.png';
 import illust15 from '@Assets/images/illust15.png';
 import {
-  Appbar,
+  // Appbar,
   Dialog,
   Text,
   Button,
@@ -51,7 +51,7 @@ import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { InOutManagerService } from '@Services/apis';
-import DocumentPicker from 'react-native-document-picker';
+// import DocumentPicker from 'react-native-document-picker';
 import { StringUtils } from "../../../services/utils";
 import { money, numberComma } from '@Services/utils/StringUtils';
 import ActionCreator from '@Actions';
@@ -522,8 +522,8 @@ class DetailsManager extends Component {
   };
 
   // TODO
-  onChangeLimitRow = (value) => {
-  };
+  // onChangeLimitRow = (value) => {
+  // };
 
   onChangeContractType = (value) => {
     let filter = { ...this.state.filter }
@@ -567,8 +567,8 @@ class DetailsManager extends Component {
       return;
     }
 
-    console.log('type :::: ', type)
-    console.log('typeCreate :::: ', typeCreate)
+    // console.log('type :::: ', type)
+    // console.log('typeCreate :::: ', typeCreate)
 
     // 창고주
     if (type === 'OWNER') {
