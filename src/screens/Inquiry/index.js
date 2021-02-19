@@ -304,6 +304,7 @@ class Inquiry extends Component {
                     data={selectOptions}
                     style={S.select}
                     valueProps={e => {
+                      console.log(e, 'e');
                       this.setState({ userType: e }, () => {
                         this.getAllData();
                       });
