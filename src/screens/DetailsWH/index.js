@@ -717,9 +717,11 @@ class DetailWH extends Component {
                           <Text style={S.textTable}>{keep.remark}</Text>
                         </View>
                         <View style={S.tableRow}>
+                          {/* 견적 요청 가능 상태인지 체크 */}
                           {keep.enable ? (
                             <View style={S.rowBtn}>
-                              {whrgData.userTypeCode === '1100' ? (
+                              {whrgData.warehMgmtType === '0001' ? (
+                                /*오픈형인 경우*/
                                 <View>
                                   <Text>
                                     {whrgData.relativeEntrp
@@ -737,6 +739,7 @@ class DetailWH extends Component {
                                 </View>
                               ) : (
                                 <View>
+                                  {/**/}
                                   {userId != whrgData.ownerUserNo ?
                                     <TouchableOpacity
                                       style={[S.btnQuote, { minWidth: 100, }]}
@@ -978,7 +981,7 @@ class DetailWH extends Component {
                         <View style={S.tableRow}>
                           {trust.enable ? (
                             <View style={S.rowBtn}>
-                              {whrgData.userTypeCode === '1100' ? (
+                              {whrgData.warehMgmtType === '0001' ? (
                                 <View>
                                   <Text>
                                     {whrgData.relativeEntrp
@@ -1054,14 +1057,14 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={S.title}>위치</Text>
               <Text style={S.describeTitle}>
-              {whrgData.roadAddr
-                ? `${whrgData.roadAddr.address} ${
+                {whrgData.roadAddr
+                  ? `${whrgData.roadAddr.address} ${
                     whrgData.roadAddr.detail === null ||
                     whrgData.roadAddr.detail === undefined
                       ? ''
                       : whrgData.roadAddr.detail
-                  }`
-                : '-'}
+                    }`
+                  : '-'}
               </Text>
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
@@ -1337,7 +1340,9 @@ class DetailWH extends Component {
                       if (this.state.isLogin) {
                         this.navigation.navigate('CreateInquiryWH', {
                           idWH: id,
-                          onReloadQna: () => this.handleRequestQnaList,
+                          onReloadQna: () => {
+                            this.handleRequestQnaList()
+                          },
                         })
                       } else {
                         alert('로그인 후 이용가능합니다.')
@@ -1585,6 +1590,7 @@ class DetailWH extends Component {
   }
 
   handleRequestQnaList = q_size => {
+    console.log(':::::::::::::::::::::::::::::::::::::::::::::REFRESH QNA')
     const { id } = this.state;
     let qnaParams = {
       id: id,

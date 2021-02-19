@@ -387,7 +387,7 @@ export default class Notification extends Component {
           <View
             onLayout={this.getDimesionsHeightSection1}
             style={[S.boxSection, { marginTop: 150 }]}>
-            <Text>{this.props.nav ? 'has' : 'empty'}</Text>
+            {/*<Text>{this.props.nav ? 'has' : 'empty'}</Text>*/}
             <Text style={S.title}>임대하고 싶은{'\n'}창고를 등록해보세요.</Text>
             <Text style={S.description}>
               유플로우에 창고 정보와 사업자 정보를 등록하여 {'\n'}임대할 창고를

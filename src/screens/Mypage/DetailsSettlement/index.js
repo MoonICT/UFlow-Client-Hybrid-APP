@@ -7,7 +7,7 @@
 // Global Imports
 import React, { Component, Fragment } from 'react';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
-import {SafeAreaView, View, ScrollView, TouchableOpacity, Linking} from 'react-native';
+import { SafeAreaView, View, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 import FilterButton from '@Components/atoms/FilterButton';
 import DefaultStyle from '@Styles/default';
@@ -21,7 +21,7 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 
 export default class DetailsSettlement extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     let id = props.route.params.id
@@ -52,12 +52,13 @@ export default class DetailsSettlement extends Component {
     this.navigation = props.navigation;
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getAllData()
   }
+
   async getAllData () {
-    let {startDate, endDate}= this.state.filter;
-    let {type, id} = this.state
+    let { startDate, endDate } = this.state.filter;
+    let { type, id } = this.state
     let params = {
       startDate,
       endDate,
@@ -67,8 +68,9 @@ export default class DetailsSettlement extends Component {
 
     let cntrTypeCode = {}
     SettlementManagementService.getDetail(params).then((res) => {
-      console.log('data', res.data.data);
-      if(res.data.msg !== 'success') {
+      console.log('계약정보 ::::', res.data.data);
+      console.log('계약정보 ::::', res.data.data.calMgmtDetail1ResBodyList);
+      if (res.data.msg !== 'success') {
         return
       }
       let calMgmtMResBody = res.data.data.calMgmtMResBody
@@ -86,11 +88,19 @@ export default class DetailsSettlement extends Component {
         date = headerDetailResBody.cntrYmdFrom ? Moment(headerDetailResBody.cntrYmdFrom).format('yyyy년 MM월') : ''
       }
 
-
-
       this.setState({
         warehouseName: settlementHeaderResBody ? settlementHeaderResBody.warehouse + ' 정산관리' : '정산관리'
       })
+
+      // TODO 임시로 산정 기준 데이터 뽑음.
+      let stdDetailCodeName = ''
+      if (res.data.data.calMgmtDetail1ResBodyList && res.data.data.calMgmtDetail1ResBodyList.length > 0) {
+        stdDetailCodeName = res.data.data.calMgmtDetail1ResBodyList[0].calStdDvCode.stdDetailCodeName
+      }
+      if (res.data.data.calMgmtDetailResBodyList && res.data.data.calMgmtDetailResBodyList.length > 0 && !stdDetailCodeName) {
+        stdDetailCodeName = res.data.data.calMgmtDetail1ResBodyList[0].calStdDvCode.stdDetailCodeName
+      }
+
       let dataInfo = [
         {
           type: '창고명',
@@ -102,7 +112,15 @@ export default class DetailsSettlement extends Component {
         },
         {
           type: '계약유형',
-          value: calMgmtMResBody.cntrTypeCode ? calMgmtMResBody.cntrTypeCode.stdDetailCodeName : '',
+          value: calMgmtMResBody.cntrTypeCode ? calMgmtMResBody.cntrTypeCode.stdDetailCodeName : '-',
+        },
+        {
+          type: '정산단위',
+          value: headerDetail1ResBody.calUnitDvCode.stdDetailCodeName ? headerDetail1ResBody.calUnitDvCode.stdDetailCodeName : '-',
+        },
+        {
+          type: '산정기준',
+          value: stdDetailCodeName ? stdDetailCodeName : '-',
         },
         // {
         //   type: '기간',
@@ -123,7 +141,7 @@ export default class DetailsSettlement extends Component {
       ]
 
       let total = 0;
-      if(res.data.data.amount && res.data.data.vat) {
+      if (res.data.data.amount && res.data.data.vat) {
         total = res.data.data.amount + res.data.data.vat
       }
       let dataTotal = [
@@ -144,7 +162,7 @@ export default class DetailsSettlement extends Component {
       let dataFeeRate = [
         {
           type: '요율',
-          value: res.data.data?.calMgmtMResBody?.rate  ?  res.data.data?.calMgmtMResBody?.rate + '%' : '',
+          value: res.data.data?.calMgmtMResBody?.rate ? res.data.data?.calMgmtMResBody?.rate + '%' : '',
         },
         {
           type: '수수료	',
@@ -167,7 +185,7 @@ export default class DetailsSettlement extends Component {
               type: '일시',
               value: item.occr
             },
-             // 량
+            // 량
             {
               type: '입고량',
               value: numberComma(item.whinQty) || '0'
@@ -180,7 +198,7 @@ export default class DetailsSettlement extends Component {
               type: '재고량',
               value: numberComma(item.stckQty) || '0'
             },
-              // 단가
+            // 단가
             {
               type: '입고단가',
               value: item.whinChrg ? money(item.whinChrg) : '0 원'
@@ -193,7 +211,7 @@ export default class DetailsSettlement extends Component {
               type: '재고단가',
               value: item.stckChrg ? money(item.stckChrg) : '0 원'
             },
-              // 비
+            // 비
             {
               type: '입고비',
               value: item.whinUprice ? money(item.whinUprice) : '0 원'
@@ -258,7 +276,15 @@ export default class DetailsSettlement extends Component {
       ]
 
       this.setState({
-        dataInfo, inOutSubtotal, headerDetailResBody, dataCost, dataTotal, dataFee, keepSubtotal, cntrTypeCode, dataFeeRate
+        dataInfo,
+        inOutSubtotal,
+        headerDetailResBody,
+        dataCost,
+        dataTotal,
+        dataFee,
+        keepSubtotal,
+        cntrTypeCode,
+        dataFeeRate
       })
     }).catch(error => {
       alert('SettlementManagementService.getDetail error:' + error);
@@ -279,8 +305,8 @@ export default class DetailsSettlement extends Component {
   };
 
 
-  render() {
-    const {dataFeeRate, feeState, toggleFee, toggleCosts, inOutSubtotal, dataInfo, dataTotal, dataFee , dataCost , keepSubtotal} = this.state;
+  render () {
+    const { dataFeeRate, feeState, toggleFee, toggleCosts, inOutSubtotal, dataInfo, dataTotal, dataFee, dataCost, keepSubtotal } = this.state;
 
     const viewFee =
       dataFee &&
@@ -344,13 +370,13 @@ export default class DetailsSettlement extends Component {
     return (
       <SafeAreaView style={S.container}>
 
-          <HistoryBackActionBar
-            title={this.state.warehouseName}
-            navigation={this.navigation}
-          />
+        <HistoryBackActionBar
+          title={this.state.warehouseName}
+          navigation={this.navigation}
+        />
 
         <ScrollView>
-          <View style={[DefaultStyle._cards, {marginTop: 10 , marginBottom: 120}]}>
+          <View style={[DefaultStyle._cards, { marginTop: 10, marginBottom: 120 }]}>
             <View style={DefaultStyle._titleCard}>
               <Text
                 style={[
@@ -362,7 +388,7 @@ export default class DetailsSettlement extends Component {
               </Text>
             </View>
 
-            <View style={[DefaultStyle._card, {marginTop:0}]}>
+            <View style={[DefaultStyle._card, { marginTop: 0 }]}>
               <View
                 style={[
                   DefaultStyle._headerCardTitle,
@@ -372,7 +398,7 @@ export default class DetailsSettlement extends Component {
                   style={[
                     DefaultStyle._textTitleCard,
                     S.textTitleTenant,
-                    { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
+                    { paddingBottom: 20, paddingTop: 20, paddingLeft: 16 },
                   ]}>
                   계약정보
                 </Text>
@@ -389,18 +415,19 @@ export default class DetailsSettlement extends Component {
                 <TouchableOpacity
                   style={[DefaultStyle._btnOutline]}
                   onPress={() => {
-                  Calculate.getOzUrl({calKey: this.state.id}).then(res => {
-                    Linking.canOpenURL(res).then(supported => {
-                      if (supported) {
-                        Linking.openURL(res);
-                      } else {
-                        console.log("Don't know how to open URI: " + res);
-                      }}).catch(error => {
+                    Calculate.getOzUrl({ calKey: this.state.id }).then(res => {
+                      Linking.canOpenURL(res).then(supported => {
+                        if (supported) {
+                          Linking.openURL(res);
+                        } else {
+                          console.log("Don't know how to open URI: " + res);
+                        }
+                      }).catch(error => {
                         alert('canOpenURL error:' + error);
                       });
-                  })
+                    })
 
-                }}>
+                  }}>
                   <Text style={[DefaultStyle._textButton]}>거래명세서</Text>
                 </TouchableOpacity>
               </View>
@@ -409,49 +436,48 @@ export default class DetailsSettlement extends Component {
             {this.state.cntrTypeCode && this.state.cntrTypeCode.stdDetailCode === '2100' &&
             <View style={SS.fee}>
               <FilterButton
-                  label="입･출고비"
-                  onPress={() => this.setState({toggleFee: !toggleFee})}
-                  isToggle={toggleFee}
-                  style={SS.toggle}
-                  styleLabel={SS.textToggle}
+                label="입･출고비"
+                onPress={() => this.setState({ toggleFee: !toggleFee })}
+                isToggle={toggleFee}
+                style={SS.toggle}
+                styleLabel={SS.textToggle}
               />
 
               {toggleFee ? (
-                  <Fragment>
-                    {viewFee}
-                  </Fragment>
+                <Fragment>
+                  {viewFee}
+                </Fragment>
               ) : null}
               <TableInfo
-                  data={inOutSubtotal}
-                  style={{borderBottomWidth: 1, borderTopWidth: 0}}
+                data={inOutSubtotal}
+                style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
               />
             </View>
             }
 
 
-
             {/* {
               headerDetailResBody && */}
-              <View style={SS.fee}>
-                <FilterButton
-                  label="보관 및 추가비용"
-                  onPress={() => this.setState({ toggleCosts: !toggleCosts })}
-                  isToggle={!toggleCosts}
-                  style={SS.toggle}
-                  styleLabel={SS.textToggle}
-                />
+            <View style={SS.fee}>
+              <FilterButton
+                label="보관 및 추가비용"
+                onPress={() => this.setState({ toggleCosts: !toggleCosts })}
+                isToggle={toggleCosts}
+                style={SS.toggle}
+                styleLabel={SS.textToggle}
+              />
 
-                <TableInfo
-                  data={keepSubtotal}
-                  style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
-                />
+              <TableInfo
+                data={keepSubtotal}
+                style={{ borderBottomWidth: 1, borderTopWidth: 0 }}
+              />
 
-                {toggleCosts === true &&
-                  <Fragment>
-                    {viewCost}
-                  </Fragment>
-                }
-              </View>
+              {toggleCosts === true &&
+              <Fragment>
+                {viewCost}
+              </Fragment>
+              }
+            </View>
             {/* } */}
 
             <View style={DefaultStyle._card}>
@@ -464,7 +490,7 @@ export default class DetailsSettlement extends Component {
                   style={[
                     DefaultStyle._textTitleCard,
                     S.textTitleTenant,
-                    { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
+                    { paddingBottom: 20, paddingTop: 20, paddingLeft: 16 },
                   ]}>
                   요율 및 수수료
                 </Text>
@@ -488,7 +514,7 @@ export default class DetailsSettlement extends Component {
                   style={[
                     DefaultStyle._textTitleCard,
                     S.textTitleTenant,
-                    { paddingBottom: 20,paddingTop: 20,paddingLeft: 16 },
+                    { paddingBottom: 20, paddingTop: 20, paddingLeft: 16 },
                   ]}>
                   정산 합계
                 </Text>

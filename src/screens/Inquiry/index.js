@@ -28,11 +28,11 @@ import { connect } from "react-redux";
 const selectOptions = [
   {
     label: '창고주 ',
-    value: '창고주 ',
+    value: 'OWNER ',
   },
   {
     label: '임차인 ',
-    value: '임차인 ',
+    value: 'TENANT ',
   },
 ];
 
@@ -302,6 +302,7 @@ class Inquiry extends Component {
                 <View style={({ flex: 1 }, [S.optionSelect, S.selectLong])}>
                   <Select
                     data={selectOptions}
+                    labelSelected={'구분'}
                     style={S.select}
                     valueProps={e => {
                       console.log(e, 'e');

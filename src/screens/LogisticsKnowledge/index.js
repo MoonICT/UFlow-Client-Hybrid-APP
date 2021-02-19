@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import { SafeAreaView, View, ScrollView } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, List, Searchbar } from 'react-native-paper';
+import HTML from 'react-native-render-html';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -172,7 +173,7 @@ class LogisticsKnowledge extends Component {
 
     const handleQueryChange = debounce(query => {
       this.fetchData({ query: query });
-      
+
     }, 200);
 
     const handleClickTab = (tabName, index) => {
@@ -201,13 +202,12 @@ class LogisticsKnowledge extends Component {
               title={item.qstnCountent}
               titleStyle={[DefaultStyle._contentAccordion, S.title]}
               id={`${index}`}>
-              <List.Item
-                descriptionNumberOfLines={15}
-                titleStyle={{display:'none'}}
-                description={`${item.rplyContent}`}
-                // description={item.rplyContent}
-                descriptionStyle={S.descript}
-              />
+              <View style={[DefaultStyle.bgMuted, S.descript]}>
+                <HTML
+                  tagsStyles={{ p: { marginBottom: 0, marginTop: 0 } }}
+                  source={{ html: item.rplyContent ? item.rplyContent : '' }}
+                />
+              </View>
             </List.Accordion>
             <Divider />
           </View>
@@ -229,7 +229,7 @@ class LogisticsKnowledge extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'물류지식 게시판'}
             navigation={this.navigation}

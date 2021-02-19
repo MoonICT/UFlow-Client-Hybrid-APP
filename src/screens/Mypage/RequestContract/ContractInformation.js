@@ -289,7 +289,7 @@ class ContractInformation extends Component {
                 this.setState({ isOnLineDialog: false })
                 this.saveSign();
                 // alert('준비중입니다.');
-              }}>재출</Button>
+              }}>완료</Button>
           </Dialog.Actions>
         </Dialog>
 

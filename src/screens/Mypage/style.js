@@ -278,4 +278,7 @@ export const styles = StyleSheet.create({
     paddingRight: 20,
     marginTop: 14,
   },
+  mr_10:{
+    marginRight: 10
+  }
 });

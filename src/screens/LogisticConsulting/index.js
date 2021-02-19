@@ -47,12 +47,13 @@ class LogisticConsulting extends Component {
             return {
               value: item.value,
               code: item.code,
-              label: item.value,
+              label: item.name,
               name: item.name,
             };
           });
           this.setState({
             dataEvs: dataConvert,
+            email: dataConvert[0].value
           });
         }
       })
@@ -77,7 +78,7 @@ class LogisticConsulting extends Component {
 
   handleChangeContent = value => {
     this.setState({ content: value });
-  } 
+  }
 
   onSubmit = async () => {
     const { email, content } = this.state;
@@ -122,7 +123,7 @@ class LogisticConsulting extends Component {
               onDismiss={this.hideDialog}>
               <Dialog.Title
                 style={[DefaultStyle._titleDialog, S.titleQuestion]}>
-                긴급차량 지원
+                물류컨설팅 지원
               </Dialog.Title>
               <Dialog.Content>
                 <View
@@ -133,6 +134,7 @@ class LogisticConsulting extends Component {
                   ]}>
                   <Select
                     required={isEmail}
+                    dataDefault={dataEvs[0]}
                     valueSelected={email}
                     data={dataEvs}
                     labelSelected="이메일"
@@ -141,12 +143,16 @@ class LogisticConsulting extends Component {
                   <TextField
                     borderColor={isContent ? 'red' : '#cccccc'}
                     labelTextField="문의 내용"
-                    colorLabel="#000000"
+                    colorLabel="#888"
                     placeholder="문의하실 내용을 입랙해 주세요."
-                    numberOfLines={5}
-                    paddingTop={0}
+                    numberOfLines={10}
                     multiline={true}
                     onChangeText={this.handleChangeContent}
+                    styleProps={{
+                      height: 150,
+                      textAlignVertical: 'top',
+                      paddingTop: 16,
+                    }}
                   />
                 </View>
               </Dialog.Content>

@@ -19,6 +19,8 @@ import { numberComma } from '@Services/utils/StringUtils';
 /*TODO 임시 값 (추후 변경 필요)*/
 let prvtAreaMax = 13200; // 전용면적 최대
 let cmnAreaMax = 13200; // 공용면적 최대
+let usblValueKeepMax = 13200; // 가용면적 최대
+let usblValueTrustMax = 1000; // 가용수량 최대
 
 class FilterScale extends Component {
   constructor (props) {
@@ -26,6 +28,9 @@ class FilterScale extends Component {
     this.state = {
       prvtArea: this.props.whFilter.prvtArea ? Number(this.props.whFilter.prvtArea) : 0, // 전용면적
       cmnArea: this.props.whFilter.cmnArea ? Number(this.props.whFilter.cmnArea) : 0, // 공용면적
+
+      usblValueKeep: this.props.whFilter.usblValueKeep ? Number(this.props.whFilter.usblValueKeep) : 0, // 임대 가용면적
+      usblValueTrust: this.props.whFilter.usblValueTrust ? Number(this.props.whFilter.usblValueTrust) : 0, // 수탁 가용수치
     };
   }
 
@@ -37,6 +42,8 @@ class FilterScale extends Component {
     this.props.setSearchFilter({
       prvtArea: '',
       cmnArea: '',
+      usblValueKeep: '',
+      usblValueTrust: '',
     });
     this.props.onClosed(); // Event emit
   }
@@ -55,61 +62,115 @@ class FilterScale extends Component {
 
         {/* TODO 가용 수치/면적 으로 필드 변경 필요.*/}
 
-        {/***** 공용면적  *****/}
+        {/***** 임대 가용면 *****/}
 
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'전용면적'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'임대 가용면'}</Text>
           </View>
           <Text
             style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(Number(this.props.whFilter.prvtArea) === prvtAreaMax || Number(this.props.whFilter.prvtArea) === 0) ?
-              '전체' : this.props.whFilter.prvtArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
+            {(Number(this.props.whFilter.usblValueKeep) === usblValueKeepMax || Number(this.props.whFilter.usblValueKeep) === 0) ?
+              '전체' : this.props.whFilter.usblValueKeep.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
 
         {/** Slider */}
-        <RangeSlider value={this.props.whFilter.prvtArea ? Number(this.props.whFilter.prvtArea) : 0}
+        <RangeSlider value={this.props.whFilter.usblValueKeep ? Number(this.props.whFilter.usblValueKeep) : 0}
                      step={1000}
                      contentStyle={{ marginBottom: 24 }}
                      minimumValue={0}
-                     maximumValue={prvtAreaMax}
-                     LabelMiddle={`${numberComma((prvtAreaMax / 2))}㎡`}
+                     maximumValue={usblValueKeepMax}
+                     LabelMiddle={`${numberComma((usblValueKeepMax / 2))}㎡`}
                      onValueChange={(value) => {
                        this.props.setSearchFilter({
-                         prvtArea: value,
+                         usblValueKeep: value,
                        });
                      }} />
 
+        {/***** 공용면적  *****/}
+
+        {/** Label */}
+        {/*<View style={styles.filterLabelWrap}>*/}
+          {/*<View style={styles.filterLabelWrap}>*/}
+            {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'전용면적'}</Text>*/}
+          {/*</View>*/}
+          {/*<Text*/}
+            {/*style={[styles.filterLabel, styles.filterLabelMain]}>*/}
+            {/*{(Number(this.props.whFilter.prvtArea) === prvtAreaMax || Number(this.props.whFilter.prvtArea) === 0) ?*/}
+              {/*'전체' : this.props.whFilter.prvtArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}*/}
+          {/*</Text>*/}
+        {/*</View>*/}
+
+        {/** Slider */}
+        {/*<RangeSlider value={this.props.whFilter.prvtArea ? Number(this.props.whFilter.prvtArea) : 0}*/}
+                     {/*step={1000}*/}
+                     {/*contentStyle={{ marginBottom: 24 }}*/}
+                     {/*minimumValue={0}*/}
+                     {/*maximumValue={prvtAreaMax}*/}
+                     {/*LabelMiddle={`${numberComma((prvtAreaMax / 2))}㎡`}*/}
+                     {/*onValueChange={(value) => {*/}
+                       {/*this.props.setSearchFilter({*/}
+                         {/*prvtArea: value,*/}
+                       {/*});*/}
+                     {/*}} />*/}
+
         <View style={styles.filterDivider}></View>
+
+        {/***** 수탁 가용수량 *****/}
+
+        {/** Label */}
+        <View style={styles.filterLabelWrap}>
+          <View style={styles.filterLabelWrap}>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'수탁 가용수량'}</Text>
+          </View>
+          <Text
+            style={[styles.filterLabel, styles.filterLabelMain]}>
+            {(Number(this.props.whFilter.usblValueTrust) === usblValueTrustMax || Number(this.props.whFilter.usblValueTrust) === 0) ?
+              '전체' : this.props.whFilter.usblValueTrust.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </Text>
+        </View>
+
+        {/** Slider */}
+        <RangeSlider value={this.props.whFilter.usblValueTrust ? Number(this.props.whFilter.usblValueTrust) : 0}
+                     step={10}
+                     contentStyle={{ marginBottom: 24 }}
+                     minimumValue={0}
+                     maximumValue={usblValueTrustMax}
+                     LabelMiddle={`${numberComma((usblValueTrustMax / 2))}`}
+                     onValueChange={(value) => {
+                       this.props.setSearchFilter({
+                         usblValueTrust: value,
+                       });
+                     }} />
 
         {/***** 전용면적 *****/}
 
         {/** Label */}
-        <View style={styles.filterLabelWrap}>
-          <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'공용면적'}</Text>
-          </View>
-          <Text
-            style={[styles.filterLabel, styles.filterLabelMain]}>
-            {(Number(this.props.whFilter.cmnArea) === cmnAreaMax || Number(this.props.whFilter.cmnArea) === 0) ?
-              '전체' : this.props.whFilter.cmnArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
-          </Text>
-        </View>
+        {/*<View style={styles.filterLabelWrap}>*/}
+          {/*<View style={styles.filterLabelWrap}>*/}
+            {/*<Text style={[styles.filterLabel, styles.filterLabelMain]}>{'공용면적'}</Text>*/}
+          {/*</View>*/}
+          {/*<Text*/}
+            {/*style={[styles.filterLabel, styles.filterLabelMain]}>*/}
+            {/*{(Number(this.props.whFilter.cmnArea) === cmnAreaMax || Number(this.props.whFilter.cmnArea) === 0) ?*/}
+              {/*'전체' : this.props.whFilter.cmnArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}*/}
+          {/*</Text>*/}
+        {/*</View>*/}
 
         {/** Slider */}
-        <RangeSlider value={this.props.whFilter.cmnArea ? Number(this.props.whFilter.cmnArea) : 0}
-                     step={1000}
-                     contentStyle={{ marginBottom: 24 }}
-                     minimumValue={0}
-                     maximumValue={cmnAreaMax}
-                     LabelMiddle={`${numberComma((cmnAreaMax / 2))}㎡`}
-                     onValueChange={(value) => {
-                       this.props.setSearchFilter({
-                         cmnArea: value,
-                       });
-                     }} />
+        {/*<RangeSlider value={this.props.whFilter.cmnArea ? Number(this.props.whFilter.cmnArea) : 0}*/}
+                     {/*step={1000}*/}
+                     {/*contentStyle={{ marginBottom: 24 }}*/}
+                     {/*minimumValue={0}*/}
+                     {/*maximumValue={cmnAreaMax}*/}
+                     {/*LabelMiddle={`${numberComma((cmnAreaMax / 2))}㎡`}*/}
+                     {/*onValueChange={(value) => {*/}
+                       {/*this.props.setSearchFilter({*/}
+                         {/*cmnArea: value,*/}
+                       {/*});*/}
+                     {/*}} />*/}
 
 
         {/** Button Group */}

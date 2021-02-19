@@ -6,13 +6,15 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
+import { Image as Image2 } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Text, IconButton } from 'react-native-paper';
 // Local Imports
 import ActionCreator from '@Actions';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
+import Progress from '@Components/organisms/Progress';
 
 class ImagePanoram extends Component {
   constructor (props) {
@@ -41,10 +43,18 @@ class ImagePanoram extends Component {
             </View>
           ) : (
             <View style={S.ImagePanaUpload}>
-              <Image
+              <Image2
                 style={S.ImageDetail}
                 source={{ uri: pnImages && pnImages[0].url }}
-                PlaceholderContent={<ActivityIndicator />}
+                PlaceholderContent={<View style={[S.bgrRegister, {
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: 238,
+                }]}>
+                  <View style={{height: 40}}><Progress /></View>
+                </View>}
               />
               {isRemove === true ? (
                 <IconButton

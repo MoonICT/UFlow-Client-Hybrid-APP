@@ -215,6 +215,9 @@ export const WarehouseSearchFilterModel = {
   prvtArea: '', // Master : 전용면적 max
   cmnArea: '', // Master, Trust, Keep : 공용면적 max
 
+  usblValueKeep: '', // 임대 가용면적
+  usblValueTrust: '', // 수탁 가용수치
+
   siteArea: '', // Master : 대지면적 max
   bldgArea: '', // Master : 건축면적 max
   totalArea: '', // Master : 연면적 max

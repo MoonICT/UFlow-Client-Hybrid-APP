@@ -390,11 +390,14 @@ class Home extends Component {
         cardItem.push(
           <View key={i} style={styles.mainProductItem}>
             {v?.thumbnail !== null ? (
-              <ProductCard navigation={this.navigation} data={v} />
+              <ProductCard navigation={this.navigation}
+                           isRecommend={true}
+                           data={v}
+              />
             ) : (
-              <ProductCard
-                navigation={this.navigation}
-                data={{ ...v, img: cardBG }}
+              <ProductCard navigation={this.navigation}
+                           isRecommend={true}
+                           data={{ ...v, img: cardBG }}
               />
             )}
           </View>,
@@ -807,7 +810,7 @@ class Home extends Component {
               style={styles.mainCallBTN}
               onPress={() =>
                 isLogin
-                  ? this.navigation.navigate('RegisterBusinessInfo')
+                  ? this.navigation.navigate('WarehouseType')
                   : this.navigation.navigate('Login')
               }>
               <Text
