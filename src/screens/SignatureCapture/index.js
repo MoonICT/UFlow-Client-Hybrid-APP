@@ -29,7 +29,9 @@ import { styles as S } from './style';
 import { LogisticsKnowledgeService } from '@Services/apis';
 import { debounce } from 'lodash';
 import SignatureCapture from 'react-native-signature-capture';
-
+import { MediaUpload, Warehouse, Contract } from '@Services/apis';
+import base64 from 'react-native-base64';
+import RNFS from 'react-native-fs';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 class SignatureCaptureScreen extends Component {
@@ -54,6 +56,10 @@ class SignatureCaptureScreen extends Component {
     this.fetchData();
     this.getListCategory();
   }
+  componentDidUpdate(prevProps, prevState) {
+    // console.log('prevState', prevState);
+    // console.log('state', this.state);
+  }
   saveSign() {
     this.refs['sign'].saveImage();
   }
@@ -62,11 +68,69 @@ class SignatureCaptureScreen extends Component {
     this.refs['sign'].resetImage();
   }
 
-  _onSaveEvent(result) {
+  // base64ToBlob = base64 => {
+  //   console.log('base64', base64);
+  //   let blobBin = atob(base64.split(',')[1]); // base64
+  //   let array = [];
+  //   for (let i = 0; i < blobBin.length; i++) {
+  //     array.push(blobBin.charCodeAt(i));
+  //   }
+  //   let file = new Blob([new Uint8Array(array)], { type: 'image/png' }); // Blob
+  //   return file;
+  // };
+  _onSaveEvent = result => {
     //result.encoded - for the base64 encoded png
     //result.pathName - for the file path name
-    console.log(result);
-  }
+    let base64Icon = `data:image/png;base64,${result.encoded}`;
+    // this.base64ToBlob(result.encoded);
+    // console.log('base64=====>', this.base64ToBlob(result.encoded));
+
+    base64.decode(result.encoded);
+
+    console.log('base64', base64);
+    const data = new FormData();
+
+    data.append('file', result.encoded);
+    // data.append('warehouseRegNo', dataContractDetail[detail.type2 === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts'].id.warehouseRegNo);
+    // data.append('rentUserNo', detail.rentUserNo);
+    // data.append('cntrYmdFrom', moment(dataContractDetail[detail.type2 === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts'].id.cntrYmdFrom).format('YYYYMMDD'));
+    const imageDate = '<some base64 data>';
+    const imagePath = `${RNFS.TemporaryDirectoryPath}image.jpg`;
+
+    // RNFS.writeFile(imagePath, result.encoded, 'base64').then(() =>
+    //   console.log('Image converted to jpg and saved at ' + imagePath),
+    // );
+    // console.log('imagePath==========>', imagePath);
+    // data.append('file', imagePath);
+
+    // Contract.elctrCntr({
+    //   type: 'tenant',
+    //   contractType: 'RG20210111326',
+    //   formData: data,
+    // })
+    // Warehouse.uploadImage({
+    //   formData: data,
+    // })
+    Warehouse.upload({
+      type: 'tenant',
+      contractType: 'RG20210111326',
+      formData: data,
+    })
+      .then(respon => {
+        let { filename, url } = respon.data;
+        console.log('respon', respon.data);
+        // var pathArray = url.split('/');
+        // var host = pathArray[pathArray.length - 1];
+      })
+      .catch(error => {
+        // alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
+        console.log('error===>', error.response);
+      });
+    console.log('data=====>', data);
+    console.log('result=====>', result);
+
+    this.setState({ result });
+  };
   _onDragEvent() {
     // This callback will be called when the user enters signature
     console.log('dragged');

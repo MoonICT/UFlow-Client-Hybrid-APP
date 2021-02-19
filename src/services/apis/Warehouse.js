@@ -36,7 +36,6 @@ export const registerWH = async data => {
   return await mainAxios.post('/api/v1/warehouse', data, config);
 };
 
-
 /**
  *
  * @param body {
@@ -56,6 +55,22 @@ export const uploadImage = async (body) => {
       }
     });
 }
+
+export const upload = async ({
+  type = '',
+  contractType = '',
+  formData,
+}) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  console.log('body====>', formData);
+  return await mainAxios.post(`/4100/${type}/${contractType}/sign-pad`, 
+    formData,
+    {headers: {
+      Authorization: `Bearer ${token}`,
+      contentType: 'multipart/form-data',
+    },
+  });
+};
 
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
@@ -194,10 +209,10 @@ export const termsContract = async (body, typeWH) => {
   });
 };
 export const searchAddressKakao = async ({
-                                           query = '',
-                                           page = 0,
-                                           size = 20,
-                                         }) => {
+  query = '',
+  page = 0,
+  size = 20,
+}) => {
   let url = parseQuery({
     query: query,
     page: page,
@@ -619,10 +634,10 @@ export const modifyWhrg = (whrgBody, id) => {
     requiresToken: true, // set access_token
     config: {
       headers: {
-        contentType: 'application/json'
-      }
-    }
-  })
+        contentType: 'application/json',
+      },
+    },
+  });
 };
 
 /**
@@ -713,13 +728,13 @@ export const getWhrg = async ({ id = '', config = '' }) => {
  * @returns {Promise<unknown>}
  */
 export const pageWhrg = ({
-                           query = '',
-                           startDate = '',
-                           endDate = '',
-                           size = 20,
-                           page = 0,
-                           sort = 'createdDate,desc',
-                         }) => {
+  query = '',
+  startDate = '',
+  endDate = '',
+  size = 20,
+  page = 0,
+  sort = 'createdDate,desc',
+}) => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse${parseQuery({
@@ -774,15 +789,15 @@ export const listAllBussinessInfo = () => {
 };
 
 export const pageWhrgQnA = async ({
-                                    id = '',
-                                    query = '',
-                                    startDate = '',
-                                    endDate = '',
-                                    size = 15,
-                                    page = 0,
-                                    sort = 'createdDate,desc',
-                                    requiresToken = true,
-                                  }) => {
+  id = '',
+  query = '',
+  startDate = '',
+  endDate = '',
+  size = 15,
+  page = 0,
+  sort = 'createdDate,desc',
+  requiresToken = true,
+}) => {
   const token = await AsyncStorage.getItem(TOKEN);
   return Axios.getRequest({
     methodType: 'GET',
@@ -834,15 +849,12 @@ export const getLinkContract = body => {
  * @param id 창고 ID
  * @returns {Promise<*>}
  */
-export const deleteWarehouse = async ({
-                                  id = ""
-                                }) => {
+export const deleteWarehouse = async ({ id = '' }) => {
   const token = await AsyncStorage.getItem(TOKEN);
 
-  return await mainAxios.delete(`/api/v1/warehouse/${id}`,
-  {
+  return await mainAxios.delete(`/api/v1/warehouse/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
