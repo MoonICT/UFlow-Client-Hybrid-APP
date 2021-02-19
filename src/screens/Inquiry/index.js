@@ -305,6 +305,7 @@ class Inquiry extends Component {
                     labelSelected={'구분'}
                     style={S.select}
                     valueProps={e => {
+                      console.log(e, 'e');
                       this.setState({ userType: e }, () => {
                         this.getAllData();
                       });
