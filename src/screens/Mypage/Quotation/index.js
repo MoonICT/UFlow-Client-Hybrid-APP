@@ -615,10 +615,18 @@ class Quotation extends Component {
                     });
                     alert('계약 요청이 완료되었습니다.');
                     // TODO 마이페이지 부모 refresh!!
-                    this.navigation.goBack();
+                    // this.navigation.goBack();
+                    this.props.navigation.push('Mypage', {
+                      title: '견적･계약 관리',
+                      prevView: 'PrevView',
+                    })
                   } else {
                     alert('계약 요청이 실패하였습니다.\n다시 시도해보세요.');
-                    this.navigation.goBack();
+                    // this.navigation.goBack();
+                    this.props.navigation.push('Mypage', {
+                      title: '견적･계약 관리',
+                      prevView: 'PrevView',
+                    })
                   }
                 });
               }}>
