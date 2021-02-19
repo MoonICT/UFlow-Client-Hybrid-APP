@@ -92,15 +92,6 @@ export default class DetailsSettlement extends Component {
         warehouseName: settlementHeaderResBody ? settlementHeaderResBody.warehouse + ' 정산관리' : '정산관리'
       })
 
-      // TODO 임시로 산정 기준 데이터 뽑음.
-      let stdDetailCodeName = ''
-      if (res.data.data.calMgmtDetail1ResBodyList && res.data.data.calMgmtDetail1ResBodyList.length > 0) {
-        stdDetailCodeName = res.data.data.calMgmtDetail1ResBodyList[0].calStdDvCode.stdDetailCodeName
-      }
-      if (res.data.data.calMgmtDetailResBodyList && res.data.data.calMgmtDetailResBodyList.length > 0 && !stdDetailCodeName) {
-        stdDetailCodeName = res.data.data.calMgmtDetail1ResBodyList[0].calStdDvCode.stdDetailCodeName
-      }
-
       let dataInfo = [
         {
           type: '창고명',
@@ -113,14 +104,6 @@ export default class DetailsSettlement extends Component {
         {
           type: '계약유형',
           value: calMgmtMResBody.cntrTypeCode ? calMgmtMResBody.cntrTypeCode.stdDetailCodeName : '-',
-        },
-        {
-          type: '정산단위',
-          value: headerDetail1ResBody.calUnitDvCode.stdDetailCodeName ? headerDetail1ResBody.calUnitDvCode.stdDetailCodeName : '-',
-        },
-        {
-          type: '산정기준',
-          value: stdDetailCodeName ? stdDetailCodeName : '-',
         },
         // {
         //   type: '기간',
@@ -184,6 +167,14 @@ export default class DetailsSettlement extends Component {
             {
               type: '일시',
               value: item.occr
+            },
+            {
+              type: '정산기준',
+              value: item.calStdDvCode && item.calStdDvCode.stdDetailCodeName ? item.calStdDvCode.stdDetailCodeName : '-'
+            },
+            {
+              type: '정산단위',
+              value: item.calUnitDvCode && item.calUnitDvCode.stdDetailCodeName ? item.calUnitDvCode.stdDetailCodeName : '-'
             },
             // 량
             {
