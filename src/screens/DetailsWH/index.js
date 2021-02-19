@@ -717,9 +717,11 @@ class DetailWH extends Component {
                           <Text style={S.textTable}>{keep.remark}</Text>
                         </View>
                         <View style={S.tableRow}>
+                          {/* 견적 요청 가능 상태인지 체크 */}
                           {keep.enable ? (
                             <View style={S.rowBtn}>
-                              {whrgData.userTypeCode === '1100' ? (
+                              {whrgData.warehMgmtType === '0001' ? (
+                                /*오픈형인 경우*/
                                 <View>
                                   <Text>
                                     {whrgData.relativeEntrp
@@ -737,6 +739,7 @@ class DetailWH extends Component {
                                 </View>
                               ) : (
                                 <View>
+                                  {/**/}
                                   {userId != whrgData.ownerUserNo ?
                                     <TouchableOpacity
                                       style={[S.btnQuote, { minWidth: 100, }]}
@@ -978,7 +981,7 @@ class DetailWH extends Component {
                         <View style={S.tableRow}>
                           {trust.enable ? (
                             <View style={S.rowBtn}>
-                              {whrgData.userTypeCode === '1100' ? (
+                              {whrgData.warehMgmtType === '0001' ? (
                                 <View>
                                   <Text>
                                     {whrgData.relativeEntrp
