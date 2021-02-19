@@ -870,8 +870,6 @@ class Home extends Component {
 
   async componentDidMount () {
     // console.log('::componentDidMount::');
-    /** App Version Check (배포시 활성.) */
-    // await VersionCheckService.init();
     /** Complete Initialize. */
     let page = await Warehouse.listRecommend();
     page = page?.data;
