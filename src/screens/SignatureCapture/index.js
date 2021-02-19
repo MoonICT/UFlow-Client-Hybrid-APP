@@ -30,7 +30,7 @@ import { LogisticsKnowledgeService } from '@Services/apis';
 import { debounce } from 'lodash';
 import SignatureCapture from 'react-native-signature-capture';
 import { MediaUpload, Warehouse, Contract } from '@Services/apis';
-import base64 from 'react-native-base64';
+// import base64 from 'react-native-base64';
 import RNFS from 'react-native-fs';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -85,9 +85,9 @@ class SignatureCaptureScreen extends Component {
     // this.base64ToBlob(result.encoded);
     // console.log('base64=====>', this.base64ToBlob(result.encoded));
 
-    base64.decode(result.encoded);
+    // base64.decode(result.encoded);
 
-    console.log('base64', base64);
+    // console.log('base64', base64);
     const data = new FormData();
 
     data.append('file', result.encoded);
