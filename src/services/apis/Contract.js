@@ -198,21 +198,18 @@ export const ozEstimateUrl = ({
  * @param cntrYmdFrom 계약일 (YYYYMMDD)
  * @returns {Promise<*>}
  */
-export const elctrCntr = ({
-                            type = '',
-                            contractType = '',
-
-
-                            formData
-                          }) => {
-  return Axios.postRequest({
-    url: `/4100/${type}/${contractType}/sign-pad`,
-    payload: formData,
-    requiresToken: true, // set access_token
-    config: {
-      headers: {
-        contentType: 'multipart/form-data'
-      }
-    }
+export const elctrCntr = async (
+  {type = '',
+  contractType = '',
+  formData}
+) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  console.log('body====>', formData);
+  return await mainAxios.post(`/api/v1/contract/4100/${type}/${contractType}/sign-pad`, 
+    formData,
+    {headers: {
+      Authorization: `Bearer ${token}`,
+      contentType: 'multipart/form-data',
+    },
   });
 }

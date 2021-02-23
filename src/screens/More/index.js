@@ -384,7 +384,7 @@ class More extends Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity
+{/**              <TouchableOpacity
               style={DefaultStyle.btnItem}
               onPress={() => this.navigation.navigate('SignatureCapture')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
@@ -398,6 +398,7 @@ class More extends Component {
                 />
               </View>
             </TouchableOpacity>
+           */}
  
               {/*<TouchableOpacity*/}
               {/*style={DefaultStyle.btnItem}*/}
