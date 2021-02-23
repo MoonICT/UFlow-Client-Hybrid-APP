@@ -49,11 +49,33 @@ class ContractInformation extends Component {
   resetSign() {
     this.refs['sign'].resetImage();
   }
-
+  
+  base64ToBlob = base64 => {
+    let blobBin = base64.split(','); // base64
+    let blob = new Blob(blobBin);
+    console.log('blod', blob);
+    const file = new File([blob], 'sign.png');
+    return file;
+  };
   _onSaveEvent(result) {
     //result.encoded - for the base64 encoded png
     //result.pathName - for the file path name
-    console.log(result);
+    let file = this.base64ToBlob(result.encoded);
+    file = { uri: result.pathName, type: 'image/png', ...file._data };
+    console.log('file=====>', file);
+    const data = new FormData();
+    data.append('file', file);
+    Contract.elctrCntr({
+      type: this.props.type,
+      contractType: this.props.contractType.toLowerCase(),
+      formData: data,
+    }).then(res => {
+      console.log('res', res)
+    })
+    .catch(error => {
+      // alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
+      console.log('error===>', error.response);
+    });
   }
   _onDragEvent() {
     // This callback will be called when the user enters signature
