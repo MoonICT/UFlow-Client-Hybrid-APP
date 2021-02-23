@@ -49,7 +49,7 @@ class ContractInformation extends Component {
   resetSign() {
     this.refs['sign'].resetImage();
   }
-  
+
   base64ToBlob = base64 => {
     let blobBin = base64.split(','); // base64
     let blob = new Blob(blobBin);
@@ -57,20 +57,23 @@ class ContractInformation extends Component {
     const file = new File([blob], 'sign.png');
     return file;
   };
-  _onSaveEvent(result) {
+  _onSaveEvent=(result) =>{
     //result.encoded - for the base64 encoded png
     //result.pathName - for the file path name
     let file = this.base64ToBlob(result.encoded);
     file = { uri: result.pathName, type: 'image/png', ...file._data };
-    console.log('file=====>', file);
     const data = new FormData();
     data.append('file', file);
+    data.append('warehouseRegNo', this.props.keepTrustContract && this.props.keepTrustContract.id.warehouseRegNo);
+    data.append('rentUserNo', this.props.rentUserNo && this.props.rentUserNo);
+    data.append('cntrYmdFrom', moment( this.props.keepTrustContract && this.props.keepTrustContract.id.cntrYmdFrom).format('YYYYMMDD'));
     Contract.elctrCntr({
       type: this.props.type,
       contractType: this.props.contractType.toLowerCase(),
       formData: data,
     }).then(res => {
       console.log('res', res)
+      this.setState({ isOnLineDialog: false })
     })
     .catch(error => {
       // alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
@@ -112,6 +115,7 @@ class ContractInformation extends Component {
       warehSeq,
       thumbnail,
     } = this.props;
+    console.log('this.props', this.props)
     let dataTable = [
       {
         type: '계약 요청일자',
@@ -308,7 +312,7 @@ class ContractInformation extends Component {
             <Button
               style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
               onPress={() => {
-                this.setState({ isOnLineDialog: false })
+               
                 this.saveSign();
                 // alert('준비중입니다.');
               }}>완료</Button>
