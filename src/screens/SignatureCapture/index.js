@@ -34,9 +34,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { TOKEN } from '@Constant';
 import configURL from '@Services/http/ConfigURL';
 // import base64 from 'react-native-base64';
-import RNFS from 'react-native-fs';
-import RNFetchBlob from 'react-native-fetch-blob';
-import { base64StringToFile } from 'react-crop-utils';
+// import RNFS from 'react-native-fs';
+// import RNFetchBlob from 'react-native-fetch-blob';
+// import { base64StringToFile } from 'react-crop-utils';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 class SignatureCaptureScreen extends Component {
