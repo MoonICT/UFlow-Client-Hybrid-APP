@@ -30,8 +30,13 @@ import { LogisticsKnowledgeService } from '@Services/apis';
 import { debounce } from 'lodash';
 import SignatureCapture from 'react-native-signature-capture';
 import { MediaUpload, Warehouse, Contract } from '@Services/apis';
+import AsyncStorage from '@react-native-community/async-storage';
+import { TOKEN } from '@Constant';
+import configURL from '@Services/http/ConfigURL';
 // import base64 from 'react-native-base64';
 import RNFS from 'react-native-fs';
+import RNFetchBlob from 'react-native-fetch-blob';
+import { base64StringToFile } from 'react-crop-utils';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 class SignatureCaptureScreen extends Component {
@@ -68,57 +73,65 @@ class SignatureCaptureScreen extends Component {
     this.refs['sign'].resetImage();
   }
 
-  // base64ToBlob = base64 => {
-  //   console.log('base64', base64);
-  //   let blobBin = atob(base64.split(',')[1]); // base64
-  //   let array = [];
-  //   for (let i = 0; i < blobBin.length; i++) {
-  //     array.push(blobBin.charCodeAt(i));
-  //   }
-  //   let file = new Blob([new Uint8Array(array)], { type: 'image/png' }); // Blob
-  //   return file;
-  // };
+  base64ToBlob = base64 => {
+    // console.log('base64', base64);
+    // var atob = require('atob');
+    // let blobBin = atob(base64.split(',')[1]); // base64
+    let blobBin = base64.split(','); // base64
+
+    // let array = [];
+    // for (let i = 0; i < blobBin.length; i++) {
+    //   array.push(blobBin.charCodeAt(i));
+    // }
+    // let file = new Blob([new Uint8Array(array)], { type: 'image/png' }); // Blob
+    let blob = new Blob(blobBin);
+    console.log('blod', blob);
+    const file = new File([blob], 'sign.png');
+    return file;
+  };
   _onSaveEvent = result => {
     //result.encoded - for the base64 encoded png
     //result.pathName - for the file path name
     let base64Icon = `data:image/png;base64,${result.encoded}`;
-    // this.base64ToBlob(result.encoded);
-    // console.log('base64=====>', this.base64ToBlob(result.encoded));
+    let type = 'tenant';
+    let contractType = 'keep';
 
+    let file = this.base64ToBlob(result.encoded);
+    // file.type = result.pathName;
+    file = { uri: result.pathName, type: 'image/png', ...file._data };
+    console.log('file=====>', file);
+    // console.log('base64=====>', this.base64ToBlob(result.encoded));
     // base64.decode(result.encoded);
 
-    // console.log('base64', base64);
     const data = new FormData();
 
-    data.append('file', result.encoded);
+    // let images = RNFetchBlob.fs.writeFile("signature.jpg", base64Icon, 'base64');
+    // const file = new File([blob], "signature.jpeg");
+    // console.log('_onSaveEvent', file);
+
+    data.append('images', file);
+    // data.append('id', 'RG202102221233');
+    // data.append('code', '001');
+
+    // data.append('warehouseRegNo', 'RG20210111326');
+    // data.append('rentUserNo', 555555);
+    // data.append('cntrYmdFrom', '1999');
     // data.append('warehouseRegNo', dataContractDetail[detail.type2 === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts'].id.warehouseRegNo);
     // data.append('rentUserNo', detail.rentUserNo);
     // data.append('cntrYmdFrom', moment(dataContractDetail[detail.type2 === 'KEEP' ? 'estmtKeeps' : 'estmtTrusts'].id.cntrYmdFrom).format('YYYYMMDD'));
-    const imageDate = '<some base64 data>';
-    const imagePath = `${RNFS.TemporaryDirectoryPath}image.jpg`;
 
-    // RNFS.writeFile(imagePath, result.encoded, 'base64').then(() =>
-    //   console.log('Image converted to jpg and saved at ' + imagePath),
-    // );
-    // console.log('imagePath==========>', imagePath);
-    // data.append('file', imagePath);
-
-    // Contract.elctrCntr({
-    //   type: 'tenant',
-    //   contractType: 'RG20210111326',
-    //   formData: data,
-    // })
-    // Warehouse.uploadImage({
-    //   formData: data,
-    // })
+    // Warehouse.uploadImage(
+    // type: 'tenant',
+    // contractType: 'trust',
     Warehouse.upload({
       type: 'tenant',
-      contractType: 'RG20210111326',
+      contractType: 'trust',
       formData: data,
     })
       .then(respon => {
+        console.log('respon', respon);
         let { filename, url } = respon.data;
-        console.log('respon', respon.data);
+        // console.log('respon', respon);
         // var pathArray = url.split('/');
         // var host = pathArray[pathArray.length - 1];
       })
@@ -126,10 +139,10 @@ class SignatureCaptureScreen extends Component {
         // alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
         console.log('error===>', error.response);
       });
-    console.log('data=====>', data);
-    console.log('result=====>', result);
-
+    // console.log('data=====>', data);
+    // console.log('result=====>', result);
     this.setState({ result });
+    // });
   };
   _onDragEvent() {
     // This callback will be called when the user enters signature
