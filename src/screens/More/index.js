@@ -383,7 +383,7 @@ class More extends Component {
                   />
                 </View>
               </TouchableOpacity>
-{/**
+
               <TouchableOpacity
               style={DefaultStyle.btnItem}
               onPress={() => this.navigation.navigate('SignatureCapture')}>
@@ -398,7 +398,7 @@ class More extends Component {
                 />
               </View>
             </TouchableOpacity>
-  */}
+ 
               {/*<TouchableOpacity*/}
               {/*style={DefaultStyle.btnItem}*/}
               {/*onPress={() => this.navigation.navigate('SampleScreen')}>*/}

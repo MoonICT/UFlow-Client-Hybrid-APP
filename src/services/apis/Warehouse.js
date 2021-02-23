@@ -56,14 +56,14 @@ export const uploadImage = async (body) => {
     });
 }
 
-export const upload = async ({
+export const upload = async (
   type = '',
   contractType = '',
   formData,
-}) => {
+) => {
   const token = await AsyncStorage.getItem(TOKEN);
   console.log('body====>', formData);
-  return await mainAxios.post(`/4100/${type}/${contractType}/sign-pad`, 
+  return await mainAxios.post(`/api/v1/contract/4100/${type}/${contractType}/sign-pad`, 
     formData,
     {headers: {
       Authorization: `Bearer ${token}`,
