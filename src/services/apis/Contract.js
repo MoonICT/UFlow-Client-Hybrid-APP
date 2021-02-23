@@ -201,12 +201,10 @@ export const ozEstimateUrl = ({
 export const elctrCntr = ({
                             type = '',
                             contractType = '',
-
-
                             formData
                           }) => {
   return Axios.postRequest({
-    url: `/4100/${type}/${contractType}/sign-pad`,
+    url: `/api/v1/contract/4100/${type}/${contractType}/sign-pad`,
     payload: formData,
     requiresToken: true, // set access_token
     config: {
