@@ -16,7 +16,7 @@ class TenantRs00Keep extends Component {
     super(props);
     this.navigation = props.navigation;
     this.state = {
-      groupOrderIndex: 0
+      groupOrderIndex: props.groupOrderIndex
     }
   }
 

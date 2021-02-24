@@ -94,12 +94,19 @@ class SearchFilter extends Component {
   }
 
   /**
+   * TODO 가용 수치/면적 으로 필드 변경 필요.
    * 규모 선택 시, 표현될 값.
    * */
   handleRenderAreaValue = () => {
     let resultArr = []
+    if (this.props.whFilter.usblValueKeep && this.props.whFilter.usblValueKeep > 0) {
+      resultArr.push(`가용면적 ${parseFloat((this.props.whFilter.usblValueKeep).toFixed(1))}m²`);
+    }
+    if (this.props.whFilter.usblValueTrust && this.props.whFilter.usblValueTrust > 0) {
+      resultArr.push(`가용수량 ${parseFloat((this.props.whFilter.usblValueTrust).toFixed(1))}`);
+    }
     if (this.props.whFilter.prvtArea && this.props.whFilter.prvtArea > 0) {
-      resultArr.push(`전용 ${parseFloat((this.props.whFilter.prvtArea).toFixed(1))}m²`);
+      resultArr.push(`전용 ${parseFloat((this.props.whFilter.prvtArea).toFied(1))}m²`);
     }
     if (this.props.whFilter.cmnArea && this.props.whFilter.cmnArea > 0) {
       resultArr.push(`공용 ${parseFloat((this.props.whFilter.cmnArea).toFixed(1))}m²`);
@@ -108,7 +115,7 @@ class SearchFilter extends Component {
       resultArr = resultArr.slice(0, 1)
       resultArr.push('...')
     }
-    return resultArr.length > 0 ? resultArr.join(', ') : '가용면적';
+    return resultArr.length > 0 ? resultArr.join(', ') : '규모';
   }
 
 

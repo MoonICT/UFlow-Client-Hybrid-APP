@@ -2,10 +2,16 @@ import { Axios, parseQuery } from '@Services/http';
 import { mainAxios, mainAxiosToken } from '../libs/axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export const GetEvs = () => {
+/**
+ *
+ * @param code 0001	긴급차량지원, 0002	물류컨설팅
+ * @returns {Promise<Promise<unknown> | Promise<unknown>>}
+ * @constructor
+ */
+export const GetEvs = ({ code }) => {
   return Axios.request({
     methodType: "GET",
-    url: `/api/v1/evs`,
+    url: `/api/v1/evs${parseQuery({code: code})}`,
     requiresToken: true,
     config: {
       headers: {

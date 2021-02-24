@@ -24,6 +24,7 @@ import Loading from '@Components/atoms/Loading';
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import { LANG_STATUS_KEY } from '@Constant';
+import SplashScreen from "react-native-splash-screen";
 
 class Global extends Component {
   constructor (props) {
@@ -72,6 +73,8 @@ class Global extends Component {
 
     /** App Version Check (배포시 활성.) */
     // await VersionCheckService.init();
+
+    SplashScreen.hide();
   }
 }
 

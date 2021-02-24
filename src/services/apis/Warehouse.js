@@ -36,20 +36,6 @@ export const registerWH = async data => {
   return await mainAxios.post('/api/v1/warehouse', data, config);
 };
 
-export const updateWH = async value => {
-  console.log('dataregisterWH :>> ', value);
-  let url = value.url;
-  let data = value.data;
-  const token = await AsyncStorage.getItem(TOKEN);
-
-  return await mainAxios.put(`/api/v1/warehouse/${url}`, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-};
-
 /**
  *
  * @param body {
@@ -69,6 +55,22 @@ export const uploadImage = async (body) => {
       }
     });
 }
+
+export const upload = async (
+  type = '',
+  contractType = '',
+  formData,
+) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+  console.log('body====>', formData);
+  return await mainAxios.post(`/api/v1/contract/4100/${type}/${contractType}/sign-pad`, 
+    formData,
+    {headers: {
+      Authorization: `Bearer ${token}`,
+      contentType: 'multipart/form-data',
+    },
+  });
+};
 
 export const myWH = async () => {
   const token = await AsyncStorage.getItem(TOKEN);
@@ -207,10 +209,10 @@ export const termsContract = async (body, typeWH) => {
   });
 };
 export const searchAddressKakao = async ({
-                                           query = '',
-                                           page = 0,
-                                           size = 20,
-                                         }) => {
+  query = '',
+  page = 0,
+  size = 20,
+}) => {
   let url = parseQuery({
     query: query,
     page: page,
@@ -329,7 +331,7 @@ export const listInsrDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/insr-dv-code`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -363,7 +365,7 @@ export const listAprchMthdDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/aprch-mthd-dv-code`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -380,7 +382,7 @@ export const listFlrDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/flr-dv-code`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -455,7 +457,7 @@ export const listCalStdDvCode = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/cal-std-dv-code`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -467,7 +469,7 @@ export const listCalStdDvCodeKeep = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/cal-std-dv-code/keep`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -479,7 +481,7 @@ export const listCalStdDvCodeTrust = () => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse/cal-std-dv-code/trust`,
-    requiresToken: true, // set access_token
+    // requiresToken: true, // set access_token
     config: {
       headers: {
         contentType: 'application/json',
@@ -600,11 +602,34 @@ export const listCalStdDvCodeTrust = () => {
  *   }
  * @returns {Promise<unknown>}
  */
-// Deprecated
+/**
+ * 20210215 필드 추가
+ * warehMgmtType : "0001" --> WHRG1002 창고관리유형(0001:오픈형, 0002:책임형) >> 0001 오픈형인 경우 사업자 번호 필요 없음.
+ * @returns {Promise<Promise<unknown> | Promise<unknown>>}
+ */
 export const registWhrg = whrgBody => {
   return Axios.request({
     methodType: 'POST',
     url: `/api/v1/warehouse`,
+    payload: whrgBody,
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
+};
+
+/**
+ * 20210215 필드 추가
+ * warehMgmtType : "0001" --> WHRG1002 창고관리유형(0001:오픈형, 0002:책임형) >> 0001 오픈형인 경우 사업자 번호 필요 없음.
+ * @returns {Promise<Promise<unknown> | Promise<unknown>>}
+ */
+export const modifyWhrg = (whrgBody, id) => {
+  return Axios.request({
+    methodType: 'PUT',
+    url: `/api/v1/warehouse/${id}`,
     payload: whrgBody,
     requiresToken: true, // set access_token
     config: {
@@ -703,13 +728,13 @@ export const getWhrg = async ({ id = '', config = '' }) => {
  * @returns {Promise<unknown>}
  */
 export const pageWhrg = ({
-                           query = '',
-                           startDate = '',
-                           endDate = '',
-                           size = 20,
-                           page = 0,
-                           sort = 'createdDate,desc',
-                         }) => {
+  query = '',
+  startDate = '',
+  endDate = '',
+  size = 20,
+  page = 0,
+  sort = 'createdDate,desc',
+}) => {
   return Axios.request({
     methodType: 'GET',
     url: `/api/v1/warehouse${parseQuery({
@@ -764,15 +789,15 @@ export const listAllBussinessInfo = () => {
 };
 
 export const pageWhrgQnA = async ({
-                                    id = '',
-                                    query = '',
-                                    startDate = '',
-                                    endDate = '',
-                                    size = 15,
-                                    page = 0,
-                                    sort = 'createdDate,desc',
-                                    requiresToken = true,
-                                  }) => {
+  id = '',
+  query = '',
+  startDate = '',
+  endDate = '',
+  size = 15,
+  page = 0,
+  sort = 'createdDate,desc',
+  requiresToken = true,
+}) => {
   const token = await AsyncStorage.getItem(TOKEN);
   return Axios.getRequest({
     methodType: 'GET',
@@ -815,6 +840,21 @@ export const getLinkContract = body => {
       headers: {
         contentType: 'application/json',
       },
+    },
+  });
+};
+
+/**
+ * 창고 삭제
+ * @param id 창고 ID
+ * @returns {Promise<*>}
+ */
+export const deleteWarehouse = async ({ id = '' }) => {
+  const token = await AsyncStorage.getItem(TOKEN);
+
+  return await mainAxios.delete(`/api/v1/warehouse/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
   });
 };

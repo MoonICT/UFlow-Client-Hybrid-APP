@@ -233,7 +233,8 @@ class More extends Component {
                 <TouchableOpacity
                   style={DefaultStyle.btnItem}
                   onPress={() =>
-                    this.navigation.navigate('RegisterBusinessInfo')
+                    // this.navigation.navigate('RegisterBusinessInfo')
+                    this.navigation.navigate('WarehouseType')
                   }>
                   <View style={[DefaultStyle.leftItem, S.item]}>
                     <Image style={S.iconItem} source={addwarehouse} />
@@ -299,6 +300,20 @@ class More extends Component {
                   />
                 </View>
               </TouchableOpacity>
+              <TouchableOpacity
+              style={DefaultStyle.btnItem}
+              onPress={() => this.navigation.navigate('LogisticConsulting')}>
+              <View style={[DefaultStyle.leftItem, S.item]}>
+                <Text style={DefaultStyle.titleItem}>물류컨설팅 지원</Text>
+              </View>
+              <View style={DefaultStyle.rightItem}>
+                <Icon
+                  name="arrow-forward-ios"
+                  size={12}
+                  color="rgba(0, 0, 0, 0.54)"
+                />
+              </View>
+            </TouchableOpacity>
             </View>
           )}
 
@@ -368,8 +383,8 @@ class More extends Component {
                   />
                 </View>
               </TouchableOpacity>
-{/**
-              <TouchableOpacity
+
+{/**              <TouchableOpacity
               style={DefaultStyle.btnItem}
               onPress={() => this.navigation.navigate('SignatureCapture')}>
               <View style={[DefaultStyle.leftItem, S.item]}>
@@ -383,7 +398,8 @@ class More extends Component {
                 />
               </View>
             </TouchableOpacity>
- */}
+           */}
+ 
               {/*<TouchableOpacity*/}
               {/*style={DefaultStyle.btnItem}*/}
               {/*onPress={() => this.navigation.navigate('SampleScreen')}>*/}

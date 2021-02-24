@@ -6,7 +6,7 @@
  * @desc [description]
  */
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { color } from '@Themes/colors';
 
 export const styles = StyleSheet.create({
@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     // fontFamily: 'NotoSansCJKkr-Regular',
   },
   medium: {
+    fontWeight: '700',
     // fontFamily: 'NotoSansCJKkr-Medium',
   },
   bold: {
@@ -70,6 +71,7 @@ export const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
     backgroundColor: '#ffff',
+    position: 'relative',
   },
   shadow: {
     // for iOS
@@ -100,18 +102,18 @@ export const styles = StyleSheet.create({
     minHeight: 104,
     overflow: 'hidden',
   },
-  imageWrapHorizon:{
-    width: 124,
+  imageWrapHorizon: {
+    width: 160,
   },
   contentWrap: {
     // flex: 1,
     height: 'auto',
-    paddingVertical: 15,
+    paddingVertical: 16,
     paddingHorizontal: 16,
   },
   contentWrapHorizon: {
     paddingVertical: 0,
-    paddingLeft: 8,
+    paddingLeft: 16,
     paddingRight: 0,
     width: '100%',
   },
@@ -126,7 +128,7 @@ export const styles = StyleSheet.create({
   },
   cardImageHorizon: {
     height: 124,
-    width: 124,
+    width: 160,
     borderRadius: 12,
   },
   badge: {
@@ -191,5 +193,39 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     marginTop: 6,
     marginBottom: 6,
+  },
+  bageCard: {
+    position: 'absolute',
+    zIndex: 99,
+    top: 4,
+    right: 4,
+    width: 40,
+    height: 40,
+  },
+  imageBage: {
+    width: '100%',
+    height: '100%',
+  },
+  textBage: {
+    zIndex: 100,
+    top: 15,
+    left: 10,
+    position: 'absolute',
+    color: '#fafafa',
+    fontSize: 9,
+  },
+  bageTypes: {
+    position: 'absolute',
+    zIndex: 100,
+    bottom: 0,
+    left: 0,
+    color: '#ffffff',
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+    lineHeight: 12,
+    fontSize: 12,
+    padding: 10,
+    paddingTop: 6,
+    paddingBottom: 2,
   },
 });

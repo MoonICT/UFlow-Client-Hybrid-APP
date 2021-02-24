@@ -11,9 +11,8 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     width: windowWidth,
-    height: windowHeight,
+    height: windowHeight - 30,
     backgroundColor: 'white',
-    paddingBottom: 32,
   },
   bodyView: {
     padding: 16,
@@ -26,25 +25,17 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
     marginTop: 24,
   },
-  viewSearch: {
-    padding: 16,
+  contentQuestion:{
+    fontSize: 12,
   },
-  searchInput: {
-    lineHeight: 24,
-    // fontFamily: 'NotoSansCJKkr',
+  titleQuestion:{
+    margin: 0,
+    textAlign: 'left',
+    fontSize:20,
+    fontWeight:'500',
   },
-  title: {
-    lineHeight: 20,
-    fontSize: 14,
+  headerButon:{
+    // color: 'rgba(0, 0, 0, 0.47)',
+    color: '#ff6d00',
   },
-  descript:{
-    color: 'rgba(0, 0, 0, 0.87)',
-    // fontFamily: 'NotoSansCJKkr-Regular',
-    fontSize: 14,
-    fontStyle: 'normal',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#d7d7d7',
-  }
 });

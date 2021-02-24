@@ -10,7 +10,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
@@ -26,8 +25,9 @@ import Checkbox from '@Components/atoms/Checkbox';
 import ActionCreator from '@Actions';
 import illust11 from '@Assets/images/illust11.png';
 import { styles as SS } from './style';
-import { Warehouse, Contract } from '@Services/apis';
+import { Contract, Terms } from '@Services/apis';
 import CardMypage from '@Components/organisms/CardMypage';
+import HTML from 'react-native-render-html';
 
 class TermsContract extends Component {
   constructor (props) {
@@ -55,8 +55,8 @@ class TermsContract extends Component {
       content: `계약 약관 동의가 처리되었습니다.`,
     });
     // 라우트 강제 새로고침.
-    this.props.route.params.onRefresh('견적･계약 관리')
-    this.navigation.navigate('Mypage',);
+    this.props.route.params.onRefresh('견적･계약 관리');
+    this.navigation.navigate('Mypage');
   };
 
   /**
@@ -134,7 +134,7 @@ class TermsContract extends Component {
       keepTrustContract,
       type, // owner || tenant
     } = this.props;
-    const { isAgree, file } = this.state;
+    const { isAgree, file,dataContent } = this.state;
     return (
       <View style={{ paddingBottom: 90 }}>
 
@@ -153,8 +153,8 @@ class TermsContract extends Component {
 
         {/** 약관 */}
         <View style={DefaultStyle._card}>
-          <ScrollView nestedScrollEnabled = {true} style={SS.bodyAgreement}  >
-            <Text style={[DefaultStyle._textDF, { marginBottom: 20 }]}>
+          <ScrollView nestedScrollEnabled={true} style={SS.bodyAgreement}>
+            {/** <Text style={[DefaultStyle._textDF, { marginBottom: 20 }]}>
               제01조 (정의)
             </Text>
             <Text style={DefaultStyle._textDF}>
@@ -200,7 +200,15 @@ class TermsContract extends Component {
               계약기간을 연장하지 않겠다는 취지를 기재한 서면의 통지를 하지 않은
               때에는 본 계약과 동일한 조건으로 00년씩 계약기간이 연장되는 것으로
               한다.
-            </Text>
+            </Text> */}
+            <View style={{ flex: 1 }}>
+              {dataContent && (
+                <HTML
+                  tagsStyles={{ p: { marginBottom: 0, marginTop: 0 } }}
+                  source={{ html: dataContent }}
+                />
+              )}
+            </View>
           </ScrollView>
 
           <View style={[SS.checkAccept, { borderBottomWidth: 1 }]}>
@@ -274,19 +282,28 @@ class TermsContract extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount () {
-    console.log('::componentDidMount::');
+  async componentDidMount() {
+    // await Term.getCodeTerm({code: '0006'})
+    await Terms.getTerms({ code: '0006' })
+      .then(res => {
+        if (res) {
+          this.setState({ dataContent: res.contents });
+        }
+      })
+      .catch(err => {
+        console.log('errTerm', err);
+      });
     SplashScreen.hide();
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -294,7 +311,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     dataAction: action => {
       dispatch(ActionCreator.ContractConditions(action));

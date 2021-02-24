@@ -222,7 +222,7 @@ class ResponseQTrust extends Component {
         defaultValue={
           rntlValue ? String(rntlValue) : '0'
         }
-        textError={ checkRntlValue === true ? null : '단가가 허용범위를 초과했습니다.'}
+        // textError={ checkRntlValue === true ? null : '요청수량이 허용범위를 초과했습니다.'}
         isRequired={true}
         onChangeText={e => {
           this.setState({
@@ -480,8 +480,9 @@ class ResponseQTrust extends Component {
                 // TODO change illustrator popup
                 alert('견적응답이 완료되었습니다.');
                 // this.props.navigation.goBack();
-                this.props.navigation.navigate('Mypage', {
+                this.props.navigation.push('Mypage', {
                   title: '견적･계약 관리',
+                  prevView: 'PrevView',
                 })
               }
             })

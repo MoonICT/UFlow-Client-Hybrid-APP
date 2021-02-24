@@ -19,7 +19,8 @@ export default (state = defaultState, action) => {
         title: action.payload.title || '',
         content: action.payload.content || '',
         image: action.payload.image || '',
-        navigation: action.payload.navigation || ''
+        navigation: action.payload.navigation || '',
+        onConfirm: action.payload.onConfirm || ''
       };
     case types.POPUP_HIDE:
       return {

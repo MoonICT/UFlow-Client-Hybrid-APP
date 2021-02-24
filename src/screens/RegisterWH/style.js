@@ -152,7 +152,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     marginRight: 8,
     borderRadius: 4,
-    backgroundColor: '#eee',
+    // backgroundColor: '#eee',
   },
   threeImage: {
     justifyContent: 'space-between',

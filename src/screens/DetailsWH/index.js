@@ -5,14 +5,14 @@
  */
 
 // Global Imports
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import {
   SafeAreaView,
   View,
   ScrollView,
   TouchableOpacity,
   Image,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -41,12 +41,12 @@ import WHType3 from '@Assets/images/icon-warehouse-3.png';
 import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
-import { PanoramaView } from "@lightbase/react-native-panorama-view";
+import { PanoramaView } from '@lightbase/react-native-panorama-view';
 
 const windowWidth = Dimensions.get('window').width;
 
 class DetailWH extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.webView = null;
     this.myRef = React.createRef();
@@ -71,6 +71,7 @@ class DetailWH extends Component {
       favorite: false,
       rentUserNo: '',
       dataTab: [],
+      checkTrust: false
     };
     this.navigation = props.navigation;
   }
@@ -89,14 +90,14 @@ class DetailWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  static getDerivedStateFromProps (nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps?.route?.params?.id !== prevState.id) {
       return { id: nextProps?.route?.params?.id };
     }
     return null;
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.route?.params?.id !== this.props?.route?.params?.id) {
       this.setState({ id: this.props?.route?.params?.id });
       this.myRef.current?.scrollTo({
@@ -107,31 +108,34 @@ class DetailWH extends Component {
     }
   }
 
-
   /** when after render DOM */
-  componentDidMount () {
+  componentDidMount() {
     // Progress
-    this.props.setProgress({ is: true, });
+    this.props.setProgress({ is: true });
 
     const { route } = this.props;
     this.getDataWH();
     this.handleRequestQnaList(4);
     this.hiddenName();
-    AsyncStorage.getItem(TOKEN).then(v => {
-      this.setState({ isLogin: v !== '' && v !== null });
-      if (v) {
-        Account.me().then(res => {
-          console.log('User info :;;;;; ', res)
-          this.setState({
-            userId: res.id
-          })
-        }).catch(error => {
-          console.log('error', error)
-        })
-      }
-    }).catch(error => {
-      alert('DetailWH componentDidMount error:' + error);
-    });
+    AsyncStorage.getItem(TOKEN)
+      .then(v => {
+        this.setState({ isLogin: v !== '' && v !== null });
+        if (v) {
+          Account.me()
+            .then(res => {
+              console.log('User info :;;;;; ', res);
+              this.setState({
+                userId: res.id,
+              });
+            })
+            .catch(error => {
+              console.log('error', error);
+            });
+        }
+      })
+      .catch(error => {
+        alert('DetailWH componentDidMount error:' + error);
+      });
     MyPage.getDetailCodes('WHRG0010')
       .then(res => {
         if (res.data && res.data._embedded && res.data._embedded.detailCodes) {
@@ -161,7 +165,6 @@ class DetailWH extends Component {
         this.props.setProgress({ is: false });
       });
   }
-
 
   /**
    * 관심창고 토글
@@ -296,17 +299,17 @@ class DetailWH extends Component {
   /**
    * 이름 비공개 처리
    * */
-  hiddenName = (name) => {
+  hiddenName = name => {
     if (name && name.length > 0) {
       let nameArr = name.split('');
       nameArr = nameArr.map((item, index) => {
-        return index > 0 ? '*' : item
-      })
-      return nameArr.join('')
+        return index > 0 ? '*' : item;
+      });
+      return nameArr.join('');
     }
-  }
+  };
 
-  render () {
+  render() {
     const {
       active,
       whrgData,
@@ -319,7 +322,8 @@ class DetailWH extends Component {
       activeIndex,
       id,
       dataTab,
-      userId
+      userId,
+      checkTrust
     } = this.state;
     console.log('whrgData', whrgData)
 
@@ -346,7 +350,6 @@ class DetailWH extends Component {
       //return value ?  Math.ceil((Math.trunc(Number(value)*10)/10) * 3.305785) : ''
       return value ? Number(Number(value) * 3.305785).toFixed(0) : '';
     };
-
 
     const displayUsblValue = (usblValue, calUnitDvCode) => {
       let resultStr = '-';
@@ -504,19 +507,19 @@ class DetailWH extends Component {
                       this.navigation.navigate('ViewPanoramaImage', {
                         image: whrgData.pnImages && whrgData.pnImages.length > 0 ? whrgData.pnImages[0].url : ''
                       })}>
-                      <PanoramaView
-                        style={S.backgroundImage}
-                        dimensions={{ height: 230, width:windowWidth }}
-                        inputType="mono"
-                        imageUrl={whrgData.pnImages[0].url}
-                      />
-                  {/**    <Image
+                      {/**    <PanoramaView
+                       style={S.backgroundImage}
+                       dimensions={{ height: 230, width:windowWidth }}
+                       inputType="mono"
+                       imageUrl={whrgData.pnImages[0].url}
+                       />*/}
+                      <Image
                         style={S.backgroundImage}
                         source={whrgData.pnImages && whrgData.pnImages.length > 0
                           ? { uri: whrgData.pnImages[0].url }
                           : ''
                         }
-                      />*/}
+                      />
                     </TouchableOpacity>
                     :
                     <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>
@@ -564,7 +567,27 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={DefaultStyle._textTitleBody}>창고 정보</Text>
               <View style={DefaultStyle.row}>
+              {
+                checkTrust===true ?
+              <Fragment>
+              
                 <TouchableOpacity
+                  style={[S.btnTabBarLeft, active === 1 ? S.activeBtn : null]}
+                  onPress={() => this.setState({ active: 1 })}>
+                  <Text style={[S.textBtn, active === 1 ? S.activeText : null]}>
+                    수탁
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[S.btnTabBarRight, active === 0 ? S.activeBtn : null]}
+                  onPress={() => this.setState({ active: 0 })}>
+                  <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
+                    임대
+                  </Text>
+                </TouchableOpacity>
+              </Fragment>:
+              <Fragment>
+              <TouchableOpacity
                   style={[S.btnTabBarLeft, active === 0 ? S.activeBtn : null]}
                   onPress={() => this.setState({ active: 0 })}>
                   <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
@@ -578,6 +601,9 @@ class DetailWH extends Component {
                     수탁
                   </Text>
                 </TouchableOpacity>
+              </Fragment>
+              }
+                
               </View>
 
               {/***** Keep (임대) *****/}
@@ -671,9 +697,7 @@ class DetailWH extends Component {
                             가용수치
                           </Text>
                           <Text style={S.textTable}>
-                            {
-                              keep.usblValue ? `${toPyeong(keep.usblValue)}평 (${toSquareMeter(keep.usblValue)} ㎡)` : '-'
-                            }
+                            {keep.usblValue ? StringUtils.displayAreaUnit(keep.usblValue) : '-'}
                           </Text>
                         </View>
                         {/* <View style={S.tableRow}>
@@ -719,9 +743,11 @@ class DetailWH extends Component {
                           <Text style={S.textTable}>{keep.remark}</Text>
                         </View>
                         <View style={S.tableRow}>
+                          {/* 견적 요청 가능 상태인지 체크 */}
                           {keep.enable ? (
                             <View style={S.rowBtn}>
-                              {whrgData.userTypeCode === '1100' ? (
+                              {whrgData.warehMgmtType === '0001' ? (
+                                /*오픈형인 경우*/
                                 <View>
                                   <Text>
                                     {whrgData.relativeEntrp
@@ -739,6 +765,7 @@ class DetailWH extends Component {
                                 </View>
                               ) : (
                                 <View>
+                                  {/**/}
                                   {userId != whrgData.ownerUserNo ?
                                     <TouchableOpacity
                                       style={[S.btnQuote, { minWidth: 100, }]}
@@ -754,8 +781,6 @@ class DetailWH extends Component {
                                   }
 
                                 </View>
-
-
                               )}
                             </View>
                           ) : (
@@ -980,7 +1005,7 @@ class DetailWH extends Component {
                         <View style={S.tableRow}>
                           {trust.enable ? (
                             <View style={S.rowBtn}>
-                              {whrgData.userTypeCode === '1100' ? (
+                              {whrgData.warehMgmtType === '0001' ? (
                                 <View>
                                   <Text>
                                     {whrgData.relativeEntrp
@@ -1057,7 +1082,12 @@ class DetailWH extends Component {
               <Text style={S.title}>위치</Text>
               <Text style={S.describeTitle}>
                 {whrgData.roadAddr
-                  ? `${whrgData.roadAddr.address} ${whrgData.roadAddr.detail}`
+                  ? `${whrgData.roadAddr.address} ${
+                    whrgData.roadAddr.detail === null ||
+                    whrgData.roadAddr.detail === undefined
+                      ? ''
+                      : whrgData.roadAddr.detail
+                    }`
                   : '-'}
               </Text>
               <View style={DefaultStyle._card}>
@@ -1075,7 +1105,7 @@ class DetailWH extends Component {
                             : 0,
                         address: whrgData.roadAddr
                           ? `${whrgData.roadAddr.address} ${
-                            whrgData.roadAddr.detail
+                              whrgData.roadAddr.detail
                             }`
                           : '',
                       });
@@ -1163,10 +1193,10 @@ class DetailWH extends Component {
                         {`${
                           whrgData.addOptDvCodes
                             ? whrgData.addOptDvCodes
-                              .map(code => code?.stdDetailCodeName)
-                              .join(',')
+                                .map(code => code?.stdDetailCodeName)
+                                .join(',')
                             : ''
-                          }`}
+                        }`}
                       </Text>
                     </View>
 
@@ -1187,10 +1217,10 @@ class DetailWH extends Component {
                         {`${
                           whrgData.insrDvCodes
                             ? whrgData.insrDvCodes
-                              .map(code => code?.stdDetailCodeName)
-                              .join(',')
+                                .map(code => code?.stdDetailCodeName)
+                                .join(',')
                             : ''
-                          }`}
+                        }`}
                       </Text>
                     </View>
                   </View>
@@ -1282,13 +1312,21 @@ class DetailWH extends Component {
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 층고
                               </Text>
-                              <Text style={S.textTable}>{floor.flrHi}</Text>
+                              <Text style={S.textTable}>
+                                {floor.flrHi
+                                  ? StringUtils.numberComma(floor.flrHi)
+                                  : '-'}
+                              </Text>
                             </View>
                             <View style={S.tableRow}>
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 유효고
                               </Text>
-                              <Text style={S.textTable}>{floor.efctvHi}</Text>
+                              <Text style={S.textTable}>
+                                {floor.efctvHi
+                                  ? StringUtils.numberComma(floor.efctvHi)
+                                  : '-'}
+                              </Text>
                             </View>
                             <View style={S.tableRow}>
                               <Text style={[S.textTable, S.textLeftTable]}>
@@ -1304,7 +1342,11 @@ class DetailWH extends Component {
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 도크 수
                               </Text>
-                              <Text style={S.textTable}>{floor.dockQty}</Text>
+                              <Text style={S.textTable}>
+                                {floor.dockQty
+                                  ? StringUtils.numberComma(floor.dockQty)
+                                  : '-'}
+                              </Text>
                             </View>
                           </View>
                         </View>
@@ -1331,7 +1373,9 @@ class DetailWH extends Component {
                       if (this.state.isLogin) {
                         this.navigation.navigate('CreateInquiryWH', {
                           idWH: id,
-                          onReloadQna: () => this.handleRequestQnaList,
+                          onReloadQna: () => {
+                            this.handleRequestQnaList()
+                          },
                         })
                       } else {
                         alert('로그인 후 이용가능합니다.')
@@ -1507,8 +1551,7 @@ class DetailWH extends Component {
     );
   }
 
-
-  async getDataWH () {
+  async getDataWH() {
     const { id } = this.state;
 
     let params = {
@@ -1519,6 +1562,8 @@ class DetailWH extends Component {
     this.setState({
       whrgData: warehouse.data,
       favorite: warehouse.data.fav,
+      active: warehouse.data.hasKeep === false && warehouse.data.hasTrust === true ? 1 : 0,
+      checkTrust: warehouse.data.hasKeep === false && warehouse.data.hasTrust === true ? true : false,
     });
 
     const dataTabs = [];
@@ -1579,6 +1624,7 @@ class DetailWH extends Component {
   }
 
   handleRequestQnaList = q_size => {
+    console.log(':::::::::::::::::::::::::::::::::::::::::::::REFRESH QNA');
     const { id } = this.state;
     let qnaParams = {
       id: id,
@@ -1613,13 +1659,13 @@ class DetailWH extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {};
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     setProgress: status => {
       dispatch(ActionCreator.setProgress(status));

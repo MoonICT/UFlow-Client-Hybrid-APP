@@ -35,6 +35,7 @@ class SearchSwipePanel extends Component {
       isProgress: false, // 목록 로딩.
       WHList: [],
       pageInfo: null,
+      openPanelCount: 0, // 최초 목록 조회시 추천창고 노출을 위해 카운팅.
     };
     this.navigation = props.navigation;
     // Ref
@@ -51,6 +52,11 @@ class SearchSwipePanel extends Component {
     if (position === 'top') {
       // 패널이 열릴 때, 최초 목록 불러오기.
       this.requestWhList(false);
+
+      // 패널 오픈 카운팅.
+      this.setState({
+        openPanelCount: this.state.openPanelCount + 1
+      })
     } else {
       this.setState({ WHList: [] })
     }
@@ -73,6 +79,26 @@ class SearchSwipePanel extends Component {
         } else {
           array = res._embedded && res._embedded.warehouses ? res._embedded.warehouses : [];
         }
+
+        // 추천 필드 추가.
+        array = array.map(item => {
+          item.isRecommend = false
+          return item
+        })
+
+        // 추천 필드 추가.
+        let recommendWH = this.state.WHRecommendList.map((item) => {
+          item.isRecommend = true
+          return item
+        })
+
+        // 패널 최초 오픈 시 추천창고 노출.
+        if (this.state.openPanelCount < 2) {
+          array = recommendWH.concat(array)
+        } else {
+          array = array.concat(this.state.WHRecommendList)
+        }
+
         this.setState({
           WHList: array,
           pageInfo: res.page,
@@ -115,6 +141,7 @@ class SearchSwipePanel extends Component {
   };
 
   render () {
+    console.log('this.state.isOpenRecommend', this.state.isOpenRecommend);
     let height = Math.round(Dimensions.get('window').height);
     if (Platform.OS === 'ios') {
       const naviHeight = 54;
@@ -151,37 +178,36 @@ class SearchSwipePanel extends Component {
           {/** 목록 스크롤 뷰 */}
           <ScrollView>
 
-            <View style={{ paddingHorizontal: 16 }}>
-              <TouchableOpacity onPress={this.toggleRecommendWH}>
-                <Alert
-                  type={'INFO'}
-                  iconName={this.state.isOpenRecommend ? 'chevron-up' : 'chevron-down'}
-                  content={'UFLOW 추천 창고 보기'}
-                  onPress={this.toggleRecommendWH}
-                />
-              </TouchableOpacity>
-            </View>
-
             {/** 추천 창고 목록 */}
-            <Animated.View style={{
-              opacity: this.state.accordionAnimation,
-              height: this.state.isOpenRecommend ? 'auto' : 0,
-            }}>
-              <View style={{ marginBottom: 28, }}>
-                <View style={styles.divider} />
-                {this.state.WHRecommendList.map((item, index) =>
-                  <View key={index} style={{ paddingHorizontal: 16, }}>
-                    <ProductCard navigation={this.props.navigation} data={item} isShadow={false} type={'HORIZONTAL'} />
-                    {this.state.WHRecommendList.length - 1 !== index && <View style={styles.divider} />}
-                  </View>
-                )}
-              </View>
-            </Animated.View>
+            {/*<View style={{ paddingHorizontal: 16 }}>*/}
+            {/*<TouchableOpacity onPress={this.toggleRecommendWH}>*/}
+            {/*<Alert*/}
+            {/*type={'INFO'}*/}
+            {/*iconName={this.state.isOpenRecommend ? 'chevron-up' : 'chevron-down'}*/}
+            {/*content={'UFLOW 추천 창고 보기'}*/}
+            {/*onPress={this.toggleRecommendWH}*/}
+            {/*/>*/}
+            {/*</TouchableOpacity>*/}
+            {/*</View>*/}
+            {/*<Animated.View style={{*/}
+            {/*opacity: this.state.accordionAnimation,*/}
+            {/*height: this.state.isOpenRecommend ? 'auto' : 0,*/}
+            {/*}}>*/}
+            {/*<View style={{ marginBottom: 28, }}>*/}
+            {/*<View style={styles.divider} />*/}
+            {/*{this.state.WHRecommendList.map((item, index) =>*/}
+            {/*<View key={index} style={{ paddingHorizontal: 16, }}>*/}
+            {/*<ProductCard navigation={this.props.navigation} data={item} isShadow={false} type={'HORIZONTAL'} isRecommend={this.state.isOpenRecommend} />*/}
+            {/*{this.state.WHRecommendList.length - 1 !== index && <View style={styles.divider} />}*/}
+            {/*</View>*/}
+            {/*)}*/}
+            {/*</View>*/}
+            {/*</Animated.View>*/}
 
-            <View style={{ paddingHorizontal: 16 }}>
-              <Text
-                style={styles.counterText}>{`창고 목록 총 ${this.state.pageInfo ? numberComma(this.state.pageInfo.totalElements) : 0}개`}</Text>
-            </View>
+            {/*<View style={{ paddingHorizontal: 16 }}>*/}
+            {/*<Text*/}
+            {/*style={styles.counterText}>{`창고 목록 총 ${this.state.pageInfo ? numberComma(this.state.pageInfo.totalElements) : 0}개`}</Text>*/}
+            {/*</View>*/}
 
             {/** 목록 없음. */}
             {(this.state.WHList.length === 0 && !this.state.isProgress) &&
@@ -191,7 +217,11 @@ class SearchSwipePanel extends Component {
             <View style={styles.divider} />
             {this.state.WHList.map((item, index) =>
               <View key={index} style={{ paddingHorizontal: 16, paddingBottom: 16, }}>
-                <ProductCard navigation={this.props.navigation} data={item} isShadow={false} type={'HORIZONTAL'} />
+                <ProductCard navigation={this.props.navigation}
+                             data={item}
+                             isShadow={false} type={'HORIZONTAL'}
+                             isRecommend={item.isRecommend ? item.isRecommend : false}
+                />
                 {this.state.WHList.length - 1 !== index && <View style={styles.divider} />}
               </View>
             )}
