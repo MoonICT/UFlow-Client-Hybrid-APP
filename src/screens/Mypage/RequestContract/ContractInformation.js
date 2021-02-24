@@ -40,8 +40,7 @@ class ContractInformation extends Component {
       isOffLineDialog: false,
 
       isValidSign: false,
-      isSigned: false
-      // isSigned: props.contractType === 'keep' ? props.detailEstimate.estmtKeeps.elctrCntrYn : props.detailEstimate.estmtTrusts.elctrCntrYn
+      isSigned: props.contractType === 'keep' ? props.detailEstimate.estmtKeeps.elctrCntrYn : props.detailEstimate.estmtTrusts.elctrCntrYn
     };
 
     // console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
