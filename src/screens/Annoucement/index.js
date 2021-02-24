@@ -15,7 +15,7 @@ import { Appbar, Text } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
-
+import {StringUtils} from '@Services/utils';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Annoucement } from '@Services/apis';
@@ -77,7 +77,7 @@ class AnnoucementScreen extends Component {
                   <View style={DefaultStyle.leftItem}>
                     <Text style={DefaultStyle.titleItem}>{item.title}</Text>
                     <Text style={DefaultStyle.contentItem}>
-                      {item.createdDate}
+                      {StringUtils.dateStr(item.createdDate)}
                     </Text>
                   </View>
                   <View style={DefaultStyle.rightItem}>
