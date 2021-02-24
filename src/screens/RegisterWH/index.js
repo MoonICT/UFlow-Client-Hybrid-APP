@@ -70,29 +70,29 @@ class RegisterWH extends Component {
     this.props.setProgress({ is: true, type: 'CIRCLE' });
     if (type === 'ModifyWH') {
       console.log('수정 데이터 ::: ', this.props.dataWH);
-      Warehouse.updateWH({ data: this.props.dataWH, url: warehouseRegNo })
+      Warehouse.modifyWhrg(this.props.dataWH, warehouseRegNo)
         .then(res => {
           const status = res.status;
-          if (status === 200) {
-            // this.navigation.navigate('Home');
-            this.props.showPopup({
-              type: 'confirm',
-              title: '수정 완료',
-              content: '창고정보 수정을 완료했습니다.',
-              image: illust10,
-              navigation: () => {
-                if (this.props.route.params && this.props.route.params.doRefresh) {
-                  this.props.route.params.doRefresh();
-                }
-                this.navigation.navigate('Mypage', {
-                  title: '내 창고',
-                  prevView: 'PrevView',
-                });
-              },
-            });
+          this.props.showPopup({
+            type: 'confirm',
+            title: '수정 완료',
+            content: '창고정보 수정을 완료했습니다.',
+            image: illust10,
+            navigation: () => {
+              if (
+                this.props.route.params &&
+                this.props.route.params.doRefresh
+              ) {
+                this.props.route.params.doRefresh();
+              }
+              this.navigation.navigate('Mypage', {
+                title: '내 창고',
+                prevView: 'PrevView',
+              });
+            },
+          });
 
-            this.doubleSubmitFlag = false;
-          }
+          this.doubleSubmitFlag = false;
 
           // Progress
           setTimeout(() => {
@@ -116,10 +116,13 @@ class RegisterWH extends Component {
         return false;
       }
 
-      Warehouse.registWhrgNew({
+      let body = {
         ...this.props.dataWH,
-        id: this.state.idWH,
-      })
+        id: this.state.idWH
+      }
+
+      console.log('등록 데이터 ::: ', body);
+      Warehouse.registWhrg(body)
         .then(res => {
           // console.log(res, '창고등록 결과')
           // this.navigation.navigate('Home');
@@ -166,7 +169,7 @@ class RegisterWH extends Component {
 
     if (
       (dataWH.keeps && dataWH.keeps.length > 0) ||
-      (dataWH.trusts && dataWH.keeps.trusts > 0)
+      (dataWH.trusts && dataWH.trusts.length > 0)
     ) {
       completeInfo = true;
     }
@@ -182,8 +185,8 @@ class RegisterWH extends Component {
     if (
       // imageStore.length > 0 &&
     // completeMoreInfo === true &&
-    completeInfo === true &&
-    // completeFloor === true &&
+      completeInfo === true &&
+      // completeFloor === true &&
       completeIntro === true
     ) {
       isSubmitUpdate = true;
@@ -214,9 +217,11 @@ class RegisterWH extends Component {
           <View style={[]}>
             <TouchableOpacity
               style={S.imageRegister}
-              onPress={() => this.navigation.navigate('RegisterImage', {
-                idWH: this.state.idWH,
-              })}>
+              onPress={() =>
+                this.navigation.navigate('RegisterImage', {
+                  idWH: this.state.idWH,
+                })
+              }>
               {imageStore && imageStore.length > 0 ? (
                 <Fragment>
                   <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
@@ -262,6 +267,11 @@ class RegisterWH extends Component {
               onPress={() =>
                 this.navigation.navigate('RegisterInfo', {
                   type: route && route.params && route.params.type,
+                  typeEdit:
+                    (dataWH.keeps && dataWH.keeps.length > 0) ||
+                    (dataWH.trusts && dataWH.trusts.length > 0)
+                      ? 'Edit'
+                      : '',
                 })
               }>
               <Text style={S.textLeftBtn}>
@@ -409,21 +419,22 @@ class RegisterWH extends Component {
   /** when after render DOM */
   async componentDidMount () {
     /** 창고 등록을 위한 아이디 생성.* */
-    const generateWHId = await Warehouse.getWhrgId()
+    const generateWHId = await Warehouse.getWhrgId();
+    console.log('창고 아이디 생성 : ', generateWHId)
     if (generateWHId && generateWHId.id) {
       this.setState({ idWH: generateWHId.id });
     }
+    let warehMgmtType = this.props.route.params && this.props.route.params.warehMgmtType;
 
-    let warehouseRegNo =
-      this.props.route.params && this.props.route.params.warehouseRegNo;
-    let entrpNo = this.props.route.params && this.props.route.params.entrpNo;
+    let warehouseRegNo = this.props.route.params && this.props.route.params.warehouseRegNo;
+    let entrpNo = this.props.route.params && this.props.route.params.entrpNo ? this.props.route.params.entrpNo : null;
     this.props.removeData();
-    this.props.updateInfo({ entrpNo });
+    this.props.updateInfo({ entrpNo, warehMgmtType });
     console.log('warehouseRegNo :>> ', warehouseRegNo);
     if (warehouseRegNo) {
       await Warehouse.detailWH(warehouseRegNo)
         .then(res => {
-          console.log('resDetailWH', res);
+          console.log('resDetailWH', res.data);
           if (res.status === 200) {
             let dataWH = res.data;
             let entrpNo = dataWH.relativeEntrp && dataWH.relativeEntrp.entrpNo;
@@ -496,32 +507,33 @@ class RegisterWH extends Component {
             // this.setState({ dataWH });
 
             this.props.updateInfo({
-              // ...dataWH,
-              id: dataWH.id,
-              name: dataWH.name,
-              description: dataWH.description,
-              telNo: dataWH.telNo,
-              address: dataWH.address,
-              roadAddr: dataWH.roadAddr,
-              gps: dataWH.gps,
-              cmpltYmd: dataWH.cmpltYmd,
-              bldgArea: dataWH.bldgArea,
-              siteArea: dataWH.siteArea,
-              totalArea: dataWH.totalArea,
-              prvtArea: dataWH.prvtArea,
-              cmnArea: dataWH.cmnArea,
-              addOptDvCodes,
-              insrDvCodes,
-              cnsltPossYn: dataWH.cnsltPossYn,
-              sttsDbCode: dataWH.sttsDbCode,
-              vrfctFailReason: dataWH.vrfctFailReason,
-              pnImages: dataWH.pnImages,
-              whImages: dataWH.whImages,
-              thImages: dataWH.thImages,
-              floors,
-              keeps,
-              trusts,
-              entrpNo,
+              ...dataWH,
+              // id: dataWH.id,
+              // name: dataWH.name,
+              // description: dataWH.description,
+              // telNo: dataWH.telNo,
+              // address: dataWH.address,
+              // roadAddr: dataWH.roadAddr,
+              // gps: dataWH.gps,
+              // cmpltYmd: dataWH.cmpltYmd,
+              // bldgArea: dataWH.bldgArea,
+              // siteArea: dataWH.siteArea,
+              // totalArea: dataWH.totalArea,
+              // prvtArea: dataWH.prvtArea,
+              // cmnArea: dataWH.cmnArea,
+              // addOptDvCodes,
+              // insrDvCodes,
+              // cnsltPossYn: dataWH.cnsltPossYn,
+              // sttsDbCode: dataWH.sttsDbCode,
+              // vrfctFailReason: dataWH.vrfctFailReason,
+              // pnImages: dataWH.pnImages,
+              // whImages: dataWH.whImages,
+              // thImages: dataWH.thImages,
+              warehMgmtType: dataWH.warehMgmtType ? dataWH.warehMgmtType : '0002',
+              // floors,
+              // keeps,
+              // trusts,
+              // entrpNo,
             });
           }
         })

@@ -111,12 +111,17 @@ class MypageBusinessInfo extends Component {
         listBusinessInfo: dataConvert
       });
 
-      this.setBusinessData(dataConvert[0])
+      if (dataConvert.length > 0) {
+        this.setBusinessData(dataConvert[0])
+      } else {
+        alert('등록된 사업자 등록 정보가 없습니다.')
+      }
 
       // Progress
       this.props.setProgress({ is: false, });
     }).catch(error => {
-      alert('MypageBusinessInfo error:' + error);
+      console.log('MypageBusinessInfo error:' + error);
+      // alert('MypageBusinessInfo error:' + error);
 
       // Progress
       this.props.setProgress({ is: false, });
@@ -337,8 +342,7 @@ class MypageBusinessInfo extends Component {
     let valid = {
       checkName: !!businessInfo.name,
       checkBusiness: !!businessInfo.number,
-      checkBusinessFormat: true, // TODO TODO 사업자번호체크로직 주석해제예정
-      // checkBusinessFormat: isBizNum(businessInfo.number),
+      checkBusinessFormat: isBizNum(businessInfo.number),
       checkAddress: !!businessInfo.roadAddr.address,
       checkRepreNm: !!businessInfo.repreNm,
       checkInchgNm: !!businessInfo.inchgNm,
@@ -395,42 +399,43 @@ class MypageBusinessInfo extends Component {
           <View style={[DefaultStyle._titleCard, { marginBottom: -4 }]}>
             <Text style={DefaultStyle._textTitleBody}>사업자 등록 정보</Text>
           </View>
-          <View style>
-            <Select
-              data={listBusinessInfo}
-              labelSelected="기등록 사업자 등록정보"
-              valueSelected={listBusinessInfo[0] ? listBusinessInfo[0].label : ''}
-              indexProps={(e, index) => {
-                this.handleChangeSelectBox(e, index)
-              }}
-            />
-            <View style={[DefaultStyle.line, DefaultStyle.mb_20]}></View>
-            <TextField
-              labelTextField="사업자 명"
-              placeholder=""
-              labelTextFieldSize={14}
-              maxLength={50}
-              isRequired={true}
-              textError={
-                !valid.checkName ? '사업자명을 입력하세요.' : ''
-              }
-              fontSize={14}
-              valueProps={e => {
-                this.setState({
-                  valid: {
-                    ...this.state.valid,
-                    checkName: true,
-                  },
-                  businessInfo: {
-                    ...businessInfo,
-                    name: e,
-                  },
-                });
-              }}
-              value={businessInfo.name ? businessInfo.name : ''}
-              colorLabel="#000000"
-            />
-            {/*<TextField
+          {this.state.listBusinessInfo.length > 0 ?
+            <View style>
+              <Select
+                data={listBusinessInfo}
+                labelSelected="기등록 사업자 등록정보"
+                valueSelected={listBusinessInfo[0] ? listBusinessInfo[0].label : ''}
+                indexProps={(e, index) => {
+                  this.handleChangeSelectBox(e, index)
+                }}
+              />
+              <View style={[DefaultStyle.line, DefaultStyle.mb_20]}></View>
+              <TextField
+                labelTextField="사업자 명"
+                placeholder=""
+                labelTextFieldSize={14}
+                maxLength={50}
+                isRequired={true}
+                textError={
+                  !valid.checkName ? '사업자명을 입력하세요.' : ''
+                }
+                fontSize={14}
+                valueProps={e => {
+                  this.setState({
+                    valid: {
+                      ...this.state.valid,
+                      checkName: true,
+                    },
+                    businessInfo: {
+                      ...businessInfo,
+                      name: e,
+                    },
+                  });
+                }}
+                value={businessInfo.name ? businessInfo.name : ''}
+                colorLabel="#000000"
+              />
+              {/*<TextField
               labelTextField="법인 등록번호"
               placeholder=""
               valueProps={(e) => {
@@ -444,227 +449,227 @@ class MypageBusinessInfo extends Component {
               value={businessInfo.corpNumber ? businessInfo.corpNumber : ''}
               colorLabel="#000000"
             />*/}
-            <TextField
-              labelTextField="사업자번호"
-              labelTextFieldSize={14}
-              fontSize={14}
-              placeholder="'-'없이 입력해주세요."
-              colorLabel="#000000"
-              isRequired={true}
-              keyboardType="numeric"
-              textError={
-                (!valid.checkBusiness ? '사업자 번호를 입력하세요.' : '') +
-                (!valid.checkBusinessFormat ? '사업자 번호 형식이 아닙니다.' : '')
-              }
-              valueProps={e => {
-                this.setState({
-                  valid: {
-                    ...this.state.valid,
-                    checkBusiness: true,
-                    checkBusinessFormat: true,
-                  },
-                  businessInfo: {
-                    ...businessInfo,
-                    number: e.replace(/[^0-9]/g, ''),
-                  },
-                });
-              }}
-              value={businessInfo.number ? businessInfo.number : ''}
-            />
-
-            <Text style={DefaultStyle._textDF}>- 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.</Text>
-            <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>- 사진은 한 파일에 10MB 까지 등록이 가능합니다.</Text>
-
-            {photo && (
-              <Image
-                source={{
-                  uri: photo,
-                  type: "image/jpeg",
-                  name: 'photo'
+              <TextField
+                labelTextField="사업자번호"
+                labelTextFieldSize={14}
+                fontSize={14}
+                placeholder="'-'없이 입력해주세요."
+                colorLabel="#000000"
+                isRequired={true}
+                keyboardType="numeric"
+                textError={
+                  (!valid.checkBusiness ? '사업자 번호를 입력하세요.' : '') +
+                  (!valid.checkBusinessFormat ? '사업자 번호 형식이 아닙니다.' : '')
+                }
+                valueProps={e => {
+                  this.setState({
+                    valid: {
+                      ...this.state.valid,
+                      checkBusiness: true,
+                      checkBusinessFormat: true,
+                    },
+                    businessInfo: {
+                      ...businessInfo,
+                      number: e.replace(/[^0-9]/g, ''),
+                    },
+                  });
                 }}
-                style={{ width: 125, height: 125, marginBottom: 20 }}
-
+                value={businessInfo.number ? businessInfo.number : ''}
               />
-            )}
-            <TouchableOpacity
-              style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-              onPress={() => this.chooseFile('photo')}>
-              <Text
-                style={[
-                  DefaultStyle._textButton,
-                  DefaultStyle._colorMuted
-                ]}>
-                {'사업자등록증 업로드'}
-              </Text>
-            </TouchableOpacity>
-            <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex, DefaultStyle.mb_20]}>
-              <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
-                <TextField colorLabel="#000000"
-                           styleProps={DefaultStyle.mb_0}
-                           value={businessInfo.roadAddr.zipNo} />
-              </View>
+
+              <Text style={DefaultStyle._textDF}>- 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.</Text>
+              <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>- 사진은 한 파일에 10MB 까지 등록이 가능합니다.</Text>
+
+              {photo && (
+                <Image
+                  source={{
+                    uri: photo,
+                    type: "image/jpeg",
+                    name: 'photo'
+                  }}
+                  style={{ width: 125, height: 125, marginBottom: 20 }}
+
+                />
+              )}
               <TouchableOpacity
                 style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
-                onPress={this._showDialog}>
+                onPress={() => this.chooseFile('photo')}>
                 <Text
                   style={[
                     DefaultStyle._textButton,
                     DefaultStyle._colorMuted
                   ]}>
-                  {'우편번호 검색'}
+                  {'사업자등록증 업로드'}
                 </Text>
               </TouchableOpacity>
-            </View>
-            <TextField
-              placeholder="도로명 주소"
-              labelTextField="도로명 주소"
-              colorLabel="#000000"
-              labelTextFieldSize={14}
-              fontSize={14}
-              value={businessInfo.roadAddr.address}
-              isRequired={true}
-              textError={
-                !valid.checkAddress ? '주소를 입력하세요.' : ''
-              }
-            />
-            <TextField
-              placeholder="상세주소"
-              colorLabel="#000000"
-              labelTextField="상세주소"
-              labelTextFieldSize={14}
-              fontSize={14}
-              maxLength={50}
-              value={businessInfo.jibunAddr.detail}
-              valueProps={e => {
-                this.setState({
-                  valid: {
-                    ...this.state.valid,
-                    checkAddress: true,
-                  },
-                  businessInfo: {
-                    ...businessInfo,
-                    jibunAddr: {
-                      ...businessInfo.jibunAddr,
-                      detail: e,
+              <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex, DefaultStyle.mb_20]}>
+                <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
+                  <TextField colorLabel="#000000"
+                             styleProps={DefaultStyle.mb_0}
+                             value={businessInfo.roadAddr.zipNo} />
+                </View>
+                <TouchableOpacity
+                  style={[DefaultStyle._btnOutlineMuted, DefaultStyle.w_50]}
+                  onPress={this._showDialog}>
+                  <Text
+                    style={[
+                      DefaultStyle._textButton,
+                      DefaultStyle._colorMuted
+                    ]}>
+                    {'우편번호 검색'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <TextField
+                placeholder="도로명 주소"
+                labelTextField="도로명 주소"
+                colorLabel="#000000"
+                labelTextFieldSize={14}
+                fontSize={14}
+                value={businessInfo.roadAddr.address}
+                isRequired={true}
+                textError={
+                  !valid.checkAddress ? '주소를 입력하세요.' : ''
+                }
+              />
+              <TextField
+                placeholder="상세주소"
+                colorLabel="#000000"
+                labelTextField="상세주소"
+                labelTextFieldSize={14}
+                fontSize={14}
+                maxLength={50}
+                value={businessInfo.jibunAddr.detail}
+                valueProps={e => {
+                  this.setState({
+                    valid: {
+                      ...this.state.valid,
+                      checkAddress: true,
                     },
-                    roadAddr: {
-                      ...businessInfo.roadAddr,
-                      detail: e,
+                    businessInfo: {
+                      ...businessInfo,
+                      jibunAddr: {
+                        ...businessInfo.jibunAddr,
+                        detail: e,
+                      },
+                      roadAddr: {
+                        ...businessInfo.roadAddr,
+                        detail: e,
+                      },
                     },
-                  },
-                });
-              }}
-            />
-            <TextField
-              labelTextField="대표자 명"
-              colorLabel="#000000"
-              labelTextFieldSize={14}
-              fontSize={14}
-              maxLength={20}
-              isRequired={true}
-              textError={
-                !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
-              }
-              valueProps={e => {
-                this.setState({
-                  valid: {
-                    ...this.state.valid,
-                    checkRepreNm: true,
-                  },
-                  businessInfo: {
-                    ...businessInfo,
-                    repreNm: e,
-                  },
-                });
-              }}
-              value={businessInfo.repreNm ? businessInfo.repreNm : ''}
-            />
-            <TextField
-              labelTextField="담당자 휴대폰번호"
-              placeholder="'-'없이 입력해주세요."
-              labelTextFieldSize={14}
-              fontSize={14}
-              isRequired={true}
-              colorLabel="#000000"
-              textError={(
-                (!valid.checkPhone ? '휴대폰번호를 입력하세요. ' : '') +
-                (!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '')
-              )}
-              valueProps={e => {
-                this.setState({
-                  valid: {
-                    ...this.state.valid,
-                    checkPhone: true,
-                    checkPhoneFormat: true,
-                  },
-                  businessInfo: {
-                    ...businessInfo,
-                    phone: e,
-                  },
-                });
-              }}
-              value={businessInfo.phone ? businessInfo.phone : ''}
-            />
-            {/* cert phone */}
-            <CertMobile
-              mobile={businessInfo.phone}
-              onComplete={() => {
-                this.setState({
-                  isCert: true
-                })
-              }}
-            />
-            <TextField
-              labelTextField="담당자 직함 (필수)"
-              labelTextFieldSize={14}
-              fontSize={14}
-              colorLabel="#000000"
-              isRequired={true}
-              maxLength={20}
-              textError={
-                !valid.checkInchgNm ? '담당자 명을 입력하세요.' : ''
-              }
-              valueProps={e => {
-                this.setState({
-                  valid: {
-                    ...this.state.valid,
-                    checkInchgNm: true,
-                  },
-                  businessInfo: {
-                    ...businessInfo,
-                    inchgNm: e,
-                  },
-                });
-              }}
-              value={businessInfo.inchgNm ? businessInfo.inchgNm : ''}
-            />
-            <TextField
-              labelTextField="담당자 이메일 (필수)"
-              labelTextFieldSize={14}
-              fontSize={14}
-              colorLabel="#000000"
-              maxLength={20}
-              isRequired={true}
-              textError={
-                (!valid.checkEmail ? '담당자 이메일을 입력하세요. ' : '') +
-                (!valid.checkEmailFormat ? '이메일 형식이 아닙니다. ' : '')
-              }
-              valueProps={e => {
-                this.setState({
-                  valid: {
-                    ...this.state.valid,
-                    checkEmail: true,
-                    checkEmailFormat: true,
-                  },
-                  businessInfo: {
-                    ...businessInfo,
-                    email: e,
-                  },
-                });
-              }}
-              value={businessInfo.email ? businessInfo.email : ''}
-            />
-            {/*<TextField
+                  });
+                }}
+              />
+              <TextField
+                labelTextField="대표자 명"
+                colorLabel="#000000"
+                labelTextFieldSize={14}
+                fontSize={14}
+                maxLength={20}
+                isRequired={true}
+                textError={
+                  !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
+                }
+                valueProps={e => {
+                  this.setState({
+                    valid: {
+                      ...this.state.valid,
+                      checkRepreNm: true,
+                    },
+                    businessInfo: {
+                      ...businessInfo,
+                      repreNm: e,
+                    },
+                  });
+                }}
+                value={businessInfo.repreNm ? businessInfo.repreNm : ''}
+              />
+              <TextField
+                labelTextField="담당자 휴대폰번호"
+                placeholder="'-'없이 입력해주세요."
+                labelTextFieldSize={14}
+                fontSize={14}
+                isRequired={true}
+                colorLabel="#000000"
+                textError={(
+                  (!valid.checkPhone ? '휴대폰번호를 입력하세요. ' : '') +
+                  (!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '')
+                )}
+                valueProps={e => {
+                  this.setState({
+                    valid: {
+                      ...this.state.valid,
+                      checkPhone: true,
+                      checkPhoneFormat: true,
+                    },
+                    businessInfo: {
+                      ...businessInfo,
+                      phone: e,
+                    },
+                  });
+                }}
+                value={businessInfo.phone ? businessInfo.phone : ''}
+              />
+              {/* cert phone */}
+              <CertMobile
+                mobile={businessInfo.phone}
+                onComplete={() => {
+                  this.setState({
+                    isCert: true
+                  })
+                }}
+              />
+              <TextField
+                labelTextField="담당자 직함 (필수)"
+                labelTextFieldSize={14}
+                fontSize={14}
+                colorLabel="#000000"
+                isRequired={true}
+                maxLength={20}
+                textError={
+                  !valid.checkInchgNm ? '담당자 명을 입력하세요.' : ''
+                }
+                valueProps={e => {
+                  this.setState({
+                    valid: {
+                      ...this.state.valid,
+                      checkInchgNm: true,
+                    },
+                    businessInfo: {
+                      ...businessInfo,
+                      inchgNm: e,
+                    },
+                  });
+                }}
+                value={businessInfo.inchgNm ? businessInfo.inchgNm : ''}
+              />
+              <TextField
+                labelTextField="담당자 이메일 (필수)"
+                labelTextFieldSize={14}
+                fontSize={14}
+                colorLabel="#000000"
+                maxLength={20}
+                isRequired={true}
+                textError={
+                  (!valid.checkEmail ? '담당자 이메일을 입력하세요. ' : '') +
+                  (!valid.checkEmailFormat ? '이메일 형식이 아닙니다. ' : '')
+                }
+                valueProps={e => {
+                  this.setState({
+                    valid: {
+                      ...this.state.valid,
+                      checkEmail: true,
+                      checkEmailFormat: true,
+                    },
+                    businessInfo: {
+                      ...businessInfo,
+                      email: e,
+                    },
+                  });
+                }}
+                value={businessInfo.email ? businessInfo.email : ''}
+              />
+              {/*<TextField
               labelTextField="세금계산서 이메일"
               colorLabel="#000000"
               valueProps={(e) => {
@@ -677,8 +682,14 @@ class MypageBusinessInfo extends Component {
               }}
               value={businessInfo.taxBillEmail ? businessInfo.taxBillEmail : ''}
             />*/}
-          </View>
+            </View>
+            :
+            <Text>등록된 사업자 등록 정보가 없습니다.</Text>
+          }
         </View>
+
+
+        {this.state.listBusinessInfo.length > 0 &&
         <View style={S.btn}>
           <Button
             mode="contained"
@@ -693,7 +704,9 @@ class MypageBusinessInfo extends Component {
             onPress={this.handleOnSubmit}>
             확인
           </Button>
-        </View>
+        </View>}
+
+
         <Portal>
           <Dialog
             style={DefaultStyle._postCode}

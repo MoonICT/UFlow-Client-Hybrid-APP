@@ -67,7 +67,5 @@ export const toPyeong = value => {
 };
 
 export const displayAreaUnit = value => {
-  return `${numberComma(value)}㎡ (${numberComma(toPyeong(
-    value,
-  ))}평)`;
+  return `${numberComma(toPyeong(value,))}평 (${numberComma(value)}㎡)`;
 };

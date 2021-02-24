@@ -309,33 +309,86 @@ class Mypage extends Component {
             styleRight={S.styleRightTable}
             bgrImage={item.thumbnail ? { uri: item.thumbnail } : null}
             footer={
-              item.modify === true ? (
-                <TouchableOpacity
+              item.modify ? (
+                <View style={[DefaultStyle._listBtn]}>
+                  <TouchableOpacity
+                    style={[
+                      DefaultStyle._btnOutline,
+                      DefaultStyle.mt_16,
+                      S.mr_10,
+                      { borderColor: '#000000' },
+                    ]}
+                    onPress={() => {
+                      // item.sttsDbCode.stdDetailCode === '0001'
+                      //   ? this.props.showPopup({
+                      //     type: 'confirm',
+                      //     image: '',
+                      //     content: '공실이 검증되지 않은 창고입니다.',
+                      //   })
+                      //   : this.navigation.navigate('RegisterWH', {
+                      //     type: 'ModifyWH',
+                      //     warehouseRegNo: item.id,
+                      //     doRefresh: () => {
+                      //       this.getWHList();
+                      //     },
+                      //   });
+                      this.navigation.navigate('RegisterWH', {
+                        type: 'ModifyWH',
+                        warehouseRegNo: item.id,
+                        doRefresh: () => {
+                          this.getWHList();
+                        },
+                      })
+                    }}>
+                    <Text
+                      style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                      상세정보 수정하기
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/** 삭제하기 */}
+                  <TouchableOpacity
                   style={[
                     DefaultStyle._btnOutline,
                     DefaultStyle.mt_16,
                     { borderColor: '#000000' },
                   ]}
                   onPress={() => {
-                    item.sttsDbCode.stdDetailCode === '0001'
-                      ? this.props.showPopup({
+                    // 0001:공실등록, 1100:공실검증완료, 4100:계약진행중, 5100:계약체결, 9100:공실검증실패
+                    if (item.sttsDbCode.stdDetailCode === '0001' // 공실등록
+                    || item.sttsDbCode.stdDetailCode === '1100' // 검증완료
+                    || item.sttsDbCode.stdDetailCode === '9100') { // 검증실패
+                    // 삭제
+                      // setDeleteTarget(WHItem.id)
+                      // doRefresh: () => {
+                      //   this.getWHList();
+                      // }
+                      this.props.showPopup({
+                        // type: 'confirm',
+                        title:'창고삭제',
+                        image: '',
+                        content: '해당 창고를 정말 삭제하시겠습니까?',
+                        onConfirm: () => Warehouse.deleteWarehouse({ id: item.id }).then(res => {
+                          this.getWHList();
+                        })
+                      })
+
+                    }else {
+                      this.props.showPopup({
                         type: 'confirm',
                         image: '',
-                        content: '공실이 검증되지 않은 창고입니다.',
+                        content: '창고 삭제를 할 수 없는 상태입니다.(공실등록, 공실검증완료, 공실검증실패 단계에 수정 가능',
                       })
-                      : this.navigation.navigate('RegisterWH', {
-                        type: 'ModifyWH',
-                        warehouseRegNo: item.id,
-                        doRefresh: () => {
-                          this.getWHList();
-                        },
-                      });
+                    }
                   }}>
                   <Text
                     style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                    상세정보 수정하기
+                    창고삭제
                   </Text>
                 </TouchableOpacity>
+                
+                </View>
+                
               ) : null
             }
           />

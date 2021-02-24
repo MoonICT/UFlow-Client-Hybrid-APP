@@ -6,10 +6,11 @@
 
 // Global Imports
 import React, { Component, Fragment } from 'react';
-import { SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, ScrollView, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, List, Searchbar } from 'react-native-paper';
+import HTML from 'react-native-render-html';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
@@ -73,7 +74,7 @@ import { debounce } from 'lodash';
 //   },
 // ];
 class FAQScreen extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -90,11 +91,12 @@ class FAQScreen extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     this.fetchData();
     this.getListCategory();
   }
-  getListCategory() {
+
+  getListCategory () {
     FAQ.getNameCate('CSSP0001')
       .then(res => {
         let dataArray = res._embedded.detailCodes.map(item => {
@@ -121,7 +123,8 @@ class FAQScreen extends Component {
         console.log(err);
       });
   }
-  fetchData(params) {
+
+  fetchData (params) {
     const { dutyDvCode } = this.state;
 
     FAQ.getFAQList({ ...params, dutyDvCode: dutyDvCode })
@@ -143,7 +146,7 @@ class FAQScreen extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  render() {
+  render () {
     const { faqList, listCategory, title } = this.state;
     console.log('faqList -> ', faqList);
     console.log('listCategory -> ', listCategory);
@@ -154,7 +157,7 @@ class FAQScreen extends Component {
 
     const handleQueryChange = query => {
       this.fetchData({ query: query });
-      
+
     };
 
     const handleClickTab = (tabName, index) => {
@@ -165,7 +168,7 @@ class FAQScreen extends Component {
           dutyDvCode: listCategory[index].stdDetailCode,
           title: tabName,
         },
-        function() {
+        function () {
           this.fetchData();
         },
       );
@@ -183,14 +186,12 @@ class FAQScreen extends Component {
               title={item.qstnCountent}
               titleStyle={[DefaultStyle._contentAccordion, S.title]}
               id={`${index}`}>
-              <List.Item
-                style={[DefaultStyle.bgMuted]}
-                descriptionNumberOfLines={15}
-                titleStyle={{display:'none'}}
-                description={item.rplyContent}
-                // title={item.rplyContent}
-                descriptionStyle={S.descript}
-              />
+              <View style={[DefaultStyle.bgMuted, S.descript]}>
+                <HTML
+                  tagsStyles={{ p: { marginBottom: 0, marginTop: 0 } }}
+                  source={{ html: item.rplyContent ? item.rplyContent : '' }}
+                />
+              </View>
             </List.Accordion>
             <Divider />
           </View>
@@ -212,11 +213,11 @@ class FAQScreen extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
-            title={'자주 묻는 질문'}
-            navigation={this.navigation}
-          />
+          title={'자주 묻는 질문'}
+          navigation={this.navigation}
+        />
         <ScrollView>
           <View style={S.viewSearch}>
             <Searchbar
@@ -242,7 +243,7 @@ class FAQScreen extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -251,7 +252,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     // countUp: diff => {
     //   dispatch(ActionCreator.countUp(diff));

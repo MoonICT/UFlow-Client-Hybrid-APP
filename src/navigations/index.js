@@ -41,6 +41,7 @@ import Notification from '@Screeens/Notification';
 import Geolocations from '@Screeens/Geolocations';
 import TextField from '@Screeens/TextField';
 // import testScreen from '@Screeens/testScreen';
+import WarehouseType from '@Screeens/RegisterWH/WarehouseType';
 import RegisterWH from '@Screeens/RegisterWH';
 import RegisterImage from '@Screeens/RegisterWH/RegisterImage';
 import RegisterInfo from '@Screeens/RegisterWH/RegisterInfo';
@@ -84,8 +85,8 @@ import ConsultingComplete from '@Screeens/Consulting/complete.js';
 import Question from '@Screeens/Question';
 import Inquiry from '@Screeens/Inquiry';
 import Emergency from '@Screeens/Emergency';
+import LogisticConsulting from '@Screeens/LogisticConsulting';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
-import SignatureCapture from '@Screeens/SignatureCapture';
 
 import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
 import RegisterBusinessInfo from '@Screeens/RegisterWH/RegisterBusinessInfo';
@@ -334,6 +335,12 @@ const App = () => {
                     component={TextField}
                     headerMode={true}
                     options={{ headerShown: true }}
+                  />
+                  <AuthStack.Screen
+                    name="WarehouseType"
+                    component={WarehouseType}
+                    headerMode={false}
+                    options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
                     name="RegisterWH"
@@ -613,11 +620,11 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
-                  name="SignatureCapture"
-                  component={SignatureCapture}
-                  headerMode={false}
-                  options={{ headerShown: false }}
-                />
+                    name="LogisticConsulting"
+                    component={LogisticConsulting}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
                 </AuthStack.Navigator>
               </Global>
             </NavigationContainer>

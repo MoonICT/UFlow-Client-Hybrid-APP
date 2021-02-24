@@ -19,7 +19,6 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
   textContent: {
-    // fontFamily: 'NotoSansCJKkr-Regular',
     fontSize: 14,
     fontStyle: 'normal',
     color: 'rgba(0, 0, 0, 0.87)',
@@ -31,7 +30,6 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     lineHeight: 24,
-    // fontFamily: 'NotoSansCJKkr',
   },
   title: {
     lineHeight: 20,
@@ -39,7 +37,8 @@ export const styles = StyleSheet.create({
   },
   descript:{
     color: 'rgba(0, 0, 0, 0.87)',
-    // fontFamily: 'NotoSansCJKkr-Regular',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
     fontSize: 14,
     fontStyle: 'normal',
   },

@@ -38,7 +38,6 @@ class CreateInquiryWH extends Component {
   handleSubmitQna = () => {
     const {questionContent} = this.state;
     const {route} = this.props;
-
     Warehouse.postWhrgQuestion({
       warehouseRegNo: route.params.idWH,
       content: questionContent

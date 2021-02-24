@@ -15,6 +15,7 @@ import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from '../style';
+import { PanoramaView } from '@lightbase/react-native-panorama-view';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -31,6 +32,7 @@ class ViewPanoramaImage extends Component {
 
   render() {
     const { image } = this.props.route.params;
+    console.log('windowHeight', windowHeight);
     return (
       <SafeAreaView style={[S.container]}>
         {/* <Appbars>
@@ -51,7 +53,13 @@ class ViewPanoramaImage extends Component {
           title={'파노라마 이미지 보기'}
           navigation={this.navigation}
         />
-        <View
+        <PanoramaView
+          style={S.backgroundImagePana}
+          dimensions={{ height: windowHeight, width: windowWidth }}
+          inputType="mono"
+          imageUrl={image ? image : ''}
+        />
+        {/**<View
           style={[S.panoOverlayWrap, { height: windowHeight - appBarHeight }]}>
           <View
             style={[
@@ -87,7 +95,7 @@ class ViewPanoramaImage extends Component {
               />
             </ScrollView>
           </View>
-        </View>
+        </View>*/}
       </SafeAreaView>
     );
   }

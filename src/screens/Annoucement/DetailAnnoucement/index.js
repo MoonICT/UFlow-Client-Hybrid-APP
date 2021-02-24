@@ -24,6 +24,7 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { Annoucement } from '@Services/apis';
+import {StringUtils} from '@Services/utils';
 import HTML from 'react-native-render-html';
 
 class RegisterInfo extends Component {
@@ -82,7 +83,7 @@ class RegisterInfo extends Component {
           <View style={S.bodyView}>
             <Text style={DefaultStyle.titleItem}>{data && data.title}</Text>
             <Text style={DefaultStyle.contentItem}>
-              {data && data.createdDate}
+              {data && StringUtils.dateStr(data.createdDate)}
             </Text>
             <View style={S.content}>
               <View style={{ flex: 1 }}>
