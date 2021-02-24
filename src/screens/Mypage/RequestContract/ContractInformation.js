@@ -40,7 +40,8 @@ class ContractInformation extends Component {
       isOffLineDialog: false,
 
       isValidSign: false,
-      isSigned: props.contractType === 'keep' ? props.detailEstimate.estmtKeeps.elctrCntrYn : props.detailEstimate.estmtTrusts.elctrCntrYn
+      isSigned: false
+      // isSigned: props.contractType === 'keep' ? props.detailEstimate.estmtKeeps.elctrCntrYn : props.detailEstimate.estmtTrusts.elctrCntrYn
     };
 
     // console.debug('견적 약관 detailEstimate : ', props.detailEstimate)
@@ -51,30 +52,32 @@ class ContractInformation extends Component {
 
   _onSaveEvent = async (result) => {
     let { type, contractType, detailEstimate, rentUserNo } = this.props
-    // console.log('result sign :::: ', result)
     let base64 = result.encoded
     if (base64) {
       let file = {
         uri: `data:image/png;base64,${base64}`,
         type: 'image/png',
         name: 'sign.png',
-      }
-
+      };
       let formData = new FormData();
-      formData.append('file', file);
-      // formData.append('file', file, 'sign.png');
+      if (Platform.OS === 'android') {
+        formData.append('base64', base64)
+      } else {
+        formData.append('file', file);
+      }
       formData.append('warehouseRegNo', detailEstimate[contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts'].id.warehouseRegNo);
       formData.append('rentUserNo', rentUserNo);
       formData.append('cntrYmdFrom', moment(detailEstimate[contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts'].id.cntrYmdFrom).format('YYYYMMDD'));
-      console.log(formData)
       Contract.elctrCntr({
         type: type.toLowerCase(),
         contractType: contractType.toLowerCase(),
         formData: formData,
       }).then(res => {
         console.log('res::::::', res)
+        this.setState({ isSigned: true })
       }).catch(error => {
         // alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
+        console.log('error ::: ', error)
         console.log('error===>', error.response);
       });
     }
@@ -103,6 +106,11 @@ class ContractInformation extends Component {
     });
     this.setState({ isOffLineDialog: false });
   };
+
+  /** when after render DOM */
+  async componentDidMount () {
+    // console.log('계약정보 : ', this.props.detailEstimate)
+  }
 
   render () {
     const {
@@ -211,16 +219,17 @@ class ContractInformation extends Component {
                   isValidSign: false
                 })}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-                  전자계약
+                  {this.state.isSigned ? '계약서 출력' : '전자 계약 요청'}
                 </Text>
               </TouchableOpacity>
+              {!this.state.isSigned &&
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                 onPress={() => this.setState({ isOffLineDialog: !this.state.isOffLineDialog })}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
                   오프라인 계약서
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity>}
             </View>
           </Fragment>
         );
@@ -268,8 +277,6 @@ class ContractInformation extends Component {
     }
     return (
       <>
-        <Text>{this.state.isSigned ? '사인함' : '사인안함'}</Text>
-
         {/* Body */}
         {viewComponent && <Fragment>{viewComponent}</Fragment>}
 
@@ -278,37 +285,44 @@ class ContractInformation extends Component {
                 visible={this.state.isOnLineDialog}
                 onDismiss={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>
           <Dialog.Title style={[DefaultStyle._titleDialog]}>
-            전자 계약 서명하기
+            {this.state.isSigned ? '계약서 출력' : '전자 계약 서명하기'}
           </Dialog.Title>
-          <Dialog.Content
-            style={{ width: '100%', height: windowHeight / 2 }}>
-            <View style={{ flex: 1, flexDirection: 'column' }}>
+          <Dialog.Content style={{ width: '100%', }}>
 
-              <SignatureCapture
-                style={[S.signature]}
-                ref={sign => (this.signPadRef = sign)}
-                onSaveEvent={this._onSaveEvent.bind(this)}
-                onDragEvent={this._onDragEvent.bind(this)}
-                saveImageFileInExtStorage={false}
-                showNativeButtons={false}
-                showTitleLabel={false}
-                backgroundColor="#fafafa"
-                strokeColor="#000000"
-                minStrokeWidth={4}
-                maxStrokeWidth={4}
-                viewMode={'portrait'}
-              />
+            {this.state.isSigned ?
+              <Paragraph style={DefaultStyle.contentDialog}>
+                선택하신 계약 방식으로{'\n'}계약을 진하시겠습니까?
+              </Paragraph>
+              :
+              <View style={{ height: 350 }}>
+                <View style={{ flex: 1, flexDirection: 'column' }}>
+                  <SignatureCapture
+                    style={[S.signature]}
+                    ref={sign => (this.signPadRef = sign)}
+                    onSaveEvent={this._onSaveEvent.bind(this)}
+                    onDragEvent={this._onDragEvent.bind(this)}
+                    saveImageFileInExtStorage={false}
+                    showNativeButtons={false}
+                    showTitleLabel={false}
+                    backgroundColor="#fafafa"
+                    strokeColor="#000000"
+                    minStrokeWidth={4}
+                    maxStrokeWidth={4}
+                    viewMode={'portrait'}
+                  />
 
-              <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                <TouchableHighlight
-                  style={S.buttonStyle}
-                  onPress={() => {
-                    this.signPadRef.resetImage();
-                  }}>
-                  <Text style={DefaultStyle._textDF3}>다시 서명</Text>
-                </TouchableHighlight>
+                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                    <TouchableHighlight
+                      style={S.buttonStyle}
+                      onPress={() => {
+                        this.signPadRef.resetImage();
+                      }}>
+                      <Text style={DefaultStyle._textDF3}>다시 서명</Text>
+                    </TouchableHighlight>
+                  </View>
+                </View>
               </View>
-            </View>
+            }
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
@@ -319,11 +333,17 @@ class ContractInformation extends Component {
             <Button
               style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
               onPress={() => {
-                if (this.state.isValidSign) {
-                  this.setState({ isOnLineDialog: false })
-                  this.signPadRef.saveImage();
+                if (this.state.isSigned) {
+                  // TODO 오즈 파라미터 변경 필요.
+                  this.requestOffLineContract()
                 } else {
-                  alert('서명을 완료해주세요.')
+                  // 서명전
+                  if (this.state.isValidSign) {
+                    this.setState({ isOnLineDialog: false })
+                    this.signPadRef.saveImage();
+                  } else {
+                    alert('서명을 완료해주세요.')
+                  }
                 }
               }}>완료</Button>
           </Dialog.Actions>

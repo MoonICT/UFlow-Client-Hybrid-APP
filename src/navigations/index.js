@@ -87,7 +87,6 @@ import Inquiry from '@Screeens/Inquiry';
 import Emergency from '@Screeens/Emergency';
 import LogisticConsulting from '@Screeens/LogisticConsulting';
 import DetailInquiry from '@Screeens/Inquiry/DetailInquiry';
-import SignatureCapture from '@Screeens/SignatureCapture';
 
 import LogisticsKnowledge from '@Screeens/LogisticsKnowledge';
 import RegisterBusinessInfo from '@Screeens/RegisterWH/RegisterBusinessInfo';
@@ -623,12 +622,6 @@ const App = () => {
                   <AuthStack.Screen
                     name="LogisticConsulting"
                     component={LogisticConsulting}
-                    headerMode={false}
-                    options={{ headerShown: false }}
-                  />
-                  <AuthStack.Screen
-                    name="SignatureCapture"
-                    component={SignatureCapture}
                     headerMode={false}
                     options={{ headerShown: false }}
                   />
