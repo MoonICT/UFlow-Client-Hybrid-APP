@@ -31,8 +31,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Contants
 import { TOKEN } from '@Constant';
+
 class Register extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -59,19 +60,24 @@ class Register extends Component {
         email: false,
         kakao: false,
       },
+      // 소셜 로그인
+      snsCode: null,
+      snsId: null,
+      snsName: null
     };
     this.navigation = props.navigation;
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
+
   handleOnClickSubmit = () => {
     this.setState({ loading: true });
     let signUpTemp = {};
@@ -83,7 +89,7 @@ class Register extends Component {
     signUpTemp.terms = this.state.terms;
     signUpTemp.marketing = this.state.marketing;
 
-    // console.log("signUpTemp",signUpTemp);
+    console.log("signUpTemp",signUpTemp);
 
     Account.signUp(signUpTemp)
       .then(res => {
@@ -117,7 +123,7 @@ class Register extends Component {
       });
   };
 
-  onChangeEmail(e) {
+  onChangeEmail (e) {
     this.setState({ email: e });
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (reg.test(this.state.email) === true) {
@@ -127,7 +133,7 @@ class Register extends Component {
     }
   }
 
-  render() {
+  render () {
     let {
       fullName,
       email,
@@ -144,21 +150,10 @@ class Register extends Component {
       errorEmail,
     } = this.state;
 
-    let checkSubmit = false;
-    let checkAll = false;
-
-    if (
-      terms.privacy === true &&
-      terms.location === true &&
-      terms.financial === true &&
-      serviceTerms === true
-    ) {
-      checkSubmit = true;
-    }
-    if (checkSubmit === true && checkMarketing === true) {
-      checkAll = true;
-    }
-    // console.log('checkSubmit :>> ', checkSubmit);
+    let checkPw = (password && confirmPassword && confirmPassword === password) || (this.state.snsCode === 'NVER');
+    let checkTerms = terms.privacy && terms.location && terms.financial && serviceTerms;
+    let checkAll = checkTerms && checkMarketing;
+    let checkSubmit = fullName && email && mobile && checkTerms && checkPw;
     return (
       <>
         {isDone ? (
@@ -221,37 +216,41 @@ class Register extends Component {
                       잘못된 형식
                     </Text>
                   ) : null}
-                  <TextField
-                    labelTextField={'비밀번호'}
-                    colorLabel="#000000"
-                    styleProps={{ borderColor: '#d7d7d7' }}
-                    placeholder="비밀번호"
-                    onChangeText={text => {
-                      this.setState({ password: text })
-                    }}
-                    value={password}
-                    type="text"
-                    mode="outlined"
-                    maxLength={20}
-                    textContentType="password"
-                    secureTextEntry={true}
-                  />
-                  <TextField
-                    labelTextField={'비밀번호 확인'}
-                    colorLabel="#000000"
-                    styleProps={{ borderColor: '#d7d7d7' }}
-                    placeholder="비밀번호 확인"
-                    onChangeText={text => {
-                      this.setState({ confirmPassword: text })
-                    }
-                    }
-                    value={confirmPassword}
-                    type="text"
-                    mode="outlined"
-                    maxLength={20}
-                    textContentType="password"
-                    secureTextEntry={true}
-                  />
+                  {this.state.snsCode !== 'NVER' &&
+                  <>
+                    <TextField
+                      labelTextField={'비밀번호'}
+                      colorLabel="#000000"
+                      styleProps={{ borderColor: '#d7d7d7' }}
+                      placeholder="비밀번호"
+                      onChangeText={text => {
+                        this.setState({ password: text })
+                      }}
+                      value={password}
+                      type="text"
+                      mode="outlined"
+                      maxLength={20}
+                      textContentType="password"
+                      secureTextEntry={true}
+                    />
+                    <TextField
+                      labelTextField={'비밀번호 확인'}
+                      colorLabel="#000000"
+                      styleProps={{ borderColor: '#d7d7d7' }}
+                      placeholder="비밀번호 확인"
+                      onChangeText={text => {
+                        this.setState({ confirmPassword: text })
+                      }
+                      }
+                      value={confirmPassword}
+                      type="text"
+                      mode="outlined"
+                      maxLength={20}
+                      textContentType="password"
+                      secureTextEntry={true}
+                    />
+                  </>}
+
                   {confirmPassword !== password ? (
                     <Text style={DefaultStyle._textErrorInput}>
                       비밀번호가 안 맞아요
@@ -535,19 +534,30 @@ class Register extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount::');
     SplashScreen.hide();
+
+    console.log('회원종보 : ', this.props.route.params)
+    let params = this.props.route.params
+    if (params) {
+      this.setState({
+        email: params.socialEmail ? params.socialEmail : null,
+        snsCode: params.snsType ? params.snsType : null,
+        snsId: params.socialId ? params.socialId : null,
+        snsName: params.socialName ? params.socialName : null
+      })
+    }
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
@@ -555,7 +565,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     countUp: diff => {
       dispatch(ActionCreator.countUp(diff));
