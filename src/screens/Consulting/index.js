@@ -103,7 +103,13 @@ class Consulting extends Component {
     if (step < listQuest.length) {
       this.setState({ step: step + 1 });
     } else if (step === listQuest.length) {
-      ConsultingApi.submitAdvisory(listAnswer)
+      ConsultingApi.submitAdvisory({
+        listAnswer: listAnswer,
+        // TODO 처리해야함
+        name: '',
+        company: '',
+        email: ''
+      })
         .then(res => {
           this.setState({ step: step + 1 });
           console.log('res', res);
