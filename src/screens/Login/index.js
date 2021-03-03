@@ -316,11 +316,11 @@ class Login extends Component {
                 <Image source={google} style={[S.snsImg]} />
                 <Text style={S.snsText}>구글로 로그인</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}
-                                onPress={() => this.handleSNSLogin('apple')}>
-                <Image source={apple} style={[S.snsImg]} />
-                <Text style={S.snsText}>애플로 로그인</Text>
-              </TouchableOpacity>
+              {/*<TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}*/}
+              {/*                  onPress={() => this.handleSNSLogin('apple')}>*/}
+              {/*  <Image source={apple} style={[S.snsImg]} />*/}
+              {/*  <Text style={S.snsText}>애플로 로그인</Text>*/}
+              {/*</TouchableOpacity>*/}
             </View>
 
             <View style={[S.plusFormLogin, S.forgot]}>

@@ -17,7 +17,7 @@ import { styles } from "@Screeens/Search/style";
 import AsyncStorage from "@react-native-community/async-storage";
 import { LANG_STATUS_KEY } from '@Constant';
 import { Account } from '@Services/apis';
-import { TOKEN } from '@Constant';
+import { TOKEN, API_CLIENT_ADDRESS } from '@Constant';
 
 // import { styles as S } from './style';
 
@@ -213,8 +213,8 @@ class WebviewMap extends Component {
 
           {/** 지도웹뷰 */}
           <WebView
-            source={{ uri: `http://localhost:13000/webview/sns` }}
-            // source={{ uri: `${API_CLIENT_ADDRESS}/webview/sns` }}
+            // source={{ uri: `http://localhost:13000/webview/sns` }}
+            source={{ uri: `${API_CLIENT_ADDRESS}/webview/sns` }}
             style={{
               flex: 1,
               height: '100%',

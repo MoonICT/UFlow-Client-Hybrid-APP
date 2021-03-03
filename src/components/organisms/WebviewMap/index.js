@@ -95,7 +95,7 @@ class WebviewMap extends Component {
 
             {/** 지도웹뷰 */}
             <WebView
-              // source={{ uri: `http://localhost:13000/webview/map` }}
+              // source={{ uri: `http://localhost:13000/webview/map?lang=${this.state.langStatus}` }}
               source={{ uri: `${API_CLIENT_ADDRESS}/webview/map?lang=${this.state.langStatus}` }}
               style={{
                 flex: 1,
