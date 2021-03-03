@@ -5,7 +5,7 @@
  */
 
 // Global Imports
-import React, { Component,Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   SafeAreaView,
   View,
@@ -42,8 +42,12 @@ import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import { PanoramaView } from '@lightbase/react-native-panorama-view';
+import ImageResizer from 'react-native-image-resizer';
+import RNFetchBlob from 'rn-fetch-blob';
+import Loading from '@Components/atoms/Loading';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 class DetailWH extends Component {
   constructor(props) {
@@ -71,7 +75,8 @@ class DetailWH extends Component {
       favorite: false,
       rentUserNo: '',
       dataTab: [],
-      checkTrust: false
+      checkTrust: false,
+      loading: false,
     };
     this.navigation = props.navigation;
   }
@@ -309,6 +314,28 @@ class DetailWH extends Component {
     }
   };
 
+  infoImage = e => {
+    const outputPath = `${RNFetchBlob.fs.dirs.DocumentDir}`;
+    ImageResizer.createResizedImage(
+      e,
+      2 * windowWidth,
+      windowHeight,
+      'JPEG',
+      100,
+      0,
+      outputPath,
+    ).then(response => {
+      let imageUri = response.uri;
+      if (imageUri) {
+        if (Platform.OS === 'ios') {
+          imageUriIOS = imageUri.split('file://')[1];
+          this.setState({ pnImagesUrl: imageUriIOS,loading:false });
+        } else {
+          this.setState({ pnImagesUrl: imageUri,loading:false });
+        }
+      }
+    });
+  };
   render() {
     const {
       active,
@@ -323,9 +350,11 @@ class DetailWH extends Component {
       id,
       dataTab,
       userId,
-      checkTrust
+      checkTrust,
+      pnImagesUrl,
+      loading
     } = this.state;
-    console.log('whrgData', whrgData)
+    // console.log('whrgData', whrgData)
 
     // const dataTab = [
     //   {
@@ -513,12 +542,10 @@ class DetailWH extends Component {
                        inputType="mono"
                        imageUrl={whrgData.pnImages[0].url}
                        />*/}
+                      <Loading loading={loading} />
                       <Image
                         style={S.backgroundImage}
-                        source={whrgData.pnImages && whrgData.pnImages.length > 0
-                          ? { uri: whrgData.pnImages[0].url }
-                          : ''
-                        }
+                        source={pnImagesUrl ? { uri: pnImagesUrl } : ''}
                       />
                     </TouchableOpacity>
                     :
@@ -1565,7 +1592,10 @@ class DetailWH extends Component {
       active: warehouse.data.hasKeep === false && warehouse.data.hasTrust === true ? 1 : 0,
       checkTrust: warehouse.data.hasKeep === false && warehouse.data.hasTrust === true ? true : false,
     });
-
+    if (warehouse.data.pnImages[0]) {
+      this.setState({loading:true})
+      this.infoImage(warehouse.data.pnImages[0].url);
+    }
     const dataTabs = [];
     warehouse.data.floors.forEach(element => {
       dataTabs.push({
