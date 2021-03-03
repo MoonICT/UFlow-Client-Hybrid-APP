@@ -16,6 +16,7 @@ import {
 import { connect } from 'react-redux';
 import { Appbar, Text, Button, RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import validator from 'validator';
 
 import Bgr from '@Assets/images/bgr-consulting.png';
 // Local Imports
@@ -38,9 +39,11 @@ class Consulting extends Component {
       limitIndex: 0,
       listQuest: [],
       listAnswer: [],
-      email: { text: '', validate: false },
-      companyName: '',
-      curator: '',
+
+      company: '',
+      name: '',
+      email: '',
+
       startStep:false,
     };
     this.navigation = props.navigation;
@@ -105,7 +108,6 @@ class Consulting extends Component {
     } else if (step === listQuest.length) {
       ConsultingApi.submitAdvisory({
         listAnswer: listAnswer,
-        // TODO 처리해야함
         name: '',
         company: '',
         email: ''
@@ -136,7 +138,7 @@ class Consulting extends Component {
                   placeholderTextColor="#979797"
                   style={S.inputNomarl}
                   value={listAnswer[index] && listAnswer[index].userAnswer}
-                  placeholder="이름을 입력해 주세요"
+                  placeholder=""
                   onChangeText={e => this.handleChange(e, index)}
                 />
                 <TouchableOpacity
@@ -305,10 +307,11 @@ class Consulting extends Component {
       step,
       limitIndex,
       listQuest,
-      email,
-      companyName,
-      curator,
       startStep,
+
+      company,
+      name,
+      email,
     } = this.state;
     return (
       <View style={S.container}>
@@ -349,33 +352,32 @@ class Consulting extends Component {
               <TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
-                placeholder="이름을 입력해주세요"
-                value={email}
-                // onChangeText={e => this.setState({ email: e })}
-                onChangeText={text => this.validate(text)}
+                value={company}
+                placeholder="회사명"
+                onChangeText={e => this.setState({ company: e })}
               />
-              {email.validate === false && email.text !== '' && (
+              <TextInput
+                placeholderTextColor="#979797"
+                style={S.inputNomarl}
+                value={name}
+                placeholder="담당자명"
+                onChangeText={e => this.setState({ name: e })}
+              />
+              <TextInput
+                placeholderTextColor="#979797"
+                style={S.inputNomarl}
+                placeholder="이메일"
+                value={email}
+                onChangeText={e => this.setState({ email: e })}
+              />
+              { !!email && !validator.isEmail(email) && (
                 <Text style={{color:'#ff6d00',marginTop:10}}>메일 주소가 맞지 않습니다.</Text>
               )}
-              <TextInput
-                placeholderTextColor="#979797"
-                style={S.inputNomarl}
-                value={companyName}
-                placeholder="회사명을 입력해주세요"
-                onChangeText={e => this.setState({ companyName: e })}
-              />
-              <TextInput
-                placeholderTextColor="#979797"
-                style={S.inputNomarl}
-                value={curator}
-                placeholder="담당자명을 입력해주세요"
-                onChangeText={e => this.setState({ curator: e })}
-              />
             </View>
             <Button
               mode="contained"
               pointerEvents={
-                email.validate && companyName !== '' && curator !== ''
+                email !== '' && company !== '' && name !== ''
                   ? 'auto'
                   : 'none'
               }
@@ -384,7 +386,7 @@ class Consulting extends Component {
                 {
                   margin: 'auto',
                   backgroundColor: `${
-                    email.validate && companyName !== '' && curator !== ''
+                    email !== '' && company !== '' && name !== ''
                       ? '#ff6d00'
                       : '#cccccc'
                   }`,
@@ -407,7 +409,9 @@ class Consulting extends Component {
               onPress={() => {
                 this.setState({ step: 0 }),
                   this.getAllData,
-                  this.navigation.navigate('ConsultingComplete');
+                  this.navigation.navigate('ConsultingComplete', {
+                    email: email
+                  });
               }}>
               <Text style={[S.textButton, { width: 175 }]}>
                 컨설팅 결과 확인하기

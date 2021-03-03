@@ -258,20 +258,20 @@ class More extends Component {
                 Premium
               </Text>
               {/* TODO 완료 전까지 임시 숨김.*/}
-              {/*<TouchableOpacity*/}
-              {/*style={DefaultStyle.btnItem}*/}
-              {/*onPress={() => this.navigation.navigate('Consulting')}>*/}
-              {/*<View style={[DefaultStyle.leftItem, S.item]}>*/}
-              {/*<Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>*/}
-              {/*</View>*/}
-              {/*<View style={DefaultStyle.rightItem}>*/}
-              {/*<Icon*/}
-              {/*name="arrow-forward-ios"*/}
-              {/*size={12}*/}
-              {/*color="rgba(0, 0, 0, 0.54)"*/}
-              {/*/>*/}
-              {/*</View>*/}
-              {/*</TouchableOpacity>*/}
+              <TouchableOpacity
+                style={DefaultStyle.btnItem}
+                onPress={() => this.navigation.navigate('Consulting')}>
+                <View style={[DefaultStyle.leftItem, S.item]}>
+                  <Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>
+                </View>
+                <View style={DefaultStyle.rightItem}>
+                  <Icon
+                    name="arrow-forward-ios"
+                    size={12}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={DefaultStyle.btnItem}
                 onPress={() => this.navigation.navigate('LogisticsKnowledge')}>
@@ -399,7 +399,7 @@ class More extends Component {
               </View>
             </TouchableOpacity>
            */}
- 
+
               {/*<TouchableOpacity*/}
               {/*style={DefaultStyle.btnItem}*/}
               {/*onPress={() => this.navigation.navigate('SampleScreen')}>*/}
