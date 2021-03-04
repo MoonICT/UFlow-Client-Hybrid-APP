@@ -6,6 +6,7 @@
 import axios, { AxiosResponse } from "axios";
 import configURL from './ConfigURL';
 import AsyncStorage from '@react-native-community/async-storage';
+import { LANG_STATUS_KEY } from '@Constant';
 
 // Local Imports
 import { TOKEN } from '@Constant';
@@ -34,7 +35,8 @@ const Axios = {
       const headers = (config && config.headers) ? config.headers : {};
 
       // if accept language
-      headers["accept-language"] = language ? language : 'ko-KR';
+      const langData = await AsyncStorage.getItem(LANG_STATUS_KEY);
+      headers["accept-language"] = language ? language : langData ? langData : 'ko-KR';
 
       if (headers.contentType) {
         headers["Content-Type"] = headers.contentType;
