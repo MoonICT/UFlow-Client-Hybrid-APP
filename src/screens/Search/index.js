@@ -38,7 +38,8 @@ import SearchFilterPanel from '@Components/organisms/SearchFilterPanel';
 import ActionCreator from '@Actions';
 import { Warehouse, WhrgSearch } from '@Services/apis';
 import Progress from '@Components/organisms/Progress';
-import { API_CLIENT_ADDRESS } from '@Constant';
+import { API_CLIENT_ADDRESS, LANG_STATUS_KEY } from '@Constant';
+import AsyncStorage from "@react-native-community/async-storage";
 
 class Search extends Component {
   constructor (props) {
@@ -51,6 +52,7 @@ class Search extends Component {
       // defaultURL: 'http://localhost:13000/webview/search'
     };
     this.state = {
+      langStatus: '',
       url: this.option.defaultURL,
       progress: 0,
       searchQuery: '',
@@ -209,7 +211,7 @@ class Search extends Component {
           {/** Webview */}
           <WebView
             // Loading URL
-            source={{ uri: this.state.url }}
+            source={{ uri: this.state.url + `?lang=${this.state.langStatus}` }}
             // Webview style
             style={styles.WebViewStyle}
             // Attaching a ref to a DOM component
@@ -242,6 +244,12 @@ class Search extends Component {
   // 비동기 요청을 처리하는 부분.
   async componentDidMount () {
     const { route } = this.props
+    // 언어 설정
+    const langData = await AsyncStorage.getItem(LANG_STATUS_KEY);
+    console.log('언어 상태', langData)
+    this.setState({
+      langStatus: langData ? langData : 'ko-KR',
+    });
     // 쿠리 검색 초기값.
     console.log('Search Query ::: ', route.params)
     // searchToggle(route.params && route.params.searchQuery);

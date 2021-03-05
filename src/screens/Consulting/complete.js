@@ -6,21 +6,13 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import update from 'immutability-helper';
 import Appbars from '@Components/organisms/AppBar';
 
 import { Appbar, Text, Button } from 'react-native-paper';
 import DefaultStyle from '@Styles/default';
-import { RadarChart } from 'react-native-charts-wrapper';
-import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
-import { ConsultingApi, Warehouse, WhrgSearch } from '@Services/apis';
-import { styles as S } from './style';
 import { WebView } from 'react-native-webview';
 import Progress from '@Components/organisms/Progress';
-import { API_CLIENT_ADDRESS } from '@Constant';
 import WVMsgService from '@Services/WebViewMessageService';
-import { connect } from 'react-redux';
-import ActionCreator from '@Actions';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -31,87 +23,25 @@ class RadarChartScreen extends React.Component {
     this.navigation = props.navigation;
     this.option = {
       // TODO if Android Test : $ adb reverse tcp:13000 tcp:13000
-      defaultURL: `${API_CLIENT_ADDRESS}/webview/search`,
-      // defaultURL: 'http://localhost:13000/webview/search'
+      defaultURL: `${API_CLIENT_ADDRESS}/webview/advisory`,
+      // defaultURL: 'http://localhost:13000/webview/advisory'
     };
     this.state = {
-      url: this.option.defaultURL,
       progress: 0,
-      data: {},
-      legend: {
-        // enabled: true,
-        textSize: 200,
-        // form: 'CIRCLE',
-        // wordWrapEnabled: true,
-      },
     };
   }
   async componentDidMount() {
-    let resultAdvisory = await ConsultingApi.result({
-      email: 'test@logisall.com',
-    });
+  }
 
-    // let _label = resultAdvisory.data.labels;
-    // let _dataSets = resultAdvisory.data.datasets;
-    // let __dataSets1 = await _dataSets[0].data.map(item => {
-    //   return item;
-    // });
-    // let __dataSets2 = await _dataSets[1].data.map(item => {
-    //   return item;
-    // });
-    // console.log('__dataSets1', __dataSets1);
-    // console.log('__dataSets2', __dataSets2);
-    // let datas = [...__dataSets1,...__dataSets2];
-    if (resultAdvisory) {
-      // console.log('__dataSets1', __dataSets1);
-      // console.log('__dataSets2', __dataSets2);
-      // console.log('datas', datas);
-      // const dataFake = [{value:8},{value:6},{value:9},{value:6}];
-      // const dataFake = [{value:15},{value:15},{value:13},{value:12}];
-      // await this.setState(
-      //   update(this.state, {
-      //     data: {
-      //       $set: {
-      //         dataSets: [
-      //           {
-      //             values: __dataSets1,
-      //             // values: dataFake1,
-      //             label: '',
-      //             config: {
-      //               color: processColor('black'),
-      //               drawFilled: true,
-      //               fillColor: processColor('#7a7a7a'),
-      //               fillAlpha: 100,
-      //               lineWidth: 1.5,
-      //             },
-      //           },
-      //           {
-      //             values: __dataSets2,
-      //             // values: dataFake2,
-      //             label: '',
-      //             config: {
-      //               color: processColor('#ff6d00'),
-      //               drawFilled: true,
-      //               fillColor: processColor('rgba(255, 109, 0, 0.2)'),
-      //               fillAlpha: 50,
-      //               lineWidth: 5,
-      //             },
-      //           },
-      //         ],
-      //       },
-      //     },
-      //     xAxis: {
-      //       $set: {
-      //         valueFormatter: _label,
-      //       },
-      //     },
-      //   }),
-      // );
-      this.setState({ data: resultAdvisory.data });
+  // When the webview calls window.postMessage.
+  async _WVOnMessage (e) {
+    // console.log(':::: onReceiveWebViewMessage');
+    let msgData = WVMsgService.parseMessageData(e);
+    switch (msgData.type) {
+      case WVMsgService.types.CONSOLE_LOG:
+        console.log('[WEBVIEW]' + msgData.data);
+        break;
     }
-    // else {
-    //   this.setState({ data: 0 });
-    // }
   }
 
   _WVSendMessage(msgObj) {
@@ -126,13 +56,13 @@ class RadarChartScreen extends React.Component {
     let injectJSCode = `
     window.consoleLog = function(...args){
     window.ReactNativeWebView.postMessage(JSON.stringify({
-        type: "message",
-        data: ${strMsgType},
+        type: "CONSOLE_LOG",
+        data: JSON.stringify(arguments)
       }))
     }
     window.ReactNativeEnv = {
       isNativeApp: true,
-      data: ${strMsgType},
+      types: ${strMsgType},
     };
     `;
     return (
@@ -156,89 +86,45 @@ class RadarChartScreen extends React.Component {
           title={'물류컨설팅'}
           navigation={this.navigation}
         /> */}
-        <ScrollView>
-          <View style={styles.container}>
-            <View
-            // style={{
-            //   flex: 1,
-            // }}
-            >
-              {this.state.progress < 1 && (
-                <View style={styles.loadingWrap}>
-                  <View style={styles.loadingInner}>
-                    <Progress />
-                  </View>
+        <View style={styles.container}>
+          <View>
+            {this.state.progress < 1 && (
+              <View style={styles.loadingWrap}>
+                <View style={styles.loadingInner}>
+                  <Progress />
                 </View>
-              )}
+              </View>
+            )}
 
-              <WebView
-                // Loading URL
-                source={{
-                  uri:
-                    `${API_CLIENT_ADDRESS}/webview/advisory?email=test@logisall.com`,
-                }}
-                // Webview style
-                style={styles.WebViewStyle}
-                // Attaching a ref to a DOM component
-                ref={webView => (this.webView = webView)}
-                // If the user taps to navigate to a new page but the new page is not in this safelist,
-                // the URL will be handled by the OS. The default safelistlisted origins are "http://" and "https://".
-                originWhitelist={['*']}
-                // Want to show the view or not
-                useWebKit={true}
-                // onLoad={event => this._WVOnLoad(event)}
-                onLoadStart={() => this.setState({ isLoading: true })}
-                onLoadEnd={() => this.setState({ isLoading: false })}
-                onLoadProgress={({ nativeEvent }) =>
-                  this.setState({ progress: nativeEvent.progress })
-                }
-                onMessage={event => this._WVOnMessage(event)}
-                // Inject javascript code in webview
-                injectedJavaScript={injectJSCode} // for Android
-                injectedJavaScriptBeforeContentLoaded={injectJSCode.toString()} // for iOS
-                javaScriptEnabledAndroid={true}
-              />
-            </View>
-
-            <View pointerEvents="none">
-              {/**    <RadarChart
-                style={styles.chart}
-                data={this.state.data}
-                xAxis={this.state.xAxis}
-                yAxis={{ drawLabels: true }}
-                chartDescription={{ text: '' }}
-                legend={this.state.legend}
-                drawWeb={true}
-                // webLineWidth={5}
-                // webLineWidthInner={5}
-                // webAlpha={255}
-
-                // webColor={processColor('red')}
-                // webColorInner={processColor('green')}
-                // skipWebLineCount={1}
-                // onSelect={this.handleSelect.bind(this)}
-                // onChange={event => console.log(event.nativeEvent)}
-              /> */}
-            </View>
-            <View style={styles.footer}>
-              <Text style={{ fontSize: 20,textAlign:'center'  }}>
-                물류 컨성팅이 완료되었습니다.
-              </Text>
-              <Text style={{ fontSize: 16, lineHeight: 24, marginTop: 20,textAlign:'center' }}>
-                컨설팅 결과 설명{'\n'}컨설팅 결과 설명
-              </Text>
-
-              <Button
-                mode="contained"
-                style={[S.styleButton, { marginTop: 30 }]}
-                onPress={() => this.navigation.replace('Home')}>
-                <Text style={[S.textButton, { width: 175 }]}>
-                  메인페이지로 이동
-                </Text>
-              </Button>
-            </View>
+            <WebView
+              // Loading URL
+              source={{
+                uri:
+                  `${this.option.defaultURL}?email=${this.props.route.params.email}`,
+              }}
+              // Webview style
+              style={styles.WebViewStyle}
+              // Attaching a ref to a DOM component
+              ref={webView => (this.webView = webView)}
+              // If the user taps to navigate to a new page but the new page is not in this safelist,
+              // the URL will be handled by the OS. The default safelistlisted origins are "http://" and "https://".
+              originWhitelist={['*']}
+              // Want to show the view or not
+              useWebKit={true}
+              // onLoad={event => this._WVOnLoad(event)}
+              onLoadStart={() => this.setState({ isLoading: true })}
+              onLoadEnd={() => this.setState({ isLoading: false })}
+              onLoadProgress={({ nativeEvent }) =>
+                this.setState({ progress: nativeEvent.progress })
+              }
+              onMessage={event => this._WVOnMessage(event)}
+              // Inject javascript code in webview
+              injectedJavaScript={injectJSCode} // for Android
+              injectedJavaScriptBeforeContentLoaded={injectJSCode.toString()} // for iOS
+              javaScriptEnabledAndroid={true}
+            />
           </View>
-        </ScrollView>
+        </View>
       </View>
     );
   }
@@ -252,13 +138,6 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
     minHeight: windowHeight,
     position: 'relative',
-  },
-  chart: {
-    flex: 1,
-    maxHeight: 400,
-    width: windowWidth - 80,
-    alignItems: 'flex-start',
-    marginTop: 50,
   },
   WebViewStyle: {
     justifyContent: 'center',
@@ -281,11 +160,6 @@ const styles = StyleSheet.create({
   loadingInner: {
     width: '100%',
     height: 40,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 100,
-    zIndex: 99999999,
   },
 });
 

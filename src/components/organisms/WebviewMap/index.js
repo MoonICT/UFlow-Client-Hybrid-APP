@@ -17,13 +17,15 @@ import { API_CLIENT_ADDRESS } from '@Constant';
 import DefaultStyle from '@Styles/default';
 import Progress from '@Components/organisms/Progress';
 import { styles } from "@Screeens/Search/style";
-
+import AsyncStorage from "@react-native-community/async-storage";
+import { LANG_STATUS_KEY } from '@Constant';
 // import { styles as S } from './style';
 
 class WebviewMap extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      langStatus: '',
       progress: 0,
     };
     this.webView = null;
@@ -93,8 +95,8 @@ class WebviewMap extends Component {
 
             {/** 지도웹뷰 */}
             <WebView
-              // source={{ uri: `http://localhost:13000/webview/map` }}
-              source={{ uri: `${API_CLIENT_ADDRESS}/webview/map` }}
+              // source={{ uri: `http://localhost:13000/webview/map?lang=${this.state.langStatus}` }}
+              source={{ uri: `${API_CLIENT_ADDRESS}/webview/map?lang=${this.state.langStatus}` }}
               style={{
                 flex: 1,
                 height: '100%',
@@ -118,6 +120,15 @@ class WebviewMap extends Component {
         }
       </View>
     );
+  }
+
+  /** when after render DOM */
+  async componentDidMount () {
+    // 언어 초기화
+    const langData = await AsyncStorage.getItem(LANG_STATUS_KEY);
+    this.setState({
+      langStatus: langData ? langData : 'ko-KR',
+    });
   }
 }
 
