@@ -219,8 +219,7 @@ const App = () => {
     }).then(res => {
       console.log(':::::: IP ::::::', res.data.countryCode)
       if (res && res.data) {
-        // AsyncStorage.setItem(LANG_STATUS_KEY, res.data.countryCode === 'KR' ? 'ko-KR' : 'en-US');
-        AsyncStorage.setItem(LANG_STATUS_KEY, 'en-US');
+        AsyncStorage.setItem(LANG_STATUS_KEY, res.data.countryCode === 'KR' ? 'ko-KR' : 'en-US');
       }
     }).catch(err => {
       AsyncStorage.setItem(LANG_STATUS_KEY, 'ko-KR');
