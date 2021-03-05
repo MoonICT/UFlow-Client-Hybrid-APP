@@ -213,10 +213,13 @@ class RegisterIntro extends Component {
 
             <View style={DefaultStyle._body}>
               <View style={DefaultStyle._titleBody}>
-                <Text style={DefaultStyle._textTitleBody}>
+                <Text style={[DefaultStyle._textTitleBody, {marginBottom: 0}]}>
                   위치<Text style={S.textNote}>*</Text>
                 </Text>
               </View>
+              <Text style={[S.textNote, {fontSize: 13, marginBottom: 15}]}>
+                 (오픈형인경우 위치를 등록하시면, 조회시 시군면 까지만 보여집니다.)
+              </Text>
               <TouchableOpacity onPress={this._showDialog}>
                 <Searchbar
                   inputStyle={S.searchRegister}
