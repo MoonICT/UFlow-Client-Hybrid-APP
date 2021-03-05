@@ -56,7 +56,7 @@ class AnnoucementScreen extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'공지사항'}
             navigation={this.navigation}
@@ -111,7 +111,7 @@ class AnnoucementScreen extends Component {
       .then(res => {
         console.log('::::: Annoucement :::::', res);
         if (res.status === 200) {
-          let annoucementList = res.data._embedded.Notice;
+          let annoucementList = res.data && res.data._embedded && res.data._embedded.Notice ? res.data._embedded.Notice : [];
 
           this.setState({
             annoucementList,
