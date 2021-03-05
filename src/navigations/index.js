@@ -686,6 +686,12 @@ const App = () => {
                     options={{ headerShown: false }}
                   />
                   <AuthStack.Screen
+                    name="DetailsLocationWH"
+                    component={DetailsLocationWH}
+                    headerMode={false}
+                    options={{ headerShown: false }}
+                  />
+                  <AuthStack.Screen
                     name="Terms"
                     component={Terms}
                     options={{ headerShown: false }}

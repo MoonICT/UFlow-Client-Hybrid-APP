@@ -42,7 +42,6 @@ class Language extends Component {
    * */
   onChangeLanguage = async (langStatus) => {
     if (langStatus !== this.state.langStatus) {
-      console.log('::: 1')
       // 번역 데이터 요청.
       const data = await Menu.localization({ language: langStatus ? langStatus : 'ko-KR' });
       // key: value  형태로 변환.
@@ -52,22 +51,19 @@ class Language extends Component {
           Object.assign(resultObj, item);
         });
       }
-      console.log('::: 2')
       // 전역 스토어 저장.
       this.props.setLangData(resultObj);
-      console.log('::: 3')
       // 앱 로컬 저장소에 언어 상태값 저장.
       AsyncStorage.setItem(LANG_STATUS_KEY, langStatus);
       // 리스트 상태 변경.
       this.setState({
         langStatus: langStatus,
       })
-      console.log('::: 4', langStatus)
       // 완료 모달.
       this.props.showPopup({
         type: 'confirm',
         title: '언어 설정 완료',
-        content: '언어 설정을 완료하였습니다.',
+        content: '언어 설정을 완료하였습니다.\n적용을 위해 앱을 다시 실행해주세요.',
         navigation: () =>
           this.navigation.navigate('More')
       });
@@ -92,7 +88,7 @@ class Language extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'언어 설정'}
             navigation={this.navigation}
@@ -134,8 +130,8 @@ class Language extends Component {
 
   /** when after render DOM */
   async componentDidMount () {
+    // 언어 초기화
     const langData = await AsyncStorage.getItem(LANG_STATUS_KEY);
-    console.log('언어 상태', langData)
     this.setState({
       langStatus: langData ? langData : 'ko-KR',
     });

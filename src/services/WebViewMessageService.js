@@ -60,6 +60,14 @@ const types = {
    * */
   GO_WH_DETAIL: 'GO_WH_DETAIL',
 
+  /**
+   * SNS 간편로그인 처리.
+   * Request Data
+   * {
+   *   id: 창고 id
+   * }
+   * */
+  HANDLE_SNS_LOGIN: 'HANDLE_SNS_LOGIN',
 
   /*******************************
    * Native App -> Webview

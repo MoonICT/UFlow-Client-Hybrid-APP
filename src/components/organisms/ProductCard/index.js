@@ -113,7 +113,7 @@ class ProductCard extends Component {
                 {isRecommend === true && (
                   <View style={styles.bageCard}>
                     <Image style={styles.imageBage} source={bageCard} />
-                    <Text style={styles.textBage}>추천</Text>
+                {/** <Text style={styles.textBage}>추천</Text> */}
                   </View>
                 )}
                 {!this.state.isHorizontal &&

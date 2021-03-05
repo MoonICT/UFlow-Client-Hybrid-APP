@@ -74,29 +74,31 @@ class WarehouseType extends Component {
         <ScrollView>
           <View style={S.container}>
             <Image style={S.image} source={illust1} />
-            <Text style={S.title}>오픈형</Text>
-            <Text style={S.content}>
-              유플로우에 창고 정보만 등록하면 임차인과 자유롭게 소통할 수
-              있습니다.
+            <Text style={[S.title, {marginBottom: 0}]}>
+              오픈형
+            </Text>
+            <Text style={{marginBottom: 10}}>(공인중개사, 부동산컨설팅 법인, 자산운용사)</Text>
+            <Text style={[S.content, {fontSize: 13}]}>
+              오픈형으로 등록시 상세주소를 정확히 입력 부탁드립니다.
+            </Text>
+            <Text style={[S.content, {color:'#F44336', fontSize: 13}]}>
+              ※ 조회시에는 창고 상세주소가 표시되지 않습니다.
             </Text>
             <TouchableOpacity
               style={[DefaultStyle._btnOutline, S.btnType]}
               onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0001'})}>
-              <Text style={DefaultStyle._textButton}>선택하기</Text>
+              <Text style={DefaultStyle._textButton}>등록하기</Text>
             </TouchableOpacity>
             <View style={S.underlined} />
           </View>
           <View style={[S.container, {paddingBottom: 80}]}>
             <Image source={illust21} />
-            <Text style={S.title}>UFLOW 책임형</Text>
-            <Text style={S.content}>
-              계약 시작부터 결정까지 유플로우가 쌍방간의 계약을 책임지고
-              관리합니다.
-            </Text>
+            <Text style={[S.title, {marginBottom: 0}]}>UFLOW 책임형</Text>
+            <Text style={{marginBottom: 10}}>(직영, 가맹, 일반창고)</Text>
             <TouchableOpacity
               style={[DefaultStyle._btnOutline, S.btnType]}
               onPress={() => this.navigation.navigate('RegisterBusinessInfo')}>
-              <Text style={DefaultStyle._textButton}>선택하기</Text>
+              <Text style={DefaultStyle._textButton}>등록하기</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

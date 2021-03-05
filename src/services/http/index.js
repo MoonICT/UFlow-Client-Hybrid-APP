@@ -46,7 +46,9 @@ const Axios = {
       // if API endpoint requires a token
       if (requiresToken) {
         const token = await AsyncStorage.getItem(TOKEN);
-        headers['Authorization'] = `Bearer ${token}`;
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
         // AsyncStorage.getItem('token').then(value => {
         //   headers['Authorization'] = `Bearer ${value}`;
         // });

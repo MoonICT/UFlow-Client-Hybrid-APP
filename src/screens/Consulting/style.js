@@ -4,8 +4,9 @@
  * @desc [description]
  */
 
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { color } from '../../themes/colors';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -20,12 +21,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'stretch',
     alignItems: 'center',
-    // marginTop: -100,
+    marginTop: Platform.OS === 'ios' ? -100 : 0,
   },
   contentAlignLeft: {
-    marginTop: -100,
     marginTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
@@ -83,7 +82,7 @@ export const styles = StyleSheet.create({
     borderRadius: 21,
     height: 42,
     marginTop: 25,
-    paddingTop:2,
+    paddingTop: 2,
   },
   textButton: {
     color: 'white',
@@ -113,8 +112,8 @@ export const styles = StyleSheet.create({
   lineMove: {
     backgroundColor: '#ff6d00',
     height: 4,
-    marginLeft:-1,
-    borderRadius:4,
+    marginLeft: -1,
+    borderRadius: 4,
     marginTop: -1,
   },
   valueProgress: {
@@ -152,8 +151,8 @@ export const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderColor: 'white',
-    backgroundColor:'white',
-    flex:1
+    backgroundColor: 'white',
+    flex: 1
 
   },
   // ====
