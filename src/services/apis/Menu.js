@@ -7,8 +7,8 @@ import { Axios, parseQuery } from '@Services/http';
 export const menus = () => {
   return Axios.getRequest({
     methodType: 'GET',
-    url: `/api/v1/mang/menus`,
-  });
+    url: `/api/v1/mang/menus/mobile`
+  })
 };
 
 /**

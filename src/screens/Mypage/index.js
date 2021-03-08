@@ -62,28 +62,28 @@ const data = [
   //   title: '관심 창고',
   // },
 ];
-const dataStatusWarehouse = [
-  {
-    value: 'All',
-    label: '전체',
-  },
-  {
-    value: '1100',
-    label: '공실검증완료',
-  },
-  {
-    value: '4100',
-    label: '계약진행중',
-  },
-  {
-    value: '5100',
-    label: '계약체결',
-  },
-  {
-    value: '9100',
-    label: '공실검증실패',
-  },
-];
+// const dataStatusWarehouse = [
+//   {
+//     value: 'All',
+//     label: '전체',
+//   },
+//   {
+//     value: '1100',
+//     label: '공실검증완료',
+//   },
+//   {
+//     value: '4100',
+//     label: '계약진행중',
+//   },
+//   {
+//     value: '5100',
+//     label: '계약체결',
+//   },
+//   {
+//     value: '9100',
+//     label: '공실검증실패',
+//   },
+// ];
 const dataSteps = [
   {
     title: '견적요청',
@@ -130,6 +130,10 @@ class Mypage extends Component {
         props.route.params && props.route.params.title
           ? props.route.params.title
           : '내 창고',
+      tab:
+        props.route.params && props.route.params.tab
+          ? props.route.params.tab
+          : 'Mypage_mywhrg',
     };
 
     this.navigation = props.navigation;
@@ -386,9 +390,9 @@ class Mypage extends Component {
                     창고삭제
                   </Text>
                 </TouchableOpacity>
-                
+
                 </View>
-                
+
               ) : null
             }
           />
@@ -399,8 +403,10 @@ class Mypage extends Component {
         <Progress />
       </View>
     );
-    switch (this.state.title) {
-      case '내 창고':
+
+    // switch (this.state.title) {
+    switch (this.state.tab) {
+      case 'Mypage_mywhrg': // 내 창고
         viewComponent = (
           <View
             style={[
@@ -436,7 +442,7 @@ class Mypage extends Component {
           </View>
         );
         break;
-      case '견적･계약 관리':
+      case 'Mypage_cntr': //'견적･계약 관리':
         viewComponent = (
           <ContractManager
             doRefresh={this.doRefreshTab}
@@ -445,7 +451,7 @@ class Mypage extends Component {
           />
         );
         break;
-      case '입･출고 관리':
+      case 'Mypage_io': //'입･출고 관리':
         viewComponent = (
           <InOutManager
             navigation={this.navigation}
@@ -453,7 +459,7 @@ class Mypage extends Component {
           />
         );
         break;
-      case '정산관리':
+      case 'Mypage_settlement': // '정산관리':
         viewComponent = (
           <SettlementManagement
             navigation={this.navigation}
@@ -461,7 +467,7 @@ class Mypage extends Component {
           />
         );
         break;
-      case '관심 창고':
+      case 'Mypage_fav': //'관심 창고':
         viewComponent = (
           <InterestWH
             navigation={this.navigation}
