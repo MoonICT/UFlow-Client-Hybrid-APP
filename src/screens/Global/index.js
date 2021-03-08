@@ -86,7 +86,7 @@ class Global extends Component {
                             onPress={() => {
                               this.sheetRef.current.open()
                             }}>
-            <Image source={channelIOImage}></Image>
+            <Image source={channelIOImage} style={{ width: 54, height: 54 }}></Image>
           </TouchableOpacity>
           {/** Channel IO Body */}
           <Modalize
