@@ -453,12 +453,31 @@ class DetailWH extends Component {
               style={[DefaultStyle._titleWH, { backgroundColor: '#4caf50' }]}>
               {whrgData.typeCode && whrgData.typeCode}
             </Text>
-            <Text style={S.describeTitle}>
-              {`${whrgData.hasKeep ? '임대창고' : ''}`}
-              {`${whrgData.hasKeep && whrgData.hasTrust ? ', ' : ''}`}
-              {`${whrgData.hasTrust ? '수탁창고' : ''}`}
-            </Text>
-            <Text style={S.header}>{whrgData.name}</Text>
+            <View style={S.titleView}>
+              <Text style={[S.describeTitle, {textAlign:'left'}]}>
+                {`${whrgData.hasKeep ? '임대창고' : ''}`}
+                {`${whrgData.hasKeep && whrgData.hasTrust ? ', ' : ''}`}
+                {`${whrgData.hasTrust ? '수탁창고' : ''}`}
+              </Text>
+              
+              <Text style={[S.describeTitle, S.rightTitle, {textAlign:'right'}]}>
+                {
+                  ((whrgData.userTypeCode !== "8000") && (whrgData.userTypeCode === "1100" || whrgData.relativeEntrp === null))
+                  ? (whrgData.userTypeCode === "1100")
+                    ? whrgData.userName + " " + whrgData.mobile.no1 + "-" + whrgData.mobile.no2 + "-" + whrgData.mobile.no3
+                    : whrgData.mobile.no1 + "-" + whrgData.mobile.no2 + "-" + whrgData.mobile.no3
+                  : ""  
+                }
+
+              </Text>
+                            
+            </View>
+            
+              
+            
+            
+
+            <Text style={S.header}>{whrgData.name} </Text>
             <View style={S.labels}>
               {whrgData.keeps &&
               whrgData.keeps.length > 0 &&
@@ -1111,7 +1130,9 @@ class DetailWH extends Component {
                 {whrgData.roadAddr
                   ? `${whrgData.roadAddr.address} ${
                     whrgData.roadAddr.detail === null ||
-                    whrgData.roadAddr.detail === undefined
+                    whrgData.roadAddr.detail === undefined ||
+                    whrgData.relativeEntrp === null ||
+                    whrgData.relativeEntrp === undefined
                       ? ''
                       : whrgData.roadAddr.detail
                     }`
