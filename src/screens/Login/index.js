@@ -184,7 +184,8 @@ class Login extends Component {
           modalHeight={height}
           panGestureEnabled={false}
           disableScrollIfPossible={false}
-          scrollViewProps={{ scrollEnabled: false }}
+          scrollViewProps={{
+            scrollEnabled: false }}
           modalStyle={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, }}
           handleStyle={{ backgroundColor: 'white', }}
           HeaderComponent={
