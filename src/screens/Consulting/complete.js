@@ -14,6 +14,8 @@ import { WebView } from 'react-native-webview';
 import Progress from '@Components/organisms/Progress';
 import WVMsgService from '@Services/WebViewMessageService';
 
+import { API_CLIENT_ADDRESS } from '@Constant';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 class RadarChartScreen extends React.Component {

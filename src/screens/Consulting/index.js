@@ -415,6 +415,7 @@ class Consulting extends Component {
               }}>
               <Text style={[S.textButton, { width: 175 }]}>
                 컨설팅 결과 확인하기
+
               </Text>
             </Button>
           </View>
