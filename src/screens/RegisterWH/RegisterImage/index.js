@@ -105,6 +105,7 @@ class RegisterImage extends Component {
     try {
       launchImageLibrary(options, response => {
         console.log('image response ::: ', response);
+        console.log('image response ::: ', response.originalRotation);
 
         let file = {
           fileCopyUri: response.uri,
@@ -117,6 +118,13 @@ class RegisterImage extends Component {
         // 이미지를 선택 안한 경우.
         if (response && response.didCancel) {
           return false;
+        }
+
+        // 용량 체크.
+        console.log('Image size : ', response.fileSize)
+        if (10485760 < response.fileSize) {
+          alert('최대 10MB 까지 업로드 가능합니다.')
+          return false
         }
 
         this.setState({ singleFile: file }, async () => {
@@ -143,9 +151,10 @@ class RegisterImage extends Component {
             // Progress
             this.props.setProgress({ is: true, type: 'CIRCLE' });
             // Please change file upload URL
-            {/** TODO 창고 이미지 업로드 시  **/}
+            {/** TODO 창고 이미지 업로드 시  **/
+            }
             {/**
-               TODO @deokin
+             TODO @deokin
              * 1)20210121 장종례 창고등록 API 수정 (1)
              * 2)20210121 장종례 창고등록 API 수정 (2)
              * 3)창고등록 이미지 업로드 처리
@@ -159,7 +168,8 @@ class RegisterImage extends Component {
              *   code => 이미지(0001) 또는 파노라마(0002)
              * }
              * @returns {Promise<AxiosResponse<any>>}
-             */}
+             */
+            }
             await Warehouse.uploadImage(data)
               .then(respon => {
                 console.log('이미지 업로드 완료 : ', respon)

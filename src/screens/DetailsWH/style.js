@@ -98,12 +98,14 @@ export const styles = StyleSheet.create({
   },
   background: {
     marginLeft: -16,
+    marginRight: -16,
     marginTop: 24,
     marginBottom: 14,
   },
   backgroundImage: {
     width: windowWidth,
     height: 240,
+    // width: '100%',
   },
   backgroundImagePana: {
     width: windowWidth,

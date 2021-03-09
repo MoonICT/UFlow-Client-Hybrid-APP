@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { Image as Image2 } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Appbar } from 'react-native-paper';
 
@@ -19,20 +20,29 @@ import { PanoramaView } from '@lightbase/react-native-panorama-view';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const appBarHeight = 130;
+const appBarHeight = 48;
+
+import ImageResizer from 'react-native-image-resizer';
+import RNFetchBlob from "rn-fetch-blob";
 
 class ViewPanoramaImage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       calcPanoImageWidth: 500,
+      tempImage: '',
     };
     this.navigation = props.navigation;
   }
 
-  render() {
+  /** when after render DOM */
+  componentDidMount () {
+  }
+
+  render () {
     const { image } = this.props.route.params;
     console.log('windowHeight', windowHeight);
+    console.log('this.props.route.params', this.props.route.params);
     return (
       <SafeAreaView style={[S.container]}>
         {/* <Appbars>
@@ -56,10 +66,10 @@ class ViewPanoramaImage extends Component {
         <PanoramaView
           style={S.backgroundImagePana}
           dimensions={{ height: windowHeight, width: windowWidth }}
-          inputType="mono"
+          inputType="stereo"
           imageUrl={image ? image : ''}
         />
-        {/**<View
+        {/*<View
           style={[S.panoOverlayWrap, { height: windowHeight - appBarHeight }]}>
           <View
             style={[
@@ -100,8 +110,6 @@ class ViewPanoramaImage extends Component {
     );
   }
 
-  /** when after render DOM */
-  componentDidMount() {}
 }
 
 export default ViewPanoramaImage;

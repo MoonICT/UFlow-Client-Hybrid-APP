@@ -14,6 +14,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { Image as Image2 } from 'react-native-elements';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Appbar, Text, IconButton } from 'react-native-paper';
@@ -32,6 +33,7 @@ import { TOKEN } from '@Constant';
 import WebviewMap from '@Components/organisms/WebviewMap';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
+import Progress from '@Components/organisms/Progress';
 // Image
 import panoIcon from '@Assets/images/iconback.png';
 import cardBG from '@Assets/images/card-img.png';
@@ -50,7 +52,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 class DetailWH extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.myRef = React.createRef();
@@ -95,14 +97,14 @@ class DetailWH extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps (nextProps, prevState) {
     if (nextProps?.route?.params?.id !== prevState.id) {
       return { id: nextProps?.route?.params?.id };
     }
     return null;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     if (prevProps.route?.params?.id !== this.props?.route?.params?.id) {
       this.setState({ id: this.props?.route?.params?.id });
       this.myRef.current?.scrollTo({
@@ -114,7 +116,7 @@ class DetailWH extends Component {
   }
 
   /** when after render DOM */
-  componentDidMount() {
+  componentDidMount () {
     // Progress
     this.props.setProgress({ is: true });
 
@@ -128,7 +130,7 @@ class DetailWH extends Component {
         if (v) {
           Account.me()
             .then(res => {
-              console.log('User info :;;;;; ', res);
+              // console.log('User info :;;;;; ', res);
               this.setState({
                 userId: res.id,
               });
@@ -214,9 +216,9 @@ class DetailWH extends Component {
     })
       .then(res => {
         // 견적 등록 가능.
-        console.log('possibleContract', res);
+        // console.log('possibleContract', res);
         if (res.data.status === 'PSB_CNT') {
-          console.log('res.data.status', res.data.status);
+          // console.log('res.data.status', res.data.status);
           this.handleRouteRequestQuotation(typeInfo, type);
         }
       })
@@ -262,8 +264,8 @@ class DetailWH extends Component {
     //   status: 'RQ00',
     //   type: 'TENANT',
     // });
-    console.log(typeInfo, 'typeInfo');
-    console.log(type, 'type');
+    // console.log(typeInfo, 'typeInfo');
+    // console.log(type, 'type');
     this.navigation.navigate('RequestQuotation', {
       data: {
         whrgMgmtTrust: type === 'TRUST' ? typeInfo : null,
@@ -316,6 +318,8 @@ class DetailWH extends Component {
 
   infoImage = e => {
     const outputPath = `${RNFetchBlob.fs.dirs.DocumentDir}`;
+
+    console.log('==================')
     ImageResizer.createResizedImage(
       e,
       2 * windowWidth,
@@ -324,19 +328,26 @@ class DetailWH extends Component {
       100,
       0,
       outputPath,
+      true,
     ).then(response => {
       let imageUri = response.uri;
+      console.log(':::::: 이미지 책임 변환 :::::::::', imageUri)
       if (imageUri) {
+        this.setState({
+          // pnImagesUrl: imageUri,
+          // loading: false
+        });
         if (Platform.OS === 'ios') {
-          imageUriIOS = imageUri.split('file://')[1];
-          this.setState({ pnImagesUrl: imageUriIOS,loading:false });
+          // let imageUriIOS = imageUri.split('file://')[1];
+          // this.setState({ pnImagesUrl: imageUri,loading:false });
         } else {
-          this.setState({ pnImagesUrl: imageUri,loading:false });
+          // this.setState({ pnImagesUrl: imageUri,loading:false });
         }
       }
     });
   };
-  render() {
+
+  render () {
     const {
       active,
       whrgData,
@@ -396,18 +407,6 @@ class DetailWH extends Component {
       return resultStr;
     };
 
-    const images = [
-      {
-        source: {
-          uri:
-            'https://cdn.pixabay.com/photo/2017/08/17/10/47/paris-2650808_960_720.jpg',
-        },
-        title: 'Paris',
-        width: 806,
-        height: 720,
-      },
-    ];
-
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -454,28 +453,25 @@ class DetailWH extends Component {
               {whrgData.typeCode && whrgData.typeCode}
             </Text>
             <View style={S.titleView}>
-              <Text style={[S.describeTitle, {textAlign:'left'}]}>
+              <Text style={[S.describeTitle, { textAlign: 'left' }]}>
                 {`${whrgData.hasKeep ? '임대창고' : ''}`}
                 {`${whrgData.hasKeep && whrgData.hasTrust ? ', ' : ''}`}
                 {`${whrgData.hasTrust ? '수탁창고' : ''}`}
               </Text>
-              
-              <Text style={[S.describeTitle, S.rightTitle, {textAlign:'right'}]}>
+
+              <Text style={[S.describeTitle, S.rightTitle, { textAlign: 'right' }]}>
                 {
                   ((whrgData.userTypeCode !== "8000") && (whrgData.userTypeCode === "1100" || whrgData.relativeEntrp === null))
-                  ? (whrgData.userTypeCode === "1100")
+                    ? (whrgData.userTypeCode === "1100")
                     ? whrgData.userName + " " + whrgData.mobile.no1 + "-" + whrgData.mobile.no2 + "-" + whrgData.mobile.no3
                     : whrgData.mobile.no1 + "-" + whrgData.mobile.no2 + "-" + whrgData.mobile.no3
-                  : ""  
+                    : ""
                 }
 
               </Text>
-                            
+
             </View>
-            
-              
-            
-            
+
 
             <Text style={S.header}>{whrgData.name} </Text>
             <View style={S.labels}>
@@ -544,7 +540,7 @@ class DetailWH extends Component {
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
 
-            {/** 창고 이미지 */}
+            {/** 창고 이미지 책임 */}
             {whrgData.whImages && whrgData.whImages.length > 0 && (
               <>
 
@@ -561,10 +557,23 @@ class DetailWH extends Component {
                        inputType="mono"
                        imageUrl={whrgData.pnImages[0].url}
                        />*/}
-                      <Loading loading={loading} />
-                      <Image
-                        style={S.backgroundImage}
-                        source={pnImagesUrl ? { uri: pnImagesUrl } : ''}
+                      {/*<Loading loading={loading} />*/}
+                      <Image2
+                        style={[S.backgroundImage,]}
+                        source={{ uri: whrgData.pnImages && whrgData.pnImages.length > 0 ? whrgData.pnImages[0].url : '' }}
+                        // source={pnImagesUrl ? { uri: pnImagesUrl } : ''}
+                        PlaceholderContent={<View style={[S.bgrRegister, {
+                          position: 'absolute',
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: 238,
+                        }]}>
+                          <View style={{ height: 40 }}><Progress /></View>
+                        </View>}
                       />
                     </TouchableOpacity>
                     :
@@ -613,43 +622,43 @@ class DetailWH extends Component {
             <View style={S.info}>
               <Text style={DefaultStyle._textTitleBody}>창고 정보</Text>
               <View style={DefaultStyle.row}>
-              {
-                checkTrust===true ?
-              <Fragment>
-              
-                <TouchableOpacity
-                  style={[S.btnTabBarLeft, active === 1 ? S.activeBtn : null]}
-                  onPress={() => this.setState({ active: 1 })}>
-                  <Text style={[S.textBtn, active === 1 ? S.activeText : null]}>
-                    수탁
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[S.btnTabBarRight, active === 0 ? S.activeBtn : null]}
-                  onPress={() => this.setState({ active: 0 })}>
-                  <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
-                    임대
-                  </Text>
-                </TouchableOpacity>
-              </Fragment>:
-              <Fragment>
-              <TouchableOpacity
-                  style={[S.btnTabBarLeft, active === 0 ? S.activeBtn : null]}
-                  onPress={() => this.setState({ active: 0 })}>
-                  <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
-                    임대
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[S.btnTabBarRight, active === 1 ? S.activeBtn : null]}
-                  onPress={() => this.setState({ active: 1 })}>
-                  <Text style={[S.textBtn, active === 1 ? S.activeText : null]}>
-                    수탁
-                  </Text>
-                </TouchableOpacity>
-              </Fragment>
-              }
-                
+                {
+                  checkTrust === true ?
+                    <Fragment>
+
+                      <TouchableOpacity
+                        style={[S.btnTabBarLeft, active === 1 ? S.activeBtn : null]}
+                        onPress={() => this.setState({ active: 1 })}>
+                        <Text style={[S.textBtn, active === 1 ? S.activeText : null]}>
+                          수탁
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[S.btnTabBarRight, active === 0 ? S.activeBtn : null]}
+                        onPress={() => this.setState({ active: 0 })}>
+                        <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
+                          임대
+                        </Text>
+                      </TouchableOpacity>
+                    </Fragment> :
+                    <Fragment>
+                      <TouchableOpacity
+                        style={[S.btnTabBarLeft, active === 0 ? S.activeBtn : null]}
+                        onPress={() => this.setState({ active: 0 })}>
+                        <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
+                          임대
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[S.btnTabBarRight, active === 1 ? S.activeBtn : null]}
+                        onPress={() => this.setState({ active: 1 })}>
+                        <Text style={[S.textBtn, active === 1 ? S.activeText : null]}>
+                          수탁
+                        </Text>
+                      </TouchableOpacity>
+                    </Fragment>
+                }
+
               </View>
 
               {/***** Keep (임대) *****/}
@@ -767,7 +776,7 @@ class DetailWH extends Component {
                               keep.splyAmount
                                 ? StringUtils.money(keep.splyAmount)
                                 : '-'
-                              }`}
+                            }`}
                           </Text>
                         </View>
                         <View style={S.tableRow}>
@@ -779,7 +788,7 @@ class DetailWH extends Component {
                               keep.mgmtChrg
                                 ? StringUtils.money(keep.mgmtChrg)
                                 : '-'
-                              }`}
+                            }`}
                           </Text>
                         </View>
                         <View style={S.tableRow}>
@@ -963,7 +972,7 @@ class DetailWH extends Component {
                               trust.splyAmount
                                 ? StringUtils.money(trust.splyAmount)
                                 : '-'
-                              }`}
+                            }`}
                           </Text>
                         </View>
 
@@ -977,7 +986,7 @@ class DetailWH extends Component {
                               trust.whinChrg
                                 ? StringUtils.money(trust.whinChrg)
                                 : '-'
-                              }`}
+                            }`}
                           </Text>
                         </View>
                         <View style={S.tableRow}>
@@ -989,7 +998,7 @@ class DetailWH extends Component {
                               trust.whoutChrg
                                 ? StringUtils.money(trust.whoutChrg)
                                 : '-'
-                              }`}
+                            }`}
                           </Text>
                         </View>
                         {/* <View style={S.tableRow}>
@@ -1135,7 +1144,7 @@ class DetailWH extends Component {
                     whrgData.relativeEntrp === undefined
                       ? ''
                       : whrgData.roadAddr.detail
-                    }`
+                  }`
                   : '-'}
               </Text>
               <View style={DefaultStyle._card}>
@@ -1153,8 +1162,8 @@ class DetailWH extends Component {
                             : 0,
                         address: whrgData.roadAddr
                           ? `${whrgData.roadAddr.address} ${
-                              whrgData.roadAddr.detail
-                            }`
+                            whrgData.roadAddr.detail
+                          }`
                           : '',
                       });
                     }}>
@@ -1241,8 +1250,8 @@ class DetailWH extends Component {
                         {`${
                           whrgData.addOptDvCodes
                             ? whrgData.addOptDvCodes
-                                .map(code => code?.stdDetailCodeName)
-                                .join(',')
+                              .map(code => code?.stdDetailCodeName)
+                              .join(',')
                             : ''
                         }`}
                       </Text>
@@ -1265,8 +1274,8 @@ class DetailWH extends Component {
                         {`${
                           whrgData.insrDvCodes
                             ? whrgData.insrDvCodes
-                                .map(code => code?.stdDetailCodeName)
-                                .join(',')
+                              .map(code => code?.stdDetailCodeName)
+                              .join(',')
                             : ''
                         }`}
                       </Text>
@@ -1599,7 +1608,7 @@ class DetailWH extends Component {
     );
   }
 
-  async getDataWH() {
+  async getDataWH () {
     const { id } = this.state;
 
     let params = {
@@ -1614,8 +1623,8 @@ class DetailWH extends Component {
       checkTrust: warehouse.data.hasKeep === false && warehouse.data.hasTrust === true ? true : false,
     });
     if (warehouse.data.pnImages[0]) {
-      this.setState({loading:true})
-      this.infoImage(warehouse.data.pnImages[0].url);
+      // this.setState({ loading: true })
+      // this.infoImage(warehouse.data.pnImages[0].url);
     }
     const dataTabs = [];
     warehouse.data.floors.forEach(element => {
@@ -1675,7 +1684,7 @@ class DetailWH extends Component {
   }
 
   handleRequestQnaList = q_size => {
-    console.log(':::::::::::::::::::::::::::::::::::::::::::::REFRESH QNA');
+    // console.log(':::::::::::::::::::::::::::::::::::::::::::::REFRESH QNA');
     const { id } = this.state;
     let qnaParams = {
       id: id,
@@ -1683,7 +1692,7 @@ class DetailWH extends Component {
       page: 0,
       requiresToken: false,
     };
-    console.log(qnaParams, 'qnaParams');
+    // console.log(qnaParams, 'qnaParams');
     Warehouse.pageWhrgQnA(qnaParams)
       .then(res => {
         if (res && res._embedded && res._embedded) {
@@ -1697,7 +1706,7 @@ class DetailWH extends Component {
             };
           });
 
-          console.log('newFQAList', res._embedded.questions);
+          // console.log('newFQAList', res._embedded.questions);
           this.setState({ qnaList: res && res._embedded && res._embedded.questions ? res._embedded.questions : [] });
           // this.setState({ qnaList: newFQAList });
           this.setState({ pageInfo: res.page });
@@ -1710,13 +1719,13 @@ class DetailWH extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {};
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     setProgress: status => {
       dispatch(ActionCreator.setProgress(status));
