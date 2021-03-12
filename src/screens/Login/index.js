@@ -301,7 +301,7 @@ class Login extends Component {
             </Button>
 
             <View style={{ marginTop: 40 }}>
-              <TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}
+              {/* <TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}
                                 onPress={() => this.handleSNSLogin('kakao')}>
                 <Image source={kakao} style={[S.snsImg]} />
                 <Text style={S.snsText}>카카오톡으로 로그인</Text>
@@ -315,7 +315,7 @@ class Login extends Component {
                                 onPress={() => this.handleSNSLogin('google')}>
                 <Image source={google} style={[S.snsImg]} />
                 <Text style={S.snsText}>구글로 로그인</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               {/*<TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}*/}
               {/*                  onPress={() => this.handleSNSLogin('apple')}>*/}
               {/*  <Image source={apple} style={[S.snsImg]} />*/}
