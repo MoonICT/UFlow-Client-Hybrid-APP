@@ -93,7 +93,7 @@ class WarehouseType extends Component {
           </View>
           <View style={[S.container, {paddingBottom: 80}]}>
             <Image source={illust21} />
-            <Text style={[S.title, {marginBottom: 0}]}>UFLOW 책임형</Text>
+            <Text style={[S.title, {marginBottom: 0}]}>UFLOW 의뢰형</Text>
             <Text style={{marginBottom: 10}}>(직영, 가맹, 일반창고)</Text>
             <TouchableOpacity
               style={[DefaultStyle._btnOutline, S.btnType]}

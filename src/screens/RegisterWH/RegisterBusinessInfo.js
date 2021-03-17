@@ -351,10 +351,10 @@ class RegisterBusinessInfo extends Component {
       return false;
     }
 
-    if (!businessInfo.regFile) {
-      alert('사업자등록증을 업로드 하세요.');
-      return false;
-    }
+    // if (!businessInfo.regFile) {
+    //   alert('사업자등록증을 업로드 하세요.');
+    //   return false;
+    // }
 
     this.setState({ loading: true });
     // 창고주 정보 등록
@@ -534,7 +534,7 @@ class RegisterBusinessInfo extends Component {
                     value={businessInfo.number ? businessInfo.number : ''}
                   />
 
-                  <Text style={DefaultStyle._textDF}>
+                  {/* <Text style={DefaultStyle._textDF}>
                     - 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.
                   </Text>
                   <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>
@@ -561,7 +561,7 @@ class RegisterBusinessInfo extends Component {
                       ]}>
                       {'사업자등록증 업로드'}
                     </Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <View
                     style={[
                       DefaultStyle._listBtn,

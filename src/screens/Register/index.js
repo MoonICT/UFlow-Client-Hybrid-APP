@@ -358,7 +358,7 @@ class Register extends Component {
                     </Text>
                   </View>
                   {/** ----------Terms 3 ------------*/}
-                  <View style={[S.itemTerm, S.itemTermMr]}>
+                  {/* <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
                       checked={terms.location}
                       onPress={() => {
@@ -382,9 +382,9 @@ class Register extends Component {
                       }>
                       위치기반서비스 이용약관 (필수)
                     </Text>
-                  </View>
+                  </View> */}
                   {/** ----------Terms 4 ------------*/}
-                  <View style={[S.itemTerm, S.itemTermMr]}>
+                  {/* <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
                       checked={terms.financial}
                       onPress={() => {
@@ -408,7 +408,7 @@ class Register extends Component {
                       }>
                       전자금융거래이용약관 사용 여부 (필수)
                     </Text>
-                  </View>
+                  </View> */}
                   {/** ----------Terms 5 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
