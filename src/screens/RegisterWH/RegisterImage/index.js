@@ -26,6 +26,8 @@ import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { Warehouse } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
+import ImageResizer from 'react-native-image-resizer';
+import RNFetchBlob from 'rn-fetch-blob';
 
 class RegisterImage extends Component {
   constructor (props) {
@@ -94,6 +96,25 @@ class RegisterImage extends Component {
   //   }
   // };
 
+  handleResizerImage = (data) => {
+    return new Promise(function (resolve, reject) {
+      const outputPath = `${RNFetchBlob.fs.dirs.DocumentDir}`;
+      ImageResizer.createResizedImage(
+        data.uri,
+        data.width,
+        data.height,
+        'JPEG',
+        100,
+        0,
+        outputPath,
+        true,
+      ).then(response => {
+        console.log(':::::: 이미지 책임 변환 :::::::::', response)
+        resolve(response)
+      });
+    });
+  }
+
   handlePicker = async (type) => {
     let options = {
       storageOptions: {
@@ -103,12 +124,20 @@ class RegisterImage extends Component {
     };
 
     try {
-      launchImageLibrary(options, response => {
-        console.log('image response ::: ', response);
-        console.log('image response ::: ', response.originalRotation);
+      launchImageLibrary(options, async (response) => {
+        console.log('image response ::: ', response)
+
+
+        // 파노라마 이미지일 경우.
+        let resultImage = response.uri
+        // if (type === '002') {
+        //   let resizeImage = await this.handleResizerImage(response)
+        //   resultImage = resizeImage.uri
+        //   console.log('==========resizeImage==========', resizeImage)
+        // }
 
         let file = {
-          fileCopyUri: response.uri,
+          fileCopyUri: resultImage,
           name: response.fileName,
           size: response.fileSize,
           type: response.type,

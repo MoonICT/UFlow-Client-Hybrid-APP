@@ -44,9 +44,6 @@ import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import { PanoramaView } from '@lightbase/react-native-panorama-view';
-import ImageResizer from 'react-native-image-resizer';
-import RNFetchBlob from 'rn-fetch-blob';
-import Loading from '@Components/atoms/Loading';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -316,37 +313,6 @@ class DetailWH extends Component {
     }
   };
 
-  infoImage = e => {
-    const outputPath = `${RNFetchBlob.fs.dirs.DocumentDir}`;
-
-    console.log('==================')
-    ImageResizer.createResizedImage(
-      e,
-      2 * windowWidth,
-      windowHeight,
-      'JPEG',
-      100,
-      0,
-      outputPath,
-      true,
-    ).then(response => {
-      let imageUri = response.uri;
-      console.log(':::::: 이미지 책임 변환 :::::::::', imageUri)
-      if (imageUri) {
-        this.setState({
-          // pnImagesUrl: imageUri,
-          // loading: false
-        });
-        if (Platform.OS === 'ios') {
-          // let imageUriIOS = imageUri.split('file://')[1];
-          // this.setState({ pnImagesUrl: imageUri,loading:false });
-        } else {
-          // this.setState({ pnImagesUrl: imageUri,loading:false });
-        }
-      }
-    });
-  };
-
   render () {
     const {
       active,
@@ -540,7 +506,7 @@ class DetailWH extends Component {
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
 
-            {/** 창고 이미지 책임 */}
+            {/** 창고 이미지 */}
             {whrgData.whImages && whrgData.whImages.length > 0 && (
               <>
 
