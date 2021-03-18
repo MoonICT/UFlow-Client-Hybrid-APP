@@ -14,6 +14,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { TextInput, Appbar, Text, Button } from 'react-native-paper';
 import { Modalize } from 'react-native-modalize';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
@@ -135,6 +136,38 @@ class Login extends Component {
   }
 
   /**
+   * 애플 로그인.
+   */
+  async onAppleButtonPress () {
+    try {
+      // performs login request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // get current authentication state for user
+      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+      const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+
+      // use credentialState response to ensure the user is authenticated
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        // user is authenticated
+        console.log('APPLE LOGIN ::: user is authenticated')
+      }
+    } catch (error) {
+      console.log('APPLE LOGIN ERROR :::', error);
+      if (error.code === appleAuth.Error.CANCELED) {
+        console.log('APPLE LOGIN ::: canceled');
+        alert('애플 로그인이 취소되었습니다.')
+      } else {
+        console.log('APPLE LOGIN ::: error');
+        alert('애플 로그인을 실패했습니다.')
+      }
+    }
+  }
+
+  /**
    * SNS 로그인 웹뷰 실행.
    * */
   handleSNSLogin = (provider) => {
@@ -153,7 +186,7 @@ class Login extends Component {
           this.sheetRef.current.open()
           break;
         case 'apple':
-          alert('준비중입니다.')
+          this.onAppleButtonPress()
           break;
       }
     }
@@ -185,7 +218,8 @@ class Login extends Component {
           panGestureEnabled={false}
           disableScrollIfPossible={false}
           scrollViewProps={{
-            scrollEnabled: false }}
+            scrollEnabled: false
+          }}
           modalStyle={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, }}
           handleStyle={{ backgroundColor: 'white', }}
           HeaderComponent={
@@ -317,11 +351,12 @@ class Login extends Component {
                 <Image source={google} style={[S.snsImg]} />
                 <Text style={S.snsText}>구글로 로그인</Text>
               </TouchableOpacity>
-              {/*<TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}*/}
-              {/*                  onPress={() => this.handleSNSLogin('apple')}>*/}
-              {/*  <Image source={apple} style={[S.snsImg]} />*/}
-              {/*  <Text style={S.snsText}>애플로 로그인</Text>*/}
-              {/*</TouchableOpacity>*/}
+              {Platform.OS === 'ios' &&
+              <TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}
+                                onPress={() => this.handleSNSLogin('apple')}>
+                <Image source={apple} style={[S.snsImg]} />
+                <Text style={S.snsText}>애플로 로그인</Text>
+              </TouchableOpacity>}
             </View>
 
             <View style={[S.plusFormLogin, S.forgot]}>
