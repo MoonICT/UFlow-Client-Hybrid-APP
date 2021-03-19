@@ -109,7 +109,7 @@ class Login extends Component {
     // data.password = 'wotkd123';
 
     if (data.email === '' || data.password === '') {
-      showPopup({ title: 'UFLOW', content: getMsg(this.props.lang, 'ACC0050', '로그인 정보를 입력하세요.'), type: 'confirm' });
+      showPopup({ title: 'UFLOW', content: getMsg(this.props.lang, 'ML0050', '로그인 정보를 입력하세요.'), type: 'confirm' });
     } else {
       this.setState({ loading: true });
       // Sign in
@@ -131,7 +131,7 @@ class Login extends Component {
         })
         .catch(error => {
           this.setState({ loading: false });
-          showPopup({ title: 'UFLOW', content: getMsg(this.props.lang, 'ACC0049', '로그인 정보를 입력하세요.'), type: 'confirm' });
+          showPopup({ title: 'UFLOW', content: getMsg(this.props.lang, 'ML0049', '로그인 정보를 입력하세요.'), type: 'confirm' });
         });
     }
     // console.log('loginData==>', loginData);
@@ -176,7 +176,7 @@ class Login extends Component {
               onPress={() => {
                 isLogin
                   ? this.navigation.navigate('Home')
-                  : alert(getMsg(this.props.lang, 'ACC0051', '로그인을 해주세요.'));
+                  : alert(getMsg(this.props.lang, 'ML0051', '로그인을 해주세요.'));
               }}
             />
           </Appbars>
@@ -240,7 +240,7 @@ class Login extends Component {
           <Image source={Logo} alt="logo" style={[S.titleLogin]} />
           <View style={S.formLogin}>
             <TextInput
-              label={getMsg(this.props.lang, 'ACC0013', '이메일')}
+              label={getMsg(this.props.lang, 'ML0013', '이메일')}
               mode="outlined"
               value={email}
               type="number"
@@ -251,7 +251,7 @@ class Login extends Component {
               }}
             />
             <TextInput
-              label={getMsg(this.props.lang, 'ACC0014', '비밀번호')}
+              label={getMsg(this.props.lang, 'ML0014', '비밀번호')}
               mode="outlined"
               value={password}
               type="text"
@@ -271,7 +271,7 @@ class Login extends Component {
                   }}
                 />
                 <Text style={[S.fontS14]}>
-                  {getMsg(this.props.lang, 'ACC0010', '자동 로그인')}
+                  {getMsg(this.props.lang, 'ML0010', '자동 로그인')}
                 </Text>
               </View>
               <View style={S.ortherLink}>
@@ -286,7 +286,7 @@ class Login extends Component {
                 <Text
                   style={[S.fontS14]}
                   onPress={() => this.navigation.navigate('FindPassWord')}>
-                  {getMsg(this.props.lang, 'ACC0004', '비밀번호 찾기')}
+                  {getMsg(this.props.lang, 'ML0004', '비밀번호 찾기')}
                 </Text>
               </View>
             </View>
@@ -305,7 +305,7 @@ class Login extends Component {
                   password,
                 });
               }}>
-              {getMsg(this.props.lang, 'CMN0001', '확인')}
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
 
             <View style={{ marginTop: 40 }}>
@@ -313,21 +313,21 @@ class Login extends Component {
                                 onPress={() => this.handleSNSLogin('kakao')}>
                 <Image source={kakao} style={[S.snsImg]} />
                 <Text style={S.snsText}>
-                  {getMsg(this.props.lang, 'ACC0005', '카카오톡으로 로그인')}
+                  {getMsg(this.props.lang, 'ML0005', '카카오톡으로 로그인')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}
                                 onPress={() => this.handleSNSLogin('naver')}>
                 <Image source={naver} style={[S.snsImg]} />
                 <Text style={S.snsText}>
-                  {getMsg(this.props.lang, 'ACC0006', '네이버로 로그인')}
+                  {getMsg(this.props.lang, 'ML0006', '네이버로 로그인')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}
                                 onPress={() => this.handleSNSLogin('google')}>
                 <Image source={google} style={[S.snsImg]} />
                 <Text style={S.snsText}>
-                  {getMsg(this.props.lang, 'ACC0007', '구글로 로그인')}
+                  {getMsg(this.props.lang, 'ML0007', '구글로 로그인')}
                 </Text>
               </TouchableOpacity>
               {Platform.OS === 'ios' &&
@@ -335,21 +335,21 @@ class Login extends Component {
                                 onPress={() => this.handleSNSLogin('apple')}>
                 <Image source={apple} style={[S.snsImg]} />
                 <Text style={S.snsText}>
-                  {getMsg(this.props.lang, 'ACC0008', '애플로 로그인')}
+                  {getMsg(this.props.lang, 'ML008', '애플로 로그인')}
                 </Text>
               </TouchableOpacity>}
             </View>
 
             <View style={[S.plusFormLogin, S.forgot]}>
               <Text style={[S.ask, S.fontS14]}>
-                {getMsg(this.props.lang, 'ACC0009', '유플로우가 처음이신가요?')}
+                {getMsg(this.props.lang, 'ML0009', '유플로우가 처음이신가요?')}
               </Text>
               <Text
                 style={[S.mrL10, S.fontS14]}
                 onPress={() => {
                   this.navigation.navigate('Register');
                 }}>
-                {getMsg(this.props.lang, 'ACC0003', '회원가입')}
+                {getMsg(this.props.lang, 'ML0003', '회원가입')}
               </Text>
             </View>
           </View>

@@ -104,7 +104,7 @@ class ForgotPass extends Component {
         {/*  />*/}
         {/*</Appbars>*/}
         <HistoryBackActionBar
-          title={isConfirmEmail === false ? getMsg(this.props.lang, 'ACC0004', '비밀번호 찾기') : getMsg(this.props.lang, 'ACC0027', '비밀번호 재설정')}
+          title={isConfirmEmail === false ? getMsg(this.props.lang, 'ML0004', '비밀번호 찾기') : getMsg(this.props.lang, 'ML0027', '비밀번호 재설정')}
           navigation={this.navigation}
         />
 
@@ -115,7 +115,7 @@ class ForgotPass extends Component {
               <View style={S.body}>
                 <Text
                   style={[DefaultStyle._textTitleCard, { marginBottom: 18 }]}>
-                  {getMsg(this.props.lang, 'ACC0048', '이메일 주소를 입력해 주세요.')}
+                  {getMsg(this.props.lang, 'ML0048', '이메일 주소를 입력해 주세요.')}
                 </Text>
                 <TextField
                   labelTextField="이메일"
@@ -130,7 +130,7 @@ class ForgotPass extends Component {
                     email !== '' ? this.sendEmail() : null;
                   }}>
                   <Text style={[DefaultStyle._textButton, S.textConfirm]}>
-                    {getMsg(this.props.lang, 'CMN0001', '확인')}
+                    {getMsg(this.props.lang, 'ML0100', '확인')}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -138,11 +138,11 @@ class ForgotPass extends Component {
           ) : (
             <View style={[S.body, { marginTop: 24 }]}>
               <Text style={[DefaultStyle._textTitleCard, { marginBottom: 18 }]}>
-                {getMsg(this.props.lang, 'ACC0028', '인증이 완료되었습니다.')}{'\n'}
-                {getMsg(this.props.lang, 'ACC0029', '새로운 비밀번호를 설정해 주세요.')}
+                {getMsg(this.props.lang, 'ML0028', '인증이 완료되었습니다.')}{'\n'}
+                {getMsg(this.props.lang, 'ML0029', '새로운 비밀번호를 설정해 주세요.')}
               </Text>
               <TextField
-                labelTextField={getMsg(this.props.lang, 'ACC0014', '비밀번호')}
+                labelTextField={getMsg(this.props.lang, 'ML0014', '비밀번호')}
                 colorLabel="#000000"
                 styleProps={{ borderColor: '#d7d7d7' }}
                 textContentType="password"
@@ -150,7 +150,7 @@ class ForgotPass extends Component {
                 valueProps={e => this.setState({ newPass: e })}
               />
               <TextField
-                labelTextField={getMsg(this.props.lang, 'ACC0015', '비밀번호 확인')}
+                labelTextField={getMsg(this.props.lang, 'ML0015', '비밀번호 확인')}
                 colorLabel="#000000"
                 styleProps={{ borderColor: '#d7d7d7' }}
                 textContentType="password"
@@ -166,7 +166,7 @@ class ForgotPass extends Component {
                     : null;
                 }}>
                 <Text style={[DefaultStyle._textButton, S.textConfirm]}>
-                  {getMsg(this.props.lang, 'CMN0001', '확인')}
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -184,12 +184,12 @@ class ForgotPass extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            {getMsg(this.props.lang, 'ACC0030', '이메일 전송 완료')}
+            {getMsg(this.props.lang, 'ML0030', '이메일 전송 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              {getMsg(this.props.lang, 'ACC0031', '입력하신 이메일로 비밀번호 재설정 메일을 발송했습니다.')}
-              {getMsg(this.props.lang, 'ACC0032', '이메일을 확인해 주세요.')}
+              {getMsg(this.props.lang, 'ML0031', '입력하신 이메일로 비밀번호 재설정 메일을 발송했습니다.')}
+              {getMsg(this.props.lang, 'ML0032', '이메일을 확인해 주세요.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -199,7 +199,7 @@ class ForgotPass extends Component {
                 this.hideDialog();
                 // this.setState({ isConfirmEmail: true });
               }}>
-              {getMsg(this.props.lang, 'CMN0001', '확인')}
+              {getMsg(this.props.lang, 'ML0001', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -213,12 +213,12 @@ class ForgotPass extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            {getMsg(this.props.lang, 'ACC0033', '비밀번호 재설정 완료')}
+            {getMsg(this.props.lang, 'ML0033', '비밀번호 재설정 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              {getMsg(this.props.lang, 'ACC0034', '비밀번호 재설정을 완료했습니다.')}{'\n'}
-              {getMsg(this.props.lang, 'ACC0035', '변경하신 비밀번호로 다시 로그인을 진행해 주세요.')}
+              {getMsg(this.props.lang, 'ML0034', '비밀번호 재설정을 완료했습니다.')}{'\n'}
+              {getMsg(this.props.lang, 'ML0035', '변경하신 비밀번호로 다시 로그인을 진행해 주세요.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -228,7 +228,7 @@ class ForgotPass extends Component {
                 this.hideConfirmPass();
                 this.setState({ isConfirmEmail: true });
               }}>
-              {getMsg(this.props.lang, 'CMN0001', '확인')}
+              {getMsg(this.props.lang, 'ML0001', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
