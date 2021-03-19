@@ -61,6 +61,9 @@ class FormInfo extends Component {
       ],
     };
     this.navigation = props.navigation;
+
+
+    
   }
 
   /** listener when change props */
@@ -125,6 +128,7 @@ class FormInfo extends Component {
     this.setState({ selectedValue: selectedValue });
   }
   render() {
+    
     const {
       data,
       valueTab,
@@ -193,7 +197,7 @@ class FormInfo extends Component {
     let defaulcmgmtChrg =
       formData &&
       mgmtChrgDvCodes &&
-      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCodes);
+      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
     return (
       <Card style={S.cards}>
         <View style>
@@ -246,7 +250,7 @@ class FormInfo extends Component {
           />
 
           <Select
-            data={mgmtChrgDvCodes && mgmtChrgDvCodes}
+            data={mgmtChrgDvCodes}
             // selectedValue={formData.mgmtChrgDvCode}
             valueSelected={
               defaulcmgmtChrg !== undefined ? defaulcmgmtChrg.label : ''
@@ -257,6 +261,7 @@ class FormInfo extends Component {
               let dataF = formData;
               dataF.mgmtChrgDvCode = e;
               valueForm && valueForm(dataF);
+              console.log("dataF ::: " , dataF);
             }}
           />
 {/**
