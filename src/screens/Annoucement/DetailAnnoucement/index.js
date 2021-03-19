@@ -27,6 +27,8 @@ import { Annoucement } from '@Services/apis';
 import {StringUtils} from '@Services/utils';
 import HTML from 'react-native-render-html';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class RegisterInfo extends Component {
   constructor(props) {
     super(props);
@@ -76,7 +78,7 @@ class RegisterInfo extends Component {
           />
         </Appbars> */}
           <HistoryBackActionBar
-            title={'공지사항'}
+            title={getMsg(this.props.lang, 'ML0054', '공지사항')}
             navigation={this.navigation}
           />
         <ScrollView>
