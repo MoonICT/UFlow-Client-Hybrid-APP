@@ -19,6 +19,7 @@ import Appbars from '@Components/organisms/AppBar';
 import RangeSlider from '@Components/atoms/RangeSlider';
 import Checkbox from '@Components/atoms/Checkbox';
 import { numberComma } from '@Services/utils/StringUtils';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 /*TODO 임시 값 (추후 변경 필요)*/
 let siteAreaMax = 13200; // 대지면적 최대
@@ -96,13 +97,15 @@ class FilterOther extends Component {
             />
           </TouchableOpacity>
           <Appbar.Content
-            title="추가 필터"
+            title={getMsg(this.props.lang, 'ML0114', '추가 필터')}
             color="rgba(0, 0, 0, 0.76)"
             titleStyle={styles.filterOtherHeaderTitle}
             style={[DefaultStyle.headerTitle, styles.filterOtherHeaderContainer]}
           />
           <TouchableOpacity onPress={this.handleResetAddFilter}>
-            <Text style={styles.filterOtherHeaderSubTitle}>초기화</Text>
+            <Text style={styles.filterOtherHeaderSubTitle}>
+              {getMsg(this.props.lang, 'ML0113', '초기화')}
+            </Text>
           </TouchableOpacity>
         </Appbars>
 
@@ -200,12 +203,14 @@ class FilterOther extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'층고'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+                {getMsg(this.props.lang, 'ML0115', '층고')}
+              </Text>
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
               {(Number(this.props.whFilter.flrHi) === flrHiMax || Number(this.props.whFilter.flrHi) === 0) ?
-                '전체' : this.props.whFilter.flrHi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + 'm'}
+                getMsg(this.props.lang, 'ML0119', '전체') : this.props.whFilter.flrHi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + 'm'}
             </Text>
           </View>
 
@@ -229,7 +234,9 @@ class FilterOther extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'층수'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+                {getMsg(this.props.lang, 'ML0116', '층수')}
+              </Text>
             </View>
           </View>
 
@@ -274,7 +281,9 @@ class FilterOther extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'접안방식'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+                {getMsg(this.props.lang, 'ML0117', '접안방식')}
+              </Text>
             </View>
           </View>
 
@@ -296,7 +305,9 @@ class FilterOther extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'보험가입 여부'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+                {getMsg(this.props.lang, 'ML0118', '보험가입 여부')}
+              </Text>
             </View>
           </View>
 
@@ -361,7 +372,9 @@ class FilterOther extends Component {
             <Button mode="contained"
                     style={[styles.btn, styles.btnPrimary]}
                     labelStyle={[styles.btnLabel, styles.btnLabelPrimary, styles.filterOtherBtn]}
-                    onPress={() => this._onClickApply()}>적용하기</Button>
+                    onPress={() => this._onClickApply()}>
+              {getMsg(this.props.lang, 'ML0112', '적용하기')}
+            </Button>
           </View>
 
         </ScrollView>
