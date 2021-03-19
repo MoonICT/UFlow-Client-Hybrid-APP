@@ -139,7 +139,9 @@ class DetailWH extends Component {
         }
       })
       .catch(error => {
-        alert('DetailWH componentDidMount error:' + error);
+        
+        this.props.showPopup({ title: 'UFLOW', content: 'DetailWH componentDidMount error:' + error, type: 'confirm' });
+        
       });
     MyPage.getDetailCodes('WHRG0010')
       .then(res => {
@@ -166,7 +168,9 @@ class DetailWH extends Component {
         }, 300);
       })
       .catch(error => {
-        alert('WHRG0010:' + error);
+      
+        this.props.showPopup({ title: 'UFLOW', content: error, type: 'confirm' });
+
         this.props.setProgress({ is: false });
       });
   }
@@ -188,7 +192,7 @@ class DetailWH extends Component {
           alert(error.response.data.message);
         });
     } else {
-      alert('로그인 후 이용해주세요.');
+      this.props.showPopup({ title: 'UFLOW', content: '로그인 후 이용해주세요.', type: 'confirm' });
     }
   };
 
@@ -775,7 +779,7 @@ class DetailWH extends Component {
                           <Text style={[S.textTable, S.textLeftTable]}>
                             비고
                           </Text>
-                          <Text style={S.textTable}>{keep.remark}</Text>
+                          <Text style={S.textTable}>{keep.remark? keep.remark : '-'}</Text>
                         </View>
                         <View style={S.tableRow}>
                           {/* 견적 요청 가능 상태인지 체크 */}
@@ -1035,7 +1039,7 @@ class DetailWH extends Component {
                           <Text style={[S.textTable, S.textLeftTable]}>
                             비고
                           </Text>
-                          <Text style={S.textTable}>{trust.remark}</Text>
+                          <Text style={S.textTable}>{trust.remark ? trust.remark : '-'}</Text>
                         </View>
                         <View style={S.tableRow}>
                           {trust.enable ? (
@@ -1403,7 +1407,8 @@ class DetailWH extends Component {
             <View style={S.info}>
               <View style={S.titleView}>
                 <Text style={S.title}>
-                  문의 ({pageInfo.totalElements ? pageInfo.totalElements : 0})
+                  문의 
+                  {/* ({pageInfo.totalElements ? pageInfo.totalElements : 0}) */}
                 </Text>
                 <View style={S.rightTitle}>
                   <TouchableOpacity
@@ -1711,6 +1716,9 @@ function mapDispatchToProps (dispatch) {
   return {
     setProgress: status => {
       dispatch(ActionCreator.setProgress(status));
+    },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
     },
   };
 }
