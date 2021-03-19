@@ -16,6 +16,8 @@ import WVMsgService from '@Services/WebViewMessageService';
 
 import { API_CLIENT_ADDRESS } from '@Constant';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 class RadarChartScreen extends React.Component {
@@ -80,7 +82,7 @@ class RadarChartScreen extends React.Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="물류컨설팅"
+            title={getMsg(this.props.lang, 'ML0436', '물류컨설팅')}
             titleStyle={DefaultStyle.headerTitle}
           />
         </Appbars>
