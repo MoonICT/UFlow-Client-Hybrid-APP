@@ -42,6 +42,7 @@ import WHType2 from '@Assets/images/icon-warehouse-2.png';
 import WHType3 from '@Assets/images/icon-warehouse-3.png';
 import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
+import WHPlaceholder from '@Assets/images/WHPlaceholder.jpeg';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import { PanoramaView } from '@lightbase/react-native-panorama-view';
 
@@ -506,7 +507,19 @@ class DetailWH extends Component {
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
 
-            {/** 창고 이미지 */}
+            {/** 창고 이미지 
+             *  이미지가 없는경우 기본이미지로 처리.
+            */}
+            {whrgData.whImages && whrgData.whImages.length == 0 && (
+              <View style={S.background}>
+                <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>
+                    <Image
+                      style={S.backgroundImage}
+                      source={WHPlaceholder}
+                    />
+                  </TouchableOpacity>
+              </View>
+            )}
             {whrgData.whImages && whrgData.whImages.length > 0 && (
               <>
 
