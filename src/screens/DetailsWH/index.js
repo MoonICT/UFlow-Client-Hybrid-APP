@@ -42,6 +42,7 @@ import WHType2 from '@Assets/images/icon-warehouse-2.png';
 import WHType3 from '@Assets/images/icon-warehouse-3.png';
 import WHType4 from '@Assets/images/icon-warehouse-4.png';
 import WHType6 from '@Assets/images/icon-warehouse-6.png';
+import WHPlaceholder from '@Assets/images/WHPlaceholder.jpeg';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import { PanoramaView } from '@lightbase/react-native-panorama-view';
 
@@ -138,7 +139,9 @@ class DetailWH extends Component {
         }
       })
       .catch(error => {
-        alert('DetailWH componentDidMount error:' + error);
+        
+        this.props.showPopup({ title: 'UFLOW', content: 'DetailWH componentDidMount error:' + error, type: 'confirm' });
+        
       });
     MyPage.getDetailCodes('WHRG0010')
       .then(res => {
@@ -165,7 +168,9 @@ class DetailWH extends Component {
         }, 300);
       })
       .catch(error => {
-        alert('WHRG0010:' + error);
+      
+        this.props.showPopup({ title: 'UFLOW', content: error, type: 'confirm' });
+
         this.props.setProgress({ is: false });
       });
   }
@@ -187,7 +192,7 @@ class DetailWH extends Component {
           alert(error.response.data.message);
         });
     } else {
-      alert('로그인 후 이용해주세요.');
+      this.props.showPopup({ title: 'UFLOW', content: '로그인 후 이용해주세요.', type: 'confirm' });
     }
   };
 
@@ -506,7 +511,19 @@ class DetailWH extends Component {
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
 
-            {/** 창고 이미지 */}
+            {/** 창고 이미지 
+             *  이미지가 없는경우 기본이미지로 처리.
+            */}
+            {whrgData.whImages && whrgData.whImages.length == 0 && (
+              <View style={S.background}>
+                <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>
+                    <Image
+                      style={S.backgroundImage}
+                      source={WHPlaceholder}
+                    />
+                  </TouchableOpacity>
+              </View>
+            )}
             {whrgData.whImages && whrgData.whImages.length > 0 && (
               <>
 
@@ -583,6 +600,7 @@ class DetailWH extends Component {
                 />
               </>
             )}
+
 
             {/** 창고 정보 */}
             <View style={S.info}>
@@ -761,7 +779,7 @@ class DetailWH extends Component {
                           <Text style={[S.textTable, S.textLeftTable]}>
                             비고
                           </Text>
-                          <Text style={S.textTable}>{keep.remark}</Text>
+                          <Text style={S.textTable}>{keep.remark? keep.remark : '-'}</Text>
                         </View>
                         <View style={S.tableRow}>
                           {/* 견적 요청 가능 상태인지 체크 */}
@@ -1021,7 +1039,7 @@ class DetailWH extends Component {
                           <Text style={[S.textTable, S.textLeftTable]}>
                             비고
                           </Text>
-                          <Text style={S.textTable}>{trust.remark}</Text>
+                          <Text style={S.textTable}>{trust.remark ? trust.remark : '-'}</Text>
                         </View>
                         <View style={S.tableRow}>
                           {trust.enable ? (
@@ -1161,7 +1179,7 @@ class DetailWH extends Component {
                         준공일자
                       </Text>
                       <Text style={S.textTable}>
-                        {`${formatDateV1(whrgData.cmpltYmd)}`}
+                        {`${whrgData.cmpltYmd? formatDateV1(whrgData.cmpltYmd) : '-'}`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -1214,11 +1232,11 @@ class DetailWH extends Component {
                       </Text>
                       <Text style={S.textTable}>
                         {`${
-                          whrgData.addOptDvCodes
+                          whrgData.addOptDvCodes && whrgData.addOptDvCodes.length > 0
                             ? whrgData.addOptDvCodes
                               .map(code => code?.stdDetailCodeName)
                               .join(',')
-                            : ''
+                            : '-'
                         }`}
                       </Text>
                     </View>
@@ -1238,11 +1256,11 @@ class DetailWH extends Component {
                       </Text>
                       <Text style={S.textTable}>
                         {`${
-                          whrgData.insrDvCodes
+                          whrgData.insrDvCodes && whrgData.insrDvCodes.length > 0
                             ? whrgData.insrDvCodes
                               .map(code => code?.stdDetailCodeName)
                               .join(',')
-                            : ''
+                            : '-'
                         }`}
                       </Text>
                     </View>
@@ -1251,8 +1269,9 @@ class DetailWH extends Component {
               </View>
             </View>
           </View>
-
-          <View style={DefaultStyle._cards}>
+          
+          { whrgData.floors && whrgData.floors.length > 0 ?
+          (<View style={DefaultStyle._cards}>
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
@@ -1382,12 +1401,14 @@ class DetailWH extends Component {
               )}
             </View>
           </View>
+          ) : <View/>}
 
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <View style={S.titleView}>
                 <Text style={S.title}>
-                  문의 ({pageInfo.totalElements ? pageInfo.totalElements : 0})
+                  문의 
+                  {/* ({pageInfo.totalElements ? pageInfo.totalElements : 0}) */}
                 </Text>
                 <View style={S.rightTitle}>
                   <TouchableOpacity
@@ -1695,6 +1716,9 @@ function mapDispatchToProps (dispatch) {
   return {
     setProgress: status => {
       dispatch(ActionCreator.setProgress(status));
+    },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
     },
   };
 }
