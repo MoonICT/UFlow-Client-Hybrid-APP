@@ -14,6 +14,7 @@ import ActionCreator from '@Actions';
 import DefaultStyle from '@Styles/default';
 import { styles } from './style';
 import illust11 from '@Assets/images/illust11.png';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class Popup extends Component {
   constructor (props) {
@@ -61,7 +62,7 @@ class Popup extends Component {
                 <Button
                   style={DefaultStyle._buttonElement}
                   onPress={() => this._hidePopup()}>
-                  확인
+                  {getMsg(this.props.lang, 'CMN0001', '확인')}
                 </Button>
               </Dialog.Actions>
             </Dialog>
@@ -78,10 +79,12 @@ class Popup extends Component {
               </View>
               <View style={styles.action}>
                 <Button onPress={() => hidePopup()} style={styles.actionButton}>
-                  취소
+                  {getMsg(this.props.lang, 'CMN0002', '확인')}
                 </Button>
                 <View style={styles.borderHave} />
-                <Button onPress={() => {onConfirm(), hidePopup()}} style={styles.actionButton}>확인</Button>
+                <Button onPress={() => {onConfirm(), hidePopup()}} style={styles.actionButton}>
+                  {getMsg(this.props.lang, 'CMN0001', '확인')}
+                </Button>
               </View>
             </Modal>
           </Portal>
