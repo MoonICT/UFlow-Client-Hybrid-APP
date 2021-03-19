@@ -13,6 +13,7 @@ import { Appbar, Text, Searchbar } from 'react-native-paper';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 import Appbars from '@Components/organisms/AppBar';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 // import DatePicker from '@Components/organisms/DatePicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import ActionCreator from '@Actions';
@@ -64,7 +65,7 @@ class Inquiry extends Component {
       typeQuestion: 'GENERAL',
       listQuestion: [],
       query: '',
-      titleActive: '전체문의'
+      titleActive: getMsg(this.props.lang, 'ML0056', '전체문의')
     };
     this.navigation = props.navigation;
   }
@@ -212,7 +213,7 @@ class Inquiry extends Component {
     return (
       <SafeAreaView style={S.container}>
         <HistoryBackActionBar
-          title={'문의내역'}
+          title={getMsg(this.props.lang, 'ML0057', '문의내역')}
           navigation={this.navigation}/>
         {/*<Appbars>*/}
         {/*  <Appbar.Action*/}
@@ -234,7 +235,7 @@ class Inquiry extends Component {
           <View style={S.filter}>
             <Searchbar
               inputStyle={[DefaultStyle._search, S.search]}
-              placeholder="검색하기"
+              placeholder={getMsg(this.props.lang, 'ML0058', '검색하기')}
               onChangeText={query => this.handleQueryChange(query)}
               value={firstQuery}
             />
@@ -255,7 +256,7 @@ class Inquiry extends Component {
                       DefaultStyle._labelTextField,
                       { color: '#000000', fontSize: 12 },
                     ]}>
-                    수탁 기간
+                    {getMsg(this.props.lang, 'ML0065', '수탁')}
                   </Text>
                   <DateTimePickerModal
                     mode={mode}
@@ -283,7 +284,7 @@ class Inquiry extends Component {
                       DefaultStyle._labelTextField,
                       { color: '#000000', fontSize: 12 },
                     ]}>
-                    임대 기간
+                    {getMsg(this.props.lang, 'ML0064', '임대 기간')}
                   </Text>
                   <DateTimePickerModal
                     mode={mode}
@@ -302,7 +303,7 @@ class Inquiry extends Component {
                 <View style={({ flex: 1 }, [S.optionSelect, S.selectLong])}>
                   <Select
                     data={selectOptions}
-                    labelSelected={'구분'}
+                    labelSelected={getMsg(this.props.lang, 'ML0059', '구분')}
                     style={S.select}
                     valueProps={e => {
                       console.log(e, 'e');
@@ -354,12 +355,11 @@ class Inquiry extends Component {
                     // }}
                   >
                     <View style={DefaultStyle.leftItem}>
-                      <Text>123123</Text>
                       {item.complete === false ? (
-                        <Text style={[S.status]}>답변 대기 중</Text>
+                        <Text style={[S.status]}>{getMsg(this.props.lang, 'ML0060', '답변 대기 중')}</Text>
                       ) : (
                         <Text style={[S.status, S.statusComplete]}>
-                          답변 완료
+                          {getMsg(this.props.lang, 'ML0061', '답변 완료')}
                         </Text>
                       )}
                       {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}
@@ -414,10 +414,10 @@ class Inquiry extends Component {
                     }}>
                     <View style={DefaultStyle.leftItem}>
                       {item.complete === false ? (
-                        <Text style={[S.status]}>답변 대기 중</Text>
+                        <Text style={[S.status]}>{getMsg(this.props.lang, 'ML0060', '답변 대기 중')}</Text>
                       ) : (
                         <Text style={[S.status, S.statusComplete]}>
-                          답변 완료
+                          {getMsg(this.props.lang, 'ML0061', '답변 완료')}
                         </Text>
                       )}
                       {/* <Text style={[S.status, S.statusComplete]}>답변 완료</Text> */}

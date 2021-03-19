@@ -25,6 +25,7 @@ import Select from '@Components/organisms/Select';
 import WarehouseRegistration from './warehouseRegistration';
 import WarehouseUse from './warehouseUse';
 import ContractMode from './contractMode';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 //Data Footer
 const data = [
@@ -96,7 +97,7 @@ export default class Notification extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: '창고 등록',
+      page: getMsg(this.props.lang, 'ML0066', '창고 등록'),
     };
     this.navigation = props.navigation;
   }
@@ -109,7 +110,7 @@ export default class Notification extends Component {
     console.log('page', page);
     return (
       <>
-        {page === '창고 등록' && (
+        {page === getMsg(this.props.lang, 'ML0066', '창고 등록') && (
           <WarehouseRegistration
             nav={this.props.navigation}
             navitationTitle={
@@ -123,7 +124,7 @@ export default class Notification extends Component {
             }
           />
         )}
-        {page === '창고 이용' && (
+        {page === getMsg(this.props.lang, 'ML0067', '창고 이용') && (
           <WarehouseUse
             nav={this.props.navigation}
             navitationTitle={
@@ -137,7 +138,7 @@ export default class Notification extends Component {
             }
           />
         )}
-        {page === '계약 방식' && (
+        {page === getMsg(this.props.lang, 'ML0068', '계약 방식') && (
           <ContractMode
             nav={this.props.navigation}
             navitationTitle={
