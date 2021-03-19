@@ -597,6 +597,7 @@ class DetailWH extends Component {
               </>
             )}
 
+
             {/** 창고 정보 */}
             <View style={S.info}>
               <Text style={DefaultStyle._textTitleBody}>창고 정보</Text>
@@ -1174,7 +1175,7 @@ class DetailWH extends Component {
                         준공일자
                       </Text>
                       <Text style={S.textTable}>
-                        {`${formatDateV1(whrgData.cmpltYmd)}`}
+                        {`${whrgData.cmpltYmd? formatDateV1(whrgData.cmpltYmd) : '-'}`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
@@ -1227,11 +1228,11 @@ class DetailWH extends Component {
                       </Text>
                       <Text style={S.textTable}>
                         {`${
-                          whrgData.addOptDvCodes
+                          whrgData.addOptDvCodes && whrgData.addOptDvCodes.length > 0
                             ? whrgData.addOptDvCodes
                               .map(code => code?.stdDetailCodeName)
                               .join(',')
-                            : ''
+                            : '-'
                         }`}
                       </Text>
                     </View>
@@ -1251,11 +1252,11 @@ class DetailWH extends Component {
                       </Text>
                       <Text style={S.textTable}>
                         {`${
-                          whrgData.insrDvCodes
+                          whrgData.insrDvCodes && whrgData.insrDvCodes.length > 0
                             ? whrgData.insrDvCodes
                               .map(code => code?.stdDetailCodeName)
                               .join(',')
-                            : ''
+                            : '-'
                         }`}
                       </Text>
                     </View>
@@ -1264,8 +1265,9 @@ class DetailWH extends Component {
               </View>
             </View>
           </View>
-
-          <View style={DefaultStyle._cards}>
+          
+          { whrgData.floors && whrgData.floors.length > 0 ?
+          (<View style={DefaultStyle._cards}>
             <View style={S.info}>
               <Text style={S.title}>층별 상세 정보</Text>
               <View style>
@@ -1395,6 +1397,7 @@ class DetailWH extends Component {
               )}
             </View>
           </View>
+          ) : <View/>}
 
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
