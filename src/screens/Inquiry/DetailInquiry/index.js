@@ -20,6 +20,7 @@ import { InquiryAPI } from '@Services/apis';
 import HTML from 'react-native-render-html';
 import ActionCreator from '@Actions';
 import { connect } from "react-redux";
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 
 class DetailInquiry extends Component {
@@ -71,9 +72,9 @@ class DetailInquiry extends Component {
         setTimeout(() => {
           if (res.status === 200) {
             this.props.showPopup({
-              title: '답변 등록 완료',
+              title: getMsg(this.props.lang, 'ML0062', '답변 등록 완료'),
               type: 'confirm',
-              content: `답변 등록을 완료하였습니다.`,
+              content: getMsg(this.props.lang, 'ML0063', '답변 등록을 완료하였습니다.'),
               navigation: () => {
                 this.setState({ answer: '', });
                 this.props.route.params.doRefresh();
@@ -132,14 +133,14 @@ class DetailInquiry extends Component {
         </Appbars> */}
         
         <HistoryBackActionBar
-            title={'문의내역'}
+            title={getMsg(this.props.lang, 'ML0057', '문의내역')}
             navigation={this.navigation}
           />
         <ScrollView>
           {(params && params.inquiryDetails && params.inquiryDetails.complete === true)
           &&
           <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-            <Text style={[S.status, S.statusComplete]}>답변 완료</Text>
+            <Text style={[S.status, S.statusComplete]}>{getMsg(this.props.lang, 'ML0061', '답변 완료')}</Text>
             <Text style={S.titleItem}>
               {params?.inquiryDetails?.content ?? ''}
             </Text>
@@ -172,7 +173,7 @@ class DetailInquiry extends Component {
           } */}
           {(params && params.inquiryDetails && params.inquiryDetails.complete === false) &&
           <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
-            <Text style={[S.status]}>답변 대기 중</Text>
+            <Text style={[S.status]}>{getMsg(this.props.lang, 'ML0060', '답변 대기 중')}</Text>
             <Text style={S.titleItem}>
               {params?.inquiryDetails?.content ?? ''}
             </Text>
@@ -181,7 +182,7 @@ class DetailInquiry extends Component {
             {params.answerMode &&
             <View style={S.answers}>
               <TextField
-                placeholder=" 답변 내용을 입력해 주세요."
+                placeholder={getMsg(this.props.lang, 'ML0055', '답변 내용을 입력해 주세요.')}
                 colorLabel="#000000"
                 valueProps={e => this.setState({ answer: e })}
                 numberOfLines={5}
@@ -200,7 +201,7 @@ class DetailInquiry extends Component {
                     DefaultStyle.textSubmit,
                     DefaultStyle.textActiveSubmit,
                   ]}>
-                  답변완료
+                  {getMsg(this.props.lang, 'ML0061', '답변 완료')}
                 </Text>
               </TouchableOpacity>
             </View>}

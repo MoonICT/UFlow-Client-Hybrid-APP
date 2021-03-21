@@ -26,6 +26,7 @@ import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import Checkbox from '@Components/atoms/Checkbox';
 import { ConsultingApi } from '@Services/apis';
 import { styles as S } from './style';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -325,7 +326,7 @@ class Consulting extends Component {
             onPress={() => this.handleNavigation()}
           />
           <Appbar.Content
-            title="물류컨설팅"
+            title={getMsg(this.props.lang, 'ML0436', '물류컨설팅')}
             titleStyle={DefaultStyle.headerTitleWhite}
           />
         </Appbars>
@@ -336,10 +337,9 @@ class Consulting extends Component {
         {/* step 0 */}
         {step === 0 && (
           <View style={S.contentCenter}>
-            <Text style={S.styleH3}>물류 컨설팅</Text>
+            <Text style={S.styleH3}>{getMsg(this.props.lang, 'ML0437', '물류 컨설팅')}</Text>
             <Text style={S.styleTextNomarl}>
-              유플로우 물류창고에 임대 관심이 있으시면{'\n'}시작 버튼을
-              눌러주세요.
+              {getMsg(this.props.lang, 'ML0438', '유플로우 물류창고에 임대 관심이 있으시면\n시작 버튼을 눌러주세요.')}
             </Text>
             <View
               style={{
@@ -353,25 +353,25 @@ class Consulting extends Component {
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
                 value={company}
-                placeholder="회사명"
+                placeholder={getMsg(this.props.lang, 'ML0439', '회사명')}
                 onChangeText={e => this.setState({ company: e })}
               />
               <TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
                 value={name}
-                placeholder="담당자명"
+                placeholder={getMsg(this.props.lang, 'ML0440', '담당자명')}
                 onChangeText={e => this.setState({ name: e })}
               />
               <TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
-                placeholder="이메일"
+                placeholder={getMsg(this.props.lang, 'ML0013', '이메일')}
                 value={email}
                 onChangeText={e => this.setState({ email: e })}
               />
               { !!email && !validator.isEmail(email) && (
-                <Text style={{color:'#ff6d00',marginTop:10}}>메일 주소가 맞지 않습니다.</Text>
+                <Text style={{color:'#ff6d00',marginTop:10}}>{getMsg(this.props.lang, 'ML0441', '메일 주소가 맞지 않습니다.')}</Text>
               )}
             </View>
             <Button
@@ -393,7 +393,7 @@ class Consulting extends Component {
                 },
               ]}
               onPress={() => {this.setState({ step: 1  }), this.getAllData;}}>
-              <Text style={[S.textButton]}>물류 컨설팅 시작하기</Text>
+              <Text style={[S.textButton]}>{getMsg(this.props.lang, 'ML0442', '물류 컨설팅 시작하기')}</Text>
             </Button>
           </View>
         )}
@@ -401,7 +401,7 @@ class Consulting extends Component {
         {step !== 1 && step === listQuest.length + 1 && (
           <View style={S.contentCenter}>
             <Text style={[S.styleTextTitleNomarl, { textAlign: 'center' }]}>
-              물류 컨설팅 등록되었습니다.{'\n'}감사합니다.
+              {getMsg(this.props.lang, 'ML0443', '물류 컨설팅 등록되었습니다.\n감사합니다.')}
             </Text>
             <Button
               mode="contained"
@@ -414,7 +414,7 @@ class Consulting extends Component {
                   });
               }}>
               <Text style={[S.textButton, { width: 175 }]}>
-                컨설팅 결과 확인하기
+                {getMsg(this.props.lang, 'ML0444', '컨설팅 결과 확인하기')}
 
               </Text>
             </Button>

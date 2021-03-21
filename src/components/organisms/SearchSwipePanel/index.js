@@ -21,6 +21,7 @@ import Alert from '@Components/atoms/Alert';
 import Progress from '@Components/organisms/Progress';
 import ProductCard from '@Components/organisms/ProductCard';
 import { numberComma } from '@Services/utils/StringUtils';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 const status = getStatusBarHeight(true);
 
@@ -211,7 +212,9 @@ class SearchSwipePanel extends Component {
 
             {/** 목록 없음. */}
             {(this.state.WHList.length === 0 && !this.state.isProgress) &&
-            <Text style={styles.emptyText}>검색된 창고가 없습니다.</Text>}
+            <Text style={styles.emptyText}>
+              {getMsg(this.props.lang, 'ML0108', '검색된 창고가 없습니다.')}
+              </Text>}
 
             {/** 목록 */}
             <View style={styles.divider} />

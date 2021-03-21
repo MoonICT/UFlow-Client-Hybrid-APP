@@ -23,6 +23,8 @@ import { FAQ } from '@Services/apis';
 
 import { debounce } from 'lodash';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 // const tabDutyDvCode = [
 //   {
 //     id: '',
@@ -215,14 +217,14 @@ class FAQScreen extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-          title={'자주 묻는 질문'}
+          title={getMsg(this.props.lang, 'ML0052', '자주 묻는 질문')}
           navigation={this.navigation}
         />
         <ScrollView>
           <View style={S.viewSearch}>
             <Searchbar
               inputStyle={S.searchInput}
-              placeholder="검색하기"
+              placeholder={getMsg(this.props.lang, 'ML0053', '검색하기')}
               // onChangeText={query => {
               //   this.setState({ firstQuery: query });
               // }}

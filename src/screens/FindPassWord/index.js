@@ -118,7 +118,7 @@ class ForgotPass extends Component {
                   {getMsg(this.props.lang, 'ML0048', '이메일 주소를 입력해 주세요.')}
                 </Text>
                 <TextField
-                  labelTextField="이메일"
+                  labelTextField={getMsg(this.props.lang, 'ML0013', '이메일')}
                   colorLabel="#000000"
                   styleProps={{ borderColor: '#d7d7d7' }}
                   valueProps={e => this.setState({ email: e })}
