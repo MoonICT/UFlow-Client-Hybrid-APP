@@ -197,7 +197,7 @@ class FormInfo extends Component {
     let defaulcmgmtChrg =
       formData &&
       mgmtChrgDvCodes &&
-      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
+      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCodes);
     return (
       <Card style={S.cards}>
         <View style>
@@ -250,7 +250,7 @@ class FormInfo extends Component {
           />
 
           <Select
-            data={mgmtChrgDvCodes}
+            data={mgmtChrgDvCodes && mgmtChrgDvCodes}
             // selectedValue={formData.mgmtChrgDvCode}
             valueSelected={
               defaulcmgmtChrg !== undefined ? defaulcmgmtChrg.label : ''
@@ -316,6 +316,7 @@ class FormInfo extends Component {
                 labelTextField="가용수치"
                 textRight="평"
                 isRequired={true}
+                maxLength={10}
                 defaultValue={
                   formData.usblValue
                     ? numberToStd(toPyeong(formData.usblValue))
@@ -442,6 +443,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
             isRequired={true}
+            maxLength={10}
             keyboardType="numeric"
             textError={checkSplyAmount === true ? null : '정보를 입력해주세요.'}
           />
@@ -461,6 +463,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
             isRequired={true}
+            maxLength={10}
             keyboardType="numeric"
             textError={checkMgmtChrg === true ? null : '정보를 입력해주세요.'}
           />
@@ -469,6 +472,7 @@ class FormInfo extends Component {
             labelTextField="비고"
             defaultValue={formData.remark ? formData.remark : ''}
             value={formData.remark}
+            maxLength={1000}
             valueProps={e => {
               this.setState({ remark: e });
               let dataF = formData;

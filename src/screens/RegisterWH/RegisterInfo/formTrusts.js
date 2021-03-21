@@ -275,6 +275,7 @@ class FormTrusts extends Component {
             placeholder="0"
             keyboardType="numeric"
             isRequired={true}
+            maxLength={10}
             defaultValue={
               formData.usblValue ? numberToStd(formData.usblValue) : ''
             }
@@ -357,6 +358,7 @@ class FormTrusts extends Component {
             labelTextField="보관단가"
             placeholder="0"
             isRequired={true}
+            maxLength={10}
             textError={
               checkSplyAmount === true
                 ? null
@@ -385,6 +387,7 @@ class FormTrusts extends Component {
                 : '정보를 입력해주세요.'
             }
             isRequired={true}
+            maxLength={10}
             keyboardType="numeric"
             textRight="원"
             defaultValue={
@@ -402,6 +405,7 @@ class FormTrusts extends Component {
           <TextField
             labelTextField="출고단가"
             isRequired={true}
+            maxLength={10}
             placeholder="0"
             textError={
               checkWhoutChrg === true
@@ -493,6 +497,7 @@ class FormTrusts extends Component {
           <TextField
             labelTextField="비고"
             value={formData.remark}
+            maxLength={1000}
             defaultValue={formData.remark ? numberToStd(formData.remark) : ''}
             valueProps={e => {
               this.setState({ remark: e });
