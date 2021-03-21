@@ -514,17 +514,8 @@ class DetailWH extends Component {
             {/** 창고 이미지 
              *  이미지가 없는경우 기본이미지로 처리.
             */}
-            {whrgData.whImages && whrgData.whImages.length == 0 && (
-              <View style={S.background}>
-                <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>
-                    <Image
-                      style={S.backgroundImage}
-                      source={WHPlaceholder}
-                    />
-                  </TouchableOpacity>
-              </View>
-            )}
-            {whrgData.whImages && whrgData.whImages.length > 0 && (
+           
+            {whrgData.whImages && (
               <>
 
                 <View style={S.background}>
@@ -566,7 +557,7 @@ class DetailWH extends Component {
                         source={
                           whrgData.whImages && whrgData.whImages.length > 0
                             ? { uri: whrgData.whImages[0].url }
-                            : ''
+                            : WHPlaceholder
                         }
                       />
                     </TouchableOpacity>}
