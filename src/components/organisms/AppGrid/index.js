@@ -131,7 +131,7 @@ class AppGrid extends Component {
             color={active === item.title ? '#000000' : 'rgba(0, 0, 0, 0.54)'}
             onPress={() => {
               this.handlePress(item);
-              titleProps && titleProps(item.title, index);
+              titleProps && titleProps(item);
             }}
             style={[
               DefaultStyle._tabItem,

@@ -48,19 +48,24 @@ import Progress from '@Components/organisms/Progress';
 const data = [
   {
     title: '내 창고',
+    tab: 'Mypage_mywhrg'
   },
   {
     title: '견적･계약 관리',
+    tab: 'Mypage_cntr'
   },
   {
     title: '입･출고 관리',
+    tab: 'Mypage_io'
   },
   {
     title: '정산관리',
+    tab: 'Mypage_settlement'
   },
-  // {
-  //   title: '관심 창고',
-  // },
+  {
+    title: '관심 창고',
+    tab: 'Mypage_fav'
+  },
 ];
 // const dataStatusWarehouse = [
 //   {
@@ -404,8 +409,9 @@ class Mypage extends Component {
       </View>
     );
 
-    // switch (this.state.title) {
+    //switch (this.state.title) {
     switch (this.state.tab) {
+      
       case 'Mypage_mywhrg': // 내 창고
         viewComponent = (
           <View
@@ -506,7 +512,8 @@ class Mypage extends Component {
             title={this.state.title}
             titleProps={e => {
               this.setState({
-                title: e,
+                title: e.title,
+                tab: e.tab
               });
             }}
           />
