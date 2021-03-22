@@ -28,6 +28,7 @@ import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class RegisterWH extends Component {
   constructor (props) {
@@ -75,8 +76,8 @@ class RegisterWH extends Component {
           const status = res.status;
           this.props.showPopup({
             type: 'confirm',
-            title: '수정 완료',
-            content: '창고정보 수정을 완료했습니다.',
+            title: getMsg(this.props.lang, 'ML0228', '수정 완료'),
+            content: getMsg(this.props.lang, 'ML0229', '창고정보 수정을 완료했습니다.'),
             image: illust10,
             navigation: () => {
               if (
@@ -86,7 +87,7 @@ class RegisterWH extends Component {
                 this.props.route.params.doRefresh();
               }
               this.navigation.navigate('Mypage', {
-                title: '내 창고',
+                title: getMsg(this.props.lang, 'ML0230', '내 창고'),
                 prevView: 'PrevView',
               });
             },
@@ -108,11 +109,11 @@ class RegisterWH extends Component {
       const { dataWH } = this.props;
 
       if (!dataWH) {
-        alert('창고등록 정보값이 없습니다.');
+        alert(getMsg(this.props.lang, 'ML0231', '창고등록 정보값이 없습니다.'));
       }
 
       if (!this.state.idWH) {
-        alert('창고 ID 생성이 필요합니다.');
+        alert(getMsg(this.props.lang, 'ML0232', '창고 ID 생성이 필요합니다.'));
         return false;
       }
 
@@ -128,9 +129,9 @@ class RegisterWH extends Component {
           // this.navigation.navigate('Home');
           this.props.showPopup({
             type: 'confirm',
-            title: '창고 등록 완료',
+            title: getMsg(this.props.lang, 'ML0234', 'UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요'),
             content:
-              ' UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요',
+              getMsg(this.props.lang, 'ML0233', '창고 등록 완료'),
             image: illust10,
             navigation: () =>
               this.navigation.navigate('Home', {
@@ -202,8 +203,8 @@ class RegisterWH extends Component {
           <Appbar.Content
             title={
               route && route.params && route.params.type === 'ModifyWH'
-                ? '창고 정보 수정'
-                : '창고 정보 등록'
+                ? getMsg(this.props.lang, 'ML0501', '창고 정보 수정')
+                : getMsg(this.props.lang, 'ML0504', '창고 정보 등록')
             }
             color="black"
             fontSize="12"
@@ -225,7 +226,7 @@ class RegisterWH extends Component {
               {imageStore && imageStore.length > 0 ? (
                 <Fragment>
                   <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
-                    대표이미지
+                    {getMsg(this.props.lang, 'ML0491', '대표이미지')}
                   </Text>
                   <Image
                     style={S.ImagePanaUpload}
@@ -235,7 +236,7 @@ class RegisterWH extends Component {
               ) : (
                 <Fragment>
                   <Image source={ignore3} style={S.ImageStyle} />
-                  <Text style={S.textImage}>사진 추가</Text>
+                  <Text style={S.textImage}>{getMsg(this.props.lang, 'ML0494', '사진 추가')}</Text>
                 </Fragment>
               )}
             </TouchableOpacity>
@@ -247,13 +248,13 @@ class RegisterWH extends Component {
                   type: route && route.params && route.params.type,
                 })
               }>
-              <Text style={S.textLeftBtn}>창고 소개</Text>
+              <Text style={S.textLeftBtn}>{getMsg(this.props.lang, 'ML0174', '창고 소개')}</Text>
               <View style={S.rightBtn}>
                 {// (dataWH && dataWH.name)
                   completeIntro === true ? (
-                    <Text style={S.completeText}>작업완료</Text>
+                    <Text style={S.completeText}>{getMsg(this.props.lang, 'ML0235', '작업완료')}</Text>
                   ) : (
-                    <Text style={S.textRightBtn}>입력하세요</Text>
+                    <Text style={S.textRightBtn}>{getMsg(this.props.lang, 'ML0236', '입력하세요')}</Text>
                   )}
                 <Icon
                   name="arrow-forward-ios"
@@ -275,13 +276,13 @@ class RegisterWH extends Component {
                 })
               }>
               <Text style={S.textLeftBtn}>
-                {completeInfo === true ? '창고 정보 수정' : '창고 정보'}
+                {completeInfo === true ? getMsg(this.props.lang, 'ML0501', '창고 정보 수정') : getMsg(this.props.lang, 'ML0136', '창고 정보')}
               </Text>
               <View style={S.rightBtn}>
                 {completeInfo === true ? (
-                  <Text style={S.completeText}>작업완료</Text>
-                ) : (
-                  <Text style={S.textRightBtn}>입력하세요</Text>
+                    <Text style={S.completeText}>{getMsg(this.props.lang, 'ML0235', '작업완료')}</Text>
+                  ) : (
+                    <Text style={S.textRightBtn}>{getMsg(this.props.lang, 'ML0236', '입력하세요')}</Text>
                 )}
 
                 <Icon
@@ -299,13 +300,13 @@ class RegisterWH extends Component {
                   type: route && route.params && route.params.type,
                 })
               }>
-              <Text style={S.textLeftBtn}>추가 정보</Text>
+              <Text style={S.textLeftBtn}>{getMsg(this.props.lang, 'ML0176', '추가 정보')}</Text>
               <View style={S.rightBtn}>
                 {completeMoreInfo === true ? (
                   // (dataWH && dataWH.siteArea)
-                  <Text style={S.completeText}>작업완료</Text>
+                  <Text style={S.completeText}>{getMsg(this.props.lang, 'ML0235', '작업완료')}</Text>
                 ) : (
-                  <Text style={S.textRightBtn}>입력하세요</Text>
+                  <Text style={S.textRightBtn}>{getMsg(this.props.lang, 'ML0236', '입력하세요')}</Text>
                 )}
                 <Icon
                   name="arrow-forward-ios"
@@ -325,12 +326,12 @@ class RegisterWH extends Component {
                     dataWH.floors && dataWH.floors.length > 0 ? 'Edit' : '',
                 })
               }>
-              <Text style={S.textLeftBtn}>층별 상세 정보</Text>
+              <Text style={S.textLeftBtn}>{getMsg(this.props.lang, 'ML0178', '층별 상세 정보')}</Text>
               <View style={S.rightBtn}>
                 {completeFloor === true ? (
-                  <Text style={S.completeText}>작업완료</Text>
+                  <Text style={S.completeText}>{getMsg(this.props.lang, 'ML0235', '작업완료')}</Text>
                 ) : (
-                  <Text style={S.textRightBtn}>입력하세요</Text>
+                  <Text style={S.textRightBtn}>{getMsg(this.props.lang, 'ML0236', '입력하세요')}</Text>
                 )}
                 <Icon
                   name="arrow-forward-ios"
@@ -381,8 +382,8 @@ class RegisterWH extends Component {
                 isSubmitUpdate === true ? DefaultStyle.textActiveSubmit : null,
               ]}>
               {route && route.params && route.params.type === 'ModifyWH'
-                ? '창고 수정하기'
-                : '창고 등록하기'}
+                ? getMsg(this.props.lang, 'ML0237', '창고 수정하기')
+                : getMsg(this.props.lang, 'ML0459', '창고 등록하기')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -395,20 +396,18 @@ class RegisterWH extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            창고 등록 완료
+            {getMsg(this.props.lang, 'ML0233', '창고 등록 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴
-              예정입니다. 자세한 내용은 [마이페이지 `{'>'}` 내 창고]에서 확인해
-              주세요.
+              {getMsg(this.props.lang, 'ML0234', 'UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해주세요')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
               onPress={this.hideDialog}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>

@@ -564,7 +564,7 @@ class Home extends Component {
                   styles.font24,
                   styles.mainProductTitleName,
                 ]}>
-                즉시 임대
+                {getMsg(this.props.lang, 'ML0531', '즉시 임대')}
               </Text>
               <Text
                 style={[

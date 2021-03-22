@@ -20,6 +20,7 @@ import { styles as S } from '../style';
 import DatePicker from '@Components/organisms/DatePicker';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class FormInfo extends Component {
   constructor(props) {
@@ -218,7 +219,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
             // selectedValue={formData.typeCode}
-            labelSelected="창고유형"
+            labelSelected={getMsg(this.props.lang, 'ML0495', '창고유형')}
           />
           <Select
             data={calUnitDvCodes}
@@ -227,7 +228,7 @@ class FormInfo extends Component {
             }
             dataDefault={defaultcalUnit !== undefined ? defaultcalUnit : ''}
             selectedValue={formData.calUnitDvCode}
-            labelSelected="정산단위"
+            labelSelected={getMsg(this.props.lang, 'ML0139', '정산단위')}
             valueProps={e => {
               let dataF = formData;
               dataF.calUnitDvCode = e;
@@ -242,7 +243,7 @@ class FormInfo extends Component {
               defaultcalStd !== undefined ? defaultcalStd.label : ''
             }
             dataDefault={defaultcalStd !== undefined ? defaultcalStd : ''}
-            labelSelected="산정기준"
+            labelSelected={getMsg(this.props.lang, 'ML0140', '산정기준')}
             valueProps={e => {
               let dataF = formData;
               dataF.calStdDvCode = e;
@@ -257,7 +258,7 @@ class FormInfo extends Component {
               defaulcmgmtChrg !== undefined ? defaulcmgmtChrg.label : ''
             }
             dataDefault={defaulcmgmtChrg !== undefined ? defaulcmgmtChrg : ''}
-            labelSelected="관리비구분"
+            labelSelected={getMsg(this.props.lang, 'ML0141', '관리비구분')}
             valueProps={e => {
               let dataF = formData;
               dataF.mgmtChrgDvCode = e;
@@ -314,8 +315,8 @@ class FormInfo extends Component {
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
-                labelTextField="가용수치"
-                textRight="평"
+                labelTextField={getMsg(this.props.lang, 'ML0140', '가용수치')}
+                textRight={getMsg(this.props.lang, 'ML0487', '평')}
                 isRequired={true}
                 maxLength={7}
                 defaultValue={
@@ -337,7 +338,7 @@ class FormInfo extends Component {
             </View>
             <View style={DefaultStyle._element}>
               <TextField
-                labelTextField="가용수치"
+                labelTextField={getMsg(this.props.lang, 'ML0140', '가용수치')}
                 isRequired={true}
                 textRight="m2"
                 maxLength={7}
@@ -373,7 +374,7 @@ class FormInfo extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                임대 시작일
+                {getMsg(this.props.lang, 'ML0496', '임대 시작일')}
               </Text>
               {/*<DatePicker*/}
               {/*  mode={mode}*/}
@@ -407,7 +408,7 @@ class FormInfo extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                임대 종료일
+                {getMsg(this.props.lang, 'ML0497', '임대 종료일')}
               </Text>
               {/*<DatePicker*/}
               {/*  mode={mode}*/}
@@ -431,12 +432,12 @@ class FormInfo extends Component {
           </View>
 
           <TextField
-            labelTextField="임대단가"
+            labelTextField={getMsg(this.props.lang, 'ML0144', '임대단가')}
             value={splyAmount}
             defaultValue={
               formData.splyAmount ? numberToStd(formData.splyAmount) : ''
             }
-            textRight="원"
+            textRight={getMsg(this.props.lang, 'ML0498', '원')}
             valueProps={e => {
               let text = e.replace(/[^0-9]/g, '');
               this.setState({ splyAmount: text });
@@ -447,15 +448,15 @@ class FormInfo extends Component {
             isRequired={true}
             maxLength={7}
             keyboardType="numeric"
-            textError={checkSplyAmount === true ? null : '정보를 입력해주세요.'}
+            textError={checkSplyAmount === true ? null : getMsg(this.props.lang, 'ML0226', '정보를 입력해주세요.')}
           />
           <TextField
-            labelTextField="관리단가"
+            labelTextField={getMsg(this.props.lang, 'ML0145', '관리단가')}
             value={mgmtChrg}
             defaultValue={
               formData.mgmtChrg ? numberToStd(formData.mgmtChrg) : ''
             }
-            textRight="원"
+            textRight={getMsg(this.props.lang, 'ML0498', '원')}
             valueProps={e => {
               let text = e.replace(/[^0-9]/g, '');
               console.log('text :>> ', text);
@@ -467,11 +468,11 @@ class FormInfo extends Component {
             isRequired={true}
             maxLength={7}
             keyboardType="numeric"
-            textError={checkMgmtChrg === true ? null : '정보를 입력해주세요.'}
+            textError={checkMgmtChrg === true ? null : getMsg(this.props.lang, 'ML0226', '정보를 입력해주세요.')}
           />
 
           <TextField
-            labelTextField="비고"
+            labelTextField={getMsg(this.props.lang, 'ML0146', '비고')}
             defaultValue={formData.remark ? formData.remark : ''}
             value={formData.remark}
             maxLength={1000}

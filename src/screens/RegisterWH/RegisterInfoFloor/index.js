@@ -41,6 +41,7 @@ import { styles as SS } from './style';
 import Form from './form';
 import { MyPage } from '@Services/apis';
 import AsyncStorage from '@react-native-community/async-storage';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class RegisterInfoFloor extends Component {
   constructor(props) {
@@ -191,7 +192,7 @@ class RegisterInfoFloor extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-          title={'층별 상세 정보'}
+          title={getMsg(this.props.lang, 'ML0178', '층별 상세 정보')}
           navigation={this.navigation}
         />
         <ScrollView style={DefaultStyle.backgroundGray}>
@@ -206,7 +207,7 @@ class RegisterInfoFloor extends Component {
               ]}>
               <View style={S.titleBody}>
                 <Text style={S.textTitleBody}>
-                  층별 상세 정보
+                  {getMsg(this.props.lang, 'ML0178', '층별 상세 정보')}
                   {this.state.floors.length > 0 && (
                     <Text style={{ color: '#777777' }}>
                       {' '}
@@ -279,7 +280,7 @@ class RegisterInfoFloor extends Component {
                         ? DefaultStyle.textActiveSubmit
                         : null,
                     ]}>
-                    확인
+                    {getMsg(this.props.lang, 'ML0100', '확인')}
                   </Text>
                 </TouchableOpacity>
               </View>

@@ -35,6 +35,7 @@ import illust21 from '@Assets/images/illust21.png';
 import { styles as S } from './style';
 import { Warehouse } from '@Services/apis';
 import Postcode from 'react-native-daum-postcode';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 class WarehouseType extends Component {
   constructor(props) {
     super(props);
@@ -68,37 +69,37 @@ class WarehouseType extends Component {
     return (
       <SafeAreaView style={[DefaultStyle._container]}>
         <HistoryBackActionBar
-          title={'창고형 선택'}
+          title={getMsg(this.props.lang, 'ML0511', '창고형 선택')}
           navigation={this.navigation}
         />
         <ScrollView>
           <View style={S.container}>
             <Image style={S.image} source={illust1} />
             <Text style={[S.title, {marginBottom: 0}]}>
-              오픈형
+              {getMsg(this.props.lang, 'ML0189', '오픈형')}
             </Text>
-            <Text style={{marginBottom: 10}}>(공인중개사, 부동산컨설팅 법인, 자산운용사)</Text>
+            <Text style={{marginBottom: 10}}>{getMsg(this.props.lang, 'ML0512', '(공인중개사, 부동산컨설팅 법인, 자산운용사)')}</Text>
             <Text style={[S.content, {fontSize: 13}]}>
-              오픈형으로 등록시 상세주소를 정확히 입력 부탁드립니다.
+              {getMsg(this.props.lang, 'ML0513', '오픈형으로 등록시 상세주소를 정확히 입력 부탁드립니다.')}
             </Text>
             <Text style={[S.content, {color:'#F44336', fontSize: 13}]}>
-              ※ 조회시에는 창고 상세주소가 표시되지 않습니다.
+              {getMsg(this.props.lang, 'ML0514', '※ 조회시에는 창고 상세주소가 표시되지 않습니다.')}
             </Text>
             <TouchableOpacity
               style={[DefaultStyle._btnOutline, S.btnType]}
               onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0001'})}>
-              <Text style={DefaultStyle._textButton}>등록하기</Text>
+              <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0515', '등록하기')}</Text>
             </TouchableOpacity>
             <View style={S.underlined} />
           </View>
           <View style={[S.container, {paddingBottom: 80}]}>
             <Image source={illust21} />
-            <Text style={[S.title, {marginBottom: 0}]}>UFLOW 책임형</Text>
-            <Text style={{marginBottom: 10}}>(직영, 가맹, 일반창고)</Text>
+            <Text style={[S.title, {marginBottom: 0}]}>{getMsg(this.props.lang, 'ML0516', 'UFLOW 책임형')}</Text>
+            <Text style={{marginBottom: 10}}>{getMsg(this.props.lang, 'ML0517', '(직영, 가맹, 일반창고)')}</Text>
             <TouchableOpacity
               style={[DefaultStyle._btnOutline, S.btnType]}
               onPress={() => this.navigation.navigate('RegisterBusinessInfo')}>
-              <Text style={DefaultStyle._textButton}>등록하기</Text>
+              <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0515', '등록하기')}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
