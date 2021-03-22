@@ -17,6 +17,7 @@ import ignore3 from '@Assets/images/ignore3x.png';
 import DefaultStyle from '@Styles/default';
 import { styles as S } from '../style';
 import Progress from '@Components/organisms/Progress';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class UpImage extends Component {
   constructor (props) {
@@ -93,7 +94,7 @@ class UpImage extends Component {
             }
           >
             <Image source={ignore3} style={S.ImageStyle} />
-            <Text style={S.textBgr}>최소 3장 이상 등록하세요.</Text>
+            <Text style={S.textBgr}>{getMsg(this.props.lang, 'ML0490', '최소 3장 이상 등록하세요.')}</Text>
           </TouchableOpacity>
         ) : (
           <View style={S.imageContainer}>
@@ -112,7 +113,7 @@ class UpImage extends Component {
                 </View>}
               />
               <Text style={[DefaultStyle._titleWH, S.textRepresentative]}>
-                대표이미지
+                {getMsg(this.props.lang, 'ML0491', '대표이미지')}
               </Text>
               {isRemove === true ? (
                 <IconButton

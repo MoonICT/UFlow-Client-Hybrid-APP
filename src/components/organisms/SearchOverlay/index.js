@@ -18,6 +18,8 @@ import { debounce } from 'lodash';
 import { styles } from './style';
 import ActionCreator from '@Actions';
 import PropTypes from 'prop-types';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class SearchOverlay extends Component {
   constructor (props) {
     super(props);
@@ -47,7 +49,7 @@ class SearchOverlay extends Component {
           // query: keyword,
         });
         this.props.setSearchQuery(keyword)
-  
+
         this.setDebounce(() => {
           WhrgSearch.searchKeywords({ query: keyword })
             .then(res => {
@@ -57,7 +59,7 @@ class SearchOverlay extends Component {
                   searchWarehouse: res.warehouses,
                 });
               }
-  
+
               setTimeout(
                 function () {
                   this.setState({
@@ -75,10 +77,6 @@ class SearchOverlay extends Component {
         // this.props.searchToggle(false);
         this.props.setSearchQuery('');
       }
-
-
-
-
   }
 
   /**
@@ -90,7 +88,6 @@ class SearchOverlay extends Component {
   };
 
   componentDidMount () {
-    console.log('디드마운')
     this._onChangeSearchQuery(this.props.searchQuery)
   }
 
@@ -168,7 +165,7 @@ class SearchOverlay extends Component {
       <View
         style={[DefaultStyle.d_center, DefaultStyle.w_100, DefaultStyle.h_150]}>
         <Text style={DefaultStyle._textDF}>
-          {isProgress ? '창고 검색 중입니다.' : '검색 결과가 없습니다.'}
+          {isProgress ? getMsg(this.props.lang, 'ML0105', '창고 검색 중입니다.') : getMsg(this.props.lang, 'ML0106', '검색 결과가 없습니다.')}
         </Text>
       </View>
     );
@@ -182,7 +179,7 @@ class SearchOverlay extends Component {
         {/** Input Search */}
         <View style={[styles.searchBarWrap]}>
           <Searchbar
-            placeholder="지역명이나 창고명을 검색하세요."
+            placeholder={getMsg(this.props.lang, 'ML0104', '지역명이나 창고명을 검색하세요.')}
             icon={'arrow-left'}
             onChangeText={query => this._onChangeSearchQuery(query)}
             onIconPress={() => {
@@ -205,7 +202,7 @@ class SearchOverlay extends Component {
         <ScrollView style={{}}>
           {/** Header */}
           <View style={styles.searchListHeader}>
-            <Text style={styles.searchListLabel}>{'검색 결과'}</Text>
+            <Text style={styles.searchListLabel}>{getMsg(this.props.lang, 'ML0107', '검색 결과')}</Text>
             {/* <TouchableOpacity style={styles.searchListBtn} onPress={() => {
               alert('검색기록 전체삭제');
             }}>

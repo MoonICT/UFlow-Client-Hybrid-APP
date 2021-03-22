@@ -44,7 +44,7 @@ class WebviewMap extends Component {
       await AsyncStorage.setItem(TOKEN, JSON.stringify(data.access_token));
       this.navigation.navigate('Home');
     } else {
-      this.noSocialLogin(`${getMsg(this.props.lang, 'ACC0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'CMN0003', '다시 시도해주세요.')}`)
+      this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
     }
 
     this.props.handleCompleteLogin(data.access_token)
@@ -133,7 +133,7 @@ class WebviewMap extends Component {
     }).then(data => {
       console.log("SNS 와 사용자계정 연동, SNS ID(고유키)로 연동된 계정이 존재하지 않고, SNS 정보와 동일한 이메일(계정)이 존재한다. -> SNS 연동후 로그인", data);
       if (!data.access_token) {
-        this.noSocialLogin(`${getMsg(this.props.lang, 'ACC0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'CMN0003', '다시 시도해주세요.')}`)
+        this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
       }
       // 로그인 처리
       this.redirectLogin(data);
@@ -145,7 +145,7 @@ class WebviewMap extends Component {
       } else {
         // 에러 메시지 처리
         console.log(res.response.data, "res.response")
-        this.noSocialLogin(`${getMsg(this.props.lang, 'ACC0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'CMN0003', '다시 시도해주세요.')}`)
+        this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
       }
     });
   }
@@ -160,7 +160,7 @@ class WebviewMap extends Component {
     }).then(data => {
       console.log("SNS 와 사용자계정 연동, SNS ID(고유키)로 연동된 계정이 존재하지 않고, SNS 정보와 동일한 이메일(계정)이 존재한다. -> SNS 연동후 로그인", data);
       if (!data.access_token) {
-        this.noSocialLogin(`${getMsg(this.props.lang, 'ACC0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'CMN0003', '다시 시도해주세요.')}`)
+        this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
       }
       // 로그인 처리
       this.redirectLogin(data);
@@ -172,7 +172,7 @@ class WebviewMap extends Component {
       } else {
         // 에러 메시지 처리
         console.log(res.response.data, "res.response")
-        this.noSocialLogin(`${getMsg(this.props.lang, 'ACC0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'CMN0003', '다시 시도해주세요.')}`)
+        this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
       }
     });
   }
@@ -202,11 +202,11 @@ class WebviewMap extends Component {
       console.log('APPLE LOGIN ERROR :::', error);
       if (error.code === appleAuth.Error.CANCELED) {
         console.log('APPLE LOGIN ::: canceled');
-        this.props.handleFailLogin(getMsg(this.props.lang, 'ACC0038', '애플 로그인이 취소되었습니다.'))
+        this.props.handleFailLogin(getMsg(this.props.lang, 'ML0038', '애플 로그인이 취소되었습니다.'))
         // alert('애플 로그인이 취소되었습니다.')
       } else {
         console.log('APPLE LOGIN ::: error');
-        this.props.handleFailLogin(getMsg(this.props.lang, 'ACC0039', '애플 로그인을 실패했습니다.'))
+        this.props.handleFailLogin(getMsg(this.props.lang, 'ML0039', '애플 로그인을 실패했습니다.'))
         // alert('애플 로그인을 실패했습니다.')
       }
     }

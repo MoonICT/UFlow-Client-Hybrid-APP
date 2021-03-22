@@ -34,6 +34,7 @@ import WebviewMap from '@Components/organisms/WebviewMap';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import Progress from '@Components/organisms/Progress';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 // Image
 import panoIcon from '@Assets/images/iconback.png';
 import cardBG from '@Assets/images/card-img.png';
@@ -139,9 +140,9 @@ class DetailWH extends Component {
         }
       })
       .catch(error => {
-        
+
         this.props.showPopup({ title: 'UFLOW', content: 'DetailWH componentDidMount error:' + error, type: 'confirm' });
-        
+
       });
     MyPage.getDetailCodes('WHRG0010')
       .then(res => {
@@ -168,7 +169,7 @@ class DetailWH extends Component {
         }, 300);
       })
       .catch(error => {
-      
+
         this.props.showPopup({ title: 'UFLOW', content: error, type: 'confirm' });
 
         this.props.setProgress({ is: false });
@@ -192,7 +193,11 @@ class DetailWH extends Component {
           alert(error.response.data.message);
         });
     } else {
-      this.props.showPopup({ title: 'UFLOW', content: '로그인 후 이용해주세요.', type: 'confirm' });
+      this.props.showPopup({
+        title: 'UFLOW',
+        content: getMsg(this.props.lang, 'ML0099', '로그인 후 이용해주세요.'),
+        type: 'confirm'
+      });
     }
   };
 
@@ -208,7 +213,7 @@ class DetailWH extends Component {
     }
     if (!isLogin) {
       // TODO Change to dialog UI
-      alert('로그인 후 이용가능합니다.');
+      alert(getMsg(this.props.lang, 'ML0099', '로그인 후 이용해주세요.'));
       return false;
     }
     await WarehouseTenant.possibleContract({
@@ -228,13 +233,13 @@ class DetailWH extends Component {
         if (error.response) {
           if (error.response.status === 401) {
             // TODO Change to dialog UI
-            alert('로그인 세션이 만료되었습니다.\n다시 로그인해주세요.');
+            alert(getMsg(this.props.lang, 'ML0130', '로그인 세션이 만료되었습니다.\n다시 로그인해주세요.'));
           }
         }
         switch (error.response.data.status) {
           case 'NONE': // 등록된 사업자가 없음, 최초 임차인 등록
             // TODO Change to dialog UI
-            alert('사업자정보 등록 후 견적 요청이 가능합니다.');
+            alert(getMsg(this.props.lang, 'ML0131', '사업자정보 등록 후 견적 요청이 가능합니다.'));
             this.navigation.navigate('DetailRegisterTenant', {
               typeInfo: typeInfo,
               typeWH: type,
@@ -247,7 +252,7 @@ class DetailWH extends Component {
             break;
           case 'IMP_CNT': // 견적등록 불가능, 창고가 공실상태가 아님.
             // TODO Change to dialog UI
-            alert('견적요청이 불가능합니다.\n현재 공실 상태가 아닙니다.');
+            alert(getMsg(this.props.lang, 'ML0132', '견적요청이 불가능합니다.\n현재 공실 상태가 아닙니다.'));
             break;
         }
       });
@@ -338,25 +343,6 @@ class DetailWH extends Component {
     } = this.state;
     // console.log('whrgData', whrgData)
 
-    // const dataTab = [
-    //   {
-    //     title: '지하 1층',
-    //     content: ''
-    //   },
-    //   {
-    //     title: '지상 2층',
-    //     content: ''
-    //   },
-    //   {
-    //     title: '지상 3층',
-    //     content: ''
-    //   },
-    //   {
-    //     title: '지상 4층',
-    //     content: ''
-    //   },
-    // ];
-
     const toSquareMeter = value => {
       //return value ?  Math.ceil((Math.trunc(Number(value)*10)/10) * 3.305785) : ''
       return value ? Number(Number(value) * 3.305785).toFixed(0) : '';
@@ -394,7 +380,7 @@ class DetailWH extends Component {
           /> */}
 
           <HistoryBackActionBar
-            title={'창고 상세'}
+            title={getMsg(this.props.lang, 'ML0133', '창고 상세')}
             navigation={this.navigation}
             rightComponent={
               favorite ? (
@@ -425,9 +411,9 @@ class DetailWH extends Component {
             </Text>
             <View style={S.titleView}>
               <Text style={[S.describeTitle, { textAlign: 'left' }]}>
-                {`${whrgData.hasKeep ? '임대창고' : ''}`}
+                {`${whrgData.hasKeep ? getMsg(this.props.lang, 'ML0134', '임대창고') : ''}`}
                 {`${whrgData.hasKeep && whrgData.hasTrust ? ', ' : ''}`}
-                {`${whrgData.hasTrust ? '수탁창고' : ''}`}
+                {`${whrgData.hasTrust ? getMsg(this.props.lang, 'ML0135', '수탁창고') : ''}`}
               </Text>
 
               <Text style={[S.describeTitle, S.rightTitle, { textAlign: 'right' }]}>
@@ -442,8 +428,6 @@ class DetailWH extends Component {
               </Text>
 
             </View>
-
-
             <Text style={S.header}>{whrgData.name} </Text>
             <View style={S.labels}>
               {whrgData.keeps &&
@@ -451,29 +435,33 @@ class DetailWH extends Component {
               whrgData.keeps.map((keep, index) => (
                 <View key={index}>
                   {keep.typeCode &&
-                  keep.typeCode?.stdDetailCodeName === '상온' && (
-                    <Text style={[S.textlabel, S.orange]}>상온</Text>
+                  keep.typeCode?.stdDetailCodeName && (
+                    <Text style={[S.textlabel, S.gray]}>{keep.typeCode?.stdDetailCodeName}</Text>
                   )}
-                  {keep.typeCode &&
-                  keep.typeCode?.stdDetailCodeName === '냉동' && (
-                    <Text style={[S.textlabel, S.azure]}>냉동</Text>
-                  )}
-                  {keep.typeCode &&
-                  keep.typeCode?.stdDetailCodeName === '냉장' && (
-                    <Text style={[S.textlabel, S.green]}>냉장</Text>
-                  )}
-                  {keep.typeCode &&
-                  keep.typeCode?.stdDetailCodeName === '야적' && (
-                    <Text style={[S.textlabel, S.gray]}>야적</Text>
-                  )}
-                  {keep.typeCode &&
-                  keep.typeCode?.stdDetailCodeName === '위험물' && (
-                    <Text style={[S.textlabel, S.gray]}>위험물</Text>
-                  )}
-                  {keep.typeCode &&
-                  keep.typeCode?.stdDetailCodeName === '기타' && (
-                    <Text style={[S.textlabel, S.gray]}>기타</Text>
-                  )}
+                  {/*{keep.typeCode &&*/}
+                  {/*keep.typeCode?.stdDetailCodeName === '상온' && (*/}
+                  {/*  <Text style={[S.textlabel, S.orange]}>상온</Text>*/}
+                  {/*)}*/}
+                  {/*{keep.typeCode &&*/}
+                  {/*keep.typeCode?.stdDetailCodeName === '냉동' && (*/}
+                  {/*  <Text style={[S.textlabel, S.azure]}>냉동</Text>*/}
+                  {/*)}*/}
+                  {/*{keep.typeCode &&*/}
+                  {/*keep.typeCode?.stdDetailCodeName === '냉장' && (*/}
+                  {/*  <Text style={[S.textlabel, S.green]}>냉장</Text>*/}
+                  {/*)}*/}
+                  {/*{keep.typeCode &&*/}
+                  {/*keep.typeCode?.stdDetailCodeName === '야적' && (*/}
+                  {/*  <Text style={[S.textlabel, S.gray]}>야적</Text>*/}
+                  {/*)}*/}
+                  {/*{keep.typeCode &&*/}
+                  {/*keep.typeCode?.stdDetailCodeName === '위험물' && (*/}
+                  {/*  <Text style={[S.textlabel, S.gray]}>위험물</Text>*/}
+                  {/*)}*/}
+                  {/*{keep.typeCode &&*/}
+                  {/*keep.typeCode?.stdDetailCodeName === '기타' && (*/}
+                  {/*  <Text style={[S.textlabel, S.gray]}>기타</Text>*/}
+                  {/*)}*/}
                 </View>
               ))}
 
@@ -482,46 +470,50 @@ class DetailWH extends Component {
               whrgData.trusts.map((trust, index) => (
                 <View key={index}>
                   {trust.typeCode &&
-                  trust.typeCode?.stdDetailCodeName === '상온' && (
-                    <Text style={[S.textlabel, S.orange]}>상온</Text>
+                  trust.typeCode?.stdDetailCodeName && (
+                    <Text style={[S.textlabel, S.orange]}>{trust.typeCode?.stdDetailCodeName}</Text>
                   )}
-                  {trust.typeCode &&
-                  trust.typeCode?.stdDetailCodeName === '냉동' && (
-                    <Text style={[S.textlabel, S.orange]}>냉동</Text>
-                  )}
-                  {trust.typeCode &&
-                  trust.typeCode?.stdDetailCodeName === '냉장' && (
-                    <Text style={[S.textlabel, S.orange]}>냉장</Text>
-                  )}
-                  {trust.typeCode &&
-                  trust.typeCode?.stdDetailCodeName === '야적' && (
-                    <Text style={[S.textlabel, S.orange]}>야적</Text>
-                  )}
-                  {trust.typeCode &&
-                  trust.typeCode?.stdDetailCodeName === '위험물' && (
-                    <Text style={[S.textlabel, S.orange]}>위험물</Text>
-                  )}
-                  {trust.typeCode &&
-                  trust.typeCode?.stdDetailCodeName === '기타' && (
-                    <Text style={[S.textlabel, S.orange]}>기타</Text>
-                  )}
+                  {/*{trust.typeCode &&*/}
+                  {/*trust.typeCode?.stdDetailCodeName === '상온' && (*/}
+                  {/*  <Text style={[S.textlabel, S.orange]}>상온</Text>*/}
+                  {/*)}*/}
+                  {/*{trust.typeCode &&*/}
+                  {/*trust.typeCode?.stdDetailCodeName === '냉동' && (*/}
+                  {/*  <Text style={[S.textlabel, S.orange]}>냉동</Text>*/}
+                  {/*)}*/}
+                  {/*{trust.typeCode &&*/}
+                  {/*trust.typeCode?.stdDetailCodeName === '냉장' && (*/}
+                  {/*  <Text style={[S.textlabel, S.orange]}>냉장</Text>*/}
+                  {/*)}*/}
+                  {/*{trust.typeCode &&*/}
+                  {/*trust.typeCode?.stdDetailCodeName === '야적' && (*/}
+                  {/*  <Text style={[S.textlabel, S.orange]}>야적</Text>*/}
+                  {/*)}*/}
+                  {/*{trust.typeCode &&*/}
+                  {/*trust.typeCode?.stdDetailCodeName === '위험물' && (*/}
+                  {/*  <Text style={[S.textlabel, S.orange]}>위험물</Text>*/}
+                  {/*)}*/}
+                  {/*{trust.typeCode &&*/}
+                  {/*trust.typeCode?.stdDetailCodeName === '기타' && (*/}
+                  {/*  <Text style={[S.textlabel, S.orange]}>기타</Text>*/}
+                  {/*)}*/}
                 </View>
               ))}
 
               {/* <Text style={S.textlabel}>12,345평</Text> */}
             </View>
 
-            {/** 창고 이미지 
+            {/** 창고 이미지
              *  이미지가 없는경우 기본이미지로 처리.
-            */}
+             */}
             {whrgData.whImages && whrgData.whImages.length == 0 && (
               <View style={S.background}>
                 <TouchableOpacity onPress={() => this.setState({ isImageViewVisible: true })}>
-                    <Image
-                      style={S.backgroundImage}
-                      source={WHPlaceholder}
-                    />
-                  </TouchableOpacity>
+                  <Image
+                    style={S.backgroundImage}
+                    source={WHPlaceholder}
+                  />
+                </TouchableOpacity>
               </View>
             )}
             {whrgData.whImages && whrgData.whImages.length > 0 && (
@@ -604,7 +596,9 @@ class DetailWH extends Component {
 
             {/** 창고 정보 */}
             <View style={S.info}>
-              <Text style={DefaultStyle._textTitleBody}>창고 정보</Text>
+              <Text style={DefaultStyle._textTitleBody}>
+                {getMsg(this.props.lang, 'ML0136', '창고 정보')}
+              </Text>
               <View style={DefaultStyle.row}>
                 {
                   checkTrust === true ?
@@ -614,14 +608,14 @@ class DetailWH extends Component {
                         style={[S.btnTabBarLeft, active === 1 ? S.activeBtn : null]}
                         onPress={() => this.setState({ active: 1 })}>
                         <Text style={[S.textBtn, active === 1 ? S.activeText : null]}>
-                          수탁
+                          {getMsg(this.props.lang, 'ML0137', '수탁')}
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={[S.btnTabBarRight, active === 0 ? S.activeBtn : null]}
                         onPress={() => this.setState({ active: 0 })}>
                         <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
-                          임대
+                          {getMsg(this.props.lang, 'ML0138', '임대')}
                         </Text>
                       </TouchableOpacity>
                     </Fragment> :
@@ -630,14 +624,14 @@ class DetailWH extends Component {
                         style={[S.btnTabBarLeft, active === 0 ? S.activeBtn : null]}
                         onPress={() => this.setState({ active: 0 })}>
                         <Text style={[S.textBtn, active === 0 ? S.activeText : null]}>
-                          임대
+                          {getMsg(this.props.lang, 'ML0138', '임대')}
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={[S.btnTabBarRight, active === 1 ? S.activeBtn : null]}
                         onPress={() => this.setState({ active: 1 })}>
                         <Text style={[S.textBtn, active === 1 ? S.activeText : null]}>
-                          수탁
+                          {getMsg(this.props.lang, 'ML0137', '수탁')}
                         </Text>
                       </TouchableOpacity>
                     </Fragment>
@@ -683,7 +677,7 @@ class DetailWH extends Component {
                       <View style={S.table}>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            창고유형
+                            {getMsg(this.props.lang, 'ML0129', '창고유형')}
                           </Text>
                           <Text style={S.textTable}>
                             {keep.typeCode
@@ -693,7 +687,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            정산단위
+                            {getMsg(this.props.lang, 'ML0139', '정산단위')}
                           </Text>
                           <Text style={S.textTable}>
                             {keep.calUnitDvCode
@@ -703,7 +697,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            산정기준
+                            {getMsg(this.props.lang, 'ML0140', '산정기준')}
                           </Text>
                           <Text style={S.textTable}>
                             {keep.calStdDvCode
@@ -713,7 +707,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            관리비구분
+                            {getMsg(this.props.lang, 'ML0141', '관리비구분')}
                           </Text>
                           <Text style={S.textTable}>
                             {keep.mgmtChrgDvCode
@@ -723,7 +717,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            가용일자
+                            {getMsg(this.props.lang, 'ML0142', '가용일자')}
                           </Text>
                           <Text style={S.textTable}>
                             {`${formatDateV1(
@@ -733,7 +727,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            가용수치
+                            {getMsg(this.props.lang, 'ML0143', '가용수치')}
                           </Text>
                           <Text style={S.textTable}>
                             {keep.usblValue ? StringUtils.displayAreaUnit(keep.usblValue) : '-'}
@@ -753,7 +747,7 @@ class DetailWH extends Component {
                         </View> */}
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            임대단가
+                            {getMsg(this.props.lang, 'ML0144', '임대단가')}
                           </Text>
                           <Text style={S.textTable}>
                             {`${
@@ -765,7 +759,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            관리단가
+                            {getMsg(this.props.lang, 'ML0145', '관리단가')}
                           </Text>
                           <Text style={S.textTable}>
                             {`${
@@ -777,9 +771,9 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            비고
+                            {getMsg(this.props.lang, 'ML0146', '비고')}
                           </Text>
-                          <Text style={S.textTable}>{keep.remark? keep.remark : '-'}</Text>
+                          <Text style={S.textTable}>{keep.remark ? keep.remark : '-'}</Text>
                         </View>
                         <View style={S.tableRow}>
                           {/* 견적 요청 가능 상태인지 체크 */}
@@ -812,11 +806,13 @@ class DetailWH extends Component {
                                         this.checkContract('KEEP', keep)
                                       }>
                                       <Text style={[S.textBtnQuote]}>
-                                        견적 요청하기
+                                        {getMsg(this.props.lang, 'ML0152', '견적 요청하기')}
                                       </Text>
                                     </TouchableOpacity>
                                     :
-                                    <Text>내가 등록한 창고입니다.(견적 요청 불가)</Text>
+                                    <Text>
+                                      {getMsg(this.props.lang, 'ML0153', '내가 등록한 창고입니다.(견적 요청 불가)')}
+                                    </Text>
                                   }
 
                                 </View>
@@ -828,7 +824,7 @@ class DetailWH extends Component {
                                 S.textBtnQuote,
                                 { color: '#ff0000', padding: 16 },
                               ]}>
-                              계약 완료된 정보입니다.
+                              {getMsg(this.props.lang, 'ML0147', '계약 완료된 정보입니다.')}
                             </Text>
                           )}
                         </View>
@@ -838,7 +834,9 @@ class DetailWH extends Component {
                 ))
               ) : (
                 <View style={DefaultStyle._card}>
-                  <Text style={S.textTable}>등록된 창고정보가 없습니다.</Text>
+                  <Text style={S.textTable}>
+                    {getMsg(this.props.lang, 'ML0148', '등록된 창고정보가 없습니다.')}
+                  </Text>
                 </View>
               ))}
 
@@ -876,7 +874,7 @@ class DetailWH extends Component {
                       <View style={S.table}>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            창고유형
+                            {getMsg(this.props.lang, 'ML0129', '창고유형')}
                           </Text>
                           <Text style={S.textTable}>
                             {trust.typeCode
@@ -886,7 +884,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            정산단위
+                            {getMsg(this.props.lang, 'ML0139', '정산단위')}
                           </Text>
                           <Text style={S.textTable}>
                             {trust.calUnitDvCode
@@ -896,7 +894,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            산정기준
+                            {getMsg(this.props.lang, 'ML0140', '산정기준')}
                           </Text>
                           <Text style={S.textTable}>
                             {trust.calStdDvCode
@@ -916,7 +914,7 @@ class DetailWH extends Component {
                         {/*</View>*/}
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            가용일자
+                            {getMsg(this.props.lang, 'ML0142', '가용일자')}
                           </Text>
                           <Text style={S.textTable}>
                             {`${formatDateV1(
@@ -926,7 +924,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            가용수치
+                            {getMsg(this.props.lang, 'ML0143', '가용수치')}
                           </Text>
                           <Text style={S.textTable}>
                             {displayUsblValue(
@@ -949,7 +947,7 @@ class DetailWH extends Component {
                         </View> */}
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            보관단가
+                            {getMsg(this.props.lang, 'ML0149', '보관단가')}
                           </Text>
                           <Text style={S.textTable}>
                             {`${
@@ -963,7 +961,7 @@ class DetailWH extends Component {
                         {/** 정보 수정 시작 **/}
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            입고단가
+                            {getMsg(this.props.lang, 'ML0150', '입고단가')}
                           </Text>
                           <Text style={S.textTable}>
                             {`${
@@ -975,7 +973,7 @@ class DetailWH extends Component {
                         </View>
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            출고단가
+                            {getMsg(this.props.lang, 'ML0151', '출고단가')}
                           </Text>
                           <Text style={S.textTable}>
                             {`${
@@ -1037,7 +1035,7 @@ class DetailWH extends Component {
                         {/** 정보 수정 시작 **/}
                         <View style={S.tableRow}>
                           <Text style={[S.textTable, S.textLeftTable]}>
-                            비고
+                            {getMsg(this.props.lang, 'ML0146', '비고')}
                           </Text>
                           <Text style={S.textTable}>{trust.remark ? trust.remark : '-'}</Text>
                         </View>
@@ -1070,11 +1068,13 @@ class DetailWH extends Component {
                                           this.checkContract('TRUST', trust)
                                         }>
                                         <Text style={[S.textBtnQuote]}>
-                                          견적 요청하기
+                                          {getMsg(this.props.lang, 'ML0152', '견적 요청하기')}
                                         </Text>
                                       </TouchableOpacity>
                                       :
-                                      <Text>내가 등록한 창고입니다.(견적 요청 불가)</Text>
+                                      <Text>
+                                        {getMsg(this.props.lang, 'ML0153', '내가 등록한 창고입니다.(견적 요청 불가)')}
+                                      </Text>
                                   }
                                 </View>
 
@@ -1086,7 +1086,7 @@ class DetailWH extends Component {
                                 S.textBtnQuote,
                                 { color: '#ff0000', padding: 16 },
                               ]}>
-                              계약 완료된 정보입니다.
+                              {getMsg(this.props.lang, 'ML0147', '계약 완료된 정보입니다.')}
                             </Text>
                           )}
                         </View>
@@ -1096,14 +1096,18 @@ class DetailWH extends Component {
                 ))
               ) : (
                 <View style={DefaultStyle._card}>
-                  <Text style={S.textTable}>등록된 창고정보가 없습니다.</Text>
+                  <Text style={S.textTable}>
+                    {getMsg(this.props.lang, 'ML0148', '등록된 창고정보가 없습니다.')}
+                  </Text>
                 </View>
               ))}
             </View>
           </View>
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
-              <Text style={S.title}>창고 소개</Text>
+              <Text style={S.title}>
+                {getMsg(this.props.lang, 'ML0174', '창고 소개')}
+              </Text>
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.viewBody}>
@@ -1118,7 +1122,9 @@ class DetailWH extends Component {
 
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
-              <Text style={S.title}>위치</Text>
+              <Text style={S.title}>
+                {getMsg(this.props.lang, 'ML0175', '위치')}
+              </Text>
               <Text style={S.describeTitle}>
                 {whrgData.roadAddr
                   ? `${whrgData.roadAddr.address} ${
@@ -1170,21 +1176,23 @@ class DetailWH extends Component {
 
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
-              <Text style={S.title}>추가 정보</Text>
+              <Text style={S.title}>
+                {getMsg(this.props.lang, 'ML0176', '추가 정보')}
+              </Text>
               <View style={DefaultStyle._card}>
                 <View style={S.bodyCard}>
                   <View style={S.table}>
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
-                        준공일자
+                        {getMsg(this.props.lang, 'ML0154', '준공일자')}
                       </Text>
                       <Text style={S.textTable}>
-                        {`${whrgData.cmpltYmd? formatDateV1(whrgData.cmpltYmd) : '-'}`}
+                        {`${whrgData.cmpltYmd ? formatDateV1(whrgData.cmpltYmd) : '-'}`}
                       </Text>
                     </View>
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
-                        전용면적
+                        {getMsg(this.props.lang, 'ML0155', '전용면적')}
                       </Text>
                       <Text style={S.textTable}>
                         {whrgData.prvtArea
@@ -1195,7 +1203,7 @@ class DetailWH extends Component {
 
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
-                        대지면적
+                        {getMsg(this.props.lang, 'ML0156', '대지면적')}
                       </Text>
                       <Text style={S.textTable}>
                         {whrgData.siteArea
@@ -1217,7 +1225,7 @@ class DetailWH extends Component {
 
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
-                        건축면적
+                        {getMsg(this.props.lang, 'ML0157', '건축면적')}
                       </Text>
                       <Text style={S.textTable}>
                         {whrgData.bldgArea
@@ -1228,7 +1236,7 @@ class DetailWH extends Component {
 
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
-                        추가옵션
+                        {getMsg(this.props.lang, 'ML0158', '추가옵션')}
                       </Text>
                       <Text style={S.textTable}>
                         {`${
@@ -1242,7 +1250,9 @@ class DetailWH extends Component {
                     </View>
 
                     <View style={S.tableRow}>
-                      <Text style={[S.textTable, S.textLeftTable]}>연면적</Text>
+                      <Text style={[S.textTable, S.textLeftTable]}>
+                        {getMsg(this.props.lang, 'ML0177', '연면적')}
+                      </Text>
                       <Text style={S.textTable}>
                         {whrgData.totalArea
                           ? StringUtils.displayAreaUnit(whrgData.totalArea)
@@ -1252,7 +1262,7 @@ class DetailWH extends Component {
 
                     <View style={S.tableRow}>
                       <Text style={[S.textTable, S.textLeftTable]}>
-                        보험가입
+                        {getMsg(this.props.lang, 'ML0159', '보험가입')}
                       </Text>
                       <Text style={S.textTable}>
                         {`${
@@ -1269,78 +1279,78 @@ class DetailWH extends Component {
               </View>
             </View>
           </View>
-          
-          { whrgData.floors && whrgData.floors.length > 0 ?
-          (<View style={DefaultStyle._cards}>
-            <View style={S.info}>
-              <Text style={S.title}>층별 상세 정보</Text>
-              <View style>
-                <AppGrid
-                  data={dataTab && dataTab}
-                  title={floors}
-                  titleProps={(e, index) =>
-                    this.setState({ floors: e, activeIndex: index })
-                  }
-                />
-              </View>
-              {whrgData.floors ? (
-                whrgData.floors.map((floor, index) => {
-                  return (
-                    activeIndex === index && (
-                      <View key={'floor' + index} style={DefaultStyle._card}>
-                        <View style={S.bodyCard}>
-                          <View style={S.table}>
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                층 수
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.flrDvCode
-                                  ? floor.flrDvCode?.stdDetailCodeName
-                                  : ''}
-                              </Text>
-                            </View>
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                층면적
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.flrArea
-                                  ? StringUtils.displayAreaUnit(floor.flrArea)
-                                  : '-'}
-                              </Text>
-                            </View>
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                사무실면적
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.opcArea
-                                  ? StringUtils.displayAreaUnit(floor.opcArea)
-                                  : '-'}
-                              </Text>
-                            </View>
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                주차장면적
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.parkArea
-                                  ? StringUtils.displayAreaUnit(floor.parkArea)
-                                  : '-'}
-                              </Text>
-                            </View>
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                전용면적
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.prvtArea
-                                  ? StringUtils.displayAreaUnit(floor.prvtArea)
-                                  : '-'}
-                              </Text>
-                            </View>
-                            {/* <View style={S.tableRow}>
+
+          {whrgData.floors && whrgData.floors.length > 0 ?
+            (<View style={DefaultStyle._cards}>
+                <View style={S.info}>
+                  <Text style={S.title}>{getMsg(this.props.lang, 'ML0178', '층별 상세 정보')}</Text>
+                  <View style>
+                    <AppGrid
+                      data={dataTab && dataTab}
+                      title={floors}
+                      titleProps={(e, index) =>
+                        this.setState({ floors: e, activeIndex: index })
+                      }
+                    />
+                  </View>
+                  {whrgData.floors ? (
+                    whrgData.floors.map((floor, index) => {
+                      return (
+                        activeIndex === index && (
+                          <View key={'floor' + index} style={DefaultStyle._card}>
+                            <View style={S.bodyCard}>
+                              <View style={S.table}>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0116', '층수')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.flrDvCode
+                                      ? floor.flrDvCode?.stdDetailCodeName
+                                      : ''}
+                                  </Text>
+                                </View>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0160', '층면적')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.flrArea
+                                      ? StringUtils.displayAreaUnit(floor.flrArea)
+                                      : '-'}
+                                  </Text>
+                                </View>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0161', '사무실면적')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.opcArea
+                                      ? StringUtils.displayAreaUnit(floor.opcArea)
+                                      : '-'}
+                                  </Text>
+                                </View>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0162', '주차장면적')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.parkArea
+                                      ? StringUtils.displayAreaUnit(floor.parkArea)
+                                      : '-'}
+                                  </Text>
+                                </View>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0163', '전용면적')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.prvtArea
+                                      ? StringUtils.displayAreaUnit(floor.prvtArea)
+                                      : '-'}
+                                  </Text>
+                                </View>
+                                {/* <View style={S.tableRow}>
                               <Text style={[S.textTable, S.textLeftTable]}>
                                 공용면적
                               </Text>
@@ -1350,64 +1360,64 @@ class DetailWH extends Component {
                                   : '-'}
                               </Text>
                             </View> */}
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                층고
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.flrHi
-                                  ? StringUtils.numberComma(floor.flrHi)
-                                  : '-'}
-                              </Text>
-                            </View>
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                유효고
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.efctvHi
-                                  ? StringUtils.numberComma(floor.efctvHi)
-                                  : '-'}
-                              </Text>
-                            </View>
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                접안방식
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.aprchMthdDvCode
-                                  ? floor.aprchMthdDvCode?.stdDetailCodeName
-                                  : ''}
-                              </Text>
-                            </View>
-                            <View style={S.tableRow}>
-                              <Text style={[S.textTable, S.textLeftTable]}>
-                                도크 수
-                              </Text>
-                              <Text style={S.textTable}>
-                                {floor.dockQty
-                                  ? StringUtils.numberComma(floor.dockQty)
-                                  : '-'}
-                              </Text>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0115', '층고')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.flrHi
+                                      ? StringUtils.numberComma(floor.flrHi)
+                                      : '-'}
+                                  </Text>
+                                </View>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0164', '유효고')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.efctvHi
+                                      ? StringUtils.numberComma(floor.efctvHi)
+                                      : '-'}
+                                  </Text>
+                                </View>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0117', '접안방식')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.aprchMthdDvCode
+                                      ? floor.aprchMthdDvCode?.stdDetailCodeName
+                                      : ''}
+                                  </Text>
+                                </View>
+                                <View style={S.tableRow}>
+                                  <Text style={[S.textTable, S.textLeftTable]}>
+                                    {getMsg(this.props.lang, 'ML0165', '도크 수')}
+                                  </Text>
+                                  <Text style={S.textTable}>
+                                    {floor.dockQty
+                                      ? StringUtils.numberComma(floor.dockQty)
+                                      : '-'}
+                                  </Text>
+                                </View>
+                              </View>
                             </View>
                           </View>
-                        </View>
-                      </View>
-                    )
-                  );
-                })
-              ) : (
-                <Text style={S.textTable} />
-              )}
-            </View>
-          </View>
-          ) : <View/>}
+                        )
+                      );
+                    })
+                  ) : (
+                    <Text style={S.textTable} />
+                  )}
+                </View>
+              </View>
+            ) : <View />}
 
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
               <View style={S.titleView}>
                 <Text style={S.title}>
-                  문의 
+                  {getMsg(this.props.lang, 'ML0166', '문의')}
                   {/* ({pageInfo.totalElements ? pageInfo.totalElements : 0}) */}
                 </Text>
                 <View style={S.rightTitle}>
@@ -1422,11 +1432,11 @@ class DetailWH extends Component {
                           },
                         })
                       } else {
-                        alert('로그인 후 이용가능합니다.')
+                        alert(getMsg(this.props.lang, 'ML0099', '로그인 후 이용해주세요.'))
                       }
                     }
                     }>
-                    <Text style={S.textInquiry}>문의하기</Text>
+                    <Text style={S.textInquiry}>{getMsg(this.props.lang, 'ML0167', '문의하기')}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -1436,7 +1446,7 @@ class DetailWH extends Component {
                   {qnaList && qnaList.length === 0 && (
                     <View style={[DefaultStyle.d_center, DefaultStyle.p_16]}>
                       <Text key={'empty'} style={S.titleInquiry}>
-                        문의 내역이 없습니다.
+                        {getMsg(this.props.lang, 'ML0168', '문의 내역이 없습니다.')}
                       </Text>
                     </View>
                   )}
@@ -1454,8 +1464,8 @@ class DetailWH extends Component {
                       }}>
                         <View style={S.leftInquiry}>
                           {qnaItem.answer ?
-                            <Text style={S.titleCompleted}>답변완료</Text> :
-                            <Text style={S.titleInquiry}>미답변</Text>}
+                            <Text style={S.titleCompleted}>{getMsg(this.props.lang, 'ML0169', '답변완료')}</Text> :
+                            <Text style={S.titleInquiry}>{getMsg(this.props.lang, 'ML0170', '미답변')}</Text>}
                           <View>
                             {/** TODO 기본 비밀글로 처리. 추후 변경.*/}
                             {qnaItem.me || !(qnaItem.secret || true) ?
@@ -1464,13 +1474,13 @@ class DetailWH extends Component {
                                   {qnaItem.content}
                                 </Text>
                                 <Text style={[S.contentInquiry, { marginTop: 4, }]}>
-                                  {qnaItem.answer ? `\n답변 :\n${qnaItem.answer.content}` : ''}
+                                  {qnaItem.answer ? `\n${getMsg(this.props.lang, 'ML0179', '답변')} :\n${qnaItem.answer.content}` : ''}
                                 </Text>
                               </>
                               :
                               <Text style={S.contentInquiry}>
                                 <IconButton style={S.btnIcon} size={16} icon="lock" />
-                                비밀글 입니다.
+                                {getMsg(this.props.lang, 'ML0171', '비밀글 입니다.')}
                               </Text>
                             }
                           </View>
@@ -1534,7 +1544,7 @@ class DetailWH extends Component {
                         this.handleRequestQnaList(100),
                           this.setState({ showAll: true });
                       }}>
-                      <Text style={S.textViewAll}>전체보기</Text>
+                      <Text style={S.textViewAll}> {getMsg(this.props.lang, 'ML0172', '전체보기')}</Text>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -1544,7 +1554,7 @@ class DetailWH extends Component {
 
           <View style={DefaultStyle._cards}>
             <View style={S.info}>
-              <Text style={S.title}>유사한 창고</Text>
+              <Text style={S.title}>{getMsg(this.props.lang, 'ML0173', '유사한 창고')}</Text>
               <View style={S.mainProductList}>
                 {/*<CarouselSnap*/}
                 {/*layout={'default'}*/}

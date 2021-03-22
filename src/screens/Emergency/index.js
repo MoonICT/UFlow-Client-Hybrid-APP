@@ -23,6 +23,7 @@ import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import { styles as S } from './style';
 import { Emergency } from '@Services/apis';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class QuestionScreen extends Component {
   constructor (props) {
@@ -125,7 +126,7 @@ class QuestionScreen extends Component {
               onDismiss={this.hideDialog}>
               <Dialog.Title
                 style={[DefaultStyle._titleDialog, S.titleQuestion]}>
-                긴급차량 지원
+                {getMsg(this.props.lang, 'ML0445', '긴급차량 지원')}
               </Dialog.Title>
               <Dialog.Content>
                 <View
@@ -139,14 +140,14 @@ class QuestionScreen extends Component {
                     dataDefault={dataEvs[0]}
                     valueSelected={email}
                     data={dataEvs}
-                    labelSelected="이메일"
+                    labelSelected={getMsg(this.props.lang, 'ML0013', '이메일')}
                     valueProps={this.valueProps}
                   />
                   <TextField
                     borderColor={isContent ? 'red' : '#cccccc'}
-                    labelTextField="문의 내용"
+                    labelTextField={getMsg(this.props.lang, 'ML0446', '문의 내용')}
                     colorLabel="#888"
-                    placeholder="문의하실 내용을 입랙해 주세요."
+                    placeholder={getMsg(this.props.lang, 'ML0447', '문의하실 내용을 입력해 주세요.')}
                     numberOfLines={10}
                     multiline={true}
                     onChangeText={this.handleChangeContent}
@@ -162,12 +163,12 @@ class QuestionScreen extends Component {
                 <Button
                   style={[DefaultStyle._buttonElement]}
                   onPress={this.onCancel}>
-                  <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>취소</Text>
+                  <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>{getMsg(this.props.lang, 'ML0101', '취소')}</Text>
                 </Button>
                 <Button
                   style={DefaultStyle._buttonElement}
                   onPress={this.onSubmit}>
-                  확인
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Button>
               </Dialog.Actions>
             </Dialog>

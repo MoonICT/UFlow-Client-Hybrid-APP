@@ -25,78 +25,79 @@ import Select from '@Components/organisms/Select';
 import WarehouseRegistration from './warehouseRegistration';
 import WarehouseUse from './warehouseUse';
 import ContractMode from './contractMode';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 //Data Footer
 const data = [
   {
-    titleList: '창고 등록',
+    titleList: getMsg(this.props.lang, 'ML0066', '창고 등록'),
     listItem: [
-      { titleItem: '공급사 등록' },
-      { titleItem: '수요사 등록' },
-      { titleItem: '회원 조회' },
-      { titleItem: '기본 조회' },
+      { titleItem: getMsg(this.props.lang, 'ML0462', '공급사 등록') },
+      { titleItem: getMsg(this.props.lang, 'ML0463', '수요사 등록') },
+      { titleItem: getMsg(this.props.lang, 'ML0464', '회원 조회') },
+      { titleItem: getMsg(this.props.lang, 'ML0465', '기본 조회') },
     ],
   },
   {
-    titleList: '창고 찾기',
+    titleList: getMsg(this.props.lang, 'ML0466', '창고 찾기'),
   },
   {
-    titleList: '이용 방법',
+    titleList: getMsg(this.props.lang, 'ML0467', '이용 방법'),
   },
   {
-    titleList: '고객센터',
+    titleList: getMsg(this.props.lang, 'ML0468', '고객센터'),
   },
   {
-    titleList: '패밀리사이트',
+    titleList: getMsg(this.props.lang, 'ML0469', '패밀리사이트'),
   },
 ];
 const navitationTitle1 = [
   {
-    label: '창고 등록',
-    value: '창고 등록',
+    label: getMsg(this.props.lang, 'ML0066', '창고 등록'),
+    value: getMsg(this.props.lang, 'ML0066', '창고 등록'),
   },
   {
-    label: '창고 이용',
-    value: '창고 이용',
+    label: getMsg(this.props.lang, 'ML0067', '창고 이용'),
+    value: getMsg(this.props.lang, 'ML0067', '창고 이용'),
   },
   {
-    label: '계약 방식',
-    value: '계약 방식',
+    label: getMsg(this.props.lang, 'ML0068', '계약 방식'),
+    value: getMsg(this.props.lang, 'ML0068', '계약 방식'),
   },
 ];
 const navitationTitle2 = [
   {
-    label: '창고 이용',
-    value: '창고 이용',
+    label: getMsg(this.props.lang, 'ML0067', '창고 이용'),
+    value: getMsg(this.props.lang, 'ML0067', '창고 이용'),
   },
   {
-    label: '창고 등록',
-    value: '창고 등록',
+    label: getMsg(this.props.lang, 'ML0066', '창고 등록'),
+    value: getMsg(this.props.lang, 'ML0066', '창고 등록'),
   },
   {
-    label: '계약 방식',
-    value: '계약 방식',
+    label: getMsg(this.props.lang, 'ML0068', '계약 방식'),
+    value: getMsg(this.props.lang, 'ML0068', '계약 방식'),
   },
 ];
 const navitationTitle3 = [
   {
-    label: '계약 방식',
-    value: '계약 방식',
+    label: getMsg(this.props.lang, 'ML0068', '계약 방식'),
+    value: getMsg(this.props.lang, 'ML0068', '계약 방식'),
   },
   {
-    label: '창고 등록',
-    value: '창고 등록',
+    label: getMsg(this.props.lang, 'ML0066', '창고 등록'),
+    value: getMsg(this.props.lang, 'ML0066', '창고 등록'),
   },
   {
-    label: '창고 이용',
-    value: '창고 이용',
+    label: getMsg(this.props.lang, 'ML0067', '창고 이용'),
+    value: getMsg(this.props.lang, 'ML0067', '창고 이용'),
   },
 ];
 export default class Notification extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: '창고 등록',
+      page: getMsg(this.props.lang, 'ML0066', '창고 등록'),
     };
     this.navigation = props.navigation;
   }
@@ -109,7 +110,7 @@ export default class Notification extends Component {
     console.log('page', page);
     return (
       <>
-        {page === '창고 등록' && (
+        {page === getMsg(this.props.lang, 'ML0066', '창고 등록') && (
           <WarehouseRegistration
             nav={this.props.navigation}
             navitationTitle={
@@ -123,7 +124,7 @@ export default class Notification extends Component {
             }
           />
         )}
-        {page === '창고 이용' && (
+        {page === getMsg(this.props.lang, 'ML0067', '창고 이용') && (
           <WarehouseUse
             nav={this.props.navigation}
             navitationTitle={
@@ -137,7 +138,7 @@ export default class Notification extends Component {
             }
           />
         )}
-        {page === '계약 방식' && (
+        {page === getMsg(this.props.lang, 'ML0068', '계약 방식') && (
           <ContractMode
             nav={this.props.navigation}
             navitationTitle={

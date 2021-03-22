@@ -16,6 +16,7 @@ import ActionCreator from "@Actions";
 import RangeSlider from '@Components/atoms/RangeSlider';
 import moment from "./FilterPeriod";
 import { money, numberComma } from '@Services/utils/StringUtils';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 /*TODO 임시 값 (추후 변경 필요)*/
 const splyAmountMax = 100000; // 임대비 최대
@@ -66,12 +67,14 @@ class FilterPrice extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'임대비'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+                {getMsg(this.props.lang, 'ML0122', '임대비')}
+              </Text>
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
               {(Number(this.props.whFilter.splyAmount) === splyAmountMax || Number(this.props.whFilter.splyAmount) === 0) ?
-                '전체' : this.props.whFilter.splyAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+                getMsg(this.props.lang, 'ML0119', '전체') : this.props.whFilter.splyAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + getMsg(this.props.lang, 'ML0126', '원')}
             </Text>
           </View>
 
@@ -95,12 +98,14 @@ class FilterPrice extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'관리비'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+                {getMsg(this.props.lang, 'ML0123', '관리비')}
+              </Text>
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
               {(Number(this.props.whFilter.mgmtChrg) === mgmtChrgMax || Number(this.props.whFilter.mgmtChrg) === 0) ?
-                '전체' : this.props.whFilter.mgmtChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+                getMsg(this.props.lang, 'ML0119', '전체') : this.props.whFilter.mgmtChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + getMsg(this.props.lang, 'ML0126', '원')}
             </Text>
           </View>
           {/** Slider */}
@@ -123,12 +128,14 @@ class FilterPrice extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'입고비'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+                {getMsg(this.props.lang, 'ML0124', '입고비')}
+              </Text>
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
               {(Number(this.props.whFilter.whinChrg) === whinChrgMax || Number(this.props.whFilter.whinChrg) === 0) ?
-                '전체' : this.props.whFilter.whinChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+                getMsg(this.props.lang, 'ML0119', '전체') : this.props.whFilter.whinChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + getMsg(this.props.lang, 'ML0126', '원')}
             </Text>
           </View>
           {/** Slider */}
@@ -152,12 +159,14 @@ class FilterPrice extends Component {
           {/** Label */}
           <View style={styles.filterLabelWrap}>
             <View style={styles.filterLabelWrap}>
-              <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'출고비'}</Text>
+              <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+                {getMsg(this.props.lang, 'ML0125', '출고비')}
+              </Text>
             </View>
             <Text
               style={[styles.filterLabel, styles.filterLabelMain]}>
               {(Number(this.props.whFilter.whoutChrg) === whoutChrgMax || Number(this.props.whFilter.whoutChrg) === 0) ?
-                '전체' : this.props.whFilter.whoutChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'}
+                getMsg(this.props.lang, 'ML0119', '전체') : this.props.whFilter.whoutChrg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + getMsg(this.props.lang, 'ML0126', '원')}
             </Text>
           </View>
           {/** Slider */}
@@ -180,13 +189,17 @@ class FilterPrice extends Component {
             <Button mode="outlined"
                     style={[styles.btn, styles.btnPrimaryOutline]}
                     labelStyle={[styles.btnLabel]}
-                    onPress={() => this._onClickCancel()}>취소하기</Button>
+                    onPress={() => this._onClickCancel()}>
+              {getMsg(this.props.lang, 'ML0111', '취소하기')}
+            </Button>
           </View>
           <View style={styles.gridColumn}>
             <Button mode="contained"
                     style={[styles.btn, styles.btnPrimary]}
                     labelStyle={[styles.btnLabel, styles.btnLabelPrimary]}
-                    onPress={() => this._onClickApply()}>적용하기</Button>
+                    onPress={() => this._onClickApply()}>
+              {getMsg(this.props.lang, 'ML0112', '적용하기')}
+            </Button>
           </View>
         </View>
 

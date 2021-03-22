@@ -15,6 +15,7 @@ import ActionCreator from '@Actions';
 import ignore3 from '@Assets/images/ignore3x.png';
 import { styles as S } from '../style';
 import Progress from '@Components/organisms/Progress';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class ImagePanoram extends Component {
   constructor (props) {
@@ -38,7 +39,7 @@ class ImagePanoram extends Component {
             <View style={S.bgrRegister}>
               <Image source={ignore3} style={S.ImageStyle} />
               <Text style={S.textBgr}>
-                파노라마 사진은 1장만 등록 가능합니다.
+                {getMsg(this.props.lang, 'ML0492', '파노라마 사진은 1장만 등록 가능합니다.')}
               </Text>
             </View>
           ) : (

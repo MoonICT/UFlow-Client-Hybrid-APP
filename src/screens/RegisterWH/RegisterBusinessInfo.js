@@ -41,22 +41,23 @@ import configURL from '@Services/http/ConfigURL';
 import ActionCreator from '@Actions';
 import validator from 'validator';
 import { isBizNum } from '@Services/utils/validate';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 // import validation from '@Utils/validate';
 const tabSelect = [
   {
     id: 'tab1',
-    title: '기본 정보',
+    title: getMsg(this.props.lang, 'ML0190', '기본 정보'),
   },
   {
     id: 'tab2',
-    title: '사업자 등록 정보',
+    title: getMsg(this.props.lang, 'ML0191', '사업자 등록정보'),
   },
 ];
 
 const dataSelect = [
   {
-    label: '냉동 1',
+    label: getMsg(this.props.lang, 'ML0248', '냉동 1'),
     value: -1,
   },
 ];
@@ -82,12 +83,12 @@ class RegisterBusinessInfo extends Component {
       loading: false,
       businessList: [
         {
-          label: '사업자정보 신규 등록',
+          label: getMsg(this.props.lang, 'ML0192', '사업자정보 신규 등록'),
           value: -1,
         },
       ],
       defautSelect: {
-        label: '사업자정보 신규 등록',
+        label: getMsg(this.props.lang, 'ML0192', '사업자정보 신규 등록'),
         value: -1,
       },
       isPossible: false,
@@ -119,7 +120,7 @@ class RegisterBusinessInfo extends Component {
           this.setState({
             isPossible: false,
           });
-          alert('창고 수 제한으로 등록이 불가합니다.');
+          alert(getMsg(this.props.lang, 'ML0518', '창고 수 제한으로 등록이 불가합니다.'));
         } else if (
           res.data.status === 'NONE' ||
           res.data.status === 'PSB_REG'
@@ -347,20 +348,20 @@ class RegisterBusinessInfo extends Component {
     }
 
     if (!isCert) {
-      alert('휴대폰 인증을 완료해주세요.');
+      alert(getMsg(this.props.lang, 'ML0193', '휴대폰 인증을 완료해주세요.'));
       return false;
     }
 
-    if (!businessInfo.regFile) {
-      alert('사업자등록증을 업로드 하세요.');
-      return false;
-    }
+    // if (!businessInfo.regFile) {
+    //   alert('사업자등록증을 업로드 하세요.');
+    //   return false;
+    // }
 
     this.setState({ loading: true });
     // 창고주 정보 등록
     WarehouseOwner.regBusinessInfo(businessInfo)
       .then(res => {
-        alert('창고 사업자 등록이 완료되었습니다.');
+        alert(getMsg(this.props.lang, 'ML0519', '창고 사업자 등록이 완료되었습니다.'));
         this.setState({ loading: false });
         this.navigation.navigate('RegisterWH', {
           ...res.data,
@@ -368,7 +369,7 @@ class RegisterBusinessInfo extends Component {
         });
       })
       .catch(error => {
-        alert('서버에러:' + error.response.data.message);
+        alert(getMsg(this.props.lang, 'ML0449', '서버에러:') + error.response.data.message);
         this.setState({ loading: false });
       });
   };
@@ -413,7 +414,7 @@ class RegisterBusinessInfo extends Component {
         style={[DefaultStyle.container, { backgroundColor: 'white' }]}>
         <Appbars>
           <HistoryBackActionBar
-            title={'창고주 정보 등록'}
+            title={getMsg(this.props.lang, 'ML0520', '창고주 정보 등록')}
             navigation={this.navigation}
           />
         </Appbars>
@@ -422,17 +423,17 @@ class RegisterBusinessInfo extends Component {
           <View style={[DefaultStyle.p_16]}>
             <View style={[DefaultStyle._titleCardCol]}>
               <Text style={[DefaultStyle._textTitleCard]}>
-                창고주 정보 등록
+                {getMsg(this.props.lang, 'ML0520', '창고주 정보 등록')}
               </Text>
               <Text style={[DefaultStyle._textDesCard]}>
-                창고 등록을 위해서 회사 정보를 입력해 주세요.
+                {getMsg(this.props.lang, 'ML0521', '창고 등록을 위해서 회사 정보를 입력해 주세요.')}
               </Text>
             </View>
 
             <View>
               <Select
                 data={businessList}
-                labelSelected="기등록 사업자 등록정보"
+                labelSelected={getMsg(this.props.lang, 'ML0522', '기등록 사업자 등록정보')}
                 color={'#000000'}
                 dataDefault={defautSelect}
                 labelSelectedSize={14}
@@ -444,21 +445,21 @@ class RegisterBusinessInfo extends Component {
               {businessMode > -1 ? (
                 <View>
                   <TextField
-                    labelTextField="사업자명"
+                    labelTextField={getMsg(this.props.lang, 'ML0523', '사업자명')}
                     value={businessList[businessMode].name}
                     colorLabel="#000000"
                     labelTextFieldSize={14}
                     fontSize={14}
                   />
                   <TextField
-                    labelTextField="사업자번호"
+                    labelTextField={getMsg(this.props.lang, 'ML0524', '사업자번호')}
                     value={businessList[businessMode].entrpNo}
                     colorLabel="#000000"
                     labelTextFieldSize={14}
                     fontSize={14}
                   />
                   <TextField
-                    labelTextField="주소"
+                    labelTextField={getMsg(this.props.lang, 'ML0525', '주소')}
                     colorLabel="#000000"
                     labelTextFieldSize={14}
                     fontSize={14}
@@ -468,11 +469,11 @@ class RegisterBusinessInfo extends Component {
               ) : (
                 <View>
                   <TextField
-                    labelTextField="사업자 명"
+                    labelTextField={getMsg(this.props.lang, 'ML0198', '사업자 명')}
                     placeholder=""
                     labelTextFieldSize={14}
                     isRequired={true}
-                    textError={!valid.checkName ? '사업자명을 입력하세요.' : ''}
+                    textError={!valid.checkName ? getMsg(this.props.lang, 'ML0199', '사업자 명을 입력하세요.') : ''}
                     fontSize={14}
                     valueProps={e => {
                       this.setState({
@@ -485,6 +486,7 @@ class RegisterBusinessInfo extends Component {
                     }}
                     value={businessInfo.name ? businessInfo.name : ''}
                     colorLabel="#000000"
+                    maxLength={50}
                   />
                   {/**
                   <TextField
@@ -507,19 +509,19 @@ class RegisterBusinessInfo extends Component {
                   />
                 */}
                   <TextField
-                    labelTextField="사업자번호"
+                    labelTextField={getMsg(this.props.lang, 'ML0524', '사업자번호')}
                     labelTextFieldSize={14}
                     fontSize={14}
-                    placeholder="'-'없이 입력해주세요."
+                    placeholder={getMsg(this.props.lang, 'ML0201', ''-' 없이 입력해주세요.')}
                     colorLabel="#000000"
                     isRequired={true}
                     keyboardType="numeric"
                     textError={
                       (!valid.checkBusiness
-                        ? '사업자 번호를 입력하세요.'
+                        ? getMsg(this.props.lang, 'ML0202', '사업자 번호를 입력하세요.')
                         : '') +
                       (!valid.checkBusinessFormat
-                        ? '사업자 번호 형식이 아닙니다.'
+                        ? getMsg(this.props.lang, 'ML0203', '사업자 번호 형식이 아닙니다.')
                         : '')
                     }
                     valueProps={e => {
@@ -532,9 +534,10 @@ class RegisterBusinessInfo extends Component {
                       });
                     }}
                     value={businessInfo.number ? businessInfo.number : ''}
+                    maxLength={15}
                   />
 
-                  <Text style={DefaultStyle._textDF}>
+                  {/* <Text style={DefaultStyle._textDF}>
                     - 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.
                   </Text>
                   <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>
@@ -561,7 +564,7 @@ class RegisterBusinessInfo extends Component {
                       ]}>
                       {'사업자등록증 업로드'}
                     </Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <View
                     style={[
                       DefaultStyle._listBtn,
@@ -570,9 +573,9 @@ class RegisterBusinessInfo extends Component {
                     ]}>
                     <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
                       <TextField
-                        placeholder="우편번호"
+                        placeholder={getMsg(this.props.lang, 'ML0204', '우편번호')}
                         colorLabel="#000000"
-                        labelTextField="주소 (필수)"
+                        labelTextField={getMsg(this.props.lang, 'ML0526', '주소  (필수)')}
                         isRequired={true}
                         labelTextFieldSize={14}
                         fontSize={14}
@@ -592,24 +595,24 @@ class RegisterBusinessInfo extends Component {
                           DefaultStyle._textButton,
                           DefaultStyle._colorMuted,
                         ]}>
-                        {'우편번호 검색'}
+                        {getMsg(this.props.lang, 'ML0205', '우편번호 검색')}
                       </Text>
                     </TouchableOpacity>
                   </View>
                   <TextField
-                    placeholder="도로명 주소"
-                    labelTextField="도로명 주소"
+                    placeholder={getMsg(this.props.lang, 'ML0206', '도로명 주소')}
+                    labelTextField={getMsg(this.props.lang, 'ML0206', '도로명 주소')}
                     colorLabel="#000000"
                     labelTextFieldSize={14}
                     fontSize={14}
                     value={businessInfo.roadAddr.address}
                     isRequired={true}
-                    textError={!valid.checkAddress ? '주소를 입력하세요.' : ''}
+                    textError={!valid.checkAddress ? getMsg(this.props.lang, 'ML0207', '주소를 입력하세요.') : ''}
                   />
                   <TextField
-                    placeholder="상세주소"
+                    placeholder={getMsg(this.props.lang, 'ML0208', '상세 주소')}
                     colorLabel="#000000"
-                    labelTextField="상세주소"
+                    labelTextField={getMsg(this.props.lang, 'ML0208', '상세 주소')}
                     labelTextFieldSize={14}
                     fontSize={14}
                     maxLength={50}
@@ -635,14 +638,14 @@ class RegisterBusinessInfo extends Component {
                     }}
                   />
                   <TextField
-                    labelTextField="대표자 명"
+                    labelTextField={getMsg(this.props.lang, 'ML0209', '대표자 명')}
                     colorLabel="#000000"
                     labelTextFieldSize={14}
                     fontSize={14}
-                    maxLength={100}
+                    maxLength={50}
                     isRequired={true}
                     textError={
-                      !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
+                      !valid.checkRepreNm ? getMsg(this.props.lang, 'ML0210', '대표자 명을 입력하세요.') : ''
                     }
                     valueProps={e => {
                       this.setState({
@@ -660,16 +663,16 @@ class RegisterBusinessInfo extends Component {
                   />
                   {/*<Text>{!valid.checkPhoneFormat ? '전화번호 형식이 아닙니다. ' : '12'}</Text>*/}
                   <TextField
-                    labelTextField="담당자 휴대폰번호"
-                    placeholder="'-'없이 입력해주세요."
+                    labelTextField={getMsg(this.props.lang, 'ML0211', '담당자 휴대폰번호')}
+                    placeholder={getMsg(this.props.lang, 'ML0201', ''-' 없이 입력해주세요.')}
                     labelTextFieldSize={14}
                     fontSize={14}
                     isRequired={true}
                     colorLabel="#000000"
                     textError={
-                      (!valid.checkPhone ? '휴대폰번호를 입력하세요. ' : '') +
+                      (!valid.checkPhone ? getMsg(this.props.lang, 'ML0212', '휴대폰번호를 입력하세요.') : '') +
                       (!valid.checkPhoneFormat
-                        ? '전화번호 형식이 아닙니다. '
+                        ? getMsg(this.props.lang, 'ML0213', '전화번호 형식이 아닙니다.')
                         : '')
                     }
                     valueProps={e => {
@@ -686,6 +689,7 @@ class RegisterBusinessInfo extends Component {
                       });
                     }}
                     value={businessInfo.phone ? businessInfo.phone : ''}
+                    maxLength={11}
                   />
 
                   {/* cert phone */}
@@ -700,14 +704,14 @@ class RegisterBusinessInfo extends Component {
                   />
 
                   <TextField
-                    labelTextField="담당자 직함 (필수)"
+                    labelTextField={getMsg(this.props.lang, 'ML0527', '담당자 직함 (필수)')}
                     labelTextFieldSize={14}
                     fontSize={14}
-                    maxLength={100}
+                    maxLength={50}
                     colorLabel="#000000"
                     isRequired={true}
                     textError={
-                      !valid.checkInchgNm ? '담당자 명을 입력하세요.' : ''
+                      !valid.checkInchgNm ? getMsg(this.props.lang, 'ML0215', '담당자 명을 입력하세요.') : ''
                     }
                     valueProps={e => {
                       this.setState({
@@ -724,18 +728,18 @@ class RegisterBusinessInfo extends Component {
                     value={businessInfo.inchgNm ? businessInfo.inchgNm : ''}
                   />
                   <TextField
-                    labelTextField="담당자 이메일 (필수)"
+                    labelTextField={getMsg(this.props.lang, 'ML0528', '담당자 이메일 (필수)')}
                     labelTextFieldSize={14}
                     fontSize={14}
-                    maxLength={100}
+                    maxLength={255}
                     colorLabel="#000000"
                     isRequired={true}
                     textError={
                       (!valid.checkEmail
-                        ? '담당자 이메일을 입력하세요. '
+                        ? getMsg(this.props.lang, 'ML0217', '담당자 이메일을 입력하세요.')
                         : '') +
                       (!valid.checkEmailFormat
-                        ? '이메일 형식이 아닙니다. '
+                        ? getMsg(this.props.lang, 'ML0218', '이메일 형식이 아닙니다.')
                         : '')
                     }
                     valueProps={e => {
@@ -792,7 +796,7 @@ class RegisterBusinessInfo extends Component {
                   ]}
                   color="red"
                   onPress={this.onClickSelectBusinessComplete}>
-                  선택완료
+                  {getMsg(this.props.lang, 'ML0529', '선택완료')}
                 </Button>
               ) : (
                 <Button
@@ -803,7 +807,7 @@ class RegisterBusinessInfo extends Component {
                   ]}
                   color="red"
                   onPress={this.handleOnSubmit}>
-                  등록
+                  {getMsg(this.props.lang, 'ML0429', '등록')}
                 </Button>
               )
             ) : (
@@ -814,7 +818,7 @@ class RegisterBusinessInfo extends Component {
                   { width: '100%', borderRadius: 24, height: 40 },
                   DefaultStyle._oulineDisabled,
                 ]}>
-                등록불가
+                {getMsg(this.props.lang, 'ML0530', '등록불가')}
               </Button>
             )}
           </View>

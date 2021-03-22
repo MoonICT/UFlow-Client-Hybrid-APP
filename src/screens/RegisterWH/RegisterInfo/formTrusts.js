@@ -37,6 +37,7 @@ import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class FormTrusts extends Component {
   constructor(props) {
@@ -231,7 +232,7 @@ class FormTrusts extends Component {
         <View style>
           <Select
             data={typeCodes}
-            labelSelected="창고유형"
+            labelSelected={getMsg(this.props.lang, 'ML0495', '창고유형')}
             // valueSelected={defaultTypeCodeT !== undefined ? defaultTypeCodeT.label : ''}
             dataDefault={defaultTypeCodeT !== undefined ? defaultTypeCodeT : ''}
             // selectedValue={formData.typeCode}
@@ -243,7 +244,7 @@ class FormTrusts extends Component {
           />
           <Select
             data={calUnitDvCodes}
-            labelSelected="정산단위"
+            labelSelected={getMsg(this.props.lang, 'ML0139', '정산단위')}
             valueSelected={
               defaultcalUnit !== undefined ? defaultcalUnit.label : ''
             }
@@ -258,7 +259,7 @@ class FormTrusts extends Component {
           />
           <Select
             data={calStdDvCodes}
-            labelSelected="산정기준"
+            labelSelected={getMsg(this.props.lang, 'ML0140', '산정기준')}
             valueSelected={
               defaultcalStd !== undefined ? defaultcalStd.label : ''
             }
@@ -271,10 +272,11 @@ class FormTrusts extends Component {
             }}
           />
           <TextField
-            labelTextField="가용수량"
+            labelTextField={getMsg(this.props.lang, 'ML0227', '가용수량')}
             placeholder="0"
             keyboardType="numeric"
             isRequired={true}
+            maxLength={7}
             defaultValue={
               formData.usblValue ? numberToStd(formData.usblValue) : ''
             }
@@ -287,7 +289,7 @@ class FormTrusts extends Component {
               valueForm && valueForm(dataF);
             }}
             textError={
-              checkUsblValue === true ? null : '정보를 입력해주세요.'
+              checkUsblValue === true ? null : getMsg(this.props.lang, 'ML0226', '정보를 입력해주세요.')
             }
           />
 
@@ -303,7 +305,7 @@ class FormTrusts extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                수탁 시작일
+                {getMsg(this.props.lang, 'ML0499', '수탁 시작일')}
               </Text>
               <DateTimePickerModal
                 mode="date"
@@ -334,7 +336,7 @@ class FormTrusts extends Component {
               </Text>
               <Text
                 style={[DefaultStyle._labelTextField, { color: '#000000' }]}>
-                수탁 종료일
+                {getMsg(this.props.lang, 'ML0500', '수탁 종료일')}
               </Text>
               <DateTimePickerModal
                 mode="date"
@@ -354,15 +356,16 @@ class FormTrusts extends Component {
           </View>
 
           <TextField
-            labelTextField="보관단가"
+            labelTextField={getMsg(this.props.lang, 'ML0149', '보관단가')}
             placeholder="0"
             isRequired={true}
+            maxLength={7}
             textError={
               checkSplyAmount === true
                 ? null
-                : '정보를 입력해주세요.'
+                : getMsg(this.props.lang, 'ML0226', '정보를 입력해주세요.')
             }
-            textRight="원"
+            textRight={getMsg(this.props.lang, 'ML0498', '원')}
             keyboardType="numeric"
             value={splyAmount}
             defaultValue={
@@ -377,16 +380,17 @@ class FormTrusts extends Component {
             }}
           />
           <TextField
-            labelTextField="입고단가"
+            labelTextField={getMsg(this.props.lang, 'ML0150', '입고단가')}
             placeholder="0"
             textError={
               checkWhinChrg === true
                 ? null
-                : '정보를 입력해주세요.'
+                : getMsg(this.props.lang, 'ML0226', '정보를 입력해주세요.')
             }
             isRequired={true}
+            maxLength={7}
             keyboardType="numeric"
-            textRight="원"
+            textRight={getMsg(this.props.lang, 'ML0498', '원')}
             defaultValue={
               formData.whinChrg ? numberToStd(formData.whinChrg) : ''
             }
@@ -400,16 +404,17 @@ class FormTrusts extends Component {
             }}
           />
           <TextField
-            labelTextField="출고단가"
+            labelTextField={getMsg(this.props.lang, 'ML0151', '출고단가')}
             isRequired={true}
+            maxLength={7}
             placeholder="0"
             textError={
               checkWhoutChrg === true
                 ? null
-                : '정보를 입력해주세요.'
+                : getMsg(this.props.lang, 'ML0226', '정보를 입력해주세요.')
             }
             keyboardType="numeric"
-            textRight="원"
+            textRight={getMsg(this.props.lang, 'ML0498', '원')}
             defaultValue={
               formData.whoutChrg ? numberToStd(formData.whoutChrg) : ''
             }
@@ -491,8 +496,9 @@ class FormTrusts extends Component {
           />
  */}
           <TextField
-            labelTextField="비고"
+            labelTextField={getMsg(this.props.lang, 'ML0146', '비고')}
             value={formData.remark}
+            maxLength={1000}
             defaultValue={formData.remark ? numberToStd(formData.remark) : ''}
             valueProps={e => {
               this.setState({ remark: e });

@@ -15,6 +15,7 @@ import moment from 'moment';
 import { styles } from './style';
 import ActionCreator from "@Actions";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class FilterPeriod extends Component {
   constructor (props) {
@@ -58,7 +59,9 @@ class FilterPeriod extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'임대 가능 기간'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+              {getMsg(this.props.lang, 'ML0120', '임대 가능 기간')}
+            </Text>
           </View>
         </View>
 
@@ -123,7 +126,9 @@ class FilterPeriod extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'수탁 가능 기간'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+              {getMsg(this.props.lang, 'ML0121', '수탁 가능 기간')}
+            </Text>
           </View>
         </View>
 
@@ -192,13 +197,17 @@ class FilterPeriod extends Component {
             <Button mode="outlined"
                     style={[styles.btn, styles.btnPrimaryOutline]}
                     labelStyle={[styles.btnLabel]}
-                    onPress={() => this._onClickCancel()}>취소하기</Button>
+                    onPress={() => this._onClickCancel()}>
+              {getMsg(this.props.lang, 'ML0111', '취소하기')}
+            </Button>
           </View>
           <View style={styles.gridColumn}>
             <Button mode="contained"
                     style={[styles.btn, styles.btnPrimary]}
                     labelStyle={[styles.btnLabel, styles.btnLabelPrimary]}
-                    onPress={() => this._onClickApply()}>적용하기</Button>
+                    onPress={() => this._onClickApply()}>
+              {getMsg(this.props.lang, 'ML0112', '적용하기')}
+            </Button>
           </View>
         </View>
       </View>

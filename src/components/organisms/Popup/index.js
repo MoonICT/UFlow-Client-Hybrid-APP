@@ -62,7 +62,7 @@ class Popup extends Component {
                 <Button
                   style={DefaultStyle._buttonElement}
                   onPress={() => this._hidePopup()}>
-                  {getMsg(this.props.lang, 'CMN0001', '확인')}
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Button>
               </Dialog.Actions>
             </Dialog>
@@ -79,11 +79,11 @@ class Popup extends Component {
               </View>
               <View style={styles.action}>
                 <Button onPress={() => hidePopup()} style={styles.actionButton}>
-                  {getMsg(this.props.lang, 'CMN0002', '확인')}
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Button>
                 <View style={styles.borderHave} />
                 <Button onPress={() => {onConfirm(), hidePopup()}} style={styles.actionButton}>
-                  {getMsg(this.props.lang, 'CMN0001', '확인')}
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Button>
               </View>
             </Modal>

@@ -134,10 +134,8 @@ export const getAppleInfo = (data) => {
   return Axios.postRequest({
     url: '/api/v1/apple-login',
     payload: {
-      snsType: 'APPL',
       code: data.code,
       idToken: data.idToken,
-      state: data.state,
     },
   });
 };

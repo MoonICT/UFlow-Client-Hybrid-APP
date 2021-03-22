@@ -16,7 +16,6 @@ import {TextInput, Appbar, Text, Button} from 'react-native-paper';
 import DefaultStyle from '../../styles/default';
 // import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
-import {getMsg} from '@Utils/langUtils';
 import {styles as S} from './style';
 // import DoneRegister from './done';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -31,6 +30,8 @@ import warehouse from '@Assets/images/more-warehouse.png';
 import {AuthContext} from '@Store/context';
 
 import {TOKEN} from '@Constant';
+
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 
 //---> Assets
@@ -99,7 +100,7 @@ class More extends Component {
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
             <Text style={[DefaultStyle._textTitleCard, {marginBottom: 18}]}>
-              더보기
+              {getMsg(this.props.lang, 'ML0103', '더 보기')}
             </Text>
             <TouchableOpacity
               style={[DefaultStyle.btnItem, S.infoUser]}
@@ -110,11 +111,11 @@ class More extends Component {
               }>
               <View style={DefaultStyle.leftItem}>
                 <Text style={[DefaultStyle.titleItem, S.textInfo]}>
-                  {isLogin === false ? '로그인' : fullName}
+                  {isLogin === false ? getMsg(this.props.lang, 'ML0001', '로그인') : fullName}
                 </Text>
                 <Text style={DefaultStyle.contentItem}>
                   {isLogin === false
-                    ? '로그인 후 더 많은 정보를 확인해보세요.'
+                    ? getMsg(this.props.lang, 'ML0047', '로그인 후 더 많은 정보를 확인해보세요.')
                     : email}
                 </Text>
               </View>
@@ -518,7 +519,9 @@ class More extends Component {
                   style={DefaultStyle.btnItem}
                   onPress={() => this.navigation.navigate('Language')}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Text style={DefaultStyle.titleItem}>언어 설정</Text>
+                    <Text style={DefaultStyle.titleItem}>
+                      {getMsg(this.props.lang, 'ML0040', '언어 설정')}
+                    </Text>
                   </View>
                   <View style={DefaultStyle.rightItem}>
                     <Icon
@@ -535,7 +538,9 @@ class More extends Component {
                     this.navigation.navigate('Login');
                   }}>
                   {isLogin === false ? null : (
-                    <Text style={S.textLogout}>로그아웃</Text>
+                    <Text style={S.textLogout}>
+                      {getMsg(this.props.lang, 'ML0002', '로그아웃')}
+                    </Text>
                   )}
                 </TouchableOpacity>
               </View>

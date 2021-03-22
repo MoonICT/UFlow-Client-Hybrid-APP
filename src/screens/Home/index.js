@@ -347,7 +347,7 @@ class Home extends Component {
         this.setState({ isLogin: v !== '' && v !== null });
       })
       .catch(error => {
-        alert('서버에러:' + error);
+        alert(getMsg(this.props.lang, 'ML00449', '서버에러:') + error);
       });
   }
 
@@ -435,9 +435,9 @@ class Home extends Component {
               <Appbar.Content
                 title={
                   <Text style={[styles.notifiAppbar, styles.font14]}>
-                    더 많은 혜택을 위해
-                    <Text style={{ color: '#ff6d00' }}> 로그인 </Text>
-                    하러 가기
+                    {getMsg(this.props.lang, 'ML0183', '더 많은 혜택을 위해')}
+                    <Text style={{ color: '#ff6d00' }}> {getMsg(this.props.lang, 'ML0001', '로그인')} </Text>
+                    {getMsg(this.props.lang, 'ML0184', '하러 가기')}
                   </Text>
                 }
                 titleStyle={DefaultStyle.headerTitle}
@@ -451,7 +451,7 @@ class Home extends Component {
                 onPress={() => this.navigation.navigate('Login')}
                 // onPress={() => this.getItem()}
               >
-                <Text style={styles.textBtnAction}>로그인</Text>
+                <Text style={styles.textBtnAction}>{getMsg(this.props.lang, 'ML0001', '로그인')}</Text>
               </TouchableOpacity>
             </View>
             <View style={[DefaultStyle.divider]} />
@@ -494,7 +494,7 @@ class Home extends Component {
               <View style={[styles.introRow, styles.BoxSearch]}>
                 {/* <Text style={styles.introTitle}>어떤 창고를 찾고 계시나요?</Text> */}
                 <TextInputNormal
-                  placeholder="어떤 창고를 찾고 계시나요?"
+                  placeholder={getMsg(this.props.lang, 'ML0450', '어떤 창고를 찾고 계시나요?')}
                   style={styles.introInput}
                   placeholderTextColor="white"
                   textAlignVertical="center"
@@ -532,7 +532,7 @@ class Home extends Component {
                 <View style={styles.introColum}>
                   {<Icon name="check" size={12} color="white" />}
                   <Text style={[styles.font9, styles.introColumText]}>
-                    빠르고 편리하게
+                    {getMsg(this.props.lang, 'ML0451', '빠르고 편리하게')}
                   </Text>
                 </View>
                 <View
@@ -542,13 +542,13 @@ class Home extends Component {
                   ]}>
                   {<Icon name="check" size={12} color="white" />}
                   <Text style={[styles.font9, styles.introColumText]}>
-                    신뢰할 수 있는
+                    {getMsg(this.props.lang, 'ML0452', '신뢰할 수 있는')}
                   </Text>
                 </View>
                 <View style={styles.introColum}>
                   {<Icon name="check" size={12} color="white" />}
                   <Text style={[styles.font9, styles.introColumText]}>
-                    안전한 보험, 계약 시스템
+                    {getMsg(this.props.lang, 'ML0453', '안전한 보험, 계약 시스템')}
                   </Text>
                 </View>
               </View>
@@ -564,7 +564,7 @@ class Home extends Component {
                   styles.font24,
                   styles.mainProductTitleName,
                 ]}>
-                즉시 임대
+                {getMsg(this.props.lang, 'ML0531', '즉시 임대')}
               </Text>
               <Text
                 style={[
@@ -573,7 +573,7 @@ class Home extends Component {
                   styles.mainProductTitleContent,
                 ]}>
                 {
-                  '창고의 용도별, 지역별, 편의 시설과 접안 편의성까지\n통합 검색이 가능한 유플로우를 통해 물류를 보관하세요.'
+                  getMsg(this.props.lang, 'ML0454', '창고의 용도별, 지역별, 편의 시설과 접안 편의성까지\n통합 검색이 가능한 유플로우를 통해 물류를 보관하세요.')
                 }
               </Text>
             </View>
@@ -591,7 +591,7 @@ class Home extends Component {
                     styles.font14,
                     styles.mainProductSeeMoreTextBTN,
                   ]}>
-                  임대 가능 창고 더 보기
+                  {getMsg(this.props.lang, 'ML0455', '임대 가능 창고 더 보기')}
                 </Text>
                 {
                   <Icon
@@ -749,8 +749,8 @@ class Home extends Component {
           {/**___Call__*/}
           <View style={styles.mainCall}>
             <Text style={[styles.mainCallTitle, styles.bold, styles.font16]}>
-              <Text style={styles.yellowColor}>좋은 창고를 공유</Text>
-              하는 경험, 지금 시작해 보세요.
+              <Text style={styles.yellowColor}>{getMsg(this.props.lang, 'ML0456', '좋은 창고를 공유')}</Text>
+              {getMsg(this.props.lang, 'ML0457', '하는 경험, 지금 시작해 보세요.')}
             </Text>
             <View
               style={[styles.introRow, styles.mainCallRow, styles.introBottom]}>
@@ -802,8 +802,7 @@ class Home extends Component {
                   styles.introColumText,
                   styles.mainAppDowloadTitle,
                 ]}>
-                혹시 창고를 보유하고 계신가요?{'\n'}
-                창고 등록 탭에서 창고를 등록해보세요.
+                {getMsg(this.props.lang, 'ML0458', '혹시 창고를 보유하고 계신가요?\n창고 등록 탭에서 창고를 등록해보세요.')}
               </Text>
             </View>
             <TouchableOpacity
@@ -821,7 +820,7 @@ class Home extends Component {
                   styles.font15,
                 ]}>
                 {/**무료로 회원 가입하기 */}
-                창고 등록하기
+                {getMsg(this.props.lang, 'ML0459', '창고 등록하기')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -860,7 +859,7 @@ class Home extends Component {
            */}
           <View style={styles.copyRight}>
             <Text style={[styles.textCopyRight, styles.font9]}>
-              Copyright © 2020 Uflow Inc. 모든 권리 보유.{'\n'}v 1(20201112)
+              Copyright © 2020 Uflow Inc. {getMsg(this.props.lang, 'ML0460', '모든 권리 보유.')}{'\n'}v 1(20201112)
             </Text>
           </View>
         </ScrollView>
@@ -901,9 +900,9 @@ function mapDispatchToProps (dispatch) {
     showPopup: status => {
       dispatch(
         ActionCreator.show({
-          title: '문의 완료',
+          title: getMsg(this.props.lang, 'ML0433', '문의 완료'),
           content:
-            '답변 내용은 [마이페이지 > 문의내역[ 혹은 등록하신 이메일에서 확인해 주세요.',
+            getMsg(this.props.lang, 'ML0461', '답변 내용은 [마이페이지 > 문의내역[ 혹은 등록하신 이메일에서 확인해 주세요.'),
         }),
       );
     },

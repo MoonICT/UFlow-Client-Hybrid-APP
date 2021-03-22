@@ -39,12 +39,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles as S } from './style';
 import Carousel from '@Components/organisms/Carousel';
 import { Appbar, Title } from 'react-native-paper';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 const data = [
   {
-    title: '책임형',
+    title: getMsg(this.props.lang, 'ML0069', '책임형'),
   },
   {
-    title: '오픈형',
+    title: getMsg(this.props.lang, 'ML0189', '오픈형'),
   },
 ];
 
@@ -77,7 +79,7 @@ export default class Notification extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '책임형',
+      title: getMsg(this.props.lang, 'ML0069', '책임형'),
     };
   }
 
@@ -101,7 +103,7 @@ export default class Notification extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-            title={'이용방법'}
+            title={getMsg(this.props.lang, 'ML0070', '이용방법')}
             navigation={this.props.nav}
           />
         <View style={S.tabTopbar}>
@@ -115,7 +117,7 @@ export default class Notification extends Component {
           />
         </View>
         <ScrollView>
-          {title === '책임형' ? (
+          {title === getMsg(this.props.lang, 'ML0069', '책임형') ? (
             <View>
               <View
                 style={{
@@ -126,9 +128,7 @@ export default class Notification extends Component {
                 }}>
                 <Text>{this.props.nav.goBack ? 'has' : 'empty'}</Text>
                 <Text style={S.title}>
-                  계약 결정까지 유플로우가{'\n'}
-                  쌍방간의 계약을 {'\n'}
-                  책임지고 관리합니다.
+                  {getMsg(this.props.lang, 'ML0071', '계약 결정까지 유플로우가\n쌍방간의 계약을\n책임지고 관리합니다.')}
                 </Text>
 
                 <ImageBackground
@@ -145,8 +145,7 @@ export default class Notification extends Component {
                   alignItems: 'center',
                 }}>
                 <Text style={S.title}>
-                  계약 확정 후 입출고 작업에 따른{'\n'} 문의는 3자간 채{'\n'}
-                  팅을 통해 진행할 수 있습니다.
+                  {getMsg(this.props.lang, 'ML0072', '계약 확정 후 입출고 작업에 따른\n문의는 3자간\n채팅을 통해 진행할 수 있습니다.')}
                 </Text>
 
                 <ImageBackground
@@ -164,8 +163,7 @@ export default class Notification extends Component {
                 alignItems: 'center',
               }}>
               <Text style={S.title}>
-                유플로우에 등록된 창고주와{'\n'}
-                자유롭게 소통하세요.
+                {getMsg(this.props.lang, 'ML0073', '유플로우에 등록된 창고주와\n자유롭게 소통하세요.')}
               </Text>
 
               <ImageBackground
@@ -173,8 +171,7 @@ export default class Notification extends Component {
                 style={{ width: 312, height: 106, marginTop: 20 }}
               />
               <Text style={[S.description, { marginTop: 25 }]}>
-                창고주에게 직접 연락하여 {'\n'}
-                임대 혹은 수탁 계약을 진행할 수 있습니다.
+                {getMsg(this.props.lang, 'ML0074', '창고주에게 직접 연락하여\n임대 혹은 수탁 계약을 진행할 수 있습니다.')}
               </Text>
             </View>
           )}

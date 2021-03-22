@@ -122,7 +122,8 @@ class Register extends Component {
             // TODO Handle the alert "Please contact your administrator.".
             const errData = err?.response?.data;
             // console.log('::: Error Code :', errData.code);
-            alert(errData?.message);
+            //alert(errData?.message);
+            this.props.showPopup({ title: 'UFLOW', content: errData?.message, type: 'confirm' });
           }
         }
       });

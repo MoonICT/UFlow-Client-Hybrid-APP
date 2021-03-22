@@ -15,6 +15,7 @@ import { styles } from './style';
 import ActionCreator from "@Actions";
 import RangeSlider from '@Components/atoms/RangeSlider';
 import { numberComma } from '@Services/utils/StringUtils';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 /*TODO 임시 값 (추후 변경 필요)*/
 let prvtAreaMax = 13200; // 전용면적 최대
@@ -67,12 +68,14 @@ class FilterScale extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'임대 가용면'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+              {getMsg(this.props.lang, 'ML0128', '임대 가용면적')}
+            </Text>
           </View>
           <Text
             style={[styles.filterLabel, styles.filterLabelMain]}>
             {(Number(this.props.whFilter.usblValueKeep) === usblValueKeepMax || Number(this.props.whFilter.usblValueKeep) === 0) ?
-              '전체' : this.props.whFilter.usblValueKeep.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
+              getMsg(this.props.lang, 'ML0119', '전체') : this.props.whFilter.usblValueKeep.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '㎡'}
           </Text>
         </View>
 
@@ -123,12 +126,14 @@ class FilterScale extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'수탁 가용수량'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+              {getMsg(this.props.lang, 'ML0127', '수탁 가용수량')}
+            </Text>
           </View>
           <Text
             style={[styles.filterLabel, styles.filterLabelMain]}>
             {(Number(this.props.whFilter.usblValueTrust) === usblValueTrustMax || Number(this.props.whFilter.usblValueTrust) === 0) ?
-              '전체' : this.props.whFilter.usblValueTrust.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              getMsg(this.props.lang, 'ML0119', '전체') : this.props.whFilter.usblValueTrust.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </Text>
         </View>
 
@@ -179,13 +184,17 @@ class FilterScale extends Component {
             <Button mode="outlined"
                     style={[styles.btn, styles.btnPrimaryOutline]}
                     labelStyle={[styles.btnLabel]}
-                    onPress={() => this._onClickCancel()}>취소하기</Button>
+                    onPress={() => this._onClickCancel()}>
+              {getMsg(this.props.lang, 'ML0111', '취소하기')}
+            </Button>
           </View>
           <View style={styles.gridColumn}>
             <Button mode="contained"
                     style={[styles.btn, styles.btnPrimary]}
                     labelStyle={[styles.btnLabel, styles.btnLabelPrimary]}
-                    onPress={() => this._onClickApply()}>적용하기</Button>
+                    onPress={() => this._onClickApply()}>
+              {getMsg(this.props.lang, 'ML0112', '적용하기')}
+            </Button>
           </View>
         </View>
       </View>

@@ -17,6 +17,7 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from '../style';
+
 // import { styles as SS } from './style';
 class RegisterInfo extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class RegisterInfo extends Component {
         </Appbars> */}
         
         <HistoryBackActionBar
-            title={'창고 위치'}
+            title={getMsg(this.props.lang, 'ML0048', '이메일 주소를 입력해 주세요.')}
             navigation={this.navigation}
           />
         <ScrollView>

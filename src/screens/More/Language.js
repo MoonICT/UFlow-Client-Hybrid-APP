@@ -24,11 +24,11 @@ class Language extends Component {
       langStatus: '',
       langList: [
         {
-          label: '한국어',
+          label: getMsg(this.props.lang, 'ML0043', '한국어'),
           value: 'ko-KR',
         },
         {
-          label: '영어',
+          label: getMsg(this.props.lang, 'ML0044', '영어'),
           value: 'en-US',
         }
       ]
@@ -62,8 +62,8 @@ class Language extends Component {
       // 완료 모달.
       this.props.showPopup({
         type: 'confirm',
-        title: '언어 설정 완료',
-        content: '언어 설정을 완료하였습니다.\n적용을 위해 앱을 다시 실행해주세요.',
+        title: getMsg(this.props.lang, 'ML0041', '언어 설정 완료'),
+        content: getMsg(this.props.lang, 'ML0042', '언어 설정을 완료하였습니다.\n적용을 위해 앱을 다시 실행해주세요.'),
         navigation: () =>
           this.navigation.goBack()
       });
@@ -90,7 +90,7 @@ class Language extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-            title={'언어 설정'}
+            title={getMsg(this.props.lang, 'ML0040', '언어 설정')}
             navigation={this.navigation}
           />
 

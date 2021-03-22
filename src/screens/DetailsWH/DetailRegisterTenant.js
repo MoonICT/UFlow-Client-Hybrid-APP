@@ -67,7 +67,7 @@ class DetailRegisterTenant extends Component {
       imageList: [],
       businessInfo: WarehouseProprietorInfo,
       selectedInfoIndex: 0,
-      isCert: true,
+      isCert: false,
       photo: null,
       loading: false,
       businessList: [{
@@ -255,10 +255,10 @@ class DetailRegisterTenant extends Component {
       return false;
     }
 
-    if (!businessInfo.regFile) {
-      alert('사업자등록증을 업로드 하세요.');
-      return false;
-    }
+    // if (!businessInfo.regFile) {
+    //   alert('사업자등록증을 업로드 하세요.');
+    //   return false;
+    // }
     // console.log('dataWE', businessInfo);
     this.setState({ loading: true });
     // 창고주 정보 등록
@@ -395,9 +395,10 @@ class DetailRegisterTenant extends Component {
                     });
                   }}
                   value={businessInfo.number ? businessInfo.number : ''}
+                  maxLength={15}
                 />
 
-                <Text style={DefaultStyle._textDF}>- 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.</Text>
+                {/* <Text style={DefaultStyle._textDF}>- 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.</Text>
                 <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>- 사진은 한 파일에 10MB 까지 등록이 가능합니다.</Text>
 
                 {photo && (
@@ -421,7 +422,7 @@ class DetailRegisterTenant extends Component {
                     ]}>
                     {'사업자등록증 업로드'}
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <View style={[DefaultStyle._listBtn, DefaultStyle.d_flex, DefaultStyle.mb_20]}>
                   <View style={[DefaultStyle._element, DefaultStyle.mr_20]}>
                     <TextField
@@ -492,7 +493,7 @@ class DetailRegisterTenant extends Component {
                   colorLabel="#000000"
                   labelTextFieldSize={14}
                   fontSize={14}
-                  maxLength={20}
+                  maxLength={50}
                   isRequired={true}
                   textError={
                     !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
@@ -536,6 +537,7 @@ class DetailRegisterTenant extends Component {
                     });
                   }}
                   value={businessInfo.phone ? businessInfo.phone : ''}
+                  maxLength={11}
                 />
 
                 {/* cert phone */}
@@ -554,7 +556,7 @@ class DetailRegisterTenant extends Component {
                   fontSize={14}
                   colorLabel="#000000"
                   isRequired={true}
-                  maxLength={20}
+                  maxLength={50}
                   textError={
                     !valid.checkInchgNm ? '담당자 명을 입력하세요.' : ''
                   }
@@ -577,7 +579,7 @@ class DetailRegisterTenant extends Component {
                   labelTextFieldSize={14}
                   fontSize={14}
                   colorLabel="#000000"
-                  maxLength={20}
+                  maxLength={255}
                   isRequired={true}
                   textError={
                     (!valid.checkEmail ? '담당자 이메일을 입력하세요. ' : '') +

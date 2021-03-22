@@ -41,6 +41,7 @@ import Form from './form';
 import FormTrusts from './formTrusts';
 import { MyPage, Warehouse } from '@Services/apis';
 import AsyncStorage from '@react-native-community/async-storage';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class RegisterInfo extends Component {
   constructor(props) {
@@ -144,7 +145,7 @@ class RegisterInfo extends Component {
           typeCode: this.state.typeCodes[0]?.value,
           calUnitDvCode: this.state.calUnitDvCodeKeeps[1]?.value,
           calStdDvCode: this.state.calStdDvCodeKeeps[0]?.value,
-          mgmtChrgDvCodes:
+          mgmtChrgDvCode:
             this.state.mgmtChrgDvCodesKeep &&
             this.state.mgmtChrgDvCodesKeep[0]?.value,
           // commonArea: '',
@@ -334,8 +335,8 @@ class RegisterInfo extends Component {
           <Appbar.Content
             title={
               route && route.params && route.params.type === 'ModifyWH'
-                ? '창고 정보 수정'
-                : '창고 정보'
+                ? getMsg(this.props.lang, 'ML0501', '창고 정보 수정')
+                : getMsg(this.props.lang, 'ML0136', '창고 정보')
             }
             color="black"
             fontSize="12"
@@ -348,12 +349,12 @@ class RegisterInfo extends Component {
               <TouchableOpacity
                 style={this.state.valueTab === 'keeps' ? SS.btnTabBar : null}
                 onPress={() => this.setState({ valueTab: 'keeps' })}>
-                <Text style={SS.textTabBar}>임대</Text>
+                <Text style={SS.textTabBar}>{getMsg(this.props.lang, 'ML0138', '임대')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={this.state.valueTab === 'trusts' ? SS.btnTabBar : null}
                 onPress={() => this.setState({ valueTab: 'trusts' })}>
-                <Text style={SS.textTabBar}>수탁</Text>
+                <Text style={SS.textTabBar}>{getMsg(this.props.lang, 'ML0137', '수탁')}</Text>
               </TouchableOpacity>
             </View>
             <View style={DefaultStyle._cards}>
@@ -372,8 +373,8 @@ class RegisterInfo extends Component {
                 ]}>
                 <Text style={DefaultStyle._textTitleCard}>
                   {route && route.params && route.params.type === 'ModifyWH'
-                    ? `임대유형 상세정보`
-                    : `임대유형 상세정보`}
+                    ? getMsg(this.props.lang, 'ML0502', '임대유형 상세정보')
+                    : getMsg(this.props.lang, 'ML0502', '임대유형 상세정보')}
                   {valueTab === 'keeps' && this.state.keeps.length > 0 && (
                     <Text style={{ color: '#777777' }}>
                       {' '}
@@ -504,7 +505,7 @@ class RegisterInfo extends Component {
                         ))
                       : this.props.showPopup({
                           type: 'confirm',
-                          content: '필수정보를 입력해야 합니다.',
+                          content: getMsg(this.props.lang, 'ML0503', '필수정보를 입력해야 합니다.'),
                           image: illust10,
                         })
                   }
@@ -516,7 +517,7 @@ class RegisterInfo extends Component {
                       DefaultStyle.textSubmit,
                       DefaultStyle.textActiveSubmit,
                     ]}>
-                    확인
+                    {getMsg(this.props.lang, 'ML0100', '확인')}
                   </Text>
                 </TouchableOpacity>
               }
