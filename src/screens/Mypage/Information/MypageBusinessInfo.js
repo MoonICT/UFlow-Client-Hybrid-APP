@@ -363,10 +363,10 @@ class MypageBusinessInfo extends Component {
       return false;
     }
 
-    if (!businessInfo.regFile) {
-      alert('사업자등록증을 업로드 하세요.');
-      return false;
-    }
+    // if (!businessInfo.regFile) {
+    //   alert('사업자등록증을 업로드 하세요.');
+    //   return false;
+    // }
     // console.log('최종 저장 사업자 정보 : ',businessInfo);
 
     // Progress

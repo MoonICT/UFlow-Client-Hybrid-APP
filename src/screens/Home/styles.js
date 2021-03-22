@@ -192,7 +192,7 @@ export const styles = StyleSheet.create({
     backgroundColor: color.primary.constrast,
   },
   introInput: {
-    width: 263,
+    width: 265,
     marginRight:10,
     borderBottomWidth:2,
     borderColor:'white',

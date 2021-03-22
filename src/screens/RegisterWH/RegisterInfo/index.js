@@ -144,7 +144,7 @@ class RegisterInfo extends Component {
           typeCode: this.state.typeCodes[0]?.value,
           calUnitDvCode: this.state.calUnitDvCodeKeeps[1]?.value,
           calStdDvCode: this.state.calStdDvCodeKeeps[0]?.value,
-          mgmtChrgDvCodes:
+          mgmtChrgDvCode:
             this.state.mgmtChrgDvCodesKeep &&
             this.state.mgmtChrgDvCodesKeep[0]?.value,
           // commonArea: '',
