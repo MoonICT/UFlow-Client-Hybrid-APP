@@ -26,29 +26,6 @@ import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { log } from 'react-native-reanimated';
 import { connect } from "react-redux";
-const selectOptions = [
-  {
-    label: getMsg(this.props.lang, 'ML0180', '창고주 '),
-    value: 'OWNER ',
-  },
-  {
-    label: getMsg(this.props.lang, 'ML0180', '임차인 '),
-    value: 'TENANT ',
-  },
-];
-
-const tabInquiry = [
-  {
-    id: 'TENANT',
-    typeQuestion: 'GENERAL',
-    title: getMsg(this.props.lang, 'ML0056', '전체문의'),
-  },
-  {
-    id: 'OWNER',
-    typeQuestion: 'WAREHOUSE',
-    title: getMsg(this.props.lang, 'ML0182', '창고문의'),
-  },
-];
 
 class Inquiry extends Component {
   constructor (props) {
@@ -68,6 +45,28 @@ class Inquiry extends Component {
       titleActive: getMsg(this.props.lang, 'ML0056', '전체문의')
     };
     this.navigation = props.navigation;
+    this.selectOptions = [
+      {
+        label: getMsg(this.props.lang, 'ML0180', '창고주 '),
+        value: 'OWNER ',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0180', '임차인 '),
+        value: 'TENANT ',
+      },
+    ]
+    this.tabInquiry = [
+      {
+        id: 'TENANT',
+        typeQuestion: 'GENERAL',
+        title: getMsg(this.props.lang, 'ML0056', '전체문의'),
+      },
+      {
+        id: 'OWNER',
+        typeQuestion: 'WAREHOUSE',
+        title: getMsg(this.props.lang, 'ML0182', '창고문의'),
+      },
+    ]
   }
 
   /** when after render DOM */
@@ -121,9 +120,9 @@ class Inquiry extends Component {
   handleClickTab = (tabName, index) => {
     this.setState(
       {
-        inquiryCode: tabInquiry[index].id,
-        userType: tabInquiry[index].id,
-        typeQuestion: tabInquiry[index].typeQuestion,
+        inquiryCode: this.tabInquiry[index].id,
+        userType: this.tabInquiry[index].id,
+        typeQuestion: this.tabInquiry[index].typeQuestion,
         titleActive: tabName
       },
       () => {
@@ -230,7 +229,7 @@ class Inquiry extends Component {
         {/*</Appbars>*/}
         <ScrollView>
           <View style={{ flex: 1 }}>
-            <AppGrid data={tabInquiry} title={titleActive} titleProps={this.handleClickTab} />
+            <AppGrid data={this.tabInquiry} title={titleActive} titleProps={this.handleClickTab} />
           </View>
           <View style={S.filter}>
             <Searchbar
@@ -302,7 +301,7 @@ class Inquiry extends Component {
               {inquiryCode === 'OWNER' && (
                 <View style={({ flex: 1 }, [S.optionSelect, S.selectLong])}>
                   <Select
-                    data={selectOptions}
+                    data={this.selectOptions}
                     labelSelected={getMsg(this.props.lang, 'ML0059', '구분')}
                     style={S.select}
                     valueProps={e => {

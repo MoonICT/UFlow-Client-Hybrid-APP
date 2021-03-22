@@ -22,57 +22,6 @@ import { LogisticsKnowledgeService } from '@Services/apis';
 import { debounce } from 'lodash';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
-// const tabDutyDvCode = [
-//   {
-//     id: '',
-//     title: '전체'
-//   },
-//   {
-//     id: 'WHRG',
-//     title: '창고등록'
-//   },
-//   {
-//     id: 'RTWH',
-//     title: '공유창고'
-//   },
-//   {
-//     id: 'WHSR',
-//     title: '창고조회'
-//   },
-//   {
-//     id: 'WHMC',
-//     title: '창고매칭'
-//   },
-//   {
-//     id: 'PRMM',
-//     title: '프리미엄'
-//   },
-//   {
-//     id: 'FFMT',
-//     title: '풀필먼트'
-//   },
-//   {
-//     id: 'CSSP',
-//     title: '고객지원'
-//   },
-//   {
-//     id: 'CNTR',
-//     title: '계약'
-//   },
-//   {
-//     id: 'MBSP',
-//     title: '회원가입'
-//   },
-//   {
-//     id: 'MANG',
-//     title: '관리자'
-//   },
-//   {
-//     id: 'SRVY',
-//     title: '설문'
-//   },
-// ];
-
 class LogisticsKnowledge extends Component {
   constructor(props) {
     super(props);
