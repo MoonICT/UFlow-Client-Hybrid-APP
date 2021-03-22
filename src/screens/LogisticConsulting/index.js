@@ -125,7 +125,7 @@ class LogisticConsulting extends Component {
               onDismiss={this.hideDialog}>
               <Dialog.Title
                 style={[DefaultStyle._titleDialog, S.titleQuestion]}>
-                물류컨설팅 지원
+                {getMsg(this.props.lang, 'ML0188', '물류컨설팅 지원')}
               </Dialog.Title>
               <Dialog.Content>
                 <View

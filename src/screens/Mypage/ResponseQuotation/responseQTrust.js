@@ -232,6 +232,7 @@ class ResponseQTrust extends Component {
             }
           });
         }}
+        maxLength={7}
       />
 
       {/** 보관 단가 (필수) **/}
@@ -256,6 +257,7 @@ class ResponseQTrust extends Component {
         }
 
         }
+        maxLength={7}
       />
       {/** 입고 단가 (필수) **/}
       <TextField
@@ -279,6 +281,7 @@ class ResponseQTrust extends Component {
         }
 
         }
+        maxLength={7}
       />
       {/** 출고 단가 (필수) **/}
       <TextField
@@ -302,6 +305,7 @@ class ResponseQTrust extends Component {
         }
 
         }
+        maxLength={7}
       />
       {/** 인건 단가 **/}
       {/**

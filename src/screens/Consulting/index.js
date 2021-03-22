@@ -150,7 +150,7 @@ class Consulting extends Component {
                       this.handleStep();
                     }
                   }}>
-                  <Text style={[S.textButton, { marginTop: 8 }]}>확인</Text>
+                  <Text style={[S.textButton, { marginTop: 8 }]}>{getMsg(this.props.lang, 'ML0100', '확인')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -222,7 +222,7 @@ class Consulting extends Component {
                     this.handleStep();
                   }
                 }}>
-                <Text style={[S.textButton, { marginTop: 8 }]}>확인</Text>
+                <Text style={[S.textButton, { marginTop: 8 }]}>{getMsg(this.props.lang, 'ML0100', '확인')}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -273,7 +273,7 @@ class Consulting extends Component {
                     this.handleStep();
                   }
                 }}>
-                <Text style={[S.textButton, { marginTop: 8 }]}>확인</Text>
+                <Text style={[S.textButton, { marginTop: 8 }]}>{getMsg(this.props.lang, 'ML0100', '확인')}</Text>
               </Button>
             </View>
           )}

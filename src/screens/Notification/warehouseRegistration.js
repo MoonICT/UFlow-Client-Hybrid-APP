@@ -40,16 +40,16 @@ import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 const data = [
   {
-    title: '1.창고 등록',
+    title: getMsg(this.props.lang, 'ML0075', '1.창고 등록'),
   },
   {
-    title: '2.공실 검증',
+    title: getMsg(this.props.lang, 'ML0076', '2.공실 검증'),
   },
   {
-    title: '3.견적 요청 확인',
+    title: getMsg(this.props.lang, 'ML0077', '3.견적 요청 확인'),
   },
   {
-    title: '4.계약 요청',
+    title: getMsg(this.props.lang, 'ML0078', '4.계약 요청'),
   },
 ];
 
@@ -192,25 +192,25 @@ export default class Notification extends Component {
     const { heightSection1, heightSection2, heightSection3 } = this.state;
     console.log('handleChangeTitle', e);
     switch (e) {
-      case '1.창고 등록':
+      case getMsg(this.props.lang, 'ML0075', '1.창고 등록'):
         this.myRef.current?.scrollTo({
           y: 0,
           animated: true,
         });
         break;
-      case '2.공실 검증':
+      case getMsg(this.props.lang, 'ML0076', '2.공실 검증'):
         this.myRef.current?.scrollTo({
           y: heightSection1 + 80,
           animated: true,
         });
         break;
-      case '3.견적 요청 확인':
+      case getMsg(this.props.lang, 'ML0077', '3.견적 요청 확인'):
         this.myRef.current?.scrollTo({
           y: heightSection1 + heightSection2 + 100,
           animated: true,
         });
         break;
-      case '4.계약 요청':
+      case getMsg(this.props.lang, 'ML0078', '4.계약 요청'):
         this.myRef.current?.scrollTo({
           y: heightSection1 + heightSection2 + heightSection3 + 200,
           animated: true,

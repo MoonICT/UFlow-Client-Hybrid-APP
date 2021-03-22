@@ -20,6 +20,7 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import illust9 from '@Assets/images/illust9.png';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 //---> Assets
 
@@ -62,7 +63,7 @@ class DoneRegister extends Component {
             onPress={() => this.navigation.navigate('Login')}
           />
           <Appbar.Content
-            title="회원가입"
+            title={getMsg(this.props.lang, 'ML0003', '회원가입')}
             color="rgba(0, 0, 0, 0.76)"
             titleStyle={DefaultStyle.headerTitle}
           />
@@ -71,10 +72,10 @@ class DoneRegister extends Component {
           <View style={[S.content, S.contentDone]}>
             <Image style={DefaultStyle._imageDialog} source={illust9} />
             <Text style={[DefaultStyle._textTitleCard, S.titleDone]}>
-              회원가입이 완료되었습니다.
+              {getMsg(this.props.lang, 'ML0185', '회원가입이 완료되었습니다.')}
             </Text>
             <Text style={[S.contentDoneNoti, S.fontRegular, S.fontS14]}>
-              {'5초 뒤 자동으로 \n' + '메인 화면으로 이동합니다.'}
+              {getMsg(this.props.lang, 'ML0186', '5초 뒤 자동으로\n메인 화면으로 이동합니다.')}
             </Text>
             <Button
               mode="contained"
@@ -87,7 +88,7 @@ class DoneRegister extends Component {
               onPress={() => {
                 this.navigation.push('Home');
               }}>
-              홈으로
+              {getMsg(this.props.lang, 'ML0187', '홈으로')}
             </Button>
           </View>
         </ScrollView>
