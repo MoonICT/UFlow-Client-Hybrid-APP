@@ -20,6 +20,7 @@ import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as S } from './style';
 import { LogisticsKnowledgeService } from '@Services/apis';
 import { debounce } from 'lodash';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 // const tabDutyDvCode = [
 //   {
@@ -231,14 +232,14 @@ class LogisticsKnowledge extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-            title={'물류지식 게시판'}
+            title={getMsg(this.props.lang, 'ML0448', '물류지식 게시판')}
             navigation={this.navigation}
           />
         <ScrollView>
           <View style={S.viewSearch}>
             <Searchbar
               inputStyle={S.searchInput}
-              placeholder="검색하기"
+              placeholder={getMsg(this.props.lang, 'ML0053', '검색하기')}
               onChangeText={query => handleQueryChange(query)}
               value={this.state.firstQuery}
             />

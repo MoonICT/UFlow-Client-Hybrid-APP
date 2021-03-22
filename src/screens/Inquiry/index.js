@@ -28,11 +28,11 @@ import { log } from 'react-native-reanimated';
 import { connect } from "react-redux";
 const selectOptions = [
   {
-    label: '창고주 ',
+    label: getMsg(this.props.lang, 'ML0180', '창고주 '),
     value: 'OWNER ',
   },
   {
-    label: '임차인 ',
+    label: getMsg(this.props.lang, 'ML0180', '임차인 '),
     value: 'TENANT ',
   },
 ];
@@ -41,12 +41,12 @@ const tabInquiry = [
   {
     id: 'TENANT',
     typeQuestion: 'GENERAL',
-    title: '전체문의',
+    title: getMsg(this.props.lang, 'ML0056', '전체문의'),
   },
   {
     id: 'OWNER',
     typeQuestion: 'WAREHOUSE',
-    title: '창고문의',
+    title: getMsg(this.props.lang, 'ML0182', '창고문의'),
   },
 ];
 
