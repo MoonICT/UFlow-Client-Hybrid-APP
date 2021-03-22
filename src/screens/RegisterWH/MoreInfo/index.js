@@ -30,6 +30,7 @@ import { styles as S } from '../style';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
 import { MyPage } from '@Services/apis';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class RegisterMoreInfo extends Component {
   constructor (props) {
@@ -222,8 +223,8 @@ class RegisterMoreInfo extends Component {
           <Appbar.Content
             title={
               route && route.params && route.params.type === 'ModifyWH'
-                ? '추가 정보 수정'
-                : '추가 정보'
+                ? getMsg(this.props.lang, 'ML0484', '추가 정보 수정')
+                : getMsg(this.props.lang, 'ML0176', '추가 정보')
             }
             color="black"
             fontSize="12"
@@ -234,7 +235,7 @@ class RegisterMoreInfo extends Component {
           <View>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
-                <Text style={DefaultStyle._textTitleBody}>추가 정보</Text>
+                <Text style={DefaultStyle._textTitleBody}>{getMsg(this.props.lang, 'ML0176', '추가 정보')}</Text>
               </View>
               <View style>
                 {/**
@@ -256,7 +257,7 @@ class RegisterMoreInfo extends Component {
                         DefaultStyle._labelTextField,
                         { color: '#000000' },
                       ]}>
-                      준공일
+                      {getMsg(this.props.lang, 'ML0485', '준공일')}
                     </Text>
                     <DateTimePickerModal
                       mode="date"
@@ -274,8 +275,8 @@ class RegisterMoreInfo extends Component {
                 <View style={DefaultStyle._listElement}>
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
-                      labelTextField="건축면적"
-                      textRight="평"
+                      labelTextField={getMsg(this.props.lang, 'ML0157', '건축면적')}
+                      textRight={getMsg(this.props.lang, 'ML0487', '평')}
                       defaultValue={
                         bldgArea ? numberToStd(toPyeong(bldgArea)) : ''
                       }
@@ -296,7 +297,7 @@ class RegisterMoreInfo extends Component {
                   </View>
                   <View style={DefaultStyle._element}>  
                     <TextField
-                      labelTextField="건축면적"
+                      labelTextField={getMsg(this.props.lang, 'ML0157', '건축면적')}
                       textRight="m2"
                       defaultValue={bldgArea ? numberToStd(bldgArea) : '0'}
                       placeholder="0"
@@ -325,8 +326,8 @@ class RegisterMoreInfo extends Component {
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                   
                     <TextField
-                      labelTextField="대지면적"
-                      textRight="평"
+                      labelTextField={getMsg(this.props.lang, 'ML0156', '대지면적')}
+                      textRight={getMsg(this.props.lang, 'ML0487', '평')}
                       defaultValue={
                         siteArea ? numberToStd(toPyeong(siteArea)) : ''
                       }
@@ -347,7 +348,7 @@ class RegisterMoreInfo extends Component {
                   </View>
                   <View style={DefaultStyle._element}>
                     <TextField
-                      labelTextField="대지면적"
+                      labelTextField={getMsg(this.props.lang, 'ML0156', '대지면적')}
                       textRight="m2"
                       defaultValue={siteArea ? numberToStd(siteArea) : '0'}
                       placeholder="0"
@@ -375,8 +376,8 @@ class RegisterMoreInfo extends Component {
                 <View style={DefaultStyle._listElement}>
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
-                      labelTextField="연면적"
-                      textRight="평"
+                      labelTextField={getMsg(this.props.lang, 'ML0177', '연면적')}
+                      textRight={getMsg(this.props.lang, 'ML0487', '평')}
                       defaultValue={
                         totalArea ? numberToStd(toPyeong(totalArea)) : ''
                       }
@@ -397,7 +398,7 @@ class RegisterMoreInfo extends Component {
                   </View>
                   <View style={DefaultStyle._element}>
                     <TextField
-                      labelTextField="연면적"
+                      labelTextField={getMsg(this.props.lang, 'ML0177', '연면적')}
                       textRight="m2"
                       defaultValue={totalArea ? numberToStd(totalArea) : '0'}
                       placeholder="0"
@@ -426,8 +427,8 @@ class RegisterMoreInfo extends Component {
                   
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
-                      labelTextField="전용면적"
-                      textRight="평"
+                      labelTextField={getMsg(this.props.lang, 'ML0155', '전용면적')}
+                      textRight={getMsg(this.props.lang, 'ML0487', '평')}
                       defaultValue={
                         prvtArea ? numberToStd(toPyeong(prvtArea)) : ''
                       }
@@ -448,7 +449,7 @@ class RegisterMoreInfo extends Component {
                   </View>
                   <View style={DefaultStyle._element}>
                     <TextField
-                      labelTextField="전용면적"
+                      labelTextField={getMsg(this.props.lang, 'ML0155', '전용면적')}
                       textRight="m2"
                       defaultValue={prvtArea ? numberToStd(prvtArea) : '0'}
                       placeholder="0"
@@ -476,8 +477,8 @@ class RegisterMoreInfo extends Component {
                   
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
-                      labelTextField="공용면적"
-                      textRight="평"
+                      labelTextField={getMsg(this.props.lang, 'ML0488', '공용면적')}
+                      textRight={getMsg(this.props.lang, 'ML0487', '평')}
                       defaultValue={
                         cmnArea ? numberToStd(toPyeong(cmnArea)) : ''
                       }
@@ -498,7 +499,7 @@ class RegisterMoreInfo extends Component {
                   </View>
                   <View style={DefaultStyle._element}>
                     <TextField
-                      labelTextField="공용면적"
+                      labelTextField={getMsg(this.props.lang, 'ML0488', '공용면적')}
                       textRight="m2"
                       defaultValue={cmnArea ? numberToStd(cmnArea) : '0'}
                       placeholder="0"
@@ -526,14 +527,14 @@ class RegisterMoreInfo extends Component {
 
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
-                <Text style={[DefaultStyle._textTitleBody]}>추가옵션</Text>
+                <Text style={[DefaultStyle._textTitleBody]}>{getMsg(this.props.lang, 'ML0158', '추가옵션')}</Text>
               </View>
               <View style={S.options}>{viewOptionMore}</View>
             </View>
 
             <View style={DefaultStyle._body}>
               <View style={DefaultStyle._titleBody}>
-                <Text style={DefaultStyle._textTitleBody}>보험 가입 여부</Text>
+                <Text style={DefaultStyle._textTitleBody}>{getMsg(this.props.lang, 'ML0489', '보험 가입 여부')}</Text>
               </View>
               <View style={[S.options, S.optionsFooter]}>
                 {viewInsrDvCodes}
@@ -568,7 +569,7 @@ class RegisterMoreInfo extends Component {
                       ? DefaultStyle.textActiveSubmit
                       : null,
                   ]}>
-                  확인
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Text>
               </TouchableOpacity>
             </View>

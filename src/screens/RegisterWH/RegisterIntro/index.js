@@ -34,6 +34,7 @@ import { styles as S } from '../style';
 import { styles as SS } from './style';
 import { Warehouse } from '@Services/apis';
 import Postcode from 'react-native-daum-postcode';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 class RegisterIntro extends Component {
   constructor (props) {
     super(props);
@@ -160,7 +161,7 @@ class RegisterIntro extends Component {
         </Appbars> */}
         
         <HistoryBackActionBar
-            title={'창고 소개'}
+            title={getMsg(this.props.lang, 'ML0174', '창고 소개')}
             navigation={this.navigation}
           />
         <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 50, }]}>
@@ -169,8 +170,8 @@ class RegisterIntro extends Component {
               <View style={DefaultStyle._titleBody}>
                 <Text style={DefaultStyle._textTitleBody}>
                   {route && route.params.type === 'ModifyWH'
-                    ? '제목'
-                    : '창고명'}
+                    ? getMsg(this.props.lang, 'ML0238', '제목')
+                    : getMsg(this.props.lang, 'ML0239', '창고명')}
                   <Text style={S.textNote}>*</Text>
                 </Text>
               </View>
@@ -182,14 +183,14 @@ class RegisterIntro extends Component {
                   this.setState({ name: e })
                 } }
                 value={name}
-                placeholder={'예)신논혁역 도보 5분 거리, 깨끗한 창고입니다.'}
+                placeholder={getMsg(this.props.lang, 'ML0507', '예)신논혁역 도보 5분 거리, 깨끗한 창고입니다.')}
               />
             </View>
 
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
                 <Text style={DefaultStyle._textTitleBody}>
-                  창고 소개<Text style={S.textNote}>*</Text>
+                  {getMsg(this.props.lang, 'ML0174', '창고 소개')}<Text style={S.textNote}>*</Text>
                 </Text>
               </View>
               <TextInput
@@ -201,29 +202,23 @@ class RegisterIntro extends Component {
                 onChangeText={e => {
                   this.setState({ description: e })
                 } }
-                placeholder={`상세 설명 작성 주의사항
-
-  - 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)
-  - 중개수수료를 언급한 내용은 입력할 수 없습니다. (중개수수료 무료, 공짜, 반값 등)
-
-  * 주의사항 위반시 허위정보로 간주되어 게시물 삭제 및 이용의 제한이 있을 수 있습니다.
-  * 유플로우의 창고 등록 규정에 위반되는 금칙어는 등록이 블가합니다. `}
+                placeholder={getMsg(this.props.lang, 'ML0508', '상세 설명 작성 주의사항\n- 창고 정보와 관련없는 홍보성 정보는 입력하실 수 없습니다. (홈페이지 주소, 블로그, SNS, 메신저ID, 전화번호, 이메일 등)\n- 중개수수료를 언급한 내용은 입력할 수 없습니다. (중개수수료 무료, 공짜, 반값 등)\n\n* 주의사항 위반시 허위정보로 간주되어 게시물 삭제 및 이용의 제한이 있을 수 있습니다.\n* 유플로우의 창고 등록 규정에 위반되는 금칙어는 등록이 블가합니다.')}
               />
             </View>
 
             <View style={DefaultStyle._body}>
               <View style={DefaultStyle._titleBody}>
                 <Text style={[DefaultStyle._textTitleBody, {marginBottom: 0}]}>
-                  위치<Text style={S.textNote}>*</Text>
+                  {getMsg(this.props.lang, 'ML0175', '위치')}<Text style={S.textNote}>*</Text>
                 </Text>
               </View>
               <Text style={[S.textNote, {fontSize: 13, marginBottom: 15}]}>
-                 (오픈형인경우 위치를 등록하시면, 조회시 시군면 까지만 보여집니다.)
+                 {getMsg(this.props.lang, 'ML0509', '(오픈형인경우 위치를 등록하시면, 조회시 시군면 까지만 보여집니다.)')}
               </Text>
               <TouchableOpacity onPress={this._showDialog}>
                 <Searchbar
                   inputStyle={S.searchRegister}
-                  placeholder="예)번동10-1, 강북구 번동"
+                  placeholder={getMsg(this.props.lang, 'ML0510', '예)번동10-1, 강북구 번동')}
                   editable={false}
                   selectTextOnFocus={false}
                   onChangeText={query => {
@@ -238,7 +233,7 @@ class RegisterIntro extends Component {
                 style={[SS.inputIntro, SS.inputLoction]}
                 // onChangeText={text => this.onChangeLocation(text)}
                 value={address && address.address}
-                placeholder={'도로명 주소'}
+                placeholder={getMsg(this.props.lang, 'ML0206', '도로명 주소')}
               />
               <TextInput
                 style={[SS.inputIntro, SS.inputLoction]}
@@ -246,7 +241,7 @@ class RegisterIntro extends Component {
                   this.onChangeLocation(text)
                 } }
                 value={address.detail}
-                placeholder={'상세 주소'}
+                placeholder={getMsg(this.props.lang, 'ML0241', '상세 주소')}
               />
             </View>
 
@@ -274,7 +269,7 @@ class RegisterIntro extends Component {
                     DefaultStyle.textSubmit,
                     isActive === true ? DefaultStyle.textActiveSubmit : '',
                   ]}>
-                  확인
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Text>
               </TouchableOpacity>
             </View>

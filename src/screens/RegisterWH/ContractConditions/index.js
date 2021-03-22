@@ -24,17 +24,18 @@ import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
 import {styles as S} from '../style';
 import {styles as SS} from './style';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class RegisterContractConditions extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
-      system: 'UF 시스템',
-      term: '1년',
+      system: getMsg(this.props.lang, 'ML0470', 'UF 시스템'),
+      term: getMsg(this.props.lang, 'ML0471', '1년'),
       settlement: '',
       deadline: '',
-      escrow: 'UF 에스크로',
+      escrow: getMsg(this.props.lang, 'ML0472', 'UF 에스크로'),
     };
 
     this.navigation = props.navigation;
@@ -45,12 +46,12 @@ class RegisterContractConditions extends Component {
     const {checked} = this.state;
     const dataSelect = [
       {
-        label: '1년',
-        value: '1년',
+        label: getMsg(this.props.lang, 'ML0471', '1년'),
+        value: getMsg(this.props.lang, 'ML0471', '1년'),
       },
       {
-        label: '2년',
-        value: '2년',
+        label: getMsg(this.props.lang, 'ML0473', '2년'),
+        value: getMsg(this.props.lang, 'ML0473', '2년'),
       },
     ];
     return (
@@ -64,8 +65,8 @@ class RegisterContractConditions extends Component {
           <Appbar.Content
             title={
               route && route.params && route.params.type === 'ModifyWH'
-                ? '계약 조건 수정'
-                : '계약 조건'
+                ? getMsg(this.props.lang, 'ML0474', '계약 조건 수정')
+                : getMsg(this.props.lang, 'ML0475', '계약 조건')
             }
             color="black"
             fontSize="12"
@@ -76,77 +77,77 @@ class RegisterContractConditions extends Component {
           <View style={{paddingBottom: 450, backgroundColor: '#ffffff'}}>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
-                <Text style={DefaultStyle._textTitleBody}>정산조건</Text>
+                <Text style={DefaultStyle._textTitleBody}>{getMsg(this.props.lang, 'ML0476', '정산조건')}</Text>
               </View>
               <View style={S.options}>
                 <View style={S.optionCheck}>
                   <RadioButton
-                    value="UF 시스템"
+                    value={getMsg(this.props.lang, 'ML0470', 'UF 시스템')}
                     status={'checked'}
                     onPress={() => {
                     }}
                   />
-                  <Text style={S.labelCheck}>UF 시스템</Text>
+                  <Text style={S.labelCheck}>{getMsg(this.props.lang, 'ML0470', 'UF 시스템')}</Text>
                 </View>
               </View>
             </View>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
-                <Text style={DefaultStyle._textTitleBody}>정산조건</Text>
+                <Text style={DefaultStyle._textTitleBody}>{getMsg(this.props.lang, 'ML0476', '정산조건')}</Text>
               </View>
               <View style={S.options}>
                 <View style={S.optionCheck}>
                   <RadioButton
-                    value="UF 책임형"
+                    value={getMsg(this.props.lang, 'ML0477', 'UF 책임형')}
                     status={checked === 'first' ? 'checked' : 'unchecked'}
                     onPress={() => {
                       this.setState({checked: 'first'});
                     }}
                   />
-                  <Text style={S.labelCheck}>UF 책임형</Text>
+                  <Text style={S.labelCheck}>{getMsg(this.props.lang, 'ML0477', 'UF 책임형')}</Text>
                 </View>
                 <View style={S.optionCheck}>
                   <RadioButton
-                    value="보증금"
+                    value={getMsg(this.props.lang, 'ML0478', '보증금')}
                     status={checked === 'second' ? 'checked' : 'unchecked'}
                     onPress={() => {
                       this.setState({checked: 'second'});
                     }}
                   />
-                  <Text style={S.labelCheck}>보증금</Text>
+                  <Text style={S.labelCheck}>{getMsg(this.props.lang, 'ML0478', '보증금')}</Text>
                 </View>
                 <View style={S.optionCheck}>
                   <RadioButton
-                    value="보증보험"
+                    value={getMsg(this.props.lang, 'ML0479', '보증보험')}
                     status={checked === 'three' ? 'checked' : 'unchecked'}
                     onPress={() => {
                       this.setState({checked: 'three'});
                     }}
                   />
-                  <Text style={S.labelCheck}>보증보험</Text>
+                  <Text style={S.labelCheck}>{getMsg(this.props.lang, 'ML0479', '보증보험')}</Text>
                 </View>
               </View>
             </View>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
-                <Text style={DefaultStyle._textTitleBody}>거래조건</Text>
+                <Text style={DefaultStyle._textTitleBody}>{getMsg(this.props.lang, 'ML0480', '거래조건')}</Text>
               </View>
               <View style>
                 <Select
                   data={dataSelect}
-                  labelSelected="계약기간"
+                  labelSelected={getMsg(this.props.lang, 'ML0481', '계약기간')}
                   colorLabel="#000000"
                   valueProps={e => this.setState({term: e})}
                 />
                 <Select
                   data={dataSelect}
-                  labelSelected="정산단위"
+                  labelSelected={getMsg(this.props.lang, 'ML0139', '정산단위')}
                   colorLabel="#000000"
                   valueProps={e => this.setState({settlement: e})}
                 />
                 <Select
                   data={dataSelect}
-                  labelSelected="마감기준"
+                  labelSelected={getMsg(this.props.lang, 'ML0481', '마감기준')}
                   colorLabel="#000000"
                   valueProps={e => this.setState({deadline: e})}
                 />
@@ -155,17 +156,17 @@ class RegisterContractConditions extends Component {
 
             <View style={DefaultStyle._body}>
               <View style={DefaultStyle._titleBody}>
-                <Text style={DefaultStyle._textTitleBody}>청구조건</Text>
+                <Text style={DefaultStyle._textTitleBody}>{getMsg(this.props.lang, 'ML0483', '청구조건')}</Text>
               </View>
               <View style={S.options}>
                 <View style={S.optionCheck}>
                   <RadioButton
-                    value="UF 에스크로"
+                    value={getMsg(this.props.lang, 'ML0472', 'UF 에스크로')}
                     status={'checked'}
                     onPress={() => {
                     }}
                   />
-                  <Text style={S.labelCheck}>UF 에스크로</Text>
+                  <Text style={S.labelCheck}>{getMsg(this.props.lang, 'ML0472', 'UF 에스크로')}</Text>
                 </View>
               </View>
             </View>
@@ -189,7 +190,7 @@ class RegisterContractConditions extends Component {
                     DefaultStyle.textSubmit,
                     imageStore.length > 2 ? DefaultStyle.textActiveSubmit : null,
                   ]}>
-                  확인
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Text>
               </TouchableOpacity>
             </View>

@@ -14,6 +14,7 @@ import TextField from '@Components/organisms/TextField';
 import { styles as S } from '../style';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import { stdToNumber, numberToStd } from '@Services/utils/StringUtils';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class FormInfo extends Component {
   constructor(props) {
@@ -68,9 +69,9 @@ class FormInfo extends Component {
           <View style={DefaultStyle._listElement}>
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
-                labelTextField="층면적"
+                labelTextField={getMsg(this.props.lang, 'ML0505', '층면적')}
                 placeholder="0"
-                textRight="평"
+                textRight={getMsg(this.props.lang, 'ML0487', '평')}
                 defaultValue={
                   formData.flrArea
                     ? numberToStd(toPyeong(formData.flrArea))
@@ -92,7 +93,7 @@ class FormInfo extends Component {
             </View>
             <View style={DefaultStyle._element}>
               <TextField
-                labelTextField="층면적"
+                labelTextField={getMsg(this.props.lang, 'ML0505', '층면적')}
                 textRight="m2"
                 placeholder="0"
                 defaultValue={
@@ -122,13 +123,13 @@ class FormInfo extends Component {
             
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
-                labelTextField="주차면적"
+                labelTextField={getMsg(this.props.lang, 'ML0506', '주차면적')}
                 defaultValue={
                   formData.parkArea
                     ? numberToStd(toPyeong(formData.parkArea))
                     : ''
                 }
-                textRight="평"
+                textRight={getMsg(this.props.lang, 'ML0487', '평')}
                 colorLabel="#000000"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
@@ -146,7 +147,7 @@ class FormInfo extends Component {
             </View>
             <View style={DefaultStyle._element}>
               <TextField
-                labelTextField="주차면적"
+                labelTextField={getMsg(this.props.lang, 'ML0506', '주차면적')}
                 defaultValue={
                   formData.parkArea ? numberToStd(formData.parkArea) : ''
                 }
@@ -176,13 +177,13 @@ class FormInfo extends Component {
             
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
-                labelTextField="사무실면적"
+                labelTextField={getMsg(this.props.lang, 'ML0161', '사무실면적')}
                 defaultValue={
                   formData.opcArea
                     ? numberToStd(toPyeong(formData.opcArea))
                     : ''
                 }
-                textRight="평"
+                textRight={getMsg(this.props.lang, 'ML0487', '평')}
                 colorLabel="#000000"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
@@ -200,7 +201,7 @@ class FormInfo extends Component {
             </View>
             <View style={DefaultStyle._element}>
               <TextField
-                labelTextField="사무실면적"
+                labelTextField={getMsg(this.props.lang, 'ML0161', '사무실면적')}
                 defaultValue={
                   formData.opcArea ? numberToStd(formData.opcArea) : ''
                 }
@@ -229,13 +230,13 @@ class FormInfo extends Component {
             
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
-                labelTextField="전용면적"
+                labelTextField={getMsg(this.props.lang, 'ML0163', '전용면적')}
                 defaultValue={
                   formData.prvtArea
                     ? numberToStd(toPyeong(formData.prvtArea))
                     : ''
                 }
-                textRight="평"
+                textRight={getMsg(this.props.lang, 'ML0487', '평')}
                 colorLabel="#000000"
                 valueProps={e => {
                   const value = parseInt(e.replace(/[^0-9]/g, ''));
@@ -253,7 +254,7 @@ class FormInfo extends Component {
             </View>
             <View style={DefaultStyle._element}>
               <TextField
-                labelTextField="전용면적"
+                labelTextField={getMsg(this.props.lang, 'ML0163', '전용면적')}
                 defaultValue={
                   formData.prvtArea ? numberToStd(formData.prvtArea) : ''
                 }
@@ -282,13 +283,13 @@ class FormInfo extends Component {
             
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
-                labelTextField="공용면적"
+                labelTextField={getMsg(this.props.lang, 'ML0488', '공용면적')}
                 defaultValue={
                   formData.cmnArea
                     ? numberToStd(toPyeong(formData.cmnArea))
                     : ''
                 }
-                textRight="평"
+                textRight={getMsg(this.props.lang, 'ML0487', '평')}
                 colorLabel="#000000"
                 valueProps={e => {
                   let value = parseInt(e.replace(/[^0-9]/g, ''));
@@ -306,7 +307,7 @@ class FormInfo extends Component {
             </View>
             <View style={DefaultStyle._element}>
               <TextField
-                labelTextField="공용면적"
+                labelTextField={getMsg(this.props.lang, 'ML0488', '공용면적')}
                 defaultValue={
                   formData.cmnArea ? numberToStd(formData.cmnArea) : ''
                 }
@@ -332,7 +333,7 @@ class FormInfo extends Component {
           </View>
 
           <TextField
-            labelTextField="층고"
+            labelTextField={getMsg(this.props.lang, 'ML0115', '층고')}
             defaultValue={formData.flrHi ? numberToStd(formData.flrHi) : ''}
             value={flrHi}
             placeholder="0"
@@ -348,7 +349,7 @@ class FormInfo extends Component {
             maxLength={5}
           />
           <TextField
-            labelTextField="유효고"
+            labelTextField={getMsg(this.props.lang, 'ML0164', '유효고')}
             defaultValue={formData.efctvHi ? numberToStd(formData.efctvHi) : ''}
             value={efctvHi}
             placeholder="0"
@@ -388,7 +389,7 @@ class FormInfo extends Component {
                 : ''
             }
             selectedValue={formData.aprchMthdDvCode}
-            labelSelected="접안방식"
+            labelSelected={getMsg(this.props.lang, 'ML0117', '접안방식')}
             valueProps={e => {
               let dataF = formData;
               dataF.aprchMthdDvCode = e;
@@ -396,7 +397,7 @@ class FormInfo extends Component {
             }}
           />
           <TextField
-            labelTextField="도크 수"
+            labelTextField={getMsg(this.props.lang, 'ML0165', '도크 수')}
             defaultValue={formData.dockQty ? numberToStd(formData.dockQty) : ''}
             colorLabel="#000000"
             keyboardType="numeric"

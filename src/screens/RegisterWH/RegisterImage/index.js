@@ -28,6 +28,7 @@ import { Warehouse } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from 'react-native-image-resizer';
 import RNFetchBlob from 'rn-fetch-blob';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class RegisterImage extends Component {
   constructor (props) {
@@ -152,7 +153,7 @@ class RegisterImage extends Component {
         // 용량 체크.
         console.log('Image size : ', response.fileSize)
         if (10485760 < response.fileSize) {
-          alert('최대 10MB 까지 업로드 가능합니다.')
+          alert(getMsg(this.props.lang, 'ML0493', '최대 10MB 까지 업로드 가능합니다.'))
           return false
         }
 
@@ -260,14 +261,14 @@ class RegisterImage extends Component {
     return (
       <SafeAreaView style={S.container}>
         <HistoryBackActionBar
-          title={'사진 추가'}
+          title={getMsg(this.props.lang, 'ML0494', '사진 추가')}
           navigation={this.navigation}
           rightComponent={
             isRemove === true && checkRemove === false ? (
               <Appbar.Content
                 color={'black'}
                 onPress={this._removeImage}
-                title={'완료'}
+                title={getMsg(this.props.lang, 'ML0223', '완료')}
                 titleStyle={S.textHeaderRight}
                 style={S.itemHeaderRight}
               />
@@ -283,7 +284,7 @@ class RegisterImage extends Component {
                     } else if (valueTab === 1) {
                       console.log('imageStore.pnImages', pnImages);
                       if (pnImages && pnImages.length > 0) {
-                        alert('파노라마 사진은 1장만 등록 가능합니다.');
+                        alert(getMsg(this.props.lang, 'ML0492', '파노라마 사진은 1장만 등록 가능합니다.'));
                       } else {
                         this.handlePicker('002'); // 파노라마 이미지
                       }
@@ -309,12 +310,12 @@ class RegisterImage extends Component {
               onPress={() => {
                 this.setState({ valueTab: 0, isRemove: false });
               }}>
-              <Text style={DefaultStyle._textTabBar}>일반 사진</Text>
+              <Text style={DefaultStyle._textTabBar}>{getMsg(this.props.lang, 'ML0224', '일반 사진')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={valueTab === 1 ? DefaultStyle._btnTabBar : null}
               onPress={() => this.setState({ valueTab: 1, isRemove: false })}>
-              <Text style={DefaultStyle._textTabBar}>파노라마 사진</Text>
+              <Text style={DefaultStyle._textTabBar}>{getMsg(this.props.lang, 'ML0225', '파노라마 사진')}</Text>
             </TouchableOpacity>
           </View>
           {valueTab === 0 ? (
@@ -352,7 +353,7 @@ class RegisterImage extends Component {
                     ? DefaultStyle.textActiveSubmit
                     : null,
                 ]}>
-                확인
+                {getMsg(this.props.lang, 'ML0100', '확인')}
               </Text>
             </TouchableOpacity>
           </View>
