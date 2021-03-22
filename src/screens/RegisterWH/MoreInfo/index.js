@@ -230,7 +230,7 @@ class RegisterMoreInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 100, }]}>
+        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 50, }]}>
           <View>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
