@@ -23,32 +23,9 @@ import { styles as S } from './style';
 import { Term, Terms } from '@Services/apis';
 import HTML from 'react-native-render-html';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 //---> Assets
-
-//Data Terms Select
-const data = [
-  {
-    label: '창고 등록',
-    value: '창고 등록',
-  },
-  {
-    label: '창고 찾기',
-    value: '창고 찾기',
-  },
-  {
-    label: '이용 방법',
-    value: '이용 방법',
-  },
-  {
-    label: '고객센터',
-    value: '고객센터',
-  },
-  {
-    label: '패밀리사이트',
-    value: '패밀리사이트',
-  },
-];
-
 class TermsScreen extends Component {
   constructor(props) {
     super(props);
@@ -77,7 +54,7 @@ class TermsScreen extends Component {
         <Appbars>
           <Appbar.BackAction onPress={() => this.navigation.goBack()} />
           <Appbar.Content
-            title="이용약관"
+            title={getMsg(this.props.lang, 'ML0249', '이용약관')}
             color="rgba(0, 0, 0, 0.76)"
             style={S.appBarTitle}
           />
@@ -101,43 +78,6 @@ class TermsScreen extends Component {
                 />
               )}
             </View>
-            {
-              // <Text style={[S.titleTerm, S.fontMedium, S.fontS16]}>
-              //       {'제 1조 (목적)'}
-              //     </Text>
-              //     <Text style={[S.contentTerm, S.fontRegular, S.fontS14]}>
-              //       이 약관은 주식회사 워시업코리아 (이하 “회사”라 합니다)가 제공하는
-              //       워시업코리아 서비스(이하 “서비스”라 합니다)와 관련하여, 회사와
-              //       이용 고객간에 서비스의 이용조건 및 절차, 회사와 회원간의 권리,
-              //       의무 및 기타 필요한 사항을 규정함을 목적으로 합니다. 본 약관은
-              //       PC통신, 스마트폰(안드로이드폰, 아이폰 등) 앱 등을 이용하는
-              //       전자상거래에 대해서도 그 성질에 반하지 않는 한 준용됩니다.
-              //     </Text>
-              //     <Text style={[S.titleTerm, S.fontMedium, S.fontS16]}>
-              //       {'제 2조 (용어의 정리)'}
-              //     </Text>
-              //     <Text style={[S.contentTerm, S.fontRegular, S.fontS14]}>
-              //       1. 이 약관은 주식회사 워시업코리아 (이하 “회사”라 합니다)이
-              //       제공하는 워시업코리아 서비스(이하 “서비스”라 합니다)와 관련하여,
-              //       회사와 이용 고객간에 서비스의 이용조건 및 절차, 회사와 회원간의
-              //       권리, 의무 및 기타 필요한 사항을 규정함을 목적으로 합니다.{'\n'}
-              //       2. 본 약관은 PC통신, 스마트폰(안드로이드폰, 아이폰 등) 앱 등을
-              //       이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한
-              //       준용됩니다. {'\n'}3. 이 약관은 주식회사 워시업코리아 (이하
-              //       “회사”라 합니다)이 제공하는 워시업코리아 서비스(이하 “서비스”라
-              //       합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
-              //       절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
-              //       목적으로 합니다.{'\n'} 4. 이 약관은 주식회사 워시업코리아 (이하
-              //       “회사”라 합니다)이 제공하는워시업코리아 서비스(이하 “서비스”라
-              //       합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
-              //       절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
-              //       목적으로 합니다.{'\n'} 5. 이 약관은 주식회사 워시업코리아 (이하
-              //       “회사”라 합니다)이 제공하는 워시업코리아 서비스(이하 “서비스”라
-              //       합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
-              //       절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
-              //       목적으로 합니다.
-              //     </Text>
-            }
           </View>
         </ScrollView>
       </SafeAreaView>
