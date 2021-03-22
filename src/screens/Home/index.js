@@ -510,7 +510,7 @@ class Home extends Component {
                     name="search"
                     size={24}
                     color="white"
-                    style={{ marginLeft: 10 }}
+                    style={{ marginLeft: 5 }}
                     onPress={() => {
                       this.setState({ textSearch: '' })
                       this.props.setSearchQuery(textSearch)
