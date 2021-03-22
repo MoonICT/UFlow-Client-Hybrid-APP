@@ -21,6 +21,8 @@ import { styles as S } from '../style';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import { styles as SS } from './style';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class RegisterInfo extends Component {
   constructor (props) {
     super(props);
@@ -57,9 +59,9 @@ class RegisterInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
-            title={'창고 위치'}
+            title={getMsg(this.props.lang, 'ML0221', '창고 위치')}
             navigation={this.navigation}
           />
         <View style={{

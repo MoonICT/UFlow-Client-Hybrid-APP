@@ -45,9 +45,11 @@ import { Warehouse } from '@Services/apis';
 import { money } from '@Services/utils/StringUtils';
 import Progress from '@Components/organisms/Progress';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 const data = [
   {
-    title: '내 창고',
+    title: '내 창고1',
   },
   {
     title: '견적･계약 관리',
@@ -62,28 +64,6 @@ const data = [
   //   title: '관심 창고',
   // },
 ];
-// const dataStatusWarehouse = [
-//   {
-//     value: 'All',
-//     label: '전체',
-//   },
-//   {
-//     value: '1100',
-//     label: '공실검증완료',
-//   },
-//   {
-//     value: '4100',
-//     label: '계약진행중',
-//   },
-//   {
-//     value: '5100',
-//     label: '계약체결',
-//   },
-//   {
-//     value: '9100',
-//     label: '공실검증실패',
-//   },
-// ];
 const dataSteps = [
   {
     title: '견적요청',
@@ -122,19 +102,42 @@ class Mypage extends Component {
     super(props);
     this.state = {
       isSwitchOn: true,
-      titleSearchWH: '전체',
+      titleSearchWH: getMsg(this.props.lang, 'ML0119', '전체'),
       visibleConfirm: false,
       refreshKey: '',
       // dataSearchWH:[],
       title:
         props.route.params && props.route.params.title
           ? props.route.params.title
-          : '내 창고',
+          : getMsg(this.props.lang, 'ML0230', '내 창고'),
       tab:
         props.route.params && props.route.params.tab
           ? props.route.params.tab
           : 'Mypage_mywhrg',
     };
+
+    this.tabList = [
+      {
+        id: 'Mypage_mywhrg',
+        title: '내 창고',
+      },
+      {
+        id: 'Mypage_cntr',
+        title: '견적･계약 관리',
+      },
+      {
+        id: 'Mypage_io',
+        title: '입･출고 관리',
+      },
+      {
+        id: 'Mypage_settlement',
+        title: '정산관리',
+      },
+      // {
+      //   id: 'Mypage_fav',
+      //   title: '관심 창고',
+      // },
+    ]
 
     this.navigation = props.navigation;
   }
@@ -155,7 +158,7 @@ class Mypage extends Component {
   doRefreshTab = title => {
     this.setState({ title: '' });
     setTimeout(() => {
-      this.setState({ title: title ? title : '내 창고' });
+      this.setState({ title: title ? title : getMsg(this.props.lang, 'ML0230', '내 창고') });
     });
   };
 
@@ -415,7 +418,7 @@ class Mypage extends Component {
               { paddingBottom: 100 },
             ]}>
             <View style={[DefaultStyle._titleBody, { flex: 1, flexWrap: 'wrap' }]}>
-              <Text style={[DefaultStyle._textTitleCard]}>내 창고</Text>
+              <Text style={[DefaultStyle._textTitleCard]}>{getMsg(this.props.lang, 'ML0230', '내 창고')}</Text>
               {/* <Select
                 arrayStyle={{ width: 250,marginLeft:30 }}
                 data={dataStatusWarehouse}
@@ -436,7 +439,7 @@ class Mypage extends Component {
               }}>
               <Text
                 style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                신규 등록
+                {getMsg(this.props.lang, 'ML0247', '신규 등록')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -530,12 +533,12 @@ class Mypage extends Component {
               color="rgba(0, 0, 0, 0.54)"
               style={[DefaultStyle._buttonElement]}
               onPress={this.hideConfirm}>
-              아니오
+              {getMsg(this.props.lang, 'ML0101', '취소')}
             </Button>
             <Button
               style={DefaultStyle._buttonElement}
               onPress={this.showDialog}>
-              네
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -549,11 +552,11 @@ class Mypage extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            회원정보 수정 완료
+            {getMsg(this.props.lang, 'ML0245', '회원정보 수정 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              회원정보가 수정되었습니다.
+              {getMsg(this.props.lang, 'ML0246', '회원정보가 수정되었습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -564,7 +567,7 @@ class Mypage extends Component {
                 this.hideConfirm();
                 this.navigation.navigate('AvaliableChate');
               }}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>

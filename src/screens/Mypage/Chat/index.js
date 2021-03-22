@@ -33,6 +33,8 @@ import { Chat } from '@Services/apis';
 import avatarImg from '@Assets/images/appicon.png';
 import avatarPersonImg from '@Assets/images/placeholderPerson.png';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class Chatting extends Component {
   constructor (props) {
     super(props);
@@ -119,7 +121,7 @@ class Chatting extends Component {
     let beforeOwnMinutes = today.subtract(1, 'minutes')
     // 현재보다 이후이고 현재 1분뒤 보다 전인
     if (createdDate.isAfter(beforeOwnMinutes)) {
-      result = '방금 전';
+      result = getMsg(this.props.lang, 'ML0240', '방금 전');
     } else if (createdDate.isSame(today, 'day')) {
       result = moment(date).format('HH:MM')
     } else if (createdDate.isSame(today, 'year')) {
@@ -145,7 +147,7 @@ class Chatting extends Component {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
         <HistoryBackActionBar
-          title={'채팅'}
+          title={getMsg(this.props.lang, 'ML0242', '채팅')}
           navigation={this.navigation}
         />
         {/*<TouchableWithoutFeedback onPress={Keyboard.dismiss}>*/}
@@ -204,7 +206,7 @@ class Chatting extends Component {
                                 <View style={SS.status} />
                               </View>
                               <Text style={SS.name}>
-                                {item.type === 'MANAGER' ? '관리자' : item.userName ? item.userName : 'unknown'}
+                                {item.type === 'MANAGER' ? getMsg(this.props.lang, 'ML0244', '관리자') : item.userName ? item.userName : 'unknown'}
                               </Text>
                             </Fragment>
                           )}
@@ -228,7 +230,7 @@ class Chatting extends Component {
                 <TextField
                   multiline={true}
                   styleProps={SS.inputType}
-                  placeholder="입력해 주세요."
+                  placeholder={getMsg(this.props.lang, 'ML0243', '입력해 주세요.')}
                   value={chatting}
                   rightComponent={
                     <Icon

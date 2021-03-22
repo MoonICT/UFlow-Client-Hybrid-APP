@@ -38,21 +38,6 @@ import Carousel from '@Components/organisms/Carousel';
 import { Appbar } from 'react-native-paper';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
-const data = [
-  {
-    title: getMsg(this.props.lang, 'ML0075', '1.창고 등록'),
-  },
-  {
-    title: getMsg(this.props.lang, 'ML0076', '2.공실 검증'),
-  },
-  {
-    title: getMsg(this.props.lang, 'ML0077', '3.견적 요청 확인'),
-  },
-  {
-    title: getMsg(this.props.lang, 'ML0078', '4.계약 요청'),
-  },
-];
-
 export default class Notification extends Component {
   constructor (props) {
     super(props);
@@ -66,6 +51,20 @@ export default class Notification extends Component {
       heightSection5: 0,
       heightSection6: 0,
     };
+    this.menu = [
+      {
+        title: getMsg(this.props.lang, 'ML0075', '1.창고 등록'),
+      },
+      {
+        title: getMsg(this.props.lang, 'ML0076', '2.공실 검증'),
+      },
+      {
+        title: getMsg(this.props.lang, 'ML0077', '3.견적 요청 확인'),
+      },
+      {
+        title: getMsg(this.props.lang, 'ML0078', '4.계약 요청'),
+      },
+    ]
   }
 
   getDimesionsHeightSection1 = e => {
@@ -360,7 +359,7 @@ export default class Notification extends Component {
           <AppGrid
             type="controlTitleActive"
             titleActive={title}
-            data={data}
+            data={this.menu}
             titleProps={e => this.handleChangeTitle(e)}
           />
         </View>

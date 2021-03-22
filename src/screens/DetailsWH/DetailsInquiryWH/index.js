@@ -1,4 +1,6 @@
 /**
+ * TODO @Deprecated
+ *
  * @create
  * @modify
  * @desc [description]
@@ -44,7 +46,7 @@ class DetailsInquiryWH extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
             title={'창고 문의 상세'}
             navigation={this.navigation}

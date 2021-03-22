@@ -41,39 +41,6 @@ import Carousel from '@Components/organisms/Carousel';
 import { Appbar, Title } from 'react-native-paper';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
-const data = [
-  {
-    title: getMsg(this.props.lang, 'ML0069', '책임형'),
-  },
-  {
-    title: getMsg(this.props.lang, 'ML0189', '오픈형'),
-  },
-];
-
-//Data Footer
-// const _data = [
-//   {
-//     titleList: '창고 등록',
-//     listItem: [
-//       { titleItem: '공급사 등록' },
-//       { titleItem: '수요사 등록' },
-//       { titleItem: '회원 조회' },
-//       { titleItem: '기본 조회' },
-//     ],
-//   },
-//   {
-//     titleList: '창고 찾기',
-//   },
-//   {
-//     titleList: '이용 방법',
-//   },
-//   {
-//     titleList: '고객센터',
-//   },
-//   {
-//     titleList: '패밀리사이트',
-//   },
-// ];
 const windowHeight = Dimensions.get('window').height;
 export default class Notification extends Component {
   constructor(props) {
@@ -81,6 +48,14 @@ export default class Notification extends Component {
     this.state = {
       title: getMsg(this.props.lang, 'ML0069', '책임형'),
     };
+    this.menu = [
+      {
+        title: getMsg(this.props.lang, 'ML0069', '책임형'),
+      },
+      {
+        title: getMsg(this.props.lang, 'ML0189', '오픈형'),
+      },
+    ]
   }
 
   render() {
@@ -111,7 +86,7 @@ export default class Notification extends Component {
           <AppGrid
             type="controlTitleActive"
             titleActive={title}
-            data={data}
+            data={this.menu}
             titleCenter={true}
             titleProps={e => this.setState({ title: e })}
           />

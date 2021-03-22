@@ -20,6 +20,9 @@ import { Warehouse } from '@Services/apis';
 
 import ActionCreator from '@Actions';
 import { styles as SS } from './style';
+
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class CreateInquiryWH extends Component {
   constructor(props) {
     super(props);
@@ -60,14 +63,14 @@ class CreateInquiryWH extends Component {
             onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
-            title="창고 문의 작성"
+            title={getMsg(this.props.lang, 'ML0219', '창고 문의 작성')}
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
           />
           <Appbar.Content
             color={questionContent ? '#ff6d00' : 'rgba(0, 0, 0, 0.47)'}
-            title="등록"
+            title={getMsg(this.props.lang, 'ML0429', '등록')}
             onPress={() => this.handleSubmitQna()}
             titleStyle={DefaultStyle._textHeaderRight}
           />
@@ -75,7 +78,7 @@ class CreateInquiryWH extends Component {
         <ScrollView>
           <View style={SS.bodyCard}>
             <View style={SS.titleBody}>
-              <Text style={SS.textTitleBody}>창고 문의 작성</Text>
+              <Text style={SS.textTitleBody}>{getMsg(this.props.lang, 'ML0219', '창고 문의 작성')}</Text>
             </View>
             {/* <TextField
               labelTextField="제목"
@@ -84,7 +87,7 @@ class CreateInquiryWH extends Component {
             /> */}
             <TextField
               labelTextField="내용"
-              placeholder="문의하실 내용을 입랙해 주세요."
+              placeholder={getMsg(this.props.lang, 'ML0220', '문의하실 내용을 입랙해 주세요.')}
               colorLabel="#000000"
               numberOfLines={15}
               style={DefaultStyle._textAreaStyle}

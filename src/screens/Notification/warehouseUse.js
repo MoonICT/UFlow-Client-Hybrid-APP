@@ -38,45 +38,6 @@ import Carousel from '@Components/organisms/Carousel';
 import { Appbar } from 'react-native-paper';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
-const data = [
-  {
-    title: getMsg(this.props.lang, 'ML0075', '1.창고 등록'),
-  },
-  {
-    title: getMsg(this.props.lang, 'ML0076', '2.공실 검증'),
-  },
-  {
-    title: getMsg(this.props.lang, 'ML0077', '3.견적 요청 확인'),
-  },
-  {
-    title: getMsg(this.props.lang, 'ML0078', '4.계약 요청'),
-  },
-];
-
-//Data Footer
-// const _data = [
-//   {
-//     titleList: '창고 등록',
-//     listItem: [
-//       { titleItem: '공급사 등록' },
-//       { titleItem: '수요사 등록' },
-//       { titleItem: '회원 조회' },
-//       { titleItem: '기본 조회' },
-//     ],
-//   },
-//   {
-//     titleList: '창고 찾기',
-//   },
-//   {
-//     titleList: '이용 방법',
-//   },
-//   {
-//     titleList: '고객센터',
-//   },
-//   {
-//     titleList: '패밀리사이트',
-//   },
-// ];
 export default class Notification extends Component {
   constructor(props) {
     super(props);
@@ -91,6 +52,20 @@ export default class Notification extends Component {
       heightSection5: 0,
       heightSection6: 0,
     };
+    this.menu = [
+      {
+        title: getMsg(this.props.lang, 'ML0075', '1.창고 등록'),
+      },
+      {
+        title: getMsg(this.props.lang, 'ML0076', '2.공실 검증'),
+      },
+      {
+        title: getMsg(this.props.lang, 'ML0077', '3.견적 요청 확인'),
+      },
+      {
+        title: getMsg(this.props.lang, 'ML0078', '4.계약 요청'),
+      },
+    ];
   }
 
   getDimesionsHeightSection1 = e => {
@@ -374,7 +349,7 @@ export default class Notification extends Component {
           <AppGrid
             type="controlTitleActive"
             titleActive={title}
-            data={data}
+            data={this.menu}
             titleProps={e => this.handleChangeTitle(e)}
           />
         </View>
