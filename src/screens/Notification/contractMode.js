@@ -43,10 +43,10 @@ import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 const data = [
   {
-    title: '책임형',
+    title: getMsg(this.props.lang, 'ML0069', '책임형'),
   },
   {
-    title: '오픈형',
+    title: getMsg(this.props.lang, 'ML0189', '오픈형'),
   },
 ];
 

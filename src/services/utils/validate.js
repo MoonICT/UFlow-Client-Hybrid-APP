@@ -209,6 +209,10 @@ exports.isMember = isMember;
 // 사업자번호,법인번호 체크로직
 const isBizNum = (userInput, errors, rule) => {
 
+  if(userInput.length > 10){
+    return false
+  }
+
   let reg = /-/g;
   let bizNum = userInput.replace(reg, '');
   let checkArray = new Array(1, 3, 7, 1, 3, 7, 1, 3, 5, 1);
