@@ -291,7 +291,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={bldgArea2 && numberToStd(bldgArea2)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                   <View style={DefaultStyle._element}>  
@@ -342,7 +342,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={siteArea2 && numberToStd(siteArea2)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                   <View style={DefaultStyle._element}>
@@ -366,7 +366,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={siteArea && numberToStd(siteArea)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                   
@@ -392,7 +392,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={totalArea2 && numberToStd(totalArea2)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                   <View style={DefaultStyle._element}>
@@ -416,7 +416,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={totalArea && numberToStd(totalArea)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                   
@@ -443,7 +443,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={prvtArea2 && numberToStd(prvtArea2)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                   <View style={DefaultStyle._element}>
@@ -467,7 +467,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={prvtArea && numberToStd(prvtArea)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                 </View>
@@ -493,7 +493,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={cmnArea2 && numberToStd(cmnArea2)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                   <View style={DefaultStyle._element}>
@@ -517,7 +517,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={cmnArea && numberToStd(cmnArea)}
                       keyboardType="numeric"
-                      maxLength={10}
+                      maxLength={7}
                     />
                   </View>
                 </View>
