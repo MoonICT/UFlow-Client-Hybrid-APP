@@ -58,7 +58,7 @@ class FormInfo extends Component {
             }
             dataDefault={defaultFlrDvCode !== undefined ? defaultFlrDvCode : ''}
             selectedValue={formData.flrDvCode}
-            labelSelected="층 수"
+            labelSelected={getMsg(this.props.lang, 'ML0116', '층 수')}
             valueProps={e => {
               let dataF = formData;
               dataF.flrDvCode = e;
@@ -116,11 +116,11 @@ class FormInfo extends Component {
                 maxLength={7}
               />
             </View>
-            
+
           </View>
 
           <View style={DefaultStyle._listElement}>
-            
+
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField={getMsg(this.props.lang, 'ML0506', '주차면적')}
@@ -174,7 +174,7 @@ class FormInfo extends Component {
           </View>
 
           <View style={DefaultStyle._listElement}>
-            
+
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField={getMsg(this.props.lang, 'ML0161', '사무실면적')}
@@ -227,7 +227,7 @@ class FormInfo extends Component {
           </View>
 
           <View style={DefaultStyle._listElement}>
-            
+
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField={getMsg(this.props.lang, 'ML0163', '전용면적')}
@@ -280,7 +280,7 @@ class FormInfo extends Component {
           </View>
 
           <View style={DefaultStyle._listElement}>
-            
+
             <View style={[DefaultStyle._element, { marginRight: 12 }]}>
               <TextField
                 labelTextField={getMsg(this.props.lang, 'ML0488', '공용면적')}

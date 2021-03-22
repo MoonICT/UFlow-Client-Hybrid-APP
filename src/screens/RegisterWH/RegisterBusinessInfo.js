@@ -44,23 +44,6 @@ import { isBizNum } from '@Services/utils/validate';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 // import validation from '@Utils/validate';
-const tabSelect = [
-  {
-    id: 'tab1',
-    title: getMsg(this.props.lang, 'ML0190', '기본 정보'),
-  },
-  {
-    id: 'tab2',
-    title: getMsg(this.props.lang, 'ML0191', '사업자 등록정보'),
-  },
-];
-
-const dataSelect = [
-  {
-    label: getMsg(this.props.lang, 'ML0248', '냉동 1'),
-    value: -1,
-  },
-];
 
 class RegisterBusinessInfo extends Component {
   constructor(props) {
@@ -107,6 +90,16 @@ class RegisterBusinessInfo extends Component {
         checkEmailFormat: true,
       },
     };
+    this.tabSelect = [
+      {
+        id: 'tab1',
+        title: getMsg(this.props.lang, 'ML0190', '기본 정보'),
+      },
+      {
+        id: 'tab2',
+        title: getMsg(this.props.lang, 'ML0191', '사업자 등록정보'),
+      },
+    ]
     this.navigation = props.navigation;
   }
 
@@ -161,7 +154,7 @@ class RegisterBusinessInfo extends Component {
   }
 
   handleClickTab = (tabName, index) => {
-    this.setState({ tabInfo: tabSelect[index].title });
+    this.setState({ tabInfo: this.tabSelect[index].title });
   };
 
   _showDialog = () => this.setState({ visible: true });
