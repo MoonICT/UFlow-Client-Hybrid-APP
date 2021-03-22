@@ -23,6 +23,8 @@ import TextField from '@Components/organisms/TextField';
 import Select from '@Components/organisms/Select';
 import { styles as S } from './style';
 import { Emergency } from '@Services/apis';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class LogisticConsulting extends Component {
   constructor(props) {
     super(props);
@@ -142,9 +144,9 @@ class LogisticConsulting extends Component {
                   />
                   <TextField
                     borderColor={isContent ? 'red' : '#cccccc'}
-                    labelTextField="문의 내용"
+                    labelTextField={getMsg(this.props.lang, 'ML0013', '이메일')}
                     colorLabel="#888"
-                    placeholder="문의하실 내용을 입랙해 주세요."
+                    placeholder={getMsg(this.props.lang, 'ML0447', '문의하실 내용을 입력해 주세요.')}
                     numberOfLines={10}
                     multiline={true}
                     onChangeText={this.handleChangeContent}
@@ -160,12 +162,12 @@ class LogisticConsulting extends Component {
                 <Button
                   style={[DefaultStyle._buttonElement]}
                   onPress={this.onCancel}>
-                  <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>취소</Text>
+                  <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>{getMsg(this.props.lang, 'ML0101', '취소')}</Text>
                 </Button>
                 <Button
                   style={DefaultStyle._buttonElement}
                   onPress={this.onSubmit}>
-                  확인
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Button>
               </Dialog.Actions>
             </Dialog>
