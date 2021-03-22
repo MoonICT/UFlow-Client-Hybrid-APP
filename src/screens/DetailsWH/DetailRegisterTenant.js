@@ -67,7 +67,7 @@ class DetailRegisterTenant extends Component {
       imageList: [],
       businessInfo: WarehouseProprietorInfo,
       selectedInfoIndex: 0,
-      isCert: true,
+      isCert: false,
       photo: null,
       loading: false,
       businessList: [{
