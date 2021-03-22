@@ -255,10 +255,10 @@ class DetailRegisterTenant extends Component {
       return false;
     }
 
-    if (!businessInfo.regFile) {
-      alert('사업자등록증을 업로드 하세요.');
-      return false;
-    }
+    // if (!businessInfo.regFile) {
+    //   alert('사업자등록증을 업로드 하세요.');
+    //   return false;
+    // }
     // console.log('dataWE', businessInfo);
     this.setState({ loading: true });
     // 창고주 정보 등록
