@@ -163,7 +163,7 @@ class RegisterIntro extends Component {
             title={'창고 소개'}
             navigation={this.navigation}
           />
-        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 100, }]}>
+        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 50, }]}>
           <View style={{ backgroundColor: '#ffffff' }}>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
