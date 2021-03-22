@@ -212,6 +212,7 @@ class ResponseQKeep extends Component {
 
 
             }}
+            maxLength={7}
           />
         </View>
         <View style={[DefaultStyle._element]}>
@@ -234,6 +235,7 @@ class ResponseQKeep extends Component {
               });
 
             }}
+            maxLength={7}
           />
         </View>
       </View>
@@ -259,6 +261,7 @@ class ResponseQKeep extends Component {
         }
 
         }
+        maxLength={7}
       />
       {/** 관리단가 (필수) **/}
       <TextField
@@ -282,6 +285,7 @@ class ResponseQKeep extends Component {
         }
 
         }
+        maxLength={7}
       />
       {/** 추가 요청 사항 **/}
       <TextField
