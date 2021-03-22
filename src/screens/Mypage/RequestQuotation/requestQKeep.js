@@ -207,6 +207,7 @@ class ReqeustQKeep extends Component {
               });
 
             }}
+            maxLength={7}
           />
         </View>
         <View style={[DefaultStyle._element]}>
@@ -230,6 +231,7 @@ class ReqeustQKeep extends Component {
               });
 
             }}
+            maxLength={7}
           />
         </View>
       </View>
@@ -254,6 +256,7 @@ class ReqeustQKeep extends Component {
           })
         }
         }
+        maxLength={7}
       />
 
       {/** 관리 단가 **/}
@@ -276,6 +279,7 @@ class ReqeustQKeep extends Component {
           })
         }
         }
+        maxLength={7}
       />
       {/** 추가 요청 사항 **/}
       <TextField
@@ -294,6 +298,7 @@ class ReqeustQKeep extends Component {
             }
           })
         }
+        maxLength={1000}
       />
       {/*<View style={[DefaultStyle._footerCards, {marginBottom: 30}]}>*/}
       {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
