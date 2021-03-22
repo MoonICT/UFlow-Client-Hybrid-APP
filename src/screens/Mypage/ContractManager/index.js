@@ -24,63 +24,62 @@ import ActionCreator from '@Actions';
 import { StringUtils } from '@Services/utils';
 import { MY_PAGE_TAB_STATUS_KEY } from '@Constant';
 
-const dataSelect = [
-  {
-    label: '계약유형',
-    value: '',
-  },
-  {
-    label: '임대',
-    value: 'KEEP',
-  },
-  {
-    label: '수탁',
-    value: 'TRUST',
-  },
-];
-const dataSelect2 = [
-  {
-    label: '견적･계약 상태',
-    value: '',
-  },
-  {
-    label: '견적요청',
-    value: 'RQ00',
-  },
-  {
-    label: '견적응답',
-    value: 'RS00',
-  },
-  {
-    label: '계약협의',
-    value: '1100',
-  },
-  {
-    label: '계약요청대기',
-    value: '2100',
-  },
-  {
-    label: '계약중',
-    value: '4100',
-  },
-  {
-    label: '계약완료',
-    value: '5100',
-  },
-];
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class ContractManager extends Component {
   constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
-      visible: false,
-      visibleConfirm: false,
       valueTab: 'OWNER',
       contractType: '',
       contractStatus: '',
     };
     this.navigation = props.navigation;
+    this.dataSelect = [
+      {
+        label: getMsg(this.props.lang, 'ML0109', '계약유형'),
+        value: '',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0138', '임대'),
+        value: 'KEEP',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0137', '수탁'),
+        value: 'TRUST',
+      },
+    ]
+    this.dataSelect2 = [
+      {
+        label: getMsg(this.props.lang, 'ML0276', '견적･계약 상태'),
+        value: '',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0262', '견적요청'),
+        value: 'RQ00',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0263', '견적응답'),
+        value: 'RS00',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0264', '계약협의'),
+        value: '1100',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0265', '계약요청대기'),
+        value: '2100',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0266', '계약중'),
+        value: '4100',
+      },
+      {
+        label: getMsg(this.props.lang, 'ML0267', '계약완료'),
+        value: '5100',
+      }
+    ]
   }
 
   /** when exits screen */
@@ -88,13 +87,6 @@ class ContractManager extends Component {
     //console.log('//::componentWillUnmount::');
   }
 
-  showDialog = () => this.setState({ visible: true });
-
-  hideDialog = () => this.setState({ visible: false });
-
-  showConfirm = () => this.setState({ visibleConfirm: true });
-
-  hideConfirm = () => this.setState({ visibleConfirm: false });
   cover = value => {
 
     const debugStatus = ''; //(' ' + value.status);
@@ -105,12 +97,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
-              type: '창고 ID',
+              type: getMsg(this.props.lang, 'ML0272', '창고 ID'),
               value: value.warehouseRegNo,
             },
             {
-              type: '계약 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대',
+              type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
+              value: value.type2 === 'TRUST' ? getMsg(this.props.lang, 'ML0137', '수탁') : getMsg(this.props.lang, 'ML0138', '임대'),
             },
             // value.type2 === 'TRUST'
             //   ? {}
@@ -124,21 +116,21 @@ class ContractManager extends Component {
             //     ),
             //   },
             {
-              type: '창고 주소',
+              type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
               value: value.info.address,
             },
             {
-              type: '견적 요청일',
+              type: getMsg(this.props.lang, 'ML0274', '견적 요청일'),
               value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
-              type: '견적 상태',
-              value: '견적요청' + debugStatus,
+              type: getMsg(this.props.lang, 'ML0273', '견적 상태'),
+              value: getMsg(this.props.lang, 'ML0262', '견적요청') + debugStatus,
               highlight: true,
             },
           ],
           // listBtnOwner: true,
-          footerTitle: this.state.valueTab === 'OWNER' ? '견적 응답' : '견적 재요청',
+          footerTitle: this.state.valueTab === 'OWNER' ? getMsg(this.props.lang, 'ML0275', '견적 응답') : getMsg(this.props.lang, 'ML0271', '견적 재요청'),
           navigation: '',
           status: 'RQ00',
           userType: this.state.valueTab,
@@ -149,12 +141,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
-              type: '창고 ID',
+              type: getMsg(this.props.lang, 'ML0272', '창고 ID'),
               value: value.warehouseRegNo,
             },
             {
-              type: '계약 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대',
+              type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
+              value: value.type2 === 'TRUST' ? getMsg(this.props.lang, 'ML0137', '수탁') : getMsg(this.props.lang, 'ML0138', '임대'),
             },
             // value.type2 === 'TRUST'
             //   ? {}
@@ -168,16 +160,16 @@ class ContractManager extends Component {
             //     ),
             //   },
             {
-              type: '창고 주소',
+              type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
               value: value.info.address,
             },
             {
-              type: '견적 요청일',
+              type: getMsg(this.props.lang, 'ML0274', '견적 요청일'),
               value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
-              type: '견적 상태',
-              value: '견적응답' + debugStatus,
+              type: getMsg(this.props.lang, 'ML0273', '견적 상태'),
+              value: getMsg(this.props.lang, 'ML0263', '견적응답') + debugStatus,
               highlight: true,
             },
           ],
@@ -188,12 +180,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
-              type: '창고 ID',
+              type: getMsg(this.props.lang, 'ML0272', '창고 ID'),
               value: value.warehouseRegNo,
             },
             {
-              type: '계약 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대',
+              type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
+              value: value.type2 === 'TRUST' ? getMsg(this.props.lang, 'ML0137', '수탁') : getMsg(this.props.lang, 'ML0138', '임대'),
             },
             // value.type2 === 'TRUST'
             //   ? {}
@@ -207,17 +199,17 @@ class ContractManager extends Component {
             //     ),
             //   },
             {
-              type: '창고 주소',
+              type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
               value: value.info.address,
             },
             {
-              type: '견적 요청일',
+              type: getMsg(this.props.lang, 'ML0274', '견적 요청일'),
               value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
-              type: '견적 상태',
+              type: getMsg(this.props.lang, 'ML0273', '견적 상태'),
               // value: this.state.valueTab === 'OWNER' ? '계약협의' : '계약중',
-              value: '계약협의' + debugStatus,
+              value: getMsg(this.props.lang, 'ML0264', '계약협의') + debugStatus,
               highlight: true,
             },
           ],
@@ -228,12 +220,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
-              type: '창고 ID',
+              type: getMsg(this.props.lang, 'ML0272', '창고 ID'),
               value: value.warehouseRegNo,
             },
             {
-              type: '계약 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대',
+              type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
+              value: value.type2 === 'TRUST' ? getMsg(this.props.lang, 'ML0137', '수탁') : getMsg(this.props.lang, 'ML0138', '임대'),
             },
             // value.type2 === 'TRUST'
             //   ? {}
@@ -247,16 +239,16 @@ class ContractManager extends Component {
             //     ),
             //   },
             {
-              type: '창고 주소',
+              type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
               value: value.info.address,
             },
             {
-              type: '견적 요청일',
+              type: getMsg(this.props.lang, 'ML0274', '견적 요청일'),
               value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
-              type: '견적 상태',
-              value: '계약요청대기' + debugStatus,
+              type: getMsg(this.props.lang, 'ML0273', '견적 상태'),
+              value: getMsg(this.props.lang, 'ML0265', '계약요청대기') + debugStatus,
               highlight: true,
             },
           ],
@@ -267,12 +259,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
-              type: '창고 ID',
+              type: getMsg(this.props.lang, 'ML0272', '창고 ID'),
               value: value.warehouseRegNo,
             },
             {
-              type: '계약 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대',
+              type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
+              value: value.type2 === 'TRUST' ? getMsg(this.props.lang, 'ML0137', '수탁') : getMsg(this.props.lang, 'ML0138', '임대'),
             },
             // value.type2 === 'TRUST'
             //   ? {}
@@ -286,16 +278,16 @@ class ContractManager extends Component {
             //     ),
             //   },
             {
-              type: '창고 주소',
+              type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
               value: value.info.address,
             },
             {
-              type: '견적 요청일',
+              type: getMsg(this.props.lang, 'ML0274', '견적 요청일'),
               value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
-              type: '견적 상태',
-              value: '계약중' + debugStatus,
+              type: getMsg(this.props.lang, 'ML0273', '견적 상태'),
+              value: getMsg(this.props.lang, 'ML0266', '계약중') + debugStatus,
               highlight: true,
             },
           ],
@@ -305,12 +297,12 @@ class ContractManager extends Component {
         return {
           data: [
             {
-              type: '창고 ID',
+              type: getMsg(this.props.lang, 'ML0272', '창고 ID'),
               value: value.warehouseRegNo,
             },
             {
-              type: '계약 유형',
-              value: value.type2 === 'TRUST' ? '수탁' : '임대',
+              type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
+              value: value.type2 === 'TRUST' ? getMsg(this.props.lang, 'ML0137', '수탁') : getMsg(this.props.lang, 'ML0138', '임대'),
             },
             // value.type2 === 'TRUST'
             //   ? {}
@@ -324,16 +316,16 @@ class ContractManager extends Component {
             //     ),
             //   },
             {
-              type: '창고 주소',
+              type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
               value: value.info.address,
             },
             {
-              type: '견적 요청일',
+              type: getMsg(this.props.lang, 'ML0274', '견적 요청일'),
               value: value.createdDate ? StringUtils.dateStr(value.createdDate) : '',
             },
             {
-              type: '견적 상태',
-              value: '계약완료' + debugStatus,
+              type: getMsg(this.props.lang, 'ML0273', '견적 상태'),
+              value: getMsg(this.props.lang, 'ML0267', '계약완료') + debugStatus,
               highlight: false,
             },
           ],
@@ -417,10 +409,9 @@ class ContractManager extends Component {
 
     const goDetail = (item, mode) => {
 
-      console.log(mode, 'mode');
-      console.log(item, 'item');
+      // console.log(mode, 'mode');
+      // console.log(item, 'item');
       if (item) {
-        console.log('상세보기 클릭')
         this.navigation.navigate(
           item.status === 'RQ00' || item.status === 'RS00'
             ? 'Quotation' // Goto RQ00, RS00
@@ -486,7 +477,7 @@ class ContractManager extends Component {
                     }}>
 
                     <Text style={DefaultStyle._textButton}>
-                      견적 재요청
+                      {getMsg(this.props.lang, 'ML0271', '견적 재요청')}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -501,7 +492,7 @@ class ContractManager extends Component {
                         DefaultStyle._textButton,
                         DefaultStyle._textInline,
                       ]}>
-                      계약 요청
+                      {getMsg(this.props.lang, 'ML0270', '계약 요청')}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -530,7 +521,9 @@ class ContractManager extends Component {
     return (
       <View style={[DefaultStyle._body, { paddingBottom: 180 }]}>
         <View style={DefaultStyle._titleBody}>
-          <Text style={[DefaultStyle._textTitleCard]}>견적･계약 관리</Text>
+          <Text style={[DefaultStyle._textTitleCard]}>
+            {getMsg(this.props.lang, 'ML0250', '견적･계약 관리')}
+          </Text>
         </View>
 
         {/** 탭 (OWNER/TENANT) **/}
@@ -544,7 +537,7 @@ class ContractManager extends Component {
                   ? DefaultStyle._textActiveTab
                   : DefaultStyle._textTabBar
               }>
-              요청 받은 견적･계약 (창고주)
+              {getMsg(this.props.lang, 'ML0268', '요청 받은 견적･계약 (창고주)')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -556,7 +549,7 @@ class ContractManager extends Component {
                   ? DefaultStyle._textActiveTab
                   : DefaultStyle._textTabBar
               }>
-              요청한 견적･계약 (임차인)
+              {getMsg(this.props.lang, 'ML0269', '요청한 견적･계약 (임차인)')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -574,7 +567,7 @@ class ContractManager extends Component {
           ]}>
           <View style={[S.optionSelect, S.selectLong]}>
             <Select
-              data={dataSelect}
+              data={this.dataSelect}
               style={S.select}
               valueProps={e => {
                 this.setState({ contractType: e });
@@ -584,7 +577,7 @@ class ContractManager extends Component {
           </View>
           <View style={[S.optionSelect, S.selectLong]}>
             <Select
-              data={dataSelect2}
+              data={this.dataSelect2}
               style={S.select}
               valueProps={e => {
                 this.setState({ contractStatus: e });
@@ -622,37 +615,37 @@ class ContractManager extends Component {
           let dataSteps = [
             {
               statusCode: 'RS00',
-              title: '견적요청',
+              title: getMsg(this.props.lang, 'ML0262', '견적요청'),
               status: data.countRQ00 > 0 ? true : false,
               number: data.countRQ00,
             },
             {
               statusCode: 'RQ00',
-              title: '견적응답',
+              title: getMsg(this.props.lang, 'ML0263', '견적응답'),
               status: data.countRS00 > 0 ? true : false,
               number: data.countRS00,
             },
             {
               statusCode: '1100',
-              title: '계약협의',
+              title: getMsg(this.props.lang, 'ML0264', '계약협의'),
               status: data.count1100 > 0 ? true : false,
               number: data.count1100,
             },
             {
               statusCode: '2100',
-              title: '계약요청대기',
+              title: getMsg(this.props.lang, 'ML0265', '계약요청대기'),
               status: data.count2100 > 0 ? true : false,
               number: data.count2100,
             },
             {
               statusCode: '4100',
-              title: '계약중',
+              title: getMsg(this.props.lang, 'ML0266', '계약중'),
               status: data.count4100 > 0 ? true : false,
               number: data.count4100,
             },
             {
               statusCode: '5100',
-              title: '계약완료',
+              title: getMsg(this.props.lang, 'ML0267', '계약완료'),
               number: data.count5100,
               status: data.count5100 > 0 ? true : false,
             },
@@ -696,37 +689,37 @@ class ContractManager extends Component {
             let dataSteps = [
               {
                 statusCode: 'RS00',
-                title: '견적요청',
+                title: getMsg(this.props.lang, 'ML0262', '견적요청'),
                 status: data.countRQ00 > 0 ? true : false,
                 number: data.countRQ00,
               },
               {
                 statusCode: 'RQ00',
-                title: '견적응답',
+                title: getMsg(this.props.lang, 'ML0263', '견적응답'),
                 status: data.countRS00 > 0 ? true : false,
                 number: data.countRS00,
               },
               {
                 statusCode: '1100',
-                title: '계약협의',
+                title: getMsg(this.props.lang, 'ML0264', '계약협의'),
                 status: data.count1100 > 0 ? true : false,
                 number: data.count1100,
               },
               {
                 statusCode: '2100',
-                title: '계약요청대기',
+                title: getMsg(this.props.lang, 'ML0265', '계약요청대기'),
                 status: data.count2100 > 0 ? true : false,
                 number: data.count2100,
               },
               {
                 statusCode: '4100',
-                title: '계약중',
+                title: getMsg(this.props.lang, 'ML0266', '계약중'),
                 status: data.count4100 > 0 ? true : false,
                 number: data.count4100,
               },
               {
                 statusCode: '5100',
-                title: '계약완료',
+                title: getMsg(this.props.lang, 'ML0267', '계약완료'),
                 number: data.count5100,
                 status: data.count5100 > 0 ? true : false,
               },

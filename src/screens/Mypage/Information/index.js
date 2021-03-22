@@ -27,17 +27,6 @@ import { styles as S } from '../style';
 
 import { getUserInfo } from '@Services/apis/MyPage';
 
-const tabSelect = [
-  {
-    id: 'tab1',
-    title: '기본 정보'
-  },
-  {
-    id: 'tab2',
-    title: '사업자 등록 정보'
-  },
-]
-
 class Information extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +40,16 @@ class Information extends Component {
       userInfo: {},
     };
     this.navigation = props.navigation;
+    this.tabSelect = [
+      {
+        id: 'tab1',
+        title: '기본 정보'
+      },
+      {
+        id: 'tab2',
+        title: '사업자 등록 정보'
+      },
+    ]
   }
 
   /** when after render DOM */
@@ -101,10 +100,10 @@ class Information extends Component {
 
         <ScrollView>
           <View style={{ flex: 1 }}>
-            <AppGrid data={tabSelect} title={tabInfo} titleProps={this.handleClickTab} />
+            <AppGrid data={this.tabSelect} title={tabInfo} titleProps={this.handleClickTab} />
           </View>
-          {tabInfo === '기본 정보' && <MypageInfo navigation={this.navigation} />}
-          {tabInfo === '사업자 등록 정보' && <MypageBusinessInfo />}
+          {tabInfo === '기본 정보' && <MypageInfo navigation={this.navigation} tabData={this.tabSelect} />}
+          {tabInfo === '사업자 등록 정보' && <MypageBusinessInfo tabData={this.tabSelect} />}
         </ScrollView>
         <Dialog
           style={DefaultStyle.popup}

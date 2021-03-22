@@ -35,17 +35,6 @@ import ActionCreator from '@Actions';
 import validator from 'validator';
 import { isBizNum } from "@Services/utils/validate";
 
-const tabSelect = [
-  {
-    id: 'tab1',
-    title: '기본 정보'
-  },
-  {
-    id: 'tab2',
-    title: '사업자 등록 정보'
-  },
-]
-
 class MypageBusinessInfo extends Component {
   constructor (props) {
     super(props);
@@ -129,7 +118,7 @@ class MypageBusinessInfo extends Component {
   }
 
   handleClickTab = (tabName, index) => {
-    this.setState({ tabInfo: tabSelect[index].title });
+    this.setState({ tabInfo: this.props.tabData[index].title });
   }
 
   _showDialog = () => this.setState({ visible: true });

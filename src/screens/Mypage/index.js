@@ -47,63 +47,12 @@ import Progress from '@Components/organisms/Progress';
 
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
-const data = [
-  {
-    title: '내 창고1',
-  },
-  {
-    title: '견적･계약 관리',
-  },
-  {
-    title: '입･출고 관리',
-  },
-  {
-    title: '정산관리',
-  },
-  // {
-  //   title: '관심 창고',
-  // },
-];
-const dataSteps = [
-  {
-    title: '견적요청',
-    status: true,
-    number: 25,
-  },
-  {
-    title: '견적응답',
-    status: true,
-    number: 12,
-  },
-  {
-    title: '견적승인',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '계약진행중',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '계약완료',
-    status: false,
-    number: 0,
-  },
-  {
-    title: '계약승인',
-    number: 0,
-    status: false,
-  }
-];
-
 class Mypage extends Component {
   constructor (props) {
     super(props);
     this.state = {
       isSwitchOn: true,
       titleSearchWH: getMsg(this.props.lang, 'ML0119', '전체'),
-      visibleConfirm: false,
       refreshKey: '',
       // dataSearchWH:[],
       title:
@@ -119,23 +68,23 @@ class Mypage extends Component {
     this.tabList = [
       {
         id: 'Mypage_mywhrg',
-        title: '내 창고',
+        title: getMsg(this.props.lang, 'ML0230', '내 창고'),
       },
       {
         id: 'Mypage_cntr',
-        title: '견적･계약 관리',
+        title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
       },
       {
         id: 'Mypage_io',
-        title: '입･출고 관리',
+        title: getMsg(this.props.lang, 'ML0251', '입･출고 관리'),
       },
       {
         id: 'Mypage_settlement',
-        title: '정산관리',
+        title: getMsg(this.props.lang, 'ML0252', '정산관리'),
       },
       // {
       //   id: 'Mypage_fav',
-      //   title: '관심 창고',
+      //   title: getMsg(this.props.lang, 'ML0253', '관심 창고'),
       // },
     ]
 
@@ -162,13 +111,6 @@ class Mypage extends Component {
     });
   };
 
-  showDialog = () => this.setState({ visible: true });
-
-  hideDialog = () => this.setState({ visible: false });
-
-  showConfirm = () => this.setState({ visibleConfirm: true });
-
-  hideConfirm = () => this.setState({ visibleConfirm: false });
   coverColor = value => {
     switch (value) {
       case '0001':
@@ -185,13 +127,13 @@ class Mypage extends Component {
   };
   coverType = value => {
     if (value.keep !== null && value.trust !== null) {
-      return '임대창고, 수탁창고';
+      return `${getMsg(this.props.lang, 'ML0047', '임대창고')}, ${getMsg(this.props.lang, 'ML0047', '수탁창고')}`;
     }
     if (value.keep !== null && value.trust === null) {
-      return '임대창고';
+      return getMsg(this.props.lang, 'ML0047', '임대창고');
     }
     if (value.keep === null && value.trust !== null) {
-      return ' 수탁창고';
+      return getMsg(this.props.lang, 'ML0047', '수탁창고');
     }
     if (value.keep === null && value.trust === null) {
       return '';
@@ -238,47 +180,47 @@ class Mypage extends Component {
         let typeCover = this.coverType(item);
 
         let dataKeep =
-          '임대단가 ' +
+          `${getMsg(this.props.lang, 'ML0144', '임대단가')} ` +
           (splyAmount ? splyAmount : '') +
           '~/' +
           (unit ? unit : '') +
-          ',\n관리단가 ' +
+          `,\n${getMsg(this.props.lang, 'ML0145', '관리단가')} ` +
           (mgmtChrg ? mgmtChrg : '') +
           '~/' +
           (unit ? unit : '');
 
         let dataTrust =
-          '입고단가 ' +
+          `${getMsg(this.props.lang, 'ML0150', '입고단가')} ` +
           (whinChrgTrust ? whinChrgTrust : '') +
-          ',\n출고단가 ' +
+          `,\n${getMsg(this.props.lang, 'ML0151', '출고단가')} ` +
           (whoutChrgTrustTrust ? whoutChrgTrustTrust : '') +
-          ',\n보관단가 ' +
+          `,\n${getMsg(this.props.lang, 'ML0149', '보관단가')} ` +
           (splyAmountTrust ? splyAmountTrust : '');
 
         let dataTable = [
           {
-            type: '등록 상태',
+            type: getMsg(this.props.lang, 'ML0254', '등록 상태'),
             value: item.sttsDbCode && item.sttsDbCode.stdDetailCode === '0001' ?
-              '미검증 공실'
+              getMsg(this.props.lang, 'ML0255', '미검증 공실')
               : item.sttsDbCode.stdDetailCodeName,
             colorValue: this.coverColor(
               item.sttsDbCode && item.sttsDbCode.stdDetailCode,
             ),
           },
           {
-            type: '계약 유형',
+            type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
             value: typeCover,
           },
           {
-            type: '창고 주소',
+            type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
             value: item.address && item.address,
           },
           {
-            type: item.keep && '임대 요약',
+            type: item.keep && getMsg(this.props.lang, 'ML0257', '임대 요약'),
             value: item.keep && dataKeep,
           },
           {
-            type: item.trust && '수탁 요약',
+            type: item.trust && getMsg(this.props.lang, 'ML0258', '수탁 요약'),
             value: item.trust && dataTrust,
           },
         ];
@@ -355,44 +297,44 @@ class Mypage extends Component {
 
                   {/** 삭제하기 */}
                   <TouchableOpacity
-                  style={[
-                    DefaultStyle._btnOutline,
-                    DefaultStyle.mt_16,
-                    { borderColor: '#000000' },
-                  ]}
-                  onPress={() => {
-                    // 0001:공실등록, 1100:공실검증완료, 4100:계약진행중, 5100:계약체결, 9100:공실검증실패
-                    if (item.sttsDbCode.stdDetailCode === '0001' // 공실등록
-                    || item.sttsDbCode.stdDetailCode === '1100' // 검증완료
-                    || item.sttsDbCode.stdDetailCode === '9100') { // 검증실패
-                    // 삭제
-                      // setDeleteTarget(WHItem.id)
-                      // doRefresh: () => {
-                      //   this.getWHList();
-                      // }
-                      this.props.showPopup({
-                        // type: 'confirm',
-                        title:'창고삭제',
-                        image: '',
-                        content: '해당 창고를 정말 삭제하시겠습니까?',
-                        onConfirm: () => Warehouse.deleteWarehouse({ id: item.id }).then(res => {
-                          this.getWHList();
+                    style={[
+                      DefaultStyle._btnOutline,
+                      DefaultStyle.mt_16,
+                      { borderColor: '#000000' },
+                    ]}
+                    onPress={() => {
+                      // 0001:공실등록, 1100:공실검증완료, 4100:계약진행중, 5100:계약체결, 9100:공실검증실패
+                      if (item.sttsDbCode.stdDetailCode === '0001' // 공실등록
+                        || item.sttsDbCode.stdDetailCode === '1100' // 검증완료
+                        || item.sttsDbCode.stdDetailCode === '9100') { // 검증실패
+                        // 삭제
+                        // setDeleteTarget(WHItem.id)
+                        // doRefresh: () => {
+                        //   this.getWHList();
+                        // }
+                        this.props.showPopup({
+                          // type: 'confirm',
+                          title: getMsg(this.props.lang, 'ML0259', '창고삭제'),
+                          image: '',
+                          content: getMsg(this.props.lang, 'ML0260', '해당 창고를 정말 삭제하시겠습니까?'),
+                          onConfirm: () => Warehouse.deleteWarehouse({ id: item.id }).then(res => {
+                            this.getWHList();
+                          })
                         })
-                      })
 
-                    }else {
-                      this.props.showPopup({
-                        type: 'confirm',
-                        image: '',
-                        content: '창고 삭제를 할 수 없는 상태입니다.(공실등록, 공실검증완료, 공실검증실패 단계에 수정 가능',
-                      })
-                    }
-                  }}>
-                  <Text
-                    style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                    창고삭제
-                  </Text>
-                </TouchableOpacity>
+                      } else {
+                        this.props.showPopup({
+                          type: 'confirm',
+                          image: '',
+                          content: getMsg(this.props.lang, 'ML0261', '창고 삭제를 할 수 없는 상태입니다.(공실등록, 공실검증완료, 공실검증실패 단계에 수정 가능'),
+                        })
+                      }
+                    }}>
+                    <Text
+                      style={[DefaultStyle._textButton, { color: '#000000' }]}>
+                      {getMsg(this.props.lang, 'ML0259', '창고삭제')}
+                    </Text>
+                  </TouchableOpacity>
 
                 </View>
 
@@ -449,7 +391,6 @@ class Mypage extends Component {
         viewComponent = (
           <ContractManager
             doRefresh={this.doRefreshTab}
-            dataSteps={dataSteps}
             navigation={this.navigation}
           />
         );
@@ -505,72 +446,18 @@ class Mypage extends Component {
 
         <ScrollView style={{}}>
           <AppGrid
-            data={data}
+            data={this.tabList}
             title={this.state.title}
-            titleProps={e => {
+            titleProps={(title, index) => {
               this.setState({
-                title: e,
+                title: title,
+                tab: this.tabList[index].id
               });
             }}
           />
           {refreshKey ? <Text>{refreshKey}</Text> : null}
           {viewComponent}
         </ScrollView>
-
-        <Dialog
-          visible={this.state.visibleConfirm}
-          onDismiss={this.hideConfirm}>
-          <Dialog.Title style={DefaultStyle._titleDialog}>
-            Alert Title
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph>
-              창고주에게 응답 받은 견적 금액으로 계약을 진행하시겠습니까?
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              color="rgba(0, 0, 0, 0.54)"
-              style={[DefaultStyle._buttonElement]}
-              onPress={this.hideConfirm}>
-              {getMsg(this.props.lang, 'ML0101', '취소')}
-            </Button>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={this.showDialog}>
-              {getMsg(this.props.lang, 'ML0100', '확인')}
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-
-        <Dialog
-          style={DefaultStyle.popup}
-          visible={this.state.visible}
-          onDismiss={this.hideDialog}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup} />
-          </Dialog.Content>
-          <Dialog.Title
-            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            {getMsg(this.props.lang, 'ML0245', '회원정보 수정 완료')}
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={DefaultStyle.contentDialog}>
-              {getMsg(this.props.lang, 'ML0246', '회원정보가 수정되었습니다.')}
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={() => {
-                this.hideDialog();
-                this.hideConfirm();
-                this.navigation.navigate('AvaliableChate');
-              }}>
-              {getMsg(this.props.lang, 'ML0100', '확인')}
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
       </SafeAreaView>
     );
   }

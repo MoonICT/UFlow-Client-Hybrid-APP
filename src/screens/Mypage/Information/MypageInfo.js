@@ -29,17 +29,6 @@ import { Account } from '@Services/apis';
 import editInfo from '@Assets/images/editInfo.png';
 import { styles as S } from '../style';
 
-const tabSelect = [
-  {
-    id: 'tab1',
-    title: '기본 정보',
-  },
-  {
-    id: 'tab2',
-    title: '사업자 등록 정보',
-  },
-];
-
 class MypageInfo extends Component {
   constructor (props) {
     super(props);
@@ -97,7 +86,7 @@ class MypageInfo extends Component {
   }
 
   handleClickTab = (tabName, index) => {
-    this.setState({ tabInfo: tabSelect[index].title });
+    this.setState({ tabInfo: this.props.tabData[index].title });
   };
 
   showDialog = () => this.setState({ visible: true });
@@ -244,8 +233,8 @@ class MypageInfo extends Component {
               labelTextField="이메일"
               editable={false}
               selectTextOnFocus={false}
-              value={data.email || 'haharu@aartkorea.com'}
-              placeholder="haharu@aartkorea.com"
+              value={data.email || ''}
+              placeholder="이메일"
               colorLabel="#000000"
             />
             <TextField
