@@ -21,6 +21,7 @@ import Select from '@Components/organisms/Select';
 import ActionCreator from '@Actions';
 import { styles as S } from './style';
 import { Term, Terms } from '@Services/apis';
+import HTML from 'react-native-render-html';
 
 //---> Assets
 
@@ -69,8 +70,8 @@ class TermsScreen extends Component {
   }
 
   render() {
-    let { terms, dataType, code } = this.state;
-    console.log('code', code);
+    let { terms, dataType, code, dataContent, dataDefault } = this.state;
+    // console.log('selectedValue', selectedValue);
     return (
       <SafeAreaView style={S.container}>
         <Appbars>
@@ -86,49 +87,57 @@ class TermsScreen extends Component {
             <View style={S.selectTerms}>
               <Select
                 data={dataType}
+                dataDefault={dataDefault && dataDefault}
                 valueProps={e => {
                   this.setState({ code: e });
                 }}
               />
             </View>
-            <Text style={[S.titleTerm, S.fontMedium, S.fontS16]}>
-              {'제 1조 (목적)'}
-            </Text>
-
-            <Text style={[S.contentTerm, S.fontRegular, S.fontS14]}>
-              이 약관은 주식회사 워시업코리아 (이하 “회사”라 합니다)가 제공하는
-              워시업코리아 서비스(이하 “서비스”라 합니다)와 관련하여, 회사와
-              이용 고객간에 서비스의 이용조건 및 절차, 회사와 회원간의 권리,
-              의무 및 기타 필요한 사항을 규정함을 목적으로 합니다. 본 약관은
-              PC통신, 스마트폰(안드로이드폰, 아이폰 등) 앱 등을 이용하는
-              전자상거래에 대해서도 그 성질에 반하지 않는 한 준용됩니다.
-            </Text>
-
-            <Text style={[S.titleTerm, S.fontMedium, S.fontS16]}>
-              {'제 2조 (용어의 정리)'}
-            </Text>
-
-            <Text style={[S.contentTerm, S.fontRegular, S.fontS14]}>
-              1. 이 약관은 주식회사 워시업코리아 (이하 “회사”라 합니다)이
-              제공하는 워시업코리아 서비스(이하 “서비스”라 합니다)와 관련하여,
-              회사와 이용 고객간에 서비스의 이용조건 및 절차, 회사와 회원간의
-              권리, 의무 및 기타 필요한 사항을 규정함을 목적으로 합니다.{'\n'}{' '}
-              2. 본 약관은 PC통신, 스마트폰(안드로이드폰, 아이폰 등) 앱 등을
-              이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한
-              준용됩니다. {'\n'}3. 이 약관은 주식회사 워시업코리아 (이하
-              “회사”라 합니다)이 제공하는 워시업코리아 서비스(이하 “서비스”라
-              합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
-              절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
-              목적으로 합니다.{'\n'} 4. 이 약관은 주식회사 워시업코리아 (이하
-              “회사”라 합니다)이 제공하는워시업코리아 서비스(이하 “서비스”라
-              합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
-              절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
-              목적으로 합니다.{'\n'} 5. 이 약관은 주식회사 워시업코리아 (이하
-              “회사”라 합니다)이 제공하는 워시업코리아 서비스(이하 “서비스”라
-              합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
-              절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
-              목적으로 합니다.
-            </Text>
+            <View style={{ flex: 1 }}>
+              {dataContent && (
+                <HTML
+                  tagsStyles={{ p: { marginBottom: 0, marginTop: 0 } }}
+                  source={{ html: dataContent }}
+                />
+              )}
+            </View>
+            {
+              // <Text style={[S.titleTerm, S.fontMedium, S.fontS16]}>
+              //       {'제 1조 (목적)'}
+              //     </Text>
+              //     <Text style={[S.contentTerm, S.fontRegular, S.fontS14]}>
+              //       이 약관은 주식회사 워시업코리아 (이하 “회사”라 합니다)가 제공하는
+              //       워시업코리아 서비스(이하 “서비스”라 합니다)와 관련하여, 회사와
+              //       이용 고객간에 서비스의 이용조건 및 절차, 회사와 회원간의 권리,
+              //       의무 및 기타 필요한 사항을 규정함을 목적으로 합니다. 본 약관은
+              //       PC통신, 스마트폰(안드로이드폰, 아이폰 등) 앱 등을 이용하는
+              //       전자상거래에 대해서도 그 성질에 반하지 않는 한 준용됩니다.
+              //     </Text>
+              //     <Text style={[S.titleTerm, S.fontMedium, S.fontS16]}>
+              //       {'제 2조 (용어의 정리)'}
+              //     </Text>
+              //     <Text style={[S.contentTerm, S.fontRegular, S.fontS14]}>
+              //       1. 이 약관은 주식회사 워시업코리아 (이하 “회사”라 합니다)이
+              //       제공하는 워시업코리아 서비스(이하 “서비스”라 합니다)와 관련하여,
+              //       회사와 이용 고객간에 서비스의 이용조건 및 절차, 회사와 회원간의
+              //       권리, 의무 및 기타 필요한 사항을 규정함을 목적으로 합니다.{'\n'}
+              //       2. 본 약관은 PC통신, 스마트폰(안드로이드폰, 아이폰 등) 앱 등을
+              //       이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한
+              //       준용됩니다. {'\n'}3. 이 약관은 주식회사 워시업코리아 (이하
+              //       “회사”라 합니다)이 제공하는 워시업코리아 서비스(이하 “서비스”라
+              //       합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
+              //       절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
+              //       목적으로 합니다.{'\n'} 4. 이 약관은 주식회사 워시업코리아 (이하
+              //       “회사”라 합니다)이 제공하는워시업코리아 서비스(이하 “서비스”라
+              //       합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
+              //       절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
+              //       목적으로 합니다.{'\n'} 5. 이 약관은 주식회사 워시업코리아 (이하
+              //       “회사”라 합니다)이 제공하는 워시업코리아 서비스(이하 “서비스”라
+              //       합니다)와 관련하여, 회사와 이용 고객간에 서비스의 이용조건 및
+              //       절차, 회사와 회원간의 권리, 의무 및 기타 필요한 사항을 규정함을
+              //       목적으로 합니다.
+              //     </Text>
+            }
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -137,10 +146,11 @@ class TermsScreen extends Component {
 
   /** when after render DOM */
   async componentDidMount() {
-    await Term.getCodeTerm({code: '0004'})
-    // await Terms.getTerms({code: '0001'})
+    let codeParam = this.props.route.params && this.props.route.params.id;
+    await Term.getTypeTerm()
+      // await Terms.getTerms({code: '0001'})
       .then(res => {
-        console.log('res=====>', res)
+        console.log('res=====>', res);
         if (res) {
           let data = res.map(el => {
             return {
@@ -148,7 +158,22 @@ class TermsScreen extends Component {
               value: el.stdDetailCode,
             };
           });
-          this.setState({ dataType: data });
+          let dataDefault =
+            data && data.find(el => el.value === codeParam);
+          this.setState({ dataType: data, dataDefault:dataDefault });
+        }
+      })
+      .catch(err => {
+        console.log('errTerm', err);
+      });
+
+    await Term.getCodeTerm({ code: codeParam })
+      // await Terms.getTerms({code: '0001'})
+      .then(res => {
+        console.log('resCode=====>', res);
+        if (res) {
+          let data = res.contents;
+          this.setState({ dataContent: data });
         }
       })
       .catch(err => {
@@ -161,9 +186,12 @@ class TermsScreen extends Component {
   componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
     if (this.state.code !== prevState.code) {
-      Terms.getCodeTerm(this.state.code)
+      Term.getCodeTerm({ code: this.state.code })
         .then(res => {
-          console.log('res', res);
+          if (res) {
+            let data = res.contents;
+            this.setState({ dataContent: data });
+          }
         })
         .catch(err => {
           console.log('errCodeTerm', err);
