@@ -33,7 +33,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { TOKEN } from '@Constant';
 
 class Register extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -63,18 +63,18 @@ class Register extends Component {
       // 소셜 로그인
       snsCode: null,
       snsId: null,
-      snsName: null
+      snsName: null,
     };
     this.navigation = props.navigation;
   }
 
   /** listener when change props */
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount () {
+  componentWillUnmount() {
     //console.log('//::componentWillUnmount::');
   }
 
@@ -89,7 +89,7 @@ class Register extends Component {
     signUpTemp.terms = this.state.terms;
     signUpTemp.marketing = this.state.marketing;
 
-    console.log("signUpTemp",signUpTemp);
+    console.log('signUpTemp', signUpTemp);
 
     Account.signUp(signUpTemp)
       .then(res => {
@@ -113,8 +113,11 @@ class Register extends Component {
             // console.log('::: Error Message :', errData.message);
             // TODO Create dialog components
             //alert(errData?.message);
-            this.props.showPopup({ title: 'UFLOW', content: errData?.message, type: 'confirm' });
-            
+            this.props.showPopup({
+              title: 'UFLOW',
+              content: errData?.message,
+              type: 'confirm',
+            });
           } else {
             // TODO Handle the alert "Please contact your administrator.".
             const errData = err?.response?.data;
@@ -126,7 +129,7 @@ class Register extends Component {
       });
   };
 
-  onChangeEmail (e) {
+  onChangeEmail(e) {
     this.setState({ email: e });
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (reg.test(this.state.email) === true) {
@@ -136,7 +139,7 @@ class Register extends Component {
     }
   }
 
-  render () {
+  render() {
     let {
       fullName,
       email,
@@ -153,7 +156,9 @@ class Register extends Component {
       errorEmail,
     } = this.state;
 
-    let checkPw = (password && confirmPassword && confirmPassword === password) || (this.state.snsCode === 'NVER');
+    let checkPw =
+      (password && confirmPassword && confirmPassword === password) ||
+      this.state.snsCode === 'NVER';
     let checkTerms = terms.privacy && serviceTerms;
     let checkAll = checkTerms && checkMarketing;
     let checkSubmit = fullName && email && mobile && checkTerms && checkPw;
@@ -193,7 +198,7 @@ class Register extends Component {
                     styleProps={{ borderColor: '#d7d7d7' }}
                     placeholder="이름"
                     onChangeText={text => {
-                      this.setState({ fullName: text })
+                      this.setState({ fullName: text });
                     }}
                     value={fullName}
                     type="text"
@@ -219,40 +224,40 @@ class Register extends Component {
                       잘못된 형식
                     </Text>
                   ) : null}
-                  {this.state.snsCode !== 'NVER' &&
-                  <>
-                    <TextField
-                      labelTextField={'비밀번호'}
-                      colorLabel="#000000"
-                      styleProps={{ borderColor: '#d7d7d7' }}
-                      placeholder="비밀번호"
-                      onChangeText={text => {
-                        this.setState({ password: text })
-                      }}
-                      value={password}
-                      type="text"
-                      mode="outlined"
-                      maxLength={20}
-                      textContentType="password"
-                      secureTextEntry={true}
-                    />
-                    <TextField
-                      labelTextField={'비밀번호 확인'}
-                      colorLabel="#000000"
-                      styleProps={{ borderColor: '#d7d7d7' }}
-                      placeholder="비밀번호 확인"
-                      onChangeText={text => {
-                        this.setState({ confirmPassword: text })
-                      }
-                      }
-                      value={confirmPassword}
-                      type="text"
-                      mode="outlined"
-                      maxLength={20}
-                      textContentType="password"
-                      secureTextEntry={true}
-                    />
-                  </>}
+                  {this.state.snsCode !== 'NVER' && (
+                    <>
+                      <TextField
+                        labelTextField={'비밀번호'}
+                        colorLabel="#000000"
+                        styleProps={{ borderColor: '#d7d7d7' }}
+                        placeholder="비밀번호"
+                        onChangeText={text => {
+                          this.setState({ password: text });
+                        }}
+                        value={password}
+                        type="text"
+                        mode="outlined"
+                        maxLength={20}
+                        textContentType="password"
+                        secureTextEntry={true}
+                      />
+                      <TextField
+                        labelTextField={'비밀번호 확인'}
+                        colorLabel="#000000"
+                        styleProps={{ borderColor: '#d7d7d7' }}
+                        placeholder="비밀번호 확인"
+                        onChangeText={text => {
+                          this.setState({ confirmPassword: text });
+                        }}
+                        value={confirmPassword}
+                        type="text"
+                        mode="outlined"
+                        maxLength={20}
+                        textContentType="password"
+                        secureTextEntry={true}
+                      />
+                    </>
+                  )}
 
                   {confirmPassword !== password ? (
                     <Text style={DefaultStyle._textErrorInput}>
@@ -328,10 +333,9 @@ class Register extends Component {
                     />
                     <Text
                       style={[S.fontS14]}
-                      // onPress={() =>
-                      //   this.navigation.navigate('Terms', { id: 1 })
-                      // }
-                      >
+                      onPress={() =>
+                        this.navigation.navigate('Terms', { id: '0001' })
+                      }>
                       서비스 이용약관 (필수)
                     </Text>
                   </View>
@@ -355,10 +359,10 @@ class Register extends Component {
                     />
                     <Text
                       style={[S.fontS14]}
-                      // onPress={() =>
-                      //   this.navigation.navigate('Terms', { id: 2 })
-                      // }
-                      >
+                      onPress={() =>
+                        this.navigation.navigate('Terms', { id: '0002' })
+                      }
+                    >
                       개인정보 수집 및 이용 동의 (필수)
                     </Text>
                   </View>
@@ -434,10 +438,10 @@ class Register extends Component {
                     />
                     <Text
                       style={[S.fontS14]}
-                      // onPress={() =>
-                      //   this.navigation.navigate('Terms', { id: 3 })
-                      // }
-                      >
+                      onPress={() =>
+                        this.navigation.navigate('Terms', { id: '0005' })
+                      }
+                    >
                       마케팅 활용 수신동의 (선택)
                     </Text>
                   </View>
@@ -540,30 +544,30 @@ class Register extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount () {
+  async componentDidMount() {
     console.log('::componentDidMount::');
     SplashScreen.hide();
 
-    console.log('회원종보 : ', this.props.route.params)
-    let params = this.props.route.params
+    console.log('회원종보 : ', this.props.route.params);
+    let params = this.props.route.params;
     if (params) {
       this.setState({
         email: params.socialEmail ? params.socialEmail : null,
         snsCode: params.snsType ? params.snsType : null,
         snsId: params.socialId ? params.socialId : null,
-        snsName: params.socialName ? params.socialName : null
-      })
+        snsName: params.socialName ? params.socialName : null,
+      });
     }
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     count: state.home.count,
@@ -571,7 +575,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     countUp: diff => {
       dispatch(ActionCreator.countUp(diff));
