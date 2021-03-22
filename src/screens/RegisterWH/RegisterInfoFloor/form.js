@@ -87,7 +87,7 @@ class FormInfo extends Component {
                 }}
                 value={formData.flrArea === '' ? '' : flrAreaValue2}
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
             <View style={DefaultStyle._element}>
@@ -112,7 +112,7 @@ class FormInfo extends Component {
                 }}
                 value={flrAreaValue2 === '' ? '' : formData.flrArea}
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
             
@@ -141,7 +141,7 @@ class FormInfo extends Component {
                 value={formData.parkArea === '' ? '' : parkAreaValue2}
                 placeholder="0"
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
             <View style={DefaultStyle._element}>
@@ -167,7 +167,7 @@ class FormInfo extends Component {
                 value={flrAreaValue2 === '' ? '' : formData.parkArea}
                 placeholder="0"
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
           </View>
@@ -195,7 +195,7 @@ class FormInfo extends Component {
                 value={formData.opcArea === '' ? '' : opcAreaValue2}
                 placeholder="0"
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
             <View style={DefaultStyle._element}>
@@ -220,7 +220,7 @@ class FormInfo extends Component {
                 value={opcAreaValue2 === '' ? '' : formData.opcArea}
                 placeholder="0"
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
           </View>
@@ -248,7 +248,7 @@ class FormInfo extends Component {
                 value={formData.prvtArea === '' ? '' : prvtAreaValue2}
                 placeholder="0"
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
             <View style={DefaultStyle._element}>
@@ -273,7 +273,7 @@ class FormInfo extends Component {
                 value={prvtAreaValue2 === '' ? '' : formData.prvtArea}
                 placeholder="0"
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
           </View>
@@ -301,7 +301,7 @@ class FormInfo extends Component {
                 value={formData.cmnArea === '' ? '' : cmnAreaValue2}
                 placeholder="0"
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
             <View style={DefaultStyle._element}>
@@ -326,7 +326,7 @@ class FormInfo extends Component {
                 value={cmnAreaValue2 === '' ? '' : formData.cmnArea}
                 placeholder="0"
                 keyboardType="numeric"
-                maxLength={10}
+                maxLength={7}
               />
             </View>
           </View>
@@ -345,7 +345,7 @@ class FormInfo extends Component {
               dataF.flrHi = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-            maxLength={10}
+            maxLength={5}
           />
           <TextField
             labelTextField="유효고"
@@ -361,7 +361,7 @@ class FormInfo extends Component {
               dataF.efctvHi = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-            maxLength={10}
+            maxLength={5}
           />
           {/* <TextField
             labelTextField="접안방식"
@@ -408,7 +408,7 @@ class FormInfo extends Component {
               dataF.dockQty = text !== '' ? stdToNumber(text) : '';
               valueForm && valueForm(dataF);
             }}
-            maxLength={10}
+            maxLength={5}
           />
         </View>
       </Card>
