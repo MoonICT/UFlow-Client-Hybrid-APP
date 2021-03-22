@@ -8,8 +8,8 @@ export const getTypeTerm = () => {
     url: '/api/v1/terms/types',
     config: {
       headers: {
-        contentType: 'application/json',
-        'Accept-Language': 'ko-KR',
+        // contentType: 'application/json',
+        // 'Accept-Language': 'ko-KR',
       },
     },
   });
@@ -23,7 +23,7 @@ export const getCodeTerm = ({code}) => {
     config: {
       headers: {
         // contentType: 'application/json',
-        'Accept-Language': 'ko-KR',
+        // 'Accept-Language': 'ko-KR',
       },
     },
   });
