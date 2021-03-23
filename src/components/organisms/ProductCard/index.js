@@ -21,6 +21,8 @@ import { StringUtils } from '@Services/utils';
 import { money } from '@Services/utils/StringUtils';
 import bageCard from '@Assets/images/bageCard.png';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class ProductCard extends Component {
   constructor (props) {
     super(props);
@@ -62,15 +64,15 @@ class ProductCard extends Component {
   render () {
     let { data, isRecommend } = this.props;
     let { isLogin } = this.state;
-    if (data === undefined) {
+    if (!data) {
       data = {
         img: cardBG,
-        type: '임대창고',
-        title: '과천동 상온 50평',
-        price: '12,345평',
-        address: '경기도 화천시 부평읍',
-        totalPrice: '60,000원/평',
-        badgeType: true,
+        type: '-',
+        title: '-',
+        price: '-',
+        address: '-',
+        totalPrice: '-',
+        badgeType: false,
       };
     }
 
@@ -131,7 +133,7 @@ class ProductCard extends Component {
                     ]}>
                     <Text style={[styles.badgeLabel]}>
                       {/** 창고 멤버십 타입 */}
-                      {data.typeCode.stdDetailCodeName} 창고
+                      {data.typeCode.stdDetailCodeName} {getMsg(this.props.lang, 'ML0610', '창고')}
                     </Text>
                   </View>
                 )}

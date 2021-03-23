@@ -47,7 +47,7 @@ class TenantRs00Keep extends Component {
       estmtKeepGroups && estmtKeepGroups.length > 0 &&
       // estmtTrustGroups[this.props.groupOrders ? this.props.groupOrders.length - 1 : 0].map((item, index) => {
       estmtKeepGroups[this.state.groupOrderIndex].map((item, index) => {
-          console.log(item, '>>>>item');
+          // console.log(item, '>>>>item');
 
           total = item.splyAmount + item.mgmtChrg;
           let dataRequest = [
@@ -110,7 +110,7 @@ class TenantRs00Keep extends Component {
       );
     if (groupOrders) {
       const dataSelect = groupOrders ? groupOrders.map((item, index) => {
-        console.log(item, 'item');
+        // console.log(item, 'item');
         return {
           label: StringUtils.dateStr(item) + `(${(index + 1)}${getMsg(this.props.lang, 'ML0586', '차')})`,
           value: index
@@ -167,8 +167,6 @@ class TenantRs00Keep extends Component {
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                 onPress={
                   () => {
-                    console.log('계약요청 버튼 클릭');
-
                     if (onClickContract)
                       onClickContract(true);
                     else

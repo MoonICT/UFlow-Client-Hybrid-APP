@@ -13,6 +13,8 @@ import moment from 'moment';
 // Local Imports
 import DefaultStyle from '@Styles/default';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 export default class CertMobile extends Component {
   constructor(props) {
     super(props);
@@ -59,17 +61,17 @@ export default class CertMobile extends Component {
 
     this.setState({ errorMsg: '' });
     if (!mobile) {
-      this.setState({ errorMsg: '휴대폰번호를 입력하세요.' });
+      this.setState({ errorMsg: getMsg(this.props.lang, 'ML0212', '휴대폰번호를 입력하세요.') });
       return false;
     }
     if (!/^\d{2,3}\d{3,4}\d{4}$/.test(mobile)) {
-      this.setState({ errorMsg: '전화번호 형식이 아닙니다.' });
+      this.setState({ errorMsg: getMsg(this.props.lang, 'ML0213', '전화번호 형식이 아닙니다.') });
       return false;
     }
     WarehouseMobileAuth.certMobile({ mobile: mobile })
       .then(res => {
         // TODO Change to dialog ui.
-        alert('인증번호가 발송되었습니다.');
+        alert(getMsg(this.props.lang, 'ML0611', '인증번호가 발송되었습니다.'));
 
         this.setState({
           isSendCode: true,
@@ -95,13 +97,13 @@ export default class CertMobile extends Component {
     const { certCode } = this.state;
 
     if (this.state.isTimeOver) {
-      alert('인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.');
+      alert(getMsg(this.props.lang, 'ML0612', '인증번호 유효시간이 만료되었습니다.\n다시 시도하세요.'));
       return true;
     }
 
     this.setState({ errorMsg: '' });
     if (!certCode) {
-      this.setState({ errorMsg: '인증번호를 입력하세요.' });
+      this.setState({ errorMsg: getMsg(this.props.lang, 'ML0613', '인증번호를 입력하세요.') });
       return false;
     }
     WarehouseMobileAuth.certMobileConfirm({
@@ -112,6 +114,7 @@ export default class CertMobile extends Component {
         if (res.data.code === 'RESULT_SUCCESS') {
           // TODO Change to dialog ui.
           alert('인증이 완료되었습니다.');
+          alert(getMsg(this.props.lang, 'ML0028', '인증이 완료되었습니다.'));
           clearInterval(this.interval);
           this.setState({
             isCompleteCert: true,
@@ -125,9 +128,8 @@ export default class CertMobile extends Component {
       .catch(err => {
         if (err.response.status >= 400 && err.response.status < 500) {
           // TODO Change to dialog ui.
-          alert(
-            '만료되었거나 유효하지 않은 인증번호입니다.\n다시 확인해주세요.',
-          );
+          alert('만료되었거나 유효하지 않은 인증번호입니다.\n다시 확인해주세요.',);
+          alert(getMsg(this.props.lang, 'ML0614', '만료되었거나 유효하지 않은 인증번호입니다.\n다시 확인해주세요.'),);
         } else {
           alert('서버에러:' + err.respose.message);
         }
@@ -148,7 +150,7 @@ export default class CertMobile extends Component {
           ]}>
           <TextField
             colorLabel="#000000"
-            placeholder="인증번호를 입력하세요."
+            placeholder={getMsg(this.props.lang, 'ML0613', '인증번호를 입력하세요.')}
             styleProps={[isSendCode && !isTimeOver ? DefaultStyle.w_100 : '']}
             valueProps={e => {
               this.setState({
@@ -168,7 +170,7 @@ export default class CertMobile extends Component {
             ]}
             onPress={() => this.confirmCert()}>
             <Text style={[DefaultStyle._textButton, DefaultStyle._colorMuted]}>
-              {'인증번호확인'}
+              {getMsg(this.props.lang, 'ML0615', '인증번호확인')}
               {isSendCode ? (
                 <Text style={[DefaultStyle._textErrorInput]}>
                   ({moment(timer).format('mm:ss')})
@@ -191,7 +193,7 @@ export default class CertMobile extends Component {
           ]}
           onPress={() => this.sendCert()}>
           <Text style={[DefaultStyle._textButton, DefaultStyle._colorMuted]}>
-            {isTimeOver || isSendCode ? '재발송' : '인증번호발송'}
+            {isTimeOver || isSendCode ? getMsg(this.props.lang, 'ML0654', '재발송') : getMsg(this.props.lang, 'ML0655', '인증번호발송')}
           </Text>
         </TouchableOpacity>
       </View>

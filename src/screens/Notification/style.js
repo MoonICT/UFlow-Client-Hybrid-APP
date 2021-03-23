@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     fontWeight: '500',
-    lineHeight: 20,
+    // lineHeight: 20,
     color: '#000000',
     lineHeight: 24,
     marginTop: 10,
@@ -116,7 +116,6 @@ export const styles = StyleSheet.create({
   image: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
     resizeMode: 'cover',
     marginTop: 30,
     justifyContent: 'center',

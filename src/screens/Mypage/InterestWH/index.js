@@ -102,11 +102,11 @@ class InterestWarehouse extends Component {
   }
 
   getDataFavorite = () => {
-    console.log('getDataFavoritedddddddđ :>> ');
+    // console.log('getDataFavoritedddddddđ :>> ');
     this.props.setProgress({ is: true, });
 
     Fav.page().then(res => {
-      console.log('resFavvvvvvvvvvvvv :>> ', res);
+      // console.log('resFavvvvvvvvvvvvv :>> ', res);
       let resultData = res.data && res.data._embedded && res.data._embedded.mbspUserFavResBodies ? res.data._embedded.mbspUserFavResBodies : [];
       let dataConvert = [];
 
@@ -136,7 +136,7 @@ class InterestWarehouse extends Component {
         })
       });
 
-      console.log('dataConvert', dataConvert);
+      // console.log('dataConvert', dataConvert);
 
       this.setState({
         listItem: dataConvert

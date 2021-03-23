@@ -45,7 +45,7 @@ class TenantRq00Keep extends Component {
       estmtKeepGroups && estmtKeepGroups.length > 0 &&
       // estmtTrustGroups[this.props.groupOrders ? this.props.groupOrders.length - 1 : 0].map((item, index) => {
       estmtKeepGroups[this.state.groupOrderIndex].map((item, index) => {
-        console.log(item, '>>>>item');
+        // console.log(item, '>>>>item');
 
         total = item.splyAmount + item.mgmtChrg;
           let dataRequest = [

@@ -52,10 +52,10 @@ class WithdrawalInformation extends Component {
       password: this.state.passWord,
       leaveReason: params.leaveReason ? params.leaveReason : '-',
     };
-    console.log('탈퇴 : ', defaultParams)
+    // console.log('탈퇴 : ', defaultParams)
     MyPage.cancelMembership(defaultParams)
       .then(res => {
-        console.log('::::: cancelMembership :::::', res);
+        // console.log('::::: cancelMembership :::::', res);
         if (res.status === 200) {
           // this.showDialog();
           this.props.showPopup({

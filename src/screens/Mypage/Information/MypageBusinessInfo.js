@@ -387,7 +387,7 @@ class MypageBusinessInfo extends Component {
       <ScrollView>
         <View style={[DefaultStyle._cards]}>
           <View style={[DefaultStyle._titleCard, { marginBottom: -4 }]}>
-            <Text style={DefaultStyle._textTitleBody}>사업자 등록 정보</Text>
+            <Text style={DefaultStyle._textTitleBody}>{getMsg(this.props.lang, 'ML0191', '사업자 등록정보')}</Text>
           </View>
           {this.state.listBusinessInfo.length > 0 ?
             <View style>

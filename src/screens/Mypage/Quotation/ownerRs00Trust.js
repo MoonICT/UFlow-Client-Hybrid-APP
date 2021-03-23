@@ -125,7 +125,7 @@ class OwnerRs00Trust extends Component {
     if (groupOrders) {
       const dataSelect = groupOrders ? groupOrders.map((item, index) => {
         return {
-          label: StringUtils.dateStr(item) + `(${(index + 1)}차)`,
+          label: StringUtils.dateStr(item) + `(${(index + 1)}${getMsg(this.props.lang, 'ML0586', '차')})`,
           value: index
         };
       }) : [];

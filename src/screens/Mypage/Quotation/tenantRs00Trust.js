@@ -37,8 +37,8 @@ class TenantRs00Trust extends Component {
     const onClickContract = this.props.onClickContract;
 
     // console.log(gIndex, 'gIndex');
-    console.log(groupOrders, 'groupOrders');
-    console.log(data, 'data');
+    // console.log(groupOrders, 'groupOrders');
+    // console.log(data, 'data');
 
     let viewRequestTrust =
       calUnitDvCodes && calUnitDvCodes.length > 0 &&
@@ -174,8 +174,6 @@ class TenantRs00Trust extends Component {
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                 onPress={
                   () => {
-                    console.log('계약요청 버튼 클릭');
-
                     if (onClickContract)
                       onClickContract(true);
                     else

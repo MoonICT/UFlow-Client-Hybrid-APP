@@ -21,6 +21,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { LANG_STATUS_KEY } from '@Constant';
 // import { styles as S } from './style';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class WebviewMap extends Component {
   constructor (props) {
     super(props);
@@ -115,7 +117,7 @@ class WebviewMap extends Component {
           </>
           :
           <Text style={{ color: '#888' }}>
-            등록된 좌표가 없습니다.
+            {getMsg(this.props.lang, 'ML0609', '등록된 좌표가 없습니다.')}
           </Text>
         }
       </View>

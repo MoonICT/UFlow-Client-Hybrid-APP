@@ -105,8 +105,8 @@ export default class SettlementManagement extends Component {
     };
 
     SettlementManagementService.getAll(params).then((res) => {
-      console.debug(params, '정산데이터 Params');
-      console.debug(res, '정산데이터');
+      // console.debug(params, '정산데이터 Params');
+      // console.debug(res, '정산데이터');
       if (res.data.msg !== 'success') {
         return
       }
