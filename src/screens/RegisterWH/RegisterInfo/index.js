@@ -263,6 +263,9 @@ class RegisterInfo extends Component {
     // console.log('keeps ====:>> ', keeps);
     // TODO 확인버튼은 수탁과 보관의 모든것의 필수값이 입력된 경우만 true
     let isSubmitUpdate = false;
+
+    // 숫자입력은 0보다 커야함.
+    let isZero = false;
     // console.log('keeps', keeps);
     // console.log('numberSlide', numberSlide);
     // let filterArea = keeps && keeps.filter(item => item.cmnArea === '');
@@ -296,7 +299,19 @@ class RegisterInfo extends Component {
       trusts.filter(
         item => item.whoutChrg === '' || item.whoutChrg === undefined,
       );
-    console.log('filtersplyAmountTrust====>', filtersplyAmountTrust);
+
+    let keepsNumberData = 
+      keeps && 
+      keeps.filter(
+        item => item.splyAmount === 0 || item.mgmtChrg === 0,
+      )
+    let trustsNumberData = 
+    trusts && 
+    trusts.filter(
+        item => item.usblValue === 0 || item.splyAmount === 0 || item.whinChrg === 0 || item.whoutChrg === 0,
+      )
+    console.log('keeps====>', keeps);
+    console.log('keepsNumberData ====> ', keepsNumberData);
     // let filterpsnChrgTrust =
     //   trusts && trusts.filter(item => item.psnChrg === '');
     // let filtermnfctChrgTrust =
@@ -322,7 +337,21 @@ class RegisterInfo extends Component {
       isSubmitUpdate = true;
     }
 
-    console.log('isSubmitUpdate', isSubmitUpdate);
+
+    if (
+      // filterArea.length === 0 &&
+      // filterusblValue.length === 0 &&
+      (keeps.length > 0 &&
+          keepsNumberData.length > 0 ) ||
+      (trusts.length > 0 &&
+          trustsNumberData.length > 0 )
+    ) {
+      isZero = true;
+    }
+
+
+    
+    //console.log('isSubmitUpdate', isSubmitUpdate);
     return (
       <SafeAreaView style={DefaultStyle._container}>
         <Appbars>
@@ -482,7 +511,14 @@ class RegisterInfo extends Component {
                 // (valueTab === 'trusts' && (trusts && trusts.length > 0))) &&
                 <TouchableOpacity
                   // disabled={isSubmitUpdate === true ? false : true}
-                  onPress={() =>
+                  onPress={() => {
+
+                    
+                    if(isZero){
+                      this.props.showPopup({ title: 'UFLOW', content: '수치 또는 단가는 0이상 입력해야합니다.', type: 'confirm' });
+                      return false;
+                    }
+
                     isSubmitUpdate === true
                       ? (this.navigation.navigate('RegisterWH', {
                           completeInfo: true,
@@ -507,7 +543,9 @@ class RegisterInfo extends Component {
                           content: '필수정보를 입력해야 합니다.',
                           image: illust10,
                         })
-                  }
+
+                     
+                  }}
                   style={[DefaultStyle.btnSubmit, DefaultStyle.activeBtnSubmit]}
                   // disabled={imageStore.length > 2 ? false : true}
                 >

@@ -47,7 +47,10 @@ class Information extends Component {
       checkMail: false,
       firstQuery: '',
       visible: false,
-      tabInfo: '기본 정보',
+      tabInfo: {
+        id: 'tab1',
+        title: '기본 정보'
+      },
       userInfo: {},
     };
     this.navigation = props.navigation;
@@ -90,7 +93,7 @@ class Information extends Component {
   render() {
 
     const {tabInfo } = this.state;
-
+    
     return (
       <ScrollView style={S.container}>
 
@@ -101,10 +104,10 @@ class Information extends Component {
 
         <ScrollView>
           <View style={{ flex: 1 }}>
-            <AppGrid data={tabSelect} title={tabInfo} titleProps={this.handleClickTab} />
+            <AppGrid data={tabSelect} title={tabInfo.title} titleProps={this.handleClickTab} />
           </View>
-          {tabInfo === '기본 정보' && <MypageInfo navigation={this.navigation} />}
-          {tabInfo === '사업자 등록 정보' && <MypageBusinessInfo />}
+          {tabInfo.id === 'tab1' && <MypageInfo navigation={this.navigation} />}
+          {tabInfo.id === 'tab2' && <MypageBusinessInfo />}
         </ScrollView>
         <Dialog
           style={DefaultStyle.popup}

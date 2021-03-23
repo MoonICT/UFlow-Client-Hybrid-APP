@@ -157,10 +157,17 @@ class Mypage extends Component {
   /**
    * 탭 리로드를 위한 함수.
    * */
-  doRefreshTab = title => {
+  doRefreshTab_old = title => {
     this.setState({ title: '' });
     setTimeout(() => {
       this.setState({ title: title ? title : '내 창고' });
+    });
+  };
+
+  doRefreshTab = tab => {
+    this.setState({ tab: '' });
+    setTimeout(() => {
+      this.setState({ tab: (tab ? tab : 'Mypage_mywhrg') });
     });
   };
 

@@ -515,7 +515,7 @@ class More extends Component {
 
 
               <View style={S.footerMore}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={DefaultStyle.btnItem}
                   onPress={() => this.navigation.navigate('Language')}>
                   <View style={[DefaultStyle.leftItem, S.item]}>
@@ -530,7 +530,7 @@ class More extends Component {
                       color="rgba(0, 0, 0, 0.54)"
                     />
                   </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity
                   onPress={() => {

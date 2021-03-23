@@ -224,11 +224,13 @@ class ResponseQTrust extends Component {
         }
         // textError={ checkRntlValue === true ? null : '요청수량이 허용범위를 초과했습니다.'}
         isRequired={true}
+        value={rntlValue}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              rntlValue: Number(e.replace(/[^0-9]/g), '')
+              rntlValue: value
             }
           });
         }}
@@ -246,11 +248,13 @@ class ResponseQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={splyAmount}
         onChangeText={e =>{
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              splyAmount: Number(e.replace(/[^0-9]/g), '')
+              splyAmount: value
             }
           })
         }
@@ -269,11 +273,13 @@ class ResponseQTrust extends Component {
         placeholder="0"
         // textError={ checkWhinChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
         isRequired={true}
+        value={whinChrg}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              whinChrg: Number(e.replace(/[^0-9]/g), '')
+              whinChrg: value
             }
           })
         }
@@ -292,11 +298,13 @@ class ResponseQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={whoutChrg}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              whoutChrg: Number(e.replace(/[^0-9]/g), '')
+              whoutChrg: value
             }
           })
         }
@@ -482,6 +490,7 @@ class ResponseQTrust extends Component {
                 // this.props.navigation.goBack();
                 this.props.navigation.push('Mypage', {
                   title: '견적･계약 관리',
+                  tab: 'Mypage_cntr',
                   prevView: 'PrevView',
                 })
               }

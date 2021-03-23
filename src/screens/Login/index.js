@@ -308,7 +308,7 @@ class Login extends Component {
               {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
 
-            <View style={{ marginTop: 40 }}>
+            {/* <View style={{ marginTop: 40 }}>
               <TouchableOpacity style={[DefaultStyle.containerBTN, S.snsBtn,]}
                                 onPress={() => this.handleSNSLogin('kakao')}>
                 <Image source={kakao} style={[S.snsImg]} />
@@ -338,7 +338,7 @@ class Login extends Component {
                   {getMsg(this.props.lang, 'ML008', '애플로 로그인')}
                 </Text>
               </TouchableOpacity>}
-            </View>
+            </View> */}
 
             <View style={[S.plusFormLogin, S.forgot]}>
               <Text style={[S.ask, S.fontS14]}>
