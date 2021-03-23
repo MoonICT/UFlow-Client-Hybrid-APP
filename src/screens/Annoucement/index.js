@@ -19,6 +19,7 @@ import {StringUtils} from '@Services/utils';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Annoucement } from '@Services/apis';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class AnnoucementScreen extends Component {
   constructor(props) {
@@ -58,7 +59,7 @@ class AnnoucementScreen extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-            title={'공지사항'}
+            title={getMsg(this.props.lang, 'ML0054', '공지사항')}
             navigation={this.navigation}
           />
         <ScrollView>
