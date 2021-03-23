@@ -11,6 +11,7 @@ import { Text } from 'react-native-paper';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 class TableInfo extends Component {
   constructor(props) {
     super(props);

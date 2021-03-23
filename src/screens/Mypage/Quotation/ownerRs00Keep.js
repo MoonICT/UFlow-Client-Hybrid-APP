@@ -7,6 +7,7 @@ import TableInfo from '@Components/atoms/TableInfo';
 import {Text} from "react-native-paper";
 import {styles as SS} from "./style";
 import {styles as S} from "../style";
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 
 
@@ -49,35 +50,35 @@ class OwnerRs00Keep extends Component {
 
           let dataRequest = [
             {
-              type: '요청 일자',
+              type: getMsg(this.props.lang, 'ML0575', '요청 일자'),
               value: StringUtils.dateStr(item.occrYmd),
             },
             {
-              type: '요청 임대기간',
+              type: getMsg(this.props.lang, 'ML0576', '요청 임대기간'),
               value: StringUtils.dateStr(item.from) + ' - ' + StringUtils.dateStr(item.to),
             },
             {
-              type: '요청 가용면적',
+              type: getMsg(this.props.lang, 'ML0577', '요청 가용면적'),
               value: item.rntlValue ? StringUtils.displayAreaUnit(item.rntlValue) : '-',
             },
             {
-              type: '정산단위',
+              type: getMsg(this.props.lang, 'ML0139', '정산단위'),
               value: item.calUnitDvCode ? StringUtils.toStdName(calUnitDvCodes, item.calUnitDvCode) : '-'
             },
             {
-              type: '산정기준',
+              type: getMsg(this.props.lang, 'ML0140', '산정기준'),
               value: item.calStdDvCode ? StringUtils.toStdName(calStdDvCodes, item.calStdDvCode) : '-'
             },
             {
-              type: '요청 임대단가',
+              type: getMsg(this.props.lang, 'ML0578', '요청 임대단가'),
               value: item.splyAmount ? StringUtils.money(item.splyAmount) : '-'
             },
             {
-              type: '요청 관리단가',
+              type: getMsg(this.props.lang, 'ML0579', '요청 관리단가'),
               value: item.mgmtChrg ? StringUtils.money(item.mgmtChrg) : '-',
             },
             {
-              type: '추가 요청사항',
+              type: getMsg(this.props.lang, 'ML0580', '추가 요청사항'),
               value: item.remark,
             },
           ];
@@ -87,7 +88,7 @@ class OwnerRs00Keep extends Component {
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
                   <Text style={DefaultStyle._headerCardTitle}>
-                    {item.estmtDvCd === 'RQ00' ? '견적 요청 정보' : '견적 응답 정보'}
+                    {item.estmtDvCd === 'RQ00' ? getMsg(this.props.lang, 'ML0080', '견적 요청 정보') : getMsg(this.props.lang, 'ML0581', '견적 응답 정보')}
                   </Text>
                 </View>
                 <View style={DefaultStyle._infoTable}>
@@ -103,7 +104,7 @@ class OwnerRs00Keep extends Component {
     if (groupOrders) {
       const dataSelect = groupOrders ? groupOrders.map((item, index) => {
         return {
-          label: StringUtils.dateStr(item) + `(${(index + 1)}차)`,
+          label: StringUtils.dateStr(item) + `(${(index + 1)}${getMsg(this.props.lang, 'ML0586', '차')})`,
           value: index
         };
       }) : [];
@@ -115,7 +116,7 @@ class OwnerRs00Keep extends Component {
 
             <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
               <Text style={DefaultStyle._textTitleCard}>
-                견적 요청 정보
+                {getMsg(this.props.lang, 'ML0080', '견적 요청 정보')}
               </Text>
               <View style={DefaultStyle._optionList}>
                 <Select data={dataSelect}

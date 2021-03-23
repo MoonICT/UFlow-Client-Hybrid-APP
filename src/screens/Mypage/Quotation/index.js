@@ -35,6 +35,7 @@ import imgType0003 from '@Assets/images/type-0003.png';
 import imgType0004 from '@Assets/images/type-0004.png';
 import imgType9100 from '@Assets/images/type-9100.png';
 import { styles as S } from "../style";
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class Quotation extends Component {
 
@@ -104,7 +105,7 @@ class Quotation extends Component {
         this.props.setProgress({ is: false });
       });
     } else {
-      alert('확인 가능한 견적서가 없습니다.');
+      alert(getMsg(this.props.lang, 'ML0566', '확인 가능한 견적서가 없습니다.'));
     }
   };
 
@@ -137,7 +138,7 @@ class Quotation extends Component {
         /*위치*/
         address: dataApi.warehouse.address,
         /*계약유형*/
-        type: '임대',
+        type: getMsg(this.props.lang, 'ML0138', '임대'),
         /*창고유형*/
         keepType: dataApi.whrgMgmtKeep.typeCode.stdDetailCodeName,
         /*전용면적*/
@@ -158,7 +159,7 @@ class Quotation extends Component {
         /*위치*/
         address: dataApi.warehouse.address,
         /*계약유형*/
-        type: '수탁',
+        type: getMsg(this.props.lang, 'ML0137', '수탁'),
         /*창고유형*/
         keepType: dataApi.whrgMgmtTrust.typeCode.stdDetailCodeName,
         /*정산단위*/
@@ -202,7 +203,7 @@ class Quotation extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-            title={'견적･계약 관리'}
+            title={getMsg(this.props.lang, 'ML0250', '견적･계약 관리')}
             navigation={this.navigation}
           />
         <ScrollView style={[DefaultStyle.backgroundGray]}>
@@ -212,7 +213,7 @@ class Quotation extends Component {
 
               {/** HEADER **/}
               <View style={[DefaultStyle._titleCard, DefaultStyle._titleStatus]}>
-                <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
+                <Text style={DefaultStyle._textTitleCard}>{getMsg(this.props.lang, 'ML0567', '견적･계약 상세')}</Text>
 
                 <Text
                   style={[
@@ -431,7 +432,7 @@ class Quotation extends Component {
                     DefaultStyle.textActiveSubmit,
                     { paddingLeft: 10 },
                   ]}>
-                  견적서 확인
+                  {getMsg(this.props.lang, 'ML0568', '견적서 확인')}
                 </Text>
               </TouchableOpacity>
             </View>}
@@ -543,16 +544,16 @@ class Quotation extends Component {
             this.setState({ visibleContractTrust: false });
           }}>
           <Dialog.Title style={DefaultStyle._titleDialog}>
-            수탁 계약협의 요청
+            {getMsg(this.props.lang, 'ML0569', '수탁 계약협의 요청')}
           </Dialog.Title>
           <Dialog.Content>
-            <Text>견적 금액을 확정하고 계약을 요청하시겠습니까?</Text>
+            <Text>{getMsg(this.props.lang, 'ML0570', '견적 금액을 확정하고 계약을 요청하시겠습니까?')}</Text>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
               onPress={() => this.setState({ visibleContractTrust: false })}>
-              아니오
+              {getMsg(this.props.lang, 'ML0571', '아니오')}
             </Button>
             <Button
               style={DefaultStyle._buttonElement}
@@ -567,16 +568,16 @@ class Quotation extends Component {
                     this.setState({
                       completeContract: true
                     });
-                    alert('계약 요청이 완료되었습니다.');
+                    alert(getMsg(this.props.lang, 'ML0572', '계약 요청이 완료되었습니다.'));
                     // TODO 마이페이지 부모 refresh!!
                     this.navigation.goBack();
                   } else {
-                    alert('계약 요청이 실패하였습니다.\n다시 시도해보세요.');
+                    alert(getMsg(this.props.lang, 'ML0573', '계약 요청이 실패하였습니다.\n다시 시도해보세요.'));
                     this.navigation.goBack();
                   }
                 });
               }}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -589,16 +590,16 @@ class Quotation extends Component {
             this.setState({ visibleContractKeep: false });
           }}>
           <Dialog.Title style={DefaultStyle._titleDialog}>
-            임대 계약협의 요청
+            {getMsg(this.props.lang, 'ML0574', '임대 계약협의 요청')}
           </Dialog.Title>
           <Dialog.Content>
-            <Text>견적 금액을 확정하고 계약을 요청하시겠습니까?</Text>
+            <Text>{getMsg(this.props.lang, 'ML0570', '견적 금액을 확정하고 계약을 요청하시겠습니까?')}</Text>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
               onPress={() => this.setState({ visibleContractKeep: false })}>
-              아니오
+              {getMsg(this.props.lang, 'ML0571', '아니오')}
             </Button>
             <Button
               style={DefaultStyle._buttonElement}
@@ -613,24 +614,24 @@ class Quotation extends Component {
                     this.setState({
                       completeContract: true
                     });
-                    alert('계약 요청이 완료되었습니다.');
+                    alert(getMsg(this.props.lang, 'ML0572', '계약 요청이 완료되었습니다.'));
                     // TODO 마이페이지 부모 refresh!!
                     // this.navigation.goBack();
                     this.props.navigation.push('Mypage', {
-                      title: '견적･계약 관리',
+                      title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
                       prevView: 'PrevView',
                     })
                   } else {
-                    alert('계약 요청이 실패하였습니다.\n다시 시도해보세요.');
+                    alert(getMsg(this.props.lang, 'ML0573', '계약 요청이 실패하였습니다.\n다시 시도해보세요.'));
                     // this.navigation.goBack();
                     this.props.navigation.push('Mypage', {
-                      title: '견적･계약 관리',
+                      title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
                       prevView: 'PrevView',
                     })
                   }
                 });
               }}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>

@@ -21,6 +21,7 @@ import { styles as S } from '../style';
 import { AuthContext } from '@Store/context';
 import illust6 from '@Assets/images/illust6.png';
 import { MyPage } from '@Services/apis';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 class WithdrawalInformation extends Component {
   static contextType = AuthContext;
 
@@ -59,9 +60,9 @@ class WithdrawalInformation extends Component {
           // this.showDialog();
           this.props.showPopup({
             type: 'confirm',
-            title: '회원탈퇴 완료',
+            title: getMsg(this.props.lang, 'ML0537', '회원탈퇴 완료'),
             content:
-              '회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.',
+              getMsg(this.props.lang, 'ML0538', '회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.'),
             image: illust6,
             navigation: () => {
               this.context.signOut();
@@ -74,8 +75,8 @@ class WithdrawalInformation extends Component {
         console.log('err', err);
         this.props.showPopup({
           type: 'confirm',
-          title: '에러가 났습니다',
-          content: '회원탈퇴가 완료되지 않았습니다',
+          title: getMsg(this.props.lang, 'ML0539', '에러가 났습니다'),
+          content: getMsg(this.props.lang, 'ML0540', '회원탈퇴가 완료되지 않았습니다'),
           image: illust6,
         });
       });
@@ -100,16 +101,16 @@ class WithdrawalInformation extends Component {
     }
     return (
       <SafeAreaView style={S.container}>
-        <HistoryBackActionBar title={'회원탈퇴'} navigation={this.navigation} />
+        <HistoryBackActionBar title={getMsg(this.props.lang, 'ML0541', '회원탈퇴')} navigation={this.navigation} />
 
         <ScrollView>
           <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
             <View style={[DefaultStyle._titleCard, { marginBottom: 24 }]}>
-              <Text style={DefaultStyle._textTitleCard}>비밀번호 확인</Text>
+              <Text style={DefaultStyle._textTitleCard}>{getMsg(this.props.lang, 'ML0015', '비밀번호 확인')}</Text>
             </View>
             <View style>
               <TextField
-                labelTextField="비밀번호"
+                labelTextField={getMsg(this.props.lang, 'ML0014', '비밀번호')}
                 colorLabel="#000000"
                 textContentType="password"
                 secureTextEntry={true}
@@ -130,7 +131,7 @@ class WithdrawalInformation extends Component {
                   DefaultStyle.textSubmit,
                   isSubmit === true ? DefaultStyle.textActiveSubmit : '',
                 ]}>
-                확인
+                {getMsg(this.props.lang, 'ML0100', '확인')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -145,18 +146,18 @@ class WithdrawalInformation extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            회원탈퇴 완료
+            {getMsg(this.props.lang, 'ML0537', '회원탈퇴 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.
+              {getMsg(this.props.lang, 'ML0538', '회원탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
               onPress={this.hideDialog}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>

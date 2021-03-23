@@ -3,6 +3,7 @@ import DefaultStyle from '@Styles/default';
 import {TouchableOpacity, View} from "react-native";
 import {Text} from "react-native-paper";
 import {styles as S} from "../style";
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 
 class SampleTenantRq00Trust extends Component {
@@ -25,7 +26,7 @@ class SampleTenantRq00Trust extends Component {
       <View style={DefaultStyle._card}>
         <View style={DefaultStyle._headerCard}>
           <Text style={DefaultStyle._headerCardTitle}>
-            견적 응답 정보
+            {getMsg(this.props.lang, 'ML0581', '견적 응답 정보')}
           </Text>
         </View>
         <Text style={S.noticeWaitting}>
@@ -49,11 +50,11 @@ class SampleTenantRq00Trust extends Component {
               // disabled={this.state.checked ? false : true}
             >
               <Text style={DefaultStyle._textButton}>
-                견적 응답하기
+                {getMsg(this.props.lang, 'ML0582', '견적 응답하기')}
               </Text>
             </TouchableOpacity>
           ) : (
-            '창고주가 보내주신 견적 요청서를 확인하고 있습니다. 견적 응답이 올 때까지 잠시만 기다려 주세요.'
+            getMsg(this.props.lang, 'ML0588', '창고주가 보내주신 견적 요청서를 확인하고 있습니다. 견적 응답이 올 때까지 잠시만 기다려 주세요.')
           )}
         </Text>
       </View>
@@ -78,7 +79,7 @@ class SampleTenantRq00Trust extends Component {
           ]}
           // disabled={this.state.checked ? false : true}
         >
-          <Text style={[DefaultStyle._textButton]}>견적 재요청</Text>
+          <Text style={[DefaultStyle._textButton]}>{getMsg(this.props.lang, 'ML0271', '견적 재요청')}</Text>
         </TouchableOpacity>
       ) : null}
     </View>;
