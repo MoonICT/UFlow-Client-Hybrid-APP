@@ -10,6 +10,9 @@ import Moment from 'moment';
 import {Warehouse} from '@Services/apis';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import moment from "moment";
+
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class ResponseQTrust extends Component {
 
   constructor(props) {
@@ -149,7 +152,7 @@ class ResponseQTrust extends Component {
                 DefaultStyle._labelTextField,
                 {color: '#000000'},
               ]}>
-              수탁기간 시작일
+              {getMsg(this.props.lang, 'ML0632', '수탁기간 시작일')}
               <Text style={[
                 {color: 'red'}
               ]}> *</Text>
@@ -187,7 +190,7 @@ class ResponseQTrust extends Component {
                 DefaultStyle._labelTextField,
                 {color: '#000000'},
               ]}>
-              수탁기간 종료일
+              {getMsg(this.props.lang, 'ML0631', '수탁기간 종료일')}
               <Text style={[
                 {color: 'red'}
               ]}> *</Text>
@@ -216,7 +219,7 @@ class ResponseQTrust extends Component {
       {/** 수탁 요청 수량 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="수탁 요청 수량"
+        labelTextField={getMsg(this.props.lang, 'ML0630', '수탁 요청 수량')}
         keyboardType="numeric"
         placeholder={"0"}
         defaultValue={
@@ -238,8 +241,8 @@ class ResponseQTrust extends Component {
       {/** 보관 단가 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="보관단가"
-        textRight="원"
+        labelTextField={getMsg(this.props.lang, 'ML0149', '보관단가')}
+        textRight={getMsg(this.props.lang, 'ML0126', '원')}
         // textError={ checkSplyAmount === true ? null : '단가가 허용범위를 초과했습니다.'}
         keyboardType="numeric"
         defaultValue={
@@ -262,8 +265,8 @@ class ResponseQTrust extends Component {
       {/** 입고 단가 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="입고단가"
-        textRight="원"
+        labelTextField={getMsg(this.props.lang, 'ML0150', '입고단가')}
+        textRight={getMsg(this.props.lang, 'ML0126', '원')}
         keyboardType="numeric"
         defaultValue={
           whinChrg ? String(whinChrg) : '0'
@@ -286,8 +289,8 @@ class ResponseQTrust extends Component {
       {/** 출고 단가 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="출고단가"
-        textRight="원"
+        labelTextField={getMsg(this.props.lang, 'ML0151', '출고단가')}
+        textRight={getMsg(this.props.lang, 'ML0126', '원')}
         // textError={ checkWhoutChrg === true ? null : '단가가 허용범위를 초과했습니다.'}
         keyboardType="numeric"
         defaultValue={
@@ -394,8 +397,8 @@ class ResponseQTrust extends Component {
       {/** 추가 요청 사항 **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="추가 요청 사항"
-        placeholder="내용입력"
+        labelTextField={getMsg(this.props.lang, 'ML0626', '추가 요청 사항')}
+        placeholder={getMsg(this.props.lang, 'ML0625', '내용을 입력하세요.')}
         numberOfLines={5}
         textAlignVertical="top"
         multiline={true}
@@ -414,7 +417,7 @@ class ResponseQTrust extends Component {
       <TouchableOpacity
         onPress={() => {
           if (!isSubmitTrust) {
-            alert('필수값을 모두 입력하세요.')
+            alert(getMsg(this.props.lang, 'ML0624', '필수값을 모두 입력하세요.'))
             return;
           }
 
@@ -427,19 +430,19 @@ class ResponseQTrust extends Component {
             // alert(`수탁요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.splyAmount <= 0) {
-            alert(`보관단가는 0이상으로 요청가능합니다.`);
+            alert(getMsg(this.props.lang, 'ML0623', '보관단가는 0이상으로 요청가능합니다.'));
             return;
           } else if (formData.splyAmount > this.props.splyAmount) {
             // alert(`보관단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.whinChrg <= 0) {
-            alert(`입고단가는 0이상으로 요청가능합니다.`);
+            alert(getMsg(this.props.lang, 'ML0622', '입고단가는 0이상으로 요청가능합니다.'));
             return;
           } else if (formData.whinChrg > this.props.whinChrg) {
             // alert(`입고단가는 ${this.props.whinChrg} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.whoutChrg <= 0) {
-            alert(`출고단가는 0이상으로 요청가능합니다.`);
+            alert(getMsg(this.props.lang, 'ML0621', '출고단가는 0이상으로 요청가능합니다.'));
             return;
           } else if (formData.whoutChrg > this.props.whoutChrg) {
             // alert(`출고단가는 ${this.props.whoutChrg} 이하로 요청가능합니다.`);
@@ -482,7 +485,7 @@ class ResponseQTrust extends Component {
                 });
 
                 // TODO change illustrator popup
-                alert('견적응답이 완료되었습니다.');
+                alert(getMsg(this.props.lang, 'ML0617', '견적응답이 완료되었습니다.'));
                 // this.props.navigation.goBack();
                 this.props.navigation.push('Mypage', {
                   title: '견적･계약 관리',
@@ -508,7 +511,7 @@ class ResponseQTrust extends Component {
             SS.textSubmit,
             isSubmitTrust ? null : SS.textDisabled,
           ]}>
-          확인
+          {getMsg(this.props.lang, 'ML0100', '확인')}
         </Text>
       </TouchableOpacity>
 

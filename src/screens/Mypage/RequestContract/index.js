@@ -27,8 +27,10 @@ import imgType9100 from '@Assets/images/type-9100.png';
 
 import { Warehouse, MyPageEstmtCntr, Contract } from '@Services/apis';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class RequestContract extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       detailContract: '', // 계약 기본 정보.
@@ -50,7 +52,7 @@ class RequestContract extends Component {
     this.navigation = props.navigation;
   }
 
-  render() {
+  render () {
     let warehSeq = this.props.route.params.warehSeq;
     let thumbnail = this.props.route.params.thumbnail;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
@@ -58,7 +60,6 @@ class RequestContract extends Component {
     let contractType = this.props.route.params.typeWH.toLowerCase(); // keep | trust
     let rentUserNo = this.props.route.params.rentUserNo;
     const status = this.props.route.params.status;
-    console.log('thumbnail=>>>', thumbnail);
     const {
       dataTrust,
       dataKeep,
@@ -73,12 +74,12 @@ class RequestContract extends Component {
             icon="arrow-left"
             color="black"
             onPress={() => {
-              this.props.route.params.onRefresh('견적･계약 관리');
+              this.props.route.params.onRefresh(getMsg(this.props.lang, 'ML0250', '견적･계약 관리'));
               this.navigation.goBack();
             }}
           />
           <Appbar.Content
-            title="견적･계약 관리"
+            title={getMsg(this.props.lang, 'ML0250', '견적･계약 관리')}
             color="black"
             fontSize="12"
             style={DefaultStyle.headerTitle}
@@ -86,22 +87,24 @@ class RequestContract extends Component {
         </Appbars>
         <View>
 
-          <ScrollView  nestedScrollEnabled = {true}>
+          <ScrollView nestedScrollEnabled={true}>
             <View style={[
-              DefaultStyle._body, 
+              DefaultStyle._body,
               { paddingBottom: 100 }
             ]}>
               {/** HEADER **/}
               <View style={[DefaultStyle._titleBody, DefaultStyle._titleStatus]}>
-                <Text style={DefaultStyle._textTitleCard}>견적･계약 상세</Text>
+                <Text style={DefaultStyle._textTitleCard}>
+                  {getMsg(this.props.lang, 'ML0567', '견적･계약 상세')}
+                </Text>
                 <Text
                   style={[
                     DefaultStyle._statusProcessing,
                     status === '5100' ? { backgroundColor: '#4caf50' } : '',
                   ]}>
                   {ContractUtils.coverStatus(status) &&
-                    ContractUtils.coverStatus(status).processingTrust &&
-                    contractType === 'trust'
+                  ContractUtils.coverStatus(status).processingTrust &&
+                  contractType === 'trust'
                     ? ContractUtils.coverStatus(status).processingTrust
                     : ContractUtils.coverStatus(status).processing}
                 </Text>
@@ -110,26 +113,26 @@ class RequestContract extends Component {
 
               {/** WAREHOUSE INFO 창고 정보 **/}
               {/*{status === '1100' && (*/}
-                {/*<View style={DefaultStyle._card}>*/}
-                  {/*<View style={DefaultStyle._headerCard}>*/}
-                    {/*{this.state.imgType && (*/}
-                      {/*<Image*/}
-                        {/*source={this.state.imgType}*/}
-                        {/*style={DefaultStyle._avatarHeader}*/}
-                      {/*/>*/}
-                    {/*)}*/}
-                  {/*</View>*/}
-                  {/*<View>*/}
-                    {/*<View style={DefaultStyle._infoTable}>*/}
-                      {/*{contractType === 'keep' && warehouseInfo.dataKeep && (*/}
-                        {/*<TableInfo data={warehouseInfo.dataKeep} />*/}
-                      {/*)}*/}
-                      {/*{contractType === 'trust' && warehouseInfo.dataTrust && (*/}
-                        {/*<TableInfo data={warehouseInfo.dataTrust} />*/}
-                      {/*)}*/}
-                    {/*</View>*/}
-                  {/*</View>*/}
-                {/*</View>*/}
+              {/*<View style={DefaultStyle._card}>*/}
+              {/*<View style={DefaultStyle._headerCard}>*/}
+              {/*{this.state.imgType && (*/}
+              {/*<Image*/}
+              {/*source={this.state.imgType}*/}
+              {/*style={DefaultStyle._avatarHeader}*/}
+              {/*/>*/}
+              {/*)}*/}
+              {/*</View>*/}
+              {/*<View>*/}
+              {/*<View style={DefaultStyle._infoTable}>*/}
+              {/*{contractType === 'keep' && warehouseInfo.dataKeep && (*/}
+              {/*<TableInfo data={warehouseInfo.dataKeep} />*/}
+              {/*)}*/}
+              {/*{contractType === 'trust' && warehouseInfo.dataTrust && (*/}
+              {/*<TableInfo data={warehouseInfo.dataTrust} />*/}
+              {/*)}*/}
+              {/*</View>*/}
+              {/*</View>*/}
+              {/*</View>*/}
               {/*)}*/}
               {/** END:ESTIMATE INFO **/}
 
@@ -138,22 +141,22 @@ class RequestContract extends Component {
                 {(status === '2100' ||
                   status === '4100' ||
                   status === '5100') && (
-                    <View style={DefaultStyle._headerCard}>
-                      {this.state.imgType && (
-                        <Image
-                          source={this.state.imgType}
-                          style={DefaultStyle._avatarHeader}
-                        />
-                      )}
-                    </View>
-                  )}
+                  <View style={DefaultStyle._headerCard}>
+                    {this.state.imgType && (
+                      <Image
+                        source={this.state.imgType}
+                        style={DefaultStyle._avatarHeader}
+                      />
+                    )}
+                  </View>
+                )}
                 <View>
                   <View style={DefaultStyle._infoTable}>
                     {contractType === 'keep' && dataKeep ? (
                       <TableInfo data={dataKeep} />
                     ) : (
-                        <TableInfo data={dataTrust} />
-                      )}
+                      <TableInfo data={dataTrust} />
+                    )}
                   </View>
                 </View>
               </View>
@@ -184,8 +187,8 @@ class RequestContract extends Component {
                   thumbnail={thumbnail}
                 />
               ) : (
-                  <></>
-                )}
+                <></>
+              )}
             </View>
           </ScrollView>
         </View>
@@ -194,7 +197,7 @@ class RequestContract extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     let warehSeq = this.props.route.params.warehSeq;
     let warehouseRegNo = this.props.route.params.warehouseRegNo;
     let type = this.props.route.params.type.toLowerCase(); // owner | tenant
@@ -315,7 +318,7 @@ class RequestContract extends Component {
               'YYYYMMDD',
             ),
           }).then(res => {
-            console.log(res, 'res111');
+            // console.log(res, 'res111');
             let resultEstmtData = {
               warehouse: resultData.warehouse,
               [contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts']: res,
@@ -341,7 +344,7 @@ class RequestContract extends Component {
             } else {
               const errData = err.response.data;
               console.log('::: Error Code :', errData.code);
-              alert('서버에러:' + errData.message + '\n관리자에 문의하세요.');
+              alert(getMsg(this.props.lang, 'ML0449', '서버에러:') + errData.message);
             }
           }
         });
@@ -354,8 +357,6 @@ class RequestContract extends Component {
       keepTrustEstimate,
       warehouseInfoData,
     } = this.state;
-
-    console.log(warehouseInfoData, 'kdjf;kdsajflks;ajflkas;');
 
     this.setState({
       warehouseInfo: {
@@ -373,10 +374,10 @@ class RequestContract extends Component {
               /*위치*/
               address: warehouseInfoData.warehouse.address,
               /*계약유형*/
-              type: '임대',
+              type: getMsg(this.props.lang, 'ML0138', '임대'),
               /*창고유형*/
               keepType:
-                warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
+              warehouseInfoData.whrgMgmtKeep.typeCode.stdDetailCodeName,
               /*전용면적*/
               prvtArea: warehouseInfoData.warehouse.prvtArea
                 ? StringUtils.displayAreaUnit(
@@ -415,18 +416,18 @@ class RequestContract extends Component {
               /*위치*/
               address: warehouseInfoData.warehouse.address,
               /*계약유형*/
-              type: '수탁',
+              type: getMsg(this.props.lang, 'ML0137', '수탁'),
               /*창고유형*/
               keepType:
-                warehouseInfoData.whrgMgmtTrust.typeCode.stdDetailCodeName,
+              warehouseInfoData.whrgMgmtTrust.typeCode.stdDetailCodeName,
               /*정산단위*/
               calUnitDvCode:
-                warehouseInfoData.whrgMgmtTrust.calUnitDvCode
-                  .stdDetailCodeName,
+              warehouseInfoData.whrgMgmtTrust.calUnitDvCode
+                .stdDetailCodeName,
               /*산정기준*/
               calStdDvCode:
-                warehouseInfoData.whrgMgmtTrust.calStdDvCode
-                  .stdDetailCodeName,
+              warehouseInfoData.whrgMgmtTrust.calStdDvCode
+                .stdDetailCodeName,
               /*수탁 가능기간*/
               usblYmd:
                 StringUtils.dateStr(
@@ -439,7 +440,7 @@ class RequestContract extends Component {
               /*수탁 가용수량*/
               usblValue: warehouseInfoData.whrgMgmtTrust.usblValue
                 ? StringUtils.numberComma(
-                  warehouseInfoData.whrgMgmtTrust.usblValue,
+                warehouseInfoData.whrgMgmtTrust.usblValue,
                 ) +
                 ' ' +
                 warehouseInfoData.whrgMgmtTrust.calUnitDvCode
@@ -486,8 +487,8 @@ class RequestContract extends Component {
             2,
             {
               /**한국어 기본**/
-              prvtAreaLabel: '가용수치', //'공용면적',
-              usblYmdLabel: '임대 계약기간',
+              prvtAreaLabel: getMsg(this.props.lang, 'ML0143', '가용수치'), //'공용면적',
+              usblYmdLabel: getMsg(this.props.lang, 'ML0386', '임대 계약기간'),
             },
             {
               /*창고명*/
@@ -499,7 +500,7 @@ class RequestContract extends Component {
               /*위치*/
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
-              type: '임대',
+              type: getMsg(this.props.lang, 'ML0138', '임대'),
               /*창고유형*/
               keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
               /*공용면적*/
@@ -529,7 +530,7 @@ class RequestContract extends Component {
             2,
             {
               /**한국어 기본**/
-              usblYmdLabel: '수탁 계약일자',
+              usblYmdLabel: getMsg(this.props.lang, 'ML0387', '수탁 계약일자'),
             },
             {
               /*창고명*/
@@ -541,7 +542,7 @@ class RequestContract extends Component {
               /*위치*/
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
-              type: '수탁',
+              type: getMsg(this.props.lang, 'ML0137', '수탁'),
               /*창고유형*/
               keepType: keepTrustContract.typeCode.stdDetailCodeName,
               /*수탁 가용일자*/
@@ -584,10 +585,10 @@ class RequestContract extends Component {
             2,
             {
               /**한국어 기본**/
-              prvtAreaLabel: '가용면적', //'공용면적',
-              usblYmdLabel: '임대 계약기간',
-              splyAmountLabel: '임대비',
-              mgmtChrgLabel: '관리비',
+              prvtAreaLabel: getMsg(this.props.lang, 'ML0388', '가용면적'), //'공용면적',
+              usblYmdLabel: getMsg(this.props.lang, 'ML0386', '임대 계약기간'),
+              splyAmountLabel: getMsg(this.props.lang, 'ML0122', '임대비'),
+              mgmtChrgLabel: getMsg(this.props.lang, 'ML0123', '관리비'),
             },
             {
               /*창고명*/
@@ -599,7 +600,7 @@ class RequestContract extends Component {
               /*위치*/
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
-              type: '임대',
+              type: getMsg(this.props.lang, 'ML0138', '임대'),
               /*창고유형*/
               keepType: keepTrustEstimate.typeCode.stdDetailCodeName,
               /*공용면적*/
@@ -628,14 +629,14 @@ class RequestContract extends Component {
             2,
             {
               /**한국어 기본**/
-              usblYmdLabel: '수탁 계약기간',
-              splyAmountLabel: '보관비',
-              mnfctChrgLabel: '가공비',
-              psnChrgLabel: '인건비',
-              whinChrgLabel: '입고비',
-              whoutChrgLabel: '출고비',
-              dlvyChrgLabel: '택배비',
-              shipChrgLabel: '운송비',
+              usblYmdLabel: getMsg(this.props.lang, 'ML0389', '수탁 계약기간'),
+              splyAmountLabel: getMsg(this.props.lang, 'ML0390', '보관비'),
+              mnfctChrgLabel: getMsg(this.props.lang, 'ML0391', '가공비'),
+              psnChrgLabel: getMsg(this.props.lang, 'ML0392', '인건비'),
+              whinChrgLabel: getMsg(this.props.lang, 'ML0124', '입고비'),
+              whoutChrgLabel: getMsg(this.props.lang, 'ML0125', '출고비'),
+              dlvyChrgLabel: getMsg(this.props.lang, 'ML0393', '택배비'),
+              shipChrgLabel: getMsg(this.props.lang, 'ML0394', '운송비'),
             },
             {
               /*창고명*/
@@ -647,7 +648,7 @@ class RequestContract extends Component {
               /*위치*/
               address: detailEstimate ? detailEstimate.warehouse.address : '-',
               /*계약유형*/
-              type: '수탁',
+              type: getMsg(this.props.lang, 'ML0137', '수탁'),
               /*창고유형*/
               keepType: keepTrustContract.typeCode.stdDetailCodeName,
               /*수탁 가용일자*/
@@ -715,13 +716,13 @@ class RequestContract extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -730,7 +731,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {};
 }
 

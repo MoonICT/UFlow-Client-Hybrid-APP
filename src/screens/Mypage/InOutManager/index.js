@@ -31,10 +31,11 @@ import { InOutManagerService, WarehouseOut } from '@Services/apis';
 import { MY_PAGE_TAB_STATUS_KEY } from '@Constant';
 // import DatePicker from '@react-native-community/datetimepicker';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
-var searchTimerQuery;
-var searchTimerQuery2;
-var searchTimerQuery3;
+let searchTimerQuery;
+let searchTimerQuery2;
+let searchTimerQuery3;
 export default class InOutManager extends Component {
   constructor (props) {
     super(props);
@@ -64,31 +65,31 @@ export default class InOutManager extends Component {
       rangeDay: [
         {
           value: '',
-          label: '전체',
+          label: getMsg(this.props.lang, 'ML0280', '전체'),
         },
         {
           value: '7',
-          label: '7일',
+          label: getMsg(this.props.lang, 'ML0281', '7일'),
         },
         {
           value: '15',
-          label: '15일',
+          label: getMsg(this.props.lang, 'ML0282', '15일'),
         },
         {
           value: '30',
-          label: '1개월',
+          label: getMsg(this.props.lang, 'ML0283', '1개월'),
         },
         {
           value: '90',
-          label: '3개월',
+          label: getMsg(this.props.lang, 'ML0284', '3개월'),
         },
         {
           value: '180',
-          label: '6개월',
+          label: getMsg(this.props.lang, 'ML0285', '6개월'),
         },
         {
           value: '365',
-          label: '1년',
+          label: getMsg(this.props.lang, 'ML0286', '1년'),
         },
       ],
     };
@@ -134,24 +135,24 @@ export default class InOutManager extends Component {
             !item.expiredContract &&
             !item.notFoundContract
           ) {
-            status = '계약체결';
+            status = getMsg(this.props.lang, 'ML0371', '계약체결');
             highlight = true;
           } else if (
             item.sttsDbCode === '5200' &&
             !item.expiredContract &&
             !item.notFoundContract
           ) {
-            status = '계약만료';
+            status = getMsg(this.props.lang, 'ML0372', '계약만료');
           } else if (
             item.sttsDbCode === '5300' &&
             !item.expiredContract &&
             !item.notFoundContract
           ) {
-            status = '계약해지';
+            status = getMsg(this.props.lang, 'ML0373', '계약해지');
           } else if (item.expiredContract) {
-            status = '계약만료';
+            status = getMsg(this.props.lang, 'ML0372', '계약만료');
           } else if (item.notFoundContract) {
-            status = '계약정보 없음';
+            status = getMsg(this.props.lang, 'ML0374', '계약정보 없음');
           }
           console.log('item', item);
           return {
@@ -162,22 +163,22 @@ export default class InOutManager extends Component {
             name: item.name,
             labelList: [
               {
-                type: '창고 주소',
+                type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
                 value: item.address || '',
               },
               {
-                type: '수탁 기간',
+                type: getMsg(this.props.lang, 'ML0065', '수탁 기간'),
                 value: `${item.cntrYmdFrom ? dateStr(item.cntrYmdFrom) : ''
-                  } ~ ${item.cntrYmdTo ? dateStr(item.cntrYmdTo) : ''}`,
+                } ~ ${item.cntrYmdTo ? dateStr(item.cntrYmdTo) : ''}`,
               },
               {
-                type: '진행 상태',
+                type: getMsg(this.props.lang, 'ML0375', '진행 상태'),
                 value: status,
                 highlight: highlight,
               },
               {
-                type: '입출고료 합계',
-                value: item.totalWhrg ? money(item.totalWhrg) : '0 원',
+                type: getMsg(this.props.lang, 'ML0376', '입출고료 합계'),
+                value: item.totalWhrg ? money(item.totalWhrg) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`,
               },
             ],
           };
@@ -399,12 +400,12 @@ export default class InOutManager extends Component {
     } = this.state;
 
     if (!timeCreateImport) {
-      alert('입고 예정일을 입력하세요.');
+      alert(getMsg(this.props.lang, 'ML0377', '입고 예정일을 입력하세요.'));
       return;
     }
 
     if (!valueCreateImport) {
-      alert('입고 예정 수량을 입력하세요.');
+      alert(getMsg(this.props.lang, 'ML0378', '입고 예정 수량을 입력하세요.'));
       return;
     }
 
@@ -415,7 +416,7 @@ export default class InOutManager extends Component {
     })
       .then((res) => {
         this.setState({
-          confirmTitle: '입고 요청 완료'
+          confirmTitle: getMsg(this.props.lang, 'ML0331', '입고 요청 완료')
         });
         this.showConfirm();
         this.hideDialogImport();
@@ -433,17 +434,17 @@ export default class InOutManager extends Component {
       typeCreate,
     } = this.state;
 
-    console.log(rentWarehNoCurrent, 'rentWarehNoCurrent');
-    console.log(timeCreateExpert, 'timeCreateExpert');
-    console.log(valueCreateExpert, 'valueCreateExpert');
+    // console.log(rentWarehNoCurrent, 'rentWarehNoCurrent');
+    // console.log(timeCreateExpert, 'timeCreateExpert');
+    // console.log(valueCreateExpert, 'valueCreateExpert');
 
     if (!timeCreateExpert) {
-      alert('출고 예정일을 입력하세요.');
+      alert(getMsg(this.props.lang, 'ML0379', '출고 예정일을 입력하세요.'));
       return;
     }
 
     if (!valueCreateExpert) {
-      alert('출고 예정 수량을 입력하세요.');
+      alert(getMsg(this.props.lang, 'ML0380', '출고 예정 수량을 입력하세요.'));
       return;
     }
 
@@ -454,7 +455,7 @@ export default class InOutManager extends Component {
     })
       .then((res) => {
         this.setState({
-          confirmTitle: '출고 요청 완료'
+          confirmTitle: getMsg(this.props.lang, 'ML0341', '출고 요청 완료')
         });
         this.showConfirm();
         this.hideDialogExpert();
@@ -502,7 +503,7 @@ export default class InOutManager extends Component {
                     ? DefaultStyle._textActiveTab
                     : DefaultStyle._textTabBar
                 }>
-                요청 받은 견적･계약 (창고주)
+                {getMsg(this.props.lang, 'ML0268', '요청 받은 견적･계약 (창고주)')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -514,7 +515,7 @@ export default class InOutManager extends Component {
                     ? DefaultStyle._textActiveTab
                     : DefaultStyle._textTabBar
                 }>
-                요청한 견적･계약 (임차인)
+                {getMsg(this.props.lang, 'ML0269', '요청한 견적･계약 (임차인)')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -526,11 +527,11 @@ export default class InOutManager extends Component {
                 S.textTitleTenant,
                 { paddingBottom: 0 },
               ]}>
-              입･출고 관리
+              {getMsg(this.props.lang, 'ML0251', '입･출고 관리')}
             </Text>
           </View>
           <Text style={[SS.infoContent, { marginBottom: 14 }]}>
-            수탁 계약이 완료된 창고의 입고, 출고 내역을 확인해 주세요.
+            {getMsg(this.props.lang, 'ML0381', '수탁 계약이 완료된 창고의 입고, 출고 내역을 확인해 주세요.')}
           </Text>
 
           <View style={S.filter}>
@@ -557,7 +558,7 @@ export default class InOutManager extends Component {
                         DefaultStyle._labelTextField,
                         { color: '#000000', fontSize: 12 },
                       ]}>
-                      시작일
+                      {getMsg(this.props.lang, 'ML0532', '시작일')}
                     </Text>
                     {
                       isOpenStart && (
@@ -594,7 +595,7 @@ export default class InOutManager extends Component {
                         DefaultStyle._labelTextField,
                         { color: '#000000', fontSize: 12 },
                       ]}>
-                      종료일
+                      {getMsg(this.props.lang, 'ML0533', '종료일')}
                     </Text>
                     {isOpenEnd && (
 
@@ -623,7 +624,7 @@ export default class InOutManager extends Component {
             </View>
             <TextField
               styleProps={[DefaultStyle._inputSearch, { paddingRight: 50 }]}
-              placeholder="검색어를 입력해 주세요."
+              placeholder={getMsg(this.props.lang, 'ML0382', '검색어를 입력해 주세요.')}
               ref={el => (this.inputKeyWord = el)}
               onChange={this.onChangeKeyWord}
               rightComponent={
@@ -669,11 +670,13 @@ export default class InOutManager extends Component {
           visible={this.state.visibleExpert}
           onDismiss={this.hideDialogExpert}>
           <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
-            출고요청 fff
+            {getMsg(this.props.lang, 'ML0297', '출고요청')}
           </Dialog.Title>
           <Dialog.Content>
             <View style={SS.bodyPopup}>
-              <Text style={DefaultStyle._textTitleCard}>출고 예정일</Text>
+              <Text style={DefaultStyle._textTitleCard}>
+                {getMsg(this.props.lang, 'ML0383', '출고 예정일')}
+              </Text>
 
               <View
                 style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
@@ -722,7 +725,9 @@ export default class InOutManager extends Component {
                 </View>
               </View>
 
-              <Text style={DefaultStyle._textTitleCard}>출고 예정 수량</Text>
+              <Text style={DefaultStyle._textTitleCard}>
+                {getMsg(this.props.lang, 'ML0328', '출고 예정 수량')}
+              </Text>
               <TextField
                 ref={el => (this.inputValueCreateExpert = el)}
                 textRight=""
@@ -736,14 +741,14 @@ export default class InOutManager extends Component {
             <Button
               style={DefaultStyle._buttonElement}
               onPress={this.hideDialogExpert}>
-              취소
+              {getMsg(this.props.lang, 'ML0101', '취소')}
             </Button>
             <Button
               style={DefaultStyle._buttonElement}
               onPress={() => {
                 this.createExpert();
               }}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
 
@@ -756,11 +761,13 @@ export default class InOutManager extends Component {
           visible={this.state.visibleImport}
           onDismiss={this.hideDialogImport}>
           <Dialog.Title style={[DefaultStyle._titleDialog, SS.popupHeader]}>
-            입고요청
+            {getMsg(this.props.lang, 'ML0292', '입고 요청')}
           </Dialog.Title>
           <Dialog.Content>
             <View style={SS.bodyPopup}>
-              <Text style={DefaultStyle._textTitleCard}>입고 예정일</Text>
+              <Text style={DefaultStyle._textTitleCard}>
+                {getMsg(this.props.lang, 'ML0385', '입고 예정일')}
+              </Text>
 
               <View
                 style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
@@ -802,7 +809,9 @@ export default class InOutManager extends Component {
                 </View>
               </View>
 
-              <Text style={DefaultStyle._textTitleCard}>입고 예정 수량</Text>
+              <Text style={DefaultStyle._textTitleCard}>
+                {getMsg(this.props.lang, 'ML0327', '입고 예정 수량')}
+              </Text>
               <TextField
                 ref={el => (this.inputValueCreateImport = el)}
                 textRight=""
@@ -817,14 +826,14 @@ export default class InOutManager extends Component {
             <Button
               style={DefaultStyle._buttonElement}
               onPress={this.hideDialogImport}>
-              취소
+              {getMsg(this.props.lang, 'ML0101', '취소')}
             </Button>
             <Button
               style={DefaultStyle._buttonElement}
               onPress={() => {
                 this.createImport();
               }}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
 
@@ -843,7 +852,7 @@ export default class InOutManager extends Component {
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              {this.state.confirmTitle}을 완료했습니다.
+              {this.state.confirmTitle} {getMsg(this.props.lang, 'ML0384', '을 완료했습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -855,7 +864,7 @@ export default class InOutManager extends Component {
                   this.getAllData();
                 });
               }}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>

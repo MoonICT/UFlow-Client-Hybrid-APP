@@ -26,6 +26,8 @@ import { styles as S } from '../style';
 import { Warehouse, Contract } from '@Services/apis';
 import configURL from '@Services/http/ConfigURL';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 const windowHeight = Dimensions.get('window').height;
 
 class ContractInformation extends Component {
@@ -72,7 +74,7 @@ class ContractInformation extends Component {
         contractType: contractType.toLowerCase(),
         formData: formData,
       }).then(res => {
-        console.log('res::::::', res)
+        // console.log('res::::::', res)
         this.setState({ isSigned: true })
       }).catch(error => {
         // alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
@@ -126,19 +128,19 @@ class ContractInformation extends Component {
     } = this.props;
     let dataTable = [
       {
-        type: '계약 요청일자',
+        type: getMsg(this.props.lang, 'ML0395', '계약 요청일자'),
         value: keepTrustContract.id.cntrYmdFrom,
       },
       {
-        type: '계약 승인일자',
+        type: getMsg(this.props.lang, 'ML0396', '계약 승인일자'),
         value: keepTrustContract.cntrYmdTo,
       },
     ];
     if (type === 'owner') {
       dataTable.push({
-        type: '첨부 서류',
+        type: getMsg(this.props.lang, 'ML0397', '첨부 서류'),
         isImageLink: keepTrustContract?.entrpByOwner?.file2,
-        fileName: keepTrustContract?.entrpByOwner?.file2 ? '통장 사본.jpg' : '-',
+        fileName: keepTrustContract?.entrpByOwner?.file2 ? getMsg(this.props.lang, 'ML0398', '통장 사본.jpg') : '-',
         value: keepTrustContract?.entrpByOwner?.file2 ? `${configURL.FILE_SERVER_ADDRESS}/${keepTrustContract?.entrpByOwner?.file2}` : '',
       });
     }
@@ -170,7 +172,7 @@ class ContractInformation extends Component {
                 DefaultStyle.textActiveSubmit,
                 { paddingLeft: 10 },
               ]}>
-              채팅 바로가기
+              {getMsg(this.props.lang, 'ML0399', '채팅 바로가기')}
             </Text>
           </TouchableOpacity>
         );
@@ -197,9 +199,9 @@ class ContractInformation extends Component {
             <CardMypage
               onPressHeader={() => {
               }}
-              headerTitle={'계약 정보'}
+              headerTitle={getMsg(this.props.lang, 'ML0650', '계약 정보')}
               data={dataTable}
-              borderRow={false} 정
+              borderRow={false}
               styleLeft={DefaultStyle._leftTableCard}
               styleRight={DefaultStyle._rightTableCard}
               bgrImage={false}
@@ -218,7 +220,7 @@ class ContractInformation extends Component {
                   isValidSign: false
                 })}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-                  {this.state.isSigned ? '계약서 출력' : '전자 계약 요청'}
+                  {this.state.isSigned ? getMsg(this.props.lang, 'ML0651', '계약서 출력') : getMsg(this.props.lang, 'ML0652', '전자 계약 요청')}
                 </Text>
               </TouchableOpacity>
               {!this.state.isSigned &&
@@ -226,7 +228,7 @@ class ContractInformation extends Component {
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
                 onPress={() => this.setState({ isOffLineDialog: !this.state.isOffLineDialog })}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
-                  오프라인 계약서
+                  {getMsg(this.props.lang, 'ML0653', '오프라인 계약서')}
                 </Text>
               </TouchableOpacity>}
             </View>
@@ -239,7 +241,7 @@ class ContractInformation extends Component {
             <CardMypage
               onPressHeader={() => {
               }}
-              headerTitle={'계약 정보'}
+              headerTitle={getMsg(this.props.lang, 'ML0650', '계약 정보')}
               data={dataTable}
               borderRow={false}
               styleLeft={DefaultStyle._leftTableCard}
@@ -248,7 +250,7 @@ class ContractInformation extends Component {
               rightHeader={
                 <TouchableOpacity onPress={() => this.requestOffLineContract()}
                                   style={[DefaultStyle._btnOutlineMuted,]}>
-                  <Text>계약서 확인</Text>
+                  <Text>{getMsg(this.props.lang, 'ML0403', '계약서 확인')}</Text>
                 </TouchableOpacity>
               }
             />
@@ -266,7 +268,7 @@ class ContractInformation extends Component {
                 }}>
                 <Text style={[DefaultStyle._textButton, { color: '#ffffff' }]}>
                   {/*입･출고 관리*/}
-                  목록으로
+                  {getMsg(this.props.lang, 'ML0649', '목록으로')}
                 </Text>
               </TouchableOpacity>}
             </View>
@@ -284,13 +286,13 @@ class ContractInformation extends Component {
                 visible={this.state.isOnLineDialog}
                 onDismiss={() => this.setState({ isOnLineDialog: !this.state.isOnLineDialog })}>
           <Dialog.Title style={[DefaultStyle._titleDialog]}>
-            {this.state.isSigned ? '계약서 출력' : '전자 계약 서명하기'}
+            {this.state.isSigned ? getMsg(this.props.lang, 'ML0651', '계약서 출력') : getMsg(this.props.lang, 'ML0648', '전자 계약 서명하기')}
           </Dialog.Title>
           <Dialog.Content style={{ width: '100%', }}>
 
             {this.state.isSigned ?
               <Paragraph style={DefaultStyle.contentDialog}>
-                선택하신 계약 방식으로{'\n'}계약을 진하시겠습니까?
+                {getMsg(this.props.lang, 'ML0645', '선택하신 계약 방식으로\n계약을 진하시겠습니까?')}
               </Paragraph>
               :
               <View style={{ height: 350 }}>
@@ -316,7 +318,7 @@ class ContractInformation extends Component {
                       onPress={() => {
                         this.signPadRef.resetImage();
                       }}>
-                      <Text style={DefaultStyle._textDF3}>다시 서명</Text>
+                      <Text style={DefaultStyle._textDF3}>{getMsg(this.props.lang, 'ML0647', '다시 서명')}</Text>
                     </TouchableHighlight>
                   </View>
                 </View>
@@ -327,7 +329,9 @@ class ContractInformation extends Component {
             <Button
               style={[DefaultStyle._buttonElement]}
               onPress={() => this.setState({ isOnLineDialog: false })}>
-              <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>취소</Text>
+              <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+                {getMsg(this.props.lang, 'ML0101', '취소')}
+              </Text>
             </Button>
             <Button
               style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
@@ -341,7 +345,7 @@ class ContractInformation extends Component {
                     this.setState({ isOnLineDialog: false })
                     this.signPadRef.saveImage();
                   } else {
-                    alert('서명을 완료해주세요.')
+                    alert(getMsg(this.props.lang, 'ML0644', '서명을 완료해주세요.'))
                   }
                 }
               }}>완료</Button>
@@ -353,22 +357,26 @@ class ContractInformation extends Component {
                 visible={this.state.isOffLineDialog}
                 onDismiss={() => this.setState({ isOffLineDialog: !this.state.isOffLineDialog })}>
           <Dialog.Title style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            오프라인 계약 요청
+            {getMsg(this.props.lang, 'ML0646', '오프라인 계약 요청')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              선택하신 계약 방식으로{'\n'}계약을 요청하시겠습니까?
+              {getMsg(this.props.lang, 'ML0645', '선택하신 계약 방식으로\n계약을 진하시겠습니까?')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={[DefaultStyle._buttonElement]}
               onPress={() => this.setState({ isOffLineDialog: false })}>
-              <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>취소</Text>
+              <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+                {getMsg(this.props.lang, 'ML0101', '취소')}
+              </Text>
             </Button>
             <Button
               style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
-              onPress={this.requestOffLineContract}>확인</Button>
+              onPress={this.requestOffLineContract}>
+              {getMsg(this.props.lang, 'ML0100', '확인')}
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </>

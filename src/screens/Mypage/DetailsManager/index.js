@@ -57,6 +57,7 @@ import { money, numberComma } from '@Services/utils/StringUtils';
 import ActionCreator from '@Actions';
 import { connect } from "react-redux";
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class DetailsManager extends Component {
   constructor (props) {
@@ -99,9 +100,9 @@ class DetailsManager extends Component {
       createDateStr: dateStr(new Date()),
       createValue: 0,
 
-      popUpTitle: '출고 확정',
-      popUpDateLabel: '출고 확정일',
-      popUpQtyLabel: '출고 확정 수량',
+      popUpTitle: getMsg(this.props.lang, 'ML0277', '출고 확정'),
+      popUpDateLabel: getMsg(this.props.lang, 'ML0278', '출고 확정일'),
+      popUpQtyLabel: getMsg(this.props.lang, 'ML0279', '출고 확정 수량'),
 
       typeCreate: 'import',
       filter: {
@@ -118,42 +119,42 @@ class DetailsManager extends Component {
       valueCreateImport: 0,
       rangeDay: [
         {
-          value: 'all', label: '전체'
+          value: 'all', label: getMsg(this.props.lang, 'ML0280', '전체')
         },
         {
-          value: '7', label: '7일'
+          value: '7', label: getMsg(this.props.lang, 'ML0281', '7일')
         },
         {
-          value: '15', label: '15일'
+          value: '15', label: getMsg(this.props.lang, 'ML0282', '15일')
         },
         {
-          value: '30', label: '1개월'
+          value: '30', label: getMsg(this.props.lang, 'ML0283', '1개월')
         },
         {
-          value: '90', label: '3개월'
+          value: '90', label: getMsg(this.props.lang, 'ML0284', '3개월')
         },
         {
-          value: '180', label: '6개월'
+          value: '180', label: getMsg(this.props.lang, 'ML0285', '6개월')
         },
         {
-          value: '365', label: '1년'
+          value: '365', label: getMsg(this.props.lang, 'ML0286', '1년')
         }
       ],
       limitRow: [
         {
-          label: '5개씩 보기',
+          label: getMsg(this.props.lang, 'ML0287', '5개씩 보기'),
           value: '5',
         },
         {
-          label: '10개씩 보기',
+          label: getMsg(this.props.lang, 'ML0288', '10개씩 보기'),
           value: '10',
         },
         {
-          label: '15개씩 보기',
+          label: getMsg(this.props.lang, 'ML0289', '15개씩 보기'),
           value: '15',
         },
         {
-          label: '20개씩 보기',
+          label: getMsg(this.props.lang, 'ML0290', '20개씩 보기'),
           value: '20',
         }
       ],
@@ -196,39 +197,39 @@ class DetailsManager extends Component {
 
         const dataInfo = [
           {
-            type: '창고명',
+            type: getMsg(this.props.lang, 'ML0239', '창고명'),
             value: header.warehouse,
           },
           {
-            type: type === 'OWNER' ? '임차인' : '창고주',
+            type: type === 'OWNER' ? getMsg(this.props.lang, 'ML0181', '임차인') : getMsg(this.props.lang, 'ML0180', '창고주'),
             value: type === 'OWNER' ? header.rentUser : header.owner,
           },
           {
-            type: '위치',
+            type: getMsg(this.props.lang, 'ML0175', '위치'),
             value: header.address,
           },
           {
-            type: '창고유형',
+            type: getMsg(this.props.lang, 'ML0129', '창고유형'),
             value: cntrTrustResBody.typeCode && cntrTrustResBody.typeCode.stdDetailCodeName,
           },
           {
-            type: '정산단위',
+            type: getMsg(this.props.lang, 'ML0139', '정산단위'),
             value: cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName,
           },
           {
-            type: '산정기준',
+            type: getMsg(this.props.lang, 'ML0140', '산정기준'),
             value: cntrTrustResBody && cntrTrustResBody.calStdDvCode && cntrTrustResBody.calStdDvCode.stdDetailCodeName,
           },
           {
-            type: '물동량',
+            type: getMsg(this.props.lang, 'ML0291', '물동량'),
             value: cntrTrustResBody && cntrTrustResBody.cntrValue && (StringUtils.numberComma(cntrTrustResBody.cntrValue) + " " + (cntrTrustResBody && cntrTrustResBody.calUnitDvCode && cntrTrustResBody.calUnitDvCode.stdDetailCodeName)),
           },
           {
-            type: '수탁 기간',
+            type: getMsg(this.props.lang, 'ML0065', '수탁 기간'),
             value: `${dateStr(cntrTrustResBody.id?.cntrYmdFrom ?? '')} ~ ${dateStr(cntrTrustResBody?.cntrYmdTo ?? '')}`,
           },
           {
-            type: '보관비',
+            type: getMsg(this.props.lang, 'ML0149', '보관 단가'),
             value: cntrTrustResBody && cntrTrustResBody.splyAmount && money(cntrTrustResBody.splyAmount),
           },
         ];
@@ -241,38 +242,38 @@ class DetailsManager extends Component {
           let whoutValue = ''
           switch (true) {
             case item.type === 'IMPORT' && item.status === '1100':
-              status = '입고 요청'
-              dateStr = '입고예정 일자'
+              status = getMsg(this.props.lang, 'ML0292', '입고 요청')
+              dateStr = getMsg(this.props.lang, 'ML0293', '입고예정 일자')
               dateValue = Moment(item.rtwhWhinResBody.id.whinExpct).format('YYYY.MM.DD')
               whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? numberComma(item.rtwhWhinResBody.whinExpctQty) : "-"
               break;
             case item.type === 'IMPORT' && item.status === '1200':
-              status = '입고 확정'
-              dateStr = '입고확정 일자'
+              status = getMsg(this.props.lang, 'ML0294', '입고 확정')
+              dateStr = getMsg(this.props.lang, 'ML0295', '입고확정 일자')
               dateValue = Moment(item.rtwhWhinResBody.whinDecis).format('YYYY.MM.DD')
               whinValue = item.rtwhWhinResBody.whinDecisQty !== null ? numberComma(item.rtwhWhinResBody.whinDecisQty) : "-"
               break;
             case item.type === 'IMPORT' && item.status === '9100':
-              status = '입고 요청 취소'
-              dateStr = '입고예정 일자'
+              status = getMsg(this.props.lang, 'ML0296', '입고 요청 취소')
+              dateStr = getMsg(this.props.lang, 'ML0293', '입고예정 일자')
               dateValue = ''
               whinValue = item.rtwhWhinResBody.whinExpctQty !== null ? numberComma(item.rtwhWhinResBody.whinExpctQty) : "-"
               break;
             case item.type === 'EXPORT' && item.status === '2100':
-              status = '출고 요청'
-              dateStr = '출고예정 일자'
+              status = getMsg(this.props.lang, 'ML0297', '출고 요청')
+              dateStr = getMsg(this.props.lang, 'ML0298', '출고예정 일자')
               dateValue = Moment(item.rtwhWhoutResBody.id.whoutExpct).format('YYYY.MM.DD')
               whoutValue = item.rtwhWhoutResBody.expctQty !== null ? numberComma(item.rtwhWhoutResBody.expctQty) : "-"
               break;
             case item.type === 'EXPORT' && item.status === '2200':
-              status = '출고 확정'
-              dateStr = '출고확정 일자'
+              status = getMsg(this.props.lang, 'ML0299', '출고 확정')
+              dateStr = getMsg(this.props.lang, 'ML0300', '출고확정 일자')
               dateValue = Moment(item.rtwhWhoutResBody.decis).format('YYYY.MM.DD')
               whoutValue = item.rtwhWhoutResBody.decisQty !== null ? numberComma(item.rtwhWhoutResBody.decisQty) : "-"
               break;
             case item.type === 'EXPORT' && item.status === '9500':
-              status = '출고 요청 취소'
-              dateStr = '출고예정 일자'
+              status = getMsg(this.props.lang, 'ML0301', '출고 요청 취소')
+              dateStr = getMsg(this.props.lang, 'ML0298', '출고예정 일자')
               dateValue = ''
               whoutValue = item.rtwhWhoutResBody.expctQty !== null ? numberComma(item.rtwhWhoutResBody.expctQty).toLocaleString() : "-"
               break;
@@ -281,10 +282,10 @@ class DetailsManager extends Component {
           let inoutLabel = ''
           let inoutValue = ''
           if (item.type === 'IMPORT') {
-            inoutLabel = '입고 단가';
+            inoutLabel = getMsg(this.props.lang, 'ML0302', '입고 단가');
             inoutValue = cntrTrustResBody.whinChrg ? (money(cntrTrustResBody.whinChrg)) : "-";
           } else if (item.type === 'EXPORT') {
-            inoutLabel = '출고 단가';
+            inoutLabel = getMsg(this.props.lang, 'ML0303', '출고 단가');
             inoutValue = cntrTrustResBody.whoutChrg ? (money(cntrTrustResBody.whoutChrg)) : "-";
           }
 
@@ -318,15 +319,15 @@ class DetailsManager extends Component {
             whoutValue,
             dataProgress: [
               {
-                type: '작성 일시',
+                type: getMsg(this.props.lang, 'ML0304', '작성 일시'),
                 value: Moment(item.createdDate).format('YYYY-MM-DD'),
               },
               {
-                type: '작성자',
-                value: '임차인(ID)',
+                type: getMsg(this.props.lang, 'ML0305', '작성자'),
+                value: getMsg(this.props.lang, 'ML0306', '임차인(ID)'),
               },
               {
-                type: '구분',
+                type: getMsg(this.props.lang, 'ML0059', '구분'),
                 value: status,
               },
               {
@@ -334,15 +335,15 @@ class DetailsManager extends Component {
                 value: dateValue,
               },
               {
-                type: '입고량',
+                type: getMsg(this.props.lang, 'ML0307', '입고량'),
                 value: numberComma(whinValue),
               },
               {
-                type: '출고량',
+                type: getMsg(this.props.lang, 'ML0308', '출고량'),
                 value: numberComma(whoutValue)
               },
               {
-                type: '재고',
+                type: getMsg(this.props.lang, 'ML0309', '재고'),
                 value: item.stockQty && numberComma(item.stockQty)
               },
               {
@@ -555,14 +556,14 @@ class DetailsManager extends Component {
 
     // 수량 유효성
     if (!createValue || createValue === 0) {
-      errorMessage = '수량은 0이상 입력해야합니다.'
+      errorMessage = getMsg(this.props.lang, 'ML0310', '수량은 0이상 입력해야합니다.')
       alert(errorMessage);
       return;
     }
 
     // 날짜 유효성
     if (!createDate || (!(Moment(createDate).isSame(Moment(), 'day')) && Moment(createDate).isBefore(Moment()))) {
-      errorMessage = '오늘부터 입력이 가능합니다.'
+      errorMessage = getMsg(this.props.lang, 'ML0311', '오늘부터 입력이 가능합니다.')
       alert(errorMessage);
       return;
     }
@@ -577,17 +578,17 @@ class DetailsManager extends Component {
         if (typeCreate === 'export') {
           // 출고 확정
           if (!ExpctYmd) {
-            alert('일자 정보가 없습니다.');
+            alert(getMsg(this.props.lang, 'ML0312', '일자 정보가 없습니다.'));
             return;
           }
           if (!createDateStr) {
-            alert('일자 정보가 없습니다.');
+            alert(getMsg(this.props.lang, 'ML0312', '일자 정보가 없습니다.'));
             return;
           } else if (!createValue) {
-            alert('수량 정보가 없습니다.');
+            alert(getMsg(this.props.lang, 'ML0313', '수량 정보가 없습니다.'));
             return;
           } else if (!rentWarehNo || !ExpctSeq) {
-            alert('공유창고 정보가 없습니다.');
+            alert(getMsg(this.props.lang, 'ML0314', '공유창고 정보가 없습니다.'));
             return;
           }
 
@@ -600,7 +601,7 @@ class DetailsManager extends Component {
             reason: "",
             filename: filename ? filename : "",
           }
-          console.log(data, 'data1111');
+          // console.log(data, 'data1111');
           // Progress
           this.props.setProgress({ is: true, type: 'CIRCLE' });
           InOutManagerService.postExportOwner(data)
@@ -619,7 +620,7 @@ class DetailsManager extends Component {
                 });
                 this.getAllData()
               } else {
-                ToastShow("출고 확정을 실패하였습니다. " + res);
+                ToastShow(getMsg(this.props.lang, 'ML0315', '출고 확정을 실패하였습니다. ') + res);
               }
               // Progress
               setTimeout(() => {
@@ -633,17 +634,17 @@ class DetailsManager extends Component {
         } else if (typeCreate === 'import') {
           // 입고 확정
           if (!ExpctYmd) {
-            alert('일자 정보가 없습니다.');
+            alert(getMsg(this.props.lang, 'ML0312', '일자 정보가 없습니다.'));
             return;
           }
           if (!createDateStr) {
-            alert('일자 정보가 없습니다.');
+            alert(getMsg(this.props.lang, 'ML0312', '일자 정보가 없습니다.'));
             return;
           } else if (!createValue) {
-            alert('수량 정보가 없습니다.');
+            alert(getMsg(this.props.lang, 'ML0313', '수량 정보가 없습니다.'));
             return;
           } else if (!rentWarehNo || !ExpctSeq) {
-            alert('공유창고 정보가 없습니다.');
+            alert(getMsg(this.props.lang, 'ML0314', '공유창고 정보가 없습니다.'));
             return;
           }
           let data = {
@@ -674,14 +675,14 @@ class DetailsManager extends Component {
                 });
                 this.getAllData()
               } else {
-                ToastShow("입고 확정을 실패하였습니다. " + res);
+                ToastShow(getMsg(this.props.lang, 'ML0316', '입고 확정을 실패하였습니다. ') + res);
               }
               // Progress
               setTimeout(() => {
                 this.props.setProgress({ is: false, });
               }, 300)
             }).catch(error => {
-              // TODO 입고 확정 수량이 클경우 400 message null. 확인 필요.
+            // TODO 입고 확정 수량이 클경우 400 message null. 확인 필요.
             alert(error.response.data.message);
             // Progress
             this.props.setProgress({ is: false, });
@@ -730,13 +731,13 @@ class DetailsManager extends Component {
         // 입고 요청
 
         if (!createDateStr) {
-          alert('일자 정보가 없습니다.');
+          alert(getMsg(this.props.lang, 'ML0312', '일자 정보가 없습니다.'));
           return;
         } else if (!createValue) {
-          alert('수량 정보가 없습니다.');
+          alert(getMsg(this.props.lang, 'ML0313', '수량 정보가 없습니다.'));
           return;
         } else if (!rentWarehNo) {
-          alert('공유창고 정보가 없습니다.');
+          alert(getMsg(this.props.lang, 'ML0314', '공유창고 정보가 없습니다.'));
           return;
         }
         let data = {
@@ -759,20 +760,20 @@ class DetailsManager extends Component {
               });
               this.getAllData()
             } else {
-              ToastShow("입고 요청이 실패하였습니다. " + res);
+              ToastShow(getMsg(this.props.lang, 'ML0317', '입고 요청이 실패하였습니다. ') + res);
             }
           }).catch(error => {
           alert(error.response.data.message);
         });
       } else if (typeCreate === 'export') {
         if (!createDateStr) {
-          alert('일자 정보가 없습니다.');
+          alert(getMsg(this.props.lang, 'ML0312', '일자 정보가 없습니다.'));
           return;
         } else if (!createValue) {
-          alert('수량 정보가 없습니다.');
+          alert(getMsg(this.props.lang, 'ML0313', '수량 정보가 없습니다.'));
           return;
         } else if (!rentWarehNo) {
-          alert('공유창고 정보가 없습니다.');
+          alert(getMsg(this.props.lang, 'ML0314', '공유창고 정보가 없습니다.'));
           return;
         }
         // 출고 요청
@@ -796,7 +797,7 @@ class DetailsManager extends Component {
 
               this.getAllData()
             } else {
-              ToastShow("출고 요청이 실패하였습니다. " + res);
+              ToastShow(getMsg(this.props.lang, 'ML0318', '출고 요청이 실패하였습니다. ') + res);
             }
           }).catch(error => {
           alert(error.response.data.message);
@@ -816,7 +817,7 @@ class DetailsManager extends Component {
         whinExpctSeq: ExpctSeq,
       }).then(res => {
         if (res.data.msg !== 'success') {
-          ToastShow('입고 요청 취소가 실패하였습니다. ' + res)
+          ToastShow(getMsg(this.props.lang, 'ML0319', '입고 요청 취소가 실패하였습니다. ') + res)
           return
         }
         this.setState({ cancelRequestImport: true, isCancel: false }, () => {
@@ -832,7 +833,7 @@ class DetailsManager extends Component {
         whoutExpctSeq: ExpctSeq,
       }).then(res => {
         if (res.data.msg !== 'success') {
-          ToastShow('출고 요청 취소가 실패하였습니다. ' + res)
+          ToastShow(getMsg(this.props.lang, 'ML0320', '출고 요청 취소가 실패하였습니다. ') + res)
           return
         }
 
@@ -898,7 +899,9 @@ class DetailsManager extends Component {
     const processing =
       isProgress === true ? (
         <View style={DefaultStyle._bodyCard}>
-          <Text style={SS.textBody}>등록한 입･출고 내역이 없습니다.</Text>
+          <Text style={SS.textBody}>
+            {getMsg(this.props.lang, 'ML0321', '등록한 입･출고 내역이 없습니다.')}
+          </Text>
         </View>
       ) : (
         <Fragment>
@@ -933,9 +936,9 @@ class DetailsManager extends Component {
                           onPress={() => {
 
                             this.setState({
-                              popUpTitle: '출고 확정',
-                              popUpDateLabel: '출고 확정일',
-                              popUpQtyLabel: '출고 확정 수량',
+                              popUpTitle: getMsg(this.props.lang, 'ML0277', '출고 확정'),
+                              popUpDateLabel: getMsg(this.props.lang, 'ML0278', '출고 확정일'),
+                              popUpQtyLabel: getMsg(this.props.lang, 'ML0279', '출고 확정 수량'),
                               typeCreate: 'export',
                               ExpctSeq: item.ExpctSeq,
                               ExpctYmd: item.Expct,
@@ -951,7 +954,7 @@ class DetailsManager extends Component {
                           ]}>
                           <Text
                             style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                            출고 확정
+                            {getMsg(this.props.lang, 'ML0277', '출고 확정')}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -964,9 +967,9 @@ class DetailsManager extends Component {
                         <TouchableOpacity
                           onPress={() => {
                             this.setState({
-                              popUpTitle: '입고 확정',
-                              popUpDateLabel: '입고 확정일',
-                              popUpQtyLabel: '입고 확정 수량',
+                              popUpTitle: getMsg(this.props.lang, 'ML0294', '입고 확정'),
+                              popUpDateLabel: getMsg(this.props.lang, 'ML0323', '입고 확정일'),
+                              popUpQtyLabel: getMsg(this.props.lang, 'ML0322', '입고 확정 수량'),
                               typeCreate: 'import',
                               ExpctSeq: item.ExpctSeq,
                               ExpctYmd: item.Expct,
@@ -979,7 +982,7 @@ class DetailsManager extends Component {
                           style={[DefaultStyle._btnInline, { marginRight: 8 }]}>
                           <Text
                             style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                            입고 확정
+                            {getMsg(this.props.lang, 'ML0294', '입고 확정')}
                           </Text>
                         </TouchableOpacity>
 
@@ -991,7 +994,7 @@ class DetailsManager extends Component {
                         <TouchableOpacity
                           onPress={() => {
                             this.setState({
-                              popUpTitle: '입고 요청 취소',
+                              popUpTitle: getMsg(this.props.lang, 'ML0296', '입고 요청 취소'),
                               typeCreate: 'import',
                               ExpctSeq: item.ExpctSeq,
                               ExpctYmd: item.Expct,
@@ -1008,7 +1011,7 @@ class DetailsManager extends Component {
                           ]}>
                           <Text
                             style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                            입고 요청 취소
+                            {getMsg(this.props.lang, 'ML0296', '입고 요청 취소')}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -1019,7 +1022,7 @@ class DetailsManager extends Component {
                         <TouchableOpacity
                           onPress={() => {
                             this.setState({
-                              popUpTitle: '출고 요청 취소',
+                              popUpTitle: getMsg(this.props.lang, 'ML0301', '출고 요청 취소'),
                               typeCreate: 'export',
                               ExpctSeq: item.ExpctSeq,
                               ExpctYmd: item.Expct,
@@ -1036,7 +1039,7 @@ class DetailsManager extends Component {
                           ]}>
                           <Text
                             style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                            출고 요청 취소
+                            {getMsg(this.props.lang, 'ML0301', '출고 요청 취소')}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -1057,7 +1060,7 @@ class DetailsManager extends Component {
                             this.setState({
                               imageUrl: item.imageUrl,
                               openImagePopup: true,
-                              openImagePopupTitle: '입고 사진 확인',
+                              openImagePopupTitle: getMsg(this.props.lang, 'ML0324', '입고 사진 확인'),
                             })
                           }}
                           style={[
@@ -1066,7 +1069,7 @@ class DetailsManager extends Component {
                             SS.btnProcess,
                           ]}>
                           <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                            입고 사진 확인
+                            {getMsg(this.props.lang, 'ML0324', '입고 사진 확인')}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -1079,7 +1082,7 @@ class DetailsManager extends Component {
                             this.setState({
                               imageUrl: item.imageUrl,
                               openImagePopup: true,
-                              openImagePopupTitle: '출고 사진 확인',
+                              openImagePopupTitle: getMsg(this.props.lang, 'ML0325', '출고 사진 확인'),
                             })
                           }}
                           style={[
@@ -1088,7 +1091,7 @@ class DetailsManager extends Component {
                             SS.btnProcess,
                           ]}>
                           <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                            출고 사진 확인
+                            {getMsg(this.props.lang, 'ML0325', '출고 사진 확인')}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -1120,7 +1123,7 @@ class DetailsManager extends Component {
                   S.textTitleTenant,
                   { paddingBottom: 0 },
                 ]}>
-                입･출고 상세 내역
+                {getMsg(this.props.lang, 'ML0326', '입･출고 상세 내역')}
               </Text>
             </View>
 
@@ -1151,7 +1154,7 @@ class DetailsManager extends Component {
                           DefaultStyle._labelTextField,
                           { color: '#000000', fontSize: 12 },
                         ]}>
-                        시작일
+                        {getMsg(this.props.lang, 'ML0532', '시작일')}
                       </Text>
                       {
                         isOpenStart &&
@@ -1188,7 +1191,7 @@ class DetailsManager extends Component {
                           DefaultStyle._labelTextField,
                           { color: '#000000', fontSize: 12 },
                         ]}>
-                        종료일
+                        {getMsg(this.props.lang, 'ML0533', '종료일')}
                       </Text>
                       {
                         isOpenEnd &&
@@ -1244,20 +1247,22 @@ class DetailsManager extends Component {
                     isExpired ?
                       <TouchableHighlight>
                         <Text style={DefaultStyle._statusProcessingFalse}>
-                          수탁 기간 만료
+                          {getMsg(this.props.lang, 'ML0534', '수탁 기간 만료')}
                         </Text>
                       </TouchableHighlight>
                       :
                       <TouchableOpacity>
                         <Text style={DefaultStyle._statusProcessing}>
-                          수탁 진행 중
+                          {getMsg(this.props.lang, 'ML0535', '수탁 진행 중')}
                         </Text>
                       </TouchableOpacity>
 
                   }
                 </View>
                 <View style={SS.totalFees}>
-                  <Text style={SS.textTotalFees}>입･출고료 합계</Text>
+                  <Text style={SS.textTotalFees}>
+                    {getMsg(this.props.lang, 'ML0536', '입･출고료 합계')}
+                  </Text>
                   <Text style={SS.textTotal}> {money(totalMoney ? totalMoney : 0)}</Text>
                 </View>
               </View>
@@ -1273,9 +1278,9 @@ class DetailsManager extends Component {
                   <TouchableOpacity
                     onPress={() => {
                       this.setState({
-                        popUpTitle: '입고 요청',
-                        popUpDateLabel: '입고 예정일',
-                        popUpQtyLabel: '입고 예정 수량',
+                        popUpTitle: getMsg(this.props.lang, 'ML0292', '입고 요청'),
+                        popUpDateLabel: getMsg(this.props.lang, 'ML0293', '입고 예정일'),
+                        popUpQtyLabel: getMsg(this.props.lang, 'ML0327', '입고 예정 수량'),
                         typeCreate: 'import'
                       }, () => {
                         this.showDialog()
@@ -1284,16 +1289,16 @@ class DetailsManager extends Component {
                     style={[DefaultStyle._btnInline, { marginRight: 8 }]}>
                     <Text
                       style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                      입고요청
+                      {getMsg(this.props.lang, 'ML0292', '입고 요청')}
                     </Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={() => {
                       this.setState({
-                        popUpTitle: '출고 요청',
-                        popUpDateLabel: '출고 예정일',
-                        popUpQtyLabel: '출고 예정 수량',
+                        popUpTitle: getMsg(this.props.lang, 'ML0297', '출고 요청'),
+                        popUpDateLabel: getMsg(this.props.lang, 'ML0298', '출고 예정일'),
+                        popUpQtyLabel: getMsg(this.props.lang, 'ML0328', '출고 예정 수량'),
                         typeCreate: 'export'
                       }, () => {
                         this.showDialog()
@@ -1305,7 +1310,7 @@ class DetailsManager extends Component {
                     ]}>
                     <Text
                       style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                      출고 요청
+                      {getMsg(this.props.lang, 'ML0297', '출고 요청')}
                     </Text>
                   </TouchableOpacity>
 
@@ -1315,7 +1320,7 @@ class DetailsManager extends Component {
 
             <View style={SS.processing}>
               <FilterButton
-                label="진행 내역 보기"
+                label={getMsg(this.props.lang, 'ML0329', '진행 내역 보기')}
                 onPress={() => this.setState({ isToggle: !isToggle })}
                 isToggle={isToggle}
                 style={[SS.toggle, { borderColor: '#e5e5ea', borderWidth: 1 }]}
@@ -1330,7 +1335,7 @@ class DetailsManager extends Component {
                 isEmpty ?
                   <View style={DefaultStyle._bodyCard}>
                     <Text style={SS.textBody}>
-                      등록한 입･출고 내역이 없습니다.
+                      {getMsg(this.props.lang, 'ML0321', '등록한 입･출고 내역이 없습니다.')}
                     </Text>
                   </View>
                   :
@@ -1468,7 +1473,7 @@ class DetailsManager extends Component {
                       { height: 36 }
                     ]}>
                     <Text style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                      파일 첨부
+                      {getMsg(this.props.lang, 'ML0330', '파일 첨부')}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -1484,7 +1489,7 @@ class DetailsManager extends Component {
               style={[SS.btnPopup]}
               color={'rgba(0, 0, 0, 0.54)'}
               onPress={this.hideDialog}>
-              취소
+              {getMsg(this.props.lang, 'ML0101', '취소')}
             </Button>
 
             <Button
@@ -1492,7 +1497,7 @@ class DetailsManager extends Component {
               onPress={() => {
                 this.createImport()
               }}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1506,12 +1511,11 @@ class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            입고 요청 완료
+            {getMsg(this.props.lang, 'ML0346', '입고 요청 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              입고요청을 완료했습니다. 입출고내역에서 요청하신 내역을 확인해
-              주세요.
+              {getMsg(this.props.lang, 'ML0347', '입고요청을 완료했습니다. 입출고내역에서 요청하신 내역을 확인해주세요.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -1521,7 +1525,7 @@ class DetailsManager extends Component {
                 this.hideConfirm();
                 this.getAllData();
               }}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1535,7 +1539,7 @@ class DetailsManager extends Component {
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              {this.state.popUpTitle}를 하시겠습니까?
+              {this.state.popUpTitle}{getMsg(this.props.lang, 'ML0345', '를 하시겠습니까?')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -1543,7 +1547,7 @@ class DetailsManager extends Component {
               color="rgba(0, 0, 0, 0.54)"
               style={[DefaultStyle._buttonElement, { paddingTop: 10, paddingBottom: 10 }]}
               onPress={() => this.setState({ isCancel: false })}>
-              아니오
+              {getMsg(this.props.lang, 'ML0101', '취소')}
             </Button>
             <Button
               style={[DefaultStyle._buttonElement, { paddingTop: 10, paddingBottom: 10 }]}
@@ -1551,7 +1555,7 @@ class DetailsManager extends Component {
                 this.onCancelRequest()
               }
               }>
-              네
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1567,11 +1571,11 @@ class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            입고 요청 완료
+            {getMsg(this.props.lang, 'ML0343', '입고 요청 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              입고 요청을 완료했습니다.
+              {getMsg(this.props.lang, 'ML0344', '입고 요청을 완료했습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -1580,7 +1584,7 @@ class DetailsManager extends Component {
               onPress={() =>
                 this.setState({ completeRequestImport: false })
               }>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1596,11 +1600,11 @@ class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            출고 요청 완료
+            {getMsg(this.props.lang, 'ML0341', '출고 요청 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              출고 요청을 완료했습니다.
+              {getMsg(this.props.lang, 'ML0342', '출고 요청을 완료했습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -1609,7 +1613,7 @@ class DetailsManager extends Component {
               onPress={() =>
                 this.setState({ completeRequestExport: false })
               }>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1626,11 +1630,11 @@ class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            입고 확정 완료
+            {getMsg(this.props.lang, 'ML0339', '입고 확정 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              입고 확정이 완료했습니다.
+              {getMsg(this.props.lang, 'ML0340', '입고 확정이 완료했습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -1639,7 +1643,7 @@ class DetailsManager extends Component {
               onPress={() =>
                 this.setState({ confirmRequestImport: false })
               }>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1656,11 +1660,11 @@ class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            출고 확정 완료
+            {getMsg(this.props.lang, 'ML0337', '출고 확정 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              출고 확정이 완료했습니다.
+              {getMsg(this.props.lang, 'ML0338', '출고 확정이 완료했습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -1669,7 +1673,7 @@ class DetailsManager extends Component {
               onPress={() =>
                 this.setState({ confirmRequestExport: false })
               }>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1684,11 +1688,11 @@ class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            입고 요청 취소 완료
+            {getMsg(this.props.lang, 'ML0335', '입고 요청 취소 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              입고 요청 취소를 완료했습니다.
+              {getMsg(this.props.lang, 'ML0336', '입고 요청 취소를 완료했습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -1697,7 +1701,7 @@ class DetailsManager extends Component {
               onPress={() =>
                 this.setState({ cancelRequestImport: false })
               }>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1712,11 +1716,11 @@ class DetailsManager extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            출고 요청 취소 완료
+            {getMsg(this.props.lang, 'ML0333', '출고 요청 취소 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              출고 요청 취소를 완료했습니다.
+              {getMsg(this.props.lang, 'ML0334', '출고 요청 취소를 완료했습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
@@ -1725,7 +1729,7 @@ class DetailsManager extends Component {
               onPress={() =>
                 this.setState({ cancelRequestExport: false })
               }>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -1764,7 +1768,7 @@ class DetailsManager extends Component {
               onPress={() =>
                 this.setState({ openImagePopup: false, imageUrl: '' })
               }>
-              닫기
+              {getMsg(this.props.lang, 'ML0332', '닫기')}
             </Button>
           </Dialog.Actions>
         </Dialog>

@@ -17,6 +17,8 @@ import TableInfo from '@Components/atoms/TableInfo';
 import { SettlementManagementService, Calculate } from '@Services/apis'
 import Moment from 'moment';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 import { styles as S } from '../style';
 import { styles as SS } from './style';
 
@@ -68,8 +70,8 @@ export default class DetailsSettlement extends Component {
 
     let cntrTypeCode = {}
     SettlementManagementService.getDetail(params).then((res) => {
-      console.log('계약정보 ::::', res.data.data);
-      console.log('계약정보 ::::', res.data.data.calMgmtDetail1ResBodyList);
+      // console.log('계약정보 ::::', res.data.data);
+      // console.log('계약정보 ::::', res.data.data.calMgmtDetail1ResBodyList);
       if (res.data.msg !== 'success') {
         return
       }
@@ -83,26 +85,26 @@ export default class DetailsSettlement extends Component {
 
       let date = ''
       if (headerDetail1ResBody) {
-        date = headerDetail1ResBody.cntrYmdFrom ? Moment(headerDetail1ResBody.cntrYmdFrom).format('yyyy년 MM월') : ''
+        date = headerDetail1ResBody.cntrYmdFrom ? Moment(headerDetail1ResBody.cntrYmdFrom).format('yyyy.MM') : ''
       } else if (headerDetailResBody) {
-        date = headerDetailResBody.cntrYmdFrom ? Moment(headerDetailResBody.cntrYmdFrom).format('yyyy년 MM월') : ''
+        date = headerDetailResBody.cntrYmdFrom ? Moment(headerDetailResBody.cntrYmdFrom).format('yyyy.MM') : ''
       }
 
       this.setState({
-        warehouseName: settlementHeaderResBody ? settlementHeaderResBody.warehouse + ' 정산관리' : '정산관리'
+        warehouseName: settlementHeaderResBody ? settlementHeaderResBody.warehouse + ` ${getMsg(this.props.lang, 'ML0252', '정산관리')}` : getMsg(this.props.lang, 'ML0252', '정산관리')
       })
 
       let dataInfo = [
         {
-          type: '창고명',
+          type: getMsg(this.props.lang, 'ML0239', '창고명'),
           value: settlementHeaderResBody.warehouse,
         },
         {
-          type: '창고주',
+          type: getMsg(this.props.lang, 'ML0180', '창고주'),
           value: settlementHeaderResBody.owner,
         },
         {
-          type: '계약유형',
+          type: getMsg(this.props.lang, 'ML0109', '계약유형'),
           value: calMgmtMResBody.cntrTypeCode ? calMgmtMResBody.cntrTypeCode.stdDetailCodeName : '-',
         },
         // {
@@ -110,15 +112,15 @@ export default class DetailsSettlement extends Component {
         //   value: `${headerDetail1ResBody ? headerDetail1ResBody.cntrYmdFrom : ''} ~ ${headerDetail1ResBody ? headerDetail1ResBody.cntrYmdTo : ''}`,
         // },
         {
-          type: '정산년월',
+          type: getMsg(this.props.lang, 'ML0348', '정산년월'),
           value: `${date}`,
         },
         {
-          type: '담당자 전화번호',
+          type: getMsg(this.props.lang, 'ML0349', '담당자 전화번호'),
           value: settlementHeaderResBody.phone,
         },
         {
-          type: '담당자 이메일',
+          type: getMsg(this.props.lang, 'ML0350', '담당자 이메일'),
           value: settlementHeaderResBody.email,
         }
       ]
@@ -129,30 +131,30 @@ export default class DetailsSettlement extends Component {
       }
       let dataTotal = [
         {
-          type: '공급가액',
-          value: res.data.data.calMgmtMResBody ? money(res.data.data.amount) : '0 원',
+          type: getMsg(this.props.lang, 'ML0351', '공급가액'),
+          value: res.data.data.calMgmtMResBody ? money(res.data.data.amount) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`,
         },
         {
-          type: '부가세',
-          value: res.data.data.vat ? money(res.data.data.vat) : '0 원',
+          type: getMsg(this.props.lang, 'ML0352', '부가세'),
+          value: res.data.data.vat ? money(res.data.data.vat) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`,
         },
         {
-          type: '합계금액',
-          value: total ? money(total) : '0 원',
+          type: getMsg(this.props.lang, 'ML0353', '합계금액'),
+          value: total ? money(total) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`,
         }
       ]
 
       let dataFeeRate = [
         {
-          type: '요율',
+          type: getMsg(this.props.lang, 'ML0354', '요율'),
           value: res.data.data?.calMgmtMResBody?.rate ? res.data.data?.calMgmtMResBody?.rate + '%' : '',
         },
         {
-          type: '수수료	',
+          type: getMsg(this.props.lang, 'ML0355', '수수료'),
           value: money(res.data.data?.calMgmtMResBody.fee) ?? '',
         },
         {
-          type: '적용금액',
+          type: getMsg(this.props.lang, 'ML0356', '적용금액'),
           value: money(res.data.data?.calMgmtMResBody?.fee) ?? ''
         }
       ]
@@ -165,62 +167,62 @@ export default class DetailsSettlement extends Component {
           title: item.occr,
           value: [
             {
-              type: '일시',
+              type: getMsg(this.props.lang, 'ML0357', '일시'),
               value: item.occr
             },
             {
-              type: '정산기준',
+              type: getMsg(this.props.lang, 'ML0358', '정산기준'),
               value: item.calStdDvCode && item.calStdDvCode.stdDetailCodeName ? item.calStdDvCode.stdDetailCodeName : '-'
             },
             {
-              type: '정산단위',
+              type: getMsg(this.props.lang, 'ML0139', '정산단위'),
               value: item.calUnitDvCode && item.calUnitDvCode.stdDetailCodeName ? item.calUnitDvCode.stdDetailCodeName : '-'
             },
             // 량
             {
-              type: '입고량',
+              type: getMsg(this.props.lang, 'ML0307', '입고량'),
               value: numberComma(item.whinQty) || '0'
             },
             {
-              type: '출고량',
+              type: getMsg(this.props.lang, 'ML0308', '출고량'),
               value: numberComma(item.whoutQty) || '0'
             },
             {
-              type: '재고량',
+              type: getMsg(this.props.lang, 'ML0309', '재고'),
               value: numberComma(item.stckQty) || '0'
             },
             // 단가
             {
-              type: '입고단가',
-              value: item.whinChrg ? money(item.whinChrg) : '0 원'
+              type: getMsg(this.props.lang, 'ML0150', '입고단가'),
+              value: item.whinChrg ? money(item.whinChrg) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
             },
             {
-              type: '출고단가',
-              value: item.whoutChrg ? money(item.whoutChrg) : '0 원'
+              type: getMsg(this.props.lang, 'ML0151', '출고단가'),
+              value: item.whoutChrg ? money(item.whoutChrg) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
             },
             {
-              type: '재고단가',
-              value: item.stckChrg ? money(item.stckChrg) : '0 원'
+              type: getMsg(this.props.lang, 'ML0359', '재고단가'),
+              value: item.stckChrg ? money(item.stckChrg) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
             },
             // 비
             {
-              type: '입고비',
-              value: item.whinUprice ? money(item.whinUprice) : '0 원'
+              type: getMsg(this.props.lang, 'ML0124', '입고비'),
+              value: item.whinUprice ? money(item.whinUprice) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
             },
             {
-              type: '출고비',
-              value: item.whoutUprice ? money(item.whoutUprice) : '0 원'
+              type: getMsg(this.props.lang, 'ML0125', '출고비'),
+              value: item.whoutUprice ? money(item.whoutUprice) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
             },
             {
-              type: '재고비',
-              value: item.stckUprice ? money(item.stckUprice) : '0 원'
+              type: getMsg(this.props.lang, 'ML0360', '재고비'),
+              value: item.stckUprice ? money(item.stckUprice) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
             },
             {
-              type: '합계',
-              value: item.amount ? money(item.amount) : '0 원'
+              type: getMsg(this.props.lang, 'ML0361', '합계'),
+              value: item.amount ? money(item.amount) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
             },
             {
-              type: '비고',
+              type: getMsg(this.props.lang, 'ML0146', '비고'),
               value: item.remark || '-'
             }
           ]
@@ -229,7 +231,7 @@ export default class DetailsSettlement extends Component {
 
       let inOutSubtotal = [
         {
-          type: '소계',
+          type: getMsg(this.props.lang, 'ML0362', '소계'),
           value: money(detail1Subtotal)
         }
       ]
@@ -244,15 +246,15 @@ export default class DetailsSettlement extends Component {
           title: item.typeDvCode.stdDetailCodeName,
           value: [
             {
-              type: '구분',
+              type: getMsg(this.props.lang, 'ML0059', '구분'),
               value: item.typeDvCode ? item.typeDvCode.stdDetailCodeName : '-'
             },
             {
-              type: '비용',
-              value: item.amount ? money(item.amount) : '0 원'
+              type: getMsg(this.props.lang, 'ML0363', '비용'),
+              value: item.amount ? money(item.amount) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
             },
             {
-              type: '비고',
+              type: getMsg(this.props.lang, 'ML0146', '비고'),
               value: item.remark || '-'
             }
           ]
@@ -261,8 +263,8 @@ export default class DetailsSettlement extends Component {
 
       let keepSubtotal = [
         {
-          type: '소계',
-          value: countTotal ? money(countTotal) : '0 원'
+          type: getMsg(this.props.lang, 'ML0362', '소계'),
+          value: countTotal ? money(countTotal) : `0 ${getMsg(this.props.lang, 'ML0126', '원')}`
         }
       ]
 
@@ -375,7 +377,7 @@ export default class DetailsSettlement extends Component {
                   S.textTitleTenant,
                   { paddingBottom: 0 },
                 ]}>
-                정산 상세 내역
+                {getMsg(this.props.lang, 'ML0365', '정산 상세 내역')}
               </Text>
             </View>
 
@@ -391,7 +393,7 @@ export default class DetailsSettlement extends Component {
                     S.textTitleTenant,
                     { paddingBottom: 20, paddingTop: 20, paddingLeft: 16 },
                   ]}>
-                  계약정보
+                  {getMsg(this.props.lang, 'ML0364', '계약정보')}
                 </Text>
               </View>
               <View style={DefaultStyle._infoTable}>
@@ -419,7 +421,9 @@ export default class DetailsSettlement extends Component {
                     })
 
                   }}>
-                  <Text style={[DefaultStyle._textButton]}>거래명세서</Text>
+                  <Text style={[DefaultStyle._textButton]}>
+                    {getMsg(this.props.lang, 'ML0366', '거래명세서')}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -427,7 +431,7 @@ export default class DetailsSettlement extends Component {
             {this.state.cntrTypeCode && this.state.cntrTypeCode.stdDetailCode === '2100' &&
             <View style={SS.fee}>
               <FilterButton
-                label="입･출고비"
+                label={getMsg(this.props.lang, 'ML0367', '입･출고비')}
                 onPress={() => this.setState({ toggleFee: !toggleFee })}
                 isToggle={toggleFee}
                 style={SS.toggle}
@@ -451,7 +455,7 @@ export default class DetailsSettlement extends Component {
               headerDetailResBody && */}
             <View style={SS.fee}>
               <FilterButton
-                label="보관 및 추가비용"
+                label={getMsg(this.props.lang, 'ML0368', '보관 및 추가비용')}
                 onPress={() => this.setState({ toggleCosts: !toggleCosts })}
                 isToggle={toggleCosts}
                 style={SS.toggle}
@@ -483,7 +487,7 @@ export default class DetailsSettlement extends Component {
                     S.textTitleTenant,
                     { paddingBottom: 20, paddingTop: 20, paddingLeft: 16 },
                   ]}>
-                  요율 및 수수료
+                  {getMsg(this.props.lang, 'ML0369', '요율 및 수수료')}
                 </Text>
               </View>
               <View style={DefaultStyle._infoTable}>
@@ -507,7 +511,7 @@ export default class DetailsSettlement extends Component {
                     S.textTitleTenant,
                     { paddingBottom: 20, paddingTop: 20, paddingLeft: 16 },
                   ]}>
-                  정산 합계
+                  {getMsg(this.props.lang, 'ML0370', '정산 합계')}
                 </Text>
               </View>
               <View style={DefaultStyle._infoTable}>

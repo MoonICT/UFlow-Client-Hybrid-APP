@@ -25,13 +25,15 @@ import ResponseQTrust from "./responseQTrust";
 import ResponseQKeep from "./responseQKeep";
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class ResponseQuotation extends Component {
   constructor(props) {
     super(props);
 
-    console.log(props.route.params, '======props.data======');
-    console.log(props.route.params.typeWH, 'props.route.params.typeWH');
-    console.log(props.route.params.lastRequestData, '======lastRequestData======');
+    // console.log(props.route.params, '======props.data======');
+    // console.log(props.route.params.typeWH, 'props.route.params.typeWH');
+    // console.log(props.route.params.lastRequestData, '======lastRequestData======');
 
     if (props.route.params.typeWH === 'TRUST') {
       let lastRequestData = null;
@@ -162,9 +164,9 @@ console.log('routeRespon :>> ', route);
             style={DefaultStyle.headerTitle}
           />
         </Appbars> */}
-        
+
         <HistoryBackActionBar
-            title={'견적 응답하기'}
+            title={getMsg(this.props.lang, 'ML0582', '견적 응답하기')}
             navigation={this.navigation}
           />
         <ScrollView>
@@ -177,7 +179,7 @@ console.log('routeRespon :>> ', route);
                   DefaultStyle._textTitleCard,
                   { paddingBottom: 0, marginRight: 4 },
                 ]}>
-                {'견적 응답 정보'}
+                {getMsg(this.props.lang, 'ML0581', '견적 응답 정보')}
               </Text>
 
               <TouchableOpacity
@@ -231,9 +233,11 @@ console.log('routeRespon :>> ', route);
           </Dialog.Content>
 
           <Dialog.Content>
-            <Text style={DefaultStyle._textDF2}>보관기간</Text>
+            <Text style={DefaultStyle._textDF2}>
+              {getMsg(this.props.lang, 'ML0635', '보관기간')}
+            </Text>
             <Text style={[DefaultStyle._textDF, {marginBottom: 13}]}>
-              -수탁가능기간 내에서 수탁기간을 선택해 주세요.
+              - {getMsg(this.props.lang, 'ML0634', '수탁가능기간 내에서 수탁기간을 선택해 주세요.')}
             </Text>
             {/*<Text style={DefaultStyle._textDF2}>응답면적</Text>*/}
             {/*<Text style={[DefaultStyle._textDF, {marginBottom: 20}]}>*/}
@@ -244,7 +248,7 @@ console.log('routeRespon :>> ', route);
             <Button
               style={DefaultStyle._buttonElement}
               onPress={this.togglePopupInfo}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -260,7 +264,7 @@ console.log('routeRespon :>> ', route);
 
     const warehouseRegNo = this.props.route.params.warehouseRegNo;
     if(!warehouseRegNo) {
-      alert('창고 ID가 존재하지 않습니다. 잘못된 접근입니다.');
+      alert(getMsg(this.props.lang, 'ML0633', '창고 ID가 존재하지 않습니다. 잘못된 접근입니다.'));
     }
 
 

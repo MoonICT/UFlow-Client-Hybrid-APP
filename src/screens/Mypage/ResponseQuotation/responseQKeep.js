@@ -12,6 +12,8 @@ import { StringUtils, DeepLogs } from '@Services/utils';
 import { toSquareMeter, toPyeong } from '@Services/utils/unit';
 import moment from "moment";
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class ResponseQKeep extends Component {
 
   constructor (props) {
@@ -125,7 +127,7 @@ class ResponseQKeep extends Component {
                 DefaultStyle._labelTextField,
                 { color: '#000000' },
               ]}>
-              임대기간 시작일
+              {getMsg(this.props.lang, 'ML0629', '임대기간 시작일')}
               <Text style={[
                 { color: 'red' }
               ]}> *</Text>
@@ -163,7 +165,7 @@ class ResponseQKeep extends Component {
                 DefaultStyle._labelTextField,
                 { color: '#000000' },
               ]}>
-              임대기간 종료일
+              {getMsg(this.props.lang, 'ML0628', '임대기간 종료일')}
               <Text style={[
                 { color: 'red' }
               ]}> *</Text>
@@ -194,8 +196,8 @@ class ResponseQKeep extends Component {
         <View style={[DefaultStyle._element, { marginRight: 12 }]}>
           <TextField
             colorLabel="#000000"
-            labelTextField="응답 면적"
-            textRight={'평'}
+            labelTextField={getMsg(this.props.lang, 'ML0616', '응답 면적')}
+            textRight={getMsg(this.props.lang, 'ML0487', '평')}
             keyboardType="numeric"
             placeholder={"0"}
             defaultValue={rntlValuePyeong ? String(rntlValuePyeong) : ''}
@@ -218,7 +220,7 @@ class ResponseQKeep extends Component {
         <View style={[DefaultStyle._element]}>
           <TextField
             colorLabel="#000000"
-            labelTextField="응답 면적"
+            labelTextField={getMsg(this.props.lang, 'ML0616', '응답 면적')}
             textRight={'m2'}
             keyboardType="numeric"
             placeholder={"0"}
@@ -243,8 +245,8 @@ class ResponseQKeep extends Component {
       {/** 임대 단가 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="임대단가"
-        textRight="원"
+        labelTextField={getMsg(this.props.lang, 'ML0144', '임대단가')}
+        textRight={getMsg(this.props.lang, 'ML0126', '원')}
         keyboardType="numeric"
         defaultValue={
           splyAmount ? String(splyAmount) : '0'
@@ -266,8 +268,8 @@ class ResponseQKeep extends Component {
       {/** 관리단가 (필수) **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="관리단가"
-        textRight="원"
+        labelTextField={getMsg(this.props.lang, 'ML0145', '관리단가')}
+        textRight={getMsg(this.props.lang, 'ML0126', '원')}
         keyboardType="numeric"
         defaultValue={
           mgmtChrg ? String(mgmtChrg) : '0'
@@ -290,8 +292,8 @@ class ResponseQKeep extends Component {
       {/** 추가 요청 사항 **/}
       <TextField
         colorLabel="#000000"
-        labelTextField="추가 요청 사항"
-        placeholder="내용입력"
+        labelTextField={getMsg(this.props.lang, 'ML0626', '추가 요청 사항')}
+        placeholder={getMsg(this.props.lang, 'ML0625', '내용을 입력하세요.')}
         numberOfLines={5}
         textAlignVertical="top"
         multiline={true}
@@ -310,7 +312,7 @@ class ResponseQKeep extends Component {
       <TouchableOpacity
         onPress={() => {
           if (!isSubmitKeep) {
-            alert('필수값을 모두 입력하세요.')
+            alert(getMsg(this.props.lang, 'ML0624', '필수값을 모두 입력하세요.'))
             return;
           }
 
@@ -323,13 +325,13 @@ class ResponseQKeep extends Component {
             // alert(`임대요수량은 ${this.props.rntlValue} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.splyAmount <= 0) {
-            alert(`임대단가는 0이상으로 요청가능합니다.`);
+            alert(getMsg(this.props.lang, 'ML0619', '임대단가는 0이상으로 요청가능합니다.'));
             return;
           } else if (formData.splyAmount > this.props.splyAmount) {
             // alert(`임대단가는 ${this.props.splyAmount} 이하로 요청가능합니다.`);
             // return;
           } else if (formData.whinChrg <= 0) {
-            alert(`관리단가는 0이상으로 요청가능합니다.`);
+            alert(getMsg(this.props.lang, 'ML0618', '관리단가는 0이상으로 요청가능합니다.'));
             return;
           } else if (formData.mgmtChrg > this.props.mgmtChrg) {
             // alert(`관리단가는 ${this.props.mgmtChrg} 이하로 요청가능합니다.`);
@@ -369,10 +371,10 @@ class ResponseQKeep extends Component {
                 });
 
                 // TODO change illustrator popup
-                alert('견적응답이 완료되었습니다.');
+                alert(getMsg(this.props.lang, 'ML0617', '견적응답이 완료되었습니다.'));
                 // this.props.navigation.goBack();
                 this.props.navigation.push('Mypage', {
-                  title: '견적･계약 관리',
+                  title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
                   prevView: 'PrevView',
                 })
               }
@@ -395,7 +397,7 @@ class ResponseQKeep extends Component {
             SS.textSubmit,
             isSubmitKeep ? null : SS.textDisabled,
           ]}>
-          확인
+          {getMsg(this.props.lang, 'ML0100', '확인')}
         </Text>
       </TouchableOpacity>
 

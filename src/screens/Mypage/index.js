@@ -105,9 +105,18 @@ class Mypage extends Component {
    * 탭 리로드를 위한 함수.
    * */
   doRefreshTab = title => {
-    this.setState({ title: '' });
+    this.setState({ title: '', tab: '' });
+    let tabStatus = ''
+    this.tabList.some((item) => {
+      if (item.title === title) {
+        return tabStatus = item.id
+      }
+    })
     setTimeout(() => {
-      this.setState({ title: title ? title : getMsg(this.props.lang, 'ML0230', '내 창고') });
+      this.setState({
+        title: title ? title : getMsg(this.props.lang, 'ML0230', '내 창고'),
+        tab: tabStatus ? tabStatus : this.state.tab
+      });
     });
   };
 

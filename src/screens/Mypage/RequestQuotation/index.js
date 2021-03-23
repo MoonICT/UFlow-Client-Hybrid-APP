@@ -6,12 +6,12 @@
  */
 
 // Global Imports
-import React, {Component, Fragment} from 'react';
-import {View, TouchableOpacity, SafeAreaView, ScrollView} from 'react-native';
-import {connect} from 'react-redux';
+import React, { Component, Fragment } from 'react';
+import { View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import {Text, Appbar, Dialog, Paragraph, Button} from 'react-native-paper';
-import {StringUtils, DeepLogs} from '@Services/utils';
+import { Text, Appbar, Dialog, Paragraph, Button } from 'react-native-paper';
+import { StringUtils, DeepLogs } from '@Services/utils';
 import ReqeustQTrust from './reqeustQTrust';
 import ReqeustQKeep from './requestQKeep';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -22,19 +22,21 @@ import DefaultStyle from '@Styles/default';
 import TextField from '@Components/organisms/TextField';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import ActionCreator from '@Actions';
-import {styles as S} from '../style';
-import {styles as SS} from './style';
+import { styles as S } from '../style';
+import { styles as SS } from './style';
 import Icon from 'react-native-vector-icons/AntDesign';
 import DatePicker from '@Components/organisms/DatePicker';
-import {Warehouse} from '@Services/apis';
+import { Warehouse } from '@Services/apis';
+
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class RequestQuotation extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
-    console.log(props, '======props======');
-    console.log(props.route.params, '======props.datadata======');
-    console.log(props.route.params.data, '======props.datadata.data======');
+    // console.log(props, '======props======');
+    // console.log(props.route.params, '======props.datadata======');
+    // console.log(props.route.params.data, '======props.datadata.data======');
     // console.log(props.route.params.data, '======props.route.params.data======');
     // console.log(props.route.params.data.whrgMgmtTrust, '======whrgMgmtTrust======');
     // console.log(props.route.params.data.whrgMgmtKeep, '======whrgMgmtKeep======');
@@ -92,26 +94,21 @@ class RequestQuotation extends Component {
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
   /** when exits screen */
-  componentWillUnmount() {
+  componentWillUnmount () {
     //console.log('//::componentWillUnmount::');
   }
 
-  togglePopupInfo = () => this.setState({visible: !this.state.visible});
+  togglePopupInfo = () => this.setState({ visible: !this.state.visible });
 
-  hidePopupInfo = () => this.setState({visible: false});
+  hidePopupInfo = () => this.setState({ visible: false });
 
-  showConfirm = () => this.setState({visibleConfirm: true});
-
-  hideConfirm = () => this.setState({visibleConfirm: false});
-
-
-  render() {
-    const {route} = this.props;
+  render () {
+    const { route } = this.props;
     const warehouseRegNo = route && route.params && route.params.warehouseRegNo;
     const warehSeq = route && route.params && route.params.warehSeq;
     const seq = route && route.params && route.params.seq;
@@ -138,20 +135,19 @@ class RequestQuotation extends Component {
       showTo,
       isSubmit,
     } = this.state;
-    console.log('routeRequest :>> ', route);
-
-    console.log(warehSeq,'warehSeq');
+    // console.log('routeRequest :>> ', route);
+    // console.log(warehSeq,'warehSeq');
 
     return (
       <SafeAreaView style={S.container}>
 
         <HistoryBackActionBar
-            title={'견적 요청하기'}
-            navigation={this.navigation}
-          />
+          title={getMsg(this.props.lang, 'ML0152', '견적 요청하기')}
+          navigation={this.navigation}
+        />
         <ScrollView>
 
-          <View style={[DefaultStyle._cards, SS.body, {paddingBottom: 450}]}>
+          <View style={[DefaultStyle._cards, SS.body, { paddingBottom: 450 }]}>
 
             {/** HEADER **/}
             <View style={[DefaultStyle._titleCard, SS.title]}>
@@ -159,17 +155,17 @@ class RequestQuotation extends Component {
               <Text
                 style={[
                   DefaultStyle._textTitleCard,
-                  {paddingBottom: 0, marginRight: 4},
+                  { paddingBottom: 0, marginRight: 4 },
                 ]}>
-                견적 요청 정보
+                {getMsg(this.props.lang, 'ML0080', '견적 요청 정보')}
               </Text>
 
               <TouchableOpacity
-                style={{justifyContent: 'flex-start'}}
+                style={{ justifyContent: 'flex-start' }}
                 onPress={() => {
                   this.togglePopupInfo();
                 }}>
-                <Icon name={'exclamationcircleo'} color={'#2196f3'} size={14}/>
+                <Icon name={'exclamationcircleo'} color={'#2196f3'} size={14} />
               </TouchableOpacity>
             </View>
             {/** END:HEADER **/}
@@ -215,9 +211,11 @@ class RequestQuotation extends Component {
           </Dialog.Content>
 
           <Dialog.Content>
-            <Text style={DefaultStyle._textDF2}>보관기간</Text>
-            <Text style={[DefaultStyle._textDF, {marginBottom: 13}]}>
-              -수탁가능기간 내에서 수탁기간을 선택해 주세요.
+            <Text style={DefaultStyle._textDF2}>
+              {getMsg(this.props.lang, 'ML0635', '보관기간')}
+            </Text>
+            <Text style={[DefaultStyle._textDF, { marginBottom: 13 }]}>
+              - {getMsg(this.props.lang, 'ML0634', '수탁가능기간 내에서 수탁기간을 선택해 주세요.')}
             </Text>
             {/*<Text style={DefaultStyle._textDF2}>응답면적</Text>*/}
             {/*<Text style={[DefaultStyle._textDF, {marginBottom: 20}]}>*/}
@@ -228,7 +226,7 @@ class RequestQuotation extends Component {
             <Button
               style={DefaultStyle._buttonElement}
               onPress={this.togglePopupInfo}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -237,29 +235,23 @@ class RequestQuotation extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::ResponseQuotation:componentDidMount::');
-
-
-    console.log(this.props.data, '======props.data======');
-
-    // DeepLogs.log(this.props.route.params , 'this.props ResponseQuotation : this.props.params')
+    // console.log(this.props.data, '======props.data======');
 
     const warehouseRegNo = this.props.route.params.warehouseRegNo;
     if (!warehouseRegNo) {
-      alert('창고 ID가 존재하지 않습니다. 잘못된 접근입니다.');
+      alert(getMsg(this.props.lang, 'ML0633', '창고 ID가 존재하지 않습니다. 잘못된 접근입니다.'));
     }
-
-
     SplashScreen.hide();
   }
 
-  UNSAFE_componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate (nextProps, nextState) {
     console.log('nextState', nextState);
   }
 
   /** when update state or props */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
 
     console.log('::componentDidUpdate::');
     let warehouseRegNo =
@@ -350,7 +342,7 @@ class RequestQuotation extends Component {
 }
 
 /** map state with store states redux store */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     imageStore: state.registerWH.pimages,
@@ -359,7 +351,7 @@ function mapStateToProps(state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     showPopup: status => {
       dispatch(ActionCreator.show(status));
