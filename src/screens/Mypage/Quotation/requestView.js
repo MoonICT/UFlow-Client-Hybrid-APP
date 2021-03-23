@@ -14,6 +14,7 @@ import {MyPage} from '@Services/apis';
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 // import TableInfo from '../TableInfo';
 import {StringUtils, DeepLogs} from '@Services/utils';
 import TableInfo from '@Components/atoms/TableInfo';
@@ -36,8 +37,8 @@ class RequestView extends Component {
     const {data, typeWH} = this.props;
     let orders = data?.orders[0] || [
       {
-        label: StringUtils.dateStr(new Date()) + '(1차)',
-        value: StringUtils.dateStr(new Date()) + '(1차)',
+        label: StringUtils.dateStr(new Date()) + getMsg(this.props.lang, 'ML587', '(1차)'),
+        value: StringUtils.dateStr(new Date()) + getMsg(this.props.lang, 'ML587', '(1차)'),
       },
     ];
 
@@ -46,8 +47,8 @@ class RequestView extends Component {
 
     const dataSelect = [
       {
-        label: StringUtils.dateStr(orders) + '(1차)',
-        value: StringUtils.dateStr(orders) + '(1차)',
+        label: StringUtils.dateStr(orders) + getMsg(this.props.lang, 'ML587', '(1차)'),
+        value: StringUtils.dateStr(orders) + getMsg(this.props.lang, 'ML587', '(1차)'),
       },
     ];
 

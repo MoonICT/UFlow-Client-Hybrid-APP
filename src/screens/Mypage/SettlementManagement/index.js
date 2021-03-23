@@ -29,6 +29,7 @@ import {SettlementManagementService, Calculate} from '@Services/apis'
 import Icon from 'react-native-vector-icons/Fontisto';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { MY_PAGE_TAB_STATUS_KEY } from '@Constant';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 var searchTimerQuery;
 
@@ -52,25 +53,25 @@ export default class SettlementManagement extends Component {
       },
       rangeDay: [
         {
-          value: '', label: '전체'
+          value: '', label: getMsg(this.props.lang, 'ML0119', '전체')
         },
         {
-          value: '7', label: '7일'
+          value: '7', label: getMsg(this.props.lang, 'ML0281', '7일')
         },
         {
-          value: '15', label: '15일'
+          value: '15', label: getMsg(this.props.lang, 'ML0282', '15일')
         },
         {
-          value: '30', label: '1개월'
+          value: '30', label: getMsg(this.props.lang, 'ML0283', '1개월')
         },
         {
-          value: '90', label: '3개월'
+          value: '90', label: getMsg(this.props.lang, 'ML0284', '3개월')
         },
         {
-          value: '180', label: '6개월'
+          value: '180', label: getMsg(this.props.lang, 'ML0285', '6개월')
         },
         {
-          value: '365', label: '1년'
+          value: '365', label: getMsg(this.props.lang, 'ML0286', '1년')
         }
       ]
     };
@@ -117,15 +118,15 @@ export default class SettlementManagement extends Component {
             urlTransaction: item.urlTransaction,
             dataRedwood: [
               {
-                type: '정산년월',
+                type: getMsg(this.props.lang, 'ML0348', '정산년월'),
                 value: `${item.cntrYmdFrom ? Moment(item.cntrYmdFrom).format('yyyy.MM') : '-'}`,
               },
               {
-                type: '계약 유형',
+                type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
                 value: item.cntrTypeCode ? item.cntrTypeCode.stdDetailCodeName : '',
               },
               {
-                type: '정산 합계\n(VAT포함)',
+                type: getMsg(this.props.lang, 'ML0595', '정산 합계\n(VAT포함)'),
                 value: `${(item.amount && item.vat) ? money(item.amount + item.vat) : ''}`,
               },
             ]
@@ -252,7 +253,7 @@ export default class SettlementManagement extends Component {
                   : DefaultStyle._textTabBar
               }
             >
-              요청 받은 견적･계약 (창고주)
+              {getMsg(this.props.lang, 'ML0268', '요청 받은 견적･계약 (창고주)')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -265,7 +266,7 @@ export default class SettlementManagement extends Component {
                   ? DefaultStyle._textActiveTab
                   : DefaultStyle._textTabBar
               }>
-              요청한 견적･계약 (임차인)
+              {getMsg(this.props.lang, 'ML0269', '요청한 견적･계약 (임차인)')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -277,7 +278,7 @@ export default class SettlementManagement extends Component {
               S.textTitleTenant,
               {paddingBottom: 0},
             ]}>
-            정산 관리
+            {getMsg(this.props.lang, 'ML0596', '정산 관리')}
           </Text>
         </View>
 
@@ -297,7 +298,7 @@ export default class SettlementManagement extends Component {
                       DefaultStyle._labelTextField,
                       {color: '#000000', fontSize: 12},
                     ]}>
-                    시작일
+                    {getMsg(this.props.lang, 'ML0532', '시작일')}
                   </Text>
                   {
                     isOpenStart &&
@@ -340,7 +341,7 @@ export default class SettlementManagement extends Component {
                       DefaultStyle._labelTextField,
                       {color: '#000000', fontSize: 12},
                     ]}>
-                    종료일
+                    {getMsg(this.props.lang, 'ML0533', '종료일')}
                   </Text>
                   {
                     isOpenEnd &&
@@ -378,7 +379,7 @@ export default class SettlementManagement extends Component {
           </View>
           <TextField
             styleProps={[DefaultStyle._inputSearch, {paddingRight: 50}]}
-            placeholder="검색어를 입력해 주세요."
+            placeholder={getMsg(this.props.lang, 'ML0382', '검색어를 입력해 주세요.')}
             ref={el => this.inputKeyWord = el}
             onChange={this.onChangeKeyWord}
             rightComponent={
@@ -431,7 +432,7 @@ export default class SettlementManagement extends Component {
                         });
 
                       }}>
-                      <Text style={[DefaultStyle._textButton]}> 거래명세서</Text>
+                      <Text style={[DefaultStyle._textButton]}> {getMsg(this.props.lang, 'ML0366', '거래명세서')}</Text>
                     </TouchableOpacity>
                   </View>
                 }

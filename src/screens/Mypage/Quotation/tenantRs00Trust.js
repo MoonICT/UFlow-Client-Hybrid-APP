@@ -8,6 +8,7 @@ import {Button, Dialog, Text} from "react-native-paper";
 import {Contract} from '@Services/apis';
 import {styles as S} from "../style";
 import {styles as SS} from "./style";
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class TenantRs00Trust extends Component {
 
@@ -47,27 +48,27 @@ class TenantRs00Trust extends Component {
 
           let dataRequest = [
             {
-              type: '요청일자',
+              type: getMsg(this.props.lang, 'ML0575', '요청 일자'),
               value: StringUtils.dateStr(item.occrYmd),
             },
             {
-              type: '요청 수탁기간',
+              type: getMsg(this.props.lang, 'ML0583', '요청 수탁기간'),
               value: StringUtils.dateStr(item.from) + ' - ' + StringUtils.dateStr(item.to),
             },
             {
-              type: '요청 가용수량',
+              type: getMsg(this.props.lang, 'ML0584', '요청 가용수량'),
               value: item.rntlValue ? StringUtils.numberComma(item.rntlValue) : '-',
             },
             {
-              type: '요청 보관단가',
+              type: getMsg(this.props.lang, 'ML0585', '요청 보관단가'),
               value: item.splyAmount ? StringUtils.money(item.splyAmount) : '-'
             },
             {
-              type: '입고단가',
+              type: getMsg(this.props.lang, 'ML0150', '입고단가'),
               value: item.whinChrg ? StringUtils.money(item.whinChrg) : '-'
             },
             {
-              type: '출고단가',
+              type: getMsg(this.props.lang, 'ML0151', '출고단가'),
               value: item.whoutChrg ? StringUtils.money(item.whoutChrg) : '-'
             },
             // {
@@ -95,7 +96,7 @@ class TenantRs00Trust extends Component {
             //   value: item.calStdDvCode ? StringUtils.toStdName(this.state.calStdDvCodes, item.calStdDvCode) : '-'
             // },
             {
-              type: '추가 요청 사항',
+              type: getMsg(this.props.lang, 'ML0580', '추가 요청사항'),
               value: item.remark ? item.remark : '-',
             },
           ];
@@ -106,7 +107,7 @@ class TenantRs00Trust extends Component {
               <View style={DefaultStyle._card}>
                 <View style={DefaultStyle._headerCard}>
                   <Text style={DefaultStyle._headerCardTitle}>
-                    {item.estmtDvCd === 'RQ00' ? '요청한 견적 정보' : '창고주의 견적응답 정보'}
+                    {item.estmtDvCd === 'RQ00' ? getMsg(this.props.lang, 'ML0590', '요청한 견적 정보') : getMsg(this.props.lang, 'ML0591', '창고주의 견적응답 정보')}
                   </Text>
                 </View>
                 <View style={DefaultStyle._infoTable}>
@@ -124,7 +125,7 @@ class TenantRs00Trust extends Component {
     if (groupOrders) {
       const dataSelect = groupOrders ? groupOrders.map((item, index) => {
         return {
-          label: StringUtils.dateStr(item) + `(${(index + 1)}차)`,
+          label: StringUtils.dateStr(item) + `(${(index + 1)}${getMsg(this.props.lang, 'ML0586', '차')})`,
           value: index
         };
       }) : [];
@@ -136,7 +137,7 @@ class TenantRs00Trust extends Component {
 
             <View style={[DefaultStyle._titleCard, SS.titleCustom]}>
               <Text style={DefaultStyle._textTitleCard}>
-                견적 요청 정보
+                {getMsg(this.props.lang, 'ML0080', '견적 요청 정보')}
               </Text>
               <View style={DefaultStyle._optionList}>
                 <Select data={dataSelect}
@@ -167,7 +168,7 @@ class TenantRs00Trust extends Component {
                     type,
                   });
                 }}>
-                <Text style={DefaultStyle._textButton}>견적 재요청</Text>
+                <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0271', '견적 재요청')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[DefaultStyle._btnInline, DefaultStyle._btnRight]}
@@ -178,7 +179,7 @@ class TenantRs00Trust extends Component {
                     if (onClickContract)
                       onClickContract(true);
                     else
-                      alert('오류가 발생하였습니다. 상세페이지에서 요청해주세요. (-2)')
+                      alert(getMsg(this.props.lang, 'ML0593', '오류가 발생하였습니다. 상세페이지에서 요청해주세요. (-2)'))
                     // this.setState({
                     //   visibleContractTrust: true,
                     //   // isConfirmRequest: !this.state.isConfirmRequest,
@@ -195,7 +196,7 @@ class TenantRs00Trust extends Component {
                     DefaultStyle._textButton,
                     DefaultStyle._textInline,
                   ]}>
-                  계약 요청
+                  {getMsg(this.props.lang, 'ML0270', '계약 요청')}
                 </Text>
               </TouchableOpacity>
             </View>

@@ -26,6 +26,7 @@ import Appbars from '@Components/organisms/AppBar';
 import { styles as S } from '../style';
 
 import { getUserInfo } from '@Services/apis/MyPage';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class Information extends Component {
   constructor(props) {
@@ -36,18 +37,18 @@ class Information extends Component {
       checkMail: false,
       firstQuery: '',
       visible: false,
-      tabInfo: '기본 정보',
+      tabInfo: getMsg(this.props.lang, 'ML0190', '기본 정보'),
       userInfo: {},
     };
     this.navigation = props.navigation;
     this.tabSelect = [
       {
         id: 'tab1',
-        title: '기본 정보'
+        title: getMsg(this.props.lang, 'ML0190', '기본 정보')
       },
       {
         id: 'tab2',
-        title: '사업자 등록 정보'
+        title: getMsg(this.props.lang, 'ML0191', '사업자 등록정보')
       },
     ]
   }
@@ -94,7 +95,7 @@ class Information extends Component {
       <ScrollView style={S.container}>
 
         <HistoryBackActionBar
-          title={'내 정보 수정'}
+          title={getMsg(this.props.lang, 'ML0542', '내 정보 수정')}
           navigation={this.navigation}
         />
 
@@ -102,8 +103,8 @@ class Information extends Component {
           <View style={{ flex: 1 }}>
             <AppGrid data={this.tabSelect} title={tabInfo} titleProps={this.handleClickTab} />
           </View>
-          {tabInfo === '기본 정보' && <MypageInfo navigation={this.navigation} tabData={this.tabSelect} />}
-          {tabInfo === '사업자 등록 정보' && <MypageBusinessInfo tabData={this.tabSelect} />}
+          {tabInfo === getMsg(this.props.lang, 'ML0190', '기본 정보') && <MypageInfo navigation={this.navigation} tabData={this.tabSelect} />}
+          {tabInfo === getMsg(this.props.lang, 'ML0191', '사업자 등록정보') && <MypageBusinessInfo tabData={this.tabSelect} />}
         </ScrollView>
         <Dialog
           style={DefaultStyle.popup}
@@ -114,18 +115,18 @@ class Information extends Component {
           </Dialog.Content>
           <Dialog.Title
             style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            회원정보 수정 완료
+            {getMsg(this.props.lang, 'ML0245', '회원정보 수정 완료')}
           </Dialog.Title>
           <Dialog.Content>
             <Paragraph style={DefaultStyle.contentDialog}>
-              회원정보가 수정되었습니다.
+              {getMsg(this.props.lang, 'ML0246', '회원정보가 수정되었습니다.')}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions style={DefaultStyle._buttonPopup}>
             <Button
               style={DefaultStyle._buttonElement}
               onPress={this.hideDialog}>
-              확인
+              {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>
         </Dialog>

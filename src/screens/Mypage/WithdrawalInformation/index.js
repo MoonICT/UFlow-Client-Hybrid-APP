@@ -18,6 +18,7 @@ import Appbars from '@Components/organisms/AppBar';
 import Checkbox from '@Components/atoms/Checkbox';
 import { styles as S } from '../style';
 import { styles as SS } from './style';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class WithdrawalInformation extends Component {
   constructor(props) {
@@ -29,22 +30,22 @@ class WithdrawalInformation extends Component {
       arrList: [
         {
           id: 1,
-          label: '고객서비스',
+          label: getMsg(this.props.lang, 'ML0597', '고객서비스'),
           isCheck: false,
         },
         {
           id: 2,
-          label: '방문 빈도가 낮음',
+          label: getMsg(this.props.lang, 'ML0598', '방문 빈도가 낮음'),
           isCheck: false,
         },
         {
           id: 3,
-          label: '서비스 기능 불만',
+          label: getMsg(this.props.lang, 'ML0599', '서비스 기능 불만'),
           isCheck: false,
         },
         {
           id: 4,
-          label: '서비스 내용 불만',
+          label: getMsg(this.props.lang, 'ML0600', '서비스 내용 불만'),
           isCheck: false,
         },
       ],
@@ -96,25 +97,24 @@ class WithdrawalInformation extends Component {
           />
         </Appbars> */}
 
-        <HistoryBackActionBar title={'회원탈퇴'} navigation={this.navigation} />
+        <HistoryBackActionBar title={getMsg(this.props.lang, 'ML0541', '회원탈퇴')} navigation={this.navigation} />
         <ScrollView>
           <View style={DefaultStyle._cards}>
             <View style={DefaultStyle._titleCard}>
-              <Text style={DefaultStyle._textTitleCard}>회원탈퇴 안내</Text>
+              <Text style={DefaultStyle._textTitleCard}>{getMsg(this.props.lang, 'ML0601', '회원탈퇴 안내')}</Text>
             </View>
             <View style>
               <Text style={[SS.textInfo, { marginBottom: 20 }]}>
-                회원탈퇴 관련 안내글이 노출되는 영역입니다.
+                {getMsg(this.props.lang, 'ML0602', '회원탈퇴 관련 안내글이 노출되는 영역입니다.')}
               </Text>
               <Text style={SS.textInfo}>
-                1. 회원 탈퇴 시 고객님의 정보는 고객정보 보호 정책에 따라
-                관리됩니다.
+                {getMsg(this.props.lang, 'ML0603', '1. 회원 탈퇴 시 고객님의 정보는 고객정보 보호 정책에 따라\n관리됩니다.')}
               </Text>
               <Text style={SS.textInfo}>
-                2. 회원 탈퇴 후 N일간 재가입이 불가능합니다.
+                {getMsg(this.props.lang, 'ML0604', '2. 회원 탈퇴 후 N일간 재가입이 불가능합니다.')}
               </Text>
               <Text style={SS.textInfo}>
-                3. 현재 계약 중인 상태이면 회원 탈퇴가 불가할 수 있습니다.
+                {getMsg(this.props.lang, 'ML0605', '3. 현재 계약 중인 상태이면 회원 탈퇴가 불가할 수 있습니다.')}
               </Text>
             </View>
           </View>
@@ -122,7 +122,7 @@ class WithdrawalInformation extends Component {
           <View style={[DefaultStyle._cards, S.cardFooter]}>
             <View style={DefaultStyle._titleCard}>
               <Text style={DefaultStyle._textTitleCard}>
-                무엇이 불편하셨나요?
+                {getMsg(this.props.lang, 'ML0606', '무엇이 불편하셨나요?')}
               </Text>
             </View>
             <View style={S.listChecks}>
@@ -140,7 +140,7 @@ class WithdrawalInformation extends Component {
             </View>
             <TextField
               numberOfLines={5}
-              placeholder="고객님의 진심어린 충고 부탁드립니다."
+              placeholder={getMsg(this.props.lang, 'ML0607', '고객님의 진심어린 충고 부탁드립니다.')}
               colorLabel="#000000"
               styleProps={SS.textInput}
               ref={ref => {
@@ -154,7 +154,7 @@ class WithdrawalInformation extends Component {
               <TouchableOpacity
                 style={SS.btnCancel}
                 onPress={() => this.navigation.goBack()}>
-                <Text style={SS.textBtn}>취소하기</Text>
+                <Text style={SS.textBtn}>{getMsg(this.props.lang, 'ML0111', '취소하기')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[SS.btnUnsubscribe,DefaultStyle.activeBtnSubmit]}
@@ -172,7 +172,7 @@ class WithdrawalInformation extends Component {
                     });
                   }
                 }>
-                <Text style={[SS.textBtn,DefaultStyle.textActiveSubmit]}>탈퇴하기</Text>
+                <Text style={[SS.textBtn,DefaultStyle.textActiveSubmit]}>{getMsg(this.props.lang, 'ML0608', '탈퇴하기')}</Text>
               </TouchableOpacity>
             </View>
           </View>

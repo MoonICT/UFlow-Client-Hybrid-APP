@@ -28,6 +28,7 @@ import ActionCreator from '@Actions';
 import { Account } from '@Services/apis';
 import editInfo from '@Assets/images/editInfo.png';
 import { styles as S } from '../style';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class MypageInfo extends Component {
   constructor (props) {
@@ -96,7 +97,7 @@ class MypageInfo extends Component {
   onSubmit = () => {
     const { data, isAgreeSNS } = this.state;
     if (!data.passwordOld) {
-      alert('현재 비밀번호를 입력하세요');
+      alert(getMsg(this.props.lang, 'ML0552', '현재 비밀번호를 입력하세요.'));
       return;
     }
     this.setState({ loading: true });
@@ -110,8 +111,8 @@ class MypageInfo extends Component {
         this.setState({ loading: false });
         this.props.showPopup({
           type: 'confirm',
-          title: '회원정보 수정 완료',
-          content: '회원정보가 수정되었습니다.',
+          title: getMsg(this.props.lang, 'ML0245', '회원정보 수정 완료'),
+          content: getMsg(this.props.lang, 'ML0246', '회원정보가 수정되었습니다.'),
           image: editInfo,
           navigation: () => this.navigation.navigate('More')
         });
@@ -125,19 +126,19 @@ class MypageInfo extends Component {
   _onChangePass = () => {
     const { data, isAgreeSNS } = this.state;
     if (!data.passwordOld) {
-      alert('현재 비밀번호를 입력하세요');
+      alert(getMsg(this.props.lang, 'ML0552', '현재 비밀번호를 입력하세요.'));
       return;
     }
     if (!data.password) {
-      alert('새 비밀번호를 입력하세요');
+      alert(getMsg(this.props.lang, 'ML0553', '새 비밀번호를 입력하세요.'));
       return;
     }
     if (!data.ConfirmPassword) {
-      alert('새 비밀번호를 입력하세요');
+      alert(getMsg(this.props.lang, 'ML0553', '새 비밀번호를 입력하세요.'));
       return;
     }
     if (data.password !== data.ConfirmPassword) {
-      alert('암호가 일치하지 않습니다');
+      alert(getMsg(this.props.lang, 'ML0554', '암호가 일치하지 않습니다'));
       return;
     }
     // Progress
@@ -159,8 +160,8 @@ class MypageInfo extends Component {
         });
         this.props.showPopup({
           type: 'confirm',
-          title: '회원정보 수정 완료',
-          content: '회원정보가 수정되었습니다.',
+          title: getMsg(this.props.lang, 'ML0245', '회원정보 수정 완료'),
+          content: getMsg(this.props.lang, 'ML0246', '회원정보가 수정되었습니다.'),
           image: editInfo,
         });
 
@@ -171,7 +172,7 @@ class MypageInfo extends Component {
       })
       .catch(error => {
         this.setState({
-          errText: error.response.data.message ? error.response.data.message : '입력하신 정보가 맞지 않습니다.'
+          errText: error.response.data.message ? error.response.data.message : getMsg(this.props.lang, 'ML0555', '입력하신 정보가 맞지 않습니다.')
         });
         this.props.setProgress({ is: false });
       });
@@ -217,7 +218,7 @@ class MypageInfo extends Component {
           </View>
           <View style>
             <TextField
-              labelTextField="이름"
+              labelTextField={getMsg(this.props.lang, 'ML0012', '이름')}
               value={data.fullName ? data.fullName : ''}
               valueProps={e =>
                 this.setState({
@@ -230,17 +231,17 @@ class MypageInfo extends Component {
               colorLabel="#000000"
             />
             <TextField
-              labelTextField="이메일"
+              labelTextField={getMsg(this.props.lang, 'ML0013', '이메일')}
               editable={false}
               selectTextOnFocus={false}
               value={data.email || ''}
-              placeholder="이메일"
+              placeholder={getMsg(this.props.lang, 'ML0013', '이메일')}
               colorLabel="#000000"
             />
             <TextField
               type={'password'}
               secureTextEntry={true}
-              labelTextField="현재 비밀번호"
+              labelTextField={getMsg(this.props.lang, 'ML0556', '현재 비밀번호')}
               colorLabel="#000000"
               value={data.passwordOld ? data.passwordOld : ''}
               valueProps={e =>
@@ -291,7 +292,7 @@ class MypageInfo extends Component {
                 borderRadius: 0,
                 width: '100%',
               }}>
-              비밀번호 변경
+              {getMsg(this.props.lang, 'ML0557', '비밀번호 변경')}
             </Button>
           </View>
           <View style={S.checks}>
@@ -307,7 +308,7 @@ class MypageInfo extends Component {
                   });
                 }}
               />
-              <Text style={S.textCheck}>마케팅 수신 동의</Text>
+              <Text style={S.textCheck}>{getMsg(this.props.lang, 'ML0558', '마케팅 수신 동의')}</Text>
             </View>
             <View style={[S.checkItem, S.checkChildren]}>
               <Checkbox
@@ -335,13 +336,13 @@ class MypageInfo extends Component {
                   });
                 }}
               />
-              <Text style={S.textCheck}>이메일</Text>
+              <Text style={S.textCheck}>{getMsg(this.props.lang, 'ML0013', '이메일')}</Text>
             </View>
           </View>
           <TouchableOpacity
             style={S._right}
             onPress={() => this.navigation.navigate('WithdrawalInformation')}>
-            <Text style={DefaultStyle._textDF3}>회원탈퇴</Text>
+            <Text style={DefaultStyle._textDF3}>{getMsg(this.props.lang, 'ML0541', '회원탈퇴')}</Text>
           </TouchableOpacity>
         </View>
         <View style={S.btn}>
@@ -359,7 +360,7 @@ class MypageInfo extends Component {
             ]}
             color="red"
             onPress={this.onSubmit}>
-            확인
+            {getMsg(this.props.lang, 'ML0100', '확인')}
           </Button>
         </View>
         <Loading loading={loading} />
@@ -370,7 +371,7 @@ class MypageInfo extends Component {
             visible={isOpenChangePass}
             onDismiss={this._hideDialogChangePass}>
             <Dialog.Title style={[DefaultStyle._titleDialog, S.titleQuestion]}>
-              비밀번호 변경
+              {getMsg(this.props.lang, 'ML0557', '비밀번호 변경')}
             </Dialog.Title>
             <Dialog.Content style={{ marginTop: 10 }}>
               <View
@@ -384,7 +385,7 @@ class MypageInfo extends Component {
                   <TextField
                     type={'password'}
                     secureTextEntry={true}
-                    labelTextField="현재 비밀번호"
+                    labelTextField={getMsg(this.props.lang, 'ML0556', '현재 비밀번호')}
                     colorLabel="#000000"
                     value={data.passwordOld ? data.passwordOld : ''}
                     valueProps={e =>
@@ -408,7 +409,7 @@ class MypageInfo extends Component {
                         },
                       })
                     }
-                    labelTextField="새 비밀번호"
+                    labelTextField={getMsg(this.props.lang, 'ML0559', '새 비밀번호')}
                     colorLabel="#000000"
                   />
                   <TextField
@@ -423,7 +424,7 @@ class MypageInfo extends Component {
                         },
                       })
                     }
-                    labelTextField="새 비밀번호 확인"
+                    labelTextField={getMsg(this.props.lang, 'ML0560', '새 비밀번호 확인')}
                     colorLabel="#000000"
                   />
                   {!!this.state.errText && <Text style={{ color: 'red', }}>{this.state.errText}</Text>}
@@ -434,12 +435,12 @@ class MypageInfo extends Component {
                       // style={[DefaultStyle._buttonElement]}
                       color={'rgba(0, 0, 0, 0.54)'}
                       onPress={this._hideDialogChangePass}>
-                      취소
+                      {getMsg(this.props.lang, 'ML0101', '취소')}
                     </Button>
                     <Button
                       // style={[DefaultStyle._buttonElement]}
                       onPress={this._onChangePass}>
-                      확인
+                      {getMsg(this.props.lang, 'ML0100', '확인')}
                     </Button>
                   </Dialog.Actions>
                 </View>

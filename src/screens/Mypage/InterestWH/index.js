@@ -22,6 +22,7 @@ import { debounce } from "lodash";
 
 // Local Imports
 import DefaultStyle from '@Styles/default';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 // import TableInfo from '../TableInfo';
 import CardMypage from '@Components/organisms/CardMypage';
 import ActionCreator from '@Actions';
@@ -113,19 +114,19 @@ class InterestWarehouse extends Component {
         dataConvert.push({
           data: [
             {
-              type: '계약 유형',
-              value: `${element.keep ? '임대창고' : ''}${element.keep && element.trust ? ', ' : ''}${element.trust ? '수탁창고' : ''}${!element.keep && !element.trust ? '-' : ''}`
+              type: getMsg(this.props.lang, 'ML0109', '계약 유형'),
+              value: `${element.keep ? getMsg(this.props.lang, 'ML0134', '임대창고') : ''}${element.keep && element.trust ? ', ' : ''}${element.trust ? getMsg(this.props.lang, 'ML0135', '수탁창고') : ''}${!element.keep && !element.trust ? '-' : ''}`
             },
             {
-              type: '창고 주소',
+              type: getMsg(this.props.lang, 'ML0256', '창고 주소'),
               value: element.warehouse.address
             },
             {
-              type: '임대 요약',
+              type: getMsg(this.props.lang, 'ML0257', '임대 요약'),
               value: `${this.renderSummaryInfo('KEEP', element)}`
             },
             {
-              type: '수탁 요약',
+              type: getMsg(this.props.lang, 'ML0258', '수탁 요약'),
               value: `${this.renderSummaryInfo('TRUST', element)}`
             }
           ],
@@ -153,24 +154,24 @@ class InterestWarehouse extends Component {
     switch (type) {
       case 'KEEP':
         if (WHItem.keep && WHItem.keep.subTitle) {
-          resultArr.push(`최대 ${WHItem.keep.subTitle}`)
+          resultArr.push(`${getMsg(this.props.lang, 'ML0561', '최대')} ${WHItem.keep.subTitle}`)
         }
         if (WHItem.keep && WHItem.keep.splyAmount) {
-          resultArr.push(`임대단가 ${StringUtils.money(WHItem.keep.splyAmount)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
+          resultArr.push(`${getMsg(this.props.lang, 'ML0144', '임대단가')} ${StringUtils.money(WHItem.keep.splyAmount)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
         }
         if (WHItem.keep && WHItem.keep.mgmtChrg) {
-          resultArr.push(`관리단가 ${StringUtils.money(WHItem.keep.mgmtChrg)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
+          resultArr.push(`${getMsg(this.props.lang, 'ML0145', '관리단가')} ${StringUtils.money(WHItem.keep.mgmtChrg)} ~/${WHItem.keep ? WHItem.keep.unit : ''}`)
         }
         return resultArr.join(', ')
       case 'TRUST':
         if (WHItem.trust && WHItem.trust.subTitle) {
-          resultArr.push(`최대 ${StringUtils.numberComma(WHItem.trust.subTitle)}`)
+          resultArr.push(`${getMsg(this.props.lang, 'ML0561', '최대')} ${StringUtils.numberComma(WHItem.trust.subTitle)}`)
         }
         if (WHItem.trust && WHItem.trust.whinChrg) {
-          resultArr.push(`보관단가 ${StringUtils.money(WHItem.trust.whinChrg)} ~/${WHItem.trust ? WHItem.trust.unit : ''}`)
+          resultArr.push(`${getMsg(this.props.lang, 'ML0149', '보관단가')} ${StringUtils.money(WHItem.trust.whinChrg)} ~/${WHItem.trust ? WHItem.trust.unit : ''}`)
         }
         if (WHItem.trust && WHItem.trust.whoutChrg) {
-          resultArr.push(`관리단가 ${StringUtils.money(WHItem.trust.whoutChrg)} ~/${WHItem.trust ? WHItem.trust.unit : ''}`)
+          resultArr.push(`${getMsg(this.props.lang, 'ML0145', '관리단가')} ${StringUtils.money(WHItem.trust.whoutChrg)} ~/${WHItem.trust ? WHItem.trust.unit : ''}`)
         }
         return resultArr.join(', ')
     }
@@ -179,7 +180,7 @@ class InterestWarehouse extends Component {
   removeFavorite = (id) => {
     Warehouse.toggleFav(id)
       .then(res => {
-        alert('삭제가 완료되었습니다.');
+        alert(getMsg(this.props.lang, 'ML0562', '삭제가 완료되었습니다.'));
         this.getDataFavorite();
       })
       .catch(error => {
@@ -204,7 +205,7 @@ class InterestWarehouse extends Component {
                     DefaultStyle._titleWH,
                     // { padding: 15, marginLeft: 16, marginTop: 16 },
                   ]}>
-                  관심 창고
+                  {getMsg(this.props.lang, 'ML0253', '관심 창고')}
                 </Text>
                 <Text
                   style={[DefaultStyle._headerCardTitle, { paddingTop: 4 }]}>
@@ -227,7 +228,7 @@ class InterestWarehouse extends Component {
                   onPress={() => this.removeFavorite(item.id)}>
                   <Text
                     style={[DefaultStyle._textButton, { color: '#000000' }]}>
-                    삭제
+                    {getMsg(this.props.lang, 'ML0563', '삭제')}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -238,7 +239,7 @@ class InterestWarehouse extends Component {
     return (
       <ScrollView style={[DefaultStyle._body, DefaultStyle.mb_20]}>
         <View style={DefaultStyle._titleCard}>
-          <Text style={[DefaultStyle._textTitleCard]}>관심 창고</Text>
+          <Text style={[DefaultStyle._textTitleCard]}>{getMsg(this.props.lang, 'ML0253', '관심 창고')}</Text>
           {/* <Text
             style={DefaultStyle._textRightTitleCard}
             onPress={() => this.setState({ listItem: [] })}>
@@ -258,7 +259,7 @@ class InterestWarehouse extends Component {
               <Image style={{ flex: 1 }} source={box ? box : { url: 'null' }} />
             </View>
             <Text style={[DefaultStyle._textDF3, { marginTop: 40, textAlign: 'center', marginBottom: 24, }]}>
-              관심 창고로 등록한 창고가 없습니다.
+              {getMsg(this.props.lang, 'ML0564', '관심 창고로 등록한 창고가 없습니다.')}
             </Text>
             <TouchableOpacity
               style={[DefaultStyle._btnInline,]}
@@ -267,7 +268,7 @@ class InterestWarehouse extends Component {
               }}>
               <Text
                 style={[DefaultStyle._textButton, DefaultStyle._textInline]}>
-                창고 조회하기
+                {getMsg(this.props.lang, 'ML0565', '창고 조회하기')}
               </Text>
             </TouchableOpacity>
           </View>
