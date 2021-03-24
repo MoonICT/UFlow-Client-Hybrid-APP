@@ -136,10 +136,10 @@ class More extends Component {
             <Fragment>
               {this.state.menu && this.state.menu.subMenus &&
 
-              this.state.menu.subMenus.map(item => {
+              this.state.menu.subMenus.map((item, index) => {
 
                 if (!item.execute) {
-                  return <View style={[DefaultStyle._cards, S.listPage]}>
+                  return <View key={index} style={[DefaultStyle._cards, S.listPage]}>
                     {item.name !== '#hide' &&
                     <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
                       {item.name}
