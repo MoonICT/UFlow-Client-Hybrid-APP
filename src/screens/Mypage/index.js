@@ -379,9 +379,9 @@ class Mypage extends Component {
             </View>
             {viewWH}
             <TouchableOpacity
-              style={DefaultStyle._btnInline}
+              style={[DefaultStyle._btnInline, {marginTop: 16}]}
               onPress={() => {
-                this.navigation.navigate('RegisterBusinessInfo', {
+                this.navigation.navigate('WarehouseType', {
                   doRefresh: () => {
                     // 창고 목록 갱신.
                     this.getWHList();

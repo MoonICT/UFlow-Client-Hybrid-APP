@@ -39,14 +39,12 @@ class RegisterMoreInfo extends Component {
     this.state = {
       isSelected: false,
       toggleCheckBox: false,
-      addOptDvCodes:
-        props.dataMoreInfo && props.dataMoreInfo.addOptDvCodes
-          ? props.dataMoreInfo.addOptDvCodes
-          : [],
-      insrDvCodes:
-        props.dataMoreInfo && props.dataMoreInfo.insrDvCodes
-          ? props.dataMoreInfo.insrDvCodes
-          : [],
+      addOptDvCodes: props.dataMoreInfo && props.dataMoreInfo.addOptDvCodes
+        ? props.dataMoreInfo.addOptDvCodes
+        : '',
+      insrDvCodes: props.dataMoreInfo && props.dataMoreInfo.insrDvCodes
+        ? props.dataMoreInfo.insrDvCodes
+        : '',
       cmpltYmd:
         props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
           ? props.dataMoreInfo.cmpltYmd
@@ -115,19 +113,19 @@ class RegisterMoreInfo extends Component {
       insrDvCodeData,
     } = this.state;
 
-    let checkbox0001 = [-1, -1, -1, -1, -1, -1];
+    // let checkbox0001 = [-1, -1, -1, -1, -1, -1];
 
-    if (addOptDvCodes.length > 0) {
-      checkbox0001[0] = addOptDvCodes.indexOf('0001');
-      checkbox0001[1] = addOptDvCodes.indexOf('0002');
-      checkbox0001[2] = addOptDvCodes.indexOf('0003');
-    }
+    // if (addOptDvCodes.length > 0) {
+    //   checkbox0001[0] = addOptDvCodes.indexOf('0001');
+    //   checkbox0001[1] = addOptDvCodes.indexOf('0002');
+    //   checkbox0001[2] = addOptDvCodes.indexOf('0003');
+    // }
 
-    if (insrDvCodes.length > 0) {
-      checkbox0001[3] = insrDvCodes.indexOf('0001');
-      checkbox0001[4] = insrDvCodes.indexOf('0002');
-      checkbox0001[5] = insrDvCodes.indexOf('0003');
-    }
+    // if (insrDvCodes.length > 0) {
+    //   checkbox0001[3] = insrDvCodes.indexOf('0001');
+    //   checkbox0001[4] = insrDvCodes.indexOf('0002');
+    //   checkbox0001[5] = insrDvCodes.indexOf('0003');
+    // }
     // console.log('checkbox0001 :>> ', checkbox0001);
 
     let isSubmitUpdate = true;
@@ -155,10 +153,20 @@ class RegisterMoreInfo extends Component {
               boxType="square"
               value={checkItem ? true : false}
               onValueChange={() => {
-                let indexItem = addOptDvCodes.indexOf(item.value);
-                indexItem > -1
-                  ? this.setState({ ...addOptDvCodes.splice(indexItem, 1) })
-                  : this.setState({ ...addOptDvCodes.push(item.value) });
+                let defaultValue = JSON.parse(JSON.stringify(addOptDvCodes))
+                let findIndex = defaultValue.indexOf(item.value)
+                if (findIndex > -1) {
+                  defaultValue.splice(findIndex, 1)
+                } else {
+                  defaultValue.push(item.value)
+                }
+                this.setState({
+                  addOptDvCodes: defaultValue
+                })
+                // let indexItem = addOptDvCodes.indexOf(item.value);
+                // indexItem > -1
+                //   ? this.setState({ ...addOptDvCodes.splice(indexItem, 1) })
+                //   : this.setState({ ...addOptDvCodes.push(item.value) });
               }}
             />
             {
@@ -190,10 +198,20 @@ class RegisterMoreInfo extends Component {
               boxType="square"
               value={checkItem ? true : false}
               onValueChange={() => {
-                let indexItem = insrDvCodes.indexOf(item.value);
-                indexItem > -1
-                  ? this.setState({ ...insrDvCodes.splice(indexItem, 1) })
-                  : this.setState({ ...insrDvCodes.push(item.value) });
+                let defaultValue = JSON.parse(JSON.stringify(insrDvCodes))
+                let findIndex = defaultValue.indexOf(item.value)
+                if (findIndex > -1) {
+                  defaultValue.splice(findIndex, 1)
+                } else {
+                  defaultValue.push(item.value)
+                }
+                this.setState({
+                  insrDvCodes: defaultValue
+                })
+                // let indexItem = insrDvCodes.indexOf(item.value);
+                // indexItem > -1
+                //   ? this.setState({ ...insrDvCodes.splice(indexItem, 1) })
+                //   : this.setState({ ...insrDvCodes.push(item.value) });
               }}
             />
             {
@@ -295,7 +313,7 @@ class RegisterMoreInfo extends Component {
                       maxLength={7}
                     />
                   </View>
-                  <View style={DefaultStyle._element}>  
+                  <View style={DefaultStyle._element}>
                     <TextField
                       labelTextField={getMsg(this.props.lang, 'ML0157', '건축면적')}
                       textRight="m2"
@@ -319,12 +337,12 @@ class RegisterMoreInfo extends Component {
                       maxLength={10}
                     />
                   </View>
-                  
+
                 </View>
 
                 <View style={DefaultStyle._listElement}>
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
-                  
+
                     <TextField
                       labelTextField={getMsg(this.props.lang, 'ML0156', '대지면적')}
                       textRight={getMsg(this.props.lang, 'ML0487', '평')}
@@ -370,7 +388,7 @@ class RegisterMoreInfo extends Component {
                       maxLength={7}
                     />
                   </View>
-                  
+
                 </View>
 
                 <View style={DefaultStyle._listElement}>
@@ -420,11 +438,11 @@ class RegisterMoreInfo extends Component {
                       maxLength={7}
                     />
                   </View>
-                  
+
                 </View>
 
                 <View style={DefaultStyle._listElement}>
-                  
+
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
                       labelTextField={getMsg(this.props.lang, 'ML0155', '전용면적')}
@@ -474,7 +492,7 @@ class RegisterMoreInfo extends Component {
                 </View>
 
                 <View style={DefaultStyle._listElement}>
-                  
+
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
                       labelTextField={getMsg(this.props.lang, 'ML0488', '공용면적')}
@@ -559,6 +577,7 @@ class RegisterMoreInfo extends Component {
                 style={[
                   DefaultStyle.btnSubmit,
                   isSubmitUpdate === true ? DefaultStyle.activeBtnSubmit : null,
+                  {marginBottom: 100}
                 ]}
                 // disabled={imageStore.length > 2 ? false : true}
               >

@@ -62,13 +62,18 @@ class RegisterWH extends Component {
   };
 
   submit = () => {
-    if (this.doubleSubmitCheck()) return;
+    console.log('submit::: ', this.doubleSubmitFlag)
+    if (this.doubleSubmitCheck()) {
+      console.log('submit::: ')
+      return
+    };
 
     let type = this.props.route.params && this.props.route.params.type;
     let warehouseRegNo =
       this.props.route.params && this.props.route.params.warehouseRegNo;
     // Progress
     this.props.setProgress({ is: true, type: 'CIRCLE' });
+    console.log('submit1:::')
     if (type === 'ModifyWH') {
       console.log('수정 데이터 ::: ', this.props.dataWH);
       Warehouse.modifyWhrg(this.props.dataWH, warehouseRegNo)
@@ -102,7 +107,7 @@ class RegisterWH extends Component {
         })
         .catch(err => {
           // alert('Update err', err);
-          console.log('err', err.response);
+          console.log('err', err.response.data);
           this.props.setProgress({ is: false });
         });
     } else {
@@ -437,69 +442,50 @@ class RegisterWH extends Component {
           if (res.status === 200) {
             let dataWH = res.data;
             let entrpNo = dataWH.relativeEntrp && dataWH.relativeEntrp.entrpNo;
-            let floors =
-              dataWH.floors.length > 0
-                ? dataWH.floors.map((item, index) => {
-                  item.seq = dataWH.floors[index].id.seq;
-                  item.flrDvCode =
-                    dataWH.floors[index].flrDvCode &&
-                    dataWH.floors[index].flrDvCode.stdDetailCode;
-                  item.aprchMthdDvCode =
-                    dataWH.floors[index].aprchMthdDvCode &&
-                    dataWH.floors[index].aprchMthdDvCode.stdDetailCode;
-                  return item;
-                })
-                : [];
             let keeps =
               dataWH.keeps.length > 0
                 ? dataWH.keeps.map((item, index) => {
-                  item.seq = dataWH.keeps[index].id.seq;
-                  item.typeCode =
-                    dataWH.keeps[index].typeCode &&
-                    dataWH.keeps[index].typeCode.stdDetailCode;
-                  item.calUnitDvCode =
-                    dataWH.keeps[index].calUnitDvCode &&
-                    dataWH.keeps[index].calUnitDvCode.stdDetailCode;
-                  item.calStdDvCode =
-                    dataWH.keeps[index].calStdDvCode &&
-                    dataWH.keeps[index].calStdDvCode.stdDetailCode;
-                  item.mgmtChrgDvCode =
-                    dataWH.keeps[index].mgmtChrgDvCode &&
-                    dataWH.keeps[index].mgmtChrgDvCode.stdDetailCode;
+                  item.calStdDvCode = item.calStdDvCode && item.calStdDvCode.stdDetailCode //  정산기준구분(수탁)
+                  item.calUnitDvCode = item.calUnitDvCode && item.calUnitDvCode.stdDetailCode //  정산단위구분(수탁)
+                  item.mgmtChrgDvCode = item.mgmtChrgDvCode && item.mgmtChrgDvCode.stdDetailCode
+                  item.typeCode = item.typeCode && item.typeCode.stdDetailCode
+                  item.seq = item.id.seq
+                  delete item.id;
                   return item;
                 })
                 : [];
             let trusts =
               dataWH.trusts.length > 0
                 ? dataWH.trusts.map((item, index) => {
-                  item.seq = dataWH.trusts[index].id.seq;
-                  item.typeCode =
-                    dataWH.trusts[index].typeCode &&
-                    dataWH.trusts[index].typeCode.stdDetailCode;
-                  item.calUnitDvCode =
-                    dataWH.trusts[index].calUnitDvCode &&
-                    dataWH.trusts[index].calUnitDvCode.stdDetailCode;
-                  item.calStdDvCode =
-                    dataWH.trusts[index].calStdDvCode &&
-                    dataWH.trusts[index].calStdDvCode.stdDetailCode;
+                  item.calStdDvCode = item.calStdDvCode && item.calStdDvCode.stdDetailCode // 정산기준구분(보관)
+                  item.calUnitDvCode = item.calUnitDvCode && item.calUnitDvCode.stdDetailCode  // 정산단위구분(보관)
+                  item.typeCode = item.typeCode && item.typeCode.stdDetailCode
+                  item.seq = item.id.seq
+                  delete item.id;
                   return item;
                 })
                 : [];
             let insrDvCodes =
               dataWH.insrDvCodes.length > 0
                 ? dataWH.insrDvCodes.map((item, index) => {
-                  item = dataWH.insrDvCodes[index].stdDetailCode
-                    ? dataWH.insrDvCodes[index].stdDetailCode
-                    : '';
+                  item = dataWH.insrDvCodes[index].stdDetailCode;
                   return item;
                 })
                 : [];
             let addOptDvCodes =
               dataWH.addOptDvCodes.length > 0
                 ? dataWH.addOptDvCodes.map((item, index) => {
-                  item = dataWH.addOptDvCodes[index].stdDetailCode
-                    ? dataWH.addOptDvCodes[index].stdDetailCode
-                    : '';
+                  item = dataWH.addOptDvCodes[index].stdDetailCode;
+                  return item;
+                })
+                : [];
+            let floors =
+              dataWH.floors.length > 0
+                ? dataWH.floors.map((item, index) => {
+                  item.aprchMthdDvCode = item.aprchMthdDvCode ? item.aprchMthdDvCode.stdDetailCode : '';
+                  item.flrDvCode = item.flrDvCode ? item.flrDvCode.stdDetailCode : '';
+                  item.seq = item.id.seq;
+                  delete item.id;
                   return item;
                 })
                 : [];
@@ -520,8 +506,8 @@ class RegisterWH extends Component {
               // totalArea: dataWH.totalArea,
               // prvtArea: dataWH.prvtArea,
               // cmnArea: dataWH.cmnArea,
-              // addOptDvCodes,
-              // insrDvCodes,
+              addOptDvCodes,
+              insrDvCodes,
               // cnsltPossYn: dataWH.cnsltPossYn,
               // sttsDbCode: dataWH.sttsDbCode,
               // vrfctFailReason: dataWH.vrfctFailReason,
@@ -529,9 +515,9 @@ class RegisterWH extends Component {
               // whImages: dataWH.whImages,
               // thImages: dataWH.thImages,
               warehMgmtType: dataWH.warehMgmtType ? dataWH.warehMgmtType : '0002',
-              // floors,
-              // keeps,
-              // trusts,
+              floors,
+              keeps,
+              trusts,
               // entrpNo,
             });
           }

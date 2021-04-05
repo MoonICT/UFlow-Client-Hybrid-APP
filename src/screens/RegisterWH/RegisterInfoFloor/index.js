@@ -261,7 +261,7 @@ class RegisterInfoFloor extends Component {
             </View>
             {floors && floors.length > 0 && (
               <View
-                style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister]}>
+                style={[DefaultStyle._bodyCard, DefaultStyle.footerRegister, {marginBottom: 100}]}>
                 <TouchableOpacity
                   disabled={isSubmitUpdate === true ? false : true}
                   onPress={this.submit}
