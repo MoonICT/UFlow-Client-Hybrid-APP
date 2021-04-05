@@ -196,8 +196,9 @@ class ReqeustQKeep extends Component {
             placeholder={"0"}
             defaultValue={rntlValuePyeong ? String(rntlValuePyeong) : ''}
             isRequired={true}
+            value={rntlValuePyeong}
             onChangeText={e => {
-              let value = Number(e.replace(/[^0-9]/g), '')
+              let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
               this.setState({
                 formData: {
                   ...this.state.formData,
@@ -207,6 +208,7 @@ class ReqeustQKeep extends Component {
               });
 
             }}
+            maxLength={7}
           />
         </View>
         <View style={[DefaultStyle._element]}>
@@ -218,8 +220,9 @@ class ReqeustQKeep extends Component {
             placeholder={"0"}
             defaultValue={rntlValue ? String(rntlValue) : ''}
             isRequired={true}
+            value={rntlValue}
             onChangeText={e => {
-              let value = Number(e.replace(/[^0-9]/g), '')
+              let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
               this.setState({
                 ...this.state,
                 formData: {
@@ -230,6 +233,7 @@ class ReqeustQKeep extends Component {
               });
 
             }}
+            maxLength={7}
           />
         </View>
       </View>
@@ -245,15 +249,18 @@ class ReqeustQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={splyAmount}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              splyAmount: Number(e.replace(/[^0-9]/g), '')
+              splyAmount: value
             }
           })
         }
         }
+        maxLength={7}
       />
 
       {/** 관리 단가 **/}
@@ -267,15 +274,18 @@ class ReqeustQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={mgmtChrg}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              mgmtChrg: Number(e.replace(/[^0-9]/g), '')
+              mgmtChrg: value
             }
           })
         }
         }
+        maxLength={7}
       />
       {/** 추가 요청 사항 **/}
       <TextField
@@ -294,6 +304,7 @@ class ReqeustQKeep extends Component {
             }
           })
         }
+        maxLength={1000}
       />
       {/*<View style={[DefaultStyle._footerCards, {marginBottom: 30}]}>*/}
       {/*<Text style={S.amount}>예상 견적 금액</Text>*/}
@@ -363,6 +374,7 @@ class ReqeustQKeep extends Component {
                 // this.props.navigation.goBack();
                 this.props.navigation.push('Mypage', {
                   title: '견적･계약 관리',
+                  tab: 'Mypage_cntr',
                   prevView: 'PrevView',
                 })
               }

@@ -79,7 +79,7 @@ class Register extends Component {
   }
 
   handleOnClickSubmit = () => {
-    this.setState({ loading: true });
+    //this.setState({ loading: true });
     let signUpTemp = {};
     signUpTemp.email = this.state.email;
     signUpTemp.password = this.state.password;
@@ -89,8 +89,14 @@ class Register extends Component {
     signUpTemp.terms = this.state.terms;
     signUpTemp.marketing = this.state.marketing;
 
-    console.log("signUpTemp",signUpTemp);
+    //console.log("signUpTemp",signUpTemp);
 
+    if(signUpTemp.mobile.length < 3){
+      this.props.showPopup({ title: 'UFLOW', content: '휴대폰번호를 확인해주세요.', type: 'confirm' });
+      return false;
+    }
+
+    this.setState({ loading: true });
     Account.signUp(signUpTemp)
       .then(res => {
         // console.log('::::: API Sign Up Ok :::::', res);
@@ -112,12 +118,15 @@ class Register extends Component {
             // console.log('::: Error Code :', errData.code);
             // console.log('::: Error Message :', errData.message);
             // TODO Create dialog components
-            alert(errData?.message);
+            //alert(errData?.message);
+            this.props.showPopup({ title: 'UFLOW', content: errData?.message, type: 'confirm' });
+            
           } else {
             // TODO Handle the alert "Please contact your administrator.".
             const errData = err?.response?.data;
             // console.log('::: Error Code :', errData.code);
-            alert(errData?.message);
+            //alert(errData?.message);
+            this.props.showPopup({ title: 'UFLOW', content: errData?.message, type: 'confirm' });
           }
         }
       });
@@ -151,7 +160,7 @@ class Register extends Component {
     } = this.state;
 
     let checkPw = (password && confirmPassword && confirmPassword === password) || (this.state.snsCode === 'NVER');
-    let checkTerms = terms.privacy && terms.location && terms.financial && serviceTerms;
+    let checkTerms = terms.privacy && serviceTerms;
     let checkAll = checkTerms && checkMarketing;
     let checkSubmit = fullName && email && mobile && checkTerms && checkPw;
     return (
@@ -209,7 +218,7 @@ class Register extends Component {
                     value={email}
                     type="text"
                     mode="outlined"
-                    maxLength={30}
+                    maxLength={200}
                   />
                   {errorEmail === true ? (
                     <Text style={DefaultStyle._textErrorInput}>
@@ -272,7 +281,7 @@ class Register extends Component {
                     value={mobile}
                     type="telephoneNumber"
                     mode="outlined"
-                    maxLength={20}
+                    maxLength={11}
                   />
                   {this.state.error === true ? 'abc' : null}
                 </View>
@@ -325,9 +334,10 @@ class Register extends Component {
                     />
                     <Text
                       style={[S.fontS14]}
-                      onPress={() =>
-                        this.navigation.navigate('Terms', { id: 1 })
-                      }>
+                      // onPress={() =>
+                      //   this.navigation.navigate('Terms', { id: 1 })
+                      // }
+                      >
                       서비스 이용약관 (필수)
                     </Text>
                   </View>
@@ -351,14 +361,15 @@ class Register extends Component {
                     />
                     <Text
                       style={[S.fontS14]}
-                      onPress={() =>
-                        this.navigation.navigate('Terms', { id: 2 })
-                      }>
+                      // onPress={() =>
+                      //   this.navigation.navigate('Terms', { id: 2 })
+                      // }
+                      >
                       개인정보 수집 및 이용 동의 (필수)
                     </Text>
                   </View>
                   {/** ----------Terms 3 ------------*/}
-                  <View style={[S.itemTerm, S.itemTermMr]}>
+                  {/* <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
                       checked={terms.location}
                       onPress={() => {
@@ -382,9 +393,9 @@ class Register extends Component {
                       }>
                       위치기반서비스 이용약관 (필수)
                     </Text>
-                  </View>
+                  </View> */}
                   {/** ----------Terms 4 ------------*/}
-                  <View style={[S.itemTerm, S.itemTermMr]}>
+                  {/* <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
                       checked={terms.financial}
                       onPress={() => {
@@ -408,7 +419,7 @@ class Register extends Component {
                       }>
                       전자금융거래이용약관 사용 여부 (필수)
                     </Text>
-                  </View>
+                  </View> */}
                   {/** ----------Terms 5 ------------*/}
                   <View style={[S.itemTerm, S.itemTermMr]}>
                     <Checkbox
@@ -429,9 +440,10 @@ class Register extends Component {
                     />
                     <Text
                       style={[S.fontS14]}
-                      onPress={() =>
-                        this.navigation.navigate('Terms', { id: 3 })
-                      }>
+                      // onPress={() =>
+                      //   this.navigation.navigate('Terms', { id: 3 })
+                      // }
+                      >
                       마케팅 활용 수신동의 (선택)
                     </Text>
                   </View>
@@ -572,6 +584,9 @@ function mapDispatchToProps (dispatch) {
     },
     countDown: diff => {
       dispatch(ActionCreator.countDown(diff));
+    },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
     },
   };
 }

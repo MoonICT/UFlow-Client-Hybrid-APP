@@ -73,7 +73,7 @@ class RequestContract extends Component {
             icon="arrow-left"
             color="black"
             onPress={() => {
-              this.props.route.params.onRefresh('견적･계약 관리');
+              this.props.route.params.onRefresh('Mypage_cntr');
               this.navigation.goBack();
             }}
           />

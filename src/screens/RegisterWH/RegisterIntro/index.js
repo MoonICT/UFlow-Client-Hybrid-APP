@@ -163,7 +163,7 @@ class RegisterIntro extends Component {
             title={'창고 소개'}
             navigation={this.navigation}
           />
-        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 100, }]}>
+        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 50, }]}>
           <View style={{ backgroundColor: '#ffffff' }}>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
@@ -254,6 +254,17 @@ class RegisterIntro extends Component {
               <TouchableOpacity
                 disabled={isActive === true ? false : true}
                 onPress={() => {
+
+                  if(name.trim().length == 0){
+                    this.props.showPopup({ title: 'UFLOW', content: '창고명을 입력해주세요.', type: 'confirm' });
+                    return false;
+                  }
+
+                  if(description.trim().length == 0){
+                    this.props.showPopup({ title: 'UFLOW', content: '창고소개를 입력해주세요.', type: 'confirm' });
+                    return false;
+                  }
+
                   this.navigation.navigate('RegisterWH', {
                     completeIntro: true,
                   });
@@ -346,6 +357,9 @@ function mapDispatchToProps (dispatch) {
   return {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));
+    },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
     },
   };
 }

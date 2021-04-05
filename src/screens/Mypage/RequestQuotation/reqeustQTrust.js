@@ -206,15 +206,18 @@ class ReqeustQTrust extends Component {
         }
 
         isRequired={true}
+        value={rntlValue}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              rntlValue: Number(e.replace(/[^0-9]/g), '')
+              rntlValue: value
             }
           });
 
         }}
+        maxLength={7}
       />
 
       {/** 보관 단가 (필수) **/}
@@ -228,15 +231,18 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={splyAmount}
         onChangeText={e =>{
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              splyAmount: Number(e.replace(/[^0-9]/g), '')
+              splyAmount: value
             }
           })
         }
         }
+        maxLength={7}
       />
       {/** 입고 단가 (필수) **/}
       <TextField
@@ -249,16 +255,19 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={whinChrg}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              whinChrg: Number(e.replace(/[^0-9]/g), '')
+              whinChrg: value
             }
           })
         }
 
         }
+        maxLength={7}
       />
       {/** 출고 단가 (필수) **/}
       <TextField
@@ -271,16 +280,19 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={whoutChrg}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              whoutChrg: Number(e.replace(/[^0-9]/g), '')
+              whoutChrg: value
             }
           })
         }
 
         }
+        maxLength={7}
       />
       {/** 인건 단가 **/}
 
@@ -454,6 +466,7 @@ class ReqeustQTrust extends Component {
                 // this.props.navigation.goBack();
                 this.props.navigation.push('Mypage', {
                   title: '견적･계약 관리',
+                  tab: 'Mypage_cntr',
                   prevView: 'PrevView',
                 })
               }

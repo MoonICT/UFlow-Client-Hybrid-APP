@@ -128,49 +128,14 @@ export const validEmail = reqBody => {
 };
 
 /**
- * 로그인 카카오
+ * 로그인 애플
  * */
-export const getKakaoInfo = (data) => {
-  console.log(data, 'getKakaoInfo');
+export const getAppleInfo = (data) => {
   return Axios.postRequest({
-    url: '/api/v1/kakao-login',
+    url: '/api/v1/apple-login',
     payload: {
-      snsType: 'KKAO',
       code: data.code,
-      redirectUri: data.redirectUri,
-      state: data.state,
-    },
-  });
-};
-
-/**
- * 로그인 네이버
- * */
-export const getNaverInfo = (data) => {
-  console.log(data, 'getNaverInfo');
-  return Axios.postRequest({
-    url: '/api/v1/naver-login',
-    payload: {
-      snsType: 'NVER',
-      code: data.code,
-      redirectUri: data.redirectUri,
-      state: data.state,
-    },
-  });
-};
-
-/**
- * 로그인 구글
- * */
-export const getGoogleInfo = (data) => {
-  console.log(data, 'getGoogleInfo');
-  return Axios.postRequest({
-    url: '/api/v1/google-login',
-    payload: {
-      snsType: 'GOGL',
-      code: data.code,
-      redirectUri: data.redirectUri,
-      state: data.state,
+      idToken: data.idToken,
     },
   });
 };
@@ -178,10 +143,9 @@ export const getGoogleInfo = (data) => {
 /**
  * 로그인 구글/카카오/네이버
  * FACE("페이스북"),
- * GOGL("구글"),
+ * GOGL("구글"),프
  * KKAO("카카오톡"),
  * NVER("네이버"),
- * APPL("애플")
  * */
 export const getSNSInfo = (data) => {
   console.log(data, 'getSNSInfo');

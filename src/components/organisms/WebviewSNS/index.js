@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 
 // Local Imports
 import WVMsgService from '@Services/WebViewMessageService';
@@ -18,6 +19,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { LANG_STATUS_KEY } from '@Constant';
 import { Account } from '@Services/apis';
 import { TOKEN, API_CLIENT_ADDRESS } from '@Constant';
+
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 // import { styles as S } from './style';
 
@@ -41,7 +44,7 @@ class WebviewMap extends Component {
       await AsyncStorage.setItem(TOKEN, JSON.stringify(data.access_token));
       this.navigation.navigate('Home');
     } else {
-      this.noSocialLogin('소셜로그인을 실패하였습니다. 다시 시도해주세요.')
+      this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
     }
 
     this.props.handleCompleteLogin(data.access_token)
@@ -119,7 +122,7 @@ class WebviewMap extends Component {
   }
 
   /**
-   * 소셜 로그인 요청.
+   * 소셜 로그인 요청.(카카오/네이버/구글)
    * */
   reqSNSLogin (data) {
     console.log('request login : ', data)
@@ -130,7 +133,7 @@ class WebviewMap extends Component {
     }).then(data => {
       console.log("SNS 와 사용자계정 연동, SNS ID(고유키)로 연동된 계정이 존재하지 않고, SNS 정보와 동일한 이메일(계정)이 존재한다. -> SNS 연동후 로그인", data);
       if (!data.access_token) {
-        this.props.handleFailLogin('소셜로그인을 실패하였습니다. 다시 시도해주세요.')
+        this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
       }
       // 로그인 처리
       this.redirectLogin(data);
@@ -142,9 +145,71 @@ class WebviewMap extends Component {
       } else {
         // 에러 메시지 처리
         console.log(res.response.data, "res.response")
-        this.props.handleFailLogin('소셜로그인을 실패하였습니다. 다시 시도해주세요.')
+        this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
       }
     });
+  }
+
+  /**
+   * 소셜 로그인 요청.(애플)
+   * */
+  reqAppleLogin (data) {
+    Account.getAppleInfo({
+      code: data.authorizationCode,
+      idToken: data.identityToken,
+    }).then(data => {
+      console.log("SNS 와 사용자계정 연동, SNS ID(고유키)로 연동된 계정이 존재하지 않고, SNS 정보와 동일한 이메일(계정)이 존재한다. -> SNS 연동후 로그인", data);
+      if (!data.access_token) {
+        this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
+      }
+      // 로그인 처리
+      this.redirectLogin(data);
+    }).catch(res => {
+      console.log(res, 'err');
+      if (res && res.response && res.response.status == 409 && res.response.data) {
+        // 409 처리
+        this.err409(res);
+      } else {
+        // 에러 메시지 처리
+        console.log(res.response.data, "res.response")
+        this.noSocialLogin(`${getMsg(this.props.lang, 'ML0037', '소셜로그인을 실패하였습니다.')} ${getMsg(this.props.lang, 'ML0102', '다시 시도해주세요.')}`)
+      }
+    });
+  }
+
+  /**
+   * 애플 로그인.
+   */
+  async onAppleButtonPress () {
+    try {
+      // performs login request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // get current authentication state for user
+      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+      const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+
+      // use credentialState response to ensure the user is authenticated
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        // user is authenticated
+        console.log('APPLE LOGIN ::: user is authenticated', appleAuthRequestResponse)
+        this.reqAppleLogin(appleAuthRequestResponse)
+      }
+    } catch (error) {
+      console.log('APPLE LOGIN ERROR :::', error);
+      if (error.code === appleAuth.Error.CANCELED) {
+        console.log('APPLE LOGIN ::: canceled');
+        this.props.handleFailLogin(getMsg(this.props.lang, 'ML0038', '애플 로그인이 취소되었습니다.'))
+        // alert('애플 로그인이 취소되었습니다.')
+      } else {
+        console.log('APPLE LOGIN ::: error');
+        this.props.handleFailLogin(getMsg(this.props.lang, 'ML0039', '애플 로그인을 실패했습니다.'))
+        // alert('애플 로그인을 실패했습니다.')
+      }
+    }
   }
 
   // When the WebView has finished loading.
@@ -211,27 +276,36 @@ class WebviewMap extends Component {
             </View>
           </View>}
 
-          {/** 지도웹뷰 */}
-          <WebView
-            // source={{ uri: `http://localhost:13000/webview/sns` }}
-            source={{ uri: `${API_CLIENT_ADDRESS}/webview/sns` }}
-            style={{
-              flex: 1,
-              height: '100%',
-            }}
-            ref={webView => (this.webView = webView)}
-            originWhitelist={['*']}
-            useWebKit={true}
-            onLoad={event => this._WVOnLoad(event)}
-            onLoadProgress={({ nativeEvent }) =>
-              this.setState({ progress: nativeEvent.progress })
-            }
-            onMessage={event => this._WVOnMessage(event)}
-            injectedJavaScript={injectJSCode} // for Android
-            injectedJavaScriptBeforeContentLoaded={injectJSCode.toString()} // for iOS
-            // TODO 구글 보안상 특정 브라우저(웹뷰)
-            userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
-          />
+          {/** 로그인 웹뷰
+           웹뷰 로그인만 해당 ( 애플은 해당 안됨 )
+           */}
+          {
+            (this.props.provider === 'kakao' ||
+              this.props.provider === 'naver' ||
+              this.props.provider === 'google')
+              ?
+              <WebView
+                // source={{ uri: `http://localhost:13000/webview/sns` }}
+                source={{ uri: `${API_CLIENT_ADDRESS}/webview/sns` }}
+                style={{
+                  flex: 1,
+                  height: '100%',
+                }}
+                ref={webView => (this.webView = webView)}
+                originWhitelist={['*']}
+                useWebKit={true}
+                onLoad={event => this._WVOnLoad(event)}
+                onLoadProgress={({ nativeEvent }) =>
+                  this.setState({ progress: nativeEvent.progress })
+                }
+                onMessage={event => this._WVOnMessage(event)}
+                injectedJavaScript={injectJSCode} // for Android
+                injectedJavaScriptBeforeContentLoaded={injectJSCode.toString()} // for iOS
+                // TODO 구글 보안상 특정 브라우저(웹뷰)
+                userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+              /> : null
+          }
+
         </>
       </View>
     );
@@ -244,6 +318,11 @@ class WebviewMap extends Component {
     this.setState({
       langStatus: langData ? langData : 'ko-KR',
     });
+
+    // 애플 로그인일 경우.
+    if (this.props.provider === 'apple') {
+      this.onAppleButtonPress()
+    }
   }
 }
 

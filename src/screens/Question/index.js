@@ -30,6 +30,8 @@ import TextField from '@Components/organisms/TextField';
 import Loading from '@Components/atoms/Loading';
 import { styles as S } from './style';
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 import { Question } from '@Services/apis';
 const windowHeight = Dimensions.get('window').height;
 
@@ -111,14 +113,14 @@ class QuestionScreen extends Component {
               onPress={() => this.navigation.goBack()}
             />
             <Appbar.Content
-              title="문의하기"
+              title={getMsg(this.props.lang, 'ML0167', '문의하기')}
               color="black"
               fontSize="12"
               style={DefaultStyle.headerTitle}
             />
             <Appbar.Content
               color="#ff6d00"
-              title="등록"
+              title={getMsg(this.props.lang, 'ML0429', '등록')}
               style={S.headerButon}
               onPress={this.onSubmit}
               titleStyle={DefaultStyle._textHeaderRight}
@@ -131,19 +133,18 @@ class QuestionScreen extends Component {
               <View style={[DefaultStyle._cards, DefaultStyle._border0]}>
                 <View style={DefaultStyle._titleCard}>
                   <Text style={DefaultStyle._textTitleBody}>
-                    유플로우에 궁금하신 점을 {'\n'}
-                    문의해 주세요.
+                    {getMsg(this.props.lang, 'ML0430', '유플로우에 궁금하신 점을\n문의해 주세요.')}
                   </Text>
                 </View>
                 <TextField
-                  labelTextField="이메일"
+                  labelTextField={getMsg(this.props.lang, 'ML0013', '이메일')}
                   placeholder=""
                   colorLabel="#000000"
                   onChangeText={this.handleChangeEmail}
                 />
                 <TextField
-                  labelTextField="내용"
-                  placeholder="문의하실 내용을 입랙해 주세요."
+                  labelTextField={getMsg(this.props.lang, 'ML0432', '내용')}
+                  placeholder={getMsg(this.props.lang, 'ML0431', '문의하실 내용을 입력해 주세요.')}
                   colorLabel="#000000"
                   numberOfLines={15}
                   multiline={true}
@@ -168,21 +169,19 @@ class QuestionScreen extends Component {
               </Dialog.Content>
               <Dialog.Title
                 style={[DefaultStyle._titleDialog, S.titleQuestion]}>
-                문의 완료
+                {getMsg(this.props.lang, 'ML0433', '문의 완료')}
               </Dialog.Title>
               <Dialog.Content>
                 <Paragraph
                   style={[DefaultStyle.contentDialog, S.contentQuestion]}>
-                  UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴
-                  예정입니다. 자세한 내용은 [마이페이지 `{'>'}` 내 창고]에서
-                  확인해 주세요.
+                  {getMsg(this.props.lang, 'ML0434', 'UFLOW 관리자가 입력하신 정보를 확인하기 위해 연락을 드릴 예정입니다. 자세한 내용은 [마이페이지 > 내 창고]에서 확인해 주세요.')}
                 </Paragraph>
               </Dialog.Content>
               <Dialog.Actions style={DefaultStyle._buttonPopup}>
                 <Button
                   style={DefaultStyle._buttonElement}
                   onPress={this.hideDialog}>
-                  확인
+                  {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Button>
               </Dialog.Actions>
             </Dialog>

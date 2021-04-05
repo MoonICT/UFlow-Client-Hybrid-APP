@@ -230,7 +230,7 @@ class RegisterMoreInfo extends Component {
             style={DefaultStyle.headerTitle}
           />
         </Appbars>
-        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 100, }]}>
+        <ScrollView style={[DefaultStyle.backgroundGray, { marginBottom: 50, }]}>
           <View>
             <View style={DefaultStyle._cards}>
               <View style={DefaultStyle._titleBody}>
@@ -275,6 +275,28 @@ class RegisterMoreInfo extends Component {
                   <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
                       labelTextField="건축면적"
+                      textRight="평"
+                      defaultValue={
+                        bldgArea ? numberToStd(toPyeong(bldgArea)) : ''
+                      }
+                      placeholder="0"
+                      colorLabel="#000000"
+                      valueProps={e => {
+                        let value = e.replace(/[^0-9]/g, '');
+                        let valueCover = toSquareMeter(value);
+                        this.setState({
+                          bldgArea2: stdToNumber(value),
+                          bldgArea: stdToNumber(valueCover),
+                        });
+                      }}
+                      value={bldgArea2 && numberToStd(bldgArea2)}
+                      keyboardType="numeric"
+                      maxLength={7}
+                    />
+                  </View>
+                  <View style={DefaultStyle._element}>  
+                    <TextField
+                      labelTextField="건축면적"
                       textRight="m2"
                       defaultValue={bldgArea ? numberToStd(bldgArea) : '0'}
                       placeholder="0"
@@ -293,14 +315,20 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={bldgArea && numberToStd(bldgArea)}
                       keyboardType="numeric"
+                      maxLength={10}
                     />
                   </View>
-                  <View style={DefaultStyle._element}>
+                  
+                </View>
+
+                <View style={DefaultStyle._listElement}>
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  
                     <TextField
-                      labelTextField="건축면적"
+                      labelTextField="대지면적"
                       textRight="평"
                       defaultValue={
-                        bldgArea ? numberToStd(toPyeong(bldgArea)) : ''
+                        siteArea ? numberToStd(toPyeong(siteArea)) : ''
                       }
                       placeholder="0"
                       colorLabel="#000000"
@@ -308,18 +336,16 @@ class RegisterMoreInfo extends Component {
                         let value = e.replace(/[^0-9]/g, '');
                         let valueCover = toSquareMeter(value);
                         this.setState({
-                          bldgArea2: stdToNumber(value),
-                          bldgArea: stdToNumber(valueCover),
+                          siteArea2: stdToNumber(value),
+                          siteArea: stdToNumber(valueCover),
                         });
                       }}
-                      value={bldgArea2 && numberToStd(bldgArea2)}
+                      value={siteArea2 && numberToStd(siteArea2)}
                       keyboardType="numeric"
+                      maxLength={7}
                     />
                   </View>
-                </View>
-
-                <View style={DefaultStyle._listElement}>
-                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <View style={DefaultStyle._element}>
                     <TextField
                       labelTextField="대지면적"
                       textRight="m2"
@@ -340,14 +366,19 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={siteArea && numberToStd(siteArea)}
                       keyboardType="numeric"
+                      maxLength={7}
                     />
                   </View>
-                  <View style={DefaultStyle._element}>
+                  
+                </View>
+
+                <View style={DefaultStyle._listElement}>
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
-                      labelTextField="대지면적"
+                      labelTextField="연면적"
                       textRight="평"
                       defaultValue={
-                        siteArea ? numberToStd(toPyeong(siteArea)) : ''
+                        totalArea ? numberToStd(toPyeong(totalArea)) : ''
                       }
                       placeholder="0"
                       colorLabel="#000000"
@@ -355,18 +386,16 @@ class RegisterMoreInfo extends Component {
                         let value = e.replace(/[^0-9]/g, '');
                         let valueCover = toSquareMeter(value);
                         this.setState({
-                          siteArea2: stdToNumber(value),
-                          siteArea: stdToNumber(valueCover),
+                          totalArea2: stdToNumber(value),
+                          totalArea: stdToNumber(valueCover),
                         });
                       }}
-                      value={siteArea2 && numberToStd(siteArea2)}
+                      value={totalArea2 && numberToStd(totalArea2)}
                       keyboardType="numeric"
+                      maxLength={7}
                     />
                   </View>
-                </View>
-
-                <View style={DefaultStyle._listElement}>
-                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <View style={DefaultStyle._element}>
                     <TextField
                       labelTextField="연면적"
                       textRight="m2"
@@ -387,14 +416,20 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={totalArea && numberToStd(totalArea)}
                       keyboardType="numeric"
+                      maxLength={7}
                     />
                   </View>
-                  <View style={DefaultStyle._element}>
+                  
+                </View>
+
+                <View style={DefaultStyle._listElement}>
+                  
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
-                      labelTextField="연면적"
+                      labelTextField="전용면적"
                       textRight="평"
                       defaultValue={
-                        totalArea ? numberToStd(toPyeong(totalArea)) : ''
+                        prvtArea ? numberToStd(toPyeong(prvtArea)) : ''
                       }
                       placeholder="0"
                       colorLabel="#000000"
@@ -402,18 +437,16 @@ class RegisterMoreInfo extends Component {
                         let value = e.replace(/[^0-9]/g, '');
                         let valueCover = toSquareMeter(value);
                         this.setState({
-                          totalArea2: stdToNumber(value),
-                          totalArea: stdToNumber(valueCover),
+                          prvtArea2: stdToNumber(value),
+                          prvtArea: stdToNumber(valueCover),
                         });
                       }}
-                      value={totalArea2 && numberToStd(totalArea2)}
+                      value={prvtArea2 && numberToStd(prvtArea2)}
                       keyboardType="numeric"
+                      maxLength={7}
                     />
                   </View>
-                </View>
-
-                <View style={DefaultStyle._listElement}>
-                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <View style={DefaultStyle._element}>
                     <TextField
                       labelTextField="전용면적"
                       textRight="m2"
@@ -434,14 +467,19 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={prvtArea && numberToStd(prvtArea)}
                       keyboardType="numeric"
+                      maxLength={7}
                     />
                   </View>
-                  <View style={DefaultStyle._element}>
+                </View>
+
+                <View style={DefaultStyle._listElement}>
+                  
+                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
                     <TextField
-                      labelTextField="전용면적"
+                      labelTextField="공용면적"
                       textRight="평"
                       defaultValue={
-                        prvtArea ? numberToStd(toPyeong(prvtArea)) : ''
+                        cmnArea ? numberToStd(toPyeong(cmnArea)) : ''
                       }
                       placeholder="0"
                       colorLabel="#000000"
@@ -449,18 +487,16 @@ class RegisterMoreInfo extends Component {
                         let value = e.replace(/[^0-9]/g, '');
                         let valueCover = toSquareMeter(value);
                         this.setState({
-                          prvtArea2: stdToNumber(value),
-                          prvtArea: stdToNumber(valueCover),
+                          cmnArea2: stdToNumber(value),
+                          cmnArea: stdToNumber(valueCover),
                         });
                       }}
-                      value={prvtArea2 && numberToStd(prvtArea2)}
+                      value={cmnArea2 && numberToStd(cmnArea2)}
                       keyboardType="numeric"
+                      maxLength={7}
                     />
                   </View>
-                </View>
-
-                <View style={DefaultStyle._listElement}>
-                  <View style={[DefaultStyle._element, { marginRight: 12 }]}>
+                  <View style={DefaultStyle._element}>
                     <TextField
                       labelTextField="공용면적"
                       textRight="m2"
@@ -481,27 +517,7 @@ class RegisterMoreInfo extends Component {
                       }}
                       value={cmnArea && numberToStd(cmnArea)}
                       keyboardType="numeric"
-                    />
-                  </View>
-                  <View style={DefaultStyle._element}>
-                    <TextField
-                      labelTextField="공용면적"
-                      textRight="평"
-                      defaultValue={
-                        cmnArea ? numberToStd(toPyeong(cmnArea)) : ''
-                      }
-                      placeholder="0"
-                      colorLabel="#000000"
-                      valueProps={e => {
-                        let value = e.replace(/[^0-9]/g, '');
-                        let valueCover = toSquareMeter(value);
-                        this.setState({
-                          cmnArea2: stdToNumber(value),
-                          cmnArea: stdToNumber(valueCover),
-                        });
-                      }}
-                      value={cmnArea2 && numberToStd(cmnArea2)}
-                      keyboardType="numeric"
+                      maxLength={7}
                     />
                   </View>
                 </View>

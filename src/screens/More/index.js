@@ -1,5 +1,5 @@
 // Global Imports
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import {
   SafeAreaView,
   View,
@@ -7,17 +7,16 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import { TextInput, Appbar, Text, Button } from 'react-native-paper';
+import {TextInput, Appbar, Text, Button} from 'react-native-paper';
 // import {useNavigation} from '@react-navigation/native';
 
 // Local Imports
 import DefaultStyle from '../../styles/default';
 // import Appbars from '@Components/organisms/AppBar';
 import ActionCreator from '@Actions';
-import { getMsg } from '@Utils/langUtils';
-import { styles as S } from './style';
+import {styles as S} from './style';
 // import DoneRegister from './done';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import account from '@Assets/images/more-account.png';
@@ -28,27 +27,31 @@ import save from '@Assets/images/more-save.png';
 import transport from '@Assets/images/more-transport.png';
 import warehouse from '@Assets/images/more-warehouse.png';
 
-import { AuthContext } from '@Store/context';
+import {AuthContext} from '@Store/context';
 
-import { TOKEN } from '@Constant';
+import {TOKEN} from '@Constant';
+
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 
 //---> Assets
 import AsyncStorage from '@react-native-community/async-storage';
-import { Account } from '@Services/apis';
+import {Account, Menu} from '@Services/apis';
 
 class More extends Component {
   static contextType = AuthContext;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.webView = null;
     this.state = {
       isLogin: false,
+      menus: []
     };
     this.navigation = props.navigation;
   }
 
-  async UNSAFE_componentWillMount () {
+  async UNSAFE_componentWillMount() {
     const value = await AsyncStorage.getItem(TOKEN);
     // console.log('More Token ==>', value);
     Account.getMe()
@@ -66,22 +69,38 @@ class More extends Component {
       .catch(err => {
         console.log('errHome', err);
       });
+
+    Menu.menus()
+      .then(res => {
+        const menu = res._embedded
+        && res._embedded.menus
+        && res._embedded.menus.length > 0 ?
+          res._embedded.menus[0] : [];
+
+        console.log('menu', menu)
+        this.setState({
+          menu: menu
+        });
+      })
+      .catch(err => {
+        console.log('errHome:Menu', err);
+      })
     if (value) {
-      this.setState({ token: value });
+      this.setState({token: value});
     }
   }
 
-  render () {
-    let { email, fullName, isLogin } = this.state;
+  render() {
+    let {email, fullName, isLogin} = this.state;
     // const { route, isLogin } = this.props;
-    const { signOut } = this.context;
+    const {signOut} = this.context;
 
     return (
       <SafeAreaView style={S.container}>
         <ScrollView style={DefaultStyle.backgroundGray}>
           <View style={[DefaultStyle._cards, DefaultStyle._margin0]}>
-            <Text style={[DefaultStyle._textTitleCard, { marginBottom: 18 }]}>
-              더보기
+            <Text style={[DefaultStyle._textTitleCard, {marginBottom: 18}]}>
+              {getMsg(this.props.lang, 'ML0103', '더 보기')}
             </Text>
             <TouchableOpacity
               style={[DefaultStyle.btnItem, S.infoUser]}
@@ -92,11 +111,11 @@ class More extends Component {
               }>
               <View style={DefaultStyle.leftItem}>
                 <Text style={[DefaultStyle.titleItem, S.textInfo]}>
-                  {isLogin === false ? '로그인' : fullName}
+                  {isLogin === false ? getMsg(this.props.lang, 'ML0001', '로그인') : fullName}
                 </Text>
                 <Text style={DefaultStyle.contentItem}>
                   {isLogin === false
-                    ? '로그인 후 더 많은 정보를 확인해보세요.'
+                    ? getMsg(this.props.lang, 'ML0047', '로그인 후 더 많은 정보를 확인해보세요.')
                     : email}
                 </Text>
               </View>
@@ -113,344 +132,425 @@ class More extends Component {
             borderBottomColor: '#d7d7d7',
             borderBottomWidth: 1,
           }}></View>
-          {isLogin === false ? null : (
+          {isLogin && (
             <Fragment>
-              <View style={[DefaultStyle._cards, S.listPage]}>
-                <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
-                  마이페이지
-                </Text>
-                <TouchableOpacity
-                  style={DefaultStyle.btnItem}
-                  onPress={() =>
-                    this.navigation.navigate('Mypage', {
-                      title: '견적･계약 관리',
-                    })
-                  }>
-                  <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={estimate} />
-                    <Text style={DefaultStyle.titleItem}>견적･계약관리</Text>
-                  </View>
-                  <View style={DefaultStyle.rightItem}>
-                    <Icon
-                      name="arrow-forward-ios"
-                      size={12}
-                      color="rgba(0, 0, 0, 0.54)"
-                    />
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={DefaultStyle.btnItem}
-                  onPress={() =>
-                    this.navigation.navigate('Mypage', {
-                      title: '입･출고 관리',
-                    })
-                  }>
-                  <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={transport} />
-                    <Text style={DefaultStyle.titleItem}>입･출고관리</Text>
-                  </View>
-                  <View style={DefaultStyle.rightItem}>
-                    <Icon
-                      name="arrow-forward-ios"
-                      size={12}
-                      color="rgba(0, 0, 0, 0.54)"
-                    />
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={DefaultStyle.btnItem}
-                  onPress={() =>
-                    this.navigation.navigate('Mypage', {
-                      title: '정산관리',
-                    })
-                  }>
-                  <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={account} />
-                    <Text style={DefaultStyle.titleItem}>정산관리</Text>
-                  </View>
-                  <View style={DefaultStyle.rightItem}>
-                    <Icon
-                      name="arrow-forward-ios"
-                      size={12}
-                      color="rgba(0, 0, 0, 0.54)"
-                    />
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('Inquiry')}>
-                  <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={inquiry} />
-                    <Text style={DefaultStyle.titleItem}>문의내역</Text>
-                  </View>
-                  <View style={DefaultStyle.rightItem}>
-                    <Icon
-                      name="arrow-forward-ios"
-                      size={12}
-                      color="rgba(0, 0, 0, 0.54)"
-                    />
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={DefaultStyle.btnItem}
-                  onPress={() =>
-                    this.navigation.navigate('Mypage', {
-                      title: '내 창고',
-                    })
-                  }>
-                  <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={warehouse} />
-                    <Text style={DefaultStyle.titleItem}>내 창고</Text>
-                  </View>
-                  <View style={DefaultStyle.rightItem}>
-                    <Icon
-                      name="arrow-forward-ios"
-                      size={12}
-                      color="rgba(0, 0, 0, 0.54)"
-                    />
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={DefaultStyle.btnItem}
-                  onPress={() => this.navigation.navigate('Mypage', {
-                    title: '관심 창고',
-                  })}>
-                  <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={save} />
-                    <Text style={DefaultStyle.titleItem}>관심창고</Text>
-                  </View>
-                  <View style={DefaultStyle.rightItem}>
-                    <Icon
-                      name="arrow-forward-ios"
-                      size={12}
-                      color="rgba(0, 0, 0, 0.54)"
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
+              {this.state.menu && this.state.menu.subMenus &&
 
-              <View style={[DefaultStyle._cards, S.listPage]}>
-                <TouchableOpacity
-                  style={DefaultStyle.btnItem}
-                  onPress={() =>
-                    // this.navigation.navigate('RegisterBusinessInfo')
-                    this.navigation.navigate('WarehouseType')
-                  }>
-                  <View style={[DefaultStyle.leftItem, S.item]}>
-                    <Image style={S.iconItem} source={addwarehouse} />
-                    <Text style={DefaultStyle.titleItem}>창고등록</Text>
-                  </View>
-                  <View style={DefaultStyle.rightItem}>
-                    <Icon
-                      name="arrow-forward-ios"
-                      size={12}
-                      color="rgba(0, 0, 0, 0.54)"
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </Fragment>
-          )}
+              this.state.menu.subMenus.map(item => {
 
-          {isLogin && (
-            <View style={[DefaultStyle._cards, S.listPage]}>
-              <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
-                Premium
-              </Text>
-              {/* TODO 완료 전까지 임시 숨김.*/}
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('Consulting')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('LogisticsKnowledge')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('Emergency')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>긴급차량 지원</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('LogisticConsulting')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>물류컨설팅 지원</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-            </View>
-          )}
+                if (!item.execute) {
+                  return <View style={[DefaultStyle._cards, S.listPage]}>
+                    {item.name !== '#hide' &&
+                    <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
+                      {item.name}
+                    </Text>}
 
-          {isLogin && (
-            <View
-              style={[
-                DefaultStyle._cards,
-                S.listPage,
-                isLogin === false ? DefaultStyle._margin0 : null,
-              ]}>
-              <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
-                고객센터
-              </Text>
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('Notification')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>이용방법</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('Annoucement')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>공지사항</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('Question')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>문의하기</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={DefaultStyle.btnItem}
-                onPress={() => this.navigation.navigate('FAQ')}>
-                <View style={[DefaultStyle.leftItem, S.item]}>
-                  <Text style={DefaultStyle.titleItem}>자주 묻는 질문</Text>
-                </View>
-                <View style={DefaultStyle.rightItem}>
-                  <Icon
-                    name="arrow-forward-ios"
-                    size={12}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </View>
-              </TouchableOpacity>
+                    {item.subMenus && item.subMenus.length > 0 &&
 
-{/**              <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('SignatureCapture')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>SignatureCapture</Text>
-              </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-           */}
+                      item.subMenus.map(item =>
+                        <TouchableOpacity
+                          key={item.menuId}
+                          style={DefaultStyle.btnItem}
+                          onPress={() => {
+                            if (item.execute) {
 
-              {/*<TouchableOpacity*/}
-              {/*style={DefaultStyle.btnItem}*/}
-              {/*onPress={() => this.navigation.navigate('SampleScreen')}>*/}
-              {/*<View style={[DefaultStyle.leftItem, S.item]}>*/}
-              {/*<Text style={DefaultStyle.titleItem}>Screen Test</Text>*/}
+                              console.log(item.url ,'tab');
+
+                              if (item.url && item.url.startsWith('#Mypage')) {
+                                return this.navigation.navigate('Mypage', {
+                                  title: item.name,
+                                  tab: item.url.replace('#', '')
+                                });
+                              } else {
+                                return this.navigation.navigate(item.url.replace('#', ''));
+                              }
+
+                            }
+                          }}>
+                          <View style={[DefaultStyle.leftItem, S.item]}>
+                            {item.url && item.url === '#Mypage_cntr' &&
+                            <Image style={S.iconItem} source={estimate}/>
+                            }
+                            {item.url && item.url === '#Mypage_io' &&
+                            <Image style={S.iconItem} source={transport}/>
+                            }
+                            {item.url && item.url === '#Mypage_settlement' &&
+                            <Image style={S.iconItem} source={account}/>
+                            }
+                            {item.url && item.url === '#Inquiry' &&
+                            <Image style={S.iconItem} source={inquiry}/>
+                            }
+                            {item.url && item.url === '#Mypage_mywhrg' &&
+                            <Image style={S.iconItem} source={warehouse}/>
+                            }
+                            {item.url && item.url === '#Mypage_fav' &&
+                            <Image style={S.iconItem} source={save}/>
+                            }
+                            {item.url && item.url === '#WarehouseType' &&
+                            <Image style={S.iconItem} source={addwarehouse}/>
+                            }
+                            <Text style={DefaultStyle.titleItem}>{item.name}</Text>
+                          </View>
+                          <View style={DefaultStyle.rightItem}>
+                            <Icon
+                              name="arrow-forward-ios"
+                              size={12}
+                              color="rgba(0, 0, 0, 0.54)"
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      )
+
+                    }
+                  </View>;
+                } else {
+                  return <Text>{item.name}</Text>;
+                }
+              })
+              }
+              {/*<View style={[DefaultStyle._cards, S.listPage]}>*/}
+              {/*  <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>*/}
+              {/*    마이페이지*/}
+              {/*  </Text>*/}
+
+                {/*<TouchableOpacity*/}
+                {/*  style={DefaultStyle.btnItem}*/}
+                {/*  onPress={() =>*/}
+                {/*    this.navigation.navigate('Mypage', {*/}
+                {/*      title: '견적･계약 관리',*/}
+                {/*      tab: 'Mypage_cntr'*/}
+                {/*    })*/}
+                {/*  }>*/}
+                {/*  <View style={[DefaultStyle.leftItem, S.item]}>*/}
+                {/*    <Image style={S.iconItem} source={estimate}/>*/}
+                {/*    <Text style={DefaultStyle.titleItem}>견적･계약관리</Text>*/}
+                {/*  </View>*/}
+                {/*  <View style={DefaultStyle.rightItem}>*/}
+                {/*    <Icon*/}
+                {/*      name="arrow-forward-ios"*/}
+                {/*      size={12}*/}
+                {/*      color="rgba(0, 0, 0, 0.54)"*/}
+                {/*    />*/}
+                {/*  </View>*/}
+                {/*</TouchableOpacity>*/}
+                {/*<TouchableOpacity*/}
+                {/*  style={DefaultStyle.btnItem}*/}
+                {/*  onPress={() =>*/}
+                {/*    this.navigation.navigate('Mypage', {*/}
+                {/*      title: '입･출고 관리',*/}
+                {/*      tab: 'Mypage_io'*/}
+                {/*    })*/}
+                {/*  }>*/}
+                {/*  <View style={[DefaultStyle.leftItem, S.item]}>*/}
+                {/*    <Image style={S.iconItem} source={transport}/>*/}
+                {/*    <Text style={DefaultStyle.titleItem}>입･출고관리</Text>*/}
+                {/*  </View>*/}
+                {/*  <View style={DefaultStyle.rightItem}>*/}
+                {/*    <Icon*/}
+                {/*      name="arrow-forward-ios"*/}
+                {/*      size={12}*/}
+                {/*      color="rgba(0, 0, 0, 0.54)"*/}
+                {/*    />*/}
+                {/*  </View>*/}
+                {/*</TouchableOpacity>*/}
+                {/*<TouchableOpacity*/}
+                {/*  style={DefaultStyle.btnItem}*/}
+                {/*  onPress={() =>*/}
+                {/*    this.navigation.navigate('Mypage', {*/}
+                {/*      title: '정산관리',*/}
+                {/*      tab: 'Mypage_settlement'*/}
+                {/*    })*/}
+                {/*  }>*/}
+                {/*  <View style={[DefaultStyle.leftItem, S.item]}>*/}
+                {/*    <Image style={S.iconItem} source={account}/>*/}
+                {/*    <Text style={DefaultStyle.titleItem}>정산관리</Text>*/}
+                {/*  </View>*/}
+                {/*  <View style={DefaultStyle.rightItem}>*/}
+                {/*    <Icon*/}
+                {/*      name="arrow-forward-ios"*/}
+                {/*      size={12}*/}
+                {/*      color="rgba(0, 0, 0, 0.54)"*/}
+                {/*    />*/}
+                {/*  </View>*/}
+                {/*</TouchableOpacity>*/}
+                {/*<TouchableOpacity*/}
+                {/*  style={DefaultStyle.btnItem}*/}
+                {/*  onPress={() => this.navigation.navigate('Inquiry')}>*/}
+                {/*  <View style={[DefaultStyle.leftItem, S.item]}>*/}
+                {/*    <Image style={S.iconItem} source={inquiry}/>*/}
+                {/*    <Text style={DefaultStyle.titleItem}>문의내역</Text>*/}
+                {/*  </View>*/}
+                {/*  <View style={DefaultStyle.rightItem}>*/}
+                {/*    <Icon*/}
+                {/*      name="arrow-forward-ios"*/}
+                {/*      size={12}*/}
+                {/*      color="rgba(0, 0, 0, 0.54)"*/}
+                {/*    />*/}
+                {/*  </View>*/}
+                {/*</TouchableOpacity>*/}
+                {/*<TouchableOpacity*/}
+                {/*  style={DefaultStyle.btnItem}*/}
+                {/*  onPress={() =>*/}
+                {/*    this.navigation.navigate('Mypage', {*/}
+                {/*      title: '내 창고',*/}
+                {/*      tab: 'Mypage_mywhrg'*/}
+                {/*    })*/}
+                {/*  }>*/}
+                {/*  <View style={[DefaultStyle.leftItem, S.item]}>*/}
+                {/*    <Image style={S.iconItem} source={warehouse}/>*/}
+                {/*    <Text style={DefaultStyle.titleItem}>내 창고</Text>*/}
+                {/*  </View>*/}
+                {/*  <View style={DefaultStyle.rightItem}>*/}
+                {/*    <Icon*/}
+                {/*      name="arrow-forward-ios"*/}
+                {/*      size={12}*/}
+                {/*      color="rgba(0, 0, 0, 0.54)"*/}
+                {/*    />*/}
+                {/*  </View>*/}
+                {/*</TouchableOpacity>*/}
+                {/*<TouchableOpacity*/}
+                {/*  style={DefaultStyle.btnItem}*/}
+                {/*  onPress={() => this.navigation.navigate('Mypage', {*/}
+                {/*    title: '관심 창고',*/}
+                {/*    tab: 'Mypage_fav'*/}
+                {/*  })}>*/}
+                {/*  <View style={[DefaultStyle.leftItem, S.item]}>*/}
+                {/*    <Image style={S.iconItem} source={save}/>*/}
+                {/*    <Text style={DefaultStyle.titleItem}>관심창고</Text>*/}
+                {/*  </View>*/}
+                {/*  <View style={DefaultStyle.rightItem}>*/}
+                {/*    <Icon*/}
+                {/*      name="arrow-forward-ios"*/}
+                {/*      size={12}*/}
+                {/*      color="rgba(0, 0, 0, 0.54)"*/}
+                {/*    />*/}
+                {/*  </View>*/}
+                {/*</TouchableOpacity>*/}
               {/*</View>*/}
-              {/*<View style={DefaultStyle.rightItem}>*/}
-              {/*<Icon*/}
-              {/*name="arrow-forward-ios"*/}
-              {/*size={12}*/}
-              {/*color="rgba(0, 0, 0, 0.54)"*/}
-              {/*/>*/}
+
+              {/*<View style={[DefaultStyle._cards, S.listPage]}>*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() =>*/}
+              {/*      // this.navigation.navigate('RegisterBusinessInfo')*/}
+              {/*      this.navigation.navigate('WarehouseType')*/}
+              {/*    }>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Image style={S.iconItem} source={addwarehouse}/>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>창고등록</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+
               {/*</View>*/}
-              {/*</TouchableOpacity>*/}
-            </View>
-          )}
+
+              {/*<View style={[DefaultStyle._cards, S.listPage]}>*/}
+              {/*  <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>*/}
+              {/*    Premium*/}
+              {/*  </Text>*/}
+              {/*  /!* TODO 완료 전까지 임시 숨김.*!/*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() => this.navigation.navigate('Consulting')}>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>물류 컨설팅</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() => this.navigation.navigate('LogisticsKnowledge')}>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>물류지식 게시판</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() => this.navigation.navigate('Emergency')}>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>긴급차량 지원</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() => this.navigation.navigate('LogisticConsulting')}>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>물류컨설팅 지원</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+              {/*</View>*/}
+
+              {/*<View*/}
+              {/*  style={[*/}
+              {/*    DefaultStyle._cards,*/}
+              {/*    S.listPage,*/}
+              {/*    isLogin === false ? DefaultStyle._margin0 : null,*/}
+              {/*  ]}>*/}
+              {/*  <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>*/}
+              {/*    고객센터*/}
+              {/*  </Text>*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() => this.navigation.navigate('Notification')}>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>이용방법</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() => this.navigation.navigate('Annoucement')}>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>공지사항</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() => this.navigation.navigate('Question')}>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>문의하기</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+              {/*  <TouchableOpacity*/}
+              {/*    style={DefaultStyle.btnItem}*/}
+              {/*    onPress={() => this.navigation.navigate('FAQ')}>*/}
+              {/*    <View style={[DefaultStyle.leftItem, S.item]}>*/}
+              {/*      <Text style={DefaultStyle.titleItem}>자주 묻는 질문</Text>*/}
+              {/*    </View>*/}
+              {/*    <View style={DefaultStyle.rightItem}>*/}
+              {/*      <Icon*/}
+              {/*        name="arrow-forward-ios"*/}
+              {/*        size={12}*/}
+              {/*        color="rgba(0, 0, 0, 0.54)"*/}
+              {/*      />*/}
+              {/*    </View>*/}
+              {/*  </TouchableOpacity>*/}
+
+                {/**              <TouchableOpacity
+                 style={DefaultStyle.btnItem}
+                 onPress={() => this.navigation.navigate('SignatureCapture')}>
+                 <View style={[DefaultStyle.leftItem, S.item]}>
+                 <Text style={DefaultStyle.titleItem}>SignatureCapture</Text>
+                 </View>
+                 <View style={DefaultStyle.rightItem}>
+                 <Icon
+                 name="arrow-forward-ios"
+                 size={12}
+                 color="rgba(0, 0, 0, 0.54)"
+                 />
+                 </View>
+                 </TouchableOpacity>
+                 */}
+
+                {/*<TouchableOpacity*/}
+                {/*style={DefaultStyle.btnItem}*/}
+                {/*onPress={() => this.navigation.navigate('SampleScreen')}>*/}
+                {/*<View style={[DefaultStyle.leftItem, S.item]}>*/}
+                {/*<Text style={DefaultStyle.titleItem}>Screen Test</Text>*/}
+                {/*</View>*/}
+                {/*<View style={DefaultStyle.rightItem}>*/}
+                {/*<Icon*/}
+                {/*name="arrow-forward-ios"*/}
+                {/*size={12}*/}
+                {/*color="rgba(0, 0, 0, 0.54)"*/}
+                {/*/>*/}
+                {/*</View>*/}
+                {/*</TouchableOpacity>*/}
+                {/*</View>*/}
+              </Fragment>
+                )}
 
 
-          <View style={S.footerMore}>
-            <TouchableOpacity
-              style={DefaultStyle.btnItem}
-              onPress={() => this.navigation.navigate('Language')}>
-              <View style={[DefaultStyle.leftItem, S.item]}>
-                <Text style={DefaultStyle.titleItem}>언어 설정</Text>
+              <View style={S.footerMore}>
+                {/* <TouchableOpacity
+                  style={DefaultStyle.btnItem}
+                  onPress={() => this.navigation.navigate('Language')}>
+                  <View style={[DefaultStyle.leftItem, S.item]}>
+                    <Text style={DefaultStyle.titleItem}>
+                      {getMsg(this.props.lang, 'ML0040', '언어 설정')}
+                    </Text>
+                  </View>
+                  <View style={DefaultStyle.rightItem}>
+                    <Icon
+                      name="arrow-forward-ios"
+                      size={12}
+                      color="rgba(0, 0, 0, 0.54)"
+                    />
+                  </View>
+                </TouchableOpacity> */}
+
+                <TouchableOpacity
+                  onPress={() => {
+                    signOut();
+                    this.navigation.navigate('Login');
+                  }}>
+                  {isLogin === false ? null : (
+                    <Text style={S.textLogout}>
+                      {getMsg(this.props.lang, 'ML0002', '로그아웃')}
+                    </Text>
+                  )}
+                </TouchableOpacity>
               </View>
-              <View style={DefaultStyle.rightItem}>
-                <Icon
-                  name="arrow-forward-ios"
-                  size={12}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                signOut();
-                this.navigation.navigate('Login');
-              }}>
-              {isLogin === false ? null : (
-                <Text style={S.textLogout}>로그아웃</Text>
-              )}
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
+            </ScrollView>
+            </SafeAreaView>
+            );
+          }
 
   /** when after render DOM */
-  async componentDidMount () {
+  async componentDidMount() {
     console.log('::componentDidMont::More');
     // const value = await AsyncStorage.getItem(TOKEN);
     // console.log('hello==>', value);
@@ -477,13 +577,13 @@ class More extends Component {
   }
 
   /** when update state or props */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     console.log('::componentDidUpdate::');
   }
 }
 
 /** map state with store states redux store */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   // console.log('++++++mapStateToProps: ', state);
   return {
     isLogin: state.home.isLogin,
@@ -492,7 +592,7 @@ function mapStateToProps (state) {
 }
 
 /** dispatch action to redux */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     setProgress: status => {
       dispatch(ActionCreator.setProgress(status));

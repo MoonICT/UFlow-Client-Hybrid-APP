@@ -26,6 +26,8 @@ import ActionCreator from '@Actions';
 import { styles as S } from '../style';
 import { Warehouse } from '@Services/apis';
 import DocumentPicker from 'react-native-document-picker';
+import ImageResizer from 'react-native-image-resizer';
+import RNFetchBlob from 'rn-fetch-blob';
 
 class RegisterImage extends Component {
   constructor (props) {
@@ -94,6 +96,25 @@ class RegisterImage extends Component {
   //   }
   // };
 
+  handleResizerImage = (data) => {
+    return new Promise(function (resolve, reject) {
+      const outputPath = `${RNFetchBlob.fs.dirs.DocumentDir}`;
+      ImageResizer.createResizedImage(
+        data.uri,
+        data.width,
+        data.height,
+        'JPEG',
+        100,
+        0,
+        outputPath,
+        true,
+      ).then(response => {
+        console.log(':::::: 이미지 책임 변환 :::::::::', response)
+        resolve(response)
+      });
+    });
+  }
+
   handlePicker = async (type) => {
     let options = {
       storageOptions: {
@@ -103,11 +124,20 @@ class RegisterImage extends Component {
     };
 
     try {
-      launchImageLibrary(options, response => {
-        console.log('image response ::: ', response);
+      launchImageLibrary(options, async (response) => {
+        console.log('image response ::: ', response)
+
+
+        // 파노라마 이미지일 경우.
+        let resultImage = response.uri
+        // if (type === '002') {
+        //   let resizeImage = await this.handleResizerImage(response)
+        //   resultImage = resizeImage.uri
+        //   console.log('==========resizeImage==========', resizeImage)
+        // }
 
         let file = {
-          fileCopyUri: response.uri,
+          fileCopyUri: resultImage,
           name: response.fileName,
           size: response.fileSize,
           type: response.type,
@@ -117,6 +147,13 @@ class RegisterImage extends Component {
         // 이미지를 선택 안한 경우.
         if (response && response.didCancel) {
           return false;
+        }
+
+        // 용량 체크.
+        console.log('Image size : ', response.fileSize)
+        if (10485760 < response.fileSize) {
+          alert('최대 10MB 까지 업로드 가능합니다.')
+          return false
         }
 
         this.setState({ singleFile: file }, async () => {
@@ -143,9 +180,10 @@ class RegisterImage extends Component {
             // Progress
             this.props.setProgress({ is: true, type: 'CIRCLE' });
             // Please change file upload URL
-            {/** TODO 창고 이미지 업로드 시  **/}
+            {/** TODO 창고 이미지 업로드 시  **/
+            }
             {/**
-               TODO @deokin
+             TODO @deokin
              * 1)20210121 장종례 창고등록 API 수정 (1)
              * 2)20210121 장종례 창고등록 API 수정 (2)
              * 3)창고등록 이미지 업로드 처리
@@ -159,7 +197,8 @@ class RegisterImage extends Component {
              *   code => 이미지(0001) 또는 파노라마(0002)
              * }
              * @returns {Promise<AxiosResponse<any>>}
-             */}
+             */
+            }
             await Warehouse.uploadImage(data)
               .then(respon => {
                 console.log('이미지 업로드 완료 : ', respon)

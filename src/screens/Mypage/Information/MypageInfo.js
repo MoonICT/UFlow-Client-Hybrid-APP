@@ -239,6 +239,7 @@ class MypageInfo extends Component {
                 })
               }
               colorLabel="#000000"
+              maxLength={30}
             />
             <TextField
               labelTextField="이메일"
@@ -247,6 +248,7 @@ class MypageInfo extends Component {
               value={data.email || 'haharu@aartkorea.com'}
               placeholder="haharu@aartkorea.com"
               colorLabel="#000000"
+              maxLength={200}
             />
             <TextField
               type={'password'}

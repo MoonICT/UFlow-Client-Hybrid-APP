@@ -14,6 +14,7 @@ import { compose } from 'redux';
 import { styles } from './style';
 import ActionCreator from "@Actions";
 import Checkbox from '@Components/atoms/Checkbox';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class FilterStorage extends Component {
   constructor (props) {
@@ -60,8 +61,12 @@ class FilterStorage extends Component {
         {/** Label */}
         <View style={styles.filterLabelWrap}>
           <View style={styles.filterLabelWrap}>
-            <Text style={[styles.filterLabel, styles.filterLabelMain]}>{'창고 유형'}</Text>
-            <Text style={[styles.filterLabel, styles.filterLabelSub]}>{'중복선택 가능합니다.'}</Text>
+            <Text style={[styles.filterLabel, styles.filterLabelMain]}>
+              {getMsg(this.props.lang, 'ML0129', '창고 유형')}
+            </Text>
+            <Text style={[styles.filterLabel, styles.filterLabelSub]}>
+              {getMsg(this.props.lang, 'ML0110', '중복선택 가능합니다.')}
+            </Text>
           </View>
         </View>
 
@@ -82,13 +87,17 @@ class FilterStorage extends Component {
             <Button mode="outlined"
                     style={[styles.btn, styles.btnPrimaryOutline]}
                     labelStyle={[styles.btnLabel]}
-                    onPress={() => this._onClickCancel()}>취소하기</Button>
+                    onPress={() => this._onClickCancel()}>
+              {getMsg(this.props.lang, 'ML0111', '취소하기')}
+            </Button>
           </View>
           <View style={styles.gridColumn}>
             <Button mode="contained"
                     style={[styles.btn, styles.btnPrimary]}
                     labelStyle={[styles.btnLabel, styles.btnLabelPrimary]}
-                    onPress={() => this._onClickApply()}>적용하기</Button>
+                    onPress={() => this._onClickApply()}>
+              {getMsg(this.props.lang, 'ML0112', '적용하기')}
+            </Button>
           </View>
         </View>
       </View>

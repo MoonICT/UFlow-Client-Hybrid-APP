@@ -61,6 +61,9 @@ class FormInfo extends Component {
       ],
     };
     this.navigation = props.navigation;
+
+
+    
   }
 
   /** listener when change props */
@@ -125,6 +128,7 @@ class FormInfo extends Component {
     this.setState({ selectedValue: selectedValue });
   }
   render() {
+    
     const {
       data,
       valueTab,
@@ -193,7 +197,8 @@ class FormInfo extends Component {
     let defaulcmgmtChrg =
       formData &&
       mgmtChrgDvCodes &&
-      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCodes);
+      mgmtChrgDvCodes.find(item => item.value === formData.mgmtChrgDvCode);
+      
     return (
       <Card style={S.cards}>
         <View style>
@@ -257,6 +262,7 @@ class FormInfo extends Component {
               let dataF = formData;
               dataF.mgmtChrgDvCode = e;
               valueForm && valueForm(dataF);
+              console.log("dataF ::: " , dataF);
             }}
           />
 {/**
@@ -311,6 +317,7 @@ class FormInfo extends Component {
                 labelTextField="가용수치"
                 textRight="평"
                 isRequired={true}
+                maxLength={7}
                 defaultValue={
                   formData.usblValue
                     ? numberToStd(toPyeong(formData.usblValue))
@@ -333,6 +340,7 @@ class FormInfo extends Component {
                 labelTextField="가용수치"
                 isRequired={true}
                 textRight="m2"
+                maxLength={7}
                 defaultValue={
                   formData.usblValue ? numberToStd(formData.usblValue) : ''
                 }
@@ -437,6 +445,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
             isRequired={true}
+            maxLength={7}
             keyboardType="numeric"
             textError={checkSplyAmount === true ? null : '정보를 입력해주세요.'}
           />
@@ -456,6 +465,7 @@ class FormInfo extends Component {
               valueForm && valueForm(dataF);
             }}
             isRequired={true}
+            maxLength={7}
             keyboardType="numeric"
             textError={checkMgmtChrg === true ? null : '정보를 입력해주세요.'}
           />
@@ -464,6 +474,7 @@ class FormInfo extends Component {
             labelTextField="비고"
             defaultValue={formData.remark ? formData.remark : ''}
             value={formData.remark}
+            maxLength={1000}
             valueProps={e => {
               this.setState({ remark: e });
               let dataF = formData;
@@ -530,6 +541,9 @@ function mapDispatchToProps(dispatch) {
     // countDown: diff => {
     //   dispatch(ActionCreator.countDown(diff));
     // },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
+    },
   };
 }
 

@@ -63,7 +63,7 @@ export const upload = async (
 ) => {
   const token = await AsyncStorage.getItem(TOKEN);
   console.log('body====>', formData);
-  return await mainAxios.post(`/api/v1/contract/4100/${type}/${contractType}/sign-pad`, 
+  return await mainAxios.post(`/api/v1/contract/4100/${type}/${contractType}/sign-pad`,
     formData,
     {headers: {
       Authorization: `Bearer ${token}`,
@@ -105,8 +105,6 @@ export const detailWH = async url => {
       ...config,
     };
   }
-
-  console.log(config, '>>>>  config');
   return await mainAxios.get(`/api/v1/warehouse/${url}`, config);
 };
 
@@ -717,8 +715,6 @@ export const getWhrg = async ({ id = '', config = '' }) => {
       ...config,
     };
   }
-
-  console.log(config, '>>>>  config');
   return await mainAxios.get(`/api/v1/warehouse/${id}`, config);
 };
 

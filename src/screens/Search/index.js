@@ -41,6 +41,8 @@ import Progress from '@Components/organisms/Progress';
 import { API_CLIENT_ADDRESS, LANG_STATUS_KEY } from '@Constant';
 import AsyncStorage from "@react-native-community/async-storage";
 
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 class Search extends Component {
   constructor (props) {
     super(props);
@@ -158,7 +160,7 @@ class Search extends Component {
         <Appbars style={styles.appBar}>
           <Appbar.Action icon="magnify" color="rgba(0, 0, 0, 0.54)" />
           <Appbar.Content
-            title="지역명이나 창고명을 검색하세요."
+            title={getMsg(this.props.lang, 'ML0104', '지역명이나 창고명을 검색하세요.')}
             color="rgba(0, 0, 0, 0.47)"
             onPress={() => {
               if (!this.props.isFilterToggle) {

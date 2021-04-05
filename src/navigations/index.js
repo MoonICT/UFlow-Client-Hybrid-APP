@@ -20,6 +20,7 @@ import {
 } from 'react-native-paper';
 import { Provider } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 // Local Imports
 //---> Screens
@@ -211,6 +212,19 @@ const App = () => {
       .catch(error => {
         alert('TabScreenOptions error:' + error);
       });
+
+    axios({
+      method: 'get',
+      url: 'http://ip-api.com/json',
+    }).then(res => {
+      console.log(':::::: IP ::::::', res.data.countryCode)
+      if (res && res.data) {
+        AsyncStorage.setItem(LANG_STATUS_KEY, res.data.countryCode === 'KR' ? 'ko-KR' : 'en-US');
+      }
+    }).catch(err => {
+      AsyncStorage.setItem(LANG_STATUS_KEY, 'ko-KR');
+    });
+
   }, []);
 
   // console.log('isLogin==>', isLogin);
@@ -264,7 +278,7 @@ const App = () => {
             <NavigationContainer
               ref={navigationRef}
               onStateChange={route => {
-                console.log(':::: onStateChange ::::', route);
+                // console.log(':::: onStateChange ::::', route);
                 Account.me()
                   .then(res => {
                     console.log('======================>> [토큰이 유효함]');

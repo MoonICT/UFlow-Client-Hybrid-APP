@@ -351,10 +351,10 @@ class RegisterBusinessInfo extends Component {
       return false;
     }
 
-    if (!businessInfo.regFile) {
-      alert('사업자등록증을 업로드 하세요.');
-      return false;
-    }
+    // if (!businessInfo.regFile) {
+    //   alert('사업자등록증을 업로드 하세요.');
+    //   return false;
+    // }
 
     this.setState({ loading: true });
     // 창고주 정보 등록
@@ -485,6 +485,7 @@ class RegisterBusinessInfo extends Component {
                     }}
                     value={businessInfo.name ? businessInfo.name : ''}
                     colorLabel="#000000"
+                    maxLength={50}
                   />
                   {/**
                   <TextField
@@ -532,9 +533,10 @@ class RegisterBusinessInfo extends Component {
                       });
                     }}
                     value={businessInfo.number ? businessInfo.number : ''}
+                    maxLength={15}
                   />
 
-                  <Text style={DefaultStyle._textDF}>
+                  {/* <Text style={DefaultStyle._textDF}>
                     - 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.
                   </Text>
                   <Text style={[DefaultStyle._textDF, DefaultStyle.mb_20]}>
@@ -561,7 +563,7 @@ class RegisterBusinessInfo extends Component {
                       ]}>
                       {'사업자등록증 업로드'}
                     </Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <View
                     style={[
                       DefaultStyle._listBtn,
@@ -639,7 +641,7 @@ class RegisterBusinessInfo extends Component {
                     colorLabel="#000000"
                     labelTextFieldSize={14}
                     fontSize={14}
-                    maxLength={100}
+                    maxLength={50}
                     isRequired={true}
                     textError={
                       !valid.checkRepreNm ? '대표자 명을 입력하세요.' : ''
@@ -686,6 +688,7 @@ class RegisterBusinessInfo extends Component {
                       });
                     }}
                     value={businessInfo.phone ? businessInfo.phone : ''}
+                    maxLength={11}
                   />
 
                   {/* cert phone */}
@@ -703,7 +706,7 @@ class RegisterBusinessInfo extends Component {
                     labelTextField="담당자 직함 (필수)"
                     labelTextFieldSize={14}
                     fontSize={14}
-                    maxLength={100}
+                    maxLength={50}
                     colorLabel="#000000"
                     isRequired={true}
                     textError={
@@ -727,7 +730,7 @@ class RegisterBusinessInfo extends Component {
                     labelTextField="담당자 이메일 (필수)"
                     labelTextFieldSize={14}
                     fontSize={14}
-                    maxLength={100}
+                    maxLength={255}
                     colorLabel="#000000"
                     isRequired={true}
                     textError={

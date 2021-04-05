@@ -36,6 +36,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles as S } from './style';
 import Carousel from '@Components/organisms/Carousel';
 import { Appbar } from 'react-native-paper';
+import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
+
 const data = [
   {
     title: '1.창고 등록',
@@ -81,7 +83,7 @@ export default class Notification extends Component {
     this.navigation = props.navigation;
     this.myRef = React.createRef();
     this.state = {
-      title: '1.창고 등록',
+      title: getMsg(this.props.lang, 'ML0075', '1.창고 등록'),
       heightSection1: 0,
       heightSection2: 0,
       heightSection3: 0,
@@ -199,13 +201,13 @@ export default class Notification extends Component {
     let height4 = height3 + heightSection4;
 
     if (scrollY <= heightSection1) {
-      this.setState({ title: '1.창고 등록' });
+      this.setState({ title: getMsg(this.props.lang, 'ML0075', '1.창고 등록') });
     } else if (heightSection1 < scrollY && scrollY < height2) {
-      this.setState({ title: '2.공실 검증' });
+      this.setState({ title: getMsg(this.props.lang, 'ML0076', '2.공실 검증') });
     } else if (scrollY > height2 && scrollY < height3) {
-      this.setState({ title: '3.견적 요청 확인' });
+      this.setState({ title: getMsg(this.props.lang, 'ML0077', '3.견적 요청 확인') });
     } else if (scrollY > height3 && scrollY < height4) {
-      this.setState({ title: '4.계약 요청' });
+      this.setState({ title: getMsg(this.props.lang, 'ML0078', '4.계약 요청') });
     } else if (scrollY > height4 + 200) {
       this.setState({ title: '5' });
     }
@@ -247,9 +249,7 @@ export default class Notification extends Component {
         key:'one',
         contentText: (
           <Text>
-            [창고 조회] 버튼을 클릭하여 {'\n'}
-            창고 조회 페이지로 이동 후 {'\n'}
-            원하는 창고를 검색하세요.
+            {getMsg(this.props.lang, 'ML0412', '[창고 조회] 버튼을 클릭하여\n창고 조회 페이지로 이동 후\n원하는 창고를 검색하세요.')}
           </Text>
         ),
       },
@@ -257,9 +257,7 @@ export default class Notification extends Component {
         key:'two',
         contentText: (
           <Text>
-            [창고 조회] 버튼을 클릭하여 {'\n'}
-            창고 조회 페이지로 이동 후 {'\n'}
-            원하는 창고를 검색하세요.
+            {getMsg(this.props.lang, 'ML0412', '[창고 조회] 버튼을 클릭하여\n창고 조회 페이지로 이동 후\n원하는 창고를 검색하세요.')}
           </Text>
         ),
       },
@@ -267,9 +265,7 @@ export default class Notification extends Component {
         key:'three',
         contentText: (
           <Text>
-            [창고 조회] 버튼을 클릭하여 {'\n'}
-            창고 조회 페이지로 이동 후 {'\n'}
-            원하는 창고를 검색하세요.
+            {getMsg(this.props.lang, 'ML0412', '[창고 조회] 버튼을 클릭하여\n창고 조회 페이지로 이동 후\n원하는 창고를 검색하세요.')}
           </Text>
         ),
       },
@@ -277,23 +273,21 @@ export default class Notification extends Component {
     let _slides2 = [
       {
         key:'one',
-        title: '추가 정보 입력',
+        title: getMsg(this.props.lang, 'ML0413', '추가 정보 입력'),
         url: ImgHTW5,
         content: (
           <Text>
-            견적 요청을 진행하기 전에 {'\n'}
-            사업자 정보를 입력합니다.
+            {getMsg(this.props.lang, 'ML0414', '견적 요청을 진행하기 전에\n사업자 정보를 입력합니다.')}
           </Text>
         ),
       },
       {
         key:'two',
-        title: '추가 정보 입력',
+        title: getMsg(this.props.lang, 'ML0413', '추가 정보 입력'),
         url: ImgHTW5,
         content: (
           <Text>
-            견적 요청을 진행하기 전에 {'\n'}
-            사업자 정보를 입력합니다.
+            {getMsg(this.props.lang, 'ML0412', '견적 요청을 진행하기 전에\n사업자 정보를 입력합니다.')}
           </Text>
         ),
       },
@@ -302,23 +296,21 @@ export default class Notification extends Component {
     let _slides3 = [
       {
         key:'one',
-        title: '전자 계약',
+        title: getMsg(this.props.lang, 'ML0415', '전자 계약'),
         url: ImgHTW5,
         content: (
           <Text>
-            클릭 한 번으로 온라인에서 간편하게 {'\n'}
-            날인할 수 있습니다.
+            {getMsg(this.props.lang, 'ML0416', '클릭 한 번으로 온라인에서 간편하게\n날인할 수 있습니다.')}
           </Text>
         ),
       },
       {
         key:'two',
-        title: '전자 계약',
+        title: getMsg(this.props.lang, 'ML0415', '전자 계약'),
         url: ImgHTW5,
         content: (
           <Text>
-            클릭 한 번으로 온라인에서 간편하게 {'\n'}
-            날인할 수 있습니다.
+            {getMsg(this.props.lang, 'ML0416', '클릭 한 번으로 온라인에서 간편하게\n날인할 수 있습니다.')}
           </Text>
         ),
       },
@@ -326,40 +318,31 @@ export default class Notification extends Component {
     let _slides4 = [
       {
         key: 'one',
-        title: '전자 계약',
+        title: getMsg(this.props.lang, 'ML0415', '전자 계약'),
         url: ImgHTW4,
         content: (
           <Text>
-            유플로우 계약 담당자가 계약 내용을 최종 {'\n'}
-            검토 후에 계약을 체결합니다. {'\n'}
-            담당자와 조율하고 최종 검토한 계약 내용과 {'\n'}
-            수수료를 확인해 주세요.
+            {getMsg(this.props.lang, 'ML0417', '유플로우 계약 담당자가 계약 내용을 최종\n검토 후에 계약을 체결합니다.\n담당자와 조율하고 최종 검토한 계약 내용과\n수수료를 확인해 주세요.')}
           </Text>
         ),
       },
       {
         key: 'two',
-        title: '전자 계약',
+        title: getMsg(this.props.lang, 'ML0415', '전자 계약'),
         url: ImgHTW4,
         content: (
           <Text>
-            유플로우 계약 담당자가 계약 내용을 최종 {'\n'}
-            검토 후에 계약을 체결합니다. {'\n'}
-            담당자와 조율하고 최종 검토한 계약 내용과 {'\n'}
-            수수료를 확인해 주세요.
+            {getMsg(this.props.lang, 'ML0417', '유플로우 계약 담당자가 계약 내용을 최종\n검토 후에 계약을 체결합니다.\n담당자와 조율하고 최종 검토한 계약 내용과\n수수료를 확인해 주세요.')}
           </Text>
         ),
       },
       {
         key: 'three',
-        title: '전자 계약',
+        title: getMsg(this.props.lang, 'ML0415', '전자 계약'),
         url: ImgHTW4,
         content: (
           <Text>
-            유플로우 계약 담당자가 계약 내용을 최종 {'\n'}
-            검토 후에 계약을 체결합니다. {'\n'}
-            담당자와 조율하고 최종 검토한 계약 내용과 {'\n'}
-            수수료를 확인해 주세요.
+            {getMsg(this.props.lang, 'ML0417', '유플로우 계약 담당자가 계약 내용을 최종\n검토 후에 계약을 체결합니다.\n담당자와 조율하고 최종 검토한 계약 내용과\n수수료를 확인해 주세요.')}
           </Text>
         ),
       },
@@ -383,7 +366,7 @@ export default class Notification extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-            title={'이용방법'}
+            title={getMsg(this.props.lang, 'ML0070', '이용방법')}
             navigation={this.props.nav}
           />
         <View style={S.tabTopbar}>
@@ -401,13 +384,12 @@ export default class Notification extends Component {
             onLayout={this.getDimesionsHeightSection1}
             style={[S.boxSection, { marginTop: 150 }]}>
             <Text>{this.props.nav.goBack ? 'has' : 'empty'}</Text>
-            <Text style={S.title}>원하는 창고를 쉽게 찾아보세요.</Text>
+            <Text style={S.title}>{getMsg(this.props.lang, 'ML0418', '원하는 창고를 쉽게 찾아보세요.')}</Text>
             <Text style={S.description}>
-              유플로우에 창고 정보와 사업자 정보를 등록하여 {'\n'}임대할 창고를
-              등록할 수 있습니다.
+              {getMsg(this.props.lang, 'ML0087', '유플로우에 창고 정보와 사업자 정보를 등록하여\n임대할 창고를 등록할 수 있습니다.')}
             </Text>
             <View style={S.boxTarget}>
-              <Text style={S.textTarget}>창고 등록 하러가기</Text>
+              <Text style={S.textTarget}>{getMsg(this.props.lang, 'ML0419', '창고 등록 하러가기')}</Text>
               <Icon.Button
                 size={20}
                 color={'#ff6d00'}
@@ -443,8 +425,7 @@ export default class Notification extends Component {
             />
             <Text
               style={[S.descriptionSmall, { marginTop: 50, lineHeight: 18 }]}>
-              ･ 수탁 계약 유형 선택 시 임대 계약 유형을 선택할 수 없습니다.
-              {'\n'}･ 계약 유형은 등록 후 수정이 불가하니 신중히 작성해 주세요.
+              {getMsg(this.props.lang, 'ML0088', '･ 수탁 계약 유형 선택 시 임대 계약 유형을 선택할 수 없습니다.\n･ 계약 유형은 등록 후 수정이 불가하니 신중히 작성해 주세요.')}
             </Text>
           </View>
 
@@ -453,27 +434,23 @@ export default class Notification extends Component {
             style={[S.boxSection, { marginTop: 80, paddingBottom: 90 }]}
             onLayout={this.getDimesionsHeightSection2}>
             <Text style={S.title}>
-              선택한 창고에 {'\n'}
-              견적 요청을 진행하세요.
+              {getMsg(this.props.lang, 'ML0420', '선택한 창고에\n견적 요청을 진행하세요.')}
             </Text>
             <Text style={S.description}>
-              검색한 창고를 확인한 후 계약 유형을 선택하여 {'\n'}
-              견적을 요청할 수 있습니다.
+              {getMsg(this.props.lang, 'ML0421', '검색한 창고를 확인한 후 계약 유형을 선택하여\n견적을 요청할 수 있습니다.')}
             </Text>
             {this.renderItemList2(
               iconServiceUse,
-              '임대 계약',
+              getMsg(this.props.lang, 'ML0422', '임대 계약'),
               <Text>
-                일정 기간 동안 원하는 창고의 공간을 {'\n'}
-                빌립니다.
+                {getMsg(this.props.lang, 'ML0424', '일정 기간 동안 원하는 창고의 공간을\n빌립니다.')}
               </Text>,
             )}
             {this.renderItemList2(
               iconServiceUse1,
-              '수탁 계약',
+              getMsg(this.props.lang, 'ML0423', '수탁 계약'),
               <Text>
-                창고에 내 화물을 맡기고 입고, 출고 등의 {'\n'}
-                서비스를 요청합니다.
+                {getMsg(this.props.lang, 'ML0425', '창고에 내 화물을 맡기고 입고, 출고 등의\n서비스를 요청합니다.')}
               </Text>,
             )}
             <View style={{ marginTop: 30 }} />
@@ -503,35 +480,30 @@ export default class Notification extends Component {
             style={[S.boxSection, { marginTop: 80, paddingBottom: 90 }]}
             onLayout={this.getDimesionsHeightSection3}>
             <Text style={S.title}>
-              확정된 견적으로 {'\n'}
-              계약을 요청하세요
+              {getMsg(this.props.lang, 'ML0426', '확정된 견적으로\n계약을 요청하세요')}
             </Text>
             <Text style={S.description}>
-              확정된 견적 내용을 토대로 유플로우에서 계약서를 {'\n'}
-              작성해드립니다. 계약은 전자 계약, 오프라인 계약을 {'\n'}
-              선택해서 진행할 수 있습니다.{'\n'}
+              {getMsg(this.props.lang, 'ML0410', '확정된 견적 내용을 토대로 유플로우에서 계약서를\n작성해드립니다. 계약은 전자 계약, 오프라인 계약을\n선택해서 진행할 수 있습니다.')}
             </Text>
             {this.renderItemList2(
               iconService3,
-              '계약서 확인',
+              getMsg(this.props.lang, 'ML0403', '계약서 확인'),
               <Text>
-                계약서 내용을 확인하고 추가 필요 서류를{'\n'}
-                제출해 주세요.
+                {getMsg(this.props.lang, 'ML0404', '계약서 내용을 확인하고 추가 필요 서류를\n제출해 주세요.')}
               </Text>,
             )}
             {this.renderItemList2(
               iconService4,
-              '계약 방식',
+              getMsg(this.props.lang, 'ML0405', '계약 방식'),
               <Text>
-                전자 계약, 오프라인 계약 중 한 가지 방식을{'\n'} 선택해 주세요.
+                {getMsg(this.props.lang, 'ML0406', '전자 계약, 오프라인 계약 중 한 가지 방식을\n선택해 주세요.')}
               </Text>,
             )}
             {this.renderItemList2(
               iconService5,
-              '계약 요청 완료',
+              getMsg(this.props.lang, 'ML0407', '계약 요청 완료'),
               <Text>
-                계약 내용을 검토 후 계약 요청을 완료해{'\n'}
-                주세요.
+                {getMsg(this.props.lang, 'ML0408', '계약 내용을 검토 후 계약 요청을 완료해\n주세요.')}
               </Text>,
             )}
             <View style={{ marginTop: 30 }} />
@@ -587,12 +559,10 @@ export default class Notification extends Component {
             ]}
             onLayout={this.getDimesionsHeightSection5}>
             <Text style={S.title}>
-              완료된 계약의{'\n'}
-              정산 금액을 확인하세요.
+              {getMsg(this.props.lang, 'ML0409', '완료된 계약의\n정산 금액을 확인하세요.')}
             </Text>
             <Text style={S.description}>
-              정산 기간 동안 발생한 모든 계약의 보관비, 관리비 등을 {'\n'}
-              확인하고 정산 처리할 수 있습니다.
+              {getMsg(this.props.lang, 'ML0427', '정산 기간 동안 발생한 모든 계약의 보관비, 관리비 등을\n확인하고 정산 처리할 수 있습니다.')}
             </Text>
 
             <View style={[S.image, { marginBottom: 30 }]}>
@@ -604,11 +574,10 @@ export default class Notification extends Component {
           </View>
           <View style={S.contentBottom}>
             <Text style={S.description}>
-              유플로우를 통해 창고를 등록하거나{'\n'}
-              필요한 창고를 편리하게 찾아보세요.
+              {getMsg(this.props.lang, 'ML0411', '유플로우를 통해 창고를 등록하거나\n필요한 창고를 편리하게 찾아보세요.')}
             </Text>
             <View style={S.boxTarget}>
-              <Text style={S.textTarget}>유플로우 회원가입하기</Text>
+              <Text style={S.textTarget}>{getMsg(this.props.lang, 'ML0428', '유플로우 회원가입하기')}</Text>
               <Icon.Button
                 size={20}
                 color={'#ff6d00'}

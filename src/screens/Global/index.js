@@ -8,9 +8,12 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, View, Text, Dimensions, Platform, Image } from 'react-native';
 import * as Progress from 'react-native-progress';
-
+import { Modalize } from 'react-native-modalize';
+import SplashScreen from "react-native-splash-screen";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { getBottomSpace, isIphoneX } from "react-native-iphone-x-helper";
 // Local Imports
 import DefaultStyle from '../../styles/default';
 import { styles as S } from './style';
@@ -24,16 +27,36 @@ import Loading from '@Components/atoms/Loading';
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import { LANG_STATUS_KEY } from '@Constant';
-import SplashScreen from "react-native-splash-screen";
+import { getStatusBarHeight } from "react-native-status-bar-height";
+import { WebView } from "react-native-webview";
+import { styles } from "@Screeens/Search/style";
+
+const channelIOImage = require('@Assets/images/channel.png');
+
+const status = getStatusBarHeight(true);
 
 class Global extends Component {
   constructor (props) {
     super(props);
+    this.webView = null;
+    this.sheetRef = React.createRef();
   }
 
   render () {
     const { children, progress } = this.props;
-
+    let height = Math.round(Dimensions.get('window').height);
+    if (Platform.OS === 'ios') {
+      const naviHeight = 48;
+      if (isIphoneX()) {
+        height =
+          Dimensions.get('window').height -
+          status -
+          getBottomSpace()
+      } else {
+        height =
+          Dimensions.get('window').height - status;
+      }
+    }
     return (
       <SafeAreaView style={[DefaultStyle.container, S.container]}>
         <View style={[DefaultStyle.container, S.container, { position: 'relative', }]}>
@@ -51,6 +74,68 @@ class Global extends Component {
                           borderWidth={0}
                           width={null}
                           style={[S.progressBar]} /></View>}
+
+
+          {/** Channel IO Button */}
+          <TouchableOpacity style={{
+            position: "absolute",
+            bottom: 64,
+            right: 16,
+            // backgroundColor: 'red',
+          }}
+                            onPress={() => {
+                              this.sheetRef.current.open()
+                            }}>
+            <Image source={channelIOImage} style={{ width: 54, height: 54 }}></Image>
+          </TouchableOpacity>
+          {/** Channel IO Body */}
+          <Modalize
+            ref={this.sheetRef}
+            handlePosition={'inside'}
+            modalHeight={height}
+            panGestureEnabled={false}
+            disableScrollIfPossible={false}
+            scrollViewProps={{ scrollEnabled: false }}
+            modalStyle={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+            handleStyle={{ backgroundColor: 'white', }}
+            HeaderComponent={
+              <View style={{
+                width: '100%',
+                justifyContent: 'center',
+                height: 48,
+                paddingHorizontal: 8,
+                borderBottomWidth: 1,
+                borderColor: '#d7d7d7',
+              }}>
+                <TouchableOpacity onPress={() => {
+                  console.log('close')
+                  this.sheetRef.current.close()
+                }}>
+                  <Icon style={{
+                    fontSize: 24,
+                    textAlign: 'right'
+                  }} name={'close'} />
+                </TouchableOpacity>
+              </View>
+            }
+          >
+            {/** 지도웹뷰 */}
+            <WebView
+              source={{ uri: `https://ej6wz.channel.io/?pluginKey=783c5bf5-4917-4339-9d39-74eb176bb85b` }}
+              style={{
+                flex: 1,
+                height: Platform.OS === 'ios' ? height - 48 : height - 74,
+              }}
+              ref={webView => (this.webView = webView)}
+              originWhitelist={['*']}
+              useWebKit={true}
+              // onLoad={event => this._WVOnLoad(event)}
+              // onLoadProgress={({ nativeEvent }) =>{}}
+              // onMessage={event => this._WVOnMessage(event)}
+              // injectedJavaScript={injectJSCode} // for Android
+              // injectedJavaScriptBeforeContentLoaded={injectJSCode.toString()} // for iOS
+            />
+          </Modalize>
         </View>
       </SafeAreaView>
     );
@@ -69,6 +154,7 @@ class Global extends Component {
         Object.assign(resultObj, item);
       });
     }
+    console.log('Lang ::: ', resultObj)
     this.props.setLangData(resultObj);
 
     /** App Version Check (배포시 활성.) */
