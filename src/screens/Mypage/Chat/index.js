@@ -226,7 +226,7 @@ class Chatting extends Component {
 
           <View style={SS.footer}>
             <View style={SS.footerItem}>
-              <View style={SS.inputChat}>
+              <View style={[SS.inputChat, { marginBottom: Platform.OS === 'ios' ? 28 : 0 }]}>
                 <TextField
                   multiline={true}
                   styleProps={SS.inputType}

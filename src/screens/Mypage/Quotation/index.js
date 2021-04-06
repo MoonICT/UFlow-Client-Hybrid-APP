@@ -619,6 +619,7 @@ class Quotation extends Component {
                     // this.navigation.goBack();
                     this.props.navigation.push('Mypage', {
                       title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
+                      tab: 'Mypage_cntr',
                       prevView: 'PrevView',
                     })
                   } else {
@@ -626,6 +627,7 @@ class Quotation extends Component {
                     // this.navigation.goBack();
                     this.props.navigation.push('Mypage', {
                       title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
+                      tab: 'Mypage_cntr',
                       prevView: 'PrevView',
                     })
                   }

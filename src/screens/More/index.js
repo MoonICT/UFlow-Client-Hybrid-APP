@@ -142,7 +142,7 @@ class More extends Component {
                   return <View key={index} style={[DefaultStyle._cards, S.listPage]}>
                     {item.name !== '#hide' &&
                     <Text style={[DefaultStyle._textTitleCard, S.textTitle]}>
-                      {item.name}
+                      {item.name}r
                     </Text>}
 
                     {item.subMenus && item.subMenus.length > 0 &&

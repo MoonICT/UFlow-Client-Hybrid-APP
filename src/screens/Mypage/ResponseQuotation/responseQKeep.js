@@ -375,6 +375,7 @@ class ResponseQKeep extends Component {
                 // this.props.navigation.goBack();
                 this.props.navigation.push('Mypage', {
                   title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
+                  tab: 'Mypage_cntr',
                   prevView: 'PrevView',
                 })
               }
