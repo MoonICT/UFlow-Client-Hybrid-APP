@@ -209,11 +209,13 @@ class ReqeustQTrust extends Component {
         }
 
         isRequired={true}
+        value={rntlValue}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              rntlValue: Number(e.replace(/[^0-9]/g), '')
+              rntlValue: value
             }
           });
 
@@ -232,11 +234,13 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={splyAmount}
         onChangeText={e =>{
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              splyAmount: Number(e.replace(/[^0-9]/g), '')
+              splyAmount: value
             }
           })
         }
@@ -254,11 +258,13 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={whinChrg}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              whinChrg: Number(e.replace(/[^0-9]/g), '')
+              whinChrg: value
             }
           })
         }
@@ -277,11 +283,13 @@ class ReqeustQTrust extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={whoutChrg}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              whoutChrg: Number(e.replace(/[^0-9]/g), '')
+              whoutChrg: value
             }
           })
         }

@@ -229,6 +229,7 @@ class MypageInfo extends Component {
                 })
               }
               colorLabel="#000000"
+              maxLength={30}
             />
             <TextField
               labelTextField={getMsg(this.props.lang, 'ML0013', '이메일')}
@@ -237,6 +238,7 @@ class MypageInfo extends Component {
               value={data.email || ''}
               placeholder={getMsg(this.props.lang, 'ML0013', '이메일')}
               colorLabel="#000000"
+              maxLength={200}
             />
             <TextField
               type={'password'}

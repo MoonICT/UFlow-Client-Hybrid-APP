@@ -191,7 +191,7 @@ class SearchOverlay extends Component {
             inputStyle={styles.searchInput}
             onKeyPress={({ nativeEvent }) => {
               if (nativeEvent.key === 'Backspace' &&
-                this.props.searchQuery.length < 2) {
+                this.props.searchQuery.length < 1) {
                 this.props.setSearchQuery('');
               }
             }}

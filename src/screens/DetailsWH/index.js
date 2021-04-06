@@ -1666,6 +1666,7 @@ class DetailWH extends Component {
     await Warehouse.listRecommend({
       typeCodes: typeCodeNames.join(','),
       gdsKeepTypeCodes: gdsKeepTypeCodeNames.join(','),
+      warehRegNo: id
     })
       .then(res => {
         let list =

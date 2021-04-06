@@ -202,8 +202,10 @@ class ResponseQKeep extends Component {
             placeholder={"0"}
             defaultValue={rntlValuePyeong ? String(rntlValuePyeong) : ''}
             isRequired={true}
+            value={rntlValuePyeong}
             onChangeText={e => {
-              let value = Number(e.replace(/[^0-9]/g), '');
+              let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
+
               this.setState({
                 formData: {
                   ...this.state.formData,
@@ -226,8 +228,9 @@ class ResponseQKeep extends Component {
             placeholder={"0"}
             defaultValue={rntlValue ? String(rntlValue) : ''}
             isRequired={true}
+            value={rntlValue}
             onChangeText={e => {
-              let value = Number(e.replace(/[^0-9]/g), '');
+              let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
               this.setState({
                 formData: {
                   ...this.state.formData,
@@ -253,11 +256,13 @@ class ResponseQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={splyAmount}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              splyAmount: Number(e.replace(/[^0-9]/g), '')
+              splyAmount: value
             }
           })
         }
@@ -276,11 +281,13 @@ class ResponseQKeep extends Component {
         }
         placeholder="0"
         isRequired={true}
+        value={mgmtChrg}
         onChangeText={e => {
+          let value = e.replace(/[^0-9]/g, '').replace(/(^0+)/, "");
           this.setState({
             formData: {
               ...this.state.formData,
-              mgmtChrg: Number(e.replace(/[^0-9]/g), '')
+              mgmtChrg: value
             }
           })
 

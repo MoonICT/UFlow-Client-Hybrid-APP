@@ -74,7 +74,7 @@ class RequestContract extends Component {
             icon="arrow-left"
             color="black"
             onPress={() => {
-              this.props.route.params.onRefresh(getMsg(this.props.lang, 'ML0250', '견적･계약 관리'));
+              this.props.route.params.onRefresh('Mypage_cntr');
               this.navigation.goBack();
             }}
           />

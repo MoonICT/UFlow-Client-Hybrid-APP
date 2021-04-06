@@ -79,7 +79,7 @@ class Register extends Component {
   }
 
   handleOnClickSubmit = () => {
-    this.setState({ loading: true });
+    //this.setState({ loading: true });
     let signUpTemp = {};
     signUpTemp.email = this.state.email;
     signUpTemp.password = this.state.password;
@@ -89,8 +89,14 @@ class Register extends Component {
     signUpTemp.terms = this.state.terms;
     signUpTemp.marketing = this.state.marketing;
 
-    console.log('signUpTemp', signUpTemp);
+    //console.log("signUpTemp",signUpTemp);
 
+    if(signUpTemp.mobile.length < 3){
+      this.props.showPopup({ title: 'UFLOW', content: '휴대폰번호를 확인해주세요.', type: 'confirm' });
+      return false;
+    }
+
+    this.setState({ loading: true });
     Account.signUp(signUpTemp)
       .then(res => {
         // console.log('::::: API Sign Up Ok :::::', res);
@@ -217,7 +223,7 @@ class Register extends Component {
                     value={email}
                     type="text"
                     mode="outlined"
-                    maxLength={30}
+                    maxLength={200}
                   />
                   {errorEmail === true ? (
                     <Text style={DefaultStyle._textErrorInput}>
@@ -280,7 +286,7 @@ class Register extends Component {
                     value={mobile}
                     type="telephoneNumber"
                     mode="outlined"
-                    maxLength={20}
+                    maxLength={11}
                   />
                   {this.state.error === true ? 'abc' : null}
                 </View>

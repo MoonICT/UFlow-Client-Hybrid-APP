@@ -249,6 +249,17 @@ class RegisterIntro extends Component {
               <TouchableOpacity
                 disabled={isActive === true ? false : true}
                 onPress={() => {
+
+                  if(name.trim().length == 0){
+                    this.props.showPopup({ title: 'UFLOW', content: '창고명을 입력해주세요.', type: 'confirm' });
+                    return false;
+                  }
+
+                  if(description.trim().length == 0){
+                    this.props.showPopup({ title: 'UFLOW', content: '창고소개를 입력해주세요.', type: 'confirm' });
+                    return false;
+                  }
+
                   this.navigation.navigate('RegisterWH', {
                     completeIntro: true,
                   });
@@ -341,6 +352,9 @@ function mapDispatchToProps (dispatch) {
   return {
     updateInfo: action => {
       dispatch(ActionCreator.updateInfo(action));
+    },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
     },
   };
 }

@@ -358,8 +358,9 @@ class Mypage extends Component {
       </View>
     );
 
-    // switch (this.state.title) {
+    //switch (this.state.title) {
     switch (this.state.tab) {
+
       case 'Mypage_mywhrg': // 내 창고
         viewComponent = (
           <View

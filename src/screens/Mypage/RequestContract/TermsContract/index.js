@@ -57,7 +57,7 @@ class TermsContract extends Component {
       content: getMsg(this.props.lang, 'ML0642', '계약 약관 동의가 처리되었습니다.'),
     });
     // 라우트 강제 새로고침.
-    this.props.route.params.onRefresh(getMsg(this.props.lang, 'ML0250', '견적･계약 관리'));
+    this.props.route.params.onRefresh('Mypage_cntr');
     this.navigation.navigate('Mypage');
   };
 

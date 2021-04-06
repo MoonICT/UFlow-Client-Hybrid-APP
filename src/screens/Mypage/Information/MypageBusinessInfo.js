@@ -465,6 +465,7 @@ class MypageBusinessInfo extends Component {
                   });
                 }}
                 value={businessInfo.number ? businessInfo.number : ''}
+                maxLength={15}
               />
 
               <Text style={DefaultStyle._textDF}>{getMsg(this.props.lang, 'ML0549', "- 등록 가능한 파일 형식은 'jpg', 'gif', 'png' 입니다.")}</Text>
@@ -555,7 +556,7 @@ class MypageBusinessInfo extends Component {
                 colorLabel="#000000"
                 labelTextFieldSize={14}
                 fontSize={14}
-                maxLength={20}
+                maxLength={50}
                 isRequired={true}
                 textError={
                   !valid.checkRepreNm ? getMsg(this.props.lang, 'ML0210', '대표자 명을 입력하세요.') : ''
@@ -599,6 +600,7 @@ class MypageBusinessInfo extends Component {
                   });
                 }}
                 value={businessInfo.phone ? businessInfo.phone : ''}
+                maxLength={11}
               />
               {/* cert phone */}
               <CertMobile
@@ -615,7 +617,7 @@ class MypageBusinessInfo extends Component {
                 fontSize={14}
                 colorLabel="#000000"
                 isRequired={true}
-                maxLength={20}
+                maxLength={50}
                 textError={
                   !valid.checkInchgNm ? getMsg(this.props.lang, 'ML0215', '담당자 명을 입력하세요.') : ''
                 }
@@ -638,7 +640,7 @@ class MypageBusinessInfo extends Component {
                 labelTextFieldSize={14}
                 fontSize={14}
                 colorLabel="#000000"
-                maxLength={20}
+                maxLength={255}
                 isRequired={true}
                 textError={
                   (!valid.checkEmail ? getMsg(this.props.lang, 'ML0217', '담당자 이메일을 입력하세요.') : '') +

@@ -542,6 +542,9 @@ function mapDispatchToProps(dispatch) {
     // countDown: diff => {
     //   dispatch(ActionCreator.countDown(diff));
     // },
+    showPopup: status => {
+      dispatch(ActionCreator.show(status));
+    },
   };
 }
 

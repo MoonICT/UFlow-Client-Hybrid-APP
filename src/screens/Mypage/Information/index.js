@@ -6,7 +6,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import {View, ScrollView, SafeAreaView} from 'react-native';
+import { View, ScrollView, SafeAreaView } from 'react-native';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import {
   Appbar,
@@ -29,7 +29,7 @@ import { getUserInfo } from '@Services/apis/MyPage';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class Information extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       checkAll: false,
@@ -37,7 +37,10 @@ class Information extends Component {
       checkMail: false,
       firstQuery: '',
       visible: false,
-      tabInfo: getMsg(this.props.lang, 'ML0190', '기본 정보'),
+      tabInfo: {
+        id: 'tab1',
+        title: getMsg(this.props.lang, 'ML0190', '기본 정보')
+      },
       userInfo: {},
     };
     this.navigation = props.navigation;
@@ -54,23 +57,23 @@ class Information extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     console.log('::componentDidMount::');
     this.getInfoUser();
     // SplashScreen.hide();
   }
 
   /** listener when change props */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return true;
   }
 
 
-  async getInfoUser() {
+  async getInfoUser () {
     await getUserInfo().then((res) => {
       console.log('res', res.data)
       if (res.status === 200) {
-        this.setState({ userInfo: res.data})
+        this.setState({ userInfo: res.data })
       }
     }).catch(error => {
       alert('getInfoUser error:' + error);
@@ -87,9 +90,9 @@ class Information extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  render() {
+  render () {
 
-    const {tabInfo } = this.state;
+    const { tabInfo } = this.state;
 
     return (
       <ScrollView style={S.container}>
@@ -101,10 +104,10 @@ class Information extends Component {
 
         <ScrollView>
           <View style={{ flex: 1 }}>
-            <AppGrid data={this.tabSelect} title={tabInfo} titleProps={this.handleClickTab} />
+            <AppGrid data={tabSelect} title={tabInfo.title} titleProps={this.handleClickTab} />
           </View>
-          {tabInfo === getMsg(this.props.lang, 'ML0190', '기본 정보') && <MypageInfo navigation={this.navigation} tabData={this.tabSelect} />}
-          {tabInfo === getMsg(this.props.lang, 'ML0191', '사업자 등록정보') && <MypageBusinessInfo tabData={this.tabSelect} />}
+          {tabInfo.id === 'tab1' && <MypageInfo navigation={this.navigation} />}
+          {tabInfo.id === 'tab2' && <MypageBusinessInfo />}
         </ScrollView>
         <Dialog
           style={DefaultStyle.popup}
