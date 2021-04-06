@@ -458,10 +458,11 @@ class Mypage extends Component {
           <AppGrid
             data={this.tabList}
             title={this.state.title}
-            titleProps={(title, index) => {
+            titleProps={(e) => {
+              console.log(e)
               this.setState({
-                title: title,
-                tab: this.tabList[index].id
+                title: e.title,
+                tab: e.id
               });
             }}
           />
