@@ -20,6 +20,7 @@ export const getLogisticsList = async ({ dutyDvCode = '', query = '' }) => {
   } else {
     params = '' + 'query=' + query;
   }
+  console.log(`/api/v1/lgst?${params}`)
   return await mainAxios.get(`/api/v1/lgst?${params}`, {
     headers: {
       // Authorization: `Bearer ${token}`,

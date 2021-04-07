@@ -6,7 +6,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { View, ScrollView, SafeAreaView } from 'react-native';
+import { View, ScrollView,  Text } from 'react-native';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import {
   Appbar,
@@ -92,7 +92,7 @@ class Information extends Component {
 
   render () {
 
-    const { tabInfo } = this.state;
+    const { tabInfo, tabSelect } = this.state;
 
     return (
       <ScrollView style={S.container}>
@@ -104,7 +104,7 @@ class Information extends Component {
 
         <ScrollView>
           <View style={{ flex: 1 }}>
-            <AppGrid data={tabSelect} title={tabInfo.title} titleProps={this.handleClickTab} />
+            <AppGrid data={this.tabSelect} title={tabInfo.title} titleProps={this.handleClickTab} />
           </View>
           {tabInfo.id === 'tab1' && <MypageInfo navigation={this.navigation} />}
           {tabInfo.id === 'tab2' && <MypageBusinessInfo />}

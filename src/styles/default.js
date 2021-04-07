@@ -571,6 +571,7 @@ export default StyleSheet.create({
   popup: {
     justifyContent: 'center',
     borderRadius: 8,
+    marginTop: -50,
   },
   titleDialog: {
     textAlign: 'center',

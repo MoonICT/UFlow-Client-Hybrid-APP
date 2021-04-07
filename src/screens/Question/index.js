@@ -33,6 +33,7 @@ import { styles as S } from './style';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 import { Question } from '@Services/apis';
+
 const windowHeight = Dimensions.get('window').height;
 
 class QuestionScreen extends Component {
@@ -88,7 +89,7 @@ class QuestionScreen extends Component {
 
   handleChangeContent = value => {
     this.setState({ content: value });
-  } 
+  }
 
   onSubmit = () => {
     if (this.state.email.length > 0 && this.state.content.length > 0) {
@@ -156,7 +157,10 @@ class QuestionScreen extends Component {
             <Dialog
               style={DefaultStyle.popup}
               visible={this.state.visible}
-              onDismiss={this.hideDialog}>
+              onDismiss={() => {
+                this.hideDialog()
+                this.navigation.goBack()
+              }}>
               <Dialog.Content>
                 {/* <View style={DefaultStyle.imagePopup} /> */}
                 <Image
@@ -180,7 +184,10 @@ class QuestionScreen extends Component {
               <Dialog.Actions style={DefaultStyle._buttonPopup}>
                 <Button
                   style={DefaultStyle._buttonElement}
-                  onPress={this.hideDialog}>
+                  onPress={() => {
+                    this.hideDialog()
+                    this.navigation.goBack()
+                  }}>
                   {getMsg(this.props.lang, 'ML0100', '확인')}
                 </Button>
               </Dialog.Actions>

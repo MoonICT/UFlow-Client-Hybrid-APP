@@ -6,7 +6,7 @@
 
 // Global Imports
 import React, { Component } from 'react';
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import { SafeAreaView, View, ScrollView, Text } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { Appbar, List, Searchbar } from 'react-native-paper';
 import HTML from 'react-native-render-html';
@@ -23,7 +23,7 @@ import { debounce } from 'lodash';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 
 class LogisticsKnowledge extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.webView = null;
     this.state = {
@@ -40,7 +40,7 @@ class LogisticsKnowledge extends Component {
   }
 
   /** when after render DOM */
-  async componentDidMount() {
+  async componentDidMount () {
     this.fetchData();
     this.getListCategory();
   }
@@ -60,19 +60,18 @@ class LogisticsKnowledge extends Component {
   //   // console.log('//::componentWillUnmount::');
   // }
 
-  getListCategory() {
-    console.log('res=>>');
+  getListCategory () {
     LogisticsKnowledgeService.getNameCate('CSSP0002')
       .then(res => {
-        console.log('res=>>');
+        // console.log('res=>>', res._embedded.detailCodes);
         let dataArray = res._embedded.detailCodes.map(item => {
           return {
-            remark1: item.remark1,
-            stdCode: item.stdCode,
-            stdCodeName: item.stdCodeName,
-            stdDetailCode: item.stdDetailCode,
+            // remark1: item.remark1,
+            // stdCode: item.stdCode,
+            // stdCodeName: item.stdCodeName,
             title: item.stdDetailCodeName,
-            value1: item.value1,
+            stdDetailCode: item.stdDetailCode,
+            // value1: item.value1,
           };
         });
         this.setState({
@@ -89,17 +88,18 @@ class LogisticsKnowledge extends Component {
         console.log(err);
       });
   }
-  fetchData(params) {
+
+  fetchData (params) {
     const { dutyDvCode } = this.state;
     LogisticsKnowledgeService.getLogisticsList({
       ...params,
       dutyDvCode: dutyDvCode,
     })
       .then(res => {
-        console.log('::::: Logistics List :::::', res);
+        console.log('::::: Logistics List :::::', res.data._embedded);
         if (res.status === 200) {
           this.setState({
-            logisticsList: res.data._embedded && res.data._embedded.lgsts,
+            logisticsList: res.data && res.data._embedded && res.data._embedded.lgsts ? res.data._embedded.lgsts : [],
           });
         }
       })
@@ -113,7 +113,7 @@ class LogisticsKnowledge extends Component {
 
   hideDialog = () => this.setState({ visible: false });
 
-  render() {
+  render () {
     const { logisticsList, title, listCategory } = this.state;
     // console.log('logisticsList -> ', logisticsList);
 
@@ -126,15 +126,15 @@ class LogisticsKnowledge extends Component {
 
     }, 200);
 
-    const handleClickTab = (tabName, index) => {
-      // console.log('tabName -> ', tabName);
+    const handleClickTab = (tabStatus, index) => {
+      // console.log('tabName -> ', tabStatus);
       // console.log('index -> ', index);
       this.setState(
         {
-          dutyDvCode: listCategory[index].stdDetailCode,
-          title: tabName,
+          dutyDvCode: tabStatus.stdDetailCode,
+          title: tabStatus.title,
         },
-        function() {
+        function () {
           this.fetchData();
         },
       );
@@ -181,9 +181,9 @@ class LogisticsKnowledge extends Component {
         </Appbars> */}
 
         <HistoryBackActionBar
-            title={getMsg(this.props.lang, 'ML0448', '물류지식 게시판')}
-            navigation={this.navigation}
-          />
+          title={getMsg(this.props.lang, 'ML0448', '물류지식 게시판')}
+          navigation={this.navigation}
+        />
         <ScrollView>
           <View style={S.viewSearch}>
             <Searchbar
@@ -199,6 +199,13 @@ class LogisticsKnowledge extends Component {
             titleProps={handleClickTab}
           />
           <Accordion type="group">{items}</Accordion>
+          {this.state.logisticsList.length === 0 &&
+          <View style={{ padding: 16 }}>
+            <Text style={{ textAlign: 'center', marginTop: 20, }}>
+              {getMsg(this.props.lang, '', '등록 된 데이터가 없습니다.')}
+            </Text>
+          </View>
+          }
         </ScrollView>
       </SafeAreaView>
     );

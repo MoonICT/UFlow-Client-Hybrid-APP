@@ -12,6 +12,7 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Appbar, Text, Button, RadioButton } from 'react-native-paper';
@@ -75,10 +76,10 @@ class Consulting extends Component {
         this.setState({
           listQuest: data,
           listAnswer: newListAnswer,
-        }).catch(err => {
-          console.log(err);
-        });
+        })
       }
+    }).catch(err => {
+      console.log(err);
     });
   }
   handleChange = (e, index, checkbox) => {
@@ -284,6 +285,7 @@ class Consulting extends Component {
 
   // navigation topbar
   handleNavigation = () => {
+    console.log('go back')
     const { step } = this.state;
     if (step > 0) {
       this.setState({ step: step - 1 });
@@ -323,7 +325,8 @@ class Consulting extends Component {
           <Appbar.Action
             icon="arrow-left"
             color="white"
-            onPress={() => this.handleNavigation()}
+            // onPress={() => this.handleNavigation()}
+            onPress={() => this.navigation.goBack()}
           />
           <Appbar.Content
             title={getMsg(this.props.lang, 'ML0436', '물류컨설팅')}
@@ -341,39 +344,41 @@ class Consulting extends Component {
             <Text style={S.styleTextNomarl}>
               {getMsg(this.props.lang, 'ML0438', '유플로우 물류창고에 임대 관심이 있으시면\n시작 버튼을 눌러주세요.')}
             </Text>
-            <View
-              style={{
-                width: windowWidth - 32,
-                paddingLeft: 16,
-                paddingRight: 16,
-                marginBottom: 15,
-                marginTop: 15,
-              }}>
-              <TextInput
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+              <View
+                style={{
+                  width: windowWidth - 32,
+                  paddingLeft: 16,
+                  paddingRight: 16,
+                  marginBottom: 15,
+                  marginTop: 15,
+                }}><TextInput
                 placeholderTextColor="#979797"
                 style={S.inputNomarl}
                 value={company}
                 placeholder={getMsg(this.props.lang, 'ML0439', '회사명')}
                 onChangeText={e => this.setState({ company: e })}
               />
-              <TextInput
-                placeholderTextColor="#979797"
-                style={S.inputNomarl}
-                value={name}
-                placeholder={getMsg(this.props.lang, 'ML0440', '담당자명')}
-                onChangeText={e => this.setState({ name: e })}
-              />
-              <TextInput
-                placeholderTextColor="#979797"
-                style={S.inputNomarl}
-                placeholder={getMsg(this.props.lang, 'ML0013', '이메일')}
-                value={email}
-                onChangeText={e => this.setState({ email: e })}
-              />
-              { !!email && !validator.isEmail(email) && (
-                <Text style={{color:'#ff6d00',marginTop:10}}>{getMsg(this.props.lang, 'ML0441', '메일 주소가 맞지 않습니다.')}</Text>
-              )}
-            </View>
+                <TextInput
+                  placeholderTextColor="#979797"
+                  style={S.inputNomarl}
+                  value={name}
+                  placeholder={getMsg(this.props.lang, 'ML0440', '담당자명')}
+                  onChangeText={e => this.setState({ name: e })}
+                />
+                <TextInput
+                  placeholderTextColor="#979797"
+                  style={S.inputNomarl}
+                  placeholder={getMsg(this.props.lang, 'ML0013', '이메일')}
+                  value={email}
+                  onChangeText={e => this.setState({ email: e })}
+                />
+                { !!email && !validator.isEmail(email) && (
+                  <Text style={{color:'#ff6d00',marginTop:10}}>{getMsg(this.props.lang, 'ML0441', '메일 주소가 맞지 않습니다.')}</Text>
+                )}
+              </View>
+            </KeyboardAvoidingView>
+
             <Button
               mode="contained"
               pointerEvents={

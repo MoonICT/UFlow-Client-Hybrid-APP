@@ -7,7 +7,7 @@
 // Global Imports
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, View, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, View, TouchableOpacity, Platform } from 'react-native';
 import {
   Appbar,
   Searchbar,

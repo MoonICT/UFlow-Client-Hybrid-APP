@@ -443,7 +443,7 @@ class MypageBusinessInfo extends Component {
                 labelTextField={getMsg(this.props.lang, 'ML0524', '사업자번호')}
                 labelTextFieldSize={14}
                 fontSize={14}
-                placeholder={getMsg(this.props.lang, 'ML0201', ''-' 없이 입력해주세요.')}
+                placeholder={getMsg(this.props.lang, 'ML0201', '\'-\' 없이 입력해주세요.')}
                 colorLabel="#000000"
                 isRequired={true}
                 keyboardType="numeric"
@@ -577,7 +577,7 @@ class MypageBusinessInfo extends Component {
               />
               <TextField
                 labelTextField={getMsg(this.props.lang, 'ML0211', '담당자 휴대폰번호')}
-                placeholder={getMsg(this.props.lang, 'ML0201', ''-' 없이 입력해주세요.')}
+                placeholder={getMsg(this.props.lang, 'ML0201', '\'-\' 없이 입력해주세요.')}
                 labelTextFieldSize={14}
                 fontSize={14}
                 isRequired={true}

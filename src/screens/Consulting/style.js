@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: Platform.OS === 'ios' ? -100 : 0,
+    // marginTop: Platform.OS === 'ios' ? -100 : 0,
   },
   contentAlignLeft: {
     marginTop: 30,
