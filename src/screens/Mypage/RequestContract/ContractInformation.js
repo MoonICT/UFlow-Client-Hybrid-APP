@@ -61,11 +61,13 @@ class ContractInformation extends Component {
         name: 'sign.png',
       };
       let formData = new FormData();
-      if (Platform.OS === 'android') {
-        formData.append('base64', base64)
-      } else {
-        formData.append('file', file);
-      }
+      formData.append('base64', base64)
+      // if (Platform.OS === 'android') {
+      //   formData.append('base64', base64)
+      // } else {
+      //   formData.append('file', file);
+      // }
+      console.log(`data:image/png;base64,${base64}`)
       formData.append('warehouseRegNo', detailEstimate[contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts'].id.warehouseRegNo);
       formData.append('rentUserNo', rentUserNo);
       formData.append('cntrYmdFrom', moment(detailEstimate[contractType === 'keep' ? 'estmtKeeps' : 'estmtTrusts'].id.cntrYmdFrom).format('YYYYMMDD'));
@@ -74,7 +76,6 @@ class ContractInformation extends Component {
         contractType: contractType.toLowerCase(),
         formData: formData,
       }).then(res => {
-        // console.log('res::::::', res)
         this.setState({ isSigned: true })
       }).catch(error => {
         // alert(' MediaUpload.uploadFile:' + error.reponse.data.message);
@@ -339,6 +340,7 @@ class ContractInformation extends Component {
                 if (this.state.isSigned) {
                   // TODO 오즈 파라미터 변경 필요.
                   this.requestOffLineContract()
+                  this.setState({ isOnLineDialog: false })
                 } else {
                   // 서명전
                   if (this.state.isValidSign) {
@@ -374,7 +376,10 @@ class ContractInformation extends Component {
             </Button>
             <Button
               style={[DefaultStyle._buttonElement, { borderLeftWidth: 0, }]}
-              onPress={this.requestOffLineContract}>
+              onPress={() => {
+                this.requestOffLineContract()
+                this.setState({ isOffLineDialog: false })
+              }}>
               {getMsg(this.props.lang, 'ML0100', '확인')}
             </Button>
           </Dialog.Actions>

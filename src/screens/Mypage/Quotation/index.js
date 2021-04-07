@@ -569,8 +569,12 @@ class Quotation extends Component {
                       completeContract: true
                     });
                     alert(getMsg(this.props.lang, 'ML0572', '계약 요청이 완료되었습니다.'));
-                    // TODO 마이페이지 부모 refresh!!
-                    this.navigation.goBack();
+                    // 마이페이지 부모 refresh!!
+                    this.props.navigation.push('Mypage', {
+                      title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
+                      tab: 'Mypage_cntr',
+                      prevView: 'PrevView',
+                    })
                   } else {
                     alert(getMsg(this.props.lang, 'ML0573', '계약 요청이 실패하였습니다.\n다시 시도해보세요.'));
                     this.navigation.goBack();
@@ -615,8 +619,7 @@ class Quotation extends Component {
                       completeContract: true
                     });
                     alert(getMsg(this.props.lang, 'ML0572', '계약 요청이 완료되었습니다.'));
-                    // TODO 마이페이지 부모 refresh!!
-                    // this.navigation.goBack();
+                    // 마이페이지 부모 refresh
                     this.props.navigation.push('Mypage', {
                       title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
                       tab: 'Mypage_cntr',
@@ -624,12 +627,7 @@ class Quotation extends Component {
                     })
                   } else {
                     alert(getMsg(this.props.lang, 'ML0573', '계약 요청이 실패하였습니다.\n다시 시도해보세요.'));
-                    // this.navigation.goBack();
-                    this.props.navigation.push('Mypage', {
-                      title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
-                      tab: 'Mypage_cntr',
-                      prevView: 'PrevView',
-                    })
+                    this.navigation.goBack();
                   }
                 });
               }}>

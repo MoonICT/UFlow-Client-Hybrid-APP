@@ -58,7 +58,10 @@ class TermsContract extends Component {
     });
     // 라우트 강제 새로고침.
     this.props.route.params.onRefresh('Mypage_cntr');
-    this.navigation.navigate('Mypage');
+    this.navigation.navigate('Mypage', {
+      title: getMsg(this.props.lang, 'ML0250', '견적･계약 관리'),
+      tab: 'Mypage_cntr',
+    });
   };
 
   /**
@@ -193,9 +196,7 @@ class TermsContract extends Component {
                 {getMsg(this.props.lang, 'ML0637', 'jpg, png, pdf 확장자 파일만 업로드가 가능합니다.')}
               </Text>
               <View style={[SS.infoRegister, { marginBottom: 16 }]}>
-                <Text style={SS.textRegister}>{file ? file.fileName : '통장 사본을 첨부해주세요.'}</Text>
-                <Text
-                  style={SS.textRegister}>{file ? file.fileName : getMsg(this.props.lang, 'ML0636', '통장 사본을 첨부해주세요.')}</Text>
+                <Text style={SS.textRegister}>{file ? file.fileName : getMsg(this.props.lang, 'ML0636', '통장 사본을 첨부해주세요.')}</Text>
               </View>
               {/*<Text style={SS.textSuccess}>*/}
               {/*성공적으로 파일을 등록했습니다.*/}

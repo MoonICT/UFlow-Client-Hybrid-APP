@@ -104,12 +104,12 @@ class Mypage extends Component {
   /**
    * 탭 리로드를 위한 함수.
    * */
-  doRefreshTab = title => {
+  doRefreshTab = tabStatus => {
     this.setState({ title: '', tab: '' });
-    let tabStatus = ''
+    let title = ''
     this.tabList.some((item) => {
-      if (item.title === title) {
-        return tabStatus = item.id
+      if (item.id === tabStatus) {
+        return title = item.title
       }
     })
     setTimeout(() => {

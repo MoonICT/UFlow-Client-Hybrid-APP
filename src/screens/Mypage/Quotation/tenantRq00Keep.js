@@ -37,6 +37,8 @@ class TenantRq00Keep extends Component {
     const estmtKeepGroups = this.props.estmtKeepGroups;
     const groupOrders = this.props.groupOrders;
 
+    let isRes = false
+
     let total = 0;
 
     let viewRequestKeep =
@@ -46,6 +48,10 @@ class TenantRq00Keep extends Component {
       // estmtTrustGroups[this.props.groupOrders ? this.props.groupOrders.length - 1 : 0].map((item, index) => {
       estmtKeepGroups[this.state.groupOrderIndex].map((item, index) => {
         // console.log(item, '>>>>item');
+
+        if(item.estmtDvCd === 'RS00'){
+          isRes = true
+        }
 
         total = item.splyAmount + item.mgmtChrg;
           let dataRequest = [
@@ -145,6 +151,7 @@ class TenantRq00Keep extends Component {
               {/*<Text style={S.total}>{StringUtils.money(total)}</Text>*/}
             {/*</View>*/}
 
+            {!isRes &&
             <View style={DefaultStyle._card}>
               <View style={DefaultStyle._headerCard}>
                 <Text style={DefaultStyle._headerCardTitle}>
@@ -154,7 +161,7 @@ class TenantRq00Keep extends Component {
               <Text style={S.noticeWaitting}>
                 {getMsg(this.props.lang, 'ML0592', '창고주가 보내주신 견적 요청서를 확인하고 있습니다.\n견적 응답이 올 때까지 잠시만 기다려 주세요.')}
               </Text>
-            </View>
+            </View>}
 
 
             <View style={DefaultStyle._listBtn}>

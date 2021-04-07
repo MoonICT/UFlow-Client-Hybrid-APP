@@ -71,7 +71,6 @@ class DetailsManager extends Component {
       isExpired: false,
       totalMoney: 0,
       visible: false,
-      confirm: false,
       dataInfo: [],
       responseFilter: [],
       isProgress: false,
@@ -410,7 +409,6 @@ class DetailsManager extends Component {
 
   }
 
-
   showDialog = () => this.setState({ visible: true });
 
   hideDialog = () => {
@@ -421,9 +419,9 @@ class DetailsManager extends Component {
     });
 
   }
-  showConfirm = () => this.setState({ confirm: true });
+  // showConfirm = () => this.setState({ confirm: true });
 
-  hideConfirm = () => this.setState({ confirm: false });
+  // hideConfirm = () => this.setState({ confirm: false });
 
   showDateStart = () => {
     let { isOpenStart } = this.state
@@ -431,6 +429,7 @@ class DetailsManager extends Component {
       isOpenStart: !isOpenStart
     })
   }
+
   showTimeCreateImport = () => {
     let { isOpenTimeCreateImport } = this.state
     this.setState({
@@ -444,7 +443,6 @@ class DetailsManager extends Component {
       isOpenEnd: !isOpenEnd
     })
   }
-
 
   onChangeStart = (selectedDate) => {
     let { isOpenStart } = this.state;
@@ -501,7 +499,6 @@ class DetailsManager extends Component {
     });
   }
 
-
   onChangeRangeDay = (value) => {
     let filter = { ...this.state.filter }
     if (value) {
@@ -522,10 +519,6 @@ class DetailsManager extends Component {
     })
   };
 
-  // TODO
-  // onChangeLimitRow = (value) => {
-  // };
-
   onChangeContractType = (value) => {
     let filter = { ...this.state.filter }
     filter.contractType = value
@@ -535,7 +528,6 @@ class DetailsManager extends Component {
       this.getAllData()
     })
   }
-
 
   async createImport () {
 
@@ -550,7 +542,6 @@ class DetailsManager extends Component {
       type,
       ImageFilename
     } = this.state
-
 
     let errorMessage = ''
 
@@ -568,8 +559,8 @@ class DetailsManager extends Component {
       return;
     }
 
-    // console.log('type :::: ', type)
-    // console.log('typeCreate :::: ', typeCreate)
+    console.log('type :::: ', type)
+    console.log('typeCreate :::: ', typeCreate)
 
     // 창고주
     if (type === 'OWNER') {
@@ -619,17 +610,23 @@ class DetailsManager extends Component {
                   uirDoneImport: url
                 });
                 this.getAllData()
+                // Progress
+                setTimeout(() => {
+                  this.props.setProgress({ is: false, });
+                }, 300)
               } else {
-                ToastShow(getMsg(this.props.lang, 'ML0315', '출고 확정을 실패하였습니다. ') + res);
-              }
-              // Progress
-              setTimeout(() => {
+                // Progress
                 this.props.setProgress({ is: false, });
-              }, 300)
+                setTimeout(() => {
+                  ToastShow(getMsg(this.props.lang, 'ML0315', '출고 확정을 실패하였습니다. ') + res);
+                }, 300)
+              }
             }).catch(error => {
-            alert(error.response.data.message);
             // Progress
             this.props.setProgress({ is: false, });
+            setTimeout(() => {
+              alert(error.response.data.message);
+            }, 300)
           });
         } else if (typeCreate === 'import') {
           // 입고 확정
@@ -674,18 +671,21 @@ class DetailsManager extends Component {
                   uirDoneImport: url
                 });
                 this.getAllData()
-              } else {
-                ToastShow(getMsg(this.props.lang, 'ML0316', '입고 확정을 실패하였습니다. ') + res);
-              }
-              // Progress
-              setTimeout(() => {
+                // Progress
                 this.props.setProgress({ is: false, });
-              }, 300)
+              } else {
+                // Progress
+                this.props.setProgress({ is: false, });
+                setTimeout(() => {
+                  ToastShow(getMsg(this.props.lang, 'ML0316', '입고 확정을 실패하였습니다. ') + res);
+                }, 300)
+              }
             }).catch(error => {
-            // TODO 입고 확정 수량이 클경우 400 message null. 확인 필요.
-            alert(error.response.data.message);
             // Progress
             this.props.setProgress({ is: false, });
+            setTimeout(() => {
+              alert(error.response.data.message);
+            }, 300)
           });
         }
       }
@@ -989,6 +989,7 @@ class DetailsManager extends Component {
                       </View>
                       }
 
+                      {/** 입고 요청 취소 */}
                       {(type === 'TENANT' && item.type === 'IMPORT' && item.status === '1100') &&
                       <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
                         <TouchableOpacity
@@ -1017,6 +1018,7 @@ class DetailsManager extends Component {
                       </View>
                       }
 
+                      {/** 출고 요청 취소 */}
                       {(type === 'TENANT' && item.type === 'EXPORT' && item.status === '2100') &&
                       <View style={[DefaultStyle._listBtn, SS.listBtnProcess, SS.wrapBtnGroup]}>
                         <TouchableOpacity
@@ -1044,7 +1046,6 @@ class DetailsManager extends Component {
                         </TouchableOpacity>
                       </View>
                       }
-
 
                       {/**입고 사진 확인**/}
                       {item.type === 'IMPORT' && item.status === '1200' && item.imageUrl &&
@@ -1271,7 +1272,6 @@ class DetailsManager extends Component {
 
             { /** 임차인 전용 (입고요청 버튼, 출고요청 버튼) TODO Working **/
               type === 'TENANT' &&
-
               <View>
                 <View style={[DefaultStyle._listBtn, SS.listBtnProcess, { marginTop: 20, marginBottom: 20 }]}>
 
@@ -1367,12 +1367,10 @@ class DetailsManager extends Component {
               ) : null}
             </View>
           </View>
-
-
         </ScrollView>
 
 
-        {/** 입/출고 팝업 **/}
+        {/** 입/출고(Tenant), 입/출고확정(Owner) 팝업 **/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.visible}
@@ -1383,8 +1381,6 @@ class DetailsManager extends Component {
           <Dialog.Content>
             <View style={[]}>
               <Text style={[DefaultStyle._textTitleCard]}>{this.state.popUpDateLabel}</Text>
-
-
               <View style={[DefaultStyle._listElement, DefaultStyle._optionList]}>
                 <View style={[S.optionSelect, S.optionSelectLeft, {
                   height: 40,
@@ -1392,7 +1388,6 @@ class DetailsManager extends Component {
                   marginTop: 5,
                   width: '100%'
                 }]}>
-
                   <View style={{ flex: 1 }}>
                     <TouchableOpacity
                       onPress={() => this.showTimeCreateImport()}
@@ -1417,13 +1412,10 @@ class DetailsManager extends Component {
                     </TouchableOpacity>
                   </View>
                 </View>
-
               </View>
-
               <Text style={[DefaultStyle._textTitleCard, { marginBottom: 5 }]}>
                 {this.state.popUpQtyLabel}
               </Text>
-
               <TextField
                 ref={el => this.inputValueCreateImport = el}
                 value={this.state.createValue}
@@ -1431,7 +1423,6 @@ class DetailsManager extends Component {
                 styleProps={[{ height: 36, lineHeight: 18, padding: 0, paddingLeft: 15, fontSize: 14 }]}
                 onChangeText={(text) => this.onChangeValueImport(text)}
               />
-
               {type === 'OWNER' &&
               <View>
                 {
@@ -1452,8 +1443,6 @@ class DetailsManager extends Component {
                     />
                   </View>
                 }
-
-
                 <View style={[DefaultStyle._listBtn, SS.listBtnProcess, {
                   marginTop: 11,
                   marginBottom: 0,
@@ -1462,8 +1451,6 @@ class DetailsManager extends Component {
                   paddingLeft: 0,
                   paddingRight: 0
                 }]}>
-
-
                   <TouchableOpacity
                     onPress={() => this.handlePicker()}
                     style={[
@@ -1477,11 +1464,8 @@ class DetailsManager extends Component {
                     </Text>
                   </TouchableOpacity>
                 </View>
-
-
               </View>
               }
-
             </View>
           </Dialog.Content>
           <Dialog.Actions style={SS.footerPopup}>
@@ -1502,34 +1486,7 @@ class DetailsManager extends Component {
           </Dialog.Actions>
         </Dialog>
 
-        <Dialog
-          style={DefaultStyle.popup}
-          visible={this.state.confirm}
-          onDismiss={this.hideConfirm}>
-          <Dialog.Content>
-            <View style={DefaultStyle.imagePopup} />
-          </Dialog.Content>
-          <Dialog.Title
-            style={[DefaultStyle._titleDialog, DefaultStyle.titleDialog]}>
-            {getMsg(this.props.lang, 'ML0346', '입고 요청 완료')}
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={DefaultStyle.contentDialog}>
-              {getMsg(this.props.lang, 'ML0347', '입고요청을 완료했습니다. 입출고내역에서 요청하신 내역을 확인해주세요.')}
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={DefaultStyle._buttonPopup}>
-            <Button
-              style={DefaultStyle._buttonElement}
-              onPress={() => {
-                this.hideConfirm();
-                this.getAllData();
-              }}>
-              {getMsg(this.props.lang, 'ML0100', '확인')}
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-
+        {/** 입/출고 취소 확인 */}
         <Dialog
           visible={this.state.isCancel}
           onDismiss={() => this.setState({ isCancel: false })}>
@@ -1618,7 +1575,7 @@ class DetailsManager extends Component {
           </Dialog.Actions>
         </Dialog>
 
-        {/** 입고 확정 완료 TODO 모달확인 **/}
+        {/** TODO 입고 확정 완료 **/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.confirmRequestImport}
@@ -1648,7 +1605,7 @@ class DetailsManager extends Component {
           </Dialog.Actions>
         </Dialog>
 
-        {/** 출고 확정 완료 TODO 모달확인**/}
+        {/** TODO 출고 확정 완료 **/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.confirmRequestExport}
@@ -1678,7 +1635,7 @@ class DetailsManager extends Component {
           </Dialog.Actions>
         </Dialog>
 
-        {/** 입고 요청 취소 완료 TODO 모달확인**/}
+        {/** 입고 요청 취소 완료 **/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.cancelRequestImport}
@@ -1706,7 +1663,7 @@ class DetailsManager extends Component {
           </Dialog.Actions>
         </Dialog>
 
-        {/** 출고 요청 취소 완료 TODO 모달확인**/}
+        {/** 출고 요청 취소 완료 **/}
         <Dialog
           style={DefaultStyle.popup}
           visible={this.state.cancelRequestExport}

@@ -154,7 +154,7 @@ class Global extends Component {
         Object.assign(resultObj, item);
       });
     }
-    console.log('Lang ::: ', resultObj)
+    // console.log('Lang ::: ', resultObj)
     this.props.setLangData(resultObj);
 
     /** App Version Check (배포시 활성.) */
