@@ -41,10 +41,10 @@ class RegisterMoreInfo extends Component {
       toggleCheckBox: false,
       addOptDvCodes: props.dataMoreInfo && props.dataMoreInfo.addOptDvCodes
         ? props.dataMoreInfo.addOptDvCodes
-        : '',
+        : [],
       insrDvCodes: props.dataMoreInfo && props.dataMoreInfo.insrDvCodes
         ? props.dataMoreInfo.insrDvCodes
-        : '',
+        : [],
       cmpltYmd:
         props.dataMoreInfo && props.dataMoreInfo.cmpltYmd
           ? props.dataMoreInfo.cmpltYmd
