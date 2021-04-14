@@ -7,44 +7,48 @@
  */
 
 // Global Imports
-import React, { Component } from 'react';
-import { SafeAreaView, TouchableOpacity, View, Text, Dimensions, Platform, Image } from 'react-native';
+import React, {Component} from 'react';
+import {SafeAreaView, TouchableOpacity, View, Text, Keyboard, Dimensions, Platform, Image, KeyboardAvoidingView} from 'react-native';
 import * as Progress from 'react-native-progress';
-import { Modalize } from 'react-native-modalize';
+import {Modalize} from 'react-native-modalize';
 import SplashScreen from "react-native-splash-screen";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { getBottomSpace, isIphoneX } from "react-native-iphone-x-helper";
+import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
 // Local Imports
 import DefaultStyle from '../../styles/default';
-import { styles as S } from './style';
+import {styles as S} from './style';
 import ActionCreator from '@Actions';
-import { Menu } from '@Services/apis';
+import {Menu} from '@Services/apis';
 import VersionCheckService from '@Services/VersionCheckService';
 
 //---> Components
 import Popup from '@Components/organisms/Popup';
 import Loading from '@Components/atoms/Loading';
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
-import { LANG_STATUS_KEY } from '@Constant';
-import { getStatusBarHeight } from "react-native-status-bar-height";
-import { WebView } from "react-native-webview";
-import { styles } from "@Screeens/Search/style";
+import {LANG_STATUS_KEY} from '@Constant';
+import {getStatusBarHeight} from "react-native-status-bar-height";
+import {WebView} from "react-native-webview";
+import {styles} from "@Screeens/Search/style";
 
 const channelIOImage = require('@Assets/images/channel.png');
 
 const status = getStatusBarHeight(true);
 
 class Global extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.webView = null;
     this.sheetRef = React.createRef();
+    this.state = {
+      keyboardSpace: 0
+    }
   }
 
-  render () {
-    const { children, progress } = this.props;
+  render() {
+    const {children, progress} = this.props;
     let height = Math.round(Dimensions.get('window').height);
+    let bodyHeight = Platform.OS === 'ios' ? height - 48 : height - 74;
     if (Platform.OS === 'ios') {
       const naviHeight = 48;
       if (isIphoneX()) {
@@ -59,7 +63,7 @@ class Global extends Component {
     }
     return (
       <SafeAreaView style={[DefaultStyle.container, S.container]}>
-        <View style={[DefaultStyle.container, S.container, { position: 'relative', }]}>
+        <View style={[DefaultStyle.container, S.container, {position: 'relative',}]}>
           <Popup />
           {children}
 
@@ -77,6 +81,7 @@ class Global extends Component {
 
 
           {/** Channel IO Button */}
+          {!this.props.offChat &&
           <TouchableOpacity style={{
             position: "absolute",
             bottom: 64,
@@ -86,8 +91,9 @@ class Global extends Component {
                             onPress={() => {
                               this.sheetRef.current.open()
                             }}>
-            <Image source={channelIOImage} style={{ width: 54, height: 54 }}></Image>
-          </TouchableOpacity>
+            <Image source={channelIOImage} style={{width: 54, height: 54}}></Image>
+          </TouchableOpacity>}
+
           {/** Channel IO Body */}
           <Modalize
             ref={this.sheetRef}
@@ -95,9 +101,9 @@ class Global extends Component {
             modalHeight={height}
             panGestureEnabled={false}
             disableScrollIfPossible={false}
-            scrollViewProps={{ scrollEnabled: false }}
-            modalStyle={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-            handleStyle={{ backgroundColor: 'white', }}
+            scrollViewProps={{scrollEnabled: false}}
+            modalStyle={{borderTopLeftRadius: 0, borderTopRightRadius: 0}}
+            handleStyle={{backgroundColor: 'white',}}
             HeaderComponent={
               <View style={{
                 width: '100%',
@@ -119,12 +125,12 @@ class Global extends Component {
               </View>
             }
           >
-            {/** 지도웹뷰 */}
+            {/** Channel IO 웹뷰 */}
             <WebView
-              source={{ uri: `https://ej6wz.channel.io/?pluginKey=783c5bf5-4917-4339-9d39-74eb176bb85b` }}
+              source={{uri: `https://ej6wz.channel.io/?pluginKey=783c5bf5-4917-4339-9d39-74eb176bb85b`}}
               style={{
                 flex: 1,
-                height: Platform.OS === 'ios' ? height - 48 : height - 74,
+                height: bodyHeight - this.state.keyboardSpace,
               }}
               ref={webView => (this.webView = webView)}
               originWhitelist={['*']}
@@ -141,13 +147,13 @@ class Global extends Component {
     );
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     // 번역 로드.
     const langData = await AsyncStorage.getItem(LANG_STATUS_KEY);
     if (!langData) {
       AsyncStorage.setItem(LANG_STATUS_KEY, 'ko-KR');
     }
-    const data = await Menu.localization({ language: langData ? langData : 'ko-KR', });
+    const data = await Menu.localization({language: langData ? langData : 'ko-KR',});
     let resultObj = {}
     if (data && data.length > 0) {
       data.map(item => {
@@ -161,11 +167,25 @@ class Global extends Component {
     // await VersionCheckService.init();
 
     SplashScreen.hide();
+
+    Keyboard.addListener("keyboardDidShow", (e) => {
+      // console.log('keyboardDidShow :::: ', e)
+      if (e && e.endCoordinates && e.endCoordinates.height) {
+        this.setState({keyboardSpace: e.endCoordinates.height});
+      }
+    });
+    Keyboard.addListener("keyboardDidHide", (e) => {
+      // console.log('keyboardDidHide :::: ', e)
+      this.setState({keyboardSpace: 0});
+    });
+
   }
 }
 
 // store의 state를 component에 필요한 state만 선별하여 제공하는 역할.
-function mapStateToProps (state) {
+function
+
+mapStateToProps(state) {
   // console.log('++++++mapStateToProps :', state);
   return {
     progress: state.global.progress,
@@ -173,7 +193,9 @@ function mapStateToProps (state) {
 }
 
 // store에 action을 dispatch 하는 역할.
-function mapDispatchToProps (dispatch) {
+function
+
+mapDispatchToProps(dispatch) {
   return {
     setLangData: status => {
       dispatch(ActionCreator.setLangData(status));
@@ -184,4 +206,9 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Global);
+)
+
+(
+  Global
+)
+;

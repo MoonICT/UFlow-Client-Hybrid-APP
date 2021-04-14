@@ -43,6 +43,7 @@ class SearchOverlay extends Component {
    * On change search query.
    * */
   _onChangeSearchQuery (keyword) {
+    console.log('Text Change :::: ', keyword)
       if (keyword) {
         this.setState({
           isProgress: true,
@@ -76,6 +77,10 @@ class SearchOverlay extends Component {
       } else {
         // this.props.searchToggle(false);
         this.props.setSearchQuery('');
+        this.setState({
+          searchAddress: [], // 검색결과(지역)
+          searchWarehouse: [], // 검색결과(창고)
+        })
       }
   }
 
