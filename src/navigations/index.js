@@ -273,7 +273,7 @@ const App = () => {
    * Channel IO 버튼 활성 유무.
    * */
   const onStateChange = () => {
-    const currentRouteName = navigationRef.current.getCurrentRoute().name;
+    const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
     setIsOffChat(currentRouteName && (
       // 버튼을 숨길 라우트 이름 명시.
       currentRouteName === 'Consulting'
