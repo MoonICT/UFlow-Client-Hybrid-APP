@@ -164,7 +164,7 @@ class Global extends Component {
     this.props.setLangData(resultObj);
 
     /** App Version Check (배포시 활성.) */
-    // await VersionCheckService.init();
+    await VersionCheckService.init();
 
     SplashScreen.hide();
 

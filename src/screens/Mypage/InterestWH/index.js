@@ -27,7 +27,7 @@ import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 import CardMypage from '@Components/organisms/CardMypage';
 import ActionCreator from '@Actions';
 import box from '@Assets/images/box.png';
-import card from '@Assets/images/card-img.png';
+import card from '@Assets/images/card-img.jpeg';
 import { styles as S } from '../style';
 import { StringUtils } from '@Services/utils';
 import AsyncStorage from "@react-native-community/async-storage";

@@ -14,7 +14,7 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { styles } from './style';
 import DefaultStyle from '@Styles/default';
 import { Card } from 'react-native-paper';
-import cardBG from '@Assets/images/card-img.png';
+import cardBG from '@Assets/images/card-img.jpeg';
 import AsyncStorage from '@react-native-community/async-storage';
 import { TOKEN } from '@Constant';
 import { StringUtils } from '@Services/utils';

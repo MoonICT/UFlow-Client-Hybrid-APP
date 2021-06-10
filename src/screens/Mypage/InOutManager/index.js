@@ -26,7 +26,7 @@ import TextField from '@Components/organisms/TextField';
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from 'react-native-vector-icons/Fontisto';
-import card from '@Assets/images/card-img.png';
+import card from '@Assets/images/card-img.jpeg';
 import { InOutManagerService, WarehouseOut } from '@Services/apis';
 import { MY_PAGE_TAB_STATUS_KEY } from '@Constant';
 // import DatePicker from '@react-native-community/datetimepicker';

@@ -37,7 +37,7 @@ import Progress from '@Components/organisms/Progress';
 import { getMsg } from '@Utils/langUtils'; // TODO Require Lang
 // Image
 import panoIcon from '@Assets/images/iconback.png';
-import cardBG from '@Assets/images/card-img.png';
+import cardBG from '@Assets/images/card-img.jpeg';
 import WHType1 from '@Assets/images/icon-warehouse-1.png';
 import WHType2 from '@Assets/images/icon-warehouse-2.png';
 import WHType3 from '@Assets/images/icon-warehouse-3.png';

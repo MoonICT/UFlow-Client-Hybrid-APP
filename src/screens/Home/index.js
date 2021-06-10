@@ -62,7 +62,7 @@ import bannerSearchWh1 from '@Assets/images/bannerSearchWh1.png';
 import bannerSearchWh2 from '@Assets/images/bannerSearchWh2.png';
 import bannerSearchWh3 from '@Assets/images/bannerSearchWh3.png';
 
-import cardBG from '@Assets/images/card-img.png';
+import cardBG from '@Assets/images/card-img.jpeg';
 // import stepBG from '@Assets/images/step.png';
 // import slogan1 from '@Assets/images/slogan1.png';
 // import slogan2 from '@Assets/images/slogan2.png';

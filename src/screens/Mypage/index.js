@@ -38,7 +38,7 @@ import ActionCreator from '@Actions';
 import SettlementManagement from './SettlementManagement';
 import InterestWH from './InterestWH';
 
-import card from '@Assets/images/card-img.png';
+import card from '@Assets/images/card-img.jpeg';
 import { styles as S } from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Warehouse } from '@Services/apis';

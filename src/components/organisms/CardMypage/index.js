@@ -10,7 +10,7 @@ import React, { Component, Fragment } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import cardBG from '@Assets/images/card-img.png';
+import cardBG from '@Assets/images/card-img.jpeg';
 import PropTypes from 'prop-types';
 
 // Local Imports
