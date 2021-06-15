@@ -11,10 +11,10 @@ import { TOKEN } from '@Constant';
  * */
 
 export const certMobile = async payload => {
-  const token = await AsyncStorage.getItem(TOKEN);
+  //const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.post(`/api/v1/warehouse/cert/mobile`, payload, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      //Authorization: `Bearer ${token}`,
       Accept: 'application/json',
     },
   });
@@ -27,10 +27,10 @@ export const certMobile = async payload => {
  * @returns {Promise<*>}
  */
 export const certMobileConfirm = async payload => {
-  const token = await AsyncStorage.getItem(TOKEN);
+  //const token = await AsyncStorage.getItem(TOKEN);
   return await mainAxios.post(`/api/v1/warehouse/cert/mobile/confirm`, payload, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      //Authorization: `Bearer ${token}`,
       Accept: 'application/json',
     },
   });

@@ -25,6 +25,8 @@ import DoneRegister from './done';
 import HistoryBackActionBar from '@Components/organisms/HistoryBackActionBar';
 import TextField from '@Components/organisms/TextField';
 import Checkbox from '@Components/atoms/Checkbox';
+import CertMobile from '@Components/organisms/CertMobile';
+
 //---> Assets
 import { Account } from '@Services/apis';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -47,6 +49,7 @@ class Register extends Component {
       checkTerms: false,
       checkMarketing: false,
       isDone: false,
+      //isCert: false,
       serviceTerms: false,
       loading: false,
       terms: {
@@ -160,6 +163,7 @@ class Register extends Component {
       checkMarketing,
       isDone,
       errorEmail,
+      isCert,
     } = this.state;
 
     let checkPw =
@@ -167,7 +171,7 @@ class Register extends Component {
       this.state.snsCode === 'NVER';
     let checkTerms = terms.privacy && serviceTerms;
     let checkAll = checkTerms && checkMarketing;
-    let checkSubmit = fullName && email && mobile && checkTerms && checkPw;
+    let checkSubmit = fullName && email && mobile && checkTerms && checkPw && isCert;
     return (
       <>
         {isDone ? (
@@ -287,6 +291,16 @@ class Register extends Component {
                     type="telephoneNumber"
                     mode="outlined"
                     maxLength={11}
+                  />
+
+                  {/* cert phone */}
+                  <CertMobile
+                    mobile={mobile}
+                    onComplete={() => {
+                      this.setState({
+                        isCert: true
+                      })
+                    }}  
                   />
                   {this.state.error === true ? 'abc' : null}
                 </View>
