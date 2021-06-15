@@ -41,7 +41,13 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   btnType: {
-    marginTop: 32,
+    marginTop: 15,
     marginBottom: 40,
+    margin: 5,
+  },
+  btnContainer: {
+    flexDirection: 'row',
+    paddingLeft: 70,
+    paddingRight: 70,
   },
 });

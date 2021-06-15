@@ -85,22 +85,37 @@ class WarehouseType extends Component {
             <Text style={[S.content, {color:'#F44336', fontSize: 13}]}>
               {getMsg(this.props.lang, 'ML0514', '※ 조회시에는 창고 상세주소가 표시되지 않습니다.')}
             </Text>
-            <TouchableOpacity
-              style={[DefaultStyle._btnOutline, S.btnType]}
-              onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0001'})}>
-              <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0515', '등록하기')}</Text>
-            </TouchableOpacity>
+            <View style={S.btnContainer}>
+              <TouchableOpacity
+                style={[DefaultStyle._btnOutline, S.btnType]}
+                /*onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0001'})}*/>
+                <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0656', '간편등록')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[DefaultStyle._btnOutline, S.btnType]}
+                onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0001'})}>
+                <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0657', '상세등록')}</Text>
+              </TouchableOpacity>
+            </View>
             <View style={S.underlined} />
           </View>
           <View style={[S.container, {paddingBottom: 80}]}>
             <Image source={illust21} />
             <Text style={[S.title, {marginBottom: 0}]}>{getMsg(this.props.lang, 'ML0516', 'UFLOW 책임형')}</Text>
             <Text style={{marginBottom: 10}}>{getMsg(this.props.lang, 'ML0517', '(직영, 가맹, 일반창고)')}</Text>
-            <TouchableOpacity
-              style={[DefaultStyle._btnOutline, S.btnType]}
-              onPress={() => this.navigation.navigate('RegisterBusinessInfo')}>
-              <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0515', '등록하기')}</Text>
-            </TouchableOpacity>
+            <View style={S.btnContainer}>
+              <TouchableOpacity
+                style={[DefaultStyle._btnOutline, S.btnType]}
+                /*onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0002'})}*/>
+                <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0656', '간편등록')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[DefaultStyle._btnOutline, S.btnType]}
+                onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0002'})}>
+                <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0657', '상세등록')}</Text>
+              </TouchableOpacity>
+            </View>
+            
           </View>
         </ScrollView>
       </SafeAreaView>
