@@ -44,6 +44,7 @@ import TextField from '@Screeens/TextField';
 // import testScreen from '@Screeens/testScreen';
 import WarehouseType from '@Screeens/RegisterWH/WarehouseType';
 import RegisterWH from '@Screeens/RegisterWH';
+import RegisterSimple from '@Screeens/RegisterWH/RegisterSimple';
 import RegisterImage from '@Screeens/RegisterWH/RegisterImage';
 import RegisterInfo from '@Screeens/RegisterWH/RegisterInfo';
 import RegisterIntro from '@Screeens/RegisterWH/RegisterIntro';
@@ -276,7 +277,7 @@ const App = () => {
     const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
     setIsOffChat(currentRouteName && (
       // 버튼을 숨길 라우트 이름 명시.
-      currentRouteName === 'Consulting'
+      currentRouteName === 'Consulting' || 'RegisterSimple'
     ))
   }
 
@@ -371,6 +372,12 @@ const App = () => {
                   <AuthStack.Screen
                     name="RegisterWH"
                     component={RegisterWH}
+                    headerMode={false}
+                    options={{headerShown: false}}
+                  />
+                  <AuthStack.Screen
+                    name="RegisterSimple"
+                    component={RegisterSimple}
                     headerMode={false}
                     options={{headerShown: false}}
                   />

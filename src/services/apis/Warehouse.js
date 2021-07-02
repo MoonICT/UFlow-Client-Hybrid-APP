@@ -487,6 +487,18 @@ export const listCalStdDvCodeTrust = () => {
     },
   });
 };
+export const listStdDetailCode = (pStdCd) => {
+  return Axios.request({
+    methodType: 'GET',
+    url: `/api/v1/mang/getDetailCodelist/${pStdCd}`,
+    // requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
+};
 
 /**
  * Deprecated
@@ -609,6 +621,25 @@ export const registWhrg = whrgBody => {
   return Axios.request({
     methodType: 'POST',
     url: `/api/v1/warehouse`,
+    payload: whrgBody,
+    requiresToken: true, // set access_token
+    config: {
+      headers: {
+        contentType: 'application/json',
+      },
+    },
+  });
+};
+
+/**
+ * 간편 창고 등록
+ * @param {*} whrgBody 
+ * @returns 
+ */
+export const registSimpleWhrg = whrgBody => {
+  return Axios.request({
+    methodType: 'POST',
+    url: `/api/v1/warehouse/addSimpleWhrg`,
     payload: whrgBody,
     requiresToken: true, // set access_token
     config: {

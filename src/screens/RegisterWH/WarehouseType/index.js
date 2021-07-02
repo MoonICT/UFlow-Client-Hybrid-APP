@@ -61,7 +61,7 @@ class WarehouseType extends Component {
       name,
       description,
       gps,
-      address,
+      address,  
       roadAddr,
       listSearch,
     } = this.state;
@@ -88,7 +88,7 @@ class WarehouseType extends Component {
             <View style={S.btnContainer}>
               <TouchableOpacity
                 style={[DefaultStyle._btnOutline, S.btnType]}
-                /*onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0001'})}*/>
+                onPress={() => this.navigation.navigate('RegisterSimple',{warehMgmtType: '0001'})}>
                 <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0656', '간편등록')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -106,7 +106,7 @@ class WarehouseType extends Component {
             <View style={S.btnContainer}>
               <TouchableOpacity
                 style={[DefaultStyle._btnOutline, S.btnType]}
-                /*onPress={() => this.navigation.navigate('RegisterWH',{warehMgmtType: '0002'})}*/>
+                onPress={() => this.navigation.navigate('RegisterSimple',{warehMgmtType: '0002'})}>
                 <Text style={DefaultStyle._textButton}>{getMsg(this.props.lang, 'ML0656', '간편등록')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
