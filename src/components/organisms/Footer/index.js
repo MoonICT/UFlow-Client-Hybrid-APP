@@ -47,7 +47,7 @@ class Footer extends Component {
             </Text>
             <Text style={DefaultStyle._textContentFooter}>
               대표이사 : 서병륜 | 주소 : 울특별시 마포구 마포대로 63-8 (도화동,
-              삼창프라자 6층) | 대표전화 : 1588-1333 |
+              삼창프라자 6층) | 대표전화 : 02-3669-7657 / 7658 |
             </Text>
             <Text style={DefaultStyle._textContentFooter}>
               팩스 : 02-0000-0000

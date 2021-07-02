@@ -860,7 +860,7 @@ class Home extends Component {
           <View style={styles.copyRight}>
             <Text style={[styles.textCopyRight, styles.font9]}>
               CopyRight© 2021 by KOREA LOGIS POOL, All Rights Reserved. {'\n'}
-              한국로지스풀(주) 대표이사 : 서용기 | 주소 : 서울특별시 마포구 마포대로 63-8 (도화동, 삼창프라자 6층) | 대표전화 : 1588-1333
+              한국로지스풀(주) 대표이사 : 서용기 | 주소 : 서울특별시 마포구 마포대로 63-8 (도화동, 삼창프라자 6층) | 대표전화 : 02-3669-7657 / 7658
             </Text>
           </View>
         </ScrollView>
